@@ -7,15 +7,15 @@
 import testing ;
 import boost ;
 
-boost.use-project ;
+# boost.use-project ;
+use-project boost : $(BOOST_ROOT) ;
 
 # set your MTL4 directory here
-MTL4_INCLUDE = /home/mario/MTL4 ;
+MTL4_INCLUDE = /home/mario/MTL4/usr/include ;
 
 project
     : requirements 
       <library>/boost/test//boost_unit_test_framework
-      <include>../../../../..
       <include>$(MTL4_INCLUDE)
       <define>BOOST_ALL_NO_LIB=1
       <link>static
@@ -26,6 +26,5 @@ project
 test-suite "odeint-mtl4"
     :
     [ run mtl4_resize.cpp ]
-    [ run lorenz.cpp ]
     : <testing.launcher>valgrind
     ;

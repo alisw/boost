@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 //
-// Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -11,14 +11,13 @@
 
 
 #include <boost/geometry/geometry.hpp>
-#include <boost/geometry/multi/geometries/multi_point.hpp>
+#include <boost/geometry/geometries/multi_point.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 
 #include <boost/geometry/algorithms/detail/partition.hpp>
 
 #include <boost/geometry/io/wkt/wkt.hpp>
-#include <boost/geometry/multi/io/wkt/wkt.hpp>
 
 #if defined(TEST_WITH_SVG)
 # include <boost/geometry/io/svg/svg_mapper.hpp>
@@ -362,7 +361,7 @@ void test_many_points(int seed, int size, int count)
     typedef svg_visitor<bg::svg_mapper<point_item> > box_visitor_type;
     box_visitor_type box_visitor(mapper);
 #else
-    typedef bg::visit_no_policy box_visitor_type;
+    typedef bg::detail::partition::visit_no_policy box_visitor_type;
     box_visitor_type box_visitor;
 #endif
 
@@ -372,6 +371,8 @@ void test_many_points(int seed, int size, int count)
             bg::model::box<point_item>,
             get_point, ovelaps_point,
             get_point, ovelaps_point,
+            bg::detail::partition::include_all_policy,
+            bg::detail::partition::include_all_policy,
             box_visitor_type
         >::apply(mp1, mp2, visitor, 2, box_visitor);
 
@@ -470,7 +471,7 @@ void test_many_boxes(int seed, int size, int count)
     partition_box_visitor_type partition_box_visitor(mapper);
 
 #else
-    typedef bg::visit_no_policy partition_box_visitor_type;
+    typedef bg::detail::partition::visit_no_policy partition_box_visitor_type;
     partition_box_visitor_type partition_box_visitor;
 #endif
 
@@ -480,6 +481,8 @@ void test_many_boxes(int seed, int size, int count)
             box_type,
             get_box, ovelaps_box,
             get_box, ovelaps_box,
+            bg::detail::partition::include_all_policy,
+            bg::detail::partition::include_all_policy,
             partition_box_visitor_type
         >::apply(boxes, visitor, 2, partition_box_visitor);
 
@@ -538,7 +541,7 @@ void test_two_collections(int seed1, int seed2, int size, int count)
     typedef svg_visitor<bg::svg_mapper<point_item> > partition_box_visitor_type;
     partition_box_visitor_type partition_box_visitor(mapper);
 #else
-    typedef bg::visit_no_policy partition_box_visitor_type;
+    typedef bg::detail::partition::visit_no_policy partition_box_visitor_type;
     partition_box_visitor_type partition_box_visitor;
 #endif
 
@@ -548,6 +551,8 @@ void test_two_collections(int seed1, int seed2, int size, int count)
             box_type,
             get_box, ovelaps_box,
             get_box, ovelaps_box,
+            bg::detail::partition::include_all_policy,
+            bg::detail::partition::include_all_policy,
             partition_box_visitor_type
         >::apply(boxes1, boxes2, visitor, 2, partition_box_visitor);
 
@@ -604,7 +609,7 @@ void test_heterogenuous_collections(int seed1, int seed2, int size, int count)
     typedef svg_visitor<bg::svg_mapper<point_item> > partition_box_visitor_type;
     partition_box_visitor_type partition_box_visitor(mapper);
 #else
-    typedef bg::visit_no_policy partition_box_visitor_type;
+    typedef bg::detail::partition::visit_no_policy partition_box_visitor_type;
     partition_box_visitor_type partition_box_visitor;
 #endif
 
@@ -614,6 +619,8 @@ void test_heterogenuous_collections(int seed1, int seed2, int size, int count)
             box_type,
             get_point, ovelaps_point,
             get_box, ovelaps_box,
+            bg::detail::partition::include_all_policy,
+            bg::detail::partition::include_all_policy,
             partition_box_visitor_type
         >::apply(points, boxes, visitor1, 2, partition_box_visitor);
 
@@ -623,6 +630,8 @@ void test_heterogenuous_collections(int seed1, int seed2, int size, int count)
             box_type,
             get_box, ovelaps_box,
             get_point, ovelaps_point,
+            bg::detail::partition::include_all_policy,
+            bg::detail::partition::include_all_policy,
             partition_box_visitor_type
         >::apply(boxes, points, visitor2, 2, partition_box_visitor);
 

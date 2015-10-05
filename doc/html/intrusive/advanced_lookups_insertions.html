@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -55,8 +56,6 @@
 <p>
         However, sometimes the object to be searched is quite expensive to construct:
       </p>
-<p>
-</p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">unordered_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstring</span><span class="special">&gt;</span>
@@ -117,8 +116,6 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
-<p>
         <code class="computeroutput"><span class="identifier">Expensive</span></code> is an expensive
         object to construct. If "key" c-string is quite long <code class="computeroutput"><span class="identifier">Expensive</span></code> has to construct a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>
         using heap memory. Like <code class="computeroutput"><span class="identifier">Expensive</span></code>,
@@ -147,8 +144,6 @@
         offers functions that take any key type and compatible hash and equality
         functions. Now, let's see the optimized search function:
       </p>
-<p>
-</p>
 <pre class="programlisting"><span class="comment">// These compare Expensive and a c-string</span>
 <span class="keyword">struct</span> <span class="identifier">StrExpComp</span>
 <span class="special">{</span>
@@ -183,8 +178,6 @@
    <span class="keyword">return</span> <span class="special">&amp;*</span><span class="identifier">it</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 <p>
         This new arbitrary key overload is also available for other functions taking
         values as arguments:
@@ -234,8 +227,6 @@
         if a value is present or not and if it's not present, a function to insert
         it immediately without any further lookup. For example, using the same <code class="computeroutput"><span class="identifier">Expensive</span></code> class, this function can be inefficient:
       </p>
-<p>
-</p>
 <pre class="programlisting"><span class="comment">// Insertion functions</span>
 <span class="keyword">bool</span> <span class="identifier">insert_to_set</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
@@ -254,15 +245,11 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
-<p>
         If the object is already present, we are constructing an <code class="computeroutput"><span class="identifier">Expensive</span></code>
         that will be discarded, and this is a waste of resources. Instead of that,
         let's use <code class="computeroutput"><span class="identifier">insert_check</span></code> and
         <code class="computeroutput"><span class="identifier">insert_commit</span></code> functions:
       </p>
-<p>
-</p>
 <pre class="programlisting"><span class="comment">// Optimized insertion functions</span>
 <span class="keyword">bool</span> <span class="identifier">insert_to_set_optimized</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">Set</span> <span class="special">&amp;</span><span class="identifier">set_object</span><span class="special">)</span>
 <span class="special">{</span>
@@ -281,8 +268,6 @@
    <span class="keyword">return</span> <span class="identifier">success</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 <p>
         <code class="computeroutput"><span class="identifier">insert_check</span></code> is similar to
         a normal <code class="computeroutput"><span class="identifier">insert</span></code> but:
@@ -353,11 +338,9 @@
 <p>
         Let's see an example:
       </p>
-<p>
-</p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">intrusive</span><span class="special">/</span><span class="identifier">set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">functional</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive</span><span class="special">;</span>
@@ -417,8 +400,6 @@
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
-<p>
-      </p>
 </div>
 <p>
       For more information about advanced lookup and insertion functions see associative
@@ -428,7 +409,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2013 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 Olaf Krzikalla<br>Copyright &#169; 2006-2015 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

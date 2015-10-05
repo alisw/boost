@@ -1,5 +1,5 @@
 [/
-              Copyright Andrey Semashev 2007 - 2014.
+              Copyright Andrey Semashev 2007 - 2015.
      Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
               http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,37 @@
 /]
 
 [section:changelog Changelog]
+
+[heading 2.6, Boost 1.59]
+
+[*General changes:]
+
+* On systems with [@https://gcc.gnu.org/wiki/Visibility symbol visibility] support (e.g. Linux) the library is now built with all internal symbols hidden. API symbols still have default visibility, so this shouldn't affect linking with the library.
+* *Breaking change:* The library has been ported to __boost_type_index__ for its underlying type info management tool. This improved library compatibility with hidden symbol visibility mode on some compilers. This affected the following public interfaces:
+  * `invalid_type` exceptions thrown by the library now have `typeindex::type_index` attached as the description of the offending type. The type was previously identified by `type_info_wrapper`.
+  * __boost_exception__ `type_info_info` error information now contains `typeindex::type_index` instead of `type_info_wrapper`. This is the error info that can be used to obtain the type info from `invalid_type` exceptions.
+  * `attribute_value::get_type()` now returns `typeindex::type_index` instead of `type_info_wrapper`. If the `attribute_value` object is empty, the returned `type_index` is default-constructed (i.e. refers to the `void` type). User-defined attribute value implementations should be similarly changed (the `attribute_value::impl::get_type()` virtual method now also returns `typeindex::type_index`).
+* `type_info_wrapper` component has been deprecated and will be removed in future releases. __boost_type_index__ is recommended as a replacement.
+* Removed the previously deprecated headers: `boost/log/utility/intrusive_ref_counter.hpp`, `boost/log/utility/explicit_operator_bool.hpp`, `boost/log/utility/empty_deleter.hpp`.
+* Added support for building the library for OpenBSD. ([ticket 11446])
+* Improved internal implementation of the event synchronization primitive used for asynchronous logging. The updated implementation relies on __boost_atomic__ for atomic operations which provides better portability. On Linux the implementation uses futexes directly. ([ticket 11398])
+* Changed the format of dates produced by the default formatter constructed from strings (e.g. when initializing the library from a config file). The new format displays months as numbers instead of abbreviated names. This allows for easier log record ordering when post-processing log files. ([ticket 8839])
+
+[*Bug fixes:]
+
+* Fixed incorrect behavior of `attribute_value_set::insert()` and `attribute_value_set` constructor in some cases. The inserted elements could have made some previously inserted elements not findable. The constructor from `attribute_set`s could leave some of the attribute values acquired from attributes not findable. ([ticket 11190])
+* Added missing function template exports. ([ticket 11495])
+
+[heading 2.5, Boost 1.58]
+
+[*Bug fixes:]
+
+* Fixed thread id formatting. The thread identifiers could be presented as zeros on big-endian platforms. Also the lower 4 bits of the ids were lost in the output.
+* Fixed process id formatting. Process ids could have misplaced filler zeros. ([ticket 10926])
+* Fixed build failure on GNU Hurd.
+* Fixed incorrect behavior of [link log.detailed.sink_backends.text_file text file sink backend] in case if free space on the file system gets exhausted. The sink will no longer create lots of empty files in attempt to recover. ([ticket 11016])
+* Fixed incorrect behavior of `attribute_set::insert()` in some cases. The inserted elements could have made some previously inserted elements not findable. ([ticket 11106])
+* Fixed incorrect behavior of `attribute_value_set::size()` if a large number of attribute values are inserted into the set. ([ticket 11148])
 
 [heading 2.4, Boost 1.57]
 

@@ -65,8 +65,8 @@ main()
         std::cout << pop_back(sv) << std::endl;
 
         // Compile check only
-        begin(pop_back(sv)) == end(sv);
-        end(pop_back(sv)) == begin(sv);
+        (void)(begin(pop_back(sv)) == end(sv));
+        (void)(end(pop_back(sv)) == begin(sv));
     }
 
     // $$$ JDG: TODO add compile fail facility $$$
@@ -95,7 +95,7 @@ main()
 #endif
 
     {
-        boost::array<std::size_t, 2> a = { 10, 50 };
+        boost::array<std::size_t, 2> a = {{ 10, 50 }};
         BOOST_TEST(back(pop_back(a)) == 10);
     }
 

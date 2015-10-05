@@ -1,4 +1,4 @@
-//  This file was automatically generated on Mon Oct 13 13:09:12 2014
+//  This file was automatically generated on Fri Jun 26 21:48:00 2015
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -280,12 +280,17 @@ namespace boost_no_cxx14_decltype_auto = empty_boost;
 #ifndef BOOST_NO_CXX14_DIGIT_SEPARATORS
 #include "boost_no_cxx14_digit_separator.ipp"
 #else
-namespace boost_no_cxx14_digit_separator = empty_boost;
+namespace boost_no_cxx14_digit_separators = empty_boost;
 #endif
 #ifndef BOOST_NO_CXX14_GENERIC_LAMBDAS
 #include "boost_no_cxx14_generic_lambda.ipp"
 #else
 namespace boost_no_cxx14_generic_lambdas = empty_boost;
+#endif
+#ifndef BOOST_NO_CXX14_HDR_SHARED_MUTEX
+#include "boost_no_cxx14_hdr_shared_mutex.ipp"
+#else
+namespace boost_no_cxx14_hdr_shared_mutex = empty_boost;
 #endif
 #ifndef BOOST_NO_CXX14_INITIALIZED_LAMBDA_CAPTURES
 #include "boost_no_cxx14_lambda_capture.ipp"
@@ -1501,7 +1506,7 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_CXX14_DECLTYPE_AUTO at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
-   if(0 != boost_no_cxx14_digit_separator::test())
+   if(0 != boost_no_cxx14_digit_separators::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX14_DIGIT_SEPARATORS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
@@ -1509,6 +1514,11 @@ int main( int, char *[] )
    if(0 != boost_no_cxx14_generic_lambdas::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX14_GENERIC_LAMBDAS at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_cxx14_hdr_shared_mutex::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX14_HDR_SHARED_MUTEX at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_cxx14_initialized_lambda_captures::test())

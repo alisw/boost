@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -26,17 +27,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="signals2.rationale"></a>Design Rationale</h2></div></div></div>
 <div class="toc"><dl class="toc">
-<dt><span class="section"><a href="rationale.html#idp430149344">User-level Connection Management</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430167984">Automatic Connection Management</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430185104"><code class="computeroutput">optional_last_value</code> as the Default Combiner</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430191648">Combiner Interface</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430206720">Connection Interfaces: +=  operator</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430226096">Signals2 Mutex Classes</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430236576">Comparison with other Signal/Slot implementations</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430398928">User-level Connection Management</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430417568">Automatic Connection Management</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430434688"><code class="computeroutput">optional_last_value</code> as the Default Combiner</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430441232">Combiner Interface</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430457152">Connection Interfaces: +=  operator</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430476528">Signals2 Mutex Classes</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430487008">Comparison with other Signal/Slot implementations</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430149344"></a>User-level Connection Management</h3></div></div></div>
+<a name="idp430398928"></a>User-level Connection Management</h3></div></div></div>
 <p> Users need to have fine control over the connection of
     signals to slots and their eventual disconnection. The primary approach
     taken by Boost.Signals2 is to return a
@@ -44,14 +45,14 @@
     connected/disconnected query, manual disconnection, and an
     automatic disconnection on destruction mode (<code class="computeroutput"><a class="link" href="../boost/signals2/scoped_connection.html" title="Class scoped_connection">signals2::scoped_connection</a></code>).
     In addition, two other interfaces are supported by the
-    <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#idp155345552-bb">signal::disconnect</a></code> overloaded method:</p>
+    <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#idp201870128-bb">signal::disconnect</a></code> overloaded method:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p><span class="bold"><strong>Pass slot to
         disconnect</strong></span>: in this interface model, the
         disconnection of a slot connected with
-        <code class="computeroutput">sig.<a class="link" href="../boost/signals2/signal.html#idp100696352-bb">connect</a>(typeof(sig)::slot_type(slot_func))</code> is
+        <code class="computeroutput">sig.<a class="link" href="../boost/signals2/signal.html#idp228076832-bb">connect</a>(typeof(sig)::slot_type(slot_func))</code> is
         performed via
-        <code class="computeroutput">sig.<a class="link" href="../boost/signals2/signal.html#idp155345552-bb">disconnect</a>(slot_func)</code>. Internally,
+        <code class="computeroutput">sig.<a class="link" href="../boost/signals2/signal.html#idp201870128-bb">disconnect</a>(slot_func)</code>. Internally,
         a linear search using slot comparison is performed and the
         slot, if found, is removed from the list. Unfortunately,
         querying connectedness ends up as a
@@ -79,14 +80,14 @@
 </ul></div>
 <p> This type of interface is supported in Boost.Signals2
         via the slot grouping mechanism, and the overload of
-        <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#idp155345552-bb">signal::disconnect</a></code>
+        <code class="computeroutput"><a class="link" href="../boost/signals2/signal.html#idp201870128-bb">signal::disconnect</a></code>
         which takes an argument of the signal's <code class="computeroutput">Group</code> type.</p>
 </li>
 </ul></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430167984"></a>Automatic Connection Management</h3></div></div></div>
+<a name="idp430417568"></a>Automatic Connection Management</h3></div></div></div>
 <p>Automatic connection management in Signals2
       depends on the use of <code class="computeroutput">boost::shared_ptr</code> to
       manage the lifetimes of tracked objects.  This is differs from
@@ -128,7 +129,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430185104"></a><code class="computeroutput">optional_last_value</code> as the Default Combiner</h3></div></div></div>
+<a name="idp430434688"></a><code class="computeroutput">optional_last_value</code> as the Default Combiner</h3></div></div></div>
 <p>
       The default combiner for Boost.Signals2 has changed from the <code class="computeroutput">last_value</code>
       combiner used by default in the original Boost.Signals library.
@@ -144,7 +145,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430191648"></a>Combiner Interface</h3></div></div></div>
+<a name="idp430441232"></a>Combiner Interface</h3></div></div></div>
 <p> The Combiner interface was chosen to mimic a call to an
     algorithm in the C++ standard library. It is felt that by viewing
     slot call results as merely a sequence of values accessed by input
@@ -272,9 +273,9 @@ private:
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430206720"></a>Connection Interfaces: +=  operator</h3></div></div></div>
+<a name="idp430457152"></a>Connection Interfaces: +=  operator</h3></div></div></div>
 <p> Boost.Signals2 supports a connection syntax with the form
-    <code class="computeroutput">sig.<a class="link" href="../boost/signals2/signal.html#idp100696352-bb">connect</a>(slot)</code>, but a
+    <code class="computeroutput">sig.<a class="link" href="../boost/signals2/signal.html#idp228076832-bb">connect</a>(slot)</code>, but a
     more terse syntax <code class="computeroutput">sig += slot</code> has been suggested (and
     has been used by other signals &amp; slots implementations). There
     are several reasons as to why this syntax has been
@@ -312,7 +313,7 @@ private:
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430226096"></a>Signals2 Mutex Classes</h3></div></div></div>
+<a name="idp430476528"></a>Signals2 Mutex Classes</h3></div></div></div>
 <p>
       The Boost.Signals2 library provides 2 mutex classes: <code class="computeroutput"><a class="link" href="../boost/signals2/mutex.html" title="Class mutex">boost::signals2::mutex</a></code>,
       and <code class="computeroutput"><a class="link" href="../boost/signals2/dummy_mutex.html" title="Class dummy_mutex">boost::signals2::dummy_mutex</a></code>.  The motivation for providing
@@ -330,14 +331,14 @@ private:
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp430236576"></a>Comparison with other Signal/Slot implementations</h3></div></div></div>
+<a name="idp430487008"></a>Comparison with other Signal/Slot implementations</h3></div></div></div>
 <div class="toc"><dl class="toc">
-<dt><span class="section"><a href="rationale.html#idp430237280">libsigc++</a></span></dt>
-<dt><span class="section"><a href="rationale.html#idp430244400">.NET delegates</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430487712">libsigc++</a></span></dt>
+<dt><span class="section"><a href="rationale.html#idp430495312">.NET delegates</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp430237280"></a>libsigc++</h4></div></div></div>
+<a name="idp430487712"></a>libsigc++</h4></div></div></div>
 <p> <a href="http://libsigc.sourceforge.net" target="_top">libsigc++</a> is a C++
       signals &amp; slots library that originally started as part of
       an initiative to wrap the C interfaces to <a href="http://www.gtk.org" target="_top">GTK</a> libraries in C++, and has
@@ -367,7 +368,7 @@ private:
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp430244400"></a>.NET delegates</h4></div></div></div>
+<a name="idp430495312"></a>.NET delegates</h4></div></div></div>
 <p> <a href="http://www.microsoft.com" target="_top">Microsoft</a>
       has introduced the .NET Framework and an associated set of
       languages and language extensions, one of which is the

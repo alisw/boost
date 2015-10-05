@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -5,7 +6,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;30.&#160;Thread 4.4.0">
+<link rel="up" href="../thread.html" title="Chapter&#160;30.&#160;Thread 4.5.0">
 <link rel="prev" href="build.html" title="Using and building the library">
 <link rel="next" href="future.html" title="Future">
 </head>
@@ -28,6 +29,154 @@
 </h2></div></div></div>
 <h4>
 <a name="thread.changes.h0"></a>
+      <span class="phrase"><a name="thread.changes.version_4_5_0___boost_1_58"></a></span><a class="link" href="changes.html#thread.changes.version_4_5_0___boost_1_58">Version
+      4.5.0 - boost 1.58</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Know Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3926" target="_top">#3926</a>
+          thread_specific_ptr + dlopen library causes a SIGSEGV.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/4833" target="_top">#4833</a>
+          MinGW/test_tss_lib: Support of automatic tss cleanup for native threading
+          API not available
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/8600" target="_top">#8600</a>
+          wait_for_any hangs, if called with multiple copies of shared_future referencing
+          same task
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/9118" target="_top">#9118</a>
+          Seg fault on thread join when llvm and libc++ are used
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/9309" target="_top">#9309</a>
+          test_latch fails often on clang-darwin-tot11
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/9311" target="_top">#9311</a>
+          ex_lambda_future fails on msvc-11.0
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10942" target="_top">#10942</a>
+          Boost.Thread fails to build on Cygwin.
+        </li>
+</ul></div>
+<p>
+      Please take a look at <a href="https://svn.boost.org/trac/boost/query?status=assigned&amp;status=new&amp;status=reopened&amp;component=thread&amp;type=!Feature+Requests&amp;col=id&amp;col=summary&amp;order=id" target="_top">thread
+      Know Bugs</a> to see the current state.
+    </p>
+<p>
+      Please take a look at <a href="http://www.boost.org/development/tests/master/developer/thread.html" target="_top">thread
+      trunk regression test</a> to see the last regression test snapshot.
+    </p>
+<p>
+      <span class="bold"><strong>Sever limitations:</strong></span>
+    </p>
+<p>
+      There are some severe bugs that prevent the use of the library on concrete
+      contexts, in particular:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          on thread specific storage that prevent the library to be used with dynamic
+          libraries ( <a href="http://svn.boost.org/trac/boost/ticket/3926" target="_top">#3926</a>,
+          ),
+        </li></ul></div>
+<p>
+      <span class="bold"><strong>New Experimental Features:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/9600" target="_top">#9600</a>
+          Async: Add task_region
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10611" target="_top">#10611</a>
+          Add emplace promise::set_value and emplace make_ready_future
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10826" target="_top">#10826</a>
+          Add scheduled executor operations
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/11048" target="_top">#11048</a>
+          Add a serial_executor based on continuations
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Fixed Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6787" target="_top">#6787</a>
+          boost::thread::sleep() hangs if system time is rolled back
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10734" target="_top">#10734</a>
+          Submit method work differently on different executors, some throw exception
+          and some silently ignore error (thread_executor and inline_executor)
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10736" target="_top">#10736</a>
+          Task exceptions silently ignored. I think std::terminate solution from
+          N3785 and std::thread is better choice and more consistent.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10737" target="_top">#10737</a>
+          In serial_executor we have infinite wait if task throw exception.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10822" target="_top">#10822</a>
+          Boost.Thread fails to compile on Android
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10824" target="_top">#10824</a>
+          Boost.Thread 1.57 breaks Windows XP compatibility for SP2 and below.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10963" target="_top">#10963</a>
+          future&lt;future&lt;T&gt;&gt;::then Has No Implementation
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10964" target="_top">#10964</a>
+          future&lt;future&lt;T&gt;&gt;::unwrap().then() Deadlocks
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10968" target="_top">#10968</a>
+          The futures returned by async() and future::then() are not blocking.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10971" target="_top">#10971</a>
+          shared_future::get()/get_or() must be const
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10972" target="_top">#10972</a>
+          shared_future::then() can be called multiple times.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10979" target="_top">#10979</a>
+          Support T&amp; type deduction when the make_ready_future parameter is reference_wrapper&lt;T&gt;
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10996" target="_top">#10996</a>
+          Thread physical_concurrency() is failing on Windows
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/11035" target="_top">#11035</a>
+          BOOST_HAS_PTHREAD_MUTEXATTR_SETTYPE not defined for Android
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/11053" target="_top">#11053</a>
+          The attached code results in a R6025 - pure virtual function call in run_thread_exit_callbacks
+        </li>
+</ul></div>
+<h4>
+<a name="thread.changes.h1"></a>
       <span class="phrase"><a name="thread.changes.version_4_4_0___boost_1_57"></a></span><a class="link" href="changes.html#thread.changes.version_4_4_0___boost_1_57">Version
       4.4.0 - boost 1.57</a>
     </h4>
@@ -235,7 +384,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h1"></a>
+<a name="thread.changes.h2"></a>
       <span class="phrase"><a name="thread.changes.version_4_3_0___boost_1_56"></a></span><a class="link" href="changes.html#thread.changes.version_4_3_0___boost_1_56">Version
       4.3.0 - boost 1.56</a>
     </h4>
@@ -407,7 +556,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h2"></a>
+<a name="thread.changes.h3"></a>
       <span class="phrase"><a name="thread.changes.version_4_2_0___boost_1_55"></a></span><a class="link" href="changes.html#thread.changes.version_4_2_0___boost_1_55">Version
       4.2.0 - boost 1.55</a>
     </h4>
@@ -575,7 +724,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h3"></a>
+<a name="thread.changes.h4"></a>
       <span class="phrase"><a name="thread.changes.version_4_1_0___boost_1_54"></a></span><a class="link" href="changes.html#thread.changes.version_4_1_0___boost_1_54">Version
       4.1.0 - boost 1.54</a>
     </h4>
@@ -736,7 +885,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h4"></a>
+<a name="thread.changes.h5"></a>
       <span class="phrase"><a name="thread.changes.version_4_0_0___boost_1_53"></a></span><a class="link" href="changes.html#thread.changes.version_4_0_0___boost_1_53">Version
       4.0.0 - boost 1.53</a>
     </h4>
@@ -933,7 +1082,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h5"></a>
+<a name="thread.changes.h6"></a>
       <span class="phrase"><a name="thread.changes.version_3_1_0___boost_1_52"></a></span><a class="link" href="changes.html#thread.changes.version_3_1_0___boost_1_52">Version
       3.1.0 - boost 1.52</a>
     </h4>
@@ -1098,7 +1247,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h6"></a>
+<a name="thread.changes.h7"></a>
       <span class="phrase"><a name="thread.changes.version_3_0_1___boost_1_51"></a></span><a class="link" href="changes.html#thread.changes.version_3_0_1___boost_1_51">Version
       3.0.1 - boost 1.51</a>
     </h4>
@@ -1189,7 +1338,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h7"></a>
+<a name="thread.changes.h8"></a>
       <span class="phrase"><a name="thread.changes.version_3_0_0___boost_1_50"></a></span><a class="link" href="changes.html#thread.changes.version_3_0_0___boost_1_50">Version
       3.0.0 - boost 1.50</a>
     </h4>
@@ -1402,7 +1551,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h8"></a>
+<a name="thread.changes.h9"></a>
       <span class="phrase"><a name="thread.changes.version_2_1_1___boost_1_49"></a></span><a class="link" href="changes.html#thread.changes.version_2_1_1___boost_1_49">Version
       2.1.1 - boost 1.49</a>
     </h4>
@@ -1500,7 +1649,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h9"></a>
+<a name="thread.changes.h10"></a>
       <span class="phrase"><a name="thread.changes.version_2_1_0___changes_since_boost_1_40"></a></span><a class="link" href="changes.html#thread.changes.version_2_1_0___changes_since_boost_1_40">Version 2.1.0
       - Changes since boost 1.40</a>
     </h4>
@@ -1509,7 +1658,7 @@
       a few minor changes.
     </p>
 <h4>
-<a name="thread.changes.h10"></a>
+<a name="thread.changes.h11"></a>
       <span class="phrase"><a name="thread.changes.changes_since_boost_1_35"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_35">Changes
       since boost 1.35</a>
     </h4>
@@ -1546,7 +1695,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h11"></a>
+<a name="thread.changes.h12"></a>
       <span class="phrase"><a name="thread.changes.version_2_0_0___changes_since_boost_1_34"></a></span><a class="link" href="changes.html#thread.changes.version_2_0_0___changes_since_boost_1_34">Version 2.0.0
       - Changes since boost 1.34</a>
     </h4>
@@ -1557,7 +1706,7 @@
       with the old code. The new features and breaking changes are described below.
     </p>
 <h4>
-<a name="thread.changes.h12"></a>
+<a name="thread.changes.h13"></a>
       <span class="phrase"><a name="thread.changes.new_features"></a></span><a class="link" href="changes.html#thread.changes.new_features">New
       Features</a>
     </h4>
@@ -1600,7 +1749,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h13"></a>
+<a name="thread.changes.h14"></a>
       <span class="phrase"><a name="thread.changes.breaking_changes"></a></span><a class="link" href="changes.html#thread.changes.breaking_changes">Breaking
       Changes</a>
     </h4>
@@ -1668,7 +1817,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -14 Vicente J. Botet Escriba<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -15 Vicente J. Botet Escriba<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

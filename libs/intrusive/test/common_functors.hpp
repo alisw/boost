@@ -13,7 +13,7 @@
 #ifndef BOOST_INTRUSIVE_TEST_COMMON_FUNCTORS_HPP
 #define BOOST_INTRUSIVE_TEST_COMMON_FUNCTORS_HPP
 
-#include<boost/intrusive/detail/iiterator.hpp>
+#include<boost/intrusive/detail/iterator.hpp>
 #include<boost/intrusive/detail/mpl.hpp>
 #include<boost/static_assert.hpp>
 
@@ -39,6 +39,14 @@ class new_cloner
 {
    public:
       T *operator()(const T &t)
+   {  return new T(t);  }
+};
+
+template<class T>
+class new_nonconst_cloner
+{
+   public:
+      T *operator()(T &t)
    {  return new T(t);  }
 };
 

@@ -14,10 +14,10 @@
 #include <boost/container/detail/config_begin.hpp>
 #include <vector>
 #include <typeinfo>
+#include <iostream>
 #include "expand_bwd_test_allocator.hpp"
-#include <algorithm>
+#include <boost/container/detail/algorithm.hpp> //equal()
 #include "movable_int.hpp"
-#include <boost/type_traits/remove_volatile.hpp>
 #include <boost/move/make_unique.hpp>
 
 namespace boost { namespace container { namespace test {
@@ -28,7 +28,7 @@ bool CheckEqualVector(const Vector1 &vector1, const Vector2 &vector2)
 {
    if(vector1.size() != vector2.size())
       return false;
-   return std::equal(vector1.begin(), vector1.end(), vector2.begin());
+   return boost::container::algo_equal(vector1.begin(), vector1.end(), vector2.begin());
 }
 
 template<class Vector>
@@ -55,8 +55,7 @@ template<class VectorWithExpandBwdAllocator>
 bool test_insert_with_expand_bwd()
 {
    typedef typename VectorWithExpandBwdAllocator::value_type value_type;
-   typedef typename boost::remove_volatile<value_type>::type non_volatile_value_type;
-   typedef std::vector<non_volatile_value_type> Vect;
+   typedef std::vector<value_type> Vect;
    const unsigned int MemorySize = 1000;
 
    //Distance old and new buffer
@@ -79,12 +78,15 @@ bool test_insert_with_expand_bwd()
       {  0, 100,  200  };
 
    for(unsigned int pos = 0; pos < sizeof(Position)/sizeof(Position[0]); ++pos){
+      if(!life_count<value_type>::check(0))
+         return false;
+
       for(unsigned int iteration = 0; iteration < Iterations; ++iteration)
       {
          boost::movelib::unique_ptr<char[]> memptr =
             boost::movelib::make_unique_definit<char[]>(MemorySize*sizeof(value_type));
          value_type *memory = (value_type*)memptr.get();
-         std::vector<non_volatile_value_type> initial_data;
+         std::vector<value_type> initial_data;
          initial_data.resize(InitialSize[iteration]);
          for(unsigned int i = 0; i < InitialSize[iteration]; ++i){
             initial_data[i] = i;
@@ -122,6 +124,8 @@ bool test_insert_with_expand_bwd()
             return false;
          }
       }
+      if(!life_count<value_type>::check(0))
+         return false;
    }
 
    return true;
@@ -133,7 +137,6 @@ template<class VectorWithExpandBwdAllocator>
 bool test_assign_with_expand_bwd()
 {
    typedef typename VectorWithExpandBwdAllocator::value_type value_type;
-   typedef typename boost::remove_volatile<value_type>::type non_volatile_value_type;
    const unsigned int MemorySize = 200;
 
    const unsigned int Offset[]      = { 50, 50, 50};
@@ -147,14 +150,14 @@ bool test_assign_with_expand_bwd()
          boost::movelib::make_unique_definit<char[]>(MemorySize*sizeof(value_type));
       value_type *memory = (value_type*)memptr.get();
       //Create initial data
-      std::vector<non_volatile_value_type> initial_data;
+      std::vector<value_type> initial_data;
       initial_data.resize(InitialSize[iteration]);
       for(unsigned int i = 0; i < InitialSize[iteration]; ++i){
          initial_data[i] = i;
       }
 
       //Create data to assign
-      std::vector<non_volatile_value_type> data_to_insert;
+      std::vector<value_type> data_to_insert;
       data_to_insert.resize(InsertSize[iteration]);
       for(unsigned int i = 0; i < InsertSize[iteration]; ++i){
          data_to_insert[i] = -i;

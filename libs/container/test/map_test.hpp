@@ -13,23 +13,23 @@
 
 #include <boost/container/detail/config_begin.hpp>
 #include "check_equal_containers.hpp"
-#include <map>
-#include <functional>
-#include <utility>
 #include "print_container.hpp"
-#include <boost/container/detail/utilities.hpp>
 #include <boost/container/detail/pair.hpp>
 #include <boost/move/iterator.hpp>
 #include <boost/move/utility_core.hpp>
 #include <boost/move/make_unique.hpp>
-#include <string>
 
-#include <boost/intrusive/detail/has_member_function_callable_with.hpp>
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_FUNCNAME rebalance
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_BEGIN namespace boost { namespace container { namespace test {
-#define BOOST_INTRUSIVE_HAS_MEMBER_FUNCTION_CALLABLE_WITH_NS_END   }}}
-#define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 0, <boost/intrusive/detail/has_member_function_callable_with.hpp>))
-#include BOOST_PP_ITERATE()
+#include <boost/intrusive/detail/minimal_pair_header.hpp>      //pair
+#include <string>
+#include <iostream>
+
+#include <boost/intrusive/detail/mpl.hpp>
+
+namespace boost { namespace container { namespace test {
+
+BOOST_INTRUSIVE_HAS_MEMBER_FUNC_CALLED(has_member_rebalance, rebalance)
+
+}}}
 
 template<class T1, class T2, class T3, class T4>
 bool operator ==(std::pair<T1, T2> &p1, std::pair<T1, T2> &p2)
@@ -133,6 +133,80 @@ int map_test()
    typedef container_detail::pair<IntType, IntType>         IntPairType;
    typedef typename MyStdMap::value_type  StdPairType;
    const int max = 50;
+   typedef typename MyStdMap::value_type StdValueType;
+   typedef typename MyStdMap::key_type StdKeyType;
+   typedef typename MyStdMap::mapped_type StdMappedType;
+
+
+   //Test construction from a range
+   {
+      IntPairType aux_vect[50];
+      for(int i = 0; i < 50; ++i){
+         IntType i1(i/2);
+         IntType i2(i/2);
+         new(&aux_vect[i])IntPairType(boost::move(i1), boost::move(i2));
+      }
+
+      StdValueType aux_vect2[50];
+      for(int i = 0; i < 50; ++i){
+         new(&aux_vect2[i])StdValueType(StdKeyType(i/2), StdMappedType(i/2));
+      }
+
+      IntPairType aux_vect3[50];
+      for(int i = 0; i < 50; ++i){
+         IntType i1(i/2);
+         IntType i2(i/2);
+         new(&aux_vect3[i])IntPairType(boost::move(i1), boost::move(i2));
+      }
+
+      ::boost::movelib::unique_ptr<MyBoostMap> const pboostmap = ::boost::movelib::make_unique<MyBoostMap>
+               ( boost::make_move_iterator(&aux_vect[0])
+               , boost::make_move_iterator(&aux_vect[0] + 50), typename MyBoostMap::key_compare());
+      ::boost::movelib::unique_ptr<MyStdMap> const pstdmap = ::boost::movelib::make_unique<MyStdMap>
+         (&aux_vect2[0], &aux_vect2[0] + 50, typename MyStdMap::key_compare());
+      if(!CheckEqualContainers(*pboostmap, *pstdmap)) return 1;
+
+      ::boost::movelib::unique_ptr<MyBoostMultiMap> const pboostmultimap = ::boost::movelib::make_unique<MyBoostMultiMap>
+               ( boost::make_move_iterator(&aux_vect3[0])
+               , boost::make_move_iterator(&aux_vect3[0] + 50), typename MyBoostMap::key_compare());
+      ::boost::movelib::unique_ptr<MyStdMultiMap> const pstdmultimap = ::boost::movelib::make_unique<MyStdMultiMap>
+         (&aux_vect2[0], &aux_vect2[0] + 50, typename MyStdMap::key_compare());
+      if(!CheckEqualContainers(*pboostmultimap, *pstdmultimap)) return 1;
+   }
+   {
+      IntPairType aux_vect[50];
+      for(int i = 0; i < 50; ++i){
+         IntType i1(i/2);
+         IntType i2(i/2);
+         new(&aux_vect[i])IntPairType(boost::move(i1), boost::move(i2));
+      }
+
+      StdValueType aux_vect2[50];
+      for(int i = 0; i < 50; ++i){
+         new(&aux_vect2[i])StdValueType(StdKeyType(i/2), StdMappedType(i/2));
+      }
+
+      IntPairType aux_vect3[50];
+      for(int i = 0; i < 50; ++i){
+         IntType i1(i/2);
+         IntType i2(i/2);
+         new(&aux_vect3[i])IntPairType(boost::move(i1), boost::move(i2));
+      }
+
+      ::boost::movelib::unique_ptr<MyBoostMap> const pboostmap = ::boost::movelib::make_unique<MyBoostMap>
+               ( boost::make_move_iterator(&aux_vect[0])
+               , boost::make_move_iterator(&aux_vect[0] + 50), typename MyBoostMap::allocator_type());
+      ::boost::movelib::unique_ptr<MyStdMap> const pstdmap = ::boost::movelib::make_unique<MyStdMap>
+         (&aux_vect2[0], &aux_vect2[0] + 50, typename MyStdMap::key_compare());
+      if(!CheckEqualContainers(*pboostmap, *pstdmap)) return 1;
+
+      ::boost::movelib::unique_ptr<MyBoostMultiMap> const pboostmultimap = ::boost::movelib::make_unique<MyBoostMultiMap>
+               ( boost::make_move_iterator(&aux_vect3[0])
+               , boost::make_move_iterator(&aux_vect3[0] + 50), typename MyBoostMap::allocator_type());
+      ::boost::movelib::unique_ptr<MyStdMultiMap> const pstdmultimap = ::boost::movelib::make_unique<MyStdMultiMap>
+         (&aux_vect2[0], &aux_vect2[0] + 50, typename MyStdMap::key_compare());
+      if(!CheckEqualContainers(*pboostmultimap, *pstdmultimap)) return 1;
+   }
 
    ::boost::movelib::unique_ptr<MyBoostMap> const pboostmap = ::boost::movelib::make_unique<MyBoostMap>();
    ::boost::movelib::unique_ptr<MyStdMap> const pstdmap = ::boost::movelib::make_unique<MyStdMap>();
@@ -143,7 +217,6 @@ int map_test()
    MyBoostMultiMap &boostmultimap = *pboostmultimap;
    MyStdMultiMap   &stdmultimap   = *pstdmultimap;
 
-   //Test construction from a range
    {
       //This is really nasty, but we have no other simple choice
       IntPairType aux_vect[50];
@@ -205,6 +278,20 @@ int map_test()
       }
       if(!CheckEqualContainers(boostmap2, stdmap2)) return 1;
       if(!CheckEqualContainers(boostmultimap2, stdmultimap2)) return 1;
+
+      //some comparison operators
+      if(!(boostmap2 == boostmap2))
+         return 1;
+      if(boostmap2 != boostmap2)
+         return 1;
+      if(boostmap2 < boostmap2)
+         return 1;
+      if(boostmap2 > boostmap2)
+         return 1;
+      if(!(boostmap2 <= boostmap2))
+         return 1;
+      if(!(boostmap2 >= boostmap2))
+         return 1;
 
       ::boost::movelib::unique_ptr<MyBoostMap> const pboostmap3 = ::boost::movelib::make_unique<MyBoostMap>
                ( boost::make_move_iterator(&aux_vect[0])
@@ -492,8 +579,8 @@ int map_test()
             std::pair<typename MyStdMultiMap::iterator, typename MyStdMultiMap::iterator>   sret =
                stdmultimap.equal_range(stdmultimap.begin()->first);
 
-            if( std::distance(bret.first, bret.second) !=
-                  std::distance(sret.first, sret.second) ){
+            if( boost::container::iterator_distance(bret.first, bret.second) !=
+                  boost::container::iterator_distance(sret.first, sret.second) ){
                return 1;
             }
          }
@@ -520,13 +607,13 @@ int map_test()
             return 1;
 
          map_test_rebalanceable(boostmap
-            , container_detail::bool_<has_member_function_callable_with_rebalance<MyBoostMap>::value>());
+            , container_detail::bool_<has_member_rebalance<MyBoostMap>::value>());
          if(!CheckEqualContainers(boostmap, stdmap)){
             std::cout << "Error in boostmap.rebalance()" << std::endl;
             return 1;
          }
          map_test_rebalanceable(boostmultimap
-            , container_detail::bool_<has_member_function_callable_with_rebalance<MyBoostMultiMap>::value>());
+            , container_detail::bool_<has_member_rebalance<MyBoostMap>::value>());
          if(!CheckEqualContainers(boostmultimap, stdmultimap)){
             std::cout << "Error in boostmultimap.rebalance()" << std::endl;
             return 1;
@@ -576,6 +663,48 @@ int map_test()
    }
    return 0;
 }
+
+template<typename MapType>
+bool test_map_support_for_initialization_list_for()
+{
+#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
+   const std::initializer_list<std::pair<typename MapType::value_type::first_type, typename MapType::mapped_type>> il
+      = { std::make_pair(1, 2), std::make_pair(3, 4) };
+
+   const MapType expected(il.begin(), il.end());
+   {
+      const MapType sil = il;
+      if (sil != expected)
+         return false;
+
+      MapType sila(il, typename MapType::allocator_type());
+      if (sila != expected)
+         return false;
+
+      MapType silca(il, typename MapType::key_compare(), typename MapType::allocator_type());
+      if (silca != expected)
+         return false;
+
+      const MapType sil_ordered(ordered_unique_range, il);
+      if (sil_ordered != expected)
+         return false;
+
+      MapType sil_assign = { std::make_pair(99, 100) };
+      sil_assign = il;
+      if (sil_assign != expected)
+         return false;
+   }
+   {
+      MapType sil;
+      sil.insert(il);
+      if (sil != expected)
+         return false;
+   }
+   return true;
+#endif
+   return true;
+}
+
 
 }  //namespace test{
 }  //namespace container {

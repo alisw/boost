@@ -1,10 +1,10 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 // Unit Test
 
-// Copyright (c) 2007-2014 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2008-2014 Bruno Lalande, Paris, France.
-// Copyright (c) 2009-2014 Mateusz Loskot, London, UK.
-// Copyright (c) 2013-2014 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2008-2015 Bruno Lalande, Paris, France.
+// Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
+// Copyright (c) 2013-2015 Adam Wulkiewicz, Lodz, Poland.
 
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -15,12 +15,9 @@
 #include <geometry_test_common.hpp>
 
 #include <boost/geometry/algorithms/num_points.hpp>
-#include <boost/geometry/multi/algorithms/num_points.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
-#include <boost/geometry/multi/geometries/multi_geometries.hpp>
 
 #include <boost/geometry/io/wkt/read.hpp>
-#include <boost/geometry/multi/io/wkt/read.hpp>
 
 template <std::size_t D, typename T = double>
 struct box_dD
@@ -86,11 +83,11 @@ int test_main(int, char* [])
 
     // test open geometries
     test_num_points<open_ring>("POLYGON((0 0,1 1,0 1))", 3u, 4u);
-    test_num_points<open_ring>("POLYGON((0 0,1 1,0 1,0 0))", 4u, 5u);
+    test_num_points<open_ring>("POLYGON((0 0,1 1,0 1,0 0))", 3u, 4u);
     test_num_points<open_polygon>("POLYGON((0 0,10 10,0 10))", 3u, 4u);
-    test_num_points<open_polygon>("POLYGON((0 0,10 10,0 10,0 0))", 4u, 5u);
+    test_num_points<open_polygon>("POLYGON((0 0,10 10,0 10,0 0))", 3u, 4u);
     test_num_points<open_multi_polygon>("MULTIPOLYGON(((0 0,0 10,10 10,10 0)),((0 10,1 10,1 9)))", 7u, 9u);
-    test_num_points<open_multi_polygon>("MULTIPOLYGON(((0 0,0 10,10 10,10 0,0 0)),((0 10,1 10,1 9,0 10)))", 9u, 11u);
+    test_num_points<open_multi_polygon>("MULTIPOLYGON(((0 0,0 10,10 10,10 0,0 0)),((0 10,1 10,1 9,0 10)))", 7u, 9u);
 
     return 0;
 }

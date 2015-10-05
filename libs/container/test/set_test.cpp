@@ -20,6 +20,7 @@
 #include "set_test.hpp"
 #include "propagate_allocator_test.hpp"
 #include "emplace_test.hpp"
+#include "../../intrusive/test/iterator_test.hpp"
 
 using namespace boost::container;
 
@@ -176,7 +177,7 @@ public:
    set<recursive_set>::const_iterator cit_;
    set<recursive_set>::reverse_iterator rit_;
    set<recursive_set>::const_reverse_iterator crit_;
-   
+
    friend bool operator< (const recursive_set &a, const recursive_set &b)
    {  return a.id_ < b.id_;   }
 };
@@ -194,7 +195,7 @@ class recursive_multiset
    multiset<recursive_multiset>::const_iterator cit_;
    multiset<recursive_multiset>::reverse_iterator rit_;
    multiset<recursive_multiset>::const_reverse_iterator crit_;
-   
+
    friend bool operator< (const recursive_multiset &a, const recursive_multiset &b)
    {  return a.id_ < b.id_;   }
 };
@@ -212,36 +213,34 @@ void test_move()
    move_assign.swap(original);
 }
 
-template<class T, class A>
-class set_propagate_test_wrapper
-   : public boost::container::set<T, std::less<T>, A
-      //tree_assoc_defaults
-      >
+struct boost_container_set;
+struct boost_container_multiset;
+
+namespace boost {
+namespace container {
+namespace test {
+
+template<>
+struct alloc_propagate_base<boost_container_set>
 {
-   BOOST_COPYABLE_AND_MOVABLE(set_propagate_test_wrapper)
-   typedef boost::container::set<T, std::less<T>, A > Base;
-   public:
-   set_propagate_test_wrapper()
-      : Base()
-   {}
-
-   set_propagate_test_wrapper(const set_propagate_test_wrapper &x)
-      : Base(x)
-   {}
-
-   set_propagate_test_wrapper(BOOST_RV_REF(set_propagate_test_wrapper) x)
-      : Base(boost::move(static_cast<Base&>(x)))
-   {}
-
-   set_propagate_test_wrapper &operator=(BOOST_COPY_ASSIGN_REF(set_propagate_test_wrapper) x)
-   {  this->Base::operator=(x);  return *this; }
-
-   set_propagate_test_wrapper &operator=(BOOST_RV_REF(set_propagate_test_wrapper) x)
-   {  this->Base::operator=(boost::move(static_cast<Base&>(x)));  return *this; }
-
-   void swap(set_propagate_test_wrapper &x)
-   {  this->Base::swap(x);  }
+   template <class T, class Allocator>
+   struct apply
+   {
+      typedef boost::container::set<T, std::less<T>, Allocator> type;
+   };
 };
+
+template<>
+struct alloc_propagate_base<boost_container_multiset>
+{
+   template <class T, class Allocator>
+   struct apply
+   {
+      typedef boost::container::multiset<T, std::less<T>, Allocator> type;
+   };
+};
+
+}}}   //boost::container::test
 
 template<class VoidAllocator, boost::container::tree_type_enum tree_type_value>
 struct GetAllocatorSet
@@ -324,36 +323,7 @@ int test_set_variants()
    return 0;
 }
 
-template<typename SetType>
-bool test_support_for_initialization_list_for()
-{
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
-   std::initializer_list<int> il = {1, 2, 3, 4, 5};
-   SetType expected(il.begin(), il.end());
-   {
-       SetType sil = il;
-       if (sil != expected)
-          return false;
 
-       SetType sil_ordered(ordered_unique_range, il);
-       if(sil_ordered != expected)
-          return false;
-
-       SetType sil_assign = {99, 100, 101, 102, 103, 104, 105};
-       sil_assign = il;
-       if(sil_assign != expected)
-          return false;
-   }
-   {
-      SetType sil;
-      sil.insert(il);
-      if(sil != expected)
-         return false;
-   }
-   return true;
-#endif
-   return true;
-}
 int main ()
 {
    //Recursive container instantiation
@@ -363,8 +333,8 @@ int main ()
    }
    //Allocator argument container
    {
-      set<int> set_((std::allocator<int>()));
-      multiset<int> multiset_((std::allocator<int>()));
+      set<int> set_((set<int>::allocator_type()));
+      multiset<int> multiset_((multiset<int>::allocator_type()));
    }
    //Now test move semantics
    {
@@ -427,13 +397,16 @@ int main ()
    ////////////////////////////////////
    //    Allocator propagation testing
    ////////////////////////////////////
-   if(!boost::container::test::test_propagate_allocator<set_propagate_test_wrapper>())
+   if(!boost::container::test::test_propagate_allocator<boost_container_set>())
       return 1;
 
-   if(!test_support_for_initialization_list_for<set<int> >())
+   if(!boost::container::test::test_propagate_allocator<boost_container_multiset>())
       return 1;
 
-   if(!test_support_for_initialization_list_for<multiset<int> >())
+   if (!boost::container::test::test_set_methods_with_initializer_list_as_argument_for<set<int> >())
+      return 1;
+
+   if (!boost::container::test::test_set_methods_with_initializer_list_as_argument_for<multiset<int> >())
       return 1;
 
    ////////////////////////////////////
@@ -467,6 +440,26 @@ int main ()
    typedef multiset< int*, std::less<int*>, std::allocator<int*>
                    , tree_assoc_options< optimize_size<true>, tree_type<avl_tree>  >::type > avlmset_size_optimized_yes;
    BOOST_STATIC_ASSERT(sizeof(avlmset_size_optimized_yes) < sizeof(avlmset_size_optimized_no));
+
+   ////////////////////////////////////
+   //    Iterator testing
+   ////////////////////////////////////
+   {
+      typedef boost::container::set<int> cont_int;
+      cont_int a; a.insert(0); a.insert(1); a.insert(2);
+      boost::intrusive::test::test_iterator_bidirectional< cont_int >(a);
+      if(boost::report_errors() != 0) {
+         return 1;
+      }
+   }
+   {
+      typedef boost::container::multiset<int> cont_int;
+      cont_int a; a.insert(0); a.insert(1); a.insert(2);
+      boost::intrusive::test::test_iterator_bidirectional< cont_int >(a);
+      if(boost::report_errors() != 0) {
+         return 1;
+      }
+   }
    return 0;
 }
 

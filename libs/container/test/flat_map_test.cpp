@@ -13,15 +13,20 @@
 #include <boost/container/allocator.hpp>
 #include <boost/container/node_allocator.hpp>
 #include <boost/container/adaptive_pool.hpp>
+#include <boost/container/detail/flat_tree.hpp>
 
 #include "print_container.hpp"
 #include "dummy_test_allocator.hpp"
 #include "movable_int.hpp"
 #include "map_test.hpp"
 #include "propagate_allocator_test.hpp"
+#include "container_common_tests.hpp"
 #include "emplace_test.hpp"
+#include "../../intrusive/test/iterator_test.hpp"
+
 #include <vector>
-#include <boost/container/detail/flat_tree.hpp>
+#include <map>
+
 
 using namespace boost::container;
 
@@ -179,7 +184,7 @@ public:
    flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::const_iterator cit_;
    flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::reverse_iterator rit_;
    flat_multimap<recursive_flat_multimap, recursive_flat_multimap>::const_reverse_iterator crit_;
-   
+
    friend bool operator< (const recursive_flat_multimap &a, const recursive_flat_multimap &b)
    {  return a.id_ < b.id_;   }
 };
@@ -195,40 +200,6 @@ void test_move()
    move_assign.swap(original);
 }
 
-template<class T, class A>
-class flat_map_propagate_test_wrapper
-   : public boost::container::flat_map
-      < T, T, std::less<T>
-      , typename boost::container::allocator_traits<A>::template
-         portable_rebind_alloc< std::pair<T, T> >::type>
-{
-   BOOST_COPYABLE_AND_MOVABLE(flat_map_propagate_test_wrapper)
-   typedef boost::container::flat_map
-      < T, T, std::less<T>
-      , typename boost::container::allocator_traits<A>::template
-         portable_rebind_alloc< std::pair<T, T> >::type> Base;
-   public:
-   flat_map_propagate_test_wrapper()
-      : Base()
-   {}
-
-   flat_map_propagate_test_wrapper(const flat_map_propagate_test_wrapper &x)
-      : Base(x)
-   {}
-
-   flat_map_propagate_test_wrapper(BOOST_RV_REF(flat_map_propagate_test_wrapper) x)
-      : Base(boost::move(static_cast<Base&>(x)))
-   {}
-
-   flat_map_propagate_test_wrapper &operator=(BOOST_COPY_ASSIGN_REF(flat_map_propagate_test_wrapper) x)
-   {  this->Base::operator=(x);  return *this; }
-
-   flat_map_propagate_test_wrapper &operator=(BOOST_RV_REF(flat_map_propagate_test_wrapper) x)
-   {  this->Base::operator=(boost::move(static_cast<Base&>(x)));  return *this; }
-
-   void swap(flat_map_propagate_test_wrapper &x)
-   {  this->Base::swap(x);  }
-};
 
 namespace boost{
 namespace container {
@@ -343,6 +314,49 @@ struct GetAllocatorMap
    };
 };
 
+struct boost_container_flat_map;
+struct boost_container_flat_multimap;
+
+namespace boost { namespace container {   namespace test {
+
+template<>
+struct alloc_propagate_base<boost_container_flat_map>
+{
+   template <class T, class Allocator>
+   struct apply
+   {
+      typedef typename boost::container::allocator_traits<Allocator>::
+         template portable_rebind_alloc<std::pair<T, T> >::type TypeAllocator;
+      typedef boost::container::flat_map<T, T, std::less<T>, TypeAllocator> type;
+   };
+};
+
+template<>
+struct alloc_propagate_base<boost_container_flat_multimap>
+{
+   template <class T, class Allocator>
+   struct apply
+   {
+      typedef typename boost::container::allocator_traits<Allocator>::
+         template portable_rebind_alloc<std::pair<T, T> >::type TypeAllocator;
+      typedef boost::container::flat_multimap<T, T, std::less<T>, TypeAllocator> type;
+   };
+};
+
+template <class Key, class T, class Compare, class Allocator>
+struct get_real_stored_allocator<flat_map<Key, T, Compare, Allocator> >
+{
+   typedef typename flat_map<Key, T, Compare, Allocator>::impl_stored_allocator_type type;
+};
+
+template <class Key, class T, class Compare, class Allocator>
+struct get_real_stored_allocator<flat_multimap<Key, T, Compare, Allocator> >
+{
+   typedef typename flat_multimap<Key, T, Compare, Allocator>::impl_stored_allocator_type type;
+};
+
+}}}   //namespace boost::container::test
+
 template<class VoidAllocator>
 int test_map_variants()
 {
@@ -398,52 +412,35 @@ int test_map_variants()
    return 0;
 }
 
-template<typename FlatMapType>
-bool test_support_for_initialization_list_for()
-{
-#if !defined(BOOST_NO_CXX11_HDR_INITIALIZER_LIST)
-   const std::initializer_list<std::pair<int, int>> il
-      = {std::make_pair(1, 2), std::make_pair(3, 4)};
-
-   const FlatMapType expected(il.begin(), il.end());
-   {
-      const FlatMapType sil = il;
-      if (sil != expected)
-         return false;
-
-      const FlatMapType sil_ordered(ordered_unique_range, il);
-      if(sil_ordered != expected)
-         return false;
-
-      FlatMapType sil_assign = {std::make_pair(99, 100)};
-      sil_assign = il;
-      if(sil_assign != expected)
-         return false;
-   }
-   {
-      FlatMapType sil;
-      sil.insert(il);
-      if(sil != expected)
-         return false;
-   }
-   return true;
-#endif
-   return true;
-}
-
 int main()
 {
    using namespace boost::container::test;
 
    //Allocator argument container
    {
-      flat_map<int, int> map_((std::allocator<std::pair<int, int> >()));
-      flat_multimap<int, int> multimap_((std::allocator<std::pair<int, int> >()));
+      flat_map<int, int> map_((flat_map<int, int>::allocator_type()));
+      flat_multimap<int, int> multimap_((flat_multimap<int, int>::allocator_type()));
    }
    //Now test move semantics
    {
       test_move<flat_map<recursive_flat_map, recursive_flat_map> >();
       test_move<flat_multimap<recursive_flat_multimap, recursive_flat_multimap> >();
+   }
+   //Now test nth/index_of
+   {
+      flat_map<int, int> map;
+      flat_multimap<int, int> mmap;
+
+      map.insert(std::pair<int, int>(0, 0));
+      map.insert(std::pair<int, int>(1, 0));
+      map.insert(std::pair<int, int>(2, 0));
+      mmap.insert(std::pair<int, int>(0, 0));
+      mmap.insert(std::pair<int, int>(1, 0));
+      mmap.insert(std::pair<int, int>(2, 0));
+      if(!boost::container::test::test_nth_index_of(map))
+         return 1;
+      if(!boost::container::test::test_nth_index_of(mmap))
+         return 1;
    }
 
    ////////////////////////////////////
@@ -477,10 +474,10 @@ int main()
       return 1;
    }
 
-   if(!test_support_for_initialization_list_for<flat_map<int, int> >())
+   if(!boost::container::test::test_map_support_for_initialization_list_for<flat_map<int, int> >())
       return 1;
 
-   if(!test_support_for_initialization_list_for<flat_multimap<int, int> >())
+   if (!boost::container::test::test_map_support_for_initialization_list_for<flat_multimap<int, int> >())
       return 1;
 
    ////////////////////////////////////
@@ -496,8 +493,31 @@ int main()
    ////////////////////////////////////
    //    Allocator propagation testing
    ////////////////////////////////////
-   if(!boost::container::test::test_propagate_allocator<flat_map_propagate_test_wrapper>())
+   if(!boost::container::test::test_propagate_allocator<boost_container_flat_map>())
       return 1;
+
+   if(!boost::container::test::test_propagate_allocator<boost_container_flat_multimap>())
+      return 1;
+
+   ////////////////////////////////////
+   //    Iterator testing
+   ////////////////////////////////////
+   {
+      typedef boost::container::flat_map<int, int> cont_int;
+      cont_int a; a.insert(cont_int::value_type(0, 9)); a.insert(cont_int::value_type(1, 9)); a.insert(cont_int::value_type(2, 9));
+      boost::intrusive::test::test_iterator_random< cont_int >(a);
+      if(boost::report_errors() != 0) {
+         return 1;
+      }
+   }
+   {
+      typedef boost::container::flat_multimap<int, int> cont_int;
+      cont_int a; a.insert(cont_int::value_type(0, 9)); a.insert(cont_int::value_type(1, 9)); a.insert(cont_int::value_type(2, 9));
+      boost::intrusive::test::test_iterator_random< cont_int >(a);
+      if(boost::report_errors() != 0) {
+         return 1;
+      }
+   }
 
    return 0;
 }

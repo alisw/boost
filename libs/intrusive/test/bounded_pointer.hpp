@@ -20,6 +20,7 @@
 #include <boost/intrusive/detail/mpl.hpp>
 #include <boost/intrusive/pointer_traits.hpp>
 #include <boost/core/no_exceptions_support.hpp>
+#include <boost/move/adl_move_swap.hpp>
 
 template < typename T >
 class bounded_pointer;
@@ -53,8 +54,8 @@ class bounded_pointer
    {}
 
    template<class T2>
-   bounded_pointer(const bounded_pointer<T2> &other, typename boost::intrusive::detail::enable_if_c
-      <boost::intrusive::detail::is_convertible<T2*, T*>::value>::type* = 0)
+   bounded_pointer( const bounded_pointer<T2> &other
+                  , typename boost::intrusive::detail::enable_if_convertible<T2*, T*>::type* = 0)
       :  m_offset(other.m_offset)
    {}
 
@@ -62,15 +63,14 @@ class bounded_pointer
    { m_offset = other.m_offset; return *this; }
 
    template <class T2>
-   typename boost::intrusive::detail::enable_if_c
-      <boost::intrusive::detail::is_convertible<T2*, T*>::value, bounded_pointer&>::type
+   typename boost::intrusive::detail::enable_if_convertible<T2*, T*, bounded_pointer&>::type
       operator= (const bounded_pointer<T2> & other)
    {  m_offset = other.m_offset;  return *this;  }
 
-   const bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >& unconst() const 
-   { return *reinterpret_cast< const bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >* >(this); } 
+   const bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >& unconst() const
+   { return *reinterpret_cast< const bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >* >(this); }
 
-   bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >& unconst() 
+   bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >& unconst()
    { return *reinterpret_cast< bounded_pointer< typename boost::intrusive::detail::remove_const< T >::type >* >(this); }
 
    static mut_val_t* base()
@@ -150,7 +150,7 @@ class bounded_reference
    bounded_reference()
       : m_offset(max_offset)
    {}
-   
+
    bounded_reference(const bounded_reference& other)
       : m_offset(other.m_offset)
    {}
@@ -171,15 +171,14 @@ class bounded_reference
    { assert(m_offset != max_offset); raw() = rhs.raw(); return *this; }
 
    template<class T2>
-   bounded_reference(const bounded_reference<T2> &other, typename boost::intrusive::detail::enable_if_c
-      <boost::intrusive::detail::is_convertible<T2&, T&>::value>::type* = 0)
+   bounded_reference( const bounded_reference<T2> &other
+                    , typename boost::intrusive::detail::enable_if_convertible<T2*, T*>::type* = 0)
       :  m_offset(other.m_offset)
    {}
 
    template <class T2>
-   typename boost::intrusive::detail::enable_if_c
-      <boost::intrusive::detail::is_convertible<T2&, T&>::value, bounded_reference&>::type
-   operator= (const bounded_reference<T2> & other)
+   typename boost::intrusive::detail::enable_if_convertible<T2*, T*, bounded_reference&>::type
+      operator= (const bounded_reference<T2> & other)
    {  m_offset = other.m_offset;  return *this;  }
 
    friend std::ostream& operator << (std::ostream& os, const bounded_reference< T >& ref)
@@ -190,7 +189,7 @@ class bounded_reference
 
    // the copy asop is shallow; we need swap overload to shuffle a vector of references
    friend void swap(bounded_reference& lhs, bounded_reference& rhs)
-   {  std::swap(lhs.m_offset, rhs.m_offset); }
+   {  ::boost::adl_move_swap(lhs.m_offset, rhs.m_offset); }
 
    private:
    template <typename> friend class bounded_reference;
@@ -219,15 +218,17 @@ class bounded_allocator
       assert(i < max_offset);
       p.m_offset = i;
       m_in_use[p.m_offset] = true;
+      ++m_in_use_count;
       return p;
    }
-   
+
    void deallocate(pointer p, size_t n)
    {
       assert(inited());
       assert(n == 1);(void)n;
       assert(m_in_use[p.m_offset]);
       m_in_use[p.m_offset] = false;
+      --m_in_use_count;
    }
 
    // static methods
@@ -238,12 +239,12 @@ class bounded_allocator
       // allocate non-constructed storage
       m_base = static_cast< T* >(::operator new [] (max_offset * sizeof(T)));
    }
-   
+
    static bool inited()
    {
       return m_in_use.size() == max_offset;
    }
-   
+
    static bool is_clear()
    {
       assert(inited());
@@ -256,7 +257,7 @@ class bounded_allocator
       }
       return true;
    }
-   
+
    static void destroy()
    {
       // deallocate storage without destructors
@@ -269,7 +270,22 @@ class bounded_allocator
    friend class bounded_pointer< const T >;
    static T* m_base;
    static boost::container::vector< bool > m_in_use;
+   static std::size_t m_in_use_count;
 }; // class bounded_allocator
+
+template <class BoundedAllocator>
+class bounded_allocator_scope
+{
+   public:
+   bounded_allocator_scope()
+   {  BoundedAllocator::init();  }
+
+   ~bounded_allocator_scope()
+   {
+      assert(BoundedAllocator::is_clear());
+      BoundedAllocator::destroy();
+   }
+};
 
 template < typename T >
 T* bounded_allocator< T >::m_base = 0;
@@ -277,6 +293,8 @@ T* bounded_allocator< T >::m_base = 0;
 template < typename T >
 boost::container::vector< bool > bounded_allocator< T >::m_in_use;
 
+template < typename T >
+std::size_t bounded_allocator< T >::m_in_use_count;
 
 template < typename T >
 class bounded_reference_cont
@@ -307,7 +325,7 @@ class bounded_reference_cont
    using Base::operator[];
    using Base::push_back;
 
-   bounded_reference_cont(size_t n = 0)
+   explicit bounded_reference_cont(size_t n = 0)
       : Base(), m_allocator()
    {
       for (size_t i = 0; i < n; ++i){
@@ -335,6 +353,17 @@ class bounded_reference_cont
       for (InputIterator it = it_start; it != it_end; ++it){
          pointer p = m_allocator.allocate(1);
          new (p.raw()) val_type(*it);
+         Base::push_back(*p);
+      }
+   }
+
+   template <typename InputIterator>   
+   void assign(InputIterator it_start, InputIterator it_end)
+   {
+      this->clear();
+      for (InputIterator it = it_start; it != it_end;){
+         pointer p = m_allocator.allocate(1);
+         new (p.raw()) val_type(*it++);
          Base::push_back(*p);
       }
    }

@@ -56,7 +56,7 @@ struct test_get_turns
     template<typename G1, typename G2>
     static void apply(std::string const& id,
             std::size_t expected_count,
-            G1 const& g1, G2 const& g2, double precision)
+            G1 const& g1, G2 const& g2, double /*precision*/)
     {
         typedef typename bg::point_type<G2>::type point_type;
         typedef typename bg::rescale_policy_type<point_type>::type
@@ -121,7 +121,7 @@ struct test_get_turns
                         << ": " << bg::operation_char(turn.operations[0].operation)
                         << " " << bg::operation_char(turn.operations[1].operation)
                         << " (" << bg::method_char(turn.method) << ")"
-                        << (turn.is_discarded() ? " (discarded) " : turn.blocked() ? " (blocked)" : "")
+                        << (turn.discarded ? " (discarded) " : turn.blocked() ? " (blocked)" : "")
                         ;
 
                     offsets[p] += 10;

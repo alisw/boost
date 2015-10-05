@@ -64,7 +64,7 @@ public:
 
    X& operator=(BOOST_COPY_ASSIGN_REF(X) x)
    {
-   
+
       i_ = x.i_;
       p_ = x.p_;
 //         std::cout << "X& operator=(const X& x)\n";
@@ -72,7 +72,7 @@ public:
       return *this;
    }
 
-   X(BOOST_RV_REF(X) x) BOOST_CONTAINER_NOEXCEPT
+   X(BOOST_RV_REF(X) x) BOOST_NOEXCEPT_OR_NOTHROW
       : i_(x.i_)
       , p_(x.p_)
    {
@@ -80,9 +80,9 @@ public:
       sp.mc++;
    }
 
-   X& operator=(BOOST_RV_REF(X) x) BOOST_CONTAINER_NOEXCEPT
+   X& operator=(BOOST_RV_REF(X) x) BOOST_NOEXCEPT_OR_NOTHROW
    {
-   
+
       i_ = x.i_;
       p_ = x.p_;
 //         std::cout << "X& operator=(X&& x)\n";

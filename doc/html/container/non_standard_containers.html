@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -32,6 +33,7 @@
       associative containers</a></span></dt>
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.slist"><span class="emphasis"><em>slist</em></span></a></span></dt>
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.static_vector"><span class="emphasis"><em>static_vector</em></span></a></span></dt>
+<dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.small_vector"><span class="emphasis"><em>small_vector</em></span></a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -464,6 +466,29 @@
         stored. Embedded and realtime applications where allocation either may not
         be available or acceptable are a particular case where <code class="computeroutput"><span class="identifier">static_vector</span></code>
         can be beneficial.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.non_standard_containers.small_vector"></a><a class="link" href="non_standard_containers.html#container.non_standard_containers.small_vector" title="small_vector"><span class="emphasis"><em>small_vector</em></span></a>
+</h3></div></div></div>
+<p>
+        <code class="computeroutput"><span class="identifier">small_vector</span></code> is a vector-like
+        container optimized for the case when it contains few elements. It contains
+        some preallocated elements in-place, which allows it to avoid the use of
+        dynamic storage allocation when the actual number of elements is below that
+        preallocated threshold. <code class="computeroutput"><span class="identifier">small_vector</span></code>
+        is inspired by <a href="http://llvm.org/docs/ProgrammersManual.html#llvm-adt-smallvector-h" target="_top">LLVM's
+        <code class="computeroutput"><span class="identifier">SmallVector</span></code></a> container.
+        Unlike <code class="computeroutput"><span class="identifier">static_vector</span></code>, <code class="computeroutput"><span class="identifier">small_vector</span></code>'s capacity can grow beyond
+        the initial preallocated capacity.
+      </p>
+<p>
+        <code class="computeroutput"><span class="identifier">small_vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;</span></code> is convertible to <code class="computeroutput"><span class="identifier">small_vector_base</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span>
+        <span class="identifier">Allocator</span><span class="special">&gt;</span></code>,
+        a type that is independent from the preallocated element count, allowing
+        client code that does not need to be templated on that N argument. <code class="computeroutput"><span class="identifier">small_vector</span></code> inherits all <code class="computeroutput"><span class="identifier">vector</span></code>'s member functions so it supports
+        all standard features like emplacement, stateful allocators, etc.
       </p>
 </div>
 </div>

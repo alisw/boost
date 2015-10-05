@@ -19,28 +19,25 @@ const char *ok_data_1 =
 
 const char *ok_data_2 = 
     "  \t {\n"
-    "  \t \"name 0\" : \"value\", \t // comment \n"
-    "  \t \"name 1\" : \"\", // comment \n"
-    "  \t \"name 2\" : true, // comment \n"
-    "  \t \"name 3\" : false, // comment \n"
-    "  \t \"name 4\" : null, // comment \n"
-    "  \t \"name 5\" : 0, // comment \n"
-    "  \t \"name 6\" : -5, // comment \n"
-    "  \t \"name 7\" : 1.1, // comment \n"
-    "  \t \"name 8\" : -956.45e+4, // comment \n"
-    "  \t \"name 8\" : 5956.45E-11, // comment \n"
-    "  \t \"name 9\" : [1,2,3,4], // comment \n"
-    "  \t \"name 10\" : {\"a\":\"b\"} // comment \n"
-    "  \t } // comment \n";
+    "  \t \"name 0\" : \"value\", \t \n"
+    "  \t \"name 1\" : \"\", \n"
+    "  \t \"name 2\" : true, \n"
+    "  \t \"name 3\" : false, \n"
+    "  \t \"name 4\" : null, \n"
+    "  \t \"name 5\" : 0, \n"
+    "  \t \"name 6\" : -5, \n"
+    "  \t \"name 7\" : 1.1, \n"
+    "  \t \"name 8\" : -956.45e+4, \n"
+    "  \t \"name 8\" : 5956.45E-11, \n"
+    "  \t \"name 9\" : [1,2,3,4], \n"
+    "  \t \"name 10\" : {\"a\":\"b\"} \n"
+    "  \t } \n";
 
 const char *ok_data_3 = 
     "{\"a\":{\"b\":\"c\"}}";
 
 const char *ok_data_4 = 
     "{\"a\":[{\"b\":\"c\"},{\"d\":\"e\"},1,2,3,4],\"f\":null}";
-
-const char *ok_data_5 = 
-    "{/* \n\n//{}//{}{\n{//\n}//{}{\n */}";
 
 const char *ok_data_6 = 
     "{\"menu\": {\n"
@@ -73,7 +70,7 @@ const char *ok_data_6 =
 
 const char *ok_data_7 = 
     "{\"web-app\": {\n"
-    "  \"servlet\": [    // Defines the CDSServlet\n"
+    "  \"servlet\": [    \n"
     "    {\n"
     "      \"servlet-name\": \"cofaxCDS\",\n"
     "      \"servlet-class\": \"org.cofax.cds.CDSServlet\",\n"
@@ -235,7 +232,7 @@ const char *ok_data_11 =
     "}\n";
 
 const char *ok_data_12 = 
-    "{\"  \\\" \\\\ \\b \\f \\n \\r \\t  \" : \"multi\" \"-\" \"string\"}";
+    "{\"  \\\" \\\\ \\b \\f \\n \\r \\t  \" : \"\"}";
 
 const char *error_data_1 = 
     "";   // No root object
@@ -331,12 +328,6 @@ void test_json_parser()
 
     generic_parser_test_ok<Ptree, ReadFunc, WriteFunc>
     (
-        ReadFunc(), WriteFunc(false), ok_data_5, NULL, 
-        "testok5.json", NULL, "testok5out.json", 1, 0, 0
-    );
-
-    generic_parser_test_ok<Ptree, ReadFunc, WriteFunc>
-    (
         ReadFunc(), WriteFunc(false), ok_data_6, NULL, 
         "testok6.json", NULL, "testok6out.json", 56, 265, 111
     );
@@ -374,7 +365,7 @@ void test_json_parser()
     generic_parser_test_ok<Ptree, ReadFunc, WriteFunc>
     (
         ReadFunc(), WriteFunc(false), ok_data_12, NULL, 
-        "testok12.json", NULL, "testok12out.json", 2, 12, 17
+        "testok12.json", NULL, "testok12out.json", 2, 0, 17
     );
 
     generic_parser_test_error<ptree, ReadFunc, WriteFunc, json_parser_error>
@@ -414,14 +405,39 @@ void test_json_parser()
 
 }
 
+void test_escaping_utf8()
+{
+    // This is cyrillic text encoded as UTF-8
+    std::string str = "\xD0\x9C\xD0\xB0\xD0\xBC\xD0\xB0 "
+      "\xD0\xBC\xD1\x8B\xD0\xBB\xD0\xB0 \xD1\x80\xD0\xB0\xD0\xBC\xD1\x83";
+    // Should NOT escape UTF-8
+    BOOST_CHECK(boost::property_tree::json_parser::create_escapes(str) == str);
+}
+
+void test_escaping_wide()
+{
+    // Should NOT escape characters within ASCII range.
+    std::wstring str1 = L"I am wstring with ASCII";
+    BOOST_CHECK(boost::property_tree::json_parser::create_escapes(str1) == str1);
+    // Should escape characters outside ASCII range - this is NOT utf-8
+    // This is cyrillic text
+    std::wstring str2 = L"\u041C\u0430\u043C\u0430 "
+        L"\u043C\u044B\u043B\u0430 \u0440\u0430\u043C\u0443";
+    BOOST_CHECK(boost::property_tree::json_parser::create_escapes(str2) ==
+        L"\\u041C\\u0430\\u043C\\u0430 "
+        L"\\u043C\\u044B\\u043B\\u0430 \\u0440\\u0430\\u043C\\u0443");
+}
+
 int test_main(int argc, char *argv[])
 {
     using namespace boost::property_tree;
     test_json_parser<ptree>();
     test_json_parser<iptree>();
+    test_escaping_utf8();
 #ifndef BOOST_NO_CWCHAR
     test_json_parser<wptree>();
     test_json_parser<wiptree>();
+    test_escaping_wide();
 #endif
     return 0;
 }

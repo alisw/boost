@@ -10,12 +10,13 @@
 #include <boost/container/detail/config_begin.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/core/no_exceptions_support.hpp>
+#include <boost/container/vector.hpp>
+#include <boost/container/stable_vector.hpp>
+#include <boost/container/detail/iterator.hpp>
+#include "../../intrusive/test/iterator_test.hpp"
 
 #include <vector>
 #include <list>
-
-#include <boost/container/vector.hpp>
-#include <boost/container/stable_vector.hpp>
 
 #include "static_vector_test.hpp"
 
@@ -208,7 +209,7 @@ void test_pop_back_nd()
 template <typename It1, typename It2>
 void test_compare_ranges(It1 first1, It1 last1, It2 first2, It2 last2)
 {
-   BOOST_TEST(std::distance(first1, last1) == std::distance(first2, last2));
+   BOOST_TEST(boost::container::iterator_distance(first1, last1) == boost::container::iterator_distance(first2, last2));
    for ( ; first1 != last1 && first2 != last2 ; ++first1, ++first2 )
       BOOST_TEST(*first1 == *first2);
 }
@@ -352,7 +353,7 @@ void test_insert(SV const& s, C const& c)
       static_vector<T, N> s1(s);
 
       typename C::const_iterator it = c.begin();
-      std::advance(it, n);
+      boost::container::iterator_advance(it, n);
       typename static_vector<T, N>::iterator
           it1 = s1.insert(s1.begin() + i, c.begin(), it);
 
@@ -810,6 +811,15 @@ int main(int, char* [])
    BOOST_TEST(default_init_test() == true);
 
    test_support_for_initializer_list();
+
+   ////////////////////////////////////
+   //    Iterator testing
+   ////////////////////////////////////
+   {
+      typedef boost::container::static_vector<int, 3> cont_int;
+      cont_int a; a.push_back(0); a.push_back(1); a.push_back(2);
+      boost::intrusive::test::test_iterator_random< cont_int >(a);
+   }
 
    return boost::report_errors();
 }

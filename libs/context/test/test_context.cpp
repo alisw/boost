@@ -16,6 +16,7 @@
 #include <boost/utility.hpp>
 
 #include <boost/context/all.hpp>
+#include <boost/context/detail/config.hpp>
 
 #include "../example/simple_stack_allocator.hpp"
 

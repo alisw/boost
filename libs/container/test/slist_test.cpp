@@ -19,6 +19,7 @@
 #include "list_test.hpp"
 #include "propagate_allocator_test.hpp"
 #include "emplace_test.hpp"
+#include "../../intrusive/test/iterator_test.hpp"
 
 using namespace boost::container;
 
@@ -59,7 +60,7 @@ public:
    slist<recursive_slist> slist_;
    slist<recursive_slist>::iterator it_;
    slist<recursive_slist>::const_iterator cit_;
-   
+
    recursive_slist &operator=(const recursive_slist &o)
    { slist_ = o.slist_;  return *this; }
 };
@@ -121,7 +122,12 @@ bool test_support_for_initializer_list()
       if(sl != expected_list)
          return false;
    }
-
+   {
+      slist<int> sl({ 1, 2 }, slist<int>::allocator_type());
+      sl = il;
+      if (sl != expected_list)
+         return false;
+   }
    {
       slist<int> sl = {4, 5};
       sl.assign(il);
@@ -146,6 +152,24 @@ bool test_support_for_initializer_list()
 #endif
    return true;
 }
+
+struct boost_container_slist;
+
+namespace boost {
+namespace container {
+namespace test {
+
+template<>
+struct alloc_propagate_base<boost_container_slist>
+{
+   template <class T, class Allocator>
+   struct apply
+   {
+      typedef boost::container::slist<T, Allocator> type;
+   };
+};
+
+}}}
 
 int main ()
 {
@@ -202,11 +226,26 @@ int main ()
    ////////////////////////////////////
    //    Allocator propagation testing
    ////////////////////////////////////
-   if(!boost::container::test::test_propagate_allocator<slist>())
+   if(!boost::container::test::test_propagate_allocator<boost_container_slist>())
       return 1;
 
+   ////////////////////////////////////
+   //    Initializer lists
+   ////////////////////////////////////
    if(!test_support_for_initializer_list())
       return 1;
+
+   ////////////////////////////////////
+   //    Iterator testing
+   ////////////////////////////////////
+   {
+      typedef boost::container::slist<int> vector_int;
+      vector_int a; a.push_front(2); a.push_front(1); a.push_front(0);
+      boost::intrusive::test::test_iterator_forward< boost::container::slist<int> >(a);
+      if(boost::report_errors() != 0) {
+         return 1;
+      }
+   }
 }
 
 #include <boost/container/detail/config_end.hpp>
