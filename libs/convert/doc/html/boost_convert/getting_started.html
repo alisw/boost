@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Getting Started</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Convert 2.0">
 <link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Convert 2.0">
 <link rel="prev" href="introduction.html" title="Introduction">
@@ -55,8 +55,9 @@
         For die-hard <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> users or as a transitional
         path to <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code>, one of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code>
         deployments is not that different from <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>
-        and, in fact, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> functionality is easily deployed
-        through <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code> interface:
+        and, in fact, the original <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>
+        functionality is easily deployed through <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code>
+        interface:
       </p>
 <p>
 </p>
@@ -89,7 +90,7 @@
     <span class="keyword">int</span>    <span class="identifier">i1</span> <span class="special">=</span> <span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"123"</span><span class="special">);</span>          <span class="comment">// boost::lexical_cast standard deployment</span>
     <span class="keyword">int</span>    <span class="identifier">i2</span> <span class="special">=</span> <span class="identifier">convert</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"123"</span><span class="special">).</span><span class="identifier">value</span><span class="special">();</span>       <span class="comment">// boost::convert with the default converter</span>
     <span class="keyword">int</span>    <span class="identifier">i3</span> <span class="special">=</span> <span class="identifier">convert</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"123"</span><span class="special">,</span> <span class="identifier">cnv</span><span class="special">).</span><span class="identifier">value</span><span class="special">();</span>  <span class="comment">// boost::convert with an explicit converter</span>
-    <span class="identifier">string</span> <span class="identifier">s1</span> <span class="special">=</span> <span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="number">123</span><span class="special">);</span>
+    <span class="identifier">string</span> <span class="identifier">s1</span> <span class="special">=</span> <span class="identifier">lexical_cast</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="number">123</span><span class="special">);</span>         <span class="comment">// boost::lexical_cast standard deployment</span>
     <span class="identifier">string</span> <span class="identifier">s2</span> <span class="special">=</span> <span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="number">123</span><span class="special">).</span><span class="identifier">value</span><span class="special">();</span>      <span class="comment">// boost::convert with the default converter</span>
     <span class="identifier">string</span> <span class="identifier">s3</span> <span class="special">=</span> <span class="identifier">convert</span><span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;(</span><span class="number">123</span><span class="special">,</span> <span class="identifier">cnv</span><span class="special">).</span><span class="identifier">value</span><span class="special">();</span> <span class="comment">// boost::convert with an explicit converter</span>
 
@@ -102,8 +103,8 @@
 <span class="special">}</span>
 <span class="keyword">catch</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">exception</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="comment">// Be aware that the conversion requests above can fail,</span>
-    <span class="comment">// so always use try'n'catch blocks to handle any exceptions thrown.</span>
+    <span class="comment">// Please be aware that the conversion requests above can fail.</span>
+    <span class="comment">// Use try'n'catch blocks to handle any exceptions thrown.</span>
     <span class="comment">// Ignore this at your peril!</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"Exception "</span> <span class="special">&lt;&lt;</span> <span class="identifier">ex</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 <span class="special">}</span>
@@ -116,22 +117,21 @@
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          As we explore <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code> behavior and interfaces further,
-          to some they might appear unduly complex, excessive, verbose, etc... nothing
-          like <code class="computeroutput"><span class="identifier">atoi</span><span class="special">()</span></code>...
-          so famous for all the wrong reasons. :-) It is important to fully understand
-          and as fully appreciate the fact that a conversion request is only a <span class="emphasis"><em>request</em></span>
-          which may succeed but may also fail (which might not be as rare or as exceptional
-          as one might hope). <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code>
-          (as well as <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>) behavior and interfaces
-          reflect that reality.
+          As we explore <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code> behavior and interface further,
+          at first they might appear unduly complex, verbose, etc... nothing like
+          <code class="computeroutput"><span class="identifier">atoi</span><span class="special">()</span></code>...
+          so famous for all the wrong reasons. :-) It is important to remember that
+          a conversion request is only a <span class="emphasis"><em>request</em></span> which may succeed
+          but may also fail... which might not be as rare or as exceptional as one
+          might hope. <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">convert</span></code> (as well as <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>)
+          behavior and interfaces reflect that reality.
         </p></td></tr>
 </table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2014 Vladimir Batov<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2016 Vladimir Batov<p>
         Distributed under the Boost Software License, Version 1.0. See copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>.
       </p>
 </div></td>

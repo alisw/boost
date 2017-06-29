@@ -26,14 +26,14 @@ namespace data=boost::unit_test::data;
 int samples1[] = {1,2,3};
 int index1 = 0;
 
-BOOST_DATA_TEST_CASE( test_case_interface_01, samples1 )
+BOOST_DATA_TEST_CASE( test_case_interface_01, data::make({1,2,3}) )
 {
     BOOST_TEST( sample == samples1[index1++] );
 }
 
 //____________________________________________________________________________//
 
-char const* samples2[] = {"qwerty","asdfg"};
+std::vector<std::string> samples2 = {"qwerty","asdfg"};
 int index2 = 0;
 
 BOOST_DATA_TEST_CASE( test_case_interface_02, samples2, str )
@@ -46,7 +46,7 @@ BOOST_DATA_TEST_CASE( test_case_interface_02, samples2, str )
 int samples3[] = {7,9};
 int index3 = 0;
 
-BOOST_DATA_TEST_CASE( test_case_interface_03, data::make(samples1)+samples3, val )
+BOOST_DATA_TEST_CASE( test_case_interface_03, data::make({1,2,3}) + samples3, val )
 {
     if( index3 < 3 )
         BOOST_TEST( val == samples1[index3] );
@@ -60,7 +60,7 @@ BOOST_DATA_TEST_CASE( test_case_interface_03, data::make(samples1)+samples3, val
 
 int index4 = 0;
 
-BOOST_DATA_TEST_CASE( test_case_interface_04, data::make(samples2)^samples3, str, intval )
+BOOST_DATA_TEST_CASE( test_case_interface_04, samples2 ^ data::make({7,9}), str, intval )
 {
     BOOST_TEST( str == samples2[index4] );
     BOOST_TEST( intval == samples3[index4] );
@@ -72,7 +72,7 @@ BOOST_DATA_TEST_CASE( test_case_interface_04, data::make(samples2)^samples3, str
 
 int index5 = 0;
 
-BOOST_DATA_TEST_CASE( test_case_interface_05, data::make(samples1) * samples2, sample0, sample1 )
+BOOST_DATA_TEST_CASE( test_case_interface_05, samples1 * samples2, sample0, sample1 )
 {
     BOOST_TEST( sample0 == samples1[index5/2] );
     BOOST_TEST( sample1 == samples2[index5%2] );
@@ -84,7 +84,7 @@ BOOST_DATA_TEST_CASE( test_case_interface_05, data::make(samples1) * samples2, s
 
 int index6 = 0;
 
-BOOST_DATA_TEST_CASE( test_case_interface_06, data::make(samples1) * samples2 * samples3, intval, str, val2 )
+BOOST_DATA_TEST_CASE( test_case_interface_06, samples1 * samples2 * samples3, intval, str, val2 )
 {
     BOOST_TEST( intval == samples1[index6/4] );
     BOOST_TEST( str == samples2[(index6/2)%2] );
@@ -94,5 +94,50 @@ BOOST_DATA_TEST_CASE( test_case_interface_06, data::make(samples1) * samples2 * 
 }
 
 //____________________________________________________________________________//
+
+// test dataset dim > 3
+int index7 = 0;
+
+float samples4[] = {1E3f, 1E-3f, 3.14f};
+
+#define sizeoftable(x) (sizeof(x)/sizeof(x[0]))
+
+BOOST_DATA_TEST_CASE( test_case_interface_07, samples1 * samples2 * samples3 * samples4, intval, str, val2, floatval )
+{
+    BOOST_TEST_CONTEXT("index7 " << index7) {
+      BOOST_TEST( intval == samples1[index7/(sizeoftable(samples4)*sizeoftable(samples3)*samples2.size())] );
+      BOOST_TEST( str == samples2[(index7/(sizeoftable(samples4)*sizeoftable(samples3)))%samples2.size()] );
+      BOOST_TEST( val2 == samples3[(index7/sizeoftable(samples4))%sizeoftable(samples3)] );
+      BOOST_TEST( floatval == samples4[index7%sizeoftable(samples4)] );
+    }
+    ++index7;
+}
+
+//____________________________________________________________________________//
+
+static int index8 = 1;
+
+struct SharedFixture {
+    SharedFixture()
+    : m_expected(index8++)
+    {
+    }
+
+    int m_expected;
+};
+
+BOOST_DATA_TEST_CASE_F( SharedFixture, test_case_interface_08, data::make({1,2,3}) )
+{
+    BOOST_TEST( sample == m_expected );
+}
+
+//____________________________________________________________________________//
+
+BOOST_DATA_TEST_CASE(test_case_interface_correct_file_line_declaration, samples2)
+{
+  boost::unit_test::test_case const& current_test_case = boost::unit_test::framework::current_test_case();
+  BOOST_TEST(current_test_case.p_line_num == 136);
+  BOOST_TEST(current_test_case.p_file_name == __FILE__);
+}
 
 // EOF

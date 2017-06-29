@@ -1,14 +1,10 @@
-# boost.align
+# Boost.Align
 
-Boost.Align provides memory alignment functions, allocators, and adaptors.
+The Boost Align C++ library provides functions, classes, templates,
+traits, and macros, for the control, inspection, and diagnostic of
+memory alignment.
 
-### Contents
+### License
 
-* **doc** - Boost.Align documentation
-* **example** - Boost.Align examples
-* **include** - Source code of Boost.Align
-* **test** - Boost.Align unit tests
-
-### Details
-
-* [Documentation](http://boost.org/libs/align)
+Distributed under the
+[Boost Software License, Version 1.0](http://boost.org/LICENSE_1_0.txt).

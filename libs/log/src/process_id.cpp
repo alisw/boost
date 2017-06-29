@@ -13,17 +13,15 @@
  *         at http://www.boost.org/doc/libs/release/libs/log/doc/html/index.html.
  */
 
+#include <boost/log/detail/config.hpp>
 #include <iostream>
 #include <boost/log/detail/process_id.hpp>
 #include "id_formatting.hpp"
-#include <boost/log/detail/header.hpp>
 
 #if defined(BOOST_WINDOWS)
 
-#define WIN32_LEAN_AND_MEAN
-
-#include "windows_version.hpp"
 #include <windows.h>
+#include <boost/log/detail/header.hpp>
 
 namespace boost {
 
@@ -52,6 +50,7 @@ BOOST_LOG_CLOSE_NAMESPACE // namespace log
 #else // defined(BOOST_WINDOWS)
 
 #include <unistd.h>
+#include <boost/log/detail/header.hpp>
 
 namespace boost {
 

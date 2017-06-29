@@ -3,10 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Collections comparison</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../index.html" title="Boost.Test">
 <link rel="up" href="../extended_comparison.html" title="Extended comparisons support">
-<link rel="prev" href="strings.html" title="C-string comparison">
+<link rel="prev" href="strings.html" title="Strings and C-strings comparison">
 <link rel="next" href="bitwise.html" title="Bitwise comparison">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -126,6 +126,17 @@
           lines were uncommented (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code>
           uses lexicographical comparison by default).
         </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            In this case, there is no additional diagnostic provided by the <span class="emphasis"><em>Unit
+            Test Framework</em></span>. See the section <a class="link" href="collections.html#ref_boost_test_coll_special_macro"><code class="computeroutput"><span class="identifier">BOOST_TEST_SPECIALIZED_COLLECTION_COMPARE</span></code></a>
+            below.
+          </p></td></tr>
+</table></div>
 <h6>
 <a name="boost_test.testing_tools.extended_comparison.collections.h1"></a>
           <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.example_descr"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.example_descr">Example:
@@ -213,8 +224,10 @@
 <span class="special">{</span>
   <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">c_a</span><span class="special">.</span><span class="identifier">size</span><span class="special">();</span> <span class="identifier">i</span><span class="special">++)</span>
   <span class="special">{</span>
-    <a class="link" href="../../utf_reference/testout_reference/test_output_macro_context.html" title="BOOST_TEST_CONTEXT"><code class="computeroutput"><span class="identifier">BOOST_TEST_CONTEXT</span></code></a><span class="special">(</span><span class="string">"index"</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span><span class="special">);</span>
-    <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">a_i</span> <span class="identifier">op</span> <span class="identifier">b_i</span><span class="special">);</span>
+    <a class="link" href="../../utf_reference/testout_reference/test_output_macro_context.html" title="BOOST_TEST_CONTEXT"><code class="computeroutput"><span class="identifier">BOOST_TEST_CONTEXT</span></code></a><span class="special">(</span><span class="string">"index "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span><span class="special">)</span>
+    <span class="special">{</span>
+      <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">a_i</span> <span class="identifier">op</span> <span class="identifier">b_i</span><span class="special">);</span>
+    <span class="special">}</span>
   <span class="special">}</span>
 <span class="special">}</span>
 <span class="keyword">else</span>
@@ -330,6 +343,10 @@
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
+              the containers should meet the <a class="link" href="collections.html#what_is_a_collection">sequence</a>
+              definition,
+            </li>
+<li class="listitem">
               the containers should yield the same number of elements,
             </li>
 <li class="listitem">
@@ -357,8 +374,7 @@
             the resulting type of "<code class="computeroutput"><span class="identifier">c_a</span>
             <span class="special">==</span> <span class="identifier">c_b</span></code>"
             is an <code class="computeroutput"><a class="link" href="../../../boost/test_tools/assertion_result.html" title="Class assertion_result">assertion_result</a></code>:
-            it is not possible to compose more that one comparison on the BOOST_TEST
-            statement:
+            it is not possible to compose more that one comparison on the <code class="computeroutput"><span class="identifier">BOOST_TEST</span></code> statement:
           </p>
 <pre class="programlisting"><span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">c_a</span> <span class="special">==</span> <span class="identifier">c_b</span> <span class="special">==</span> <span class="number">42</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">test_tools</span><span class="special">::</span><span class="identifier">per_element</span><span class="special">()</span> <span class="special">);</span> <span class="comment">// does not compile</span>
 </pre>
@@ -392,6 +408,17 @@
             <span class="identifier">c_b</span></code> and <code class="computeroutput"><span class="identifier">c_b</span>
             <span class="special">&lt;=</span> <span class="identifier">c_a</span></code>
             are mutually exclusive.
+          </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The equality <code class="computeroutput"><span class="special">==</span></code> and inequality
+            <code class="computeroutput"><span class="special">!=</span></code> are not available for
+            this type of comparison.
           </p></td></tr>
 </table></div>
 <h6>
@@ -455,11 +482,88 @@
 </pre>
                 </td></tr></tbody>
 </table></div>
-<h5>
+<a name="ref_boost_test_coll_special_macro"></a><h5>
 <a name="boost_test.testing_tools.extended_comparison.collections.h7"></a>
+          <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.extended_diagnostic_by_default_f"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.extended_diagnostic_by_default_f">Extended
+          diagnostic by default for specific containers</a>
+        </h5>
+<p>
+          As seen above, the lexicographical comparison is either explicit (<code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">test_tools</span><span class="special">::</span><span class="identifier">lexicographic</span><span class="special">()</span></code>)
+          or implicit when the container operations uses this type of comparison.
+          In the second case, it is however not possible to benefit from an extended
+          diagnostic in case of failure.
+        </p>
+<p>
+          If the lexicographical comparison is the default for a specific container,
+          it is possible to dispatch the comparison operations to the <span class="emphasis"><em>Unit
+          Test Framework</em></span> instead of the container operator. In order to
+          default to the <span class="emphasis"><em>Unit Test Framework</em></span> lexicographical
+          comparison, the macro <code class="computeroutput"><span class="identifier">BOOST_TEST_SPECIALIZED_COLLECTION_COMPARE</span></code>
+          might be used as follow:
+        </p>
+<h6>
+<a name="boost_test.testing_tools.extended_comparison.collections.h8"></a>
+          <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.example_descr2"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.example_descr2">Example:
+          Default <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span></code>
+          to lexicographic with extended diagnostic</a>
+        </h6>
+<div class="informaltable"><table class="table">
+<colgroup><col></colgroup>
+<thead><tr><th>
+                  <p>
+                    Code
+                  </p>
+                </th></tr></thead>
+<tbody><tr><td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MODULE</span> <span class="identifier">boost_test_container_lex_default</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">tt</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">test_tools</span><span class="special">;</span>
+
+<span class="identifier">BOOST_TEST_SPECIALIZED_COLLECTION_COMPARE</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;)</span>
+
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_collections_vectors_lex</span> <span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">a</span><span class="special">{</span><span class="number">1</span><span class="special">,</span><span class="number">2</span><span class="special">,</span><span class="number">3</span><span class="special">},</span> <span class="identifier">b</span><span class="special">{</span><span class="number">1</span><span class="special">,</span><span class="number">2</span><span class="special">,</span><span class="number">2</span><span class="special">};</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">long</span> <span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">c</span><span class="special">{</span><span class="number">1</span><span class="special">,</span><span class="number">2</span><span class="special">,</span><span class="number">3</span><span class="special">,</span><span class="number">5</span><span class="special">},</span> <span class="identifier">d</span><span class="special">{</span><span class="number">1</span><span class="special">,</span><span class="number">2</span><span class="special">,</span><span class="number">3</span><span class="special">,</span><span class="number">4</span><span class="special">};</span>
+
+  <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">a</span> <span class="special">&lt;</span> <span class="identifier">a</span><span class="special">);</span> <span class="comment">// extended diagnostic</span>
+  <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">a</span> <span class="special">&lt;</span> <span class="identifier">b</span><span class="special">);</span> <span class="comment">// extended diagnostic</span>
+  <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">c</span> <span class="special">&lt;</span> <span class="identifier">d</span><span class="special">);</span> <span class="comment">// no extended diagnostic</span>
+<span class="special">}</span>
+</pre>
+                </td></tr></tbody>
+</table></div>
+<div class="informaltable"><table class="table">
+<colgroup><col></colgroup>
+<thead><tr><th>
+                  <p>
+                    Output
+                  </p>
+                </th></tr></thead>
+<tbody><tr><td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="special">&gt;</span> <span class="special">./</span><span class="identifier">boost_test_container_lex_default</span>
+<span class="identifier">Running</span> <span class="number">1</span> <span class="identifier">test</span> <span class="keyword">case</span><span class="special">...</span>
+<span class="identifier">test</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">22</span><span class="special">:</span> <span class="identifier">error</span><span class="special">:</span> <span class="identifier">in</span> <span class="string">"test_collections_vectors_lex"</span><span class="special">:</span> <span class="identifier">check</span> <span class="identifier">a</span> <span class="special">&lt;</span> <span class="identifier">a</span> <span class="identifier">has</span> <span class="identifier">failed</span><span class="special">.</span>
+<span class="identifier">Collections</span> <span class="identifier">appear</span> <span class="identifier">to</span> <span class="identifier">be</span> <span class="identifier">equal</span><span class="special">.</span>
+<span class="identifier">test</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">23</span><span class="special">:</span> <span class="identifier">error</span><span class="special">:</span> <span class="identifier">in</span> <span class="string">"test_collections_vectors_lex"</span><span class="special">:</span> <span class="identifier">check</span> <span class="identifier">a</span> <span class="special">&lt;</span> <span class="identifier">b</span> <span class="identifier">has</span> <span class="identifier">failed</span><span class="special">.</span>
+<span class="identifier">Failure</span> <span class="identifier">at</span> <span class="identifier">position</span> <span class="number">2</span><span class="special">:</span> <span class="number">3</span> <span class="special">&gt;=</span> <span class="number">2.</span>
+<span class="identifier">test</span><span class="special">.</span><span class="identifier">run</span><span class="special">-</span><span class="identifier">fail</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">24</span><span class="special">:</span> <span class="identifier">error</span><span class="special">:</span> <span class="identifier">in</span> <span class="string">"test_collections_vectors_lex"</span><span class="special">:</span> <span class="identifier">check</span> <span class="identifier">c</span> <span class="special">&lt;</span> <span class="identifier">d</span> <span class="identifier">has</span> <span class="identifier">failed</span>
+
+<span class="special">***</span> <span class="number">3</span> <span class="identifier">failures</span> <span class="identifier">are</span> <span class="identifier">detected</span> <span class="identifier">in</span> <span class="identifier">the</span> <span class="identifier">test</span> <span class="identifier">module</span> <span class="string">"boost_test_container_lex_default"</span>
+</pre>
+                </td></tr></tbody>
+</table></div>
+<h5>
+<a name="boost_test.testing_tools.extended_comparison.collections.h9"></a>
           <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.requirements0"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.requirements0">Requirements</a>
         </h5>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+              the containers should meet the <a class="link" href="collections.html#what_is_a_collection">sequence</a>
+              definition,
+            </li>
 <li class="listitem">
               the containers should be of the exact same type
             </li>
@@ -471,7 +575,7 @@
             </li>
 </ul></div>
 <a name="what_is_a_collection"></a><h4>
-<a name="boost_test.testing_tools.extended_comparison.collections.h8"></a>
+<a name="boost_test.testing_tools.extended_comparison.collections.h10"></a>
           <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.what_is_a_sequence"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.what_is_a_sequence">What
           is a sequence?</a>
         </h4>
@@ -497,8 +601,8 @@
           iterable containers:
         </p>
 <h6>
-<a name="boost_test.testing_tools.extended_comparison.collections.h9"></a>
-          <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.example_descr2"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.example_descr2">Example:
+<a name="boost_test.testing_tools.extended_comparison.collections.h11"></a>
+          <span class="phrase"><a name="boost_test.testing_tools.extended_comparison.collections.example_descr3"></a></span><a class="link" href="collections.html#boost_test.testing_tools.extended_comparison.collections.example_descr3">Example:
           BOOST_TEST C-arrays</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -579,7 +683,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2015 Boost.Test team<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2016 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

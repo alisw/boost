@@ -32,7 +32,10 @@ struct arithmetic_backend
    typedef mpl::list<float, double, long double>                                       float_types;
    typedef int                                                                         exponent_type;
 
-   arithmetic_backend(){}
+   arithmetic_backend()
+   {
+      m_value = 0;
+   }
    arithmetic_backend(const arithmetic_backend& o)
    {
       m_value = o.m_value;
@@ -60,14 +63,18 @@ struct arithmetic_backend
    }
    arithmetic_backend& operator = (const char* s)
    {
+#ifndef BOOST_NO_EXCEPTIONS
       try
       {
+#endif
          m_value = boost::lexical_cast<Arithmetic>(s);
+#ifndef BOOST_NO_EXCEPTIONS
       }
       catch(const bad_lexical_cast&)
       {
          throw std::runtime_error(std::string("Unable to interpret the string provided: \"") + s + std::string("\" as a compatible number type."));
       }
+#endif
       return *this;
    }
    void swap(arithmetic_backend& o)

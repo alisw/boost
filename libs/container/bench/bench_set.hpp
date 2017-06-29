@@ -24,21 +24,30 @@ using boost::timer::cpu_timer;
 using boost::timer::cpu_times;
 using boost::timer::nanosecond_type;
 
-#ifdef NDEBUG
 static const std::size_t NElements = 1000;
-#else
-static const std::size_t NElements = 100;
-#endif
 
 #ifdef NDEBUG
-static const std::size_t NIter = 500;
+static const std::size_t NIter = 250;
 #else
-static const std::size_t NIter = 50;
+static const std::size_t NIter = 25;
 #endif
 
 void compare_times(cpu_times time_numerator, cpu_times time_denominator){
    std::cout << ((double)time_numerator.wall/(double)time_denominator.wall) << std::endl;
    std::cout << "----------------------------------------------" << '\n' << std::endl;
+}
+
+template< class RandomIt >
+void random_shuffle( RandomIt first, RandomIt last )
+{
+   typedef typename boost::container::iterator_traits<RandomIt>::difference_type difference_type;
+   difference_type n = last - first;
+   for (difference_type i = n-1; i > 0; --i) {
+      difference_type j = std::rand() % (i+1);
+      if(j != i) {
+         boost::adl_move_swap(first[i], first[j]);
+      }
+   }
 }
 
 boost::container::vector<int> sorted_unique_range_int;
@@ -61,11 +70,11 @@ void fill_range_ints()
    //random_range_int
    std::srand(0);
    random_range_int.assign(sorted_range_int.begin(), sorted_range_int.end());
-   std::random_shuffle(random_range_int.begin(), random_range_int.end());
+   ::random_shuffle(random_range_int.begin(), random_range_int.end());
    //random_unique_range_int
    std::srand(0);
    random_unique_range_int.assign(sorted_unique_range_int.begin(), sorted_unique_range_int.end());
-   std::random_shuffle(random_unique_range_int.begin(), random_unique_range_int.end());
+   ::random_shuffle(random_unique_range_int.begin(), random_unique_range_int.end());
 }
 
 boost::container::vector<boost::container::string> sorted_unique_range_string;
@@ -97,11 +106,11 @@ void fill_range_strings()
    //random_range_string
    std::srand(0);
    random_range_string.assign(sorted_range_string.begin(), sorted_range_string.end());
-   std::random_shuffle(random_range_string.begin(), random_range_string.end());
+   ::random_shuffle(random_range_string.begin(), random_range_string.end());
    //random_unique_range_string
    std::srand(0);
    random_unique_range_string.assign(sorted_unique_range_string.begin(), sorted_unique_range_string.end());
-   std::random_shuffle(random_unique_range_string.begin(), random_unique_range_string.end());
+   ::random_shuffle(random_unique_range_string.begin(), random_unique_range_string.end());
 }
 
 template<class T>

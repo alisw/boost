@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Change Log</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../hash.html" title="Chapter&#160;12.&#160;Boost.Functional/Hash">
+<link rel="up" href="../hash.html" title="Chapter&#160;16.&#160;Boost.Functional/Hash">
 <link rel="prev" href="disable.html" title="Disabling The Extensions">
 <link rel="next" href="rationale.html" title="Rationale">
 </head>
@@ -395,6 +395,30 @@
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
           Fixed strict aliasing violation (<a href="https://github.com/boostorg/functional/pull/3" target="_top">GitHub
           #3</a>).
+        </li></ul></div>
+<h3>
+<a name="hash.changes.h22"></a>
+      <span class="phrase"><a name="hash.changes.boost_1_63_0"></a></span><a class="link" href="changes.html#hash.changes.boost_1_63_0">Boost
+      1.63.0</a>
+    </h3>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Fixed some warnings.
+        </li>
+<li class="listitem">
+          Only define hash for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">wstring</span></code>
+          when we know we have a <code class="computeroutput"><span class="keyword">wchar_t</span></code>.
+          Otherwise there's a compile error as there's no overload for hashing the
+          characters in wide strings (<a href="https://svn.boost.org/trac/boost/ticket/8552" target="_top">#8552</a>).
+        </li>
+</ul></div>
+<h3>
+<a name="hash.changes.h23"></a>
+      <span class="phrase"><a name="hash.changes.boost_1_64_0"></a></span><a class="link" href="changes.html#hash.changes.boost_1_64_0">Boost
+      1.64.0</a>
+    </h3>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          Fix for recent versions of Visual C++ which have removed <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">unary_function</span></code> and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">binary_function</span></code>.
         </li></ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

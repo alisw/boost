@@ -869,7 +869,7 @@ any other threads have shared ownership, blocks until exclusive ownership can be
 
 [variablelist
 
-[[Precondition:] [The calling thread shall hold a upgrade lock on the mutex.]]
+[[Precondition:] [The calling thread shall hold an upgrade lock on the mutex.]]
 
 [[Effects:] [The function attempts to atomically convert the ownership from upgrade to exclusive for the calling thread without blocking. 
 For this conversion to be successful, this thread must be the only thread holding any ownership of the lock. 
@@ -893,7 +893,7 @@ If the conversion is not successful, the upgrade ownership of m is retained.]]
 
 [variablelist
 
-[[Precondition:] [The calling thread shall hold a upgrade lock on the mutex.]]
+[[Precondition:] [The calling thread shall hold an upgrade lock on the mutex.]]
 
 [[Effects:] [If the tick period of `rel_time` is not exactly convertible to the native tick period, the duration shall be rounded up to the nearest native tick period. 
 The function attempts to atomically convert the ownership from upgrade to exclusive for the calling thread within the relative timeout specified by `rel_time`. 
@@ -919,7 +919,7 @@ If the conversion is not successful, the upgrade ownership of m is retained.]]
 
 [variablelist
 
-[[Precondition:] [The calling thread shall hold a upgrade lock on the mutex.]]
+[[Precondition:] [The calling thread shall hold an upgrade lock on the mutex.]]
 
 [[Effects:] [The function attempts to atomically convert the ownership from upgrade to exclusive for the calling thread within the absolute timeout specified by `abs_time`. 
 If `abs_time` has already passed, the function attempts to obtain exclusive ownership without blocking (as if by calling `__try_unlock_upgrade_and_lock()`). 
@@ -2150,7 +2150,7 @@ object passed to the constructor.]]
 __nested_strict_lock is a model of __StrictLock.
 
 A nested strict lock is a scoped lock guard ensuring a mutex is locked on its
-scope, by taking ownership of an nesting lock, locking the mutex on construction if not already locked
+scope, by taking ownership of a nesting lock, locking the mutex on construction if not already locked
 and restoring the ownership to the nesting lock on destruction.
  
 
@@ -3034,8 +3034,8 @@ An instance of __reverse_lock doesn't ['own] the lock never.
 [[Effects:] [Locks the __lockable_concept_type__ objects supplied as
 arguments in an unspecified and indeterminate order in a way that
 avoids deadlock. It is safe to call this function concurrently from
-multiple threads with the same mutexes (or other lockable objects) in
-different orders without risk of deadlock. If any of the __lock_ref__
+multiple threads for any set of mutexes (or other lockable objects) in
+any order without risk of deadlock. If any of the __lock_ref__
 or __try_lock_ref__ operations on the supplied
 __lockable_concept_type__ objects throws an exception any locks
 acquired by the function will be released before the function exits.]]
@@ -3062,8 +3062,8 @@ are locked by the calling thread.]]
 [[Effects:] [Locks all the __lockable_concept_type__ objects in the
 supplied range in an unspecified and indeterminate order in a way that
 avoids deadlock. It is safe to call this function concurrently from
-multiple threads with the same mutexes (or other lockable objects) in
-different orders without risk of deadlock. If any of the __lock_ref__
+multiple threads for any set of mutexes (or other lockable objects) in
+any order without risk of deadlock. If any of the __lock_ref__
 or __try_lock_ref__ operations on the __lockable_concept_type__
 objects in the supplied range throws an exception any locks acquired
 by the function will be released before the function exits.]]

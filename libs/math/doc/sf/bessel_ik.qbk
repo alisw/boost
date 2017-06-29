@@ -33,7 +33,7 @@ where:
 
 [equation mbessel3]
 
-The return type of these functions is computed using the __arg_pomotion_rules
+The return type of these functions is computed using the __arg_promotion_rules
 when T1 and T2 are different types.  The functions are also optimised for the
 relatively common case that T1 is an integer.
 
@@ -63,29 +63,20 @@ a simplified version of this implementation
 [h4 Accuracy]
 
 The following tables show how the accuracy of these functions
-varies on various platforms, along with a comparison to the __gsl library.  
+varies on various platforms, along with comparison to other libraries.  
 Note that only results for the widest floating-point type on the 
 system are given, as narrower types have __zero_error.  All values
-are relative errors in units of epsilon.
+are relative errors in units of epsilon.  Note that our test suite
+includes some fairly extreme inputs which results in most of the worst
+problem cases in other libraries:
 
-[table Errors Rates in cyl_bessel_i
-[[Significand Size] [Platform and Compiler] [I[sub v]] ]
-[[53] [Win32 / Visual C++ 8.0] [Peak=10 Mean=3.4
-      GSL Peak=6000]  ]
-[[64] [Red Hat Linux IA64 / G++ 3.4] [Peak=11 Mean=3] ]
-[[64] [SUSE Linux AMD64 / G++ 4.1] [Peak=11 Mean=4] ]
-[[113] [HP-UX / HP aCC 6] [Peak=15 Mean=4]  ]
-]
+[table_cyl_bessel_i_integer_orders_]
 
-[table Errors Rates in cyl_bessel_k
-[[Significand Size] [Platform and Compiler] [K[sub v]] ]
-[[53] [Win32 / Visual C++ 8.0] [Peak=9 Mean=2 
+[table_cyl_bessel_i]
 
-GSL Peak=9] ]
-[[64] [Red Hat Linux IA64 / G++ 3.4] [Peak=10 Mean=2] ]
-[[64] [SUSE Linux AMD64 / G++ 4.1] [Peak=10 Mean=2] ]
-[[113] [HP-UX / HP aCC 6] [Peak=12 Mean=5] ]
-]
+[table_cyl_bessel_k_integer_orders_]
+
+[table_cyl_bessel_k]
 
 [h4 Implementation]
 
@@ -98,16 +89,32 @@ odd if [nu][space] is odd and even if [nu][space] is even, and we can reflect to
 
 For I[sub v][space] with v equal to 0, 1 or 0.5 are handled as special cases.
 
-The 0 and 1 cases use minimax rational approximations on
-finite and infinite intervals. The coefficients are from:
+The 0 and 1 cases use polynomial approximations on
+finite and infinite intervals. The approximating forms
+are based on 
+[@http://www.advanpix.com/2015/11/11/rational-approximations-for-the-modified-bessel-function-of-the-first-kind-i0-computations-double-precision/ 
+"Rational Approximations for the Modified Bessel Function of the First Kind - I[sub 0](x) for Computations with Double Precision"]
+by Pavel Holoborodko, extended by us to deal with up to 128-bit precision (with different approximations for each target precision).
 
-* J.M. Blair and C.A. Edwards, ['Stable rational minimax approximations
-    to the modified Bessel functions I_0(x) and I_1(x)], Atomic Energy of Canada
-    Limited Report 4928, Chalk River, 1974.
-* S. Moshier, ['Methods and Programs for Mathematical Functions],
-    Ellis Horwood Ltd, Chichester, 1989.    
+[equation bessel21]
 
-While the 0.5 case is a simple trigonometric function:
+[equation bessel20]
+
+[equation bessel17]
+
+[equation bessel18]
+
+Similarly we have:
+
+[equation bessel22]
+
+[equation bessel23]
+
+[equation bessel24]
+
+[equation bessel25]
+
+The 0.5 case is a simple trigonometric function:
 
 I[sub 0.5](x) = sqrt(2 / [pi]x) * sinh(x)
 

@@ -1,7 +1,7 @@
 
 // boostdep - a tool to generate Boost dependency reports
 //
-// Copyright 2014, 2015 Peter Dimov
+// Copyright 2014, 2015, 2016 Peter Dimov
 //
 // Distributed under the Boost Software License, Version 1.0.
 // See accompanying file LICENSE_1_0.txt or copy at
@@ -24,6 +24,9 @@ namespace fs = boost::filesystem;
 // header -> module
 static std::map< std::string, std::string > s_header_map;
 
+// module -> headers
+static std::map< std::string, std::set<std::string> > s_module_headers;
+
 static std::set< std::string > s_modules;
 
 static void scan_module_headers( fs::path const & path )
@@ -43,14 +46,16 @@ static void scan_module_headers( fs::path const & path )
 
         for( ; it != last; ++it )
         {
-            fs::directory_entry const & e = *it;
+            if( it->status().type() == fs::directory_file )
+            {
+                continue;
+            }
 
-            std::string p2 = e.path().generic_string();
+            std::string p2 = it->path().generic_string();
             p2 = p2.substr( n+1 );
 
-            // std::cout << module << ": " << p2 << std::endl;
-
             s_header_map[ p2 ] = module;
+            s_module_headers[ module ].insert( p2 );
         }
     }
     catch( fs::filesystem_error const & x )
@@ -186,7 +191,42 @@ static fs::path module_build_path( std::string module )
     return fs::path( "libs" ) / module / "build";
 }
 
-static void scan_module_dependencies( std::string const & module, module_primary_actions & actions, bool track_sources )
+static fs::path module_test_path( std::string module )
+{
+    std::replace( module.begin(), module.end(), '~', '/' );
+    return fs::path( "libs" ) / module / "test";
+}
+
+static void scan_module_path( fs::path const & dir, bool remove_prefix, std::map< std::string, std::set< std::string > > & deps, std::map< std::string, std::set< std::string > > & from )
+{
+    size_t n = dir.generic_string().size();
+
+    if( fs::exists( dir ) )
+    {
+        fs::recursive_directory_iterator it( dir ), last;
+
+        for( ; it != last; ++it )
+        {
+            if( it->status().type() == fs::directory_file )
+            {
+                continue;
+            }
+
+            std::string header = it->path().generic_string();
+
+            if( remove_prefix )
+            {
+                header = header.substr( n+1 );
+            }
+
+            fs::ifstream is( it->path() );
+
+            scan_header_dependencies( header, is, deps, from );
+        }
+    }
+}
+
+static void scan_module_dependencies( std::string const & module, module_primary_actions & actions, bool track_sources, bool track_tests, bool include_self )
 {
     // module -> [ header, header... ]
     std::map< std::string, std::set< std::string > > deps;
@@ -194,47 +234,23 @@ static void scan_module_dependencies( std::string const & module, module_primary
     // header -> included from [ header, header... ]
     std::map< std::string, std::set< std::string > > from;
 
-    {
-        fs::path dir = module_include_path( module );
-        size_t n = dir.generic_string().size();
-
-        fs::recursive_directory_iterator it( dir ), last;
-
-        for( ; it != last; ++it )
-        {
-            std::string header = it->path().generic_string().substr( n+1 );
-
-            fs::ifstream is( it->path() );
-
-            scan_header_dependencies( header, is, deps, from );
-        }
-    }
+    scan_module_path( module_include_path( module ), true, deps, from );
 
     if( track_sources )
     {
-        fs::path dir = module_source_path( module );
-        size_t n = dir.generic_string().size();
+        scan_module_path( module_source_path( module ), false, deps, from );
+    }
 
-        if( fs::exists( dir ) )
-        {
-            fs::recursive_directory_iterator it( dir ), last;
-
-            for( ; it != last; ++it )
-            {
-                std::string header = it->path().generic_string().substr( n+1 );
-
-                fs::ifstream is( it->path() );
-
-                scan_header_dependencies( header, is, deps, from );
-            }
-        }
+    if( track_tests )
+    {
+        scan_module_path( module_test_path( module ), false, deps, from );
     }
 
     actions.heading( module );
 
     for( std::map< std::string, std::set< std::string > >::iterator i = deps.begin(); i != deps.end(); ++i )
     {
-        if( i->first == module ) continue;
+        if( i->first == module && !include_self ) continue;
 
         actions.module_start( i->first );
 
@@ -265,9 +281,13 @@ static std::map< std::string, std::set< std::string > > s_header_deps;
 // [ module, module... ] depend on module
 static std::map< std::string, std::set< std::string > > s_reverse_deps;
 
+// header includes [header, header...]
+static std::map< std::string, std::set< std::string > > s_header_includes;
+
 struct build_mdmap_actions: public module_primary_actions
 {
     std::string module_;
+    std::string module2_;
     std::string header_;
 
     void heading( std::string const & module )
@@ -277,8 +297,13 @@ struct build_mdmap_actions: public module_primary_actions
 
     void module_start( std::string const & module )
     {
-        s_module_deps[ module_ ].insert( module );
-        s_reverse_deps[ module ].insert( module_ );
+        if( module != module_ )
+        {
+            s_module_deps[ module_ ].insert( module );
+            s_reverse_deps[ module ].insert( module_ );
+        }
+
+        module2_ = module;
     }
 
     void module_end( std::string const & /*module*/ )
@@ -296,24 +321,29 @@ struct build_mdmap_actions: public module_primary_actions
 
     void from_header( std::string const & header )
     {
-        s_header_deps[ header_ ].insert( header );
+        if( module_ != module2_ )
+        {
+            s_header_deps[ header_ ].insert( header );
+        }
+
+        s_header_includes[ header ].insert( header_ );
     }
 };
 
-static void build_module_dependency_map( bool track_sources )
+static void build_module_dependency_map( bool track_sources, bool track_tests )
 {
     for( std::set< std::string >::iterator i = s_modules.begin(); i != s_modules.end(); ++i )
     {
         build_mdmap_actions actions;
-        scan_module_dependencies( *i, actions, track_sources );
+        scan_module_dependencies( *i, actions, track_sources, track_tests, true );
     }
 }
 
-static void output_module_primary_report( std::string const & module, module_primary_actions & actions, bool track_sources )
+static void output_module_primary_report( std::string const & module, module_primary_actions & actions, bool track_sources, bool track_tests )
 {
     try
     {
-        scan_module_dependencies( module, actions, track_sources );
+        scan_module_dependencies( module, actions, track_sources, track_tests, false );
     }
     catch( fs::filesystem_error const & x )
     {
@@ -339,11 +369,9 @@ static void exclude( std::set< std::string > & x, std::set< std::string > const 
     }
 }
 
-static void output_module_secondary_report( std::string const & module, module_secondary_actions & actions )
+static void output_module_secondary_report( std::string const & module, std::set< std::string> deps, module_secondary_actions & actions )
 {
     actions.heading( module );
-
-    std::set< std::string > deps = s_module_deps[ module ];
 
     deps.insert( module );
 
@@ -385,6 +413,11 @@ static void output_module_secondary_report( std::string const & module, module_s
             deps = deps2;
         }
     }
+}
+
+static void output_module_secondary_report( std::string const & module, module_secondary_actions & actions )
+{
+    output_module_secondary_report( module, s_module_deps[ module ], actions );
 }
 
 struct header_inclusion_actions
@@ -494,17 +527,17 @@ struct module_primary_html_actions: public module_primary_actions
     }
 };
 
-static void output_module_primary_report( std::string const & module, bool html, bool track_sources )
+static void output_module_primary_report( std::string const & module, bool html, bool track_sources, bool track_tests )
 {
     if( html )
     {
         module_primary_html_actions actions;
-        output_module_primary_report( module, actions, track_sources );
+        output_module_primary_report( module, actions, track_sources, track_tests );
     }
     else
     {
         module_primary_txt_actions actions;
-        output_module_primary_report( module, actions, track_sources );
+        output_module_primary_report( module, actions, track_sources, track_tests );
     }
 }
 
@@ -1282,13 +1315,13 @@ static void output_html_footer( std::string const & footer )
     std::cout << "</html>\n";
 }
 
-static void enable_secondary( bool & secondary, bool track_sources )
+static void enable_secondary( bool & secondary, bool track_sources, bool track_tests )
 {
     if( !secondary )
     {
         try
         {
-            build_module_dependency_map( track_sources );
+            build_module_dependency_map( track_sources, track_tests );
         }
         catch( fs::filesystem_error const & x )
         {
@@ -1580,6 +1613,353 @@ static void output_module_weight_report( bool html )
     }
 }
 
+// output_module_subset_report
+
+struct module_subset_actions
+{
+    virtual void heading( std::string const & module ) = 0;
+
+    virtual void module_start( std::string const & module ) = 0;
+    virtual void module_end( std::string const & module ) = 0;
+
+    virtual void from_path( std::vector<std::string> const & path ) = 0;
+};
+
+static void add_module_headers( fs::path const & dir, std::set<std::string> & headers )
+{
+    if( fs::exists( dir ) )
+    {
+        fs::recursive_directory_iterator it( dir ), last;
+
+        for( ; it != last; ++it )
+        {
+            if( it->status().type() == fs::directory_file )
+            {
+                continue;
+            }
+
+            headers.insert( it->path().generic_string() );
+        }
+    }
+}
+
+static void output_module_subset_report( std::string const & module, bool track_sources, bool track_tests, module_subset_actions & actions )
+{
+    // build header closure
+
+    std::set<std::string> headers = s_module_headers[ module ];
+
+    if( track_sources )
+    {
+        add_module_headers( module_source_path( module ), headers );
+    }
+
+    if( track_tests )
+    {
+        add_module_headers( module_test_path( module ), headers );
+    }
+
+    // header -> (header)*
+    std::map< std::string, std::set<std::string> > inc2;
+
+    // (header, header) -> path
+    std::map< std::pair<std::string, std::string>, std::vector<std::string> > paths;
+
+    for( std::set<std::string>::const_iterator i = headers.begin(); i != headers.end(); ++i )
+    {
+        std::set<std::string> & s = inc2[ *i ];
+
+        s = s_header_includes[ *i ];
+
+        for( std::set<std::string>::const_iterator j = s.begin(); j != s.end(); ++j )
+        {
+            std::vector<std::string> & v = paths[ std::make_pair( *i, *j ) ];
+
+            v.resize( 0 );
+            v.push_back( *i );
+            v.push_back( *j );
+        }
+    }
+
+    for( ;; )
+    {
+        bool r = false;
+
+        for( std::map< std::string, std::set<std::string> >::iterator i = inc2.begin(); i != inc2.end(); ++i )
+        {
+            std::set<std::string> & s2 = i->second;
+
+            for( std::set<std::string>::const_iterator j = s2.begin(); j != s2.end(); ++j )
+            {
+                std::set<std::string> const & s = s_header_includes[ *j ];
+
+                for( std::set<std::string>::const_iterator k = s.begin(); k != s.end(); ++k )
+                {
+                    if( s2.count( *k ) == 0 )
+                    {
+                        s2.insert( *k );
+
+                        std::vector<std::string> const & v1 = paths[ std::make_pair( i->first, *j ) ];
+                        std::vector<std::string> & v2 = paths[ std::make_pair( i->first, *k ) ];
+
+                        v2 = v1;
+                        v2.push_back( *k );
+
+                        r = true;
+                    }
+                }
+            }
+        }
+
+        if( !r ) break;
+    }
+
+    // module -> header -> path [header -> header -> header]
+    std::map< std::string, std::map< std::string, std::vector<std::string> > > subset;
+
+    for( std::set<std::string>::const_iterator i = headers.begin(); i != headers.end(); ++i )
+    {
+        std::set<std::string> const & s = inc2[ *i ];
+
+        for( std::set<std::string>::const_iterator j = s.begin(); j != s.end(); ++j )
+        {
+            std::string const & m = s_header_map[ *j ];
+
+            if( m.empty() ) continue;
+
+            std::vector<std::string> const & path = paths[ std::make_pair( *i, *j ) ];
+
+            if( subset.count( m ) == 0 || subset[ m ].count( *i ) == 0 || subset[ m ][ *i ].size() > path.size() )
+            {
+                subset[ m ][ *i ] = path;
+            }
+        }
+    }
+
+    actions.heading( module );
+
+    for( std::map< std::string, std::map< std::string, std::vector<std::string> > >::const_iterator i = subset.begin(); i != subset.end(); ++i )
+    {
+        if( i->first == module ) continue;
+
+        actions.module_start( i->first );
+
+        int k = 0;
+
+        for( std::map< std::string, std::vector<std::string> >::const_iterator j = i->second.begin(); j != i->second.end() && k < 4; ++j, ++k )
+        {
+            actions.from_path( j->second );
+        }
+
+        actions.module_end( i->first );
+    }
+}
+
+struct module_subset_txt_actions: public module_subset_actions
+{
+    void heading( std::string const & module )
+    {
+        std::cout << "Subset dependencies for " << module << ":\n\n";
+    }
+
+    void module_start( std::string const & module )
+    {
+        std::cout << module << ":\n";
+    }
+
+    void module_end( std::string const & /*module*/ )
+    {
+        std::cout << "\n";
+    }
+
+    void from_path( std::vector<std::string> const & path )
+    {
+        for( std::vector<std::string>::const_iterator i = path.begin(); i != path.end(); ++i )
+        {
+            if( i == path.begin() )
+            {
+                std::cout << "  ";
+            }
+            else
+            {
+                std::cout << " -> ";
+            }
+
+            std::cout << *i;
+        }
+
+        std::cout << "\n";
+    }
+};
+
+struct module_subset_html_actions: public module_subset_actions
+{
+    void heading( std::string const & module )
+    {
+        std::cout << "\n\n<h1 id=\"subset-dependencies\">Subset dependencies for <em>" << module << "</em></h1>\n";
+    }
+
+    void module_start( std::string const & module )
+    {
+        std::cout << "  <h2 id=\"subset-" << module << "\"><a href=\"" << module << ".html\"><em>" << module << "</em></a></h2><ul>\n";
+    }
+
+    void module_end( std::string const & /*module*/ )
+    {
+        std::cout << "</ul>\n";
+    }
+
+    void from_path( std::vector<std::string> const & path )
+    {
+        std::cout << "    <li>";
+
+        for( std::vector<std::string>::const_iterator i = path.begin(); i != path.end(); ++i )
+        {
+            if( i != path.begin() )
+            {
+                std::cout << " &#8674; ";
+            }
+
+            std::cout << "<code>" << *i << "</code>";
+        }
+
+        std::cout << "</li>\n";
+    }
+};
+
+static void output_module_subset_report( std::string const & module, bool track_sources, bool track_tests, bool html )
+{
+    if( html )
+    {
+        module_subset_html_actions actions;
+        output_module_subset_report( module, track_sources, track_tests, actions );
+    }
+    else
+    {
+        module_subset_txt_actions actions;
+        output_module_subset_report( module, track_sources, track_tests, actions );
+    }
+}
+
+static void list_exceptions()
+{
+    std::string lm;
+
+    for( std::map< std::string, std::set<std::string> >::const_iterator i = s_module_headers.begin(); i != s_module_headers.end(); ++i )
+    {
+        std::string module = i->first;
+
+        std::replace( module.begin(), module.end(), '~', '/' );
+
+        std::string const prefix = "boost/" + module;
+        size_t const n = prefix.size();
+
+        for( std::set< std::string >::const_iterator j = i->second.begin(); j != i->second.end(); ++j )
+        {
+            std::string const & header = *j;
+
+            if( header.substr( 0, n+1 ) != prefix + '/' && header != prefix + ".hpp" )
+            {
+                if( lm != module )
+                {
+                    std::cout << module << ":\n";
+                    lm = module;
+                }
+
+                std::cout << "  " << header << '\n';
+            }
+        }
+    }
+}
+
+struct module_test_primary_actions: public module_primary_actions
+{
+    std::set< std::string > & m_;
+
+    module_test_primary_actions( std::set< std::string > & m ): m_( m )
+    {
+    }
+
+    void heading( std::string const & module )
+    {
+        std::cout << "Test dependencies for " << module << ":\n\n";
+    }
+
+    void module_start( std::string const & module )
+    {
+        std::cout << module << "\n";
+        m_.insert( module );
+    }
+
+    void module_end( std::string const & /*module*/ )
+    {
+    }
+
+    void header_start( std::string const & /*header*/ )
+    {
+    }
+
+    void header_end( std::string const & /*header*/ )
+    {
+    }
+
+    void from_header( std::string const & /*header*/ )
+    {
+    }
+};
+
+struct module_test_secondary_actions: public module_secondary_actions
+{
+    std::set< std::string > & m_;
+    std::string m2_;
+
+    module_test_secondary_actions( std::set< std::string > & m ): m_( m )
+    {
+    }
+
+    void heading( std::string const & module )
+    {
+    }
+
+    void module_start( std::string const & module )
+    {
+        m2_ = module;
+    }
+
+    void module_end( std::string const & /*module*/ )
+    {
+    }
+
+    void module_adds( std::string const & module )
+    {
+        if( m_.count( module ) == 0 )
+        {
+            std::cout << module << " (from " << m2_ << ")\n";
+            m_.insert( module );
+        }
+    }
+};
+
+static void output_module_test_report( std::string const & module )
+{
+    std::set< std::string > m;
+
+    module_test_primary_actions a1( m );
+    output_module_primary_report( module, a1, true, true );
+
+    std::cout << "\n";
+
+    bool secondary = false;
+    enable_secondary( secondary, true, false );
+
+    std::set< std::string > m2( m );
+    m2.insert( module );
+
+    module_test_secondary_actions a2( m2 );
+
+    output_module_secondary_report( module, m, a2 );
+}
+
 int main( int argc, char const* argv[] )
 {
     if( argc < 2 )
@@ -1590,7 +1970,8 @@ int main( int argc, char const* argv[] )
             "\n"
             "    boostdep --list-modules\n"
             "    boostdep --list-buildable\n"
-            "    boostdep [--track-sources] --list-dependencies\n"
+            "    boostdep [--track-sources] [--track-tests] --list-dependencies\n"
+            "    boostdep --list-exceptions\n"
             "\n"
             "    boostdep [options] --module-overview\n"
             "    boostdep [options] --module-levels\n"
@@ -1599,9 +1980,12 @@ int main( int argc, char const* argv[] )
             "    boostdep [options] [--primary] <module>\n"
             "    boostdep [options] --secondary <module>\n"
             "    boostdep [options] --reverse <module>\n"
+            "    boostdep [options] --subset <module>\n"
             "    boostdep [options] [--header] <header>\n"
+            "    boostdep --test <module>\n"
             "\n"
-            "    [options]: [--track-sources] [--title <title>] [--footer <footer>] [--html]\n";
+            "    [options]: [--[no-]track-sources] [--[no-]track-tests]\n"
+            "               [--title <title>] [--footer <footer>] [--html]\n";
 
         return -1;
     }
@@ -1618,6 +2002,7 @@ int main( int argc, char const* argv[] )
     bool html = false;
     bool secondary = false;
     bool track_sources = false;
+    bool track_tests = false;
 
     std::string title = "Boost Dependency Report";
     std::string footer;
@@ -1660,18 +2045,30 @@ int main( int argc, char const* argv[] )
         {
             track_sources = true;
         }
+        else if( option == "--no-track-sources" )
+        {
+            track_sources = false;
+        }
+        else if( option == "--track-tests" )
+        {
+            track_tests = true;
+        }
+        else if( option == "--no-track-tests" )
+        {
+            track_tests = false;
+        }
         else if( option == "--primary" )
         {
             if( i + 1 < argc )
             {
-                output_module_primary_report( argv[ ++i ], html, track_sources );
+                output_module_primary_report( argv[ ++i ], html, track_sources, track_tests );
             }
         }
         else if( option == "--secondary" )
         {
             if( i + 1 < argc )
             {
-                enable_secondary( secondary, track_sources );
+                enable_secondary( secondary, track_sources, track_tests );
                 output_module_secondary_report( argv[ ++i ], html );
             }
         }
@@ -1679,7 +2076,7 @@ int main( int argc, char const* argv[] )
         {
             if( i + 1 < argc )
             {
-                enable_secondary( secondary, track_sources );
+                enable_secondary( secondary, track_sources, track_tests );
                 output_module_reverse_report( argv[ ++i ], html );
             }
         }
@@ -1687,37 +2084,56 @@ int main( int argc, char const* argv[] )
         {
             if( i + 1 < argc )
             {
-                enable_secondary( secondary, track_sources );
+                enable_secondary( secondary, track_sources, track_tests );
                 output_header_report( argv[ ++i ], html );
+            }
+        }
+        else if( option == "--subset" )
+        {
+            if( i + 1 < argc )
+            {
+                enable_secondary( secondary, track_sources, track_tests );
+                output_module_subset_report( argv[ ++i ], track_sources, track_tests, html );
+            }
+        }
+        else if( option == "--test" )
+        {
+            if( i + 1 < argc )
+            {
+                output_module_test_report( argv[ ++i ] );
             }
         }
         else if( option == "--module-levels" )
         {
-            enable_secondary( secondary, track_sources );
+            enable_secondary( secondary, track_sources, track_tests );
             output_module_level_report( html );
         }
         else if( option == "--module-overview" )
         {
-            enable_secondary( secondary, track_sources );
+            enable_secondary( secondary, track_sources, track_tests );
             output_module_overview_report( html );
         }
         else if( option == "--module-weights" )
         {
-            enable_secondary( secondary, track_sources );
+            enable_secondary( secondary, track_sources, track_tests );
             output_module_weight_report( html );
         }
         else if( option == "--list-dependencies" )
         {
-            enable_secondary( secondary, track_sources );
+            enable_secondary( secondary, track_sources, track_tests );
             list_dependencies();
+        }
+        else if( option == "--list-exceptions" )
+        {
+            list_exceptions();
         }
         else if( s_modules.count( option ) )
         {
-            output_module_primary_report( option, html, track_sources );
+            output_module_primary_report( option, html, track_sources, track_tests );
         }
         else if( s_header_map.count( option ) )
         {
-            enable_secondary( secondary, track_sources );
+            enable_secondary( secondary, track_sources, track_tests );
             output_header_report( option, html );
         }
         else

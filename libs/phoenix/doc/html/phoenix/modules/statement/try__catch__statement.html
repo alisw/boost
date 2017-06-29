@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>try_ catch_ Statement</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Phoenix 3.2.0">
 <link rel="up" href="../statement.html" title="Statement">
 <link rel="prev" href="for_statement.html" title="for_ Statement">
@@ -40,6 +40,10 @@
 <span class="special">[</span>
     <span class="identifier">sequenced_statements</span>
 <span class="special">]</span>
+<span class="special">.</span><span class="identifier">catch_</span><span class="special">&lt;</span><span class="identifier">another_exception_type</span><span class="special">&gt;(</span><span class="identifier">local</span><span class="special">-</span><span class="identifier">id</span><span class="special">)</span>
+<span class="special">[</span>
+    <span class="identifier">sequenced_statements</span>
+<span class="special">]</span>
 <span class="special">...</span>
 <span class="special">.</span><span class="identifier">catch_all</span>
 <span class="special">[</span>
@@ -49,6 +53,11 @@
 <p>
           Note the usual underscore after try and catch, and the extra parentheses
           required after the catch.
+        </p>
+<p>
+          The second form of catch statement can refer thrown exception using specified
+          local-id, which is <a class="link" href="../scope/local_variables.html" title="Local Variables">Local
+          Variables</a>, in sequenced_statements.
         </p>
 <p>
           Example: The following code calls the (lazy) function <code class="computeroutput"><span class="identifier">f</span></code>
@@ -63,9 +72,9 @@
 <span class="special">[</span>
     <span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"caught runtime error or derived\n"</span><span class="special">)</span>
 <span class="special">]</span>
-<span class="special">.</span><span class="identifier">catch_</span><span class="special">&lt;</span><span class="identifier">exception</span><span class="special">&gt;()</span>
+<span class="special">.</span><span class="identifier">catch_</span><span class="special">&lt;</span><span class="identifier">exception</span><span class="special">&gt;(</span><span class="identifier">e_</span><span class="special">)</span>
 <span class="special">[</span>
-    <span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"caught exception or derived\n"</span><span class="special">)</span>
+    <span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"caught exception or derived: "</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">bind</span><span class="special">(&amp;</span><span class="identifier">exception</span><span class="special">::</span><span class="identifier">what</span><span class="special">,</span> <span class="identifier">e_</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">val</span><span class="special">(</span><span class="string">"\n"</span><span class="special">)</span>
 <span class="special">]</span>
 <span class="special">.</span><span class="identifier">catch_all</span>
 <span class="special">[</span>

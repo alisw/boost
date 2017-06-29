@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Stream-Oriented File Descriptors</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../posix.html" title="POSIX-Specific Functionality">
 <link rel="prev" href="local.html" title="UNIX Domain Sockets">
@@ -30,8 +30,17 @@
 <p>
           Boost.Asio includes classes added to permit synchronous and asynchronous
           read and write operations to be performed on POSIX file descriptors, such
-          as pipes, standard input and output, and various devices (but <span class="emphasis"><em>not</em></span>
-          regular files).
+          as pipes, standard input and output, and various devices.
+        </p>
+<p>
+          These classes also provide limited support for regular files. This support
+          assumes that the underlying read and write operations provided by the operating
+          system never fail with <code class="computeroutput"><span class="identifier">EAGAIN</span></code>
+          or <code class="computeroutput"><span class="identifier">EWOULDBLOCK</span></code>. (This assumption
+          normally holds for buffered file I/O.) Synchronous and asynchronous read
+          and write operations on file descriptors will succeed but the I/O will
+          always be performed immediately. Wait operations, and operations involving
+          <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">null_buffers</span></code>, are not portably supported.
         </p>
 <p>
           For example, to perform read and write operations on standard input and
@@ -71,8 +80,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2015 Christopher M.
-      Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

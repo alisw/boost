@@ -1,5 +1,5 @@
 [/
-              Copyright Andrey Semashev 2007 - 2015.
+              Copyright Andrey Semashev 2007 - 2016.
      Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
               http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,68 @@
 /]
 
 [section:changelog Changelog]
+
+[heading 2.10, Boost 1.63]
+
+[*General changes:]
+
+* Removed the previously deprecated `type_info_wrapper`. As previously suggested, __boost_type_index__ is recommended as a replacement.
+
+[*New features:]
+
+* Added a way to access the current file name from the [link log.detailed.sink_backends.text_file text file sink backend]. The file name can be obtained with the `get_current_file_name` method.
+* Added a way to disable log file rotation on [link log.detailed.sink_backends.text_file text file sink backend] destruction, which typically happens on program termination. This can be done via `enable_final_rotation` backend constructor parameter or similarly named method, or with the `EnableFinalRotation` parameter in the settings.
+
+[*Bug fixes:]
+
+* Fixed compilation errors for Android API prior to version 21.
+* Streaming operators now take scalar types and enums by value. This allows to output static constants and bitfields directly into formatting stream and record stream. ([ticket 11998])
+* Fixed auto-detection of native syslog API. ([ticket 12600])
+* In UDP socket based syslog backend implementation, changed the syslog message format for better compliance with RFC3164.
+* File close handler installed in [link log.detailed.sink_backends.text_file text file sink backend] is no longer called if the file is not open yet.
+
+[heading 2.9, Boost 1.62]
+
+[*New features:]
+
+* Added new tools for inter-process logging on a local machine. The implementation includes a [link log.detailed.utilities.ipc.object_name resource name wrapper], an [link log.detailed.utilities.ipc.reliable_message_queue inter-process message queue] and a [link log.detailed.sink_backends.text_ipc_message_queue sink backend]. The new functionality is optional and can be disabled by defining [link log.installation.config `BOOST_LOG_WITHOUT_IPC`] macro at library build time. Thanks to Lingxi Li for the initial patch.
+* Added a new character decorator called [link log.detailed.expressions.formatters.decorators.max_size `max_size_decor`]. The new decorator allows to limit the output of its adopted formatter up to the specified length. This can be useful with the new inter-process sink backend.
+
+[*Bug fixes:]
+
+* Fixed that logging streams could retain formatting settings across different log records. ([ticket 12178])
+
+[heading 2.8, Boost 1.61]
+
+[*General changes:]
+
+* The support for `boost::basic_string_ref` and its specializations is deprecated; users are encouraged to switch to `boost::basic_string_view`, which is now supported for output to the formatting streams. The support for `boost::basic_string_ref` will be removed in future releases.
+* Added support for limiting the number of stored log files in the target directory of the file collector. The limit can be specified in the `max_files` named parameter to the `make_collector` or `add_file_log` calls or as the "MaxFiles" parameter for the sink in the settings file. Thanks to Erich Keane for the patch. ([ticket 8746])
+
+[*Bug fixes:]
+
+* Fixed various compilation problems for Windows CE.
+* Fixed compilation problems on Solaris.
+* Added a workaround for MSVC-10 and 11 generating broken code for formatters in some cases. ([ticket 12025])
+
+[heading 2.7, Boost 1.60]
+
+[*General changes:]
+
+* On Windows, the configuration macro `BOOST_LOG_USE_WINNT6_API` is no longer used by the library. The target Windows version should be configured by defining macro `BOOST_USE_WINAPI_VERSION` to the desired WinAPI version (e.g. 0x0501 for Windows XP). This macro is used in multiple different Boost libraries besides Boost.Log.
+* The default target Windows version is now Vista on compilers with recent enough Windows SDK and XP on others. The default is no longer chosen by Boost.Log but by the common WinAPI submodule used by different Boost libraries.
+* Changed internal mutex type in the thread-safe queue implementation that is used in asynchronous sink frontends with the `unbounded_fifo_queue` policy. The updated queue has improved performance in case of heavy thread contention (hundreds and thousands of logging threads) on POSIX-compatible systems.
+
+[*Bug fixes:]
+
+* Fixed compilation for Android using Google NDK. ([ticket 11559])
+* Fixed compilation of some logging statements, where the first object to be put into stream is not directly supported by `formatting_ostream`. ([ticket 11549])
+* Added a workaround for Solaris Studio 12.4, which should fix the compilation of `formatting_ostream`. ([ticket 11545])
+* Fixed compilation when native `wchar_t` type is disabled. Added a note of discouragement to the [link log.installation.config configuration] section. ([ticket 11541])
+* Fixed exporting symbols from the `boost_log_setup` library on POSIX-like systems.
+* Fixed build failure on Nuxi CloudABI.
+* Fixed compilation of [link log.detailed.expressions.formatters.decorators character decorators].
+* Added a workaround for incorrect file name generation in [link log.detailed.sink_backends.text_file text file sink backend], when the file name contains date/time placeholders. ([ticket 11691])
 
 [heading 2.6, Boost 1.59]
 
@@ -44,7 +106,7 @@
 
 [*Bug fixes:]
 
-* [link log.detailed.expressions.formatters.decorators XML character decorator] now escapes quote (\") characters.
+* [link log.detailed.expressions.formatters.decorators.xml XML character decorator] now escapes quote (\") characters.
 * The exceptions thrown by asynchronous sinks created as a result of [link log.detailed.utilities.setup.settings initialization from settings] are now silently suppressed instead of terminating the application. If special error handling is needed, it is recommended to [link log.extension.settings.adding_support_for_user_defined_sinks register a user-defined sink factory]. ([ticket 10638])
 * Corrected syslog message composition on MSVC, if message length exceeds 1025 bytes. ([ticket 10700])
 

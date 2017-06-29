@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>How to Determine the Kind of a Number From std::numeric_limits</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Multiprecision">
 <link rel="up" href="../limits.html" title="Numeric Limits">
 <link rel="prev" href="limits32.html" title="Numeric limits for 32-bit platform">
@@ -99,11 +99,11 @@
         </p>
 <h5>
 <a name="boost_multiprecision.tut.limits.how_to_tell.h3"></a>
-          <span class="phrase"><a name="boost_multiprecision.tut.limits.how_to_tell.floating_point_types"></a></span><a class="link" href="how_to_tell.html#boost_multiprecision.tut.limits.how_to_tell.floating_point_types">Floating
-          Point Types</a>
+          <span class="phrase"><a name="boost_multiprecision.tut.limits.how_to_tell.floating_point_types"></a></span><a class="link" href="how_to_tell.html#boost_multiprecision.tut.limits.how_to_tell.floating_point_types">floating-point
+          Types</a>
         </h5>
 <p>
-          For a floating point type T, all of the following conditions hold:
+          For a floating-point type T, all of the following conditions hold:
         </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">is_specialized</span> <span class="special">==</span> <span class="keyword">true</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">is_integer</span> <span class="special">==</span> <span class="keyword">false</span>
@@ -124,7 +124,7 @@
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">radix</span>
 </pre>
 <p>
-          In general, there are no arbitrary precision floating point types, and
+          In general, there are no arbitrary precision floating-point types, and
           so:
         </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">is_bounded</span> <span class="special">==</span> <span class="keyword">false</span>
@@ -132,12 +132,12 @@
 <h5>
 <a name="boost_multiprecision.tut.limits.how_to_tell.h4"></a>
           <span class="phrase"><a name="boost_multiprecision.tut.limits.how_to_tell.exact_floating_point_types"></a></span><a class="link" href="how_to_tell.html#boost_multiprecision.tut.limits.how_to_tell.exact_floating_point_types">Exact
-          Floating Point Types</a>
+          floating-point Types</a>
         </h5>
 <p>
-          Exact floating point types are a <a href="http://en.wikipedia.org/wiki/Field_%28mathematics%29" target="_top">field</a>
+          Exact floating-point types are a <a href="http://en.wikipedia.org/wiki/Field_%28mathematics%29" target="_top">field</a>
           composed of an arbitrary precision integer scaled by an exponent. Such
-          types have no division operator and are the same as floating point types
+          types have no division operator and are the same as floating-point types
           except:
         </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">is_exact</span> <span class="special">==</span> <span class="keyword">true</span>

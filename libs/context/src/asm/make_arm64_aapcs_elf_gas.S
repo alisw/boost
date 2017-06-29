@@ -1,5 +1,5 @@
 /*
-            Copyright Edward Nevill 2015
+            Copyright Edward Nevill + Oliver Kowalke 2015
    Distributed under the Boost Software License, Version 1.0.
       (See accompanying file LICENSE_1_0.txt or copy at
           http://www.boost.org/LICENSE_1_0.txt)
@@ -51,7 +51,6 @@
  *                                                     *
  *******************************************************/
 
-.cpu    generic+fp+simd
 .text
 .align  2
 .global make_fcontext

@@ -22,6 +22,7 @@
 
 #include <memory>    //std::allocator
 #include <iostream>  //std::cout, std::endl
+#include <cassert>   //assert
 
 #include <boost/timer/timer.hpp>
 using boost::timer::cpu_timer;
@@ -126,7 +127,7 @@ void vector_test_template(unsigned int num_iterations, unsigned int num_elements
                   << float(nseconds)/(num_iterations*num_elements)
                   << std::endl << std::endl;
    }
-   boost_cont_trim(0);
+   bc::dlmalloc_trim(0);
 }
 
 int main(int argc, const char *argv[])

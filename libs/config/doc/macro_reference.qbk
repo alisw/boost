@@ -138,7 +138,7 @@ The standard library lacks `<iostream>`, `<istream>` or `<ostream>`.
 [[`BOOST_NO_IS_ABSTRACT`][Compiler][
 The C++ compiler does not support SFINAE with abstract types, this is covered
 by __CORE_LANGUAGE_DR337__, but is not part of the current standard.  Fortunately
-most compilers that support SFINAE also support this DR.
+most compilers that support SFINAE also support this DR.  See also BOOST_NO_SFINAE and BOOST_NO_SFINAE_EXPR
 ]]
 [[`BOOST_NO_LIMITS`][Standard library][
 The C++ implementation does not provide the `<limits>` header. Never check for
@@ -209,16 +209,20 @@ Pointers to members don't work when used as template parameters.
 The compiler misreads 8.5.1, treating classes as non-aggregate if they
 contain private or protected member functions.
 ]]
+[[`BOOST_NO_RESTRICT_REFERENCES`][Compiler][
+Compiler-specific `restrict` keyword can not be applied to references.
+]]
 [[`BOOST_NO_RTTI`][Compiler][
 The compiler may (or may not) have the typeid operator, but RTTI on the dynamic type
 of an object is not supported.
 ]]
 [[`BOOST_NO_SFINAE`][Compiler][
 The compiler does not support the "Substitution Failure Is Not An Error"
-meta-programming idiom.
+meta-programming idiom.  This is the lightweight pre-C++11 version of SFINAE.
 ]]
 [[`BOOST_NO_SFINAE_EXPR`][Compiler][
-The compiler does not support usage of SFINAE with arbitrary expressions.
+The compiler does not support usage of SFINAE with arbitrary expressions.  This is the
+post-C++11 SFINAE, but excludes a few specific corner cases, see also BOOST_NO_CXX11_SFINAE_EXPR.
 ]]
 [[`BOOST_NO_STD_ALLOCATOR`][Standard library][
 The C++ standard library does not provide a standards conforming
@@ -348,6 +352,9 @@ The platform has the POSIX header `<dirent.h>`.
 [[`BOOST_HAS_EXPM1`][Platform][
 The platform has the functions `expm1`, `expm1f` and `expm1l` in `<math.h>`
 ]]
+[[`BOOST_HAS_FLOAT128`][Compiler][
+The compiler has `__float128` as a native type which is distinct
+from all the regular C++ floating point types.]]
 [[`BOOST_HAS_FTIME`][Platform][
 The platform has the Win32 API type FTIME.
 ]]
@@ -689,6 +696,11 @@ r-value references.
 [[`BOOST_NO_CXX11_SCOPED_ENUMS`][The compiler does not support
 scoped enumerations (`enum class`). 
 ]]
+[[`BOOST_NO_CXX11_SFINAE_EXPR`][The compiler does not support
+usage of C++11 SFINAE with arbitrary expressions.  Use this macro only if you
+are using all of the features of SFINAE including substitution-failure-on-private-member-access.  
+Otherwise use BOOST_NO_SFINAE_EXPR or BOOST_NO_SFINAE which get defined for fewer compilers.
+]]
 [[`BOOST_NO_CXX11_SMART_PTR`][The standard library header <memory> has no shared_ptr and unique_ptr.]]
 [[`BOOST_NO_CXX11_STATIC_ASSERT`][The compiler does not support
 `static_assert`. 
@@ -698,6 +710,8 @@ scoped enumerations (`enum class`).
 <unordered_map> and <unordered_set>. 
 ]]
 [[`BOOST_NO_CXX11_TEMPLATE_ALIASES`][The compiler does not support template aliases. 
+]]
+[[`BOOST_NO_CXX11_THREAD_LOCAL`][The compiler does not support the `thread_local` storage specifier. 
 ]]
 [[`BOOST_NO_CXX11_TRAILING_RESULT_TYPES`][The compiler does not support the new function result type
 specification syntax (e.g. `auto foo(T) -> T;`).]]
@@ -919,6 +933,18 @@ provide compliant C++14 support.
 
 [endsect]
 
+[section Macros that describe C++17 features not supported]
+
+The following macros describe features in the 2016 ISO C++ standard, formerly known as C++1z,
+that are not yet supported by a particular compiler or library.
+
+[table
+[[Macro ][Description ]]
+[[`BOOST_NO_CXX17_STD_INVOKE`][The compiler does not support `std::invoke()`.]]
+]
+
+[endsect]
+
 [#config_helpers]
 
 [section Boost Helper Macros]
@@ -1132,6 +1158,21 @@ This piece of macro magic joins the two arguments together, even when one of
 the arguments is itself a macro (see 16.3.1 in C++ standard). This is normally
 used to create a mangled name in combination with a predefined macro such a
 \_\_LINE__.
+]]
+[[`BOOST_RESTRICT`][
+This macro can be used in place of the compiler specific variant of the C99 `restrict` keyword to
+notify the compiler that, for the lifetime of the qualified pointer variable, only it and its
+derivative value will be used to gain access to the object it references. This limits the effect of
+pointer aliasing and helps the optimizers in generating better code. However, i this condition is
+violated, undefined behavior may occurs.
+
+Usage example:
+``
+  void perform_computation( float* BOOST_RESTRICT in, float* BOOST_RESTRICT out )
+  {
+    *out = *in * 0.5f;
+  }
+``
 ]]
 [[`BOOST_FORCEINLINE`][
 This macro can be used in place of the `inline` keyword to instruct the compiler
@@ -1357,7 +1398,7 @@ include separate source code, and are intended to address several issues:
 * Fixing the ABI of the compiled library
 * Selecting which compiled library to link against based upon the compilers settings
 
-See [@http://svn.boost.org/trac/boost/wiki/Guidelines/Separate Guidelines for Authors of Boost Libraries Containing Separate Source] 
+See [@http://www.boost.org/development/separate_compilation.html Guidelines for Authors of Boost Libraries Containing Separate Source]
 
 [section Macros controlling shared library symbol visibility]
 

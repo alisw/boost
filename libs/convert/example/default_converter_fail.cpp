@@ -1,5 +1,5 @@
 // Boost.Convert test and usage example
-// Copyright (c) 2009-2014 Vladimir Batov.
+// Copyright (c) 2009-2016 Vladimir Batov.
 // Use, modification and distribution are subject to the Boost Software License,
 // Version 1.0. See http://www.boost.org/LICENSE_1_0.txt.
 
@@ -12,7 +12,7 @@ using boost::convert;
 //'boost::cnv::by_default' : class has no constructors.
 
 int
-main(int argc, char const* argv[])
+main(int, char const* [])
 {
     int    i = convert<int>("123").value();
     string s = convert<string>(123).value();

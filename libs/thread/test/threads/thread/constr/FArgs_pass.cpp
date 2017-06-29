@@ -26,26 +26,26 @@
 unsigned throw_one = 0xFFFF;
 
 #if defined _GLIBCXX_THROW
-void* operator new(std::size_t s) _GLIBCXX_THROW (std::bad_alloc)
+inline void* operator new(std::size_t s) _GLIBCXX_THROW (std::bad_alloc)
 #elif defined BOOST_MSVC
-void* operator new(std::size_t s)
+inline void* operator new(std::size_t s)
 #else
 void* operator new(std::size_t s) throw (std::bad_alloc)
 #endif
 {
-  std::cout << __FILE__ << ":" << __LINE__ << std::endl;
+  //std::cout << __FILE__ << ":" << __LINE__ << std::endl;
   if (throw_one == 0) throw std::bad_alloc();
   --throw_one;
   return std::malloc(s);
 }
 
 #if defined BOOST_MSVC
-void operator delete(void* p)
+inline void operator delete(void* p)
 #else
-void operator delete(void* p) throw ()
+inline void operator delete(void* p) throw ()
 #endif
 {
-  std::cout << __FILE__ << ":" << __LINE__ << std::endl;
+  //std::cout << __FILE__ << ":" << __LINE__ << std::endl;
   std::free(p);
 }
 

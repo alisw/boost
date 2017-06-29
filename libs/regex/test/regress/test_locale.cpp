@@ -15,6 +15,8 @@
 #include <boost/scoped_array.hpp>
 #include <windows.h>
 #endif
+#include <iostream>
+#include <iomanip>
 
 #ifdef BOOST_MSVC
 #pragma warning(disable:4127)
@@ -62,6 +64,8 @@ test_locale::test_locale(const char* c_name, boost::uint32_t lcid)
       std::cout << "The C++ locale: " << c_name << " is not available and will not be tested." << std::endl;
    }
 #else
+   m_old_cpp_locale = s_cpp_locale_inst;
+   m_old_cpp_state = s_cpp_locale;
    s_cpp_locale = no_test;
 #endif
 

@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Emulations</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;30.&#160;Thread 4.5.0">
+<link rel="up" href="../thread.html" title="Chapter&#160;38.&#160;Thread 4.7.2">
 <link rel="prev" href="time.html" title="Time Requirements">
 <link rel="next" href="acknowledgements.html" title="Acknowledgments">
 </head>
@@ -466,7 +466,7 @@
         The library provides un implicit conversion to an undefined type that can
         be used as a conditional expression.
       </p>
-<pre class="programlisting"><span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_NO_EXPLICIT_CONVERSION_OPERATORS</span><span class="special">)</span>
+<pre class="programlisting"><span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS</span><span class="special">)</span>
     <span class="keyword">operator</span> <span class="emphasis"><em>unspecified-bool-type</em></span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
     <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!()</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="preprocessor">#else</span>
@@ -474,7 +474,7 @@
 <span class="preprocessor">#endif</span>
 </pre>
 <p>
-        The user should use the lock.owns_lock() when a explicit conversion is required.
+        The user should use the lock.owns_lock() when an explicit conversion is required.
       </p>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -548,7 +548,7 @@
 <span class="identifier">BOOST_SCOPED_ENUM_DECLARE_END</span><span class="special">(</span><span class="identifier">future_errc</span><span class="special">)</span>
 </pre>
 <p>
-        These macros allows to use 'future_errc' in almost all the cases as an scoped
+        These macros allows to use 'future_errc' in almost all the cases as a scoped
         enum.
       </p>
 <p>
@@ -581,7 +581,7 @@
 <p>
         And instead of
       </p>
-<pre class="programlisting"><span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_NO_SCOPED_ENUMS</span>
+<pre class="programlisting"><span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_NO_CXX11_SCOPED_ENUMS</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">BOOST_SYMBOL_VISIBLE</span> <span class="identifier">is_error_code_enum</span><span class="special">&lt;</span><span class="identifier">future_errc</span><span class="special">&gt;</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">true_type</span> <span class="special">{</span> <span class="special">};</span>
 <span class="preprocessor">#endif</span>
@@ -589,7 +589,7 @@
 <p>
         use
       </p>
-<pre class="programlisting"><span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_NO_SCOPED_ENUMS</span>
+<pre class="programlisting"><span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_NO_CXX11_SCOPED_ENUMS</span>
 <span class="keyword">template</span> <span class="special">&lt;&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">BOOST_SYMBOL_VISIBLE</span> <span class="identifier">is_error_code_enum</span><span class="special">&lt;</span><span class="identifier">future_errc</span><span class="special">::</span><span class="identifier">enum_type</span><span class="special">&gt;</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">true_type</span> <span class="special">{</span> <span class="special">};</span>
 <span class="preprocessor">#endif</span>
@@ -598,7 +598,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -15 Vicente J. Botet Escriba<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -16 Vicente J. Botet Escriba<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

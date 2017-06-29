@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Boost Macro Reference</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="Boost.Config">
 <link rel="up" href="../index.html" title="Boost.Config">
 <link rel="prev" href="../index.html" title="Boost.Config">
@@ -26,7 +26,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_config.boost_macro_reference"></a><a class="link" href="boost_macro_reference.html" title="Boost Macro Reference">Boost Macro Reference</a>
 </h2></div></div></div>
-<div class="toc"><dl>
+<div class="toc"><dl class="toc">
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_that_describe_c__03_defects">Macros
       that describe C++03 defects</a></span></dt>
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_that_describe_optional_features">Macros
@@ -41,6 +41,8 @@
       that describe C++14 features not supported</a></span></dt>
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_that_allow_use_of_c__14_features_with_c__11_or_earlier_compilers">Macros
       that allow use of C++14 features with C++11 or earlier compilers</a></span></dt>
+<dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_that_describe_c__17_features_not_supported">Macros
+      that describe C++17 features not supported</a></span></dt>
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.boost_helper_macros">Boost
       Helper Macros</a></span></dt>
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.boost_informational_macros">Boost
@@ -515,7 +517,7 @@
                   is covered by <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#337" target="_top">Core
                   Language DR337</a>, but is not part of the current standard.
                   Fortunately most compilers that support SFINAE also support this
-                  DR.
+                  DR. See also BOOST_NO_SFINAE and BOOST_NO_SFINAE_EXPR
                 </p>
               </td>
 </tr>
@@ -815,6 +817,24 @@
 <tr>
 <td>
                 <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_NO_RESTRICT_REFERENCES</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Compiler
+                </p>
+              </td>
+<td>
+                <p>
+                  Compiler-specific <code class="computeroutput"><span class="identifier">restrict</span></code>
+                  keyword can not be applied to references.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <code class="computeroutput"><span class="identifier">BOOST_NO_RTTI</span></code>
                 </p>
               </td>
@@ -844,7 +864,8 @@
 <td>
                 <p>
                   The compiler does not support the "Substitution Failure Is
-                  Not An Error" meta-programming idiom.
+                  Not An Error" meta-programming idiom. This is the lightweight
+                  pre-C++11 version of SFINAE.
                 </p>
               </td>
 </tr>
@@ -862,6 +883,8 @@
 <td>
                 <p>
                   The compiler does not support usage of SFINAE with arbitrary expressions.
+                  This is the post-C++11 SFINAE, but excludes a few specific corner
+                  cases, see also BOOST_NO_CXX11_SFINAE_EXPR.
                 </p>
               </td>
 </tr>
@@ -1423,6 +1446,25 @@
                 <p>
                   The platform has the functions <code class="computeroutput"><span class="identifier">expm1</span></code>,
                   <code class="computeroutput"><span class="identifier">expm1f</span></code> and <code class="computeroutput"><span class="identifier">expm1l</span></code> in <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">math</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_HAS_FLOAT128</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Compiler
+                </p>
+              </td>
+<td>
+                <p>
+                  The compiler has <code class="computeroutput"><span class="identifier">__float128</span></code>
+                  as a native type which is distinct from all the regular C++ floating
+                  point types.
                 </p>
               </td>
 </tr>
@@ -3036,6 +3078,22 @@
 <tr>
 <td>
                 <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_NO_CXX11_SFINAE_EXPR</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The compiler does not support usage of C++11 SFINAE with arbitrary
+                  expressions. Use this macro only if you are using all of the features
+                  of SFINAE including substitution-failure-on-private-member-access.
+                  Otherwise use BOOST_NO_SFINAE_EXPR or BOOST_NO_SFINAE which get
+                  defined for fewer compilers.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <code class="computeroutput"><span class="identifier">BOOST_NO_CXX11_SMART_PTR</span></code>
                 </p>
               </td>
@@ -3092,6 +3150,19 @@
 <td>
                 <p>
                   The compiler does not support template aliases.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_NO_CXX11_THREAD_LOCAL</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The compiler does not support the <code class="computeroutput"><span class="keyword">thread_local</span></code>
+                  storage specifier.
                 </p>
               </td>
 </tr>
@@ -3683,6 +3754,46 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
+<a name="boost_config.boost_macro_reference.macros_that_describe_c__17_features_not_supported"></a><a class="link" href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_that_describe_c__17_features_not_supported" title="Macros that describe C++17 features not supported">Macros
+      that describe C++17 features not supported</a>
+</h3></div></div></div>
+<p>
+        The following macros describe features in the 2016 ISO C++ standard, formerly
+        known as C++1z, that are not yet supported by a particular compiler or library.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Macro
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_NO_CXX17_STD_INVOKE</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The compiler does not support <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">invoke</span><span class="special">()</span></code>.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
 <a name="boost_config.boost_macro_reference.boost_helper_macros"></a><a name="config_helpers"></a><a class="link" href="boost_macro_reference.html#boost_config.boost_macro_reference.boost_helper_macros" title="Boost Helper Macros">Boost
       Helper Macros</a>
 </h3></div></div></div>
@@ -4085,6 +4196,35 @@
                   when one of the arguments is itself a macro (see 16.3.1 in C++
                   standard). This is normally used to create a mangled name in combination
                   with a predefined macro such a __LINE__.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_RESTRICT</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  This macro can be used in place of the compiler specific variant
+                  of the C99 <code class="computeroutput"><span class="identifier">restrict</span></code>
+                  keyword to notify the compiler that, for the lifetime of the qualified
+                  pointer variable, only it and its derivative value will be used
+                  to gain access to the object it references. This limits the effect
+                  of pointer aliasing and helps the optimizers in generating better
+                  code. However, i this condition is violated, undefined behavior
+                  may occurs.
+                </p>
+                <p>
+                  Usage example:
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">void</span> <span class="identifier">perform_computation</span><span class="special">(</span> <span class="keyword">float</span><span class="special">*</span> <span class="identifier">BOOST_RESTRICT</span> <span class="identifier">in</span><span class="special">,</span> <span class="keyword">float</span><span class="special">*</span> <span class="identifier">BOOST_RESTRICT</span> <span class="identifier">out</span> <span class="special">)</span>
+<span class="special">{</span>
+  <span class="special">*</span><span class="identifier">out</span> <span class="special">=</span> <span class="special">*</span><span class="identifier">in</span> <span class="special">*</span> <span class="number">0.5f</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
                 </p>
               </td>
 </tr>
@@ -5591,7 +5731,7 @@
 <a name="boost_config.boost_macro_reference.macros_for_libraries_with_separate_source_code"></a><a class="link" href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_for_libraries_with_separate_source_code" title="Macros for libraries with separate source code">Macros
       for libraries with separate source code</a>
 </h3></div></div></div>
-<div class="toc"><dl>
+<div class="toc"><dl class="toc">
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_for_libraries_with_separate_source_code.macros_controlling_shared_library_symbol_visibility">Macros
         controlling shared library symbol visibility</a></span></dt>
 <dt><span class="section"><a href="boost_macro_reference.html#boost_config.boost_macro_reference.macros_for_libraries_with_separate_source_code.abi_fixing">ABI
@@ -5616,7 +5756,7 @@
           </li>
 </ul></div>
 <p>
-        See <a href="http://svn.boost.org/trac/boost/wiki/Guidelines/Separate" target="_top">Guidelines
+        See <a href="http://www.boost.org/development/separate_compilation.html" target="_top">Guidelines
         for Authors of Boost Libraries Containing Separate Source</a>
       </p>
 <div class="section">

@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( manual_test_case_creation_test )
     BOOST_TEST( tc1->p_id != INV_TEST_UNIT_ID );
 
     BOOST_TEST( tc1->p_expected_failures == 0U );
-    BOOST_TEST( tc1->p_timeout == 0 );
+    BOOST_TEST( tc1->p_timeout == 0U );
     BOOST_TEST( tc1->p_name == const_string( "empty_" ) );
     BOOST_TEST( tc1->p_test_func );
     BOOST_TEST( tc1->p_default_status == test_unit::RS_INHERIT );
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE( manual_test_suite_creation )
     BOOST_TEST( ts1->p_line_num == 138U );
 
     BOOST_TEST( ts1->p_expected_failures == 0U );
-    BOOST_TEST( ts1->p_timeout == 0 );
+    BOOST_TEST( ts1->p_timeout == 0U );
     BOOST_TEST( ts1->p_name == const_string( "TestSuite" ) );
     BOOST_TEST( ts1->p_default_status == test_unit::RS_INHERIT );
     BOOST_TEST( ts1->p_run_status == test_unit::RS_INVALID );
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE( manual_test_unit_registration )
     BOOST_TEST( ts1->size() == 1U );
 
     BOOST_TEST( tc1->p_expected_failures == 1U );
-    BOOST_TEST( tc1->p_timeout == 10 );
+    BOOST_TEST( tc1->p_timeout == 10U );
     BOOST_TEST( ts1->p_expected_failures == 1U );
 
     test_case* tc2 = make_test_case( &empty_, "empty2", "file_name", line_num );
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE( manual_test_unit_registration )
     BOOST_TEST( ts1->size() == 2U );
 
     BOOST_TEST( tc2->p_expected_failures == 2U );
-    BOOST_TEST( tc2->p_timeout == 0 );
+    BOOST_TEST( tc2->p_timeout == 0U );
     BOOST_TEST( ts1->p_expected_failures == 3U );
 
     test_suite* ts2 = BOOST_TEST_SUITE( "TestSuite2" );
@@ -285,8 +285,8 @@ BOOST_AUTO_TEST_CASE( user_class_test_case )
     test_case* tc1 = BOOST_CLASS_TEST_CASE( &A::test_methodA1, instA );
     test_case* tc2 = BOOST_CLASS_TEST_CASE( &A::test_methodA2, instA );
 
-    BOOST_TEST( tc1->p_name == const_string( "A::test_methodA1" ) );
-    BOOST_TEST( tc2->p_name == const_string( "A::test_methodA2" ) );
+    BOOST_TEST( tc1->p_name == const_string( "A__test_methodA1" ) );
+    BOOST_TEST( tc2->p_name == const_string( "A__test_methodA2" ) );
 
     BOOST_TEST( instA->i == 0 );
     tc1->p_test_func.get()();
@@ -298,8 +298,8 @@ BOOST_AUTO_TEST_CASE( user_class_test_case )
     test_case* tc3 = BOOST_CLASS_TEST_CASE( &A::test_methodA1, instB );
     test_case* tc4 = BOOST_CLASS_TEST_CASE( &B::test_methodB, instB );
 
-    BOOST_TEST( tc3->p_name == const_string( "A::test_methodA1" ) );
-    BOOST_TEST( tc4->p_name == const_string( "B::test_methodB" ) );
+    BOOST_TEST( tc3->p_name == const_string( "A__test_methodA1" ) );
+    BOOST_TEST( tc4->p_name == const_string( "B__test_methodB" ) );
 
     BOOST_TEST( instB->i == 0 );
     tc3->p_test_func.get()();
@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE( user_class_test_case )
     boost::shared_ptr<C> instC1( new D );
     test_case* tc5 = BOOST_CLASS_TEST_CASE( &C::test_method, instC1 );
 
-    BOOST_TEST( tc5->p_name == const_string( "C::test_method" ) );
+    BOOST_TEST( tc5->p_name == const_string( "C__test_method" ) );
 
     tc5->p_test_func.get()();
     BOOST_TEST( instC1->i == 1 );
@@ -318,7 +318,7 @@ BOOST_AUTO_TEST_CASE( user_class_test_case )
     boost::shared_ptr<C> instC2( new E );
     test_case* tc6 = BOOST_CLASS_TEST_CASE( &C::test_method, instC2 );
 
-    BOOST_TEST( tc6->p_name == const_string( "C::test_method" ) );
+    BOOST_TEST( tc6->p_name == const_string( "C__test_method" ) );
 
     tc6->p_test_func.get()();
     BOOST_TEST( instC2->i == 2 );

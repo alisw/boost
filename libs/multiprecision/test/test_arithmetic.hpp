@@ -13,6 +13,8 @@
 
 template <class T>
 struct is_boost_rational : public boost::mpl::false_{};
+template <class T>
+struct is_checked_cpp_int : public boost::mpl::false_ {};
 
 #ifdef BOOST_MSVC
 // warning C4127: conditional expression is constant
@@ -22,9 +24,12 @@ struct is_boost_rational : public boost::mpl::false_{};
 template <class Target, class Source>
 Target checked_lexical_cast(const Source& val)
 {
+#ifndef BOOST_NO_EXCEPTIONS
    try
    {
+#endif
       return boost::lexical_cast<Target>(val);
+#ifndef BOOST_NO_EXCEPTIONS
    }
    catch(...)
    {
@@ -32,6 +37,7 @@ Target checked_lexical_cast(const Source& val)
       std::cerr << "Target type = " << typeid(Target).name() << std::endl;
       throw;
    }
+#endif
 }
 
 
@@ -224,8 +230,10 @@ void test_rational(const boost::mpl::false_&)
    b /= 6;
    BOOST_CHECK_EQUAL(a ,  b);
 
+#ifndef BOOST_NO_EXCEPTIONS
    BOOST_CHECK_THROW(Real(a / 0), std::overflow_error);
    BOOST_CHECK_THROW(Real("3.14"), std::runtime_error);
+#endif
    b = Real("2/3");
    BOOST_CHECK_EQUAL(a, b);
    //
@@ -344,10 +352,50 @@ void test_signed_integer_ops(const boost::mpl::true_&)
    BOOST_CHECK_EQUAL(c ,  a / b);
    BOOST_CHECK_EQUAL(r ,  a % b);
    BOOST_CHECK_EQUAL(integer_modulus(a, -57) ,  abs(a % -57));
+#ifndef TEST_CHECKED_INT
+   if(is_checked_cpp_int<Real>::value)
+   {
+      a = -1;
+#ifndef BOOST_NO_EXCEPTIONS
+      BOOST_CHECK_THROW(a << 2, std::range_error);
+      BOOST_CHECK_THROW(a >> 2, std::range_error);
+      BOOST_CHECK_THROW(a <<= 2, std::range_error);
+      BOOST_CHECK_THROW(a >>= 2, std::range_error);
+#endif
+   }
+   else
+   {
+      a = -1;
+      BOOST_CHECK_EQUAL(a << 10, (boost::intmax_t(-1) << 10));
+      a = -23;
+      BOOST_CHECK_EQUAL(a << 10, (boost::intmax_t(-23) << 10));
+      a = -23456;
+      BOOST_CHECK_EQUAL(a >> 10, (boost::intmax_t(-23456) >> 10));
+      a = -3;
+      BOOST_CHECK_EQUAL(a >> 10, (boost::intmax_t(-3) >> 10));
+   }
+#endif
 }
 template <class Real>
 void test_signed_integer_ops(const boost::mpl::false_&)
 {
+}
+
+template <class Real, class Int>
+void test_integer_round_trip()
+{
+   if(std::numeric_limits<Real>::digits >= std::numeric_limits<Int>::digits)
+   {
+      Real m((std::numeric_limits<Int>::max)());
+      Int r = m.template convert_to<Int>();
+      BOOST_CHECK_EQUAL(m, r);
+      if(std::numeric_limits<Real>::is_signed && (std::numeric_limits<Real>::digits > std::numeric_limits<Int>::digits))
+      {
+         m = (std::numeric_limits<Int>::min)();
+         r = m.template convert_to<Int>();
+         BOOST_CHECK_EQUAL(m, r);
+      }
+   }
 }
 
 template <class Real>
@@ -383,8 +431,10 @@ void test_integer_ops(const boost::mpl::int_<boost::multiprecision::number_kind_
    BOOST_CHECK_EQUAL(a ,  20 % 7);
 #endif
    a = 20;
-   BOOST_CHECK_EQUAL(++a ,  21);
-   BOOST_CHECK_EQUAL(--a ,  20);
+   ++a;
+   BOOST_CHECK_EQUAL(a ,  21);
+   --a;
+   BOOST_CHECK_EQUAL(a ,  20);
    BOOST_CHECK_EQUAL(a++ ,  20);
    BOOST_CHECK_EQUAL(a ,  21);
    BOOST_CHECK_EQUAL(a-- ,  21);
@@ -398,32 +448,40 @@ void test_integer_ops(const boost::mpl::int_<boost::multiprecision::number_kind_
    BOOST_CHECK_EQUAL(a ,  2000L << 20);
    a >>= 20u;
    BOOST_CHECK_EQUAL(a ,  2000);
+#ifndef BOOST_NO_EXCEPTIONS
    BOOST_CHECK_THROW(a <<= -20, std::out_of_range);
    BOOST_CHECK_THROW(a >>= -20, std::out_of_range);
    BOOST_CHECK_THROW(Real(a << -20), std::out_of_range);
    BOOST_CHECK_THROW(Real(a >> -20), std::out_of_range);
+#endif
 #ifndef BOOST_NO_LONG_LONG
    if(sizeof(long long) > sizeof(std::size_t))
    {
       // extreme values should trigger an exception:
+#ifndef BOOST_NO_EXCEPTIONS
       BOOST_CHECK_THROW(a >>= (1uLL << (sizeof(long long) * CHAR_BIT - 2)), std::out_of_range);
       BOOST_CHECK_THROW(a <<= (1uLL << (sizeof(long long) * CHAR_BIT - 2)), std::out_of_range);
       BOOST_CHECK_THROW(a >>= -(1LL << (sizeof(long long) * CHAR_BIT - 2)), std::out_of_range);
       BOOST_CHECK_THROW(a <<= -(1LL << (sizeof(long long) * CHAR_BIT - 2)), std::out_of_range);
       BOOST_CHECK_THROW(a >>= (1LL << (sizeof(long long) * CHAR_BIT - 2)), std::out_of_range);
       BOOST_CHECK_THROW(a <<= (1LL << (sizeof(long long) * CHAR_BIT - 2)), std::out_of_range);
+#endif
       // Unless they fit within range:
       a = 2000L;
-      BOOST_CHECK_EQUAL((a <<= 20uLL) ,  (2000L << 20));
+      a <<= 20uLL;
+      BOOST_CHECK_EQUAL(a,  (2000L << 20));
       a = 2000;
-      BOOST_CHECK_EQUAL((a <<= 20LL)  ,  (2000L << 20));
+      a <<= 20LL;
+      BOOST_CHECK_EQUAL(a,  (2000L << 20));
 
+#ifndef BOOST_NO_EXCEPTIONS
       BOOST_CHECK_THROW(Real(a >> (1uLL << (sizeof(long long) * CHAR_BIT - 2))), std::out_of_range);
       BOOST_CHECK_THROW(Real(a <<= (1uLL << (sizeof(long long) * CHAR_BIT - 2))), std::out_of_range);
       BOOST_CHECK_THROW(Real(a >>= -(1LL << (sizeof(long long) * CHAR_BIT - 2))), std::out_of_range);
       BOOST_CHECK_THROW(Real(a <<= -(1LL << (sizeof(long long) * CHAR_BIT - 2))), std::out_of_range);
       BOOST_CHECK_THROW(Real(a >>= (1LL << (sizeof(long long) * CHAR_BIT - 2))), std::out_of_range);
       BOOST_CHECK_THROW(Real(a <<= (1LL << (sizeof(long long) * CHAR_BIT - 2))), std::out_of_range);
+#endif
       // Unless they fit within range:
       a = 2000L;
       BOOST_CHECK_EQUAL(Real(a << 20uLL) ,  (2000L << 20));
@@ -567,12 +625,12 @@ void test_integer_ops(const boost::mpl::int_<boost::multiprecision::number_kind_
    BOOST_CHECK_EQUAL(c ,  a / b);
    BOOST_CHECK_EQUAL(r ,  a % b);
    BOOST_CHECK_EQUAL(integer_modulus(a, 57) ,  a % 57);
-   for(unsigned i = 0; i < 20; ++i)
+   for(i = 0; i < 20; ++i)
    {
       if(std::numeric_limits<Real>::is_specialized && (!std::numeric_limits<Real>::is_bounded || ((int)i * 17 < std::numeric_limits<Real>::digits)))
       {
-         BOOST_CHECK_EQUAL(lsb(Real(1) << (i * 17)) ,  i * 17);
-         BOOST_CHECK_EQUAL(msb(Real(1) << (i * 17)) ,  i * 17);
+         BOOST_CHECK_EQUAL(lsb(Real(1) << (i * 17)),  static_cast<unsigned>(i * 17));
+         BOOST_CHECK_EQUAL(msb(Real(1) << (i * 17)), static_cast<unsigned>(i * 17));
          BOOST_CHECK(bit_test(Real(1) << (i * 17), i * 17));
          BOOST_CHECK(!bit_test(Real(1) << (i * 17), i * 17 + 1));
          if(i)
@@ -592,8 +650,8 @@ void test_integer_ops(const boost::mpl::int_<boost::multiprecision::number_kind_
    //
    // pow, powm:
    //
-   BOOST_CHECK_EQUAL(pow(Real(3), 4) ,  81);
-   BOOST_CHECK_EQUAL(pow(Real(3) + Real(0), 4) ,  81);
+   BOOST_CHECK_EQUAL(pow(Real(3), 4u) ,  81);
+   BOOST_CHECK_EQUAL(pow(Real(3) + Real(0), 4u) ,  81);
    BOOST_CHECK_EQUAL(powm(Real(3), Real(4), Real(13)) ,  81 % 13);
    BOOST_CHECK_EQUAL(powm(Real(3), Real(4), 13) ,  81 % 13);
    BOOST_CHECK_EQUAL(powm(Real(3), Real(4), Real(13) + 0) ,  81 % 13);
@@ -617,12 +675,14 @@ void test_integer_ops(const boost::mpl::int_<boost::multiprecision::number_kind_
    //
    test_conditional(Real(powm(Real(3), Real(4), Real(13))), powm(Real(3), Real(4), Real(13)));
 
+#ifndef BOOST_NO_EXCEPTIONS
    //
    // Things that are expected errors:
    //
    BOOST_CHECK_THROW(Real("3.14"), std::runtime_error);
    BOOST_CHECK_THROW(Real("3L"), std::runtime_error);
    BOOST_CHECK_THROW(Real(Real(20) / 0u), std::overflow_error);
+#endif
    //
    // Extra tests added for full coverage:
    //
@@ -654,6 +714,21 @@ void test_integer_ops(const boost::mpl::int_<boost::multiprecision::number_kind_
    BOOST_CHECK_EQUAL(c ,  (20 ^ 7));
    c = 20 ^ (b + 0);
    BOOST_CHECK_EQUAL(c ,  (20 ^ 7));
+
+
+   //
+   // Round tripping of built in integers:
+   //
+   test_integer_round_trip<Real, short>();
+   test_integer_round_trip<Real, unsigned short>();
+   test_integer_round_trip<Real, int>();
+   test_integer_round_trip<Real, unsigned int>();
+   test_integer_round_trip<Real, long>();
+   test_integer_round_trip<Real, unsigned long>();
+#ifndef BOOST_NO_CXX11_LONG_LONG
+   test_integer_round_trip<Real, long long>();
+   test_integer_round_trip<Real, unsigned long long>();
+#endif
 }
 
 template <class Real, class T>
@@ -667,7 +742,7 @@ void test_float_funcs(const boost::mpl::true_&)
    //
    // Test variable reuse in function calls, see https://svn.boost.org/trac/boost/ticket/8326
    //
-   Real a(2), b(10);
+   Real a(2), b(10), c, d;
    a = pow(a, b);
    BOOST_CHECK_EQUAL(a, 1024);
    a = 2;
@@ -742,6 +817,7 @@ void test_float_funcs(const boost::mpl::true_&)
    a = 0.5;
    a = tanh(a);
    BOOST_CHECK_CLOSE_FRACTION(a, Real(tanh(Real(0.5))), tol);
+   // fmod, need to check all the sign permutations:
    a = 4;
    b = 2;
    a = fmod(a, b);
@@ -749,12 +825,102 @@ void test_float_funcs(const boost::mpl::true_&)
    a = 4;
    b = fmod(a, b);
    BOOST_CHECK_CLOSE_FRACTION(b, Real(fmod(Real(4), Real(2))), tol);
+   a = 4;
+   b = 2;
+   a = fmod(-a, b);
+   BOOST_CHECK_CLOSE_FRACTION(a, Real(fmod(-Real(4), Real(2))), tol);
+   a = 4;
+   b = fmod(-a, b);
+   BOOST_CHECK_CLOSE_FRACTION(b, Real(-fmod(Real(4), Real(2))), tol);
+   a = 4;
+   b = 2;
+   a = fmod(a, -b);
+   BOOST_CHECK_CLOSE_FRACTION(a, Real(fmod(Real(4), -Real(2))), tol);
+   a = 4;
+   b = fmod(a, -b);
+   BOOST_CHECK_CLOSE_FRACTION(b, Real(fmod(Real(4), -Real(2))), tol);
+   a = 4;
+   b = 2;
+   a = fmod(-a, -b);
+   BOOST_CHECK_CLOSE_FRACTION(a, Real(fmod(-Real(4), -Real(2))), tol);
+   a = 4;
+   b = fmod(-a, -b);
+   BOOST_CHECK_CLOSE_FRACTION(b, Real(fmod(-Real(4), -Real(2))), tol);
+   // modf:
+   a = 5;
+   a /= 2;
+   b = modf(a, &c);
+   BOOST_CHECK_EQUAL(b + c, a);
+   BOOST_CHECK_EQUAL(b > 0, a > 0);
+   BOOST_CHECK_EQUAL(c > 0, a > 0);
+   a = -a;
+   b = modf(a, &c);
+   BOOST_CHECK_EQUAL(b + c, a);
+   BOOST_CHECK_EQUAL(b > 0, a > 0);
+   BOOST_CHECK_EQUAL(c > 0, a > 0);
+   b = modf(a, &c);
+   c = 0;
+   modf(a, &c);
+   BOOST_CHECK_EQUAL(b + c, a);
+   BOOST_CHECK_EQUAL(b > 0, a > 0);
+   BOOST_CHECK_EQUAL(c > 0, a > 0);
+   a = -a;
+   b = modf(a, &c);
+   c = 0;
+   modf(a, &c);
+   BOOST_CHECK_EQUAL(b + c, a);
+   BOOST_CHECK_EQUAL(b > 0, a > 0);
+   BOOST_CHECK_EQUAL(c > 0, a > 0);
+
+   if(std::numeric_limits<Real>::has_infinity)
+   {
+      a = std::numeric_limits<Real>::infinity();
+      b = modf(a, &c);
+      BOOST_CHECK_EQUAL(a, c);
+      BOOST_CHECK_EQUAL(b, 0);
+      a = -std::numeric_limits<Real>::infinity();
+      b = modf(a, &c);
+      BOOST_CHECK_EQUAL(a, c);
+      BOOST_CHECK_EQUAL(b, 0);
+   }
+   if(std::numeric_limits<Real>::has_quiet_NaN)
+   {
+      a = std::numeric_limits<Real>::quiet_NaN();
+      b = modf(a, &c);
+      BOOST_CHECK((boost::math::isnan)(b));
+      BOOST_CHECK((boost::math::isnan)(c));
+   }
+
+   a = 4;
    b = 2;
    a = atan2(a, b);
    BOOST_CHECK_CLOSE_FRACTION(a, Real(atan2(Real(4), Real(2))), tol);
    a = 4;
    b = atan2(a, b);
    BOOST_CHECK_CLOSE_FRACTION(b, Real(atan2(Real(4), Real(2))), tol);
+
+   // fma:
+   a = 2;
+   b = 4;
+   c = 6;
+   BOOST_CHECK_EQUAL(fma(a, b, c), 14);
+   BOOST_CHECK_EQUAL(fma(a, 4, c), 14);
+   BOOST_CHECK_EQUAL(fma(a, b, 6), 14);
+   BOOST_CHECK_EQUAL(fma(a, 4, 6), 14);
+   BOOST_CHECK_EQUAL(fma(a + 0, b, c), 14);
+   BOOST_CHECK_EQUAL(fma(a - 0, 4, c), 14);
+   BOOST_CHECK_EQUAL(fma(a * 1, b, 6), 14);
+   BOOST_CHECK_EQUAL(fma(a / 1, 4, 6), 14);
+   BOOST_CHECK_EQUAL(fma(2, b, c), 14);
+   BOOST_CHECK_EQUAL(fma(2, b, 6), 14);
+   BOOST_CHECK_EQUAL(fma(2, b * 1, c), 14);
+   BOOST_CHECK_EQUAL(fma(2, b + 0, 6), 14);
+   BOOST_CHECK_EQUAL(fma(2, 4, c), 14);
+   BOOST_CHECK_EQUAL(fma(2, 4, c + 0), 14);
+
+   // Default construct, for consistency with native floats, default constructed values are zero:
+   Real zero;
+   BOOST_CHECK_EQUAL(zero, 0);
 }
 
 template <class T, class U>
@@ -814,10 +980,11 @@ void test_float_ops(const boost::mpl::int_<boost::multiprecision::number_kind_fl
    //
    // ldexp and frexp, these pretty much have to be implemented by each backend:
    //
+   typedef typename Real::backend_type::exponent_type e_type;
    BOOST_CHECK_EQUAL(ldexp(Real(2), 5) ,  64);
    BOOST_CHECK_EQUAL(ldexp(Real(2), -5) ,  Real(2) / 32);
    Real v(512);
-   int exponent;
+   e_type exponent;
    Real r = frexp(v, &exponent);
    BOOST_CHECK_EQUAL(r ,  0.5);
    BOOST_CHECK_EQUAL(exponent ,  10);
@@ -826,7 +993,6 @@ void test_float_ops(const boost::mpl::int_<boost::multiprecision::number_kind_fl
    r = frexp(v, &exponent);
    BOOST_CHECK_EQUAL(r ,  0.5);
    BOOST_CHECK_EQUAL(exponent ,  -8);
-   typedef typename Real::backend_type::exponent_type e_type;
    BOOST_CHECK_EQUAL(ldexp(Real(2), e_type(5)) ,  64);
    BOOST_CHECK_EQUAL(ldexp(Real(2), e_type(-5)) ,  Real(2) / 32);
    v = 512;
@@ -847,9 +1013,7 @@ void test_float_ops(const boost::mpl::int_<boost::multiprecision::number_kind_fl
    {
       BOOST_CHECK_EQUAL(scalbn(Real(2), 5), 2 * pow(double(std::numeric_limits<Real>::radix), 5));
       BOOST_CHECK_EQUAL(scalbn(Real(2), -5), Real(2) / pow(double(std::numeric_limits<Real>::radix), 5));
-      Real v(512);
-      int exponent;
-      Real r;
+      v = 512;
       exponent = ilogb(v);
       r = scalbn(v, -exponent);
       BOOST_CHECK(r >= 1);
@@ -884,6 +1048,8 @@ void test_float_ops(const boost::mpl::int_<boost::multiprecision::number_kind_fl
    BOOST_CHECK_EQUAL(r ,  boost::math::pow<6>(3.25));
    r = pow(v, 25);
    BOOST_CHECK_EQUAL(r ,  boost::math::pow<25>(Real(3.25)));
+
+#ifndef BOOST_NO_EXCEPTIONS
    //
    // Things that are expected errors:
    //
@@ -899,6 +1065,7 @@ void test_float_ops(const boost::mpl::int_<boost::multiprecision::number_kind_fl
          BOOST_CHECK_THROW(Real(Real(20) / 0u), std::overflow_error);
       }
    }
+#endif
    //
    // Comparisons of NaN's should always fail:
    //
@@ -924,6 +1091,102 @@ void test_float_ops(const boost::mpl::int_<boost::multiprecision::number_kind_fl
       {
          compare_NaNs(r, std::numeric_limits<double>::quiet_NaN());
          compare_NaNs(std::numeric_limits<double>::quiet_NaN(), r);
+      }
+   }
+
+   //
+   // Operations involving NaN's as one argument:
+   //
+   if(std::numeric_limits<Real>::has_quiet_NaN)
+   {
+      v = 20.25;
+      r = std::numeric_limits<Real>::quiet_NaN();
+      BOOST_CHECK((boost::math::isnan)(v + r));
+      BOOST_CHECK((boost::math::isnan)(r + v));
+      BOOST_CHECK((boost::math::isnan)(r - v));
+      BOOST_CHECK((boost::math::isnan)(v - r));
+      BOOST_CHECK((boost::math::isnan)(r * v));
+      BOOST_CHECK((boost::math::isnan)(v * r));
+      BOOST_CHECK((boost::math::isnan)(r / v));
+      BOOST_CHECK((boost::math::isnan)(v / r));
+      Real t = v;
+      BOOST_CHECK((boost::math::isnan)(t += r));
+      t = r;
+      BOOST_CHECK((boost::math::isnan)(t += v));
+      t = r;
+      BOOST_CHECK((boost::math::isnan)(t -= v));
+      t = v;
+      BOOST_CHECK((boost::math::isnan)(t -= r));
+      t = r;
+      BOOST_CHECK((boost::math::isnan)(t *= v));
+      t = v;
+      BOOST_CHECK((boost::math::isnan)(t *= r));
+      t = r;
+      BOOST_CHECK((boost::math::isnan)(t /= v));
+      t = v;
+      BOOST_CHECK((boost::math::isnan)(t /= r));
+   }
+   //
+   // Operations involving infinities as one argument:
+   //
+   if(std::numeric_limits<Real>::has_infinity)
+   {
+      v = 20.25;
+      r = std::numeric_limits<Real>::infinity();
+      BOOST_CHECK((boost::math::isinf)(v + r));
+      BOOST_CHECK((boost::math::isinf)(r + v));
+      BOOST_CHECK((boost::math::isinf)(r - v));
+      BOOST_CHECK((boost::math::isinf)(v - r));
+      BOOST_CHECK_LT(v - r, 0);
+      BOOST_CHECK((boost::math::isinf)(r * v));
+      BOOST_CHECK((boost::math::isinf)(v * r));
+      BOOST_CHECK((boost::math::isinf)(r / v));
+      BOOST_CHECK_EQUAL(v / r, 0);
+      Real t = v;
+      BOOST_CHECK((boost::math::isinf)(t += r));
+      t = r;
+      BOOST_CHECK((boost::math::isinf)(t += v));
+      t = r;
+      BOOST_CHECK((boost::math::isinf)(t -= v));
+      t = v;
+      BOOST_CHECK((boost::math::isinf)(t -= r));
+      t = v;
+      BOOST_CHECK(t -= r < 0);
+      t = r;
+      BOOST_CHECK((boost::math::isinf)(t *= v));
+      t = v;
+      BOOST_CHECK((boost::math::isinf)(t *= r));
+      t = r;
+      BOOST_CHECK((boost::math::isinf)(t /= v));
+      t = v;
+      BOOST_CHECK((t /= r) == 0);
+   }
+   //
+   // Operations that should produce NaN as a result:
+   //
+   if(std::numeric_limits<Real>::has_quiet_NaN)
+   {
+      v = r = 0;
+      Real t = v / r;
+      BOOST_CHECK((boost::math::isnan)(t));
+      v /= r;
+      BOOST_CHECK((boost::math::isnan)(v));
+      t = v / 0;
+      BOOST_CHECK((boost::math::isnan)(v));
+      if(std::numeric_limits<Real>::has_infinity)
+      {
+         v = 0;
+         r = std::numeric_limits<Real>::infinity();
+         t = v * r;
+         if(!boost::multiprecision::is_interval_number<Real>::value)
+         {
+            BOOST_CHECK((boost::math::isnan)(t));
+            t = r * 0;
+            BOOST_CHECK((boost::math::isnan)(t));
+         }
+         v = r;
+         t = r / v;
+         BOOST_CHECK((boost::math::isnan)(t));
       }
    }
 
@@ -1018,11 +1281,22 @@ void test_negative_mixed(boost::mpl::true_ const&)
    BOOST_CHECK_EQUAL(Real(n2).template convert_to<Num>() ,  n2);
    BOOST_CHECK_EQUAL(Real(n3).template convert_to<Num>() ,  n3);
    BOOST_CHECK_EQUAL(Real(n4).template convert_to<Num>() ,  n4);
-#ifndef BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+#ifndef BOOST_MP_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n1)) ,  n1);
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n2)) ,  n2);
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n3)) ,  n3);
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n4)) ,  n4);
+#endif
+   // Conversions when source is an expression template:
+   BOOST_CHECK_EQUAL((Real(n1) + 0).template convert_to<Num>() ,  n1);
+   BOOST_CHECK_EQUAL((Real(n2) + 0).template convert_to<Num>(), n2);
+   BOOST_CHECK_EQUAL((Real(n3) + 0).template convert_to<Num>(), n3);
+   BOOST_CHECK_EQUAL((Real(n4) + 0).template convert_to<Num>(), n4);
+#ifndef BOOST_MP_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+   BOOST_CHECK_EQUAL(static_cast<Num>((Real(n1) + 0)), n1);
+   BOOST_CHECK_EQUAL(static_cast<Num>((Real(n2) + 0)), n2);
+   BOOST_CHECK_EQUAL(static_cast<Num>((Real(n3) + 0)), n3);
+   BOOST_CHECK_EQUAL(static_cast<Num>((Real(n4) + 0)), n4);
 #endif
 #if defined(TEST_MPFR)
    Num tol = 10 * std::numeric_limits<Num>::epsilon();
@@ -1267,6 +1541,27 @@ void test_mixed(const boost::mpl::false_&)
 {
 }
 
+template <class Real>
+inline bool check_is_nan(const Real& val, const boost::mpl::true_&)
+{
+   return (boost::math::isnan)(val);
+}
+template <class Real>
+inline bool check_is_nan(const Real&, const boost::mpl::false_&)
+{
+   return false;
+}
+template <class Real>
+inline Real negate_value(const Real& val, const boost::mpl::true_&)
+{
+   return -val;
+}
+template <class Real>
+inline Real negate_value(const Real& val, const boost::mpl::false_&)
+{
+   return val;
+}
+
 template <class Real, class Num>
 void test_mixed(const boost::mpl::true_&)
 {
@@ -1309,13 +1604,24 @@ void test_mixed(const boost::mpl::true_&)
    BOOST_CHECK_EQUAL(Real(n2).template convert_to<Num>() ,  n2);
    BOOST_CHECK_EQUAL(Real(n3).template convert_to<Num>() ,  n3);
    BOOST_CHECK_EQUAL(Real(n4).template convert_to<Num>() ,  n4);
-#ifndef BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+#ifndef BOOST_MP_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n1)) ,  n1);
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n2)) ,  n2);
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n3)) ,  n3);
    BOOST_CHECK_EQUAL(static_cast<Num>(Real(n4)) ,  n4);
 #endif
-   BOOST_CHECK_EQUAL(static_cast<cast_type>(n1) ,  Real(n1));
+   // Again with expression templates:
+   BOOST_CHECK_EQUAL((Real(n1) + 0).template convert_to<Num>(), n1);
+   BOOST_CHECK_EQUAL((Real(n2) + 0).template convert_to<Num>(), n2);
+   BOOST_CHECK_EQUAL((Real(n3) + 0).template convert_to<Num>(), n3);
+   BOOST_CHECK_EQUAL((Real(n4) + 0).template convert_to<Num>(), n4);
+#ifndef BOOST_MP_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+   BOOST_CHECK_EQUAL(static_cast<Num>(Real(n1) + 0), n1);
+   BOOST_CHECK_EQUAL(static_cast<Num>(Real(n2) + 0), n2);
+   BOOST_CHECK_EQUAL(static_cast<Num>(Real(n3) + 0), n3);
+   BOOST_CHECK_EQUAL(static_cast<Num>(Real(n4) + 0), n4);
+#endif
+   BOOST_CHECK_EQUAL(static_cast<cast_type>(n1), Real(n1));
    BOOST_CHECK_EQUAL(static_cast<cast_type>(n2) ,  Real(n2));
    BOOST_CHECK_EQUAL(static_cast<cast_type>(n3) ,  Real(n3));
    BOOST_CHECK_EQUAL(static_cast<cast_type>(n4) ,  Real(n4));
@@ -1457,6 +1763,21 @@ void test_mixed(const boost::mpl::true_&)
    BOOST_CHECK_EQUAL(d ,  3 * 4 - 2);
    d = b * static_cast<cast_type>(n3) - static_cast<cast_type>(n1);
    BOOST_CHECK_EQUAL(d ,  3 * 4 - 2);
+
+   if(std::numeric_limits<Real>::has_infinity && std::numeric_limits<Num>::has_infinity)
+   {
+      d = static_cast<Real>(std::numeric_limits<Num>::infinity());
+      BOOST_CHECK_GT(d, (std::numeric_limits<Real>::max)());
+      d = static_cast<Real>(negate_value(std::numeric_limits<Num>::infinity(), boost::mpl::bool_<std::numeric_limits<Num>::is_signed>()));
+      BOOST_CHECK_LT(d, negate_value((std::numeric_limits<Real>::max)(), boost::mpl::bool_<std::numeric_limits<Real>::is_signed>()));
+   }
+   if(std::numeric_limits<Real>::has_quiet_NaN && std::numeric_limits<Num>::has_quiet_NaN)
+   {
+      d = static_cast<Real>(std::numeric_limits<Num>::quiet_NaN());
+      BOOST_CHECK(check_is_nan(d, boost::mpl::bool_<std::numeric_limits<Real>::has_quiet_NaN>()));
+      d = static_cast<Real>(negate_value(std::numeric_limits<Num>::quiet_NaN(), boost::mpl::bool_<std::numeric_limits<Num>::is_signed>()));
+      BOOST_CHECK(check_is_nan(d, boost::mpl::bool_<std::numeric_limits<Real>::has_quiet_NaN>()));
+   }
 }
 
 template <class Real>
@@ -1536,6 +1857,47 @@ void test_signed_ops(const boost::mpl::true_&)
 template <class Real>
 void test_signed_ops(const boost::mpl::false_&)
 {
+}
+
+template <class Real>
+void test_basic_conditionals(Real a, Real b)
+{
+   if(a)
+   {
+      BOOST_ERROR("Unexpected non-zero result");
+   }
+   if(!a){}
+   else
+   {
+      BOOST_ERROR("Unexpected zero result");
+   }
+   b = 2;
+   if(!b)
+   {
+      BOOST_ERROR("Unexpected zero result");
+   }
+   if(b){}
+   else
+   {
+      BOOST_ERROR("Unexpected non-zero result");
+   }
+   if(a && b)
+   {
+      BOOST_ERROR("Unexpected zero result");
+   }
+   if(!(a || b))
+   {
+      BOOST_ERROR("Unexpected zero result");
+   }
+   if(a + b){}
+   else
+   {
+      BOOST_ERROR("Unexpected zero result");
+   }
+   if(b - 2)
+   {
+      BOOST_ERROR("Unexpected non-zero result");
+   }
 }
 
 template <class Real>
@@ -1770,47 +2132,33 @@ void test()
    BOOST_CHECK_EQUAL((72 >= b+a) ,  true);
    BOOST_CHECK_EQUAL((72 > b+a) ,  false);
 
+   BOOST_CHECK_EQUAL((b + a == 8), false);
+   BOOST_CHECK_EQUAL((b + a != 8), true);
+   BOOST_CHECK_EQUAL((b + a >= 8), true);
+   BOOST_CHECK_EQUAL((b + a > 8), true);
+   BOOST_CHECK_EQUAL((b + a <= 8), false);
+   BOOST_CHECK_EQUAL((b + a < 8), false);
+   BOOST_CHECK_EQUAL((b + a == 800), false);
+   BOOST_CHECK_EQUAL((b + a != 800), true);
+   BOOST_CHECK_EQUAL((b + a <= 800), true);
+   BOOST_CHECK_EQUAL((b + a < 800), true);
+   BOOST_CHECK_EQUAL((b + a >= 800), false);
+   BOOST_CHECK_EQUAL((b + a > 800), false);
+   BOOST_CHECK_EQUAL((b + a == 72), true);
+   BOOST_CHECK_EQUAL((b + a != 72), false);
+   BOOST_CHECK_EQUAL((b + a >= 72), true);
+   BOOST_CHECK_EQUAL((b + a > 72), false);
+   BOOST_CHECK_EQUAL((b + a <= 72), true);
+   BOOST_CHECK_EQUAL((b + a < 72), false);
+
+
    test_members(a);
    //
    // Use in Boolean context:
    //
    a = 0;
-   if(a)
-   {
-      BOOST_ERROR("Unexpected non-zero result");
-   }
-   if(!a){}
-   else
-   {
-      BOOST_ERROR("Unexpected zero result");
-   }
    b = 2;
-   if(!b)
-   {
-      BOOST_ERROR("Unexpected zero result");
-   }
-   if(b){}
-   else
-   {
-      BOOST_ERROR("Unexpected non-zero result");
-   }
-   if(a && b)
-   {
-      BOOST_ERROR("Unexpected zero result");
-   }
-   if(!(a || b))
-   {
-      BOOST_ERROR("Unexpected zero result");
-   }
-   if(a + b){}
-   else
-   {
-      BOOST_ERROR("Unexpected zero result");
-   }
-   if(b - 2)
-   {
-      BOOST_ERROR("Unexpected non-zero result");
-   }
+   test_basic_conditionals(a, b);
    //
    // Test iostreams:
    //
@@ -1906,10 +2254,67 @@ void test()
    Real m3(static_cast<Real&&>(a));
 #endif
    //
+   // min and max overloads:
+   //
+#if !defined(min) && !defined(max)
+   using std::max;
+   using std::min;
+   a = 2;
+   b = 5;
+   c = 6;
+   BOOST_CHECK_EQUAL(min(a, b), a);
+   BOOST_CHECK_EQUAL(min(b, a), a);
+   BOOST_CHECK_EQUAL(max(a, b), b);
+   BOOST_CHECK_EQUAL(max(b, a), b);
+   BOOST_CHECK_EQUAL(min(a, b + c), a);
+   BOOST_CHECK_EQUAL(min(b + c, a), a);
+   BOOST_CHECK_EQUAL(min(a, c - b), 1);
+   BOOST_CHECK_EQUAL(min(c - b, a), 1);
+   BOOST_CHECK_EQUAL(max(a, b + c), 11);
+   BOOST_CHECK_EQUAL(max(b + c, a), 11);
+   BOOST_CHECK_EQUAL(max(a, c - b), a);
+   BOOST_CHECK_EQUAL(max(c - b, a), a);
+   BOOST_CHECK_EQUAL(min(a + b, b + c), 7);
+   BOOST_CHECK_EQUAL(min(b + c, a + b), 7);
+   BOOST_CHECK_EQUAL(max(a + b, b + c), 11);
+   BOOST_CHECK_EQUAL(max(b + c, a + b), 11);
+   BOOST_CHECK_EQUAL(min(a + b, c - a), 4);
+   BOOST_CHECK_EQUAL(min(c - a, a + b), 4);
+   BOOST_CHECK_EQUAL(max(a + b, c - a), 7);
+   BOOST_CHECK_EQUAL(max(c - a, a + b), 7);
+
+   long l1(2), l2(3), l3;
+   l3 = min(l1, l2) + max(l1, l2) + max<long>(l1, l2) + min<long>(l1, l2);
+   BOOST_CHECK_EQUAL(l3, 10);
+
+#endif
+   //
    // Bug cases, self assignment first:
    //
    a = 20;
    a = a;
    BOOST_CHECK_EQUAL(a, 20);
+
+   a = 2;
+   a = a * a * a;
+   BOOST_CHECK_EQUAL(a, 8);
+   a = 2;
+   a = a + a + a;
+   BOOST_CHECK_EQUAL(a, 6);
+   a = 2;
+   a = a - a + a;
+   BOOST_CHECK_EQUAL(a, 2);
+   a = 2;
+   a = a + a - a;
+   BOOST_CHECK_EQUAL(a, 2);
+   a = 2;
+   a = a * a - a;
+   BOOST_CHECK_EQUAL(a, 2);
+   a = 2;
+   a = a + a * a;
+   BOOST_CHECK_EQUAL(a, 6);
+   a = 2;
+   a = (a + a) * a;
+   BOOST_CHECK_EQUAL(a, 8);
 }
 

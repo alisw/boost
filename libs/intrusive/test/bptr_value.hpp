@@ -15,8 +15,11 @@
 #define BOOST_INTRUSIVE_BPTR_VALUE_HPP
 
 #include <cassert>
+#include <iostream>
 #include "bounded_pointer.hpp"
 #include "common_functors.hpp"
+#include "int_holder.hpp"
+#include <boost/intrusive/link_mode.hpp>
 
 
 namespace boost {
@@ -84,6 +87,15 @@ struct BPtr_Value
    friend bool operator< (const BPtr_Value &other1, int other2)
    {  return other1.value_ < other2;  }
 
+   friend bool operator> (const BPtr_Value &other1, const BPtr_Value &other2)
+   {  return other1.value_ > other2.value_;  }
+
+   friend bool operator> (int other1, const BPtr_Value &other2)
+   {  return other1 > other2.value_;  }
+
+   friend bool operator> (const BPtr_Value &other1, int other2)
+   {  return other1.value_ > other2;  }
+
    friend bool operator== (const BPtr_Value &other1, const BPtr_Value &other2)
    {  return other1.value_ == other2.value_;  }
 
@@ -103,6 +115,9 @@ struct BPtr_Value
    {  return !(other1.value_ == other2);  }
 
 }; // class BPtr_Value
+
+std::ostream& operator<<(std::ostream& s, const BPtr_Value& t)
+{  return s << t.value_.int_value();   }
 
 template < typename Node_Algorithms >
 void swap_nodes(bounded_reference< BPtr_Value > lhs, bounded_reference< BPtr_Value > rhs)

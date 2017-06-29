@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2014 Vladimir Batov.
+// Copyright (c) 2009-2016 Vladimir Batov.
 // Use, modification and distribution are subject to the Boost Software License,
 // Version 1.0. See http://www.boost.org/LICENSE_1_0.txt.
 
@@ -21,7 +21,7 @@ my_cypher(std::string const& value_in, boost::optional<std::string>& value_out)
 }
 
 int
-main(int argc, char const* argv[])
+main(int, char const* [])
 {
     ////////////////////////////////////////////////////////////////////////////
     // Testing custom converter.

@@ -16,6 +16,7 @@
 #include <boost/test/data/monomorphic/array.hpp>
 #include <boost/test/data/monomorphic/collection.hpp>
 #include <boost/test/data/monomorphic/generators/xrange.hpp>
+#include <boost/test/data/for_each_sample.hpp>
 
 namespace data = boost::unit_test::data;
 
@@ -93,7 +94,7 @@ BOOST_AUTO_TEST_CASE( test_mono_grid_cpp11_features )
 
   data::for_each_sample( samples2, [&c,&vec1,exp3](double a1,char const* a2,int a3) {
       BOOST_TEST( a1 == vec1[c/3] );
-      BOOST_CHECK_EQUAL( a2, "qqq" );
+      BOOST_TEST( a2 == "qqq" );
       BOOST_TEST( a3 == exp3[c%3] );
       ++c;
   });
@@ -168,6 +169,16 @@ BOOST_AUTO_TEST_CASE( test_mono_grid_number_of_copies_auto )
   BOOST_TEST( ds3.size() == 9 );
   data::for_each_sample( ds3, check_arg_type<std::tuple<copy_count,copy_count>>() );
   BOOST_TEST( copy_count::value() == std_vector_constructor_count *2 *3);
+}
+
+BOOST_AUTO_TEST_CASE( test_mono_grid_variadic_dimension )
+{
+  // tests that the grid dimension can be > 3
+
+  BOOST_TEST( (data::make( 1 ) * data::make( 5 ) * data::make( 1 )).size() == 1 );
+  BOOST_TEST( (data::make( 1 ) * data::make( 5 ) * data::make( 1 ) * data::make( 1 )).size() == 1 );
+
+  BOOST_TEST( (data::xrange(2) * data::xrange(2) * data::xrange(2) * data::xrange(2)).size() == (1 << 4));
 }
 
 //____________________________________________________________________________//

@@ -31,7 +31,8 @@ project
         <toolset>gcc:<cxxflags>-Wno-long-long
         #<toolset>gcc:<cxxflags>-ansi
         #<toolset>gcc:<cxxflags>-fpermissive
-        <toolset>gcc:<cxxflags>-Wno-variadic-macros
+        <toolset>gcc-4:<cxxflags>-Wno-variadic-macros
+        <toolset>gcc-5:<cxxflags>-Wno-variadic-macros
         #<toolset>gcc:<cxxflags>-Wunused-local-typedefs
         <toolset>gcc:<cxxflags>-Wunused-function
         <toolset>gcc:<cxxflags>-Wno-unused-parameter
@@ -298,6 +299,7 @@ rule thread-compile ( sources : reqs * : name )
           [ thread-compile test_10963.cpp : : test_10963_c ]
           [ thread-run test_10964.cpp ]
           [ thread-test test_11053.cpp ]
+          [ thread-run test_11266.cpp ]
     ;
 
 
@@ -796,7 +798,9 @@ rule thread-compile ( sources : reqs * : name )
           [ thread-run2-noit ../example/synchronized_value.cpp : ex_synchronized_value ]
           [ thread-run2-noit ../example/synchronized_person.cpp : ex_synchronized_person ]
           [ thread-run2-noit ../example/thread_guard.cpp : ex_thread_guard ]
+          [ thread-run2-noit ../example/std_thread_guard.cpp : ex_std_thread_guard ]
           [ thread-run2-noit ../example/scoped_thread.cpp : ex_scoped_thread ]
+          [ thread-run2-noit ../example/std_scoped_thread.cpp : ex_std_scoped_thread ]
           [ thread-run2-noit ../example/strict_lock.cpp : ex_strict_lock ]
           [ thread-run2-noit ../example/ba_externallly_locked.cpp : ex_ba_externallly_locked ]
           [ thread-run2 ../example/producer_consumer_bounded.cpp : ex_producer_consumer_bounded ]
@@ -810,7 +814,7 @@ rule thread-compile ( sources : reqs * : name )
           [ thread-run2 ../example/executor.cpp : ex_executor ]
           [ thread-run2 ../example/generic_executor_ref.cpp : ex_generic_executor_ref ]
           [ thread-run2 ../example/serial_executor.cpp : ex_serial_executor ]
-          [ thread-run2 ../example/serial_executor_cont.cpp : ex_serial_executor_cont ]
+          #[ thread-run2 ../example/serial_executor_cont.cpp : ex_serial_executor_cont ]
           [ thread-run2 ../example/future_when_all.cpp : ex_future_when_all ]
           [ thread-run2 ../example/parallel_accumulate.cpp : ex_parallel_accumulate ]
           [ thread-run2 ../example/parallel_quick_sort.cpp : ex_parallel_quick_sort ]
@@ -947,11 +951,25 @@ rule thread-compile ( sources : reqs * : name )
           [ thread-run2-noit ./experimental/parallel/v2/task_region_pass.cpp : task_region_p ]
     ;
     
-    explicit ts_ ;
-    test-suite ts_
+    explicit ts_other ;
+    test-suite ts_other
     :
           [ thread-run2 ../example/this_executor.cpp : ex_this_executor ]
           [ thread-run2 ../example/default_executor.cpp : ex_default_executor ]
     ;
+
+    explicit ts_ ;
+    test-suite ts_
+    :
+          #[ thread-run test_11256.cpp ] 
+          #[ thread-run test_11256.cpp ]
+          #[ thread-run test_11499.cpp ]
+          [ thread-run test_11611.cpp ]
+          #[ thread-run test_11818.cpp ]
+          #[ thread-run test_11796.cpp ]
+          [ thread-run test_12293.cpp ]
+          
+    ;
+
 
 }

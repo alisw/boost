@@ -27,8 +27,10 @@ namespace utf = boost::unit_test;
 
 //____________________________________________________________________________//
 
-#define EXPR_TYPE( E, expr ) auto const& E = assertion::seed() ->* expr
+#define EXPR_TYPE( expr ) ( assertion::seed() ->* expr )
 
+
+#if !defined(BOOST_TEST_FWD_ITERABLE_CXX03)
 // some broken compilers do not implement properly decltype on expressions
 // partial implementation of is_forward_iterable when decltype not available
 struct not_fwd_iterable_1 {
@@ -133,46 +135,42 @@ BOOST_AUTO_TEST_CASE( test_forward_iterable_concept )
   }
 }
 
+#endif
+
 BOOST_AUTO_TEST_CASE( test_basic_value_expression_construction )
 {
     using namespace boost::test_tools;
 
     {
-        EXPR_TYPE( E, 1 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 1 ).evaluate();
         BOOST_TEST( res );
         BOOST_TEST( res.message().is_empty() );
     }
 
     {
-        EXPR_TYPE( E, 0 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 0 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
     }
 
     {
-        EXPR_TYPE( E, true );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( true ).evaluate();
         BOOST_TEST( res );
         BOOST_TEST( res.message().is_empty() );
     }
 
     {
-        EXPR_TYPE( E, 1.5 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 1.5 ).evaluate();
         BOOST_TEST( res );
     }
 
     {
-        EXPR_TYPE( E, "abc" );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( "abc" ).evaluate();
         BOOST_TEST( res );
     }
 
     {
-        EXPR_TYPE( E, 1>2 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 1>2 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [1 <= 2]" );
     }
@@ -186,45 +184,39 @@ BOOST_AUTO_TEST_CASE( test_comparison_expression )
     using namespace boost::test_tools;
 
     {
-        EXPR_TYPE( E, 1>2 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 1>2 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [1 <= 2]" );
     }
 
     {
-        EXPR_TYPE( E, 100 < 50 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 100 < 50 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [100 >= 50]" );
     }
 
     {
-        EXPR_TYPE( E, 5 <= 4 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 5 <= 4 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [5 > 4]" );
     }
 
     {
-        EXPR_TYPE( E, 10>=20 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 10>=20 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [10 < 20]" );
     }
 
     {
         int i = 10;
-        EXPR_TYPE( E, i != 10 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( i != 10 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [10 == 10]" );
     }
 
     {
         int i = 5;
-        EXPR_TYPE( E, i == 3 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( i == 3 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [5 != 3]" );
     }
@@ -239,8 +231,7 @@ BOOST_AUTO_TEST_CASE( test_arithmetic_ops )
     {
         int i = 3;
         int j = 5;
-        EXPR_TYPE( E, i+j !=8 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( i+j !=8 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [3 + 5 == 8]" );
     }
@@ -248,16 +239,14 @@ BOOST_AUTO_TEST_CASE( test_arithmetic_ops )
     {
         int i = 3;
         int j = 5;
-        EXPR_TYPE( E, 2*i-j > 1 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 2*i-j > 1 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [2 * 3 - 5 <= 1]" );
     }
 
     {
         int j = 5;
-        EXPR_TYPE( E, 2<<j < 30 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( 2<<j < 30 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [2 << 5 >= 30]" );
     }
@@ -265,8 +254,7 @@ BOOST_AUTO_TEST_CASE( test_arithmetic_ops )
     {
         int i = 2;
         int j = 5;
-        EXPR_TYPE( E, i&j );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( i&j ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [2 & 5]" );
     }
@@ -274,16 +262,15 @@ BOOST_AUTO_TEST_CASE( test_arithmetic_ops )
     {
         int i = 3;
         int j = 5;
-        EXPR_TYPE( E, i^j^6 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( i^j^6 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [3 ^ 5 ^ 6]" );
     }
 
     // do not support
-    // EXPR_TYPE( E, 99/2 == 48 || 101/2 > 50 );
-    // EXPR_TYPE( E, a ? 100 < 50 : 25*2 == 50 );
-    // EXPR_TYPE( E, true,false );
+    // EXPR_TYPE( 99/2 == 48 || 101/2 > 50 );
+    // EXPR_TYPE( a ? 100 < 50 : 25*2 == 50 );
+    // EXPR_TYPE( true,false );
 }
 
 //____________________________________________________________________________//
@@ -330,8 +317,7 @@ BOOST_AUTO_TEST_CASE( test_objects )
         Testee obj;
         Testee::s_copy_counter = 0;
 
-        EXPR_TYPE( E, obj );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( obj ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)Testee is false]" );
         BOOST_TEST( Testee::s_copy_counter == expected_copy_count );
@@ -341,8 +327,7 @@ BOOST_AUTO_TEST_CASE( test_objects )
         Testee const obj;
         Testee::s_copy_counter = 0;
 
-        EXPR_TYPE( E, obj );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( obj ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)Testee is false]" );
         BOOST_TEST( Testee::s_copy_counter == expected_copy_count );
@@ -351,8 +336,7 @@ BOOST_AUTO_TEST_CASE( test_objects )
     {
         Testee::s_copy_counter = 0;
 
-        EXPR_TYPE( E, get_obj() );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( get_obj() ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)Testee is false]" );
         BOOST_TEST( Testee::s_copy_counter == expected_copy_count );
@@ -361,8 +345,7 @@ BOOST_AUTO_TEST_CASE( test_objects )
     {
         Testee::s_copy_counter = 0;
 
-        EXPR_TYPE( E, get_const_obj() );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( get_const_obj() ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)Testee is false]" );
         BOOST_TEST( Testee::s_copy_counter == expected_copy_count );
@@ -374,8 +357,7 @@ BOOST_AUTO_TEST_CASE( test_objects )
         Testee t1;
         Testee t2;
 
-        EXPR_TYPE( E, t1 != t2 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( t1 != t2 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [Testee == Testee]" );
         BOOST_TEST( Testee::s_copy_counter == 0 );
@@ -385,8 +367,7 @@ BOOST_AUTO_TEST_CASE( test_objects )
         NC nc1;
         NC nc2;
 
-        EXPR_TYPE( E, nc1 == nc2 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( nc1 == nc2 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [NC != NC]" );
     }
@@ -401,8 +382,7 @@ BOOST_AUTO_TEST_CASE( test_pointers )
     {
         Testee* ptr = 0;
 
-        EXPR_TYPE( E, ptr );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( ptr ).evaluate();
         BOOST_TEST( !res );
     }
 
@@ -410,8 +390,7 @@ BOOST_AUTO_TEST_CASE( test_pointers )
         Testee obj1;
         Testee obj2;
 
-        EXPR_TYPE( E, &obj1 == &obj2 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( &obj1 == &obj2 ).evaluate();
         BOOST_TEST( !res );
     }
 
@@ -419,8 +398,7 @@ BOOST_AUTO_TEST_CASE( test_pointers )
         Testee obj;
         Testee* ptr =&obj;
 
-        EXPR_TYPE( E, *ptr );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( *ptr ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)Testee is false]" );
     }
@@ -430,15 +408,14 @@ BOOST_AUTO_TEST_CASE( test_pointers )
         Testee* ptr =&obj;
         bool Testee::* mem_ptr =&Testee::m_value;
 
-        EXPR_TYPE( E, ptr->*mem_ptr );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( ptr->*mem_ptr ).evaluate();
         BOOST_TEST( !res );
     }
 
     // do not support
     // Testee obj;
     // bool Testee::* mem_ptr =&Testee::m_value;
-    // EXPR_TYPE( E, obj.*mem_ptr );
+    // EXPR_TYPE( obj.*mem_ptr );
 }
 
 //____________________________________________________________________________//
@@ -450,8 +427,7 @@ BOOST_AUTO_TEST_CASE( test_mutating_ops )
     {
         int j = 5;
 
-        EXPR_TYPE( E, j = 0 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( j = 0 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
         BOOST_TEST( j == 0 );
@@ -460,8 +436,7 @@ BOOST_AUTO_TEST_CASE( test_mutating_ops )
     {
         int j = 5;
 
-        EXPR_TYPE( E, j -= 5 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( j -= 5 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
         BOOST_TEST( j == 0 );
@@ -470,8 +445,7 @@ BOOST_AUTO_TEST_CASE( test_mutating_ops )
     {
         int j = 5;
 
-        EXPR_TYPE( E, j *= 0 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( j *= 0 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
         BOOST_TEST( j == 0 );
@@ -480,8 +454,7 @@ BOOST_AUTO_TEST_CASE( test_mutating_ops )
     {
         int j = 5;
 
-        EXPR_TYPE( E, j /= 10 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( j /= 10 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
         BOOST_TEST( j == 0 );
@@ -490,8 +463,7 @@ BOOST_AUTO_TEST_CASE( test_mutating_ops )
     {
         int j = 4;
 
-        EXPR_TYPE( E, j %= 2 );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( j %= 2 ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
         BOOST_TEST( j == 0 );
@@ -500,15 +472,44 @@ BOOST_AUTO_TEST_CASE( test_mutating_ops )
     {
         int j = 5;
 
-        EXPR_TYPE( E, j ^= j );
-        predicate_result const& res = E.evaluate();
+        predicate_result const& res = EXPR_TYPE( j ^= j ).evaluate();
         BOOST_TEST( !res );
         BOOST_TEST( res.message() == " [(bool)0 is false]" );
         BOOST_TEST( j == 0 );
    }
 }
 
-//____________________________________________________________________________//
+BOOST_AUTO_TEST_CASE( test_specialized_comparator_string )
+{
+    using namespace boost::test_tools;
+
+    {
+        std::string s("abc");
+
+        predicate_result const& res = EXPR_TYPE( s == "a" ).evaluate();
+        BOOST_TEST( !res );
+        BOOST_TEST( res.message() == " [abc != a]" );
+        BOOST_TEST( s == "abc" );
+    }
+
+    {
+        predicate_result const& res = EXPR_TYPE( std::string("abc") == "a" ).evaluate();
+        BOOST_TEST( !res );
+        BOOST_TEST( res.message() == " [abc != a]" );
+    }
+
+    {
+        predicate_result const& res = EXPR_TYPE( "abc" == std::string("a") ).evaluate();
+        BOOST_TEST( !res );
+        BOOST_TEST( res.message() == " [abc != a]" );
+    }
+
+    {
+        predicate_result const& res = EXPR_TYPE( std::string("abc") == std::string("a") ).evaluate();
+        BOOST_TEST( !res );
+        BOOST_TEST( res.message() == " [abc != a]" );
+    }
+}
 
 // EOF
 

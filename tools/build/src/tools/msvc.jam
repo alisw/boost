@@ -3,7 +3,7 @@
 # Copyright (c) 2005 Alexey Pakhunov
 # Copyright (c) 2006 Bojan Resnik
 # Copyright (c) 2006 Ilya Sokolov
-# Copyright (c) 2007 Rene Rivera
+# Copyright (c) 2007-2017 Rene Rivera
 # Copyright (c) 2008 Jurko Gospodnetic
 # Copyright (c) 2014 Microsoft Corporation
 #
@@ -793,7 +793,7 @@ actions write-setup-script
 # Local helper rule to create the vcvars setup command for given architecture
 # and options.
 #
-local rule generate-setup-cmd ( version : command : parent : options * : cpu : global-setup : default-global-setup-options : default-setup )
+local rule generate-setup-cmd ( version : command : parent : options * : cpu : global-setup ? : default-global-setup-options : default-setup )
 {
     local setup-prefix = "call " ;
     local setup-suffix = " >nul"$(.nl) ;
@@ -820,7 +820,16 @@ local rule generate-setup-cmd ( version : command : parent : options * : cpu : g
         }
         else
         {
+            if [ MATCH "(14.1)" : $(version) ]
+            {
+                if $(.debug-configuration)
+                {
+                    ECHO 'notice: [generate-setup-cmd] $(version) is 14.1' ;
+                }
+                parent = [ path.native [ path.join  $(parent) "..\\..\\..\\..\\..\\Auxiliary\\Build" ] ] ;
+            }
             setup = [ locate-default-setup $(command) : $(parent) : $(default-setup) ] ;
+            setup ?= [ path.join  $(parent) "vcvarsall.bat" ] ;
         }
     }
     
@@ -850,8 +859,16 @@ local rule configure-really ( version ? : options * )
     # Decide what the 'default' version is.
     if ! $(v)
     {
-        # Take the first registered (i.e. auto-detected) version.
+        # Take the best registered (i.e. auto-detected) version.
         version = [ $(.versions).all ] ;
+        for local known in $(.known-versions)
+        {
+            if $(known) in $(version)
+            {
+                version = $(known) ;
+                break ;
+            }
+        }
         version = $(version[1]) ;
         v = $(version) ;
 
@@ -894,10 +911,28 @@ local rule configure-really ( version ? : options * )
 
         local command = [ feature.get-values <command> : $(options) ] ;
 
+        # For 14.1 we need the exact version as MS is planning rolling updates
+        # that will cause our `setup-cmd` to become invalid
+        exact-version = [ MATCH "(14\.10\.[0-9\.]+)" : $(command) ] ;
+
         # If version is specified, we try to search first in default paths, and
         # only then in PATH.
         command = [ common.get-invocation-command msvc : cl.exe : $(command) :
             [ default-paths $(version) ] : $(version) ] ;
+
+        if ( ! $(version) || $(version) = "default" ) && ! $(command:D)
+        {
+            ECHO ;
+            ECHO warning:
+                "Did not find command for MSVC toolset."
+                "If you have Visual Studio 2017 installed you will need to"
+                "specify the full path to the command,"
+                "set VS150COMNTOOLS for your installation,"
+                "or"
+                "build from the 'Visual Studio Command Prompt for VS 2017'."
+                ;
+            ECHO ;
+        }
 
         common.handle-options msvc : $(conditions) : $(command) : $(options) ;
 
@@ -907,7 +942,11 @@ local rule configure-really ( version ? : options * )
             # version from the path.
             # FIXME: We currently detect both Microsoft Visual Studio 9.0 and
             # 9.0express as 9.0 here.
-            if [ MATCH "(Microsoft Visual Studio 14)" : $(command) ]
+            if [ MATCH "(MSVC\\14.1)" : $(command) ]
+            {
+                version = 14.1 ;
+            }
+            else if [ MATCH "(Microsoft Visual Studio 14)" : $(command) ]
             {
                 version = 14.0 ;
             }
@@ -960,7 +999,7 @@ local rule configure-really ( version ? : options * )
         {
             cpu = i386 ;
         }
-        if $(below-11.0)
+        else if $(below-11.0)
         {
             cpu = i386 amd64 ia64 ;
         }
@@ -1069,7 +1108,8 @@ local rule configure-really ( version ? : options * )
 
             for local c in $(cpu)
             {
-                setup-$(c) = [ generate-setup-cmd $(version) : $(command) : $(parent) : $(options) : $(c) : $(global-setup) : $(default-global-setup-options-$(c)) : $(default-setup-$(c)) ] ;
+                exact-version ?= $(version) ;
+                setup-$(c) = [ generate-setup-cmd $(exact-version) : $(command) : $(parent) : $(options) : $(c) : $(global-setup) : $(default-global-setup-options-$(c)) : $(default-setup-$(c)) ] ;
             }
             
             # Windows phone has different setup scripts, located in a different directory hierarchy.
@@ -1161,7 +1201,14 @@ local rule configure-really ( version ? : options * )
                 {
                     setup-script = $(setup-phone-$(c)) ;
                 }
-                toolset.flags msvc.compile .CC  <windows-api>$(api)/$(cpu-conditions) : $(setup-script)$(compiler) /Zm800 -nologo ;
+                if $(api) = desktop
+                {
+                    toolset.flags msvc.compile .CC  <windows-api>$(api)/$(cpu-conditions) : $(setup-script)$(compiler) /Zm800 -nologo ;
+                }
+                else
+                {
+                    toolset.flags msvc.compile .CC  <windows-api>$(api)/$(cpu-conditions) : $(setup-script)$(compiler) /Zm800 /ZW /EHsc -nologo ;
+                }
                 toolset.flags msvc.compile .ASM <windows-api>$(api)/$(cpu-conditions) : $(setup-script)$(cpu-assembler) -nologo ;
                 toolset.flags msvc.link    .LD  <windows-api>$(api)/$(cpu-conditions) : $(setup-script)$(linker) /NOLOGO /INCREMENTAL:NO ;
                 toolset.flags msvc.archive .LD  <windows-api>$(api)/$(cpu-conditions) : $(setup-script)$(linker) /lib /NOLOGO  ;
@@ -1194,37 +1241,39 @@ local rule configure-really ( version ? : options * )
 local rule default-path ( version )
 {
     # Use auto-detected path if possible.
-    local path = [ feature.get-values <command> : [ $(.versions).get $(version)
+    local result = [ feature.get-values <command> : [ $(.versions).get $(version)
         : options ] ] ;
 
-    if $(path)
+    if $(result)
     {
-        path = $(path:D) ;
+        result = $(result:D) ;
     }
     else
     {
         # Check environment.
-        if $(.version-$(version)-env)
+        for local env in $(.version-$(version)-env)
         {
-            local vc-path = [ os.environ $(.version-$(version)-env) ] ;
-            if $(vc-path)
+            local env-path = [ os.environ $(env) ] ;
+            if $(env-path) && $(.version-$(version)-path)
             {
-                vc-path = [ path.make $(vc-path) ] ;
-                vc-path = [ path.join $(vc-path) $(.version-$(version)-envpath) ] ;
-                vc-path = [ path.native $(vc-path) ] ;
-
-                path = $(vc-path) ;
+                for local bin-path in $(.version-$(version)-path)
+                {
+                    result = [ path.glob [ path.make $(env-path) ] : $(bin-path) ] ;
+                    if $(result)
+                    {
+                        result = [ path.native $(result[1]) ] ;
+                        break ;
+                    }
+                }
             }
-        }
-
-        # Check default path.
-        if ! $(path) && $(.version-$(version)-path)
-        {
-            path = [ path.native [ path.join $(.ProgramFiles) $(.version-$(version)-path) ] ] ;
+            if $(result)
+            {
+                break ;
+            }
         }
     }
 
-    return $(path) ;
+    return $(result) ;
 }
 
 
@@ -1584,7 +1633,7 @@ if [ MATCH (--debug-configuration) : [ modules.peek : ARGV ] ]
                      armv7 armv7s ;
 
 # Known toolset versions, in order of preference.
-.known-versions = 14.0 12.0 11.0 10.0 10.0express 9.0 9.0express 8.0 8.0express 7.1
+.known-versions = 14.1 14.0 12.0 11.0 10.0 10.0express 9.0 9.0express 8.0 8.0express 7.1
     7.1toolkit 7.0 6.0 ;
 
 # Version aliases.
@@ -1597,6 +1646,7 @@ if [ MATCH (--debug-configuration) : [ modules.peek : ARGV ] ]
 .version-alias-11 = 11.0 ;
 .version-alias-12 = 12.0 ;
 .version-alias-14 = 14.0 ;
+.version-alias-14.1 = 14.1 ;
 
 # Names of registry keys containing the Visual C++ installation path (relative
 # to "HKEY_LOCAL_MACHINE\SOFTWARE\\Microsoft").
@@ -1616,13 +1666,17 @@ if [ MATCH (--debug-configuration) : [ modules.peek : ARGV ] ]
 # Visual C++ Toolkit 2003 does not store its installation path in the registry.
 # The environment variable 'VCToolkitInstallDir' and the default installation
 # path will be checked instead.
-.version-7.1toolkit-path    = "Microsoft Visual C++ Toolkit 2003" "bin" ;
+.version-7.1toolkit-path    = "Microsoft Visual C++ Toolkit 2003/bin" ;
 .version-7.1toolkit-env     = VCToolkitInstallDir ;
-
-# Path to the folder containing "cl.exe" relative to the value of the
-# corresponding environment variable.
-.version-7.1toolkit-envpath = "bin" ;
-
+# Visual Studio 2017 doesn't use a registry at all. And the suggested methods
+# of discovery involve having a compiled program. We can't do that as it would
+# make for a recursive discovery and build dependency cycle. So we search
+# paths for VS2017 (aka msvc >= 14.1).
+.version-14.1-path =
+    "../../VC/Tools/MSVC/*/bin/Host*/*"
+    "Microsoft Visual Studio/2017/*/VC/Tools/MSVC/*/bin/Host*/*"
+    ;
+.version-14.1-env = VS150COMNTOOLS ProgramFiles ProgramFiles(x86) ;
 
 # Auto-detect all the available msvc installations on the system.
 auto-detect-toolset-versions ;

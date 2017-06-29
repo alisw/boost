@@ -4,11 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Struct template placeholder</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../xpressive/reference.html#header.boost.xpressive.regex_actions_hpp" title="Header &lt;boost/xpressive/regex_actions.hpp&gt;">
 <link rel="prev" href="local.html" title="Struct template local">
-<link rel="next" href="reference.html" title="Struct template reference">
+<link rel="next" href="at.html" title="Global at">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -21,7 +21,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="local.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../xpressive/reference.html#header.boost.xpressive.regex_actions_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="local.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../xpressive/reference.html#header.boost.xpressive.regex_actions_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="at.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="boost.xpressive.placeholder"></a><div class="titlepage"></div>
@@ -35,11 +35,11 @@
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">int</span> I <span class="special">=</span> <span class="number">0</span><span class="special">&gt;</span> 
 <span class="keyword">struct</span> <a class="link" href="placeholder.html" title="Struct template placeholder">placeholder</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="placeholder.html#boost.xpressive.placeholderconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="placeholder.html#idp358081984-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="placeholder.html#idp358085872-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="placeholder.html#idp783885120-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="placeholder.html#idp783889008-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp537531168"></a><h2>Description</h2>
+<a name="idp626850160"></a><h2>Description</h2>
 <p>Use <code class="computeroutput">placeholder&lt;&gt;</code> to define a placeholder for use in semantic actions to stand in for real objects. The use of placeholders allows regular expressions with actions to be defined once and reused in many contexts to read and write from objects which were not available when the regex was defined.</p>
 <p>
 You can use <code class="computeroutput">placeholder&lt;&gt;</code> by creating an object of type <code class="computeroutput">placeholder&lt;T&gt;</code> and using that object in a semantic action exactly as you intend an object of type <code class="computeroutput">T</code> to be used. </p>
@@ -95,7 +95,7 @@ You can use <code class="computeroutput">placeholder&lt;&gt;</code> by creating 
 </pre>
 <p> </p>
 <div class="refsect2">
-<a name="idp537681008"></a><h3>Template Parameters</h3>
+<a name="idp626999712"></a><h3>Template Parameters</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">typename</span> T</pre>
@@ -108,13 +108,13 @@ You can use <code class="computeroutput">placeholder&lt;&gt;</code> by creating 
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idp537687504"></a><h3>
+<a name="idp627006208"></a><h3>
 <a name="boost.xpressive.placeholderconstruct-copy-destruct"></a><code class="computeroutput">placeholder</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="idp358081984-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="idp783885120-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>
 
 </p>
@@ -145,7 +145,7 @@ You can use <code class="computeroutput">placeholder&lt;&gt;</code> by creating 
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="idp358085872-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span> t<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="idp783889008-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span> t<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
 </li>
 </ol></div>
@@ -162,7 +162,7 @@ You can use <code class="computeroutput">placeholder&lt;&gt;</code> by creating 
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="local.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../xpressive/reference.html#header.boost.xpressive.regex_actions_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="local.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../xpressive/reference.html#header.boost.xpressive.regex_actions_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="at.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

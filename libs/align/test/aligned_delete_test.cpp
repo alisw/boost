@@ -1,61 +1,52 @@
 /*
-(c) 2014 Glen Joseph Fernandes
-glenjofe at gmail dot com
+Copyright 2014 Glen Joseph Fernandes
+(glenjofe@gmail.com)
 
-Distributed under the Boost Software
-License, Version 1.0.
-http://boost.org/LICENSE_1_0.txt
+Distributed under the Boost Software License, Version 1.0.
+(http://www.boost.org/LICENSE_1_0.txt)
 */
 #include <boost/align/aligned_alloc.hpp>
 #include <boost/align/aligned_delete.hpp>
 #include <boost/align/alignment_of.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <new>
-#include <cstddef>
 
 template<class T>
 class type {
 public:
-    static int count;
+    static unsigned count;
 
     type()
-        : value() {
-        count++;
+        : value_() {
+        ++count;
     }
 
     ~type() {
-        count--;
+        --count;
     }
 
 private:
-    T value;
+    T value_;
 };
 
 template<class T>
-int type<T>::count = 0;
-
-template<class T>
-T* aligned_new()
-{
-    void* p = boost::alignment::aligned_alloc(boost::
-        alignment::alignment_of<T>::value, sizeof(T));
-    if (p) {
-        return ::new(p) T();
-    } else {
-        throw std::bad_alloc();
-    }
-}
+unsigned type<T>::count = 0;
 
 template<class T>
 void test()
 {
-    type<T>* p = aligned_new<type<T> >();
-    BOOST_TEST(type<T>::count == 1);
-    boost::alignment::aligned_delete()(p);
-    BOOST_TEST(type<T>::count == 0);
+    typedef type<T> E;
+    void* p = boost::alignment::aligned_alloc(boost::
+        alignment::alignment_of<E>::value, sizeof(E));
+    BOOST_TEST(p != 0);
+    E* q = ::new(p) E;
+    BOOST_TEST(E::count == 1);
+    boost::alignment::aligned_delete()(q);
+    BOOST_TEST(E::count == 0);
 }
 
 class C { };
+union U { };
 
 int main()
 {
@@ -72,6 +63,7 @@ int main()
     test<C>();
     test<int C::*>();
     test<int (C::*)()>();
+    test<U>();
 
     return boost::report_errors();
 }

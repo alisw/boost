@@ -24,7 +24,7 @@ int value1 = 0;
 std::string value2 = "";
 bool value3 = false;
 double value4 = .0;
-int * value5 = 0;
+int * value5 = nullptr;
 int& value6 = value1;
 int& value7 = value1;
 int value8 = 0;
@@ -171,7 +171,7 @@ void f91( coro::coroutine< int const* >::pull_type & c)
 
 void f10( coro::coroutine< int & >::pull_type & c)
 {
-    int const& i = c.get();
+    int & i = c.get();
     value5 = const_cast< int * >( & i);
 }
 
@@ -188,14 +188,11 @@ void f11( coro::coroutine< std::tuple< int, int > >::pull_type & c)
 
 void f12( coro::coroutine< void >::pull_type & c)
 {
+    value1 = 7;
     X x_;
     c();
     c();
 }
-
-template< typename E >
-void f14( coro::coroutine< void >::pull_type &, E const& e)
-{ throw e; }
 
 void f16( coro::coroutine< int >::push_type & c)
 {
@@ -214,13 +211,6 @@ void f17( coro::coroutine< int >::pull_type & c, std::vector< int > & vec)
         vec.push_back( x);
         x = c().get();
     }
-}
-
-void f19( coro::coroutine< int& >::push_type & c, int & i1, int & i2, int & i3)
-{
-    c( i1);
-    c( i2);
-    c( i3);
 }
 
 void f20( coro::coroutine< int >::push_type &)
@@ -296,6 +286,15 @@ void test_complete()
     value1 = 0;
 
     coro::coroutine< void >::pull_type coro( f2);
+    BOOST_CHECK( ! coro);
+    BOOST_CHECK_EQUAL( ( int)1, value1);
+}
+
+void test_bind()
+{
+    value1 = 0;
+
+    coro::coroutine< void >::pull_type coro( std::bind( f2, std::placeholders::_1) );
     BOOST_CHECK( ! coro);
     BOOST_CHECK_EQUAL( ( int)1, value1);
 }
@@ -380,7 +379,7 @@ void test_fp()
 
 void test_ptr()
 {
-    value5 = 0;
+    value5 = nullptr;
 
     int a = 3;
     coro::coroutine< int * >::push_type coro( f9);
@@ -392,7 +391,7 @@ void test_ptr()
 
 void test_const_ptr()
 {
-    value5 = 0;
+    value5 = nullptr;
 
     int a = 3;
     coro::coroutine< int const* >::push_type coro( f91);
@@ -404,19 +403,20 @@ void test_const_ptr()
 
 void test_ref()
 {
-    value5 = 0;
+    value5 = nullptr;
 
-    int a = 3;
+    int a_ = 3;
+    int & a = a_;
     coro::coroutine< int & >::push_type coro( f10);
     BOOST_CHECK( coro);
-    coro( a);
+    coro( std::ref( a) );
     BOOST_CHECK( ! coro);
     BOOST_CHECK_EQUAL( & a, value5);
 }
 
 void test_const_ref()
 {
-    value5 = 0;
+    value5 = nullptr;
 
     int a = 3;
     coro::coroutine< int const& >::push_type coro( f101);
@@ -424,6 +424,12 @@ void test_const_ref()
     coro( a);
     BOOST_CHECK( ! coro);
     BOOST_CHECK_EQUAL( & a, value5);
+}
+
+void test_no_result()
+{
+    coro::coroutine< int >::pull_type coro( f20);
+    BOOST_CHECK( ! coro);
 }
 
 void test_tuple()
@@ -457,6 +463,14 @@ void test_unwind()
         BOOST_CHECK_EQUAL( ( int) 7, value1);
     }
     BOOST_CHECK_EQUAL( ( int) 0, value1);
+    int i = 0;
+    {
+        coro::coroutine< void >::push_type coro(
+            [&i](coro::coroutine< void >::pull_type &) mutable {
+                i = 7;
+        });
+    }
+    BOOST_CHECK_EQUAL( ( int) 0, i);
 }
 
 void test_exceptions()
@@ -466,7 +480,9 @@ void test_exceptions()
     try
     {
         coro::coroutine< void >::push_type coro(
-            std::bind( f14< std::runtime_error >, std::placeholders::_1, ex) );
+                [&msg]( coro::coroutine< void >::pull_type &) {
+                    throw std::runtime_error( msg);
+                });
         BOOST_CHECK( coro);
         coro();
         BOOST_CHECK( ! coro);
@@ -512,7 +528,12 @@ void test_input_iterator()
     {
         int i1 = 1, i2 = 2, i3 = 3;
         coro::coroutine< int& >::pull_type coro(
-            std::bind( f19, std::placeholders::_1, std::ref( i1), std::ref( i2), std::ref( i3) ) );
+            [&i1,&i2,&i3](coro::coroutine< int& >::push_type & c){
+                c( i1);
+                c( i2);
+                c( i3);
+            });
+
         int counter = 1;
         for ( int & i : coro) {
             switch ( counter) {
@@ -549,8 +570,6 @@ void test_output_iterator()
                 x = c().get();
             }
         });
-//  coro::coroutine< int >::push_type coro(
-//      std::bind( f17, std::placeholders::_1, std::ref( vec) ) );
     coro::coroutine< int >::push_type::iterator e( end( coro) );
     for ( coro::coroutine< int >::push_type::iterator i( begin( coro) );
           i != e; ++i)
@@ -564,19 +583,58 @@ void test_output_iterator()
     BOOST_CHECK_EQUAL( ( int)4, vec[3] );
 }
 
-void test_no_result()
+std::vector< int > vec;
+coro::coroutine< void >::pull_type * child = nullptr;
+
+void start_child_coroutine() {
+    child = new coro::coroutine< void >::pull_type([](coro::coroutine< void >::push_type & yield) {
+            vec.push_back( 2);
+            yield();
+            vec.push_back( 2);
+            yield();
+            vec.push_back( 2);
+            yield();
+            vec.push_back( 2);
+            yield();
+            vec.push_back( 2);
+            yield();
+            vec.push_back( 2);
+            });
+}
+
+coro::coroutine< void >::pull_type start_parent_coroutine() {
+    return coro::coroutine< void >::pull_type([=](coro::coroutine< void >::push_type & yield) {
+            vec.push_back( 1);
+            start_child_coroutine();
+            yield();
+            vec.push_back( 1);
+            });
+}
+
+void test_chaining()
 {
-    coro::coroutine< int >::pull_type coro( f20);
-    BOOST_CHECK( ! coro);
+    auto parent = start_parent_coroutine();
+    while ( * child) {
+        ( * child)();
+    }
+    BOOST_CHECK_EQUAL( 7, vec.size() );
+    BOOST_CHECK_EQUAL( 1, vec[0]);
+    BOOST_CHECK_EQUAL( 2, vec[1]);
+    BOOST_CHECK_EQUAL( 2, vec[2]);
+    BOOST_CHECK_EQUAL( 2, vec[3]);
+    BOOST_CHECK_EQUAL( 2, vec[4]);
+    BOOST_CHECK_EQUAL( 2, vec[5]);
+    BOOST_CHECK_EQUAL( 2, vec[6]);
 }
 
 boost::unit_test::test_suite * init_unit_test_suite( int, char* [])
 {
     boost::unit_test::test_suite * test =
-        BOOST_TEST_SUITE("Boost.coroutine: coroutine test suite");
+        BOOST_TEST_SUITE("Boost.Coroutine2: coroutine test suite");
 
     test->add( BOOST_TEST_CASE( & test_move) );
     test->add( BOOST_TEST_CASE( & test_complete) );
+    test->add( BOOST_TEST_CASE( & test_bind) );
     test->add( BOOST_TEST_CASE( & test_jump) );
     test->add( BOOST_TEST_CASE( & test_result_int) );
     test->add( BOOST_TEST_CASE( & test_result_string) );
@@ -593,6 +651,7 @@ boost::unit_test::test_suite * init_unit_test_suite( int, char* [])
     test->add( BOOST_TEST_CASE( & test_exceptions) );
     test->add( BOOST_TEST_CASE( & test_input_iterator) );
     test->add( BOOST_TEST_CASE( & test_output_iterator) );
+    test->add( BOOST_TEST_CASE( & test_chaining) );
 
     return test;
 }

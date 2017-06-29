@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2014 Vladimir Batov.
+// Copyright (c) 2009-2016 Vladimir Batov.
 // Use, modification and distribution are subject to the Boost Software License,
 // Version 1.0. See http://www.boost.org/LICENSE_1_0.txt.
 
@@ -19,14 +19,14 @@ introduction()
 //[algorithm_introduction
 
    /*`The following code demonstrates conversion of an array of integers from their textual ['hexadecimal]
-      representation and assigns -1 to those which fail to convert:
+      representation. It assigns -1 to those which fail to convert:
    */
 
     boost::array<char const*, 3> strs = {{ " 5", "0XF", "not an int" }};
     std::vector<int>             ints;
     boost::cnv::cstream           cnv;
 
-    // Configure converter to read as a string of hexadecimal characters, skip (leading) white spaces.
+    // Configure converter to read hexadecimal, skip (leading) white spaces.
     cnv(std::hex)(std::skipws);
 
     std::transform(strs.begin(), strs.end(), std::back_inserter(ints),
@@ -71,7 +71,7 @@ example2()
 {
 //[algorithm_example2
     /*`If the exception-throwing behavior is the desired behavior, then ['Boost.Convert] supports that.
-      In addition, it also provides a non-throwing process-flow:
+      In addition, it also supports a non-throwing process-flow:
     */
     boost::array<char const*, 3> strs = {{ " 5", "0XF", "not an int" }};
     std::vector<int>             ints;
@@ -173,7 +173,7 @@ example5()
 }
 
 int
-main(int argc, char const* argv[])
+main(int, char const* [])
 {
     introduction();
     example1();

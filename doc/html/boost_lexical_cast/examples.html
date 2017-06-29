@@ -4,10 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Examples</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../boost_lexical_cast.html" title="Chapter&#160;17.&#160;Boost.Lexical_Cast 1.0">
-<link rel="prev" href="../boost_lexical_cast.html" title="Chapter&#160;17.&#160;Boost.Lexical_Cast 1.0">
+<link rel="up" href="../boost_lexical_cast.html" title="Chapter&#160;21.&#160;Boost.Lexical_Cast 1.0">
+<link rel="prev" href="../boost_lexical_cast.html" title="Chapter&#160;21.&#160;Boost.Lexical_Cast 1.0">
 <link rel="next" href="synopsis.html" title="Synopsis">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -248,8 +248,10 @@
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variant</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">v1</span><span class="special">(</span><span class="char">'0'</span><span class="special">),</span> <span class="identifier">v2</span><span class="special">(</span><span class="string">"10.0001"</span><span class="special">),</span> <span class="identifier">v3</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
 
-    <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">sum</span> <span class="special">=</span> <span class="identifier">to_long_double</span><span class="special">(</span><span class="identifier">v1</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">to_long_double</span><span class="special">(</span><span class="identifier">v2</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">to_long_double</span><span class="special">(</span><span class="identifier">v3</span><span class="special">);</span>
-    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">sum</span> <span class="special">&gt;</span> <span class="number">11</span> <span class="special">&amp;&amp;</span> <span class="identifier">sum</span> <span class="special">&lt;</span> <span class="number">11.1</span><span class="special">);</span>
+    <span class="keyword">const</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">sum</span> <span class="special">=</span> <span class="identifier">to_long_double</span><span class="special">(</span><span class="identifier">v1</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">to_long_double</span><span class="special">(</span><span class="identifier">v2</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">to_long_double</span><span class="special">(</span><span class="identifier">v3</span><span class="special">);</span>
+    <span class="keyword">const</span> <span class="keyword">int</span> <span class="identifier">ret</span> <span class="special">=</span> <span class="special">(</span><span class="identifier">sum</span> <span class="special">&gt;</span> <span class="number">11</span> <span class="special">&amp;&amp;</span> <span class="identifier">sum</span> <span class="special">&lt;</span> <span class="number">11.1</span> <span class="special">?</span> <span class="number">0</span> <span class="special">:</span> <span class="number">1</span><span class="special">);</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">ret</span> <span class="special">==</span> <span class="number">0</span><span class="special">);</span>
+    <span class="keyword">return</span> <span class="identifier">ret</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>

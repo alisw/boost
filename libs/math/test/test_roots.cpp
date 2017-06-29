@@ -209,7 +209,7 @@ double inverse_ibeta_halley(double a, double b, double z)
    return boost::math::tools::halley_iterate(ibeta_roots_3<double, boost::math::policies::policy<> >(a, b, z, invert), guess, min, max, precision);
 }
 
-double inverse_ibeta_schroeder(double a, double b, double z)
+double inverse_ibeta_schroder(double a, double b, double z)
 {
    double guess = 0.5;
    bool invert = false;
@@ -237,7 +237,7 @@ double inverse_ibeta_schroeder(double a, double b, double z)
 
    double min = 0;
    double max = 1;
-   return boost::math::tools::schroeder_iterate(ibeta_roots_3<double, boost::math::policies::policy<> >(a, b, z, invert), guess, min, max, precision);
+   return boost::math::tools::schroder_iterate(ibeta_roots_3<double, boost::math::policies::policy<> >(a, b, z, invert), guess, min, max, precision);
 }
 
 
@@ -248,7 +248,7 @@ void test_inverses(const T& data)
    typedef typename T::value_type row_type;
    typedef Real                   value_type;
 
-   value_type precision = static_cast<value_type>(ldexp(1.0, 1-boost::math::policies::digits<value_type, boost::math::policies::policy<> >()/2)) * 100;
+   value_type precision = static_cast<value_type>(ldexp(1.0, 1-boost::math::policies::digits<value_type, boost::math::policies::policy<> >()/2)) * 150;
    if(boost::math::policies::digits<value_type, boost::math::policies::policy<> >() < 50)
       precision = 1;   // 1% or two decimal digits, all we can hope for when the input is truncated
 
@@ -263,7 +263,7 @@ void test_inverses(const T& data)
       if(data[i][5] == 0)
       {
          BOOST_CHECK_EQUAL(inverse_ibeta_halley(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(0));
-         BOOST_CHECK_EQUAL(inverse_ibeta_schroeder(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(0));
+         BOOST_CHECK_EQUAL(inverse_ibeta_schroder(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(0));
          BOOST_CHECK_EQUAL(inverse_ibeta_newton(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(0));
          BOOST_CHECK_EQUAL(inverse_ibeta_bisect(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(0));
       }
@@ -273,7 +273,7 @@ void test_inverses(const T& data)
       {
          value_type inv = inverse_ibeta_halley(Real(data[i][0]), Real(data[i][1]), Real(data[i][5]));
          BOOST_CHECK_CLOSE_EX(Real(data[i][2]), inv, precision, i);
-         inv = inverse_ibeta_schroeder(Real(data[i][0]), Real(data[i][1]), Real(data[i][5]));
+         inv = inverse_ibeta_schroder(Real(data[i][0]), Real(data[i][1]), Real(data[i][5]));
          BOOST_CHECK_CLOSE_EX(Real(data[i][2]), inv, precision, i);
          inv = inverse_ibeta_newton(Real(data[i][0]), Real(data[i][1]), Real(data[i][5]));
          BOOST_CHECK_CLOSE_EX(Real(data[i][2]), inv, precision, i);
@@ -283,7 +283,7 @@ void test_inverses(const T& data)
       else if(1 == data[i][5])
       {
          BOOST_CHECK_EQUAL(inverse_ibeta_halley(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(1));
-         BOOST_CHECK_EQUAL(inverse_ibeta_schroeder(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(1));
+         BOOST_CHECK_EQUAL(inverse_ibeta_schroder(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(1));
          BOOST_CHECK_EQUAL(inverse_ibeta_newton(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(1));
          BOOST_CHECK_EQUAL(inverse_ibeta_bisect(Real(data[i][0]), Real(data[i][1]), Real(data[i][5])), value_type(1));
       }

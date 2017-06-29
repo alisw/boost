@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class segmented_stack</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Coroutine2">
 <link rel="up" href="../stack.html" title="Stack allocation">
 <link rel="prev" href="fixedsize.html" title="Class fixedsize_stack">
@@ -41,29 +41,23 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           Segmented stacks are currently only supported by <span class="bold"><strong>gcc</strong></span>
-          from version <span class="bold"><strong>4.7</strong></span> <span class="bold"><strong>clang</strong></span>
+          from version <span class="bold"><strong>4.7</strong></span> and <span class="bold"><strong>clang</strong></span>
           from version <span class="bold"><strong>3.4</strong></span> onwards. In order to
           use a <span class="emphasis"><em>segmented-stack</em></span> <span class="bold"><strong>Boost.Coroutine2</strong></span>
-          must be built with <span class="bold"><strong>toolset=gcc segmented-stacks=on</strong></span>
-          at b2/bjam command-line. Applications must be compiled with compiler-flags
-          <span class="bold"><strong>-fsplit-stack -DBOOST_USE_SEGMENTED_STACKS</strong></span>.
+          must be built with property <code class="computeroutput"><span class="identifier">segmented</span><span class="special">-</span><span class="identifier">stacks</span></code>,
+          e.g. <span class="bold"><strong>toolset=gcc segmented-stacks=on</strong></span> at
+          b2/bjam command line.
         </p></td></tr>
 </table></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">coroutine2</span><span class="special">/</span><span class="identifier">segmented_stack</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">traitsT</span> <span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">basic_segmented_stack</span>
-<span class="special">{</span>
-    <span class="keyword">typedef</span> <span class="identifier">traitT</span>  <span class="identifier">traits_type</span><span class="special">;</span>
-
-    <span class="identifier">basic_segmented_stack</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span> <span class="special">=</span> <span class="identifier">traits_type</span><span class="special">::</span><span class="identifier">default_size</span><span class="special">());</span>
+<span class="keyword">struct</span> <span class="identifier">segmented_stack</span> <span class="special">{</span>
+    <span class="identifier">segmented_stack</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span> <span class="special">=</span> <span class="identifier">traits_type</span><span class="special">::</span><span class="identifier">default_size</span><span class="special">());</span>
 
     <span class="identifier">stack_context</span> <span class="identifier">allocate</span><span class="special">();</span>
 
     <span class="keyword">void</span> <span class="identifier">deallocate</span><span class="special">(</span> <span class="identifier">stack_context</span> <span class="special">&amp;);</span>
 <span class="special">}</span>
-
-<span class="keyword">typedef</span> <span class="identifier">basic_segmented_stack</span><span class="special">&lt;</span> <span class="identifier">stack_traits</span> <span class="special">&gt;</span> <span class="identifier">segmented_stack</span><span class="special">;</span>
 </pre>
 <h5>
 <a name="coroutine2.stack.segmented.h0"></a>
@@ -82,7 +76,7 @@
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
               Allocates memory of at least <code class="computeroutput"><span class="identifier">size</span></code>
-              Bytes and stores a pointer to the stack and its actual size in <code class="computeroutput"><span class="identifier">sctx</span></code>. Depending on the architecture
+              bytes and stores a pointer to the stack and its actual size in <code class="computeroutput"><span class="identifier">sctx</span></code>. Depending on the architecture
               (the stack grows downwards/upwards) the stored address is the highest/lowest
               address of the stack.
             </p></dd>
@@ -110,6 +104,16 @@
             </p></dd>
 </dl>
 </div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          If the library is compiled for segmented stacks, <span class="emphasis"><em>segmented-stack</em></span>
+          is the only available stack allocator.
+        </p></td></tr>
+</table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

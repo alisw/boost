@@ -91,6 +91,13 @@ void expected_results()
    add_expected_result(
       ".*",                          // compiler
       ".*",                          // stdlib
+      ".*Solaris.*",                 // platform
+      largest_type,                  // test type(s)
+      ".*",                          // test data group
+      ".*", 500, 200);               // test function
+   add_expected_result(
+      ".*",                          // compiler
+      ".*",                          // stdlib
       ".*",                          // platform
       largest_type,                  // test type(s)
       ".*",                          // test data group
@@ -138,7 +145,7 @@ BOOST_AUTO_TEST_CASE( test_main )
    std::cout << "<note>The long double tests have been disabled on this platform "
       "either because the long double overloads of the usual math functions are "
       "not available at all, or because they are too inaccurate for these tests "
-      "to pass.</note>" << std::cout;
+      "to pass.</note>" << std::endl;
 #endif
 }
 

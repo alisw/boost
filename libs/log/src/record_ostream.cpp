@@ -13,6 +13,7 @@
  *         at http://www.boost.org/doc/libs/release/libs/log/doc/html/index.html.
  */
 
+#include <boost/log/detail/config.hpp>
 #include <locale>
 #include <utility>
 #include <boost/log/sources/record_ostream.hpp>
@@ -33,6 +34,7 @@ BOOST_LOG_OPEN_NAMESPACE
 template< typename CharT >
 BOOST_LOG_API void basic_record_ostream< CharT >::init_stream()
 {
+    base_type::init_stream();
     base_type::imbue(std::locale());
     if (m_record)
     {
@@ -57,7 +59,7 @@ BOOST_LOG_API void basic_record_ostream< CharT >::detach_from_record() BOOST_NOE
     {
         base_type::detach();
         m_record = NULL;
-        base_type::exceptions(stream_type::goodbit);
+        base_type::exceptions(base_type::goodbit);
     }
 }
 

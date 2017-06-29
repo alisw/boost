@@ -329,6 +329,7 @@ void test()
    //
    // Finish off by testing the error handlers:
    //
+#ifndef BOOST_NO_EXCEPTIONS
    BOOST_CHECK_THROW(static_cast<T>(iround(static_cast<T>(1e20))), boost::math::rounding_error);
    BOOST_CHECK_THROW(static_cast<T>(iround(static_cast<T>(-1e20))), boost::math::rounding_error);
    BOOST_CHECK_THROW(static_cast<T>(lround(static_cast<T>(1e20))), boost::math::rounding_error);
@@ -339,7 +340,7 @@ void test()
 #endif
    if(std::numeric_limits<T>::has_infinity)
    {
-      BOOST_CHECK_THROW(static_cast<T>(round(std::numeric_limits<T>::infinity())), boost::math::rounding_error);
+      BOOST_CHECK_EQUAL(static_cast<T>(round(std::numeric_limits<T>::infinity())), std::numeric_limits<T>::infinity()); // See C99 Annex F.
       BOOST_CHECK_THROW(static_cast<T>(iround(std::numeric_limits<T>::infinity())), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(iround(-std::numeric_limits<T>::infinity())), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(lround(std::numeric_limits<T>::infinity())), boost::math::rounding_error);
@@ -351,7 +352,7 @@ void test()
    }
    if(std::numeric_limits<T>::has_quiet_NaN)
    {
-      BOOST_CHECK_THROW(static_cast<T>(round(std::numeric_limits<T>::quiet_NaN())), boost::math::rounding_error);
+      BOOST_CHECK((boost::multiprecision::isnan)(round(std::numeric_limits<T>::quiet_NaN())));
       BOOST_CHECK_THROW(static_cast<T>(iround(std::numeric_limits<T>::quiet_NaN())), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(lround(std::numeric_limits<T>::quiet_NaN())), boost::math::rounding_error);
    #ifdef BOOST_HAS_LONG_LONG
@@ -368,7 +369,8 @@ void test()
 #endif
    if(std::numeric_limits<T>::has_infinity)
    {
-      BOOST_CHECK_THROW(static_cast<T>(trunc(std::numeric_limits<T>::infinity())), boost::math::rounding_error);
+      BOOST_CHECK_EQUAL(static_cast<T>(trunc(std::numeric_limits<T>::infinity())), std::numeric_limits<T>::infinity());
+      BOOST_CHECK_EQUAL(static_cast<T>(trunc(-std::numeric_limits<T>::infinity())), -std::numeric_limits<T>::infinity());
       BOOST_CHECK_THROW(static_cast<T>(itrunc(std::numeric_limits<T>::infinity())), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(itrunc(-std::numeric_limits<T>::infinity())), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(ltrunc(std::numeric_limits<T>::infinity())), boost::math::rounding_error);
@@ -380,7 +382,7 @@ void test()
    }
    if(std::numeric_limits<T>::has_quiet_NaN)
    {
-      BOOST_CHECK_THROW(static_cast<T>(trunc(std::numeric_limits<T>::quiet_NaN())), boost::math::rounding_error);
+      BOOST_CHECK((boost::multiprecision::isnan)(trunc(std::numeric_limits<T>::quiet_NaN())));
       BOOST_CHECK_THROW(static_cast<T>(itrunc(std::numeric_limits<T>::quiet_NaN())), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(ltrunc(std::numeric_limits<T>::quiet_NaN())), boost::math::rounding_error);
    #ifdef BOOST_HAS_LONG_LONG
@@ -420,6 +422,7 @@ void test()
       BOOST_CHECK_THROW(static_cast<T>(llround(static_cast<T>((std::numeric_limits<boost::long_long_type>::max)()) + 1)), boost::math::rounding_error);
       BOOST_CHECK_THROW(static_cast<T>(llround(static_cast<T>((std::numeric_limits<boost::long_long_type>::min)()) - 1)), boost::math::rounding_error);
    }
+#endif
 #endif
 }
 

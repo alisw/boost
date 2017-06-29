@@ -5,10 +5,10 @@
 // Copyright (c) 2008-2015 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2015 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2015.
-// Modifications copyright (c) 2015, Oracle and/or its affiliates.
-
+// This file was modified by Oracle on 2015, 2016.
+// Modifications copyright (c) 2015-2016, Oracle and/or its affiliates.
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
 // (geolib/GGL), copyright (c) 1995-2010 Geodan, Amsterdam, the Netherlands.
@@ -20,10 +20,6 @@
 #include <climits>
 #include <iostream>
 #include <string>
-
-// If defined, tests are run without rescaling-to-integer or robustness policy
-// Test which would fail then are disabled automatically
-// #define BOOST_GEOMETRY_NO_ROBUSTNESS
 
 #include <boost/config.hpp>
 #include <boost/core/ignore_unused.hpp>
@@ -53,6 +49,10 @@ void test_areal()
     typedef typename bg::coordinate_type<Polygon>::type ct;
     bool const ccw = bg::point_order<Polygon>::value == bg::counterclockwise;
     bool const open = bg::closure<Polygon>::value == bg::open;
+
+    ut_settings ignore_validity;
+    ignore_validity.test_validity = false;
+
 
     test_one<Polygon, Polygon, Polygon>("simplex_with_empty_1",
         simplex_normal[0], polygon_empty,
@@ -142,11 +142,11 @@ void test_areal()
 
     test_one<Polygon, Polygon, Polygon>("distance_zero",
         distance_zero[0], distance_zero[1],
-        1, 0 /* f: 4, other: 5 */, 0.29516139, 0.01);
+        1, 0 /* f: 4, other: 5 */, 0.29516139, ut_settings(0.01));
 
     test_one<Polygon, Polygon, Polygon>("equal_holes_disjoint",
         equal_holes_disjoint[0], equal_holes_disjoint[1],
-        1, 20, 81 - 2 * 3 * 3 - 3 * 7);
+        1, 20, 81.0 - 2.0 * 3.0 * 3.0 - 3.0 * 7.0);
 
     test_one<Polygon, Polygon, Polygon>("only_hole_intersections1",
         only_hole_intersections[0], only_hole_intersections[1],
@@ -157,7 +157,7 @@ void test_areal()
 
     test_one<Polygon, Polygon, Polygon>("fitting",
         fitting[0], fitting[1],
-        0, 0, 0);
+        0, 0, 0.0);
 
     test_one<Polygon, Polygon, Polygon>("crossed",
         crossed[0], crossed[1],
@@ -165,19 +165,26 @@ void test_areal()
 
     test_one<Polygon, Polygon, Polygon>("pie_2_3_23_0",
         pie_2_3_23_0[0], pie_2_3_23_0[1],
-        1, 4, 163292.679042133, 0.1);
+        1, 4, 163292.679042133, ut_settings(0.1));
 
+#if defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
+    test_one<Polygon, Polygon, Polygon>("isovist",
+        isovist1[0], isovist1[1],
+        1, 19, 88.4178,
+        ignore_validity);
+#else
+    // SQL Server gives: 88.1920416352664
+    // PostGIS gives:    88.19203677911
     test_one<Polygon, Polygon, Polygon>("isovist",
         isovist1[0], isovist1[1],
         1, 19, 88.19203,
-        if_typed_tt<ct>(0.01, 0.1));
-
-    // SQL Server gives: 88.1920416352664
-    // PostGIS gives:    88.19203677911
+        ut_settings(if_typed_tt<ct>(0.01, 0.1)));
+#endif
 
     test_one<Polygon, Polygon, Polygon>("geos_1",
         geos_1[0], geos_1[1],
-            1, -1, 3461.0214843, 0.005); // MSVC 14 reports 3461.025390625
+            1, -1, 3461.0214843, // MSVC 14 reports 3461.025390625
+            ut_settings(0.005, false));
 
     // Expectations:
     // In most cases: 0 (no intersection)
@@ -185,7 +192,7 @@ void test_areal()
     // In some cases: 5.6022983000000002e-05 (powerpc64le-gcc-6-0)
     test_one<Polygon, Polygon, Polygon>("geos_2",
         geos_2[0], geos_2[1],
-            0, 0, 6.0e-5, -1.0); // -1 denotes: compare with <=
+            0, 0, 6.0e-5, ut_settings(-1.0)); // -1 denotes: compare with <=
 
 #if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
     test_one<Polygon, Polygon, Polygon>("geos_3",
@@ -207,7 +214,7 @@ void test_areal()
             ggl_list_20110306_javier[0], ggl_list_20110306_javier[1],
             1, if_typed<ct, float>(4, 5),
             0.6649875,
-            if_typed<ct, float>(1.0, 0.01));
+            ut_settings(if_typed<ct, float>(1.0, 0.01)));
     }
 
     // SQL Server reports: 0.400390625
@@ -220,7 +227,7 @@ void test_areal()
         #if defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
             0.40
         #else
-            0.397162651, 0.01
+            0.397162651, ut_settings(0.01)
         #endif
             );
 
@@ -236,40 +243,31 @@ void test_areal()
 
     test_one<Polygon, Polygon, Polygon>("ggl_list_20131119_james",
         ggl_list_20131119_james[0], ggl_list_20131119_james[1],
-        1, 4, 6.6125873045, 0.1);
+        1, 4, 6.6125873045, ut_settings(0.1));
 
     test_one<Polygon, Polygon, Polygon>("ggl_list_20140223_shalabuda",
         ggl_list_20140223_shalabuda[0], ggl_list_20140223_shalabuda[1],
-        1, 4, 3.77106, 0.001);
+        1, 4, 3.77106, ut_settings(0.001));
 
-#if 0
-    // TODO: fix this testcase, it should give 0 but instead it gives one of the input polygons
     // Mailed to the Boost.Geometry list on 2014/03/21 by 7415963@gmail.com
     test_one<Polygon, Polygon, Polygon>("ggl_list_20140321_7415963",
         ggl_list_20140321_7415963[0], ggl_list_20140321_7415963[1],
-        0, 0, 0, 0.1);
-#endif
+        0, 0, 0, ut_settings(0.1));
 
 #if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
     test_one<Polygon, Polygon, Polygon>("buffer_rt_f", buffer_rt_f[0], buffer_rt_f[1],
-                1, 4,  0.00029437899183903937, 0.01);
-#endif
+                1, 4,  0.00029437899183903937, ut_settings(0.01));
 
     test_one<Polygon, Polygon, Polygon>("buffer_rt_g", buffer_rt_g[0], buffer_rt_g[1],
                 1, 0, 2.914213562373);
-
-#if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
-    test_one<Polygon, Polygon, Polygon>("ticket_8254", ticket_8254[0], ticket_8254[1],
-                1, 4, 3.635930e-08, 0.01);
 #endif
 
+    test_one<Polygon, Polygon, Polygon>("ticket_8254", ticket_8254[0], ticket_8254[1],
+                1, 4, 3.635930e-08, ut_settings(0.01));
     test_one<Polygon, Polygon, Polygon>("ticket_6958", ticket_6958[0], ticket_6958[1],
-                1, 4, 4.34355e-05, 0.01);
-
-#if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
+                1, 4, 4.34355e-05, ut_settings(0.01));
     test_one<Polygon, Polygon, Polygon>("ticket_8652", ticket_8652[0], ticket_8652[1],
                 1, 4, 0.0003);
-#endif
 
     test_one<Polygon, Polygon, Polygon>("ticket_8310a", ticket_8310a[0], ticket_8310a[1],
                 1, 5, 0.3843747);
@@ -296,41 +294,83 @@ void test_areal()
 
     test_one<Polygon, Polygon, Polygon>("ticket_10747_a",
                 ticket_10747_a[0], ticket_10747_a[1],
-                1, 4, 70368744177664);
+                1, 4, 70368744177664.0);
     test_one<Polygon, Polygon, Polygon>("ticket_10747_b",
                 ticket_10747_b[0], ticket_10747_b[1],
-                1, 4, 7036874417766400);
+                1, 4, 7036874417766400.0);
     test_one<Polygon, Polygon, Polygon>("ticket_10747_c",
                 ticket_10747_c[0], ticket_10747_c[1],
-                1, 4, 17592186044416);
+                1, 4, 17592186044416.0);
     test_one<Polygon, Polygon, Polygon>("ticket_10747_d",
                 ticket_10747_d[0], ticket_10747_d[1],
-                1, 4, 703687777321);
+                1, 4, 703687777321.0);
     test_one<Polygon, Polygon, Polygon>("ticket_10747_e",
                 ticket_10747_e[0], ticket_10747_e[1],
                 1, 4, 7.0368748575710959e-15);
 
-#if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
+    test_one<Polygon, Polygon, Polygon>("ticket_11576",
+                ticket_11576[0], ticket_11576[1],
+                1, 0, 5.585617332907136e-07);
+
     test_one<Polygon, Polygon, Polygon>("ticket_9563", ticket_9563[0], ticket_9563[1],
                 1, 8, 129.90381);
-#endif
 
-#if ! defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
     test_one<Polygon, Polygon, Polygon>("buffer_mp1", buffer_mp1[0], buffer_mp1[1],
                 1, 31, 2.271707796);
-#endif
-
     test_one<Polygon, Polygon, Polygon>("buffer_mp2", buffer_mp2[0], buffer_mp2[1],
                 1, 29, 0.457126);
 
-    return;
+    test_one<Polygon, Polygon, Polygon>("case_58_iet",
+        case_58[0], case_58[2],
+        2, -1, 1.0 / 3.0);
 
+    test_one<Polygon, Polygon, Polygon>("case_80",
+        case_80[0], case_80[1],
+        0, -1, 0.0);
 
-    test_one<Polygon, Polygon, Polygon>(
-            "polygon_pseudo_line",
-            "Polygon((0 0,0 4,4 4,4 0,0 0))",
-            "Polygon((2 -2,2 -1,2 6,2 -2))",
-            5, 22, 1.1901714);
+    test_one<Polygon, Polygon, Polygon>("case_81",
+        case_81[0], case_81[1],
+        0, -1, 0.0);
+
+    test_one<Polygon, Polygon, Polygon>("case_101",
+        case_101[0], case_101[1],
+        0, -1, 6.25);
+    test_one<Polygon, Polygon, Polygon>("case_102",
+        case_102[0], case_102[1],
+        0, -1, 3.1875);
+
+    test_one<Polygon, Polygon, Polygon>("mysql_21964049",
+        mysql_21964049[0], mysql_21964049[1],
+        0, -1, 0.0);
+
+    test_one<Polygon, Polygon, Polygon>("mysql_21964465",
+        mysql_21964465[0], mysql_21964465[1],
+        0, -1, 0.0);
+
+    test_one<Polygon, Polygon, Polygon>("mysql_21965285_b_inv",
+        mysql_21965285_b_inv[0],
+        mysql_21965285_b_inv[1],
+        2, -1, 183.71376870369406);
+
+    // Needs self-intersections to solve validity
+    test_one<Polygon, Polygon, Polygon>("mysql_23023665_6",
+        mysql_23023665_6[0], mysql_23023665_6[1],
+        1, -1, 11.812440191387557,
+        ignore_validity);
+
+    test_one<Polygon, Polygon, Polygon>("mysql_23023665_10",
+        mysql_23023665_10[0], mysql_23023665_10[1],
+        1, 0, -1, 54.701340543162523);
+
+    test_one<Polygon, Polygon, Polygon>("mysql_23023665_11",
+        mysql_23023665_11[0], mysql_23023665_11[1],
+        1, 0, -1, 35.933385462482065);
+
+//    test_one<Polygon, Polygon, Polygon>(
+//        "polygon_pseudo_line",
+//        "Polygon((0 0,0 4,4 4,4 0,0 0))",
+//        "Polygon((2 -2,2 -1,2 6,2 -2))",
+//        5, 22, 1.1901714);
 }
 
 template <typename Polygon, typename Box>
@@ -446,6 +486,86 @@ void test_areal_linear()
     test_one_lp<LineString, Polygon, LineString>("case19", poly_9, "LINESTRING(1 2,1 3,0 3)", 1, 2, 1.0);
     test_one_lp<LineString, Polygon, LineString>("case20", poly_9, "LINESTRING(1 2,1 3,2 3)", 1, 3, 2.0);
 
+    test_one_lp<LineString, Polygon, LineString>("case21",
+        "POLYGON((2 3,-9 -7,12 -13,2 3))",
+        "LINESTRING(-1.3 0,-15 0,-1.3 0)",
+         0, 0, 0);
+
+    test_one_lp<LineString, Polygon, LineString>("case22",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(5 5,-10 5,5 5)",
+         2, 4, 10);
+
+    test_one_lp<LineString, Polygon, LineString>("case22a",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(1 1,5 5,-10 5,5 5,6 6)",
+         2, 6, 17.071068);
+
+    test_one_lp<LineString, Polygon, LineString>("case23",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-10 5,5 5,-10 5)",
+         1, 3, 10);
+
+    test_one_lp<LineString, Polygon, LineString>("case23a",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-20 10,-10 5,5 5,-10 5,-20 -10)",
+         1, 3, 10);
+
+    test_one_lp<LineString, Polygon, LineString>("case24",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(0 5,5 5,0 5)",
+         1, 3, 10);
+
+    test_one_lp<LineString, Polygon, LineString>("case24",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(0 5,5 5,1 1,9 1,5 5,0 5)",
+         1, 6, 29.313708);
+
+    test_one_lp<LineString, Polygon, LineString>("case25",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(5 5,0 5,5 5)",
+         1, 3, 10);
+
+    test_one_lp<LineString, Polygon, LineString>("case25a",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-10 10,5 5,0 5,5 5,20 10)",
+         1, 4, 20.540925);
+
+    test_one_lp<LineString, Polygon, LineString>("case25b",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-10 10,5 5,1 5,5 5,20 10)",
+         1, 4, 18.540925);
+
+    test_one_lp<LineString, Polygon, LineString>("case25c",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-10 10,5 5,-1 5,5 5,20 10)",
+         2, 6, 20.540925);
+
+    test_one_lp<LineString, Polygon, LineString>("case26",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-5 5,0 5,-5 5)",
+         0, 0, 0);
+
+    test_one_lp<LineString, Polygon, LineString>("case26a",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(-10 10,-5 5,0 5,-5 5,-10 -10)",
+         0, 0, 0);
+
+    test_one_lp<LineString, Polygon, LineString>("case27",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(5 5,0 5,5 5,5 4,0 4,5 4)",
+         1, 6, 21.0);
+
+    test_one_lp<LineString, Polygon, LineString>("case28",
+        "POLYGON((0 0,0 10,10 10,10 0,0 0))",
+        "LINESTRING(5 5,0 5,5 5,5 4,0 4,5 3)",
+         1, 6, 21.099019);
+
+    test_one_lp<LineString, Polygon, LineString>("case29",
+        "POLYGON((5 5,15 15,15 5,5 5))",
+        "LINESTRING(0 0,10 10)",
+        1, 2, 5 * std::sqrt(2.0));
+
     // PROPERTIES CHANGED BY switch_to_integer
     // TODO test_one_lp<LineString, Polygon, LineString>("case21", poly_9, "LINESTRING(1 2,1 4,4 4,4 1,2 1,2 2)", 1, 6, 11.0);
 
@@ -503,6 +623,9 @@ void test_all()
     typedef bg::model::polygon<P, false, false> polygon_ccw_open;
     boost::ignore_unused<polygon_ccw, polygon_open, polygon_ccw_open>();
 
+    ut_settings ignore_validity;
+    ignore_validity.test_validity = false;
+
     std::string clip = "box(2 2,8 8)";
 
     test_areal_linear<polygon, linestring>();
@@ -552,23 +675,22 @@ void test_all()
     test_one<linestring, linestring, box>("llbi", "LINESTRING(3 3,7 7)", clip, 1, 2, sqrt(2.0 * 4.0 * 4.0));
 
     // Completely outside
-    test_one<linestring, linestring, box>("llbo", "LINESTRING(9 9,10 10)", clip, 0, 0, 0);
+    test_one<linestring, linestring, box>("llbo", "LINESTRING(9 9,10 10)", clip, 0, 0, 0.0);
 
     // Touching with point (-> output linestring with ONE point)
-    //std::cout << "Note: the output line is degenerate! Might be removed!" << std::endl;
-    test_one<linestring, linestring, box>("llb_touch", "LINESTRING(8 8,10 10)", clip, 1, 1, 0.0);
+    test_one<linestring, linestring, box>("llb_touch", "LINESTRING(8 8,10 10)", clip, 1, 1, 0.0, ignore_validity);
 
     // Along border
-    test_one<linestring, linestring, box>("llb_along", "LINESTRING(2 2,2 8)", clip, 1, 2, 6);
+    test_one<linestring, linestring, box>("llb_along", "LINESTRING(2 2,2 8)", clip, 1, 2, 6.0);
 
     // Outputting two lines (because of 3-4-5 constructions (0.3,0.4,0.5)
     // which occur 4 times, the length is expected to be 2.0)
-    test_one<linestring, linestring, box>("llb_2", "LINESTRING(1.7 1.6,2.3 2.4,2.9 1.6,3.5 2.4,4.1 1.6)", clip, 2, 6, 4 * 0.5);
+    test_one<linestring, linestring, box>("llb_2", "LINESTRING(1.7 1.6,2.3 2.4,2.9 1.6,3.5 2.4,4.1 1.6)", clip, 2, 6, 4.0 * 0.5);
 
     // linear
-    test_one<P, linestring, linestring>("llp1", "LINESTRING(0 0,1 1)", "LINESTRING(0 1,1 0)", 1, 1, 0);
-    test_one<P, segment, segment>("ssp1", "LINESTRING(0 0,1 1)", "LINESTRING(0 1,1 0)", 1, 1, 0);
-    test_one<P, linestring, linestring>("llp2", "LINESTRING(0 0,1 1)", "LINESTRING(0 0,2 2)", 2, 2, 0);
+    test_one<P, linestring, linestring>("llp1", "LINESTRING(0 0,1 1)", "LINESTRING(0 1,1 0)", 1, 1, 0.0);
+    test_one<P, segment, segment>("ssp1", "LINESTRING(0 0,1 1)", "LINESTRING(0 1,1 0)", 1, 1, 0.0);
+    test_one<P, linestring, linestring>("llp2", "LINESTRING(0 0,1 1)", "LINESTRING(0 0,2 2)", 2, 2, 0.0);
 
     // polygons outputing points
     //test_one<P, polygon, polygon>("ppp1", simplex_normal[0], simplex_normal[1], 1, 7, 5.47363293);
@@ -681,6 +803,7 @@ void test_boxes_nd()
     test_boxes_per_d(p3(0,0,0), p3(5,5,5), p3(3,3,3), p3(6,6,6), true);
 }
 
+
 template <typename CoordinateType>
 void test_ticket_10868(std::string const& wkt_out)
 {
@@ -705,7 +828,7 @@ void test_ticket_10868(std::string const& wkt_out)
 
     test_one<polygon_type, polygon_type, polygon_type>("ticket_10868",
         ticket_10868[0], ticket_10868[1],
-        1, 7, 20266195244586);
+        1, 7, 20266195244586.0);
 }
 
 int test_main(int, char* [])
@@ -722,7 +845,9 @@ int test_main(int, char* [])
 
 #endif
 
-    test_exception<bg::model::d2::point_xy<double> >();
+    // Commented, because exception is now disabled:
+    // test_exception<bg::model::d2::point_xy<double> >();
+
     test_pointer_version();
 #if ! defined(BOOST_GEOMETRY_RESCALE_TO_ROBUST)
     test_rational<bg::model::d2::point_xy<boost::rational<int> > >();

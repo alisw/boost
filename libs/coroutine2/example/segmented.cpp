@@ -36,22 +36,11 @@ void bar( int i)
 int main() {
     int count = 384;
 
-#if defined(BOOST_USE_SEGMENTED_STACKS)
     std::cout << "using segmented_stack stacks: allocates " << count << " * 4kB == " << 4 * count << "kB on stack, ";
     std::cout << "initial stack size = " << boost::context::segmented_stack::traits_type::default_size() / 1024 << "kB" << std::endl;
     std::cout << "application should not fail" << std::endl;
-#else
-    std::cout << "using standard stacks: allocates " << count << " * 4kB == " << 4 * count << "kB on stack, ";
-    std::cout << "initial stack size = " << boost::context::fixedsize_stack::traits_type::default_size() / 1024 << "kB" << std::endl;
-    std::cout << "application might fail" << std::endl;
-#endif
 
     boost::coroutines2::coroutine< void >::push_type sink(
-#if defined(BOOST_USE_SEGMENTED_STACKS)
-        boost::coroutines2::segmented_stack(),
-#else
-        boost::coroutines2::fixedsize_stack(),
-#endif
         [&]( boost::coroutines2::coroutine< void >::pull_type & source) {
             bar( count);
             source();
@@ -59,7 +48,7 @@ int main() {
     
     sink();
 
-    std::cout << "main: done" << std::endl;
+    std::cout << "main: Done" << std::endl;
 
     return 0;
 }

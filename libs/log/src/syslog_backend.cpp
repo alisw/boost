@@ -15,7 +15,6 @@
 
 #ifndef BOOST_LOG_WITHOUT_SYSLOG
 
-#include "windows_version.hpp"
 #include <boost/log/detail/config.hpp>
 #include <ctime>
 #include <algorithm>
@@ -37,6 +36,7 @@
 #include <boost/system/error_code.hpp>
 #include <boost/date_time/c_time.hpp>
 #include <boost/log/sinks/syslog_backend.hpp>
+#include <boost/log/sinks/syslog_constants.hpp>
 #include <boost/log/detail/singleton.hpp>
 #include <boost/log/detail/snprintf.hpp>
 #include <boost/log/exceptions.hpp>
@@ -377,7 +377,7 @@ BOOST_LOG_ANONYMOUS_NAMESPACE {
         (
             packet,
             sizeof(packet),
-            "<%d> %s % 2d %02d:%02d:%02d %s %s",
+            "<%d>%s %2d %02d:%02d:%02d %s %s",
             pri,
             months[time_stamp->tm_mon],
             time_stamp->tm_mday,

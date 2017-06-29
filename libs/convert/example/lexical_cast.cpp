@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2014 Vladimir Batov.
+// Copyright (c) 2009-2016 Vladimir Batov.
 // Use, modification and distribution are subject to the Boost Software License,
 // Version 1.0. See http://www.boost.org/LICENSE_1_0.txt.
 
@@ -15,7 +15,7 @@ struct boost::cnv::by_default : public boost::cnv::lexical_cast {};
 //]
 
 int
-main(int argc, char const* argv[])
+main(int, char const* [])
 {
     //[lexical_cast_example1
     int    i1 = lexical_cast<int>("123");         // Throws if the conversion fails.

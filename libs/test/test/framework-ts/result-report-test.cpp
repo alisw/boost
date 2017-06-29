@@ -100,7 +100,8 @@ struct guard {
     ~guard()
     {
         results_reporter::set_stream( std::cerr );
-        results_reporter::set_format( runtime_config::report_format() );
+        results_reporter::set_format( runtime_config::get<output_format>(
+            runtime_config::btrt_report_format ) );
     }
 };
 
@@ -115,7 +116,7 @@ BOOST_AUTO_TEST_CASE( test_result_reports )
 
     std::string pattern_file_name(
         framework::master_test_suite().argc == 1
-            ? (runtime_config::save_pattern() ? PATTERN_FILE_NAME : "./test_files/" PATTERN_FILE_NAME )
+            ? (runtime_config::save_pattern() ? PATTERN_FILE_NAME : "./baseline-outputs/" PATTERN_FILE_NAME )
             : framework::master_test_suite().argv[1] );
 
     output_test_stream test_output( pattern_file_name, !runtime_config::save_pattern() );
@@ -150,6 +151,12 @@ BOOST_AUTO_TEST_CASE( test_result_reports )
         ts_main->add( ts_2 );
         ts_main->add( ts_3 );
 
+    test_suite* ts_char_escaping = BOOST_TEST_SUITE( "Char escaping" );
+        ts_char_escaping->add( BOOST_TEST_CASE( good_foo ) );
+        test_case * i_have_problems = BOOST_TEST_CASE( bad_foo );
+        i_have_problems->p_name.set("bad_foo<h>");
+        ts_char_escaping->add( i_have_problems );
+
     check( test_output, ts_1 );
 
     check( test_output, ts_1b );
@@ -163,6 +170,8 @@ BOOST_AUTO_TEST_CASE( test_result_reports )
     ts_3->depends_on( ts_1 );
 
     check( test_output, ts_main );
+
+    check( test_output, ts_char_escaping );
 
     results_reporter::set_stream( std::cout );
 }

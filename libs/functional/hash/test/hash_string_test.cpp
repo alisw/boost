@@ -38,7 +38,24 @@ void string_tests()
 #endif
 }
 
-#if !defined(BOOST_NO_STD_WSTRING)
+void string0_tests()
+{
+    std::string x1(1, '\0');
+    std::string x2(2, '\0');
+    std::string x3(3, '\0');
+    std::string x4(10, '\0');
+
+    BOOST_HASH_TEST_NAMESPACE::hash<std::string> hasher;
+
+    BOOST_TEST(hasher(x1) != hasher(x2));
+    BOOST_TEST(hasher(x1) != hasher(x3));
+    BOOST_TEST(hasher(x1) != hasher(x4));
+    BOOST_TEST(hasher(x2) != hasher(x3));
+    BOOST_TEST(hasher(x2) != hasher(x4));
+    BOOST_TEST(hasher(x3) != hasher(x4));
+}
+
+#if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
 void wstring_tests()
 {
     compile_time_tests((std::wstring*) 0);
@@ -66,7 +83,8 @@ void wstring_tests()
 int main()
 {
     string_tests();
-#if !defined(BOOST_NO_STD_WSTRING)
+    string0_tests();
+#if !defined(BOOST_NO_STD_WSTRING) && !defined(BOOST_NO_INTRINSIC_WCHAR_T)
     wstring_tests();
 #endif
     return boost::report_errors();

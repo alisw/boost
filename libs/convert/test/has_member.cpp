@@ -1,11 +1,11 @@
 // Boost.Convert test and usage example
-// Copyright (c) 2009-2014 Vladimir Batov.
+// Copyright (c) 2009-2016 Vladimir Batov.
 // Use, modification and distribution are subject to the Boost Software License,
 // Version 1.0. See http://www.boost.org/LICENSE_1_0.txt.
 
 #include "./test.hpp"
 
-#if defined(BOOST_CONVERT_INTEL_SFINAE_BROKEN) || defined(BOOST_CONVERT_MSVC_SFINAE_BROKEN)
+#if defined(BOOST_CONVERT_MSVC_SFINAE_BROKEN)
 int main(int, char const* []) { return 0; }
 #else
 
@@ -67,7 +67,7 @@ namespace { namespace local
 }}
 
 int
-main(int argc, char const* argv[])
+main(int, char const* [])
 {
     BOOST_TEST(local::has_begin<local::test01>::value     == true);
     BOOST_TEST(local::has_begin<local::test02>::value     == true);

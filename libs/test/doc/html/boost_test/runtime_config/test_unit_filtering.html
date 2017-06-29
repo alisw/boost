@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Test unit filtering</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Boost.Test">
 <link rel="up" href="../runtime_config.html" title="Runtime parameters">
 <link rel="prev" href="../runtime_config.html" title="Runtime parameters">
@@ -90,7 +90,7 @@
 <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">io_implemented</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
 <span class="keyword">const</span> <span class="keyword">bool</span> <span class="identifier">db_implemented</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
 
-<span class="identifier">BOOST_AUTO_TEST_SUITE</span><span class="special">(</span><span class="identifier">suite1</span><span class="special">,</span> <span class="special">*</span> <span class="identifier">utf</span><span class="special">::</span><span class="identifier">disabled</span><span class="special">());</span>
+<span class="identifier">BOOST_AUTO_TEST_SUITE</span><span class="special">(</span><span class="identifier">suite1</span><span class="special">,</span> <span class="special">*</span> <span class="identifier">utf</span><span class="special">::</span><span class="identifier">disabled</span><span class="special">())</span>
 
   <span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span><span class="identifier">test_1</span><span class="special">)</span>
   <span class="special">{</span>
@@ -114,7 +114,7 @@
     <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="number">4</span> <span class="special">!=</span> <span class="number">4</span><span class="special">);</span>
   <span class="special">}</span>
 
-<span class="identifier">BOOST_AUTO_TEST_SUITE_END</span><span class="special">();</span>
+<span class="identifier">BOOST_AUTO_TEST_SUITE_END</span><span class="special">()</span>
 </pre>
               </td></tr></tbody>
 </table></div>
@@ -308,7 +308,8 @@ suite_1/suite_2/test_2
 <tr>
 <td>
                 <p>
-                  Run multiple test units residing in the same test suite
+                  Run multiple test units that are <span class="bold"><strong>siblings</strong></span>
+                  of the same test suite
                 </p>
               </td>
 <td>
@@ -318,6 +319,21 @@ suite_1/suite_2/test_2
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">suite_1/suite_2/test_1
 suite_1/suite_2/test_2
 suite_1/test_1
+</pre>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Run multiple test units that are not necessarily siblings
+                </p>
+              </td>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a class="link" href="../utf_reference/rt_param_reference/run_test.html" title="run_test"><code class="computeroutput"><span class="identifier">run_test</span></code></a>=suite_1/test_1:test_1</pre>
+              </td>
+<td>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">suite_1/test_1
+test_1
 </pre>
               </td>
 </tr>
@@ -522,7 +538,7 @@ suite_1/suite_2/test_2
         syntax as in the absolute specification, but preceded with either character
         <code class="computeroutput"><span class="char">'!'</span></code> for disabling enabled test
         units or with character <code class="computeroutput"><span class="char">'+'</span></code> for
-        enabling the disabled test units. this can be summarized with the following
+        enabling the disabled test units. This can be summarized with the following
         table:
       </p>
 <div class="informaltable"><table class="table">
@@ -744,7 +760,7 @@ suite_1/suite_2/test_2
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2015 Boost.Test team<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2016 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Building the Unit Test Framework</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Boost.Test">
 <link rel="up" href="../adv_scenarios.html" title="Advanced Usage Scenarios">
 <link rel="prev" href="../adv_scenarios.html" title="Advanced Usage Scenarios">
@@ -49,7 +49,8 @@
           </li>
 </ul></div>
 <p>
-        More documentation about Boost's build system can be found <a href="http://www.boost.org/more/getting_started/index.html" target="_top">here</a>.
+        More documentation about <span class="bold"><strong>Boost's build system</strong></span>
+        can be found <a href="http://www.boost.org/more/getting_started/index.html" target="_top">here</a>.
       </p>
 <h4>
 <a name="boost_test.adv_scenarios.build_utf.h0"></a>
@@ -58,6 +59,10 @@
 <p>
         You need to have a compilation toolchain. <span class="emphasis"><em>Visual Studio Express</em></span>
         is such one, freely available from the Microsoft website. Once installed,
+        open a <span class="emphasis"><em>Visual Studio Command Line tools</em></span> prompt and build
+        the Boost build program <code class="computeroutput"><span class="identifier">b2</span></code>
+        (see the link above). You will then be able to compile the <span class="emphasis"><em>Unit
+        Test Framework</em></span> with different variants.
       </p>
 <h5>
 <a name="boost_test.adv_scenarios.build_utf.h1"></a>
@@ -69,7 +74,7 @@
         commands:
       </p>
 <pre class="programlisting"><span class="special">&gt;</span> <span class="identifier">cd</span> $<span class="identifier">boost_path</span>
-<span class="special">&gt;</span> <span class="identifier">boostrap</span><span class="special">.</span><span class="identifier">bat</span>
+<span class="special">&gt;</span> <span class="identifier">bootstrap</span><span class="special">.</span><span class="identifier">bat</span>
 <span class="special">&gt;</span> <span class="identifier">b2</span> <span class="identifier">address</span><span class="special">-</span><span class="identifier">model</span><span class="special">=</span><span class="number">32</span> <span class="identifier">architecture</span><span class="special">=</span><span class="identifier">x86</span> <span class="special">--</span><span class="identifier">with</span><span class="special">-</span><span class="identifier">test</span> <span class="identifier">link</span><span class="special">=</span><span class="keyword">static</span> <span class="special">\</span>
 <span class="special">&gt;</span>                     <span class="special">--</span><span class="identifier">prefix</span><span class="special">=</span>$<span class="identifier">boost_installation_prefix</span> <span class="identifier">install</span>
 </pre>
@@ -77,7 +82,7 @@
         For building 64bits libraries, the commands become:
       </p>
 <pre class="programlisting"><span class="special">&gt;</span> <span class="identifier">cd</span> $<span class="identifier">boost_path</span>
-<span class="special">&gt;</span> <span class="identifier">boostrap</span><span class="special">.</span><span class="identifier">bat</span>
+<span class="special">&gt;</span> <span class="identifier">bootstrap</span><span class="special">.</span><span class="identifier">bat</span>
 <span class="special">&gt;</span> <span class="identifier">b2</span> <span class="identifier">address</span><span class="special">-</span><span class="identifier">model</span><span class="special">=</span><span class="number">64</span> <span class="identifier">architecture</span><span class="special">=</span><span class="identifier">x86</span> <span class="special">--</span><span class="identifier">with</span><span class="special">-</span><span class="identifier">test</span> <span class="identifier">link</span><span class="special">=</span><span class="keyword">static</span> <span class="special">\</span>
 <span class="special">&gt;</span>                    <span class="special">--</span><span class="identifier">prefix</span><span class="special">=</span>$<span class="identifier">boost_installation_prefix</span> <span class="identifier">install</span>
 </pre>
@@ -93,7 +98,7 @@
         become:
       </p>
 <pre class="programlisting"><span class="special">&gt;</span> <span class="identifier">cd</span> $<span class="identifier">boost_path</span>
-<span class="special">&gt;</span> <span class="identifier">boostrap</span><span class="special">.</span><span class="identifier">bat</span>
+<span class="special">&gt;</span> <span class="identifier">bootstrap</span><span class="special">.</span><span class="identifier">bat</span>
 <span class="special">&gt;</span> <span class="identifier">b2</span> <span class="identifier">address</span><span class="special">-</span><span class="identifier">model</span><span class="special">=</span><span class="number">64</span> <span class="identifier">architecture</span><span class="special">=</span><span class="identifier">x86</span> <span class="special">--</span><span class="identifier">with</span><span class="special">-</span><span class="identifier">test</span> <span class="identifier">link</span><span class="special">=</span><span class="identifier">shared</span> <span class="special">--</span><span class="identifier">prefix</span><span class="special">=</span>$<span class="identifier">boost_installation_prefix</span> <span class="identifier">install</span>
 </pre>
 <h4>
@@ -105,13 +110,13 @@
         Framework</em></span> is very similar to the one on Windows:
       </p>
 <pre class="programlisting"><span class="special">&gt;</span> <span class="identifier">cd</span> $<span class="identifier">boost_path</span>
-<span class="special">&gt;</span> <span class="special">./</span><span class="identifier">boostrap</span><span class="special">.</span><span class="identifier">sh</span>
+<span class="special">&gt;</span> <span class="special">./</span><span class="identifier">bootstrap</span><span class="special">.</span><span class="identifier">sh</span>
 <span class="special">&gt;</span> <span class="special">./</span><span class="identifier">b2</span> <span class="special">--</span><span class="identifier">with</span><span class="special">-</span><span class="identifier">test</span> <span class="special">--</span><span class="identifier">prefix</span><span class="special">=</span>$<span class="identifier">boost_installation_prefix</span> <span class="identifier">install</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2015 Boost.Test team<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2016 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -2,6 +2,11 @@
 // Unit Test Helper
 
 // Copyright (c) 2010-2015 Barend Gehrels, Amsterdam, the Netherlands.
+
+// This file was modified by Oracle on 2016-2017.
+// Modifications copyright (c) 2016-2017, Oracle and/or its affiliates.
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -30,6 +35,7 @@
 #include <boost/geometry/algorithms/intersects.hpp>
 #include <boost/geometry/algorithms/is_empty.hpp>
 #include <boost/geometry/algorithms/is_valid.hpp>
+#include <boost/geometry/algorithms/num_interior_rings.hpp>
 #include <boost/geometry/algorithms/union.hpp>
 
 #include <boost/geometry/algorithms/detail/overlay/debug_turn_info.hpp>
@@ -91,8 +97,10 @@ template<> struct EndTestProperties<boost::geometry::strategy::buffer::end_flat>
 
 
 
-template <typename Geometry, typename RescalePolicy>
-std::size_t count_self_ips(Geometry const& geometry, RescalePolicy const& rescale_policy)
+template <typename Geometry, typename Strategy, typename RescalePolicy>
+std::size_t count_self_ips(Geometry const& geometry,
+                           Strategy const& strategy,
+                           RescalePolicy const& rescale_policy)
 {
     typedef typename bg::point_type<Geometry>::type point_type;
     typedef bg::detail::overlay::turn_info
@@ -107,7 +115,7 @@ std::size_t count_self_ips(Geometry const& geometry, RescalePolicy const& rescal
     bg::self_turns
         <
             bg::detail::overlay::assign_null_policy
-        >(geometry, rescale_policy, turns, policy);
+        >(geometry, strategy, rescale_policy, turns, policy);
 
     return turns.size();
 }
@@ -128,7 +136,10 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
             DistanceStrategy const& distance_strategy,
             SideStrategy const& side_strategy,
             PointStrategy const& point_strategy,
-            bool check_self_intersections, double expected_area,
+            bool check_self_intersections,
+            int expected_count,
+            int expected_holes_count,
+            double expected_area,
             double tolerance,
             std::size_t* self_ip_count)
 {
@@ -208,10 +219,15 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
     typedef typename bg::point_type<Geometry>::type point_type;
     typedef typename bg::rescale_policy_type<point_type>::type
         rescale_policy_type;
+    typedef typename bg::strategy::intersection::services::default_strategy
+        <
+            typename bg::cs_tag<Geometry>::type
+        >::type strategy_type;
 
     // Enlarge the box to get a proper rescale policy
     bg::buffer(envelope, envelope, distance_strategy.max_distance(join_strategy, end_strategy));
 
+    strategy_type strategy;
     rescale_policy_type rescale_policy
             = bg::get_rescale_policy<rescale_policy_type>(envelope);
 
@@ -224,6 +240,7 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
                         join_strategy,
                         end_strategy,
                         point_strategy,
+                        strategy,
                         rescale_policy,
                         visitor);
 
@@ -253,6 +270,7 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
     bg::model::box<point_type> envelope_output;
     bg::assign_values(envelope_output, 0, 0, 1,  1);
     bg::envelope(buffered, envelope_output);
+
     rescale_policy_type rescale_policy_output
             = bg::get_rescale_policy<rescale_policy_type>(envelope_output);
 
@@ -261,6 +279,29 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
     //    std::cout << "OUTPUT: " << area << std::endl;
     //    std::cout << "OUTPUT env: " << bg::wkt(envelope_output) << std::endl;
     //    std::cout << bg::wkt(buffered) << std::endl;
+
+    if (expected_count >= 0)
+    {
+        BOOST_CHECK_MESSAGE
+            (
+                int(buffered.size()) == expected_count,
+                "#outputs not as expected."
+                << " Expected: " << expected_count
+                << " Detected: " << buffered.size()
+            );
+    }
+
+    if (expected_holes_count >= 0)
+    {
+        std::size_t nholes = bg::num_interior_rings(buffered);
+        BOOST_CHECK_MESSAGE
+        (
+            int(nholes) == expected_holes_count,
+            "#holes not as expected."
+            << " Expected: " << expected_holes_count
+            << " Detected: " << nholes
+        );
+    }
 
     if (expected_area > -0.1)
     {
@@ -273,6 +314,7 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
                 << " Expected: " << expected_area
                 << " Detected: " << area
                 << " Diff: " << difference
+                << " Tol: " << tolerance
                 << std::setprecision(3)
                 << " , " << 100.0 * (difference / expected_area) << "%"
             );
@@ -283,7 +325,7 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
             try
             {
                 bool has_self_ips = bg::detail::overlay::has_self_intersections(
-                                        buffered, rescale_policy_output, false);
+                                        buffered, strategy, rescale_policy_output, false);
                 // Be sure resulting polygon does not contain
                 // self-intersections
                 BOOST_CHECK_MESSAGE
@@ -339,9 +381,9 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
     {
         std::size_t count = 0;
         if (bg::detail::overlay::has_self_intersections(buffered,
-                rescale_policy_output, false))
+                strategy, rescale_policy_output, false))
         {
-            count = count_self_ips(buffered, rescale_policy_output);
+            count = count_self_ips(buffered, strategy, rescale_policy_output);
         }
 
         *self_ip_count += count;
@@ -352,6 +394,31 @@ void test_buffer(std::string const& caseid, Geometry const& geometry,
     }
 }
 
+template
+<
+    typename GeometryOut,
+    typename JoinStrategy,
+    typename EndStrategy,
+    typename DistanceStrategy,
+    typename SideStrategy,
+    typename PointStrategy,
+    typename Geometry
+>
+void test_buffer(std::string const& caseid, Geometry const& geometry,
+            JoinStrategy const& join_strategy,
+            EndStrategy const& end_strategy,
+            DistanceStrategy const& distance_strategy,
+            SideStrategy const& side_strategy,
+            PointStrategy const& point_strategy,
+            bool check_self_intersections,
+            double expected_area,
+            double tolerance,
+            std::size_t* self_ip_count)
+{
+    test_buffer<GeometryOut>(caseid, geometry,
+        join_strategy, end_strategy, distance_strategy, side_strategy, point_strategy,
+        check_self_intersections, -1, -1, expected_area, tolerance, self_ip_count);
+}
 
 #ifdef BOOST_GEOMETRY_CHECK_WITH_POSTGIS
 static int counter = 0;
@@ -366,7 +433,7 @@ template
 >
 void test_one(std::string const& caseid, std::string const& wkt,
         JoinStrategy const& join_strategy, EndStrategy const& end_strategy,
-        double expected_area,
+        int expected_count, int expected_holes_count, double expected_area,
         double distance_left, double distance_right = same_distance,
         bool check_self_intersections = true,
         double tolerance = 0.01)
@@ -404,7 +471,8 @@ void test_one(std::string const& caseid, std::string const& wkt,
             (caseid, g,
             join_strategy, end_strategy,
             distance_strategy, side_strategy, circle_strategy,
-            check_self_intersections, expected_area,
+            check_self_intersections,
+            expected_count, expected_holes_count, expected_area,
             tolerance, NULL);
 
 #if !defined(BOOST_GEOMETRY_COMPILER_MODE_DEBUG) && defined(BOOST_GEOMETRY_COMPILER_MODE_RELEASE)
@@ -422,11 +490,31 @@ void test_one(std::string const& caseid, std::string const& wkt,
                 (caseid + "_sym", g,
                 join_strategy, end_strategy,
                 sym_distance_strategy, side_strategy, circle_strategy,
-                check_self_intersections, expected_area,
+                check_self_intersections,
+                expected_count, expected_holes_count, expected_area,
                 tolerance, NULL);
 
     }
 #endif
+}
+
+template
+<
+    typename Geometry,
+    typename GeometryOut,
+    typename JoinStrategy,
+    typename EndStrategy
+>
+void test_one(std::string const& caseid, std::string const& wkt,
+        JoinStrategy const& join_strategy, EndStrategy const& end_strategy,
+        double expected_area,
+        double distance_left, double distance_right = same_distance,
+        bool check_self_intersections = true,
+        double tolerance = 0.01)
+{
+    test_one<Geometry, GeometryOut>(caseid, wkt, join_strategy, end_strategy,
+        -1 ,-1, expected_area,
+        distance_left, distance_right, check_self_intersections, tolerance);
 }
 
 // Version (currently for the Aimes test) counting self-ip's instead of checking

@@ -16,6 +16,7 @@ import virtual-target ;
 import generators ;
 import property ;
 import print ;
+import regex ;
 
 project.initialize $(__name__) ;
 .project = [ project.current ] ;
@@ -25,7 +26,7 @@ rule generate-include ( target : sources * : properties * )
 {
     local header = [ property.select <include> : $(properties) ] ;
     print.output $(target) ;
-    print.text "#include <$(header:G=)>" : true ;
+    print.text "#include <$(header:G=)>\n" : true ;
 }
 
 rule generate-main ( target : sources * : properties * )
@@ -43,9 +44,13 @@ rule find-include-path ( properties : header : provided-path ? )
     else
     {
         local a = [ class.new action : ac.generate-include : [ property-set.create <include>$(header) ] ] ;
-        local cpp = [ class.new file-target $(header).cpp exact : CPP : $(.project) : $(a) ] ;
+        # Create a new CPP target named after the header.
+        # Replace dots (".") in target basename for portability.
+        local basename = [ regex.replace $(header:D=) "[.]" "_" ] ;
+        local header-target = $(header:S=:B=$(basename)) ;
+        local cpp = [ class.new file-target $(header-target:S=.cpp) exact : CPP : $(.project) : $(a) ] ;
         cpp = [ virtual-target.register $(cpp) ] ;
-        local result = [ generators.construct $(.project) $(header) : OBJ : $(properties) : $(cpp) : true ] ;
+        local result = [ generators.construct $(.project) $(header-target) : OBJ : $(properties) : $(cpp) : true ] ;
         local jam-targets ;
         for t in $(result[2-])
         {
@@ -71,14 +76,6 @@ rule construct-library ( name : property-set : provided-path ? )
 rule find-library ( properties : names + : provided-path ? )
 {
     local result ;
-    if ! $(.main.cpp)
-    {
-        local a = [ class.new action : ac.generate-main :
-                    [ property-set.empty ] ] ;
-        .main.cpp = [ virtual-target.register
-            [ class.new file-target main.cpp exact
-                : CPP : $(.project) : $(a) ] ] ;
-    }
     if [ $(properties).get <link> ] = shared
     {
         link-opts = <link>shared <link>static ;
@@ -95,8 +92,12 @@ rule find-library ( properties : names + : provided-path ? )
         {
             local name = $(names-iter[1]) ;
             local lib = [ construct-library $(name) : $(properties) : $(provided-path) ] ;
+            local a = [ class.new action : ac.generate-main :
+                [ property-set.empty ] ] ;
+            local main.cpp = [ virtual-target.register
+                [ class.new file-target main-$(name).cpp exact : CPP : $(.project) : $(a) ] ] ;
             local test = [ generators.construct $(.project) $(name) : EXE
-                : [ $(properties).add $(lib[1]) ] : $(.main.cpp) $(lib[2-])
+                : [ $(properties).add $(lib[1]) ] : $(main.cpp) $(lib[2-])
                 : true ] ;
             local jam-targets ;
             for t in $(test[2-])

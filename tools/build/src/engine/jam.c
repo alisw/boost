@@ -165,6 +165,12 @@ static char * othersyms[] = { OSMAJOR, OSMINOR, OSPLAT, JAMVERSYM, 0 };
 # endif
 #endif
 
+
+#ifdef OS_VMS
+# define use_environ arg_environ
+#endif
+
+
 /* on Win32-LCC */
 #if defined( OS_NT ) && defined( __LCC__ )
 # define use_environ _environ
@@ -206,6 +212,7 @@ int anyhow = 0;
     extern PyObject * bjam_variable     ( PyObject * self, PyObject * args );
     extern PyObject * bjam_backtrace    ( PyObject * self, PyObject * args );
     extern PyObject * bjam_caller       ( PyObject * self, PyObject * args );
+    int python_optimize = 1;  /* Set Python optimzation on by default */
 #endif
 
 void regex_done();
@@ -235,7 +242,13 @@ int main( int argc, char * * argv, char * * arg_environ )
     --argc;
     ++argv;
 
-    if ( getoptions( argc, argv, "-:l:m:d:j:p:f:gs:t:ano:qv", optv ) < 0 )
+    #ifdef HAVE_PYTHON
+    #define OPTSTRING "-:l:m:d:j:p:f:gs:t:ano:qvz"
+    #else
+    #define OPTSTRING "-:l:m:d:j:p:f:gs:t:ano:qv"
+    #endif
+
+    if ( getoptions( argc, argv, OPTSTRING, optv ) < 0 )
     {
         err_printf( "\nusage: %s [ options ] targets...\n\n", progname );
 
@@ -253,6 +266,9 @@ int main( int argc, char * * argv, char * * arg_environ )
         err_printf( "-sx=y   Set variable x=y, overriding environment.\n" );
         err_printf( "-tx     Rebuild x, even if it is up-to-date.\n" );
         err_printf( "-v      Print the version of jam and exit.\n" );
+        #ifdef HAVE_PYTHON
+        err_printf( "-z      Disable Python Optimization and enable asserts\n" );
+        #endif
         err_printf( "--x     Option is ignored.\n\n" );
 
         exit( EXITBAD );
@@ -318,6 +334,11 @@ int main( int argc, char * * argv, char * * arg_environ )
     if ( ( s = getoptval( optv, 'm', 0 ) ) )
         globs.max_buf = atoi( s ) * 1024;  /* convert to kb */
 
+    #ifdef HAVE_PYTHON
+    if ( ( s = getoptval( optv, 'z', 0 ) ) )
+        python_optimize = 0;  /* disable python optimization */
+    #endif
+
     /* Turn on/off debugging */
     for ( n = 0; ( s = getoptval( optv, 'd', n ) ); ++n )
     {
@@ -364,6 +385,7 @@ int main( int argc, char * * argv, char * * arg_environ )
 #ifdef HAVE_PYTHON
         {
             PROFILE_ENTER( MAIN_PYTHON );
+            Py_OptimizeFlag = python_optimize;
             Py_Initialize();
             {
                 static PyMethodDef BjamMethods[] = {
@@ -647,6 +669,24 @@ char * executable_path( char const * argv0 )
     char buf[ 1024 ];
     ssize_t const ret = readlink( "/proc/self/exe", buf, sizeof( buf ) );
     return ( !ret || ret == sizeof( buf ) ) ? NULL : strndup( buf, ret );
+}
+#elif defined(OS_VMS)
+# include <unixlib.h>
+char * executable_path( char const * argv0 )
+{
+    char * vms_path = NULL;
+    char * posix_path = NULL;
+    char * p;
+
+    /* On VMS argv[0] shows absolute path to the image file.
+     * So, just remove VMS file version and translate path to POSIX-style.
+     */
+    vms_path = strdup( argv0 );
+    if ( vms_path && ( p = strchr( vms_path, ';') ) ) *p = '\0';
+    posix_path = decc$translate_vms( vms_path );
+    if ( vms_path ) free( vms_path );
+
+    return posix_path > 0 ? strdup( posix_path ) : NULL;
 }
 #else
 char * executable_path( char const * argv0 )

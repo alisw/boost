@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Allocators, containers and memory allocation algorithms</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter&#160;14.&#160;Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter&#160;18.&#160;Boost.Interprocess">
 <link rel="prev" href="managed_memory_segments.html" title="Managed Memory Segments">
 <link rel="next" href="memory_algorithms.html" title="Memory allocation algorithms">
 </head>
@@ -1169,7 +1169,7 @@
           <span class="bold"><strong>Boost.Interprocess</strong></span> STL compatible allocators
           offer a STL compatible allocator interface and if they define their internal
           <span class="bold"><strong>pointer</strong></span> typedef as a relative pointer,
-          they can sbe used to place STL containers in shared memory, memory mapped
+          they can be used to place STL containers in shared memory, memory mapped
           files or in a user defined memory segment.
         </p>
 <p>
@@ -1823,11 +1823,11 @@
   <span class="identifier">employee</span><span class="special">,</span>
   <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">indexed_by</span><span class="special">&lt;</span>
     <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">ordered_unique</span>
-      <span class="special">&lt;</span><span class="identifier">bmi</span><span class="special">::</span><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">id</span><span class="special">&gt;,</span>  <span class="identifier">BOOST_MULTI_INDEX_MEMBER</span><span class="special">(</span><span class="identifier">employee</span><span class="special">,</span><span class="keyword">int</span><span class="special">,</span><span class="identifier">id</span><span class="special">)&gt;,</span>
+      <span class="special">&lt;</span><span class="identifier">bmi</span><span class="special">::</span><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">id</span><span class="special">&gt;,</span>  <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">member</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">,</span><span class="keyword">int</span><span class="special">,&amp;</span><span class="identifier">employee</span><span class="special">::</span><span class="identifier">id</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
     <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">ordered_non_unique</span><span class="special">&lt;</span>
-      <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">name</span><span class="special">&gt;,</span><span class="identifier">BOOST_MULTI_INDEX_MEMBER</span><span class="special">(</span><span class="identifier">employee</span><span class="special">,</span><span class="identifier">shm_string</span><span class="special">,</span><span class="identifier">name</span><span class="special">)&gt;,</span>
+      <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">name</span><span class="special">&gt;,</span> <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">member</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">,</span><span class="identifier">shm_string</span><span class="special">,&amp;</span><span class="identifier">employee</span><span class="special">::</span><span class="identifier">name</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
     <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">ordered_non_unique</span>
-      <span class="special">&lt;</span><span class="identifier">bmi</span><span class="special">::</span><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">age</span><span class="special">&gt;,</span> <span class="identifier">BOOST_MULTI_INDEX_MEMBER</span><span class="special">(</span><span class="identifier">employee</span><span class="special">,</span><span class="keyword">int</span><span class="special">,</span><span class="identifier">age</span><span class="special">)&gt;</span> <span class="special">&gt;,</span>
+      <span class="special">&lt;</span><span class="identifier">bmi</span><span class="special">::</span><span class="identifier">tag</span><span class="special">&lt;</span><span class="identifier">age</span><span class="special">&gt;,</span> <span class="identifier">bmi</span><span class="special">::</span><span class="identifier">member</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">,</span><span class="keyword">int</span><span class="special">,&amp;</span><span class="identifier">employee</span><span class="special">::</span><span class="identifier">age</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;,</span>
   <span class="identifier">managed_shared_memory</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">&gt;::</span><span class="identifier">type</span>
 <span class="special">&gt;</span> <span class="identifier">employee_set</span><span class="special">;</span>
 

@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Containers with custom ValueTraits</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../intrusive.html" title="Chapter&#160;15.&#160;Boost.Intrusive">
+<link rel="up" href="../intrusive.html" title="Chapter&#160;19.&#160;Boost.Intrusive">
 <link rel="prev" href="node_algorithms.html" title="Node algorithms with custom NodeTraits">
 <link rel="next" href="thread_safety.html" title="Thread safety guarantees">
 </head>
@@ -656,11 +656,11 @@
 
    <span class="comment">//Now test lists</span>
    <span class="identifier">List</span><span class="special">::</span><span class="identifier">const_iterator</span>   <span class="identifier">list_it</span> <span class="special">(</span><span class="identifier">my_list</span><span class="special">.</span><span class="identifier">cbegin</span><span class="special">());</span>
-   <span class="identifier">identifier_t</span> <span class="special">*</span><span class="identifier">it_val</span><span class="special">(&amp;</span><span class="identifier">ids</span><span class="special">[</span><span class="identifier">NumElements</span><span class="special">-</span><span class="number">1</span><span class="special">]),</span> <span class="special">*</span><span class="identifier">it_rbeg_val</span><span class="special">(&amp;</span><span class="identifier">ids</span><span class="special">[</span><span class="number">0</span><span class="special">]-</span><span class="number">1</span><span class="special">);</span>
+   <span class="identifier">identifier_t</span> <span class="special">*</span><span class="identifier">it_val</span><span class="special">(&amp;</span><span class="identifier">ids</span><span class="special">[</span><span class="identifier">NumElements</span><span class="special">]),</span> <span class="special">*</span><span class="identifier">it_rbeg_val</span><span class="special">(&amp;</span><span class="identifier">ids</span><span class="special">[</span><span class="number">0</span><span class="special">]);</span>
 
    <span class="comment">//Test the objects inserted in the base hook list</span>
    <span class="keyword">for</span><span class="special">(;</span> <span class="identifier">it_val</span> <span class="special">!=</span> <span class="identifier">it_rbeg_val</span><span class="special">;</span> <span class="special">--</span><span class="identifier">it_val</span><span class="special">,</span> <span class="special">++</span><span class="identifier">list_it</span><span class="special">)</span>
-      <span class="keyword">if</span><span class="special">(&amp;*</span><span class="identifier">list_it</span>  <span class="special">!=</span> <span class="special">&amp;*</span><span class="identifier">it_val</span><span class="special">)</span>   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+      <span class="keyword">if</span><span class="special">(&amp;*</span><span class="identifier">list_it</span>  <span class="special">!=</span> <span class="special">&amp;</span><span class="identifier">it_val</span><span class="special">[-</span><span class="number">1</span><span class="special">])</span>   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
 
    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>

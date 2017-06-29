@@ -20,11 +20,14 @@
 #include <iostream>  //std::cout, std::endl
 #include <vector>    //std::vector
 #include <cstddef>   //std::size_t
+#include <cassert>   //assert
+
 #include <boost/container/allocator.hpp>
 #include <boost/container/adaptive_pool.hpp>
 #include <boost/container/stable_vector.hpp>
 #include <boost/container/vector.hpp>
 #include <boost/timer/timer.hpp>
+
 using boost::timer::cpu_timer;
 using boost::timer::cpu_times;
 using boost::timer::nanosecond_type;
@@ -174,8 +177,8 @@ void stable_vector_test_template(unsigned int num_iterations, unsigned int num_e
                      << " (" << (float(top_capacity)/float(num_iterations*num_elements) - 1)*100 << " %)"*/
                      << std::endl << std::endl;
    }
-   assert(boost_cont_all_deallocated());
-   boost_cont_trim(0);
+   assert(bc::dlmalloc_all_deallocated());
+   bc::dlmalloc_trim(0);
 }
 
 void print_header()
@@ -221,14 +224,14 @@ int main(int argc, const char *argv[])
    #define SINGLE_TEST
    #ifndef SINGLE_TEST
       #ifdef NDEBUG
-      unsigned int numit [] = { 400, 4000, 40000, 400000 };
+      unsigned int numit [] = { 40, 400, 4000, 40000 };
       #else
       unsigned int numit [] = { 4,   40,   400,   4000 };
       #endif
       unsigned int numele [] = { 10000, 1000, 100,   10     };
    #else
       #ifdef NDEBUG
-      unsigned int numit [] = { 400 };
+      unsigned int numit [] = { 40 };
       #else
       unsigned int numit [] = { 4 };
       #endif

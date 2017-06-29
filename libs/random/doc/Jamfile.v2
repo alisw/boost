@@ -29,7 +29,9 @@ doxygen_files =
     extreme_value_distribution
     fisher_f_distribution
     gamma_distribution
+    generate_canonical
     geometric_distribution
+    hyperexponential_distribution
     independent_bits
     inversive_congruential
     lagged_fibonacci
@@ -62,6 +64,7 @@ doxygen_files =
     variate_generator
     weibull_distribution
     xor_combine
+    traits
 ;
 
 path-constant here : . ;
@@ -173,3 +176,13 @@ boostbook standalone :
     <xsl:param>chunk.section.depth=2
     <format>pdf:<xsl:param>img.src.path=$(here)/html/
 ;
+
+###############################################################################
+alias boostdoc
+    : random
+    :
+    : <dependency>reference
+    : ;
+explicit boostdoc ;
+alias boostrelease ;
+explicit boostrelease ;
