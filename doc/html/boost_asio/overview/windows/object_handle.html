@@ -61,31 +61,27 @@
           For example, to perform asynchronous operations on an event, the following
           object may be created:
         </p>
-<pre class="programlisting"><span class="identifier">HANDLE</span> <span class="identifier">handle</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">CreateEvent</span><span class="special">(...);</span>
-<span class="identifier">windows</span><span class="special">::</span><span class="identifier">object_handle</span> <span class="identifier">file</span><span class="special">(</span><span class="identifier">my_io_service</span><span class="special">,</span> <span class="identifier">handle</span><span class="special">);</span>
+<pre class="programlisting">HANDLE handle = ::CreateEvent(...);
+windows::object_handle file(my_io_context, handle);
 </pre>
 <p>
-          The <code class="computeroutput"><span class="identifier">wait</span><span class="special">()</span></code>
-          and <code class="computeroutput"><span class="identifier">async_wait</span><span class="special">()</span></code>
-          member functions may then be used to wait until the kernel object is signalled.
+          The <code class="computeroutput">wait()</code> and <code class="computeroutput">async_wait()</code> member functions
+          may then be used to wait until the kernel object is signalled.
         </p>
 <h6>
 <a name="boost_asio.overview.windows.object_handle.h0"></a>
           <span class="phrase"><a name="boost_asio.overview.windows.object_handle.see_also"></a></span><a class="link" href="object_handle.html#boost_asio.overview.windows.object_handle.see_also">See Also</a>
         </h6>
 <p>
-          <a class="link" href="../../reference/windows__object_handle.html" title="windows::object_handle">windows::object_handle</a>,
-          <a class="link" href="../../reference/windows__basic_object_handle.html" title="windows::basic_object_handle">windows::basic_object_handle</a>,
-          <a class="link" href="../../reference/windows__object_handle_service.html" title="windows::object_handle_service">windows::object_handle_service</a>.
+          <a class="link" href="../../reference/windows__object_handle.html" title="windows::object_handle">windows::object_handle</a>.
         </p>
 <h6>
 <a name="boost_asio.overview.windows.object_handle.h1"></a>
           <span class="phrase"><a name="boost_asio.overview.windows.object_handle.notes"></a></span><a class="link" href="object_handle.html#boost_asio.overview.windows.object_handle.notes">Notes</a>
         </h6>
 <p>
-          Windows object <code class="computeroutput"><span class="identifier">HANDLE</span></code>s
-          are only available at compile time when targeting Windows. Programs may
-          test for the macro <code class="computeroutput"><span class="identifier">BOOST_ASIO_HAS_WINDOWS_OBJECT_HANDLE</span></code>
+          Windows object <code class="computeroutput">HANDLE</code>s are only available at compile time
+          when targeting Windows. Programs may test for the macro <code class="computeroutput">BOOST_ASIO_HAS_WINDOWS_OBJECT_HANDLE</code>
           to determine whether they are supported.
         </p>
 </div>

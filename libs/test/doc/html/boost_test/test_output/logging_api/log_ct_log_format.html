@@ -44,7 +44,7 @@
 <th align="left">Caution</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            <code class="computeroutput"><a class="link" href="../../../boost/unit_test/unit_test_log_t.html#idp58196464-bb">boost::unit_test::unit_test_log_t::set_format</a></code>
+            <code class="computeroutput"><a class="link" href="../../../boost/unit_test/unit_test_log_t.html#idp41754768-bb">boost::unit_test::unit_test_log_t::set_format</a></code>
             above disables all formatters but the one provided as argument.
           </p></td></tr>
 </table></div>
@@ -54,7 +54,7 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            See <code class="computeroutput"><a class="link" href="../../../boost/unit_test/unit_test_log_t.html#idp58196464-bb">boost::unit_test::unit_test_log_t::set_format</a></code>
+            See <code class="computeroutput"><a class="link" href="../../../boost/unit_test/unit_test_log_t.html#idp41754768-bb">boost::unit_test::unit_test_log_t::set_format</a></code>
             and <code class="computeroutput"><a class="link" href="../../../header/boost/test/detail/global_typedef_hpp.html#boost.unit_test.output_format">boost::unit_test::output_format</a></code>
             for more details
           </p></td></tr>
@@ -83,17 +83,15 @@
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">;</span>
 
 <span class="keyword">struct</span> <span class="identifier">MyConfig</span> <span class="special">{</span>
-  <span class="identifier">MyConfig</span><span class="special">()</span>
-  <span class="special">{</span>
+  <span class="identifier">MyConfig</span><span class="special">()</span> <span class="special">{</span>
     <span class="identifier">unit_test_log</span><span class="special">.</span><span class="identifier">set_format</span><span class="special">(</span> <span class="identifier">OF_XML</span> <span class="special">);</span>
   <span class="special">}</span>
   <span class="special">~</span><span class="identifier">MyConfig</span><span class="special">()</span> <span class="special">{}</span>
 <span class="special">};</span>
 
-<span class="identifier">BOOST_GLOBAL_FIXTURE</span><span class="special">(</span> <span class="identifier">MyConfig</span> <span class="special">);</span>
+<span class="identifier">BOOST_TEST_GLOBAL_CONFIGURATION</span><span class="special">(</span> <span class="identifier">MyConfig</span> <span class="special">);</span>
 
-<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case0</span> <span class="special">)</span>
-<span class="special">{</span>
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case0</span> <span class="special">)</span> <span class="special">{</span>
   <span class="identifier">BOOST_TEST</span><span class="special">(</span> <span class="keyword">false</span> <span class="special">);</span>
 <span class="special">}</span>
 </pre>
@@ -108,14 +106,14 @@
                 </th></tr></thead>
 <tbody><tr><td>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="special">&gt;</span> <span class="identifier">example</span> <span class="special">--</span><span class="identifier">report_level</span><span class="special">=</span><span class="identifier">no</span>
-<span class="special">&lt;</span><span class="identifier">TestLog</span><span class="special">&gt;&lt;</span><span class="identifier">Error</span> <span class="identifier">file</span><span class="special">=</span><span class="string">"test.cpp"</span> <span class="identifier">line</span><span class="special">=</span><span class="string">"18"</span><span class="special">&gt;</span><span class="identifier">check</span> <span class="keyword">false</span> <span class="identifier">failed</span><span class="special">&lt;/</span><span class="identifier">Error</span><span class="special">&gt;&lt;/</span><span class="identifier">TestLog</span><span class="special">&gt;</span>
+<span class="special">&lt;</span><span class="identifier">TestLog</span><span class="special">&gt;&lt;</span><span class="identifier">Error</span> <span class="identifier">file</span><span class="special">=</span><span class="string">"test.cpp"</span> <span class="identifier">line</span><span class="special">=</span><span class="string">"23"</span><span class="special">&gt;</span><span class="identifier">check</span> <span class="keyword">false</span> <span class="identifier">failed</span><span class="special">&lt;/</span><span class="identifier">Error</span><span class="special">&gt;&lt;/</span><span class="identifier">TestLog</span><span class="special">&gt;</span>
 </pre>
                 </td></tr></tbody>
 </table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2016 Boost.Test contributors<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2017 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

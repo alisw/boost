@@ -30,14 +30,14 @@
 <p>
           Write all of the supplied data at the specified offset before returning.
         </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../SyncRandomAccessWriteDevice.html" title="Buffer-oriented synchronous random-access write device requirements">SyncRandomAccessWriteDevice</a><span class="special">,</span>
-    <span class="keyword">typename</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">write_at</span><span class="special">(</span>
-    <span class="identifier">SyncRandomAccessWriteDevice</span> <span class="special">&amp;</span> <span class="identifier">d</span><span class="special">,</span>
-    <span class="identifier">uint64_t</span> <span class="identifier">offset</span><span class="special">,</span>
-    <span class="identifier">basic_streambuf</span><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <span class="identifier">b</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="../SyncRandomAccessWriteDevice.html" title="Buffer-oriented synchronous random-access write device requirements">SyncRandomAccessWriteDevice</a>,
+    typename Allocator&gt;
+std::size_t write_at(
+    SyncRandomAccessWriteDevice &amp; d,
+    uint64_t offset,
+    basic_streambuf&lt; Allocator &gt; &amp; b,
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
           This function is used to write a certain number of bytes of data to a random
@@ -46,7 +46,8 @@
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-              All of the data in the supplied <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput"><span class="identifier">basic_streambuf</span></code></a> has been written.
+              All of the data in the supplied <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput">basic_streambuf</code></a>
+              has been written.
             </li>
 <li class="listitem">
               An error occurred.
@@ -74,8 +75,8 @@
               </p></dd>
 <dt><span class="term">b</span></dt>
 <dd><p>
-                The <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput"><span class="identifier">basic_streambuf</span></code></a> object from
-                which data will be written.
+                The <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput">basic_streambuf</code></a>
+                object from which data will be written.
               </p></dd>
 <dt><span class="term">ec</span></dt>
 <dd><p>
@@ -97,9 +98,9 @@
 <p>
           This overload is equivalent to calling:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write_at</span><span class="special">(</span>
-    <span class="identifier">d</span><span class="special">,</span> <span class="number">42</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_all</span><span class="special">(),</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::write_at(
+    d, 42, b,
+    boost::asio::transfer_all(), ec);
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

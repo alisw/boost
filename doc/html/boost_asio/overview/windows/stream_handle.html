@@ -29,15 +29,14 @@
 </h4></div></div></div>
 <p>
           Boost.Asio contains classes to allow asynchronous read and write operations
-          to be performed on Windows <code class="computeroutput"><span class="identifier">HANDLE</span></code>s,
-          such as named pipes.
+          to be performed on Windows <code class="computeroutput">HANDLE</code>s, such as named pipes.
         </p>
 <p>
           For example, to perform asynchronous operations on a named pipe, the following
           object may be created:
         </p>
-<pre class="programlisting"><span class="identifier">HANDLE</span> <span class="identifier">handle</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">CreateFile</span><span class="special">(...);</span>
-<span class="identifier">windows</span><span class="special">::</span><span class="identifier">stream_handle</span> <span class="identifier">pipe</span><span class="special">(</span><span class="identifier">my_io_service</span><span class="special">,</span> <span class="identifier">handle</span><span class="special">);</span>
+<pre class="programlisting">HANDLE handle = ::CreateFile(...);
+windows::stream_handle pipe(my_io_context, handle);
 </pre>
 <p>
           These are then used as synchronous or asynchronous read and write streams.
@@ -48,28 +47,25 @@
           free functions.
         </p>
 <p>
-          The kernel object referred to by the <code class="computeroutput"><span class="identifier">HANDLE</span></code>
-          must support use with I/O completion ports (which means that named pipes
-          are supported, but anonymous pipes and console streams are not).
+          The kernel object referred to by the <code class="computeroutput">HANDLE</code> must support use
+          with I/O completion ports (which means that named pipes are supported,
+          but anonymous pipes and console streams are not).
         </p>
 <h6>
 <a name="boost_asio.overview.windows.stream_handle.h0"></a>
           <span class="phrase"><a name="boost_asio.overview.windows.stream_handle.see_also"></a></span><a class="link" href="stream_handle.html#boost_asio.overview.windows.stream_handle.see_also">See Also</a>
         </h6>
 <p>
-          <a class="link" href="../../reference/windows__stream_handle.html" title="windows::stream_handle">windows::stream_handle</a>,
-          <a class="link" href="../../reference/windows__basic_stream_handle.html" title="windows::basic_stream_handle">windows::basic_stream_handle</a>,
-          <a class="link" href="../../reference/windows__stream_handle_service.html" title="windows::stream_handle_service">windows::stream_handle_service</a>.
+          <a class="link" href="../../reference/windows__stream_handle.html" title="windows::stream_handle">windows::stream_handle</a>.
         </p>
 <h6>
 <a name="boost_asio.overview.windows.stream_handle.h1"></a>
           <span class="phrase"><a name="boost_asio.overview.windows.stream_handle.notes"></a></span><a class="link" href="stream_handle.html#boost_asio.overview.windows.stream_handle.notes">Notes</a>
         </h6>
 <p>
-          Windows stream <code class="computeroutput"><span class="identifier">HANDLE</span></code>s
-          are only available at compile time when targeting Windows and only when
-          the I/O completion port backend is used (which is the default). A program
-          may test for the macro <code class="computeroutput"><span class="identifier">BOOST_ASIO_HAS_WINDOWS_STREAM_HANDLE</span></code>
+          Windows stream <code class="computeroutput">HANDLE</code>s are only available at compile time
+          when targeting Windows and only when the I/O completion port backend is
+          used (which is the default). A program may test for the macro <code class="computeroutput">BOOST_ASIO_HAS_WINDOWS_STREAM_HANDLE</code>
           to determine whether they are supported.
         </p>
 </div>

@@ -119,14 +119,14 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 </class>
 
 
+
+
+
+
+
 <function name="ctti_construct"><type><emphasis>unspecified</emphasis></type><template>
           <template-type-parameter name="T"/>
         </template><purpose>Helper method for getting <classname alt="boost::typeindex::detail::ctti_data">detail::ctti_data</classname> of a template parameter T. </purpose></function>
-
-
-
-
-
 
 
 
@@ -153,19 +153,19 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 
 
 
+
+
+
+
+
+
+
 <function name="runtime_pointer_cast"><type>boost::shared_ptr&lt; T &gt;</type><template>
           <template-type-parameter name="T"><purpose><para>The desired target type to return a pointer of. </para></purpose></template-type-parameter>
           <template-type-parameter name="U"><purpose><para>A complete class type of the source instance pointed to from u. </para></purpose></template-type-parameter>
         </template><parameter name="u"><paramtype>boost::shared_ptr&lt; U &gt; const &amp;</paramtype></parameter><purpose>Creates a new instance of std::shared_ptr whose stored pointer is obtained from u's stored pointer using a runtime_cast. </purpose><description><para>The new shared_ptr will share ownership with u, except that it is empty if the runtime_cast performed by runtime_pointer_cast returns a null pointer. 
 
 </para></description><returns><para>If there exists a valid conversion from U* to T*, returns a boost::shared_ptr&lt;T&gt; that points to an address suitably offset from u. If no such conversion exists, returns boost::shared_ptr&lt;T&gt;(); </para></returns></function>
-
-
-
-
-
-
-
 </namespace>
 
 </namespace>
@@ -173,6 +173,8 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 <header name="boost/type_index/runtime_cast/pointer_cast.hpp">
 <namespace name="boost">
 <namespace name="typeindex">
+
+
 
 
 
@@ -208,8 +210,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 
 </para></description><returns><para>If there exists a valid conversion from U const* to T const*, returns a T const* that points to an address suitably offset from u. If no such conversion exists, returns NULL. </para></returns></function>
 
-
-
 </namespace>
 
 </namespace>
@@ -218,10 +218,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 <para>Contains the overload of boost::typeindex::runtime_cast for reference types. </para><namespace name="boost">
 <namespace name="typeindex">
 <struct name="bad_runtime_cast"><inherit access="public">exception</inherit><purpose>Indicates that runtime_cast was unable to perform the desired cast operation because the source instance was not also an instance of the target type. </purpose></struct>
-
-
-
-
 
 
 
@@ -243,6 +239,10 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
         </template><parameter name="u"><paramtype>U const &amp;</paramtype></parameter><purpose>Safely converts references to classes up, down, and sideways along the inheritance hierarchy. </purpose><description><para>
 
 </para></description><returns><para>If there exists a valid conversion from U const&amp; to T const, returns a T const that references an address suitably offset from u. If no such conversion exists, throws <classname alt="boost::typeindex::bad_runtime_cast">boost::typeindex::bad_runtime_cast</classname>. </para></returns></function>
+
+
+
+
 
 </namespace>
 
@@ -336,19 +336,19 @@ if(derived2* pb2 = boost::typeindex::runtime_cast&lt;derived2*&gt;(pb1))
 
 
 
-
-
-
-
-
-
-
 <function name="runtime_pointer_cast"><type>std::shared_ptr&lt; T &gt;</type><template>
           <template-type-parameter name="T"><purpose><para>The desired target type to return a pointer of. </para></purpose></template-type-parameter>
           <template-type-parameter name="U"><purpose><para>A complete class type of the source instance pointed to from u. </para></purpose></template-type-parameter>
         </template><parameter name="u"><paramtype>std::shared_ptr&lt; U &gt; const &amp;</paramtype></parameter><purpose>Creates a new instance of std::shared_ptr whose stored pointer is obtained from u's stored pointer using a runtime_cast. </purpose><description><para>The new shared_ptr will share ownership with u, except that it is empty if the runtime_cast performed by runtime_pointer_cast returns a null pointer. 
 
 </para></description><returns><para>If there exists a valid conversion from U* to T*, returns a std::shared_ptr&lt;T&gt; that points to an address suitably offset from u. If no such conversion exists, returns std::shared_ptr&lt;T&gt;(); </para></returns></function>
+
+
+
+
+
+
+
 </namespace>
 
 </namespace>
@@ -433,7 +433,7 @@ public:
 <method name="before" cv="const noexcept"><type>bool</type><parameter name="rhs"><paramtype>const Derived &amp;</paramtype></parameter><description><para><emphasis role="bold">Override:</emphasis> This function <emphasis role="bold">may</emphasis> be redefined in Derived class. Overrides <emphasis role="bold">must</emphasis> not throw. 
 </para></description><returns><para>True if rhs is greater than this. By default compares types by raw_name(). </para></returns></method>
 <method name="hash_code" cv="const noexcept"><type>std::size_t</type><description><para><emphasis role="bold">Override:</emphasis> This function <emphasis role="bold">may</emphasis> be redefined in Derived class. Overrides <emphasis role="bold">must</emphasis> not throw. 
-<note><para>&lt;boost/functional/hash.hpp&gt; has to be included if this function is used. </para></note>
+<note><para>Derived class header <emphasis role="bold">must</emphasis> include &lt;boost/functional/hash.hpp&gt;, <emphasis role="bold">unless</emphasis> this function is redefined in Derived class to not use boost::hash_range(). </para></note>
 </para></description><returns><para>Hash code of a type. By default hashes types by raw_name(). </para></returns></method>
 </method-group>
 <method-group name="protected member functions">
@@ -462,7 +462,6 @@ public:
 </class>
 
 
-
 <function name="operator==,!=,&lt;,..."><type>bool</type><parameter name="lhs"><paramtype>const <classname>type_index_facade</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>type_index_facade</classname> &amp;</paramtype></parameter><purpose>noexcept comparison operators for <classname alt="boost::typeindex::type_index_facade">type_index_facade</classname> classes. </purpose></function>
 <function name="operator==,!=,&lt;,..."><type>bool</type><parameter name="lhs"><paramtype>const <classname>type_index_facade</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const TypeInfo &amp;</paramtype></parameter><purpose>noexcept comparison operators for <classname alt="boost::typeindex::type_index_facade">type_index_facade</classname> and it's TypeInfo classes. </purpose></function>
 <function name="operator==,!=,&lt;,..."><type>bool</type><parameter name="lhs"><paramtype>const TypeInfo &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>type_index_facade</classname> &amp;</paramtype></parameter><purpose>noexcept comparison operators for <classname alt="boost::typeindex::type_index_facade">type_index_facade</classname>'s TypeInfo and <classname alt="boost::typeindex::type_index_facade">type_index_facade</classname> classes. </purpose></function>
@@ -477,6 +476,7 @@ public:
           <template-type-parameter name="TypeInfo"/>
         </template><parameter name="lhs"><paramtype>const <classname>type_index_facade</classname>&lt; Derived, TypeInfo &gt; &amp;</paramtype></parameter><description><para>This free function is used by Boost's unordered containers. <note><para>&lt;boost/functional/hash.hpp&gt; has to be included if this function is used. </para></note>
 </para></description></function>
+
 
 
 

@@ -11,7 +11,7 @@
 
 namespace quickbook
 {
-    typedef quickbook::string_view::const_iterator glob_iterator;
+    typedef string_iterator glob_iterator;
 
     void check_glob_range(glob_iterator&, glob_iterator);
     void check_glob_escape(glob_iterator&, glob_iterator);
@@ -19,8 +19,10 @@ namespace quickbook
     bool match_section(glob_iterator& pattern_begin, glob_iterator pattern_end,
             glob_iterator& filename_begin, glob_iterator& filename_end);
     bool match_range(glob_iterator& pattern_begin, glob_iterator pattern_end,
-            unsigned char x);
+            char x);
 
+    // Is pattern a glob or a plain file name?
+    // Throws glob_error if pattern is an invalid glob.
     bool check_glob(quickbook::string_view pattern)
     {
         bool is_glob = false;
@@ -30,7 +32,7 @@ namespace quickbook
         glob_iterator end = pattern.end();
 
         while (begin != end) {
-            if (*begin < 32 || *begin > 127)
+            if (*begin < 32 || (*begin & 0x80))
                 is_ascii = false;
 
             switch(*begin) {
@@ -94,7 +96,6 @@ namespace quickbook
                     ++begin;
                     break;
                 case '[':
-                    // TODO: Allow?
                     throw glob_error("nested square brackets");
                 case ']':
                     ++begin;
@@ -125,6 +126,9 @@ namespace quickbook
         ++begin;
     }
 
+    // Does filename match pattern?
+    // Might throw glob_error if pattern is an invalid glob,
+    // but should call check_glob first to validate the glob.
     bool glob(quickbook::string_view const& pattern,
             quickbook::string_view const& filename)
     {
@@ -147,10 +151,9 @@ namespace quickbook
 
             if (pattern_it == pattern_end) return true;
 
-            // TODO: Error?
-            if (*pattern_it == '*') return false;
+            if (*pattern_it == '*') { throw glob_error("'**' not supported"); }
 
-            while (true) {
+            for (;;) {
                 if (filename_it == filename_end) return false;
                 if (match_section(pattern_it, pattern_end, filename_it, filename_end))
                     break;
@@ -173,19 +176,25 @@ namespace quickbook
             switch(*pattern_it) {
                 case '*':
                     assert(false);
-                    return false;
+                    throw new glob_error("Internal error");
                 case '[':
                     if (!match_range(pattern_it, pattern_end, *filename_it))
                         return false;
                     ++filename_it;
                     break;
+                case ']':
+                    throw glob_error("uneven square brackets");
                 case '?':
                     ++pattern_it;
                     ++filename_it;
                     break;
                 case '\\':
                     ++pattern_it;
-                    if (pattern_it == pattern_end) return false;
+                    if (pattern_it == pattern_end) {
+                        throw glob_error("trailing escape");
+                    } else if (*pattern_it == '\\' || *pattern_it == '/') {
+                        throw glob_error("contains escaped slash");
+                    }
                     BOOST_FALLTHROUGH;
                 default:
                     if (*pattern_it != *filename_it) return false;
@@ -203,11 +212,13 @@ namespace quickbook
     }
 
     bool match_range(glob_iterator& pattern_begin, glob_iterator pattern_end,
-            unsigned char x)
+            char x)
     {
         assert(pattern_begin != pattern_end && *pattern_begin == '[');
         ++pattern_begin;
-        if (pattern_begin == pattern_end) return false;
+        if (pattern_begin == pattern_end) {
+            throw glob_error("uneven square brackets");
+        }
 
         bool invert_match = false;
         bool matched = false;
@@ -215,20 +226,36 @@ namespace quickbook
         if (*pattern_begin == '^') {
             invert_match = true;
             ++pattern_begin;
-            if (pattern_begin == pattern_end) return false;
+            if (pattern_begin == pattern_end) {
+                throw glob_error("uneven square brackets");
+            }
+        } else if (*pattern_begin == ']') {
+            throw glob_error("empty range");
         }
 
         // Search for a match
-        while (true) {
+        for (;;) {
             unsigned char first = *pattern_begin;
             ++pattern_begin;
             if (first == ']') break;
-            if (pattern_begin == pattern_end) return false;
+            if (first == '[') {
+                throw glob_error("nested square brackets");
+            }
+            if (pattern_begin == pattern_end) {
+                throw glob_error("uneven square brackets");
+            }
 
             if (first == '\\') {
                 first = *pattern_begin;
+                if (first == '\\' || first == '/') {
+                    throw glob_error("contains escaped slash");
+                }
                 ++pattern_begin;
-                if (pattern_begin == pattern_end) return false;
+                if (pattern_begin == pattern_end) {
+                    throw glob_error("uneven square brackets");
+                }
+            } else if (first == '/') {
+                throw glob_error("slash in square brackets");
             }
 
             if (*pattern_begin != '-') {
@@ -236,7 +263,9 @@ namespace quickbook
             }
             else {
                 ++pattern_begin;
-                if (pattern_begin == pattern_end) return false;
+                if (pattern_begin == pattern_end) {
+                    throw glob_error("uneven square brackets");
+                }
 
                 unsigned char second = *pattern_begin;
                 ++pattern_begin;
@@ -244,15 +273,23 @@ namespace quickbook
                     matched = matched || (first == x) || (x == '-');
                     break;
                 }
-                if (pattern_begin == pattern_end) return false;
+                if (pattern_begin == pattern_end) {
+                    throw glob_error("uneven square brackets");
+                }
 
                 if (second == '\\') {
                     second = *pattern_begin;
+                    if (second == '\\' || second == '/') {
+                        throw glob_error("contains escaped slash");
+                    }
                     ++pattern_begin;
-                    if (pattern_begin == pattern_end) return false;
+                    if (pattern_begin == pattern_end) {
+                        throw glob_error("uneven square brackets");
+                    }
+                } else if (second == '/') {
+                    throw glob_error("slash in square brackets");
                 }
 
-                // TODO: What if second < first?
                 matched = matched || (first <= x && x <= second);
             }
         }
@@ -267,7 +304,7 @@ namespace quickbook
         // doesn't take a position argument.
         std::size_t removed = 0;
 
-        while (true) {
+        for (;;) {
             pos = pattern.find_first_of("[]?*\\");
             if (pos == quickbook::string_view::npos) return pos;
             if (pattern[pos] != '\\') return pos + removed;
@@ -280,7 +317,7 @@ namespace quickbook
     {
         std::string result;
 
-        while (true) {
+        for (;;) {
             std::size_t pos = pattern.find("\\");
             if (pos == quickbook::string_view::npos) {
                 result.append(pattern.data(), pattern.size());

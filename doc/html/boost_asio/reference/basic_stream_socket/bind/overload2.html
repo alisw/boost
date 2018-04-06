@@ -33,9 +33,9 @@
 <p>
             Bind the socket to the given local endpoint.
           </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">bind</span><span class="special">(</span>
-    <span class="keyword">const</span> <span class="identifier">endpoint_type</span> <span class="special">&amp;</span> <span class="identifier">endpoint</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void bind(
+    const endpoint_type &amp; endpoint,
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
             This function binds the socket to the specified endpoint on the local
@@ -62,15 +62,15 @@
 <a name="boost_asio.reference.basic_stream_socket.bind.overload2.h1"></a>
             <span class="phrase"><a name="boost_asio.reference.basic_stream_socket.bind.overload2.example"></a></span><a class="link" href="overload2.html#boost_asio.reference.basic_stream_socket.bind.overload2.example">Example</a>
           </h6>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">open</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">v4</span><span class="special">());</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">;</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">endpoint</span><span class="special">(</span>
-      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">v4</span><span class="special">(),</span> <span class="number">12345</span><span class="special">),</span> <span class="identifier">ec</span><span class="special">);</span>
-<span class="keyword">if</span> <span class="special">(</span><span class="identifier">ec</span><span class="special">)</span>
-<span class="special">{</span>
-  <span class="comment">// An error occurred.</span>
-<span class="special">}</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+socket.open(boost::asio::ip::tcp::v4());
+boost::system::error_code ec;
+socket.bind(boost::asio::ip::tcp::endpoint(
+      boost::asio::ip::tcp::v4(), 12345), ec);
+if (ec)
+{
+  // An error occurred.
+}
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

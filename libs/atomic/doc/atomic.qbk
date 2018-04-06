@@ -1,6 +1,6 @@
 [/
  / Copyright (c) 2009 Helge Bahmann
- / Copyright (c) 2014 Andrey Semashev
+ / Copyright (c) 2014, 2017 Andrey Semashev
  /
  / Distributed under the Boost Software License, Version 1.0. (See accompanying
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,7 +11,7 @@
     [authors [Bahmann, Helge][Semashev, Andrey]]
     [copyright 2011 Helge Bahmann]
     [copyright 2012 Tim Blechmann]
-    [copyright 2013 Andrey Semashev]
+    [copyright 2013, 2017 Andrey Semashev]
     [id atomic]
     [dirname atomic]
     [purpose Atomic operations]
@@ -445,6 +445,66 @@ of the various ordering constraints.
 
 [endsect]
 
+[section:interface_atomic_flag Atomic flags]
+
+    #include <boost/atomic/atomic_flag.hpp>
+
+The `boost::atomic_flag` type provides the most basic set of atomic operations
+suitable for implementing mutually exclusive access to thread-shared data. The flag
+can have one of the two possible states: set and clear. The class implements the
+following operations:
+
+[table
+    [[Syntax] [Description]]
+    [
+      [`atomic_flag()`]
+      [Initialize to the clear state. See the discussion below.]
+    ]
+    [
+      [`bool test_and_set(memory_order order)`]
+      [Sets the atomic flag to the set state; returns `true` if the flag had been set prior to the operation]
+    ]
+    [
+      [`void clear(memory_order order)`]
+      [Sets the atomic flag to the clear state]
+    ]
+]
+
+`order` always has `memory_order_seq_cst` as default parameter.
+
+Note that the default constructor `atomic_flag()` is unlike `std::atomic_flag`, which
+leaves the default-constructed object uninitialized. This potentially requires dynamic
+initialization during the program startup to perform the object initialization, which
+makes it unsafe to create global `boost::atomic_flag` objects that can be used before
+entring `main()`. Some compilers though (especially those supporting C++11 `constexpr`)
+may be smart enough to perform flag initialization statically (which is, in C++11 terms,
+a constant initialization).
+
+This difference is deliberate and is done to support C++03 compilers. C++11 defines the
+`ATOMIC_FLAG_INIT` macro which can be used to statically initialize `std::atomic_flag`
+to a clear state like this:
+
+    std::atomic_flag flag = ATOMIC_FLAG_INIT; // constant initialization
+
+This macro cannot be implemented in C++03 because for that `atomic_flag` would have to be
+an aggregate type, which it cannot be because it has to prohibit copying and consequently
+define the default constructor. Thus the closest equivalent C++03 code using [*Boost.Atomic]
+would be:
+
+    boost::atomic_flag flag; // possibly, dynamic initialization in C++03;
+                             // constant initialization in C++11
+
+The same code is also valid in C++11, so this code can be used universally. However, for
+interface parity with `std::atomic_flag`, if possible, the library also defines the
+`BOOST_ATOMIC_FLAG_INIT` macro, which is equivalent to `ATOMIC_FLAG_INIT`:
+
+    boost::atomic_flag flag = BOOST_ATOMIC_FLAG_INIT; // constant initialization
+
+This macro will only be implemented on a C++11 compiler. When this macro is not available,
+the library defines `BOOST_ATOMIC_NO_ATOMIC_FLAG_INIT`.
+
+[endsect]
+
 [section:interface_atomic_object Atomic objects]
 
     #include <boost/atomic/atomic.hpp>
@@ -466,7 +526,7 @@ non-equal via [^memcmp] even though all members are equal.
 
 [section:interface_atomic_generic [^boost::atomic<['T]>] template class]
 
-All atomic objects supports the following operations:
+All atomic objects support the following operations and properties:
 
 [table
     [[Syntax] [Description]]
@@ -480,7 +540,7 @@ All atomic objects supports the following operations:
     ]
     [
       [`bool is_lock_free()`]
-      [Checks if the atomic object is lock-free]
+      [Checks if the atomic object is lock-free; the returned value is consistent with the `is_always_lock_free` static constant, see below]
     ]
     [
       [`T load(memory_order order)`]
@@ -520,6 +580,10 @@ All atomic objects supports the following operations:
       Returns `true` if an exchange has been performed, and always writes the
       previous value back in `expected`.]
     ]
+    [
+      [`static bool is_always_lock_free`]
+      [This static boolean constant indicates if any atomic object of this type is lock-free]
+    ]
 ]
 
 `order` always has `memory_order_seq_cst` as default parameter.
@@ -542,33 +606,115 @@ constraint.
 
 In addition to the operations listed in the previous section,
 [^boost::atomic<['I]>] for integral
-types [^['I]] supports the following operations:
+types [^['I]], except `bool`, supports the following operations,
+which correspond to [^std::atomic<['I]>]:
 
 [table
     [[Syntax] [Description]]
     [
-      [`T fetch_add(T v, memory_order order)`]
+      [`I fetch_add(I v, memory_order order)`]
       [Add `v` to variable, returning previous value]
     ]
     [
-      [`T fetch_sub(T v, memory_order order)`]
+      [`I fetch_sub(I v, memory_order order)`]
       [Subtract `v` from variable, returning previous value]
     ]
     [
-      [`T fetch_and(T v, memory_order order)`]
+      [`I fetch_and(I v, memory_order order)`]
       [Apply bit-wise "and" with `v` to variable, returning previous value]
     ]
     [
-      [`T fetch_or(T v, memory_order order)`]
+      [`I fetch_or(I v, memory_order order)`]
       [Apply bit-wise "or" with `v` to variable, returning previous value]
     ]
     [
-      [`T fetch_xor(T v, memory_order order)`]
+      [`I fetch_xor(I v, memory_order order)`]
       [Apply bit-wise "xor" with `v` to variable, returning previous value]
     ]
 ]
 
+Additionally, as a [*Boost.Atomic] extension, the following operations are also provided:
+
+[table
+    [[Syntax] [Description]]
+    [
+      [`I fetch_negate(memory_order order)`]
+      [Change the sign of the value stored in the variable, returning previous value]
+    ]
+    [
+      [`I fetch_complement(memory_order order)`]
+      [Set the variable to the one\'s complement of the current value, returning previous value]
+    ]
+    [
+      [`void opaque_negate(memory_order order)`]
+      [Change the sign of the value stored in the variable, returning nothing]
+    ]
+    [
+      [`void opaque_complement(memory_order order)`]
+      [Set the variable to the one\'s complement of the current value, returning nothing]
+    ]
+    [
+      [`void opaque_add(I v, memory_order order)`]
+      [Add `v` to variable, returning nothing]
+    ]
+    [
+      [`void opaque_sub(I v, memory_order order)`]
+      [Subtract `v` from variable, returning nothing]
+    ]
+    [
+      [`void opaque_and(I v, memory_order order)`]
+      [Apply bit-wise "and" with `v` to variable, returning nothing]
+    ]
+    [
+      [`void opaque_or(I v, memory_order order)`]
+      [Apply bit-wise "or" with `v` to variable, returning nothing]
+    ]
+    [
+      [`void opaque_xor(I v, memory_order order)`]
+      [Apply bit-wise "xor" with `v` to variable, returning nothing]
+    ]
+    [
+      [`bool add_and_test(I v, memory_order order)`]
+      [Add `v` to variable, returning `true` if the result is zero and `false` otherwise]
+    ]
+    [
+      [`bool sub_and_test(I v, memory_order order)`]
+      [Subtract `v` from variable, returning `true` if the result is zero and `false` otherwise]
+    ]
+    [
+      [`bool and_and_test(I v, memory_order order)`]
+      [Apply bit-wise "and" with `v` to variable, returning `true` if the result is zero and `false` otherwise]
+    ]
+    [
+      [`bool or_and_test(I v, memory_order order)`]
+      [Apply bit-wise "or" with `v` to variable, returning `true` if the result is zero and `false` otherwise]
+    ]
+    [
+      [`bool xor_and_test(I v, memory_order order)`]
+      [Apply bit-wise "xor" with `v` to variable, returning `true` if the result is zero and `false` otherwise]
+    ]
+    [
+      [`bool bit_test_and_set(unsigned int n, memory_order order)`]
+      [Set bit number `n` in the variable to 1, returning `true` if the bit was previously set to 1 and `false` otherwise]
+    ]
+    [
+      [`bool bit_test_and_reset(unsigned int n, memory_order order)`]
+      [Set bit number `n` in the variable to 0, returning `true` if the bit was previously set to 1 and `false` otherwise]
+    ]
+    [
+      [`bool bit_test_and_complement(unsigned int n, memory_order order)`]
+      [Change bit number `n` in the variable to the opposite value, returning `true` if the bit was previously set to 1 and `false` otherwise]
+    ]
+]
+
 `order` always has `memory_order_seq_cst` as default parameter.
+
+The [^opaque_['op]] and [^['op]_and_test] variants of the operations
+may result in a more efficient code on some architectures because
+the original value of the atomic variable is not preserved. In the
+[^bit_test_and_['op]] operations, the bit number `n` starts from 0, which
+means the least significand bit, and must not exceed
+[^std::numeric_limits<['I]>::digits - 1].
 
 In addition to these explicit operations, each
 [^boost::atomic<['I]>] object also
@@ -576,7 +722,7 @@ supports implicit pre-/post- increment/decrement, as well
 as the operators `+=`, `-=`, `&=`, `|=` and `^=`.
 Avoid using these operators,
 as they do not allow explicit specification of a memory ordering
-constraint.
+constraint which always defaults to `memory_order_seq_cst`.
 
 [endsect]
 
@@ -584,7 +730,8 @@ constraint.
 
 In addition to the operations applicable to all atomic object,
 [^boost::atomic<['P]>] for pointer
-types [^['P]] (other than [^void] pointers) support the following operations:
+types [^['P]] (other than pointers to [^void], function or member pointers) support
+the following operations, which correspond to [^std::atomic<['P]>]:
 
 [table
     [[Syntax] [Description]]
@@ -598,6 +745,20 @@ types [^['P]] (other than [^void] pointers) support the following operations:
     ]
 ]
 
+Similarly to integers, the following [*Boost.Atomic] extensions are also provided:
+
+[table
+    [[Syntax] [Description]]
+    [
+      [`void opaque_add(ptrdiff_t v, memory_order order)`]
+      [Add `v` to variable, returning nothing]
+    ]
+    [
+      [`void opaque_sub(ptrdiff_t v, memory_order order)`]
+      [Subtract `v` from variable, returning nothing]
+    ]
+]
+
 `order` always has `memory_order_seq_cst` as default parameter.
 
 In addition to these explicit operations, each
@@ -605,7 +766,69 @@ In addition to these explicit operations, each
 supports implicit pre-/post- increment/decrement, as well
 as the operators `+=`, `-=`. Avoid using these operators,
 as they do not allow explicit specification of a memory ordering
-constraint.
+constraint which always defaults to `memory_order_seq_cst`.
+
+[endsect]
+
+[section:interface_atomic_convenience_typedefs [^boost::atomic<['T]>] convenience typedefs]
+
+For convenience, several shorthand typedefs of [^boost::atomic<['T]>] are provided:
+
+[c++]
+
+    typedef atomic< char > atomic_char;
+    typedef atomic< unsigned char > atomic_uchar;
+    typedef atomic< signed char > atomic_schar;
+    typedef atomic< unsigned short > atomic_ushort;
+    typedef atomic< short > atomic_short;
+    typedef atomic< unsigned int > atomic_uint;
+    typedef atomic< int > atomic_int;
+    typedef atomic< unsigned long > atomic_ulong;
+    typedef atomic< long > atomic_long;
+    typedef atomic< unsigned long long > atomic_ullong;
+    typedef atomic< long long > atomic_llong;
+
+    typedef atomic< void* > atomic_address;
+    typedef atomic< bool > atomic_bool;
+    typedef atomic< wchar_t > atomic_wchar_t;
+    typedef atomic< char16_t > atomic_char16_t;
+    typedef atomic< char32_t > atomic_char32_t;
+
+    typedef atomic< uint8_t > atomic_uint8_t;
+    typedef atomic< int8_t > atomic_int8_t;
+    typedef atomic< uint16_t > atomic_uint16_t;
+    typedef atomic< int16_t > atomic_int16_t;
+    typedef atomic< uint32_t > atomic_uint32_t;
+    typedef atomic< int32_t > atomic_int32_t;
+    typedef atomic< uint64_t > atomic_uint64_t;
+    typedef atomic< int64_t > atomic_int64_t;
+
+    typedef atomic< int_least8_t > atomic_int_least8_t;
+    typedef atomic< uint_least8_t > atomic_uint_least8_t;
+    typedef atomic< int_least16_t > atomic_int_least16_t;
+    typedef atomic< uint_least16_t > atomic_uint_least16_t;
+    typedef atomic< int_least32_t > atomic_int_least32_t;
+    typedef atomic< uint_least32_t > atomic_uint_least32_t;
+    typedef atomic< int_least64_t > atomic_int_least64_t;
+    typedef atomic< uint_least64_t > atomic_uint_least64_t;
+    typedef atomic< int_fast8_t > atomic_int_fast8_t;
+    typedef atomic< uint_fast8_t > atomic_uint_fast8_t;
+    typedef atomic< int_fast16_t > atomic_int_fast16_t;
+    typedef atomic< uint_fast16_t > atomic_uint_fast16_t;
+    typedef atomic< int_fast32_t > atomic_int_fast32_t;
+    typedef atomic< uint_fast32_t > atomic_uint_fast32_t;
+    typedef atomic< int_fast64_t > atomic_int_fast64_t;
+    typedef atomic< uint_fast64_t > atomic_uint_fast64_t;
+    typedef atomic< intmax_t > atomic_intmax_t;
+    typedef atomic< uintmax_t > atomic_uintmax_t;
+
+    typedef atomic< std::size_t > atomic_size_t;
+    typedef atomic< std::ptrdiff_t > atomic_ptrdiff_t;
+
+    typedef atomic< intptr_t > atomic_intptr_t;
+    typedef atomic< uintptr_t > atomic_uintptr_t;
+
+The typedefs are provided only if the corresponding type is available.
 
 [endsect]
 
@@ -757,7 +980,7 @@ In the table above, `intN_type` is a type that fits storage of contiguous `N` bi
 [section:limitations Limitations]
 
 While [*Boost.Atomic] strives to implement the atomic operations
-from C++11 as faithfully as possible, there are a few
+from C++11 and later as faithfully as possible, there are a few
 limitations that cannot be lifted without compiler support:
 
 * [*Using non-POD-classes as template parameter to `atomic<T>` results
@@ -770,10 +993,16 @@ limitations that cannot be lifted without compiler support:
   Crucially, `memory_order_consume` only affects computationally-dependent
   operations, but in general there is nothing preventing a compiler
   from transforming a computation dependency into a control dependency.
-  A C++11 compiler would be forbidden from such a transformation.
-  [*Advise]: Use `memory_order_consume` only in conjunction with
-  pointer values, as the compiler cannot speculate and transform
-  these into control dependencies.
+  A fully compliant C++11 compiler would be forbidden from such a transformation,
+  but in practice most if not all compilers have chosen to promote
+  `memory_order_consume` to `memory_order_acquire` instead
+  (see [@https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59448 this] gcc bug
+  for example). In the current implementation [*Boost.Atomic] follows that trend,
+  but this may change in the future.
+  [*Advice]: In general, avoid `memory_order_consume` and use `memory_order_acquire`
+  instead. Use `memory_order_consume` only in conjunction with
+  pointer values, and only if you can ensure that the compiler cannot
+  speculate and transform these into control dependencies.
 * [*Fence operations enforce "too strong" compiler ordering]:
   Semantically, `memory_order_acquire`/`memory_order_consume`
   and `memory_order_release` need to restrain reordering of

@@ -189,18 +189,28 @@
       </p>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">async_foo</span> <span class="special">:</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/handler.html" title="Struct handler">handler</a></code><span class="special">,</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/require_io_service.html" title="Struct require_io_service">ex::require_boost::asio::io_service</a></code>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">async_foo</span> <span class="special">:</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/handler.html" title="Struct handler">handler</a></code><span class="special">,</span> <code class="computeroutput">ex::require_boost::asio::io_service</code>
 <span class="special">{</span>
     <span class="identifier">tempalte</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">on_setup</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span> <span class="identifier">exec</span><span class="special">)</span>
     <span class="special">{</span>
-        <span class="identifier">__io_service__</span> <span class="special">&amp;</span> <span class="identifier">ios</span> <span class="special">=</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/get_io_service.html" title="Function template get_io_service">ex::get_boost::asio::io_service</a></code><span class="special">(</span><span class="identifier">exec</span><span class="special">.</span><span class="identifier">seq</span><span class="special">);</span> <span class="comment">//gives us a reference and a compiler error if not present.</span>
+        <a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/io_service.html" target="_top">boost::asio::io_service</a> <span class="special">&amp;</span> <span class="identifier">ios</span> <span class="special">=</span> <code class="computeroutput">ex::get_boost::asio::io_service</code><span class="special">(</span><span class="identifier">exec</span><span class="special">.</span><span class="identifier">seq</span><span class="special">);</span> <span class="comment">//gives us a reference and a compiler error if not present.</span>
         <span class="comment">//do something with ios</span>
     <span class="special">}</span>
 <span class="special">};</span>
 </pre>
 <p>
       </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          All async_handlers use one signal(SIGCHLD) on posix, which is only guaranteed
+          to work when all use the same <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/io_service.html" target="_top">boost::asio::io_service</a></code>
+        </p></td></tr>
+</table></div>
 <div class="note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>

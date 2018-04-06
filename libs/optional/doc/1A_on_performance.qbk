@@ -1,7 +1,7 @@
 ﻿
 [section Performance considerations]
 
-Technical details aside, the memory layout of `optional<T>` is more-less this:
+Technical details aside, the memory layout of `optional<T>` for a generic `T` is more-less this:
 
   template <typename T>
   class optional
@@ -9,8 +9,33 @@ Technical details aside, the memory layout of `optional<T>` is more-less this:
     bool _initialized;
     std::aligned_storage_t<sizeof(t), alignof(T)> _storage;
   };
+
+Lifetime of the `T` inside `_storage` is manually controlled with placement-`new`s and pseudo-destructor calls. However, for scalar `T`s we use a different way of storage, by simply holding a `T`:
   
-But for the purpose of this analysis, considering memory layouts, we can think of it as:
+  template <typename T>
+  class optional
+  {
+    bool _initialized;
+    T _storage;
+  };
+
+We call it a ['direct] storage. This makes `optional<T>` a trivially-copyable type for scalar `T`s. This only works for compilers that support defaulted functions (including defaulted move assignment and constructor). On compilers without defaulted functions we still use the direct storage, but `optional<T>` is no longer recognized as trivially-copyable. Apart from scalar types, we leave the programmer a way of customizing her type, so that it is reconized by `optional` as candidate for optimized storage, by specializing type trait `boost::opitonal_config::optional_uses_direct_storage_for`:
+
+  struct X // not trivial
+  {
+    X() {}
+  };
+
+  namespace boost { namespace optional_config {
+    
+    template <> struct optional_uses_direct_storage_for<X> : boost::true_type {};
+    
+  }}
+  
+
+[heading Controlling the size]
+  
+For the purpose of the following analysis, considering memory layouts, we can think of it as:
 
   template <typename T>
   class optional

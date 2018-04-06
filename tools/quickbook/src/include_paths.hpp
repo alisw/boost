@@ -30,8 +30,8 @@ namespace quickbook
         std::string value;
         path_type type;
 
-        path_parameter(std::string const& value, path_type type) :
-            value(value), type(type) {}
+        path_parameter(std::string const& value_, path_type type_) :
+            value(value_), type(type_) {}
     };
 
     path_parameter check_path(value const& path, quickbook::state& state);
@@ -65,9 +65,7 @@ namespace quickbook
     std::set<quickbook_path> include_search(path_parameter const&,
             quickbook::state& state, string_iterator pos);
 
-    quickbook_path resolve_xinclude_path(std::string const&, quickbook::state&);
-    std::string file_path_to_url(fs::path const&);
-    std::string dir_path_to_url(fs::path const&);
+    quickbook_path resolve_xinclude_path(std::string const&, quickbook::state&, bool is_file = false);
 }
 
 #endif

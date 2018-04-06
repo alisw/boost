@@ -29,10 +29,10 @@
 <p>
         Adds buffering to the read- and write-related operations of a stream.
       </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">Stream</span><span class="special">&gt;</span>
-<span class="keyword">class</span> <span class="identifier">buffered_stream</span> <span class="special">:</span>
-  <span class="identifier">noncopyable</span>
+<pre class="programlisting">template&lt;
+    typename Stream&gt;
+class buffered_stream :
+  noncopyable
 </pre>
 <h5>
 <a name="boost_asio.reference.buffered_stream.h0"></a>
@@ -56,6 +56,18 @@
               </th>
 </tr></thead>
 <tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="buffered_stream/executor_type.html" title="buffered_stream::executor_type"><span class="bold"><strong>executor_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  The type of the executor associated with the object.
+                </p>
+              </td>
+</tr>
 <tr>
 <td>
                 <p>
@@ -219,12 +231,38 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="buffered_stream/get_executor.html" title="buffered_stream::get_executor"><span class="bold"><strong>get_executor</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the executor associated with the object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="buffered_stream/get_io_context.html" title="buffered_stream::get_io_context"><span class="bold"><strong>get_io_context</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use get_executor().) Get the io_context associated
+                  with the object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="buffered_stream/get_io_service.html" title="buffered_stream::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  Get the io_service associated with the object.
+                  (Deprecated: Use get_executor().) Get the io_context associated
+                  with the object.
                 </p>
               </td>
 </tr>
@@ -321,7 +359,7 @@
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="buffered_stream.html" title="buffered_stream"><code class="computeroutput"><span class="identifier">buffered_stream</span></code></a>
+        The <a class="link" href="buffered_stream.html" title="buffered_stream"><code class="computeroutput">buffered_stream</code></a>
         class template can be used to add buffering to the synchronous and asynchronous
         read and write operations of a stream.
       </p>

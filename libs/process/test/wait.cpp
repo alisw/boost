@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(async_wait, *boost::unit_test::timeout(2))
     using boost::unit_test::framework::master_test_suite;
     using namespace boost::asio;
 
-    boost::asio::io_service io_service;
+    boost::asio::io_context io_context;
 
     std::error_code ec;
     bool called = false;
@@ -54,42 +54,13 @@ BOOST_AUTO_TEST_CASE(async_wait, *boost::unit_test::timeout(2))
         master_test_suite().argv[1],
         bp::args+={"test", "--wait", "1"},
         ec,
-        io_service,
+        io_context,
         bp::on_exit([&](int, const std::error_code&){called = true;})
 
     );
     BOOST_REQUIRE(!ec);
 
-    io_service.run();
+    io_context.run();
     BOOST_CHECK(called);
-
-}
-
-BOOST_AUTO_TEST_CASE(double_wait, *boost::unit_test::timeout(5))
-{
-    using boost::unit_test::framework::master_test_suite;
-    using namespace boost::asio;
-
-    boost::asio::io_service io_service;
-
-    std::error_code ec;
-    std::atomic<bool> called{false};
-
-    bp::child c(
-        master_test_suite().argv[1],
-        bp::args+={"test", "--wait", "1"},
-        ec,
-        io_service,
-        bp::on_exit([&](int, const std::error_code&){called.store(true);})
-
-    );
-    BOOST_REQUIRE(!ec);
-
-    std::thread th([&]{io_service.run();});
-
-    c.wait();
-
-    th.join();
-    BOOST_CHECK(called.load());
 
 }

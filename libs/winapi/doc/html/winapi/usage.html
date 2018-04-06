@@ -27,16 +27,16 @@
 </h2></div></div></div>
 <p>
       In order to use Boost.WinAPI you have to include one or several headers from
-      the <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">winapi</span></code>
-      directory. Each header there defines a portion of Windows API, the name of
-      the header should be self-explanatory. Each Boost.WinAPI header may declare
-      a number of symbols like functions and types in the global namespace, mimicking
-      the Windows SDK, and the corresponding set of symbols in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span></code>
-      namespace. User's code is supposed to use the symbols from the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span></code>
+      the <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">winapi</span></code> directory. Each header there defines
+      a portion of Windows API, the name of the header should be self-explanatory.
+      Each Boost.WinAPI header may declare a number of symbols like functions and
+      types in the global namespace, mimicking the Windows SDK, and the corresponding
+      set of symbols in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span></code>
+      namespace. User's code is supposed to use the symbols from the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span></code>
       namespace only.
     </p>
 <p>
-      Most of the functions in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span></code>
+      Most of the functions in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span></code>
       have the same name and meaning as the corresponding Windows API functions.
       Types and constants have a trailing underscore ('_') in their name to avoid
       clashes with macros that are defined in Windows SDK.
@@ -61,20 +61,20 @@
       For example, here is how one would create and destroy a semaphore with Boost.WinAPI:
     </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">winapi</span><span class="special">/</span><span class="identifier">handles</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">winapi</span><span class="special">/</span><span class="identifier">semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">winapi</span><span class="special">/</span><span class="identifier">handles</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">winapi</span><span class="special">/</span><span class="identifier">semaphore</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">HANDLE_</span> <span class="identifier">h</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">CreateSemaphoreExW</span><span class="special">(</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">HANDLE_</span> <span class="identifier">h</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">CreateSemaphoreExW</span><span class="special">(</span>
     <span class="identifier">NULL</span><span class="special">,</span>                                                        <span class="comment">// security attributes</span>
     <span class="number">0l</span><span class="special">,</span>                                                          <span class="comment">// initial count</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">LONG_</span> <span class="special">&gt;::</span><span class="identifier">max</span><span class="special">(),</span>  <span class="comment">// max count</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">LONG_</span> <span class="special">&gt;::</span><span class="identifier">max</span><span class="special">(),</span>          <span class="comment">// max count</span>
     <span class="identifier">L</span><span class="string">"Local\\MySemaphore"</span><span class="special">,</span>                                       <span class="comment">// semaphore name</span>
     <span class="number">0l</span><span class="special">,</span>                                                          <span class="comment">// flags</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">SEMAPHORE_ALL_ACCESS_</span>                 <span class="comment">// access mode</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">SEMAPHORE_ALL_ACCESS_</span>                         <span class="comment">// access mode</span>
 <span class="special">);</span>
 
 <span class="keyword">if</span> <span class="special">(</span><span class="identifier">h</span><span class="special">)</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">CloseHandle</span><span class="special">(</span><span class="identifier">h</span><span class="special">);</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">winapi</span><span class="special">::</span><span class="identifier">CloseHandle</span><span class="special">(</span><span class="identifier">h</span><span class="special">);</span>
 </pre>
 <p>
       Refer to <a href="https://msdn.microsoft.com/library" target="_top">MSDN</a> for documentation

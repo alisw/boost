@@ -71,7 +71,7 @@
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.process.async_hpp"></a>Header &lt;<a href="../../../../../boost/process/async.hpp" target="_top">boost/process/async.hpp</a>&gt;</h3></div></div></div>
-<p>The header which provides the basic asynchrounous features. It provides the on_exit property, which allows callbacks when the process exits. It also implements the necessary traits for passing an boost::asio::io_service, which is needed for asynchronous communication.</p>
+<p>The header which provides the basic asynchrounous features. It provides the on_exit property, which allows callbacks when the process exits. It also implements the necessary traits for passing an boost::asio::io_context, which is needed for asynchronous communication.</p>
 <p>It also pulls the <a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/buffer.html" target="_top">boost::asio::buffer</a> into the boost::process namespace for convenience.</p>
 <p> 
 </p>
@@ -103,7 +103,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">process</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> ExitHandler<span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> Args<span class="special">&gt;</span> 
-      <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="../boost/process/async_system.html" title="Function template async_system"><span class="identifier">async_system</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">ExitHandler</span> <span class="special">&amp;&amp;</span><span class="special">,</span> 
+      <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="../boost/process/async_system.html" title="Function template async_system"><span class="identifier">async_system</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_context</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">ExitHandler</span> <span class="special">&amp;&amp;</span><span class="special">,</span> 
                                <span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -115,6 +115,8 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">process</span> <span class="special">{</span>
     <span class="keyword">class</span> <a class="link" href="../boost/process/child.html" title="Class child">child</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="boost.process.pid_t"></a><span class="identifier">pid_t</span><span class="special">;</span>  <span class="comment">// Typedef for the type of an pid_t. </span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -245,7 +247,7 @@ Please refer to the <a class="link" href="../boost_process/extend.html" title="E
   <span class="keyword">namespace</span> <span class="identifier">process</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">extend</span> <span class="special">{</span>
       <span class="keyword">struct</span> <a class="link" href="../boost/process/extend/handler.html" title="Struct handler">handler</a><span class="special">;</span>
-      <span class="keyword">struct</span> <a class="link" href="../boost/process/extend/require_io_service.html" title="Struct require_io_service">require_io_service</a><span class="special">;</span>
+      <span class="keyword">struct</span> <a class="link" href="../boost/process/extend/require_io_context.html" title="Struct require_io_context">require_io_context</a><span class="special">;</span>
       <span class="keyword">struct</span> <a class="link" href="../boost/process/extend/async_handler.html" title="Struct async_handler">async_handler</a><span class="special">;</span>
       <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sequence<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/process/extend/posix_executor.html" title="Struct template posix_executor">posix_executor</a><span class="special">;</span>
       <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Char<span class="special">,</span> <span class="keyword">typename</span> Sequence<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/process/extend/windows_executor.html" title="Struct template windows_executor">windows_executor</a><span class="special">;</span>
@@ -262,7 +264,7 @@ Please refer to the <a class="link" href="../boost_process/extend.html" title="E
       <span class="keyword">void</span> <a class="link" href="../boost/process/extend/throw_last_error.html" title="Function throw_last_error"><span class="identifier">throw_last_error</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
       <span class="keyword">void</span> <a class="link" href="../boost/process/extend/throw_last_error.html" title="Function throw_last_error"><span class="identifier">throw_last_error</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
       <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sequence<span class="special">&gt;</span> 
-        <span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> <a class="link" href="../boost/process/extend/get_io_service.html" title="Function template get_io_service"><span class="identifier">get_io_service</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Sequence</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+        <span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_context</span> <span class="special">&amp;</span> <a class="link" href="../boost/process/extend/get_io_context.html" title="Function template get_io_context"><span class="identifier">get_io_context</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Sequence</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -327,7 +329,7 @@ Another way is to communicate through pipes.</p>
 <p><b>Asynchronous I/O.&#160;</b></p>
 <p>
 Utilizing <code class="computeroutput">boost.asio</code> asynchronous I/O is provided.</p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="identifier">ios</span><span class="special">;</span>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_context</span> <span class="identifier">ios</span><span class="special">;</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">output</span><span class="special">;</span>
 <span class="identifier">system</span><span class="special">(</span><span class="string">"ls"</span><span class="special">,</span> <span class="identifier">std_out</span> <span class="special">&gt;</span> <span class="identifier">output</span><span class="special">,</span> <span class="identifier">ios</span><span class="special">)</span><span class="special">;</span>
 
@@ -338,7 +340,7 @@ Utilizing <code class="computeroutput">boost.asio</code> asynchronous I/O is pro
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p><code class="computeroutput">boost/process/asnyc.hpp</code> must also be included for this to work.</p></td></tr>
+<tr><td align="left" valign="top"><p><code class="computeroutput">boost/process/async.hpp</code> must also be included for this to work.</p></td></tr>
 </table></div>
 <p>
 </p>

@@ -33,13 +33,13 @@
 <p>
             Cancel all asynchronous operations associated with the socket.
           </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">cancel</span><span class="special">(</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void cancel(
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
             This function causes all outstanding asynchronous connect, send and receive
             operations to finish immediately, and the handlers for cancelled operations
-            will be passed the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span></code>
+            will be passed the <code class="computeroutput">boost::asio::error::operation_aborted</code>
             error.
           </p>
 <h6>
@@ -60,8 +60,7 @@
             <span class="phrase"><a name="boost_asio.reference.basic_raw_socket.cancel.overload2.remarks"></a></span><a class="link" href="overload2.html#boost_asio.reference.basic_raw_socket.cancel.overload2.remarks">Remarks</a>
           </h6>
 <p>
-            Calls to <code class="computeroutput"><span class="identifier">cancel</span><span class="special">()</span></code>
-            will always fail with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_not_supported</span></code>
+            Calls to <code class="computeroutput">cancel()</code> will always fail with <code class="computeroutput">boost::asio::error::operation_not_supported</code>
             when run on Windows XP, Windows Server 2003, and earlier versions of
             Windows, unless BOOST_ASIO_ENABLE_CANCELIO is defined. However, the CancelIo
             function has two issues that should be considered before enabling its
@@ -87,9 +86,8 @@
                 Disable asio's I/O completion port backend by defining BOOST_ASIO_DISABLE_IOCP.
               </li>
 <li class="listitem">
-                Use the <code class="computeroutput"><span class="identifier">close</span><span class="special">()</span></code>
-                function to simultaneously cancel the outstanding operations and
-                close the socket.
+                Use the <code class="computeroutput">close()</code> function to simultaneously cancel the
+                outstanding operations and close the socket.
               </li>
 </ul></div>
 <p>

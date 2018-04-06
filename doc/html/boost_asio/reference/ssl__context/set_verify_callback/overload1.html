@@ -30,10 +30,10 @@
 <p>
             Set the callback used to verify peer certificates.
           </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">VerifyCallback</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">set_verify_callback</span><span class="special">(</span>
-    <span class="identifier">VerifyCallback</span> <span class="identifier">callback</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename VerifyCallback&gt;
+void set_verify_callback(
+    VerifyCallback callback);
 </pre>
 <p>
             This function is used to specify a callback function that will be called
@@ -52,10 +52,10 @@
                   The function object to be used for verifying a certificate. The
                   function signature of the handler must be:
 </p>
-<pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">verify_callback</span><span class="special">(</span>
-  <span class="keyword">bool</span> <span class="identifier">preverified</span><span class="special">,</span> <span class="comment">// True if the certificate passed pre-verification.</span>
-  <span class="identifier">verify_context</span><span class="special">&amp;</span> <span class="identifier">ctx</span> <span class="comment">// The peer certificate and other context.</span>
-<span class="special">);</span>
+<pre class="programlisting">bool verify_callback(
+  bool preverified, // True if the certificate passed pre-verification.
+  verify_context&amp; ctx // The peer certificate and other context.
+);
 </pre>
 <p>
                   The return value of the callback is true if the certificate has
@@ -82,7 +82,7 @@
             <span class="phrase"><a name="boost_asio.reference.ssl__context.set_verify_callback.overload1.remarks"></a></span><a class="link" href="overload1.html#boost_asio.reference.ssl__context.set_verify_callback.overload1.remarks">Remarks</a>
           </h6>
 <p>
-            Calls <code class="computeroutput"><span class="identifier">SSL_CTX_set_verify</span></code>.
+            Calls <code class="computeroutput">SSL_CTX_set_verify</code>.
           </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

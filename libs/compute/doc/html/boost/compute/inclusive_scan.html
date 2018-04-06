@@ -44,7 +44,7 @@
                  <span class="identifier">OutputIterator</span> result<span class="special">,</span> 
                  <span class="identifier">command_queue</span> <span class="special">&amp;</span> queue <span class="special">=</span> <span class="identifier">system</span><span class="special">::</span><span class="identifier">default_queue</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp94381040"></a><h2>Description</h2>
+<a name="idp96135920"></a><h2>Description</h2>
 <p>Performs an inclusive scan of the elements in the range [<code class="computeroutput">first</code>, <code class="computeroutput">last</code>) and stores the results in the range beginning at <code class="computeroutput">result</code>.</p>
 <p>Each element in the output is assigned to the sum of the current value in the input with the sum of every previous value in the input.</p>
 <p>
@@ -53,7 +53,9 @@ The default operation is to add the elements up.</p>
 <pre class="programlisting"></pre>
 <p> But different associative operation can be specified as <code class="computeroutput">binary_op</code> instead (e.g., multiplication, maximum, minimum).</p>
 <pre class="programlisting"></pre>
-<p> </p>
+<p> Space complexity on GPUs: (n)<br>
+ Space complexity on GPUs when <code class="computeroutput">first</code> == <code class="computeroutput">result:</code> (2n)<br>
+ Space complexity on CPUs: (1)</p>
 <p><span class="bold"><strong>See Also:</strong></span></p>
 <p>exclusive_scan() </p>
 <p>

@@ -44,12 +44,12 @@ std::transform(
           <template-type-parameter name="Converter"/>
         </template><parameter name="cnv"><paramtype>Converter const &amp;</paramtype></parameter></function>
 </namespace>
-<data-member name="throw_on_failure"><type><emphasis>unspecified</emphasis></type><description><para>The boost::throw_on_failure is the name of an object of the boost::detail::throw_on_failure type that is used to indicate desired exception-throwing behavior. </para></description></data-member>
+<data-member name="throw_on_failure"><type><emphasis>unspecified</emphasis></type><description><para>boost::throw_on_failure is the 'tag' object to request the exception-throwing behavior. </para></description></data-member>
 <function name="convert"><type>boost::optional&lt; TypeOut &gt;</type><template>
           <template-type-parameter name="TypeOut"/>
           <template-type-parameter name="TypeIn"/>
           <template-type-parameter name="Converter"/>
-        </template><parameter name="value_in"><paramtype>TypeIn const &amp;</paramtype><description><para>Value of the TypeIn type to be converted to the TyeOut type </para></description></parameter><parameter name="converter"><paramtype>Converter const &amp;</paramtype><description><para>Converter to be used for conversion </para></description></parameter><purpose>Boost.Convert main deployment interface. </purpose><description><para>
+        </template><parameter name="value_in"><paramtype>TypeIn const &amp;</paramtype><description><para>Value of the TypeIn type to be converted to the TypeOut type </para></description></parameter><parameter name="converter"><paramtype>Converter const &amp;</paramtype><description><para>Converter to be used for conversion </para></description></parameter><purpose>Boost.Convert main deployment interface. </purpose><description><para>
 
 For example, <programlisting language="c++"><classname alt="boost::cnv::basic_stream">boost::cnv::cstream</classname> cnv;
 
@@ -59,7 +59,7 @@ boost::optional&lt;string&gt; s = boost::convert&lt;string&gt;(123.456, cnv);
 <function name="convert"><type>boost::optional&lt; TypeOut &gt;</type><template>
           <template-type-parameter name="TypeOut"/>
           <template-type-parameter name="TypeIn"/>
-        </template><parameter name="value_in"><paramtype>TypeIn const &amp;</paramtype></parameter><purpose>Boost.Convert deployment interface with the default converter. </purpose><description><para>For example, <programlisting language="c++">struct boost::cnv::by_default : public <classname alt="boost::cnv::basic_stream">boost::cnv::cstream</classname> {};
+        </template><parameter name="value_in"><paramtype>TypeIn const &amp;</paramtype></parameter><purpose>Boost.Convert deployment interface with the default converter. </purpose><description><para>For example, <programlisting language="c++">struct boost::cnv::by_default : <classname alt="boost::cnv::basic_stream">boost::cnv::cstream</classname> {};
 
 // boost::cnv::cstream (through boost::cnv::by_default) is deployed
 // as the default converter when no converter is provided explicitly.
@@ -148,9 +148,6 @@ boost::optional&lt;string&gt; s = boost::convert&lt;string&gt;(123.456);
           <template-type-parameter name="in_type"/>
           <template-type-parameter name="string_type"/>
         </template><parameter name="value_in"><paramtype>in_type</paramtype></parameter><parameter name="result_out"><paramtype>optional&lt; string_type &gt; &amp;</paramtype></parameter></method>
-<method name="format_" cv="const"><type>void</type><template>
-          <template-type-parameter name="char_type"/>
-        </template><parameter name="buf"><paramtype>char_type *</paramtype></parameter><parameter name="beg"><paramtype>char_type *&amp;</paramtype></parameter><parameter name="end"><paramtype>char_type *&amp;</paramtype></parameter></method>
 <method name="dncast" cv="const"><type>derived_type const &amp;</type></method>
 <method name="dncast"><type>derived_type &amp;</type></method>
 </method-group>

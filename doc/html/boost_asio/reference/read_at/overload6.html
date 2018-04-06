@@ -31,14 +31,14 @@
           Attempt to read a certain amount of data at the specified offset before
           returning.
         </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../SyncRandomAccessReadDevice.html" title="Buffer-oriented synchronous random-access read device requirements">SyncRandomAccessReadDevice</a><span class="special">,</span>
-    <span class="keyword">typename</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">read_at</span><span class="special">(</span>
-    <span class="identifier">SyncRandomAccessReadDevice</span> <span class="special">&amp;</span> <span class="identifier">d</span><span class="special">,</span>
-    <span class="identifier">uint64_t</span> <span class="identifier">offset</span><span class="special">,</span>
-    <span class="identifier">basic_streambuf</span><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <span class="identifier">b</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="../SyncRandomAccessReadDevice.html" title="Buffer-oriented synchronous random-access read device requirements">SyncRandomAccessReadDevice</a>,
+    typename Allocator&gt;
+std::size_t read_at(
+    SyncRandomAccessReadDevice &amp; d,
+    uint64_t offset,
+    basic_streambuf&lt; Allocator &gt; &amp; b,
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
           This function is used to read a certain number of bytes of data from a
@@ -70,8 +70,8 @@
               </p></dd>
 <dt><span class="term">b</span></dt>
 <dd><p>
-                The <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput"><span class="identifier">basic_streambuf</span></code></a> object into
-                which the data will be read.
+                The <a class="link" href="../basic_streambuf.html" title="basic_streambuf"><code class="computeroutput">basic_streambuf</code></a>
+                object into which the data will be read.
               </p></dd>
 <dt><span class="term">ec</span></dt>
 <dd><p>
@@ -93,9 +93,9 @@
 <p>
           This overload is equivalent to calling:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read_at</span><span class="special">(</span>
-    <span class="identifier">d</span><span class="special">,</span> <span class="number">42</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_all</span><span class="special">(),</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::read_at(
+    d, 42, b,
+    boost::asio::transfer_all(), ec);
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

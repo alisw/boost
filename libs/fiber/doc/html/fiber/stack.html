@@ -28,10 +28,9 @@
 </h2></div></div></div>
 <div class="toc"><dl class="toc"><dt><span class="section"><a href="stack/valgrind.html">Support for valgrind</a></span></dt></dl></div>
 <p>
-      A <a class="link" href="fiber_mgmt/fiber.html#class_fiber"><code class="computeroutput">fiber</code></a> uses internally an <a href="http://www.boost.org/doc/libs/release/libs/context/doc/html/context/ecv2.html" target="_top"><span class="emphasis"><em>execution_context</em></span></a>
-      which manages a set of registers and a stack. The memory used by the stack
-      is allocated/deallocated via a <span class="emphasis"><em>stack_allocator</em></span> which is
-      required to model a <a class="link" href="stack.html#stack_allocator_concept"><span class="emphasis"><em>stack-allocator
+      A <a class="link" href="fiber_mgmt/fiber.html#class_fiber"><code class="computeroutput">fiber</code></a> uses internally an __econtext__ which manages a set of registers
+      and a stack. The memory used by the stack is allocated/deallocated via a <span class="emphasis"><em>stack_allocator</em></span>
+      which is required to model a <a class="link" href="stack.html#stack_allocator_concept"><span class="emphasis"><em>stack-allocator
       concept</em></span></a>.
     </p>
 <p>
@@ -152,7 +151,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
         The memory for the stack is not required to be aligned; alignment takes place
-        inside <a href="http://www.boost.org/doc/libs/release/libs/context/doc/html/context/ecv2.html" target="_top"><span class="emphasis"><em>execution_context</em></span></a>.
+        inside __econtext__.
       </p></td></tr>
 </table></div>
 <p>
@@ -500,7 +499,7 @@
 </dl>
 </div>
 <p>
-      </p>
+      <a name="segmented"></a></p>
 <h5>
 <a name="class_segmented_stack_bridgehead"></a>
   <span class="phrase"><a name="class_segmented_stack"></a></span>
@@ -528,8 +527,17 @@
         from version <span class="bold"><strong>3.4</strong></span> onwards. In order to use
         a <a class="link" href="stack.html#class_segmented_stack"><code class="computeroutput">segmented_stack</code></a> <span class="bold"><strong>Boost.Fiber</strong></span>
         must be built with property <code class="computeroutput"><span class="identifier">segmented</span><span class="special">-</span><span class="identifier">stacks</span></code>,
-        e.g. <span class="bold"><strong>toolset=gcc segmented-stacks=on</strong></span> at
-        b2/bjam command line.
+        e.g. <span class="bold"><strong>toolset=gcc segmented-stacks=on</strong></span> and
+        applying BOOST_USE_SEGMENTED_STACKS at b2/bjam command line.
+      </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Segmented stacks can only be used with callcc() using property <code class="computeroutput"><span class="identifier">context</span><span class="special">-</span><span class="identifier">impl</span><span class="special">=</span><span class="identifier">ucontext</span></code>.
       </p></td></tr>
 </table></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fiber</span><span class="special">/</span><span class="identifier">segmented_stack</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>

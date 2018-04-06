@@ -137,7 +137,6 @@
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_index</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">unordered_set</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">functional</span><span class="special">/</span><span class="identifier">hash</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
@@ -661,6 +660,7 @@
 
             <span class="comment">// Actual implementation of the serialization goes below</span>
             <span class="comment">// ...</span>
+            <span class="identifier">do_something</span><span class="special">(</span><span class="identifier">value</span><span class="special">);</span>
         <span class="special">}</span>
     <span class="special">};</span>
 
@@ -737,7 +737,7 @@
 
 <span class="comment">// Using the newly created `is_asc_sorted` trait:</span>
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">do_something</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">types</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">...&gt;&amp;</span> <span class="identifier">t</span><span class="special">)</span> <span class="keyword">noexcept</span> <span class="special">{</span>
+<span class="keyword">void</span> <span class="identifier">do_something</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">types</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">...&gt;&amp;</span> <span class="comment">/*value*/</span><span class="special">)</span> <span class="keyword">noexcept</span> <span class="special">{</span>
     <span class="keyword">static_assert</span><span class="special">(</span>
         <span class="identifier">is_asc_sorted</span><span class="special">(</span> <span class="identifier">types</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">...&gt;()</span> <span class="special">),</span>
         <span class="string">"T... for do_something(const types&lt;T...&gt;&amp; t) must be sorted ascending"</span>

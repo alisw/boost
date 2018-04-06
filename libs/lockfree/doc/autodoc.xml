@@ -18,9 +18,7 @@
 <namespace name="lockfree">
 <class name="queue"><template>
       <template-type-parameter name="T"/>
-      <template-type-parameter name="A0"/>
-      <template-type-parameter name="A1"/>
-      <template-type-parameter name="A2"/>
+      <template-nontype-parameter name="Options"><type>typename...</type></template-nontype-parameter>
     </template><description><para>The queue class provides a multi-writer/multi-reader queue, pushing and popping is lock-free, construction/destruction has to be synchronized. It uses a freelist for memory management, freed nodes are pushed to the freelist and not returned to the OS before the queue is destroyed.</para><para><emphasis role="bold">Policies:</emphasis> <itemizedlist>
 <listitem><para><classname alt="boost::lockfree::fixed_sized">boost::lockfree::fixed_sized</classname>, defaults to <computeroutput>boost::lockfree::fixed_sized&lt;false&gt;</computeroutput> <sbr/>
  Can be used to completely disable dynamic memory allocations during push in order to ensure lockfree behavior. <sbr/>
@@ -30,12 +28,7 @@
  Specifies the allocator that is used for the internal freelist</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Requirements:</emphasis> <itemizedlist>
 <listitem><para>T must have a copy constructor</para></listitem><listitem><para>T must have a trivial assignment operator</para></listitem><listitem><para>T must have a trivial destructor </para></listitem></itemizedlist>
-</para></description><struct name="implementation_defined"><template>
-      <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>typename...</type></template-nontype-parameter>
-    </template><typedef name="allocator"><type>node_allocator</type></typedef>
-<typedef name="size_type"><type>std::size_t</type></typedef>
-</struct><constructor><parameter name=""><paramtype>void</paramtype></parameter><purpose>Construct queue. </purpose></constructor>
+</para></description><constructor><parameter name=""><paramtype>void</paramtype></parameter><purpose>Construct queue. </purpose></constructor>
 <constructor specifiers="explicit"><template>
           <template-type-parameter name="U"/>
         </template><parameter name="alloc"><paramtype>typename node_allocator::template rebind&lt; U &gt;::other const &amp;</paramtype></parameter></constructor>
@@ -44,21 +37,15 @@
 <constructor><template>
           <template-type-parameter name="U"/>
         </template><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name="alloc"><paramtype>typename node_allocator::template rebind&lt; U &gt;::other const &amp;</paramtype></parameter></constructor>
-<method-group name="private member functions">
-<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>(boost::has_trivial_destructor&lt; T &gt;::value)</paramtype></parameter></method>
-<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>(boost::has_trivial_assign&lt; T &gt;::value)</paramtype></parameter></method>
-<method name="BOOST_ALIGNMENT"><type>struct</type><parameter name=""><paramtype>BOOST_LOCKFREE_CACHELINE_BYTES</paramtype></parameter></method>
-<method name="initialize"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter></method>
-<method name="BOOST_DELETED_FUNCTION"><type/><parameter name=""><paramtype><classname>queue</classname>(<classname>queue</classname> const &amp;)</paramtype></parameter></method>
+<typedef name="value_type"><type>T</type></typedef>
+<typedef name="allocator"><type>implementation_defined::allocator</type></typedef>
+<typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
+<method-group name="public member functions">
 <method name="is_lock_free" cv="const"><type>bool</type><parameter name=""><paramtype>void</paramtype></parameter><description><para>
 <warning><para>It only checks, if the queue head and tail nodes and the freelist can be modified in a lock-free manner. On most platforms, the whole implementation is lock-free, if this is true. Using c++0x-style atomics, there is no possibility to provide a completely accurate implementation, because one would need to test every internal node, which is impossible if further nodes will be allocated from the operating system. </para></warning>
 </para></description><returns><para>true, if implementation is lock-free.</para></returns></method>
-<method name="reserve"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><description><para>Allocate n nodes for freelist</para><para>
-<note><para>thread-safe, may block if memory allocator blocks </para></note>
-</para></description><requires><para>only valid if no capacity&lt;&gt; argument given </para></requires></method>
-<method name="reserve_unsafe"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><description><para>Allocate n nodes for freelist</para><para>
-<note><para>not thread-safe, may block if memory allocator blocks </para></note>
-</para></description><requires><para>only valid if no capacity&lt;&gt; argument given </para></requires></method>
+<method name="reserve"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter></method>
+<method name="reserve_unsafe"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter></method>
 <method name="empty" cv="const"><type>bool</type><parameter name=""><paramtype>void</paramtype></parameter><description><para>Check if the queue is empty</para><para>
 <note><para>The result is only accurate, if no other thread modifies the queue. Therefore it is rarely practical to use this value in program logic. </para></note>
 </para></description><returns><para>true, if the queue is empty, false otherwise </para></returns></method>
@@ -71,12 +58,6 @@
 <note><para>Thread-safe and non-blocking. If internal memory pool is exhausted, operation will fail </para></note>
 
 </para></description><postconditions><para>object will be pushed to the queue, if internal node can be allocated </para></postconditions><returns><para>true, if the push operation is successful.</para></returns><throws><simpara><classname>if</classname> memory allocator throws </simpara></throws></method>
-<method name="do_push"><type>bool</type><template>
-          <template-nontype-parameter name="Bounded"><type>bool</type></template-nontype-parameter>
-        </template><parameter name="t"><paramtype>T const &amp;</paramtype></parameter></method>
-</method-group>
-<destructor><parameter name=""><paramtype>void</paramtype></parameter><description><para>Destroys queue, free all nodes from freelist. </para></description></destructor>
-<method-group name="public member functions">
 <method name="unsynchronized_push"><type>bool</type><parameter name="t"><paramtype>T const &amp;</paramtype></parameter><description><para>Pushes object t to the queue.</para><para>
 
 <note><para>Not Thread-safe. If internal memory pool is exhausted and the memory pool is not fixed-sized, a new node will be allocated from the OS. This may not be lock-free. </para></note>
@@ -125,6 +106,7 @@
 <note><para>Thread-safe and non-blocking, if functor is thread-safe and non-blocking </para></note>
 </para></description><returns><para>number of elements that are consumed</para></returns></method>
 </method-group>
+<destructor><parameter name=""><paramtype>void</paramtype></parameter><description><para>Destroys queue, free all nodes from freelist. </para></description></destructor>
 </class></namespace>
 </namespace>
 </header>
@@ -250,7 +232,9 @@
 <namespace name="lockfree">
 <class name="stack"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>typename...</type></template-nontype-parameter>
+      <template-type-parameter name="A0"/>
+      <template-type-parameter name="A1"/>
+      <template-type-parameter name="A2"/>
     </template><description><para>The stack class provides a multi-writer/multi-reader stack, pushing and popping is lock-free, construction/destruction has to be synchronized. It uses a freelist for memory management, freed nodes are pushed to the freelist and not returned to the OS before the stack is destroyed.</para><para><emphasis role="bold">Policies:</emphasis> </para><para><itemizedlist>
 <listitem><para><computeroutput>boost::lockfree::fixed_sized&lt;&gt;</computeroutput>, defaults to <computeroutput>boost::lockfree::fixed_sized&lt;false&gt;</computeroutput> <sbr/>
  Can be used to completely disable dynamic memory allocations during push in order to ensure lockfree behavior.<sbr/>
@@ -260,7 +244,21 @@
  Specifies the allocator that is used for the internal freelist</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Requirements:</emphasis> <itemizedlist>
 <listitem><para>T must have a copy constructor </para></listitem></itemizedlist>
-</para></description><constructor><parameter name=""><paramtype>void</paramtype></parameter><purpose>Construct stack. </purpose></constructor>
+</para></description><struct name="implementation_defined"><template>
+      <template-type-parameter name="T"/>
+      <template-nontype-parameter name="Options"><type>typename...</type></template-nontype-parameter>
+    </template><typedef name="allocator"><type>node_allocator</type></typedef>
+<typedef name="size_type"><type>std::size_t</type></typedef>
+</struct><struct name="node"><template>
+      <template-type-parameter name="T"/>
+      <template-nontype-parameter name="Options"><type>typename...</type></template-nontype-parameter>
+    </template><typedef name="handle_t"><type><emphasis>unspecified</emphasis></type></typedef>
+<data-member name="next"><type>handle_t</type></data-member>
+<data-member name="v"><type>const T</type></data-member>
+<method-group name="public member functions">
+</method-group>
+<constructor><parameter name="val"><paramtype>T const &amp;</paramtype></parameter></constructor>
+</struct><constructor><parameter name=""><paramtype>void</paramtype></parameter><purpose>Construct stack. </purpose></constructor>
 <constructor specifiers="explicit"><template>
           <template-type-parameter name="U"/>
         </template><parameter name="alloc"><paramtype>typename node_allocator::template rebind&lt; U &gt;::other const &amp;</paramtype></parameter></constructor>
@@ -269,10 +267,10 @@
 <constructor><template>
           <template-type-parameter name="U"/>
         </template><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name="alloc"><paramtype>typename node_allocator::template rebind&lt; U &gt;::other const &amp;</paramtype></parameter></constructor>
-<typedef name="value_type"><type>T</type></typedef>
-<typedef name="allocator"><type>implementation_defined::allocator</type></typedef>
-<typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
-<method-group name="public member functions">
+<method-group name="private member functions">
+<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>boost::is_copy_constructible&lt; T &gt;::value</paramtype></parameter></method>
+<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>(mpl::if_c&lt; has_capacity, mpl::bool_&lt; <classname>capacity</classname>-1&lt; boost::integer_traits&lt; boost::uint16_t &gt;::const_max &gt;, mpl::true_ &gt;::type::value)</paramtype></parameter></method>
+<method name="BOOST_DELETED_FUNCTION"><type/><parameter name=""><paramtype><classname>stack</classname>(<classname>stack</classname> const &amp;)</paramtype></parameter></method>
 <method name="is_lock_free" cv="const"><type>bool</type><parameter name=""><paramtype>void</paramtype></parameter><description><para>
 <warning><para>It only checks, if the top stack node and the freelist can be modified in a lock-free manner. On most platforms, the whole implementation is lock-free, if this is true. Using c++0x-style atomics, there is no possibility to provide a completely accurate implementation, because one would need to test every internal node, which is impossible if further nodes will be allocated from the operating system. </para></warning>
 </para></description><returns><para>true, if implementation is lock-free.</para></returns></method>
@@ -282,6 +280,25 @@
 <method name="reserve_unsafe"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><description><para>Allocate n nodes for freelist</para><para>
 <note><para>not thread-safe, may block if memory allocator blocks </para></note>
 </para></description><requires><para>only valid if no capacity&lt;&gt; argument given </para></requires></method>
+<method name="initialize"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter></method>
+<method name="link_nodes_atomic"><type>void</type><parameter name="new_top_node"><paramtype>node *</paramtype></parameter><parameter name="end_node"><paramtype>node *</paramtype></parameter></method>
+<method name="link_nodes_unsafe"><type>void</type><parameter name="new_top_node"><paramtype>node *</paramtype></parameter><parameter name="end_node"><paramtype>node *</paramtype></parameter></method>
+<method name="prepare_node_list"><type>tuple&lt; node *, node * &gt;</type><template>
+          <template-nontype-parameter name="Threadsafe"><type>bool</type></template-nontype-parameter>
+          <template-nontype-parameter name="Bounded"><type>bool</type></template-nontype-parameter>
+          <template-type-parameter name="ConstIterator"/>
+        </template><parameter name="begin"><paramtype>ConstIterator</paramtype></parameter><parameter name="end"><paramtype>ConstIterator</paramtype></parameter><parameter name="ret"><paramtype>ConstIterator &amp;</paramtype></parameter></method>
+<method name="do_push"><type>bool</type><template>
+          <template-nontype-parameter name="Bounded"><type>bool</type></template-nontype-parameter>
+        </template><parameter name="v"><paramtype>T const &amp;</paramtype></parameter></method>
+<method name="do_push"><type>ConstIterator</type><template>
+          <template-nontype-parameter name="Bounded"><type>bool</type></template-nontype-parameter>
+          <template-type-parameter name="ConstIterator"/>
+        </template><parameter name="begin"><paramtype>ConstIterator</paramtype></parameter><parameter name="end"><paramtype>ConstIterator</paramtype></parameter></method>
+</method-group>
+<destructor><parameter name=""><paramtype>void</paramtype></parameter><description><para>Destroys stack, free all nodes from freelist.</para><para><note><para>not thread-safe </para></note>
+</para></description></destructor>
+<method-group name="public member functions">
 <method name="push"><type>bool</type><parameter name="v"><paramtype>T const &amp;</paramtype></parameter><description><para>Pushes object t to the stack.</para><para>
 
 <note><para>Thread-safe. If internal memory pool is exhausted and the memory pool is not fixed-sized, a new node will be allocated from the OS. This may not be lock-free. </para></note>
@@ -380,8 +397,6 @@
 <note><para>It only guarantees that at some point during the execution of the function the stack has been empty. It is rarely practical to use this value in program logic, because the stack can be modified by other threads. </para></note>
 </para></description><returns><para>true, if stack is empty.</para></returns></method>
 </method-group>
-<destructor><parameter name=""><paramtype>void</paramtype></parameter><description><para>Destroys stack, free all nodes from freelist.</para><para><note><para>not thread-safe </para></note>
-</para></description></destructor>
 </class></namespace>
 </namespace>
 </header>

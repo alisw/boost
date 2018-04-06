@@ -27,68 +27,42 @@
 <a name="coroutine2.performance"></a><a class="link" href="performance.html" title="Performance">Performance</a>
 </h2></div></div></div>
 <p>
-      Performance of <span class="bold"><strong>Boost.Coroutine2</strong></span> was measured
-      on the platforms shown in the following table. Performance measurements were
-      taken using <code class="computeroutput"><span class="identifier">rdtsc</span></code> and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">high_resolution_clock</span></code>,
-      with overhead corrections, on x86 platforms. In each case, cache warm-up was
-      accounted for, and the one running thread was pinned to a single CPU.
+      Performance measurements were taken using <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">highresolution_clock</span></code>,
+      with overhead corrections. The code was compiled with gcc-6.3.1, using build
+      options: variant = release, optimization = speed. Tests were executed on dual
+      Intel XEON E5 2620v4 2.2GHz, 16C/32T, 64GB RAM, running Linux (x86_64).
     </p>
 <div class="table">
-<a name="coroutine2.performance.performance_of_asymmetric_coroutines__using_execution_context_"></a><p class="title"><b>Table&#160;1.1.&#160;Performance of asymmetric coroutines (using execution_context)</b></p>
-<div class="table-contents"><table class="table" summary="Performance of asymmetric coroutines (using execution_context)">
+<a name="coroutine2.performance.performance_of_context_switch"></a><p class="title"><b>Table&#160;1.1.&#160;Performance of context switch</b></p>
+<div class="table-contents"><table class="table" summary="Performance of context switch">
 <colgroup>
-<col>
-<col>
 <col>
 <col>
 </colgroup>
 <thead><tr>
 <th>
               <p>
-                Platform
+                using <a href="../../../../../libs/context/doc/html/context/cc.html#implementation" target="_top">fcontext_t</a>
               </p>
             </th>
 <th>
               <p>
-                switch
-              </p>
-            </th>
-<th>
-              <p>
-                construction (protected stack-allocator)
-              </p>
-            </th>
-<th>
-              <p>
-                construction (standard stack-allocator)
+                using <a href="../../../../../libs/context/doc/html/context/cc.html#implementation" target="_top">ucontext_t</a>
               </p>
             </th>
 </tr></thead>
 <tbody><tr>
 <td>
               <p>
-                x86_64 <a href="#ftn.coroutine2.performance.f0" class="footnote" name="coroutine2.performance.f0"><sup class="footnote">[a]</sup></a>
+                26 ns / 56 CPU cycles
               </p>
             </td>
 <td>
               <p>
-                16 ns / 50 cycles
-              </p>
-            </td>
-<td>
-              <p>
-                7 &#181;s / 22133 cycles
-              </p>
-            </td>
-<td>
-              <p>
-                1.7 &#181;s / 5383 cycles
+                542 ns / 1146 CPU cycles
               </p>
             </td>
 </tr></tbody>
-<tbody class="footnotes"><tr><td colspan="4"><div id="ftn.coroutine2.performance.f0" class="footnote"><p><a href="#coroutine2.performance.f0" class="para"><sup class="para">[a] </sup></a>
-                  Intel Core i7-4770S 3.10GHz
-                </p></div></td></tr></tbody>
 </table></div>
 </div>
 <br class="table-break">

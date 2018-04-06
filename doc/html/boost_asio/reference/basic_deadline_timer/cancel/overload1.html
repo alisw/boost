@@ -30,12 +30,12 @@
 <p>
             Cancel any asynchronous operations that are waiting on the timer.
           </p>
-<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">cancel</span><span class="special">();</span>
+<pre class="programlisting">std::size_t cancel();
 </pre>
 <p>
             This function forces the completion of any pending asynchronous wait
             operations against the timer. The handler for each cancelled operation
-            will be invoked with the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span></code>
+            will be invoked with the <code class="computeroutput">boost::asio::error::operation_aborted</code>
             error code.
           </p>
 <p>
@@ -67,8 +67,8 @@
             <span class="phrase"><a name="boost_asio.reference.basic_deadline_timer.cancel.overload1.remarks"></a></span><a class="link" href="overload1.html#boost_asio.reference.basic_deadline_timer.cancel.overload1.remarks">Remarks</a>
           </h6>
 <p>
-            If the timer has already expired when <code class="computeroutput"><span class="identifier">cancel</span><span class="special">()</span></code> is called, then the handlers for asynchronous
-            wait operations will:
+            If the timer has already expired when <code class="computeroutput">cancel()</code> is called,
+            then the handlers for asynchronous wait operations will:
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">

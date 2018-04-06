@@ -791,32 +791,7 @@
 <header name="boost/date_time/date_formatting.hpp">
 <namespace name="boost">
 <namespace name="date_time">
-<class name="month_formatter"><template>
-      <template-type-parameter name="month_type"/>
-      <template-type-parameter name="format_type"/>
-      <template-type-parameter name="charT"><default>char</default></template-type-parameter>
-    </template><purpose>Formats a month as as string into an ostream. </purpose><method-group name="public static functions">
-<method name="format_month" specifiers="static"><type>ostream_type &amp;</type><parameter name="month"><paramtype>const month_type &amp;</paramtype></parameter><parameter name="os"><paramtype>ostream_type &amp;</paramtype></parameter><purpose>Formats a month as as string into an ostream. </purpose><description><para>This function demands that month_type provide functions for converting to short and long strings if that capability is used. </para></description></method>
-<method name="format_month" specifiers="static"><type>std::ostream &amp;</type><parameter name="month"><paramtype>const month_type &amp;</paramtype></parameter><parameter name="os"><paramtype>std::ostream &amp;</paramtype></parameter><purpose>Formats a month as as string into an ostream. </purpose><description><para>This function demands that month_type provide functions for converting to short and long strings if that capability is used. </para></description></method>
-</method-group>
-</class><class name="ymd_formatter"><template>
-      <template-type-parameter name="ymd_type"/>
-      <template-type-parameter name="format_type"/>
-      <template-type-parameter name="charT"><default>char</default></template-type-parameter>
-    </template><purpose>Convert ymd to a standard string formatting policies. </purpose><method-group name="public static functions">
-<method name="ymd_to_string" specifiers="static"><type>std::basic_string&lt; charT &gt;</type><parameter name="ymd"><paramtype>ymd_type</paramtype></parameter><purpose>Convert ymd to a standard string formatting policies. </purpose><description><para>This is standard code for handling date formatting with year-month-day based date information. This function uses the format_type to control whether the string will contain separator characters, and if so what the character will be. In addtion, it can format the month as either an integer or a string as controled by the formatting policy </para></description></method>
-<method name="ymd_to_string" specifiers="static"><type>std::string</type><parameter name="ymd"><paramtype>ymd_type</paramtype></parameter><purpose>Convert ymd to a standard string formatting policies. </purpose><description><para>This is standard code for handling date formatting with year-month-day based date information. This function uses the format_type to control whether the string will contain separator characters, and if so what the character will be. In addtion, it can format the month as either an integer or a string as controled by the formatting policy </para></description></method>
-</method-group>
-</class><class name="date_formatter"><template>
-      <template-type-parameter name="date_type"/>
-      <template-type-parameter name="format_type"/>
-      <template-type-parameter name="charT"><default>char</default></template-type-parameter>
-    </template><purpose>Convert a date to string using format policies. </purpose><typedef name="string_type"><type>std::basic_string&lt; charT &gt;</type></typedef>
-<method-group name="public static functions">
-<method name="date_to_string" specifiers="static"><type>string_type</type><parameter name="d"><paramtype>date_type</paramtype></parameter><purpose>Convert to a date to standard string using format policies. </purpose></method>
-<method name="date_to_string" specifiers="static"><type>std::string</type><parameter name="d"><paramtype>date_type</paramtype></parameter><purpose>Convert to a date to standard string using format policies. </purpose></method>
-</method-group>
-</class>
+
 
 
 
@@ -855,7 +830,28 @@
 <header name="boost/date_time/date_formatting_limited.hpp">
 <namespace name="boost">
 <namespace name="date_time">
-
+<class name="month_formatter"><template>
+      <template-type-parameter name="month_type"/>
+      <template-type-parameter name="format_type"/>
+    </template><purpose>Formats a month as as string into an ostream. </purpose><method-group name="public static functions">
+<method name="format_month" specifiers="static"><type>std::ostream &amp;</type><parameter name="month"><paramtype>const month_type &amp;</paramtype></parameter><parameter name="os"><paramtype>std::ostream &amp;</paramtype></parameter><purpose>Formats a month as as string into an ostream. </purpose><description><para>This function demands that month_type provide functions for converting to short and long strings if that capability is used. </para></description></method>
+<method name="format_month" specifiers="static"><type>ostream_type &amp;</type><parameter name="month"><paramtype>const month_type &amp;</paramtype></parameter><parameter name="os"><paramtype>ostream_type &amp;</paramtype></parameter><purpose>Formats a month as as string into an ostream. </purpose><description><para>This function demands that month_type provide functions for converting to short and long strings if that capability is used. </para></description></method>
+</method-group>
+</class><class name="ymd_formatter"><template>
+      <template-type-parameter name="ymd_type"/>
+      <template-type-parameter name="format_type"/>
+    </template><purpose>Convert ymd to a standard string formatting policies. </purpose><method-group name="public static functions">
+<method name="ymd_to_string" specifiers="static"><type>std::string</type><parameter name="ymd"><paramtype>ymd_type</paramtype></parameter><purpose>Convert ymd to a standard string formatting policies. </purpose><description><para>This is standard code for handling date formatting with year-month-day based date information. This function uses the format_type to control whether the string will contain separator characters, and if so what the character will be. In addtion, it can format the month as either an integer or a string as controled by the formatting policy </para></description></method>
+<method name="ymd_to_string" specifiers="static"><type>std::basic_string&lt; charT &gt;</type><parameter name="ymd"><paramtype>ymd_type</paramtype></parameter><purpose>Convert ymd to a standard string formatting policies. </purpose><description><para>This is standard code for handling date formatting with year-month-day based date information. This function uses the format_type to control whether the string will contain separator characters, and if so what the character will be. In addtion, it can format the month as either an integer or a string as controled by the formatting policy </para></description></method>
+</method-group>
+</class><class name="date_formatter"><template>
+      <template-type-parameter name="date_type"/>
+      <template-type-parameter name="format_type"/>
+    </template><purpose>Convert a date to string using format policies. </purpose><method-group name="public static functions">
+<method name="date_to_string" specifiers="static"><type>std::string</type><parameter name="d"><paramtype>date_type</paramtype></parameter><purpose>Convert to a date to standard string using format policies. </purpose></method>
+<method name="date_to_string" specifiers="static"><type>string_type</type><parameter name="d"><paramtype>date_type</paramtype></parameter><purpose>Convert to a date to standard string using format policies. </purpose></method>
+</method-group>
+</class>
 
 
 
@@ -1272,7 +1268,35 @@ fkbf.get_date(date(2002,Feb,1));
 <method name="day_of_week" cv="const"><type>day_of_week_type</type></method>
 </method-group>
 <constructor><parameter name="dow"><paramtype>day_of_week_type</paramtype></parameter></constructor>
-</class><function name="nth_as_str"><type>BOOST_DATE_TIME_DECL const char *</type><parameter name="n"><paramtype>int</paramtype></parameter><purpose>Returns nth arg as string. 1 -&gt; "first", 2 -&gt; "second", max is 5. </purpose></function>
+</class>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<function name="nth_as_str"><type>BOOST_DATE_TIME_DECL const char *</type><parameter name="n"><paramtype>int</paramtype></parameter><purpose>Returns nth arg as string. 1 -&gt; "first", 2 -&gt; "second", max is 5. </purpose></function>
 <function name="days_until_weekday"><type>date_type::duration_type</type><template>
           <template-type-parameter name="date_type"/>
           <template-type-parameter name="weekday_type"/>
@@ -1289,34 +1313,6 @@ fkbf.get_date(date(2002,Feb,1));
           <template-type-parameter name="date_type"/>
           <template-type-parameter name="weekday_type"/>
         </template><parameter name="d"><paramtype>const date_type &amp;</paramtype></parameter><parameter name="wd"><paramtype>const weekday_type &amp;</paramtype></parameter><purpose>Generates a date object representing the date of the previous weekday from the given date. </purpose><description><para>Generates a date object representing the date of the previous weekday from the given date. If the date given is 2004-May-9 (a Sunday) and the given weekday is Tuesday then the resulting date will be 2004-May-4. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
@@ -1512,6 +1508,19 @@ fkbf.get_date(date(2002,Feb,1));
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="convert_to_lower"><type>std::string</type><parameter name="inp"><paramtype>std::string</paramtype></parameter><purpose>A function to replace the std::transform( , , ,tolower) construct. </purpose><description><para>This function simply takes a string, and changes all the characters in that string to lowercase (according to the default system locale). In the event that a compiler does not support locales, the old C style tolower() is used. </para></description></function>
 <function name="month_str_to_ushort"><type>unsigned short</type><template>
           <template-type-parameter name="month_type"/>
@@ -1545,19 +1554,6 @@ fkbf.get_date(date(2002,Feb,1));
           <template-type-parameter name="date_type"/>
           <template-type-parameter name="charT"/>
         </template><parameter name="s"><paramtype>const std::basic_string&lt; charT &gt; &amp;</paramtype></parameter><purpose>function called by wrapper functions: date_period_from_(w)string() </purpose></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1739,28 +1735,8 @@ fkbf.get_date(date(2002,Feb,1));
 <header name="boost/date_time/filetime_functions.hpp">
 <para>Function(s) for converting between a FILETIME structure and a time object. This file is only available on systems that have BOOST_HAS_FTIME defined. </para><namespace name="boost">
 <namespace name="date_time">
-<namespace name="winapi">
-<struct name="FILETIME"><data-member name="dwLowDateTime"><type>boost::uint32_t</type></data-member>
-<data-member name="dwHighDateTime"><type>boost::uint32_t</type></data-member>
-</struct><struct name="SYSTEMTIME"><data-member name="wYear"><type>boost::uint16_t</type></data-member>
-<data-member name="wMonth"><type>boost::uint16_t</type></data-member>
-<data-member name="wDayOfWeek"><type>boost::uint16_t</type></data-member>
-<data-member name="wDay"><type>boost::uint16_t</type></data-member>
-<data-member name="wHour"><type>boost::uint16_t</type></data-member>
-<data-member name="wMinute"><type>boost::uint16_t</type></data-member>
-<data-member name="wSecond"><type>boost::uint16_t</type></data-member>
-<data-member name="wMilliseconds"><type>boost::uint16_t</type></data-member>
-</struct><typedef name="file_time"><type><classname>FILETIME</classname></type></typedef>
-<typedef name="system_time"><type><classname>SYSTEMTIME</classname></type></typedef>
-<data-member name="lpLocalFileTime"><type><classname>FILETIME</classname> *</type></data-member>
-<data-member name="lpFileTime"><type><classname>FILETIME</classname> *</type></data-member>
-<function name="__declspec"><type/><parameter name=""><paramtype>dllimport</paramtype></parameter></function>
-<function name="get_system_time_as_file_time"><type>void</type><parameter name="ft"><paramtype><classname>file_time</classname> &amp;</paramtype></parameter></function>
-<function name="file_time_to_microseconds"><type>boost::uint64_t</type><template>
-          <template-type-parameter name="FileTimeT"/>
-        </template><parameter name="ft"><paramtype>FileTimeT const &amp;</paramtype></parameter><description><para>The function converts file_time into number of microseconds elapsed since 1970-Jan-01</para><para><note><para>Only dates after 1970-Jan-01 are supported. Dates before will be wrapped.</para><para>The function is templated on the <classname alt="boost::date_time::winapi::FILETIME">FILETIME</classname> type, so that it can be used with both native <classname alt="boost::date_time::winapi::FILETIME">FILETIME</classname> and the ad-hoc boost::date_time::winapi::file_time type. </para></note>
-</para></description></function>
-</namespace>
+
+
 
 
 
@@ -1779,10 +1755,8 @@ fkbf.get_date(date(2002,Feb,1));
 <function name="time_from_ftime"><type>TimeT</type><template>
           <template-type-parameter name="TimeT"/>
           <template-type-parameter name="FileTimeT"/>
-        </template><parameter name="ft"><paramtype>const FileTimeT &amp;</paramtype></parameter><purpose>Create a time object from an initialized FILETIME struct. </purpose><description><para>Create a time object from an initialized FILETIME struct. A FILETIME struct holds 100-nanosecond units (0.0000001). When built with microsecond resolution the file_time's sub second value will be truncated. Nanosecond resolution has no truncation.</para><para><note><para>The function is templated on the FILETIME type, so that it can be used with both native FILETIME and the ad-hoc boost::date_time::winapi::file_time type. </para></note>
+        </template><parameter name="ft"><paramtype>const FileTimeT &amp;</paramtype></parameter><purpose>Create a time object from an initialized FILETIME struct. </purpose><description><para>Create a time object from an initialized FILETIME struct. A FILETIME struct holds 100-nanosecond units (0.0000001). When built with microsecond resolution the file_time's sub second value will be truncated. Nanosecond resolution has no truncation.</para><para><note><para>The function is templated on the FILETIME type, so that it can be used with both native FILETIME and the ad-hoc boost::detail::winapi::FILETIME_ type. </para></note>
 </para></description></function>
-
-
 
 
 
@@ -1860,8 +1834,6 @@ fkbf.get_date(date(2002,Feb,1));
 
 
 
-
-
 <function name="fixed_string_to_int"><type>int_type</type><template>
           <template-type-parameter name="int_type"/>
           <template-type-parameter name="charT"/>
@@ -1874,6 +1846,8 @@ fkbf.get_date(date(2002,Feb,1));
           <template-type-parameter name="int_type"/>
           <template-type-parameter name="charT"/>
         </template><parameter name="itr"><paramtype>std::istreambuf_iterator&lt; charT &gt; &amp;</paramtype></parameter><parameter name="stream_end"><paramtype>const std::istreambuf_iterator&lt; charT &gt; &amp;</paramtype></parameter><parameter name="max_length"><paramtype>unsigned int</paramtype></parameter><purpose>Helper function for parsing varied length strings into integers. </purpose><description><para>Will consume 'max_length' characters from stream only if those characters are digits. Returns '-1' if no number can be parsed. Will not parse a number preceeded by a '+' or '-'. </para></description></function>
+
+
 
 
 
@@ -2029,18 +2003,18 @@ fkbf.get_date(date(2002,Feb,1));
 
 
 
-
-
-
-
-
-
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; charT, traits &gt; &amp;</type><template>
           <template-type-parameter name="charT"/>
           <template-type-parameter name="traits"/>
           <template-type-parameter name="int_type"/>
         </template><parameter name="os"><paramtype>std::basic_ostream&lt; charT, traits &gt; &amp;</paramtype></parameter><parameter name="ia"><paramtype>const <classname>int_adapter</classname>&lt; int_type &gt; &amp;</paramtype></parameter><description><para>Expected output is either a numeric representation or a special values representation.<sbr/>
  Ex. "12", "+infinity", "not-a-number", etc. </para></description></function>
+
+
+
+
+
+
 
 
 
@@ -2213,15 +2187,15 @@ typedef date_time::local_adjustor&lt;ptime, -7, no_dst&gt; us_arizona;
 
 
 
-
-
-
-
-
-
-
-
 <function name="dummy_to_prevent_msvc6_ice"><type>void</type></function>
+
+
+
+
+
+
+
+
 
 
 
@@ -2380,6 +2354,8 @@ if (us_dst::local_is_dst(t.date(), t.time_of_day())
 </method-group>
 <method-group name="private static functions">
 <method name="create_time" specifiers="static"><type>time_type</type><parameter name="converter"><paramtype>time_converter</paramtype></parameter></method>
+<method name="file_time_to_microseconds" specifiers="static"><type>boost::uint64_t</type><parameter name="ft"><paramtype>boost::winapi::FILETIME_ const &amp;</paramtype></parameter><description><para>The function converts file_time into number of microseconds elapsed since 1970-Jan-01</para><para><note><para>Only dates after 1970-Jan-01 are supported. Dates before will be wrapped. </para></note>
+</para></description></method>
 </method-group>
 </class>
 
@@ -2855,20 +2831,20 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
 
 
 
-
-
-
-
-
-
-
-
-
-
 <function name="convert_string_type"><type>std::basic_string&lt; OutputT &gt;</type><template>
           <template-type-parameter name="InputT"/>
           <template-type-parameter name="OutputT"/>
         </template><parameter name="inp_str"><paramtype>const std::basic_string&lt; InputT &gt; &amp;</paramtype></parameter><purpose>Converts a string from one value_type to another. </purpose><description><para>Converts a wstring to a string (or a string to wstring). If both template parameters are of same type, a copy of the input string is returned. </para></description></function>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2931,21 +2907,21 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; charT &gt; &amp;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="os"><paramtype>std::basic_ostream&lt; charT &gt; &amp;</paramtype></parameter><parameter name="mr"><paramtype><classname>parse_match_result</classname>&lt; charT &gt; &amp;</paramtype></parameter></function>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2970,21 +2946,6 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="gather_month_strings"><type>std::vector&lt; std::basic_string&lt; charT &gt; &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="locale"><paramtype>const std::locale &amp;</paramtype><description><para>The locale to use when gathering the strings </para></description></parameter><parameter name="short_strings"><paramtype>bool</paramtype><default>true</default><description><para>True(default) to gather short strings, false for long strings. </para></description></parameter><purpose>This function gathers up all the month strings from a std::locale. </purpose><description><para>Using the time_put facet, this function creates a collection of all the month strings from a locale. This is handy when building custom date parsers or formatters that need to be localized.</para><para>
@@ -2995,6 +2956,21 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
         </template><parameter name="locale"><paramtype>const std::locale &amp;</paramtype><description><para>The locale to use when gathering the strings </para></description></parameter><parameter name="short_strings"><paramtype>bool</paramtype><default>true</default><description><para>True(default) to gather short strings, false for long strings. </para></description></parameter><purpose>This function gathers up all the weekday strings from a std::locale. </purpose><description><para>Using the time_put facet, this function creates a collection of all the weekday strings from a locale starting with the string for 'Sunday'. This is handy when building custom date parsers or formatters that need to be localized.</para><para>
 
 </para></description><returns><para>A vector of strings containing the weekdays in order. eg: Sun, Mon, Tue, Wed, Thu, Fri, Sat </para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3592,30 +3568,6 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
 <namespace name="boost">
 <namespace name="date_time">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="power"><type>int_type</type><template>
           <template-type-parameter name="int_type"/>
         </template><parameter name="base"><paramtype>int_type</paramtype></parameter><parameter name="exponent"><paramtype>int_type</paramtype></parameter><purpose>computes exponential math like 2^8 =&gt; 256, only works with positive integers </purpose></function>
@@ -3636,6 +3588,30 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
 <function name="parse_iso_time"><type>time_type</type><template>
           <template-type-parameter name="time_type"/>
         </template><parameter name="s"><paramtype>const std::string &amp;</paramtype></parameter><parameter name="sep"><paramtype>char</paramtype></parameter><purpose>Parse time string of form YYYYMMDDThhmmss where T is delimeter between date and time. </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </namespace>
 </namespace>
@@ -3673,7 +3649,7 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
       <template-nontype-parameter name="resolution_adjust"><type>#if(defined(BOOST_MSVC)&amp;&amp;(_MSC_VER&lt; 1300)) boost::int64_t</type></template-nontype-parameter>
       <template-nontype-parameter name="resolution_adjust"><type>#else typename frac_sec_type::int_type</type></template-nontype-parameter>
       <template-nontype-parameter name="frac_digits"><type>#endif unsigned short</type></template-nontype-parameter>
-      <template-type-parameter name="var_type"><default>boost::int32_t</default></template-type-parameter>
+      <template-type-parameter name="var_type"><default>std::time_t</default></template-type-parameter>
     </template><typedef name="fractional_seconds_type"><type>frac_sec_type::int_type</type></typedef>
 <typedef name="tick_type"><type>frac_sec_type::int_type</type></typedef>
 <typedef name="impl_type"><type>frac_sec_type::impl_type</type></typedef>
@@ -3696,41 +3672,41 @@ special_value_formatter svf(&amp;special_value_names[0], &amp;special_value_name
 </class><typedef name="milli_res"><type><classname>time_resolution_traits</classname>&lt; <classname>time_resolution_traits_adapted32_impl</classname>, milli, 1000, 3 &gt;</type></typedef>
 <typedef name="micro_res"><type><classname>time_resolution_traits</classname>&lt; <classname>time_resolution_traits_adapted64_impl</classname>, micro, 1000000, 6 &gt;</type></typedef>
 <typedef name="nano_res"><type><classname>time_resolution_traits</classname>&lt; <classname>time_resolution_traits_adapted64_impl</classname>, nano, 1000000000, 9 &gt;</type></typedef>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="absolute_value"><type>T</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="x"><paramtype>T</paramtype></parameter><purpose>Simple function to calculate absolute value of a numeric type. </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>

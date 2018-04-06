@@ -108,9 +108,8 @@
       </h5>
 <p>
         These POSIX-specific examples show how to use Boost.Asio in conjunction with
-        the <code class="computeroutput"><span class="identifier">fork</span><span class="special">()</span></code>
-        system call. The first example illustrates the steps required to start a
-        daemon process:
+        the <code class="computeroutput">fork()</code> system call. The first example illustrates the steps
+        required to start a daemon process:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
             <a href="../example/cpp03/fork/daemon.cpp" target="_top">boost_asio/example/cpp03/fork/daemon.cpp</a>
@@ -210,7 +209,7 @@
         Server 2</a>
       </h5>
 <p>
-        An HTTP server using an io_service-per-CPU design.
+        An HTTP server using an io_context-per-CPU design.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -223,10 +222,10 @@
             <a href="../example/cpp03/http/server2/header.hpp" target="_top">boost_asio/example/cpp03/http/server2/header.hpp</a>
           </li>
 <li class="listitem">
-            <a href="../example/cpp03/http/server2/io_service_pool.cpp" target="_top">boost_asio/example/cpp03/http/server2/io_service_pool.cpp</a>
+            <a href="../example/cpp03/http/server2/io_context_pool.cpp" target="_top">boost_asio/example/cpp03/http/server2/io_context_pool.cpp</a>
           </li>
 <li class="listitem">
-            <a href="../example/cpp03/http/server2/io_service_pool.hpp" target="_top">boost_asio/example/cpp03/http/server2/io_service_pool.hpp</a>
+            <a href="../example/cpp03/http/server2/io_context_pool.hpp" target="_top">boost_asio/example/cpp03/http/server2/io_context_pool.hpp</a>
           </li>
 <li class="listitem">
             <a href="../example/cpp03/http/server2/main.cpp" target="_top">boost_asio/example/cpp03/http/server2/main.cpp</a>
@@ -271,7 +270,7 @@
         Server 3</a>
       </h5>
 <p>
-        An HTTP server using a single io_service and a thread pool calling <code class="computeroutput"><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">run</span><span class="special">()</span></code>.
+        An HTTP server using a single io_context and a thread pool calling <code class="computeroutput">io_context::run()</code>.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -460,7 +459,7 @@
       </h5>
 <p>
         This example demonstrates how to integrate custom functionality (in this
-        case, for logging) into asio's <a class="link" href="../reference/io_service.html" title="io_service">io_service</a>,
+        case, for logging) into asio's <a class="link" href="../reference/io_context.html" title="io_context">io_context</a>,
         and how to use a custom service with <a class="link" href="../reference/basic_stream_socket.html" title="basic_stream_socket">basic_stream_socket&lt;&gt;</a>.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -608,6 +607,9 @@
             <a href="../example/cpp03/local/connect_pair.cpp" target="_top">boost_asio/example/cpp03/local/connect_pair.cpp</a>
           </li>
 <li class="listitem">
+            <a href="../example/cpp03/local/iostream_client.cpp" target="_top">boost_asio/example/cpp03/local/iostream_client.cpp</a>
+          </li>
+<li class="listitem">
             <a href="../example/cpp03/local/stream_server.cpp" target="_top">boost_asio/example/cpp03/local/stream_server.cpp</a>
           </li>
 <li class="listitem">
@@ -619,7 +621,8 @@
         <span class="phrase"><a name="boost_asio.examples.cpp03_examples.windows"></a></span><a class="link" href="cpp03_examples.html#boost_asio.examples.cpp03_examples.windows">Windows</a>
       </h5>
 <p>
-        An example showing how to use the Windows-specific function <code class="computeroutput"><span class="identifier">TransmitFile</span></code> with Boost.Asio.
+        An example showing how to use the Windows-specific function <code class="computeroutput">TransmitFile</code>
+        with Boost.Asio.
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
             <a href="../example/cpp03/windows/transmit_file.cpp" target="_top">boost_asio/example/cpp03/windows/transmit_file.cpp</a>

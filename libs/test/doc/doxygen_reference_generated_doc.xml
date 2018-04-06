@@ -278,9 +278,9 @@
 </struct></namespace>
 <overloaded-function name="make"><signature><type>std::enable_if&lt; <classname>monomorphic::is_dataset</classname>&lt; DataSet &gt;::value, DataSet &gt;::type</type><template>
           <template-type-parameter name="DataSet"/>
-        </template><parameter name="ds"><paramtype>DataSet &amp;&amp;</paramtype></parameter></signature><signature><type>std::enable_if&lt;!<classname>is_forward_iterable</classname>&lt; T &gt;::value &amp;&amp;!<classname>monomorphic::is_dataset</classname>&lt; T &gt;::value &amp;&amp;!is_array&lt; typename remove_reference&lt; T &gt;::type &gt;::value, <classname>monomorphic::singleton</classname>&lt; T &gt; &gt;::type</type><template>
+        </template><parameter name="ds"><paramtype>DataSet &amp;&amp;</paramtype></parameter></signature><signature><type>std::enable_if&lt;!<classname>is_container_forward_iterable</classname>&lt; T &gt;::value &amp;&amp;!<classname>monomorphic::is_dataset</classname>&lt; T &gt;::value &amp;&amp;!is_array&lt; typename remove_reference&lt; T &gt;::type &gt;::value, <classname>monomorphic::singleton</classname>&lt; T &gt; &gt;::type</type><template>
           <template-type-parameter name="T"/>
-        </template><parameter name="v"><paramtype>T &amp;&amp;</paramtype></parameter></signature><signature><type>std::enable_if&lt; <classname>is_forward_iterable</classname>&lt; C &gt;::value, <classname>monomorphic::collection</classname>&lt; C &gt; &gt;::type</type><template>
+        </template><parameter name="v"><paramtype>T &amp;&amp;</paramtype></parameter></signature><signature><type>std::enable_if&lt; <classname>is_container_forward_iterable</classname>&lt; C &gt;::value, <classname>monomorphic::collection</classname>&lt; C &gt; &gt;::type</type><template>
           <template-type-parameter name="C"/>
         </template><parameter name="c"><paramtype>C &amp;&amp;</paramtype></parameter></signature><signature><type><classname>monomorphic::array</classname>&lt; typename boost::remove_const&lt; T &gt;::type &gt;</type><template>
           <template-type-parameter name="T"/>
@@ -1427,6 +1427,7 @@ auto d = xrange(param);
 <method-group name="public member functions">
 </method-group>
 <constructor specifiers="explicit"><parameter name="file_name"><paramtype>char const *</paramtype><default>0</default></parameter><parameter name="line_num"><paramtype>size_t</paramtype><default>0</default></parameter><parameter name="func"><paramtype>char const *</paramtype><default>0</default></parameter></constructor>
+<constructor specifiers="explicit"><parameter name="file_name"><paramtype>const_string</paramtype></parameter><parameter name="line_num"><paramtype>size_t</paramtype><default>0</default></parameter><parameter name="func"><paramtype>char const *</paramtype><default>0</default></parameter></constructor>
 </struct><constructor><parameter name="ec"><paramtype>error_code</paramtype><description><para>error code </para></description></parameter><parameter name="what_msg"><paramtype>const_string</paramtype><description><para>error message </para></description></parameter><parameter name="location"><paramtype><classname>location</classname> const &amp;</paramtype><description><para>error location </para></description></parameter><purpose>Constructs instance based on message, location and error code. </purpose><description><para>
 </para></description></constructor>
 <enum name="error_code"><enumvalue name="no_error"><default>= 0</default><purpose>for completeness only; never returned </purpose></enumvalue><enumvalue name="user_error"><default>= 200</default><purpose>user reported non-fatal error </purpose></enumvalue><enumvalue name="cpp_exception_error"><default>= 205</default><purpose>see note (1) above </purpose></enumvalue><enumvalue name="system_error"><default>= 210</default><purpose>see note (2) above </purpose></enumvalue><enumvalue name="timeout_error"><default>= 215</default><purpose>only detectable on certain platforms </purpose></enumvalue><enumvalue name="user_fatal_error"><default>= 220</default><purpose>user reported fatal error </purpose></enumvalue><enumvalue name="system_fatal_error"><default>= 225</default><purpose>see note (2) above </purpose></enumvalue><purpose>These values are sometimes used as program return codes. The particular values have been chosen to avoid conflicts with commonly used program return codes: values &lt; 100 are often user assigned, values &gt; 255 are sometimes used to report system errors. Gaps in values allow for orderly expansion. </purpose><description><para><note><para>(1) Only uncaught C++ exceptions are treated as errors. If a function catches a C++ exception, it never reaches the <classname alt="boost::execution_monitor">execution_monitor</classname>.</para></note>
@@ -1521,7 +1522,11 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 <function name="clear"><type>void</type><purpose>After this call the framework can be reinitialized to perform a second test run during the same program lifetime. </purpose></function>
 <function name="register_observer"><type>void</type><parameter name="to"><paramtype><classname>test_observer</classname> &amp;</paramtype><description><para>test observer object to add </para></description></parameter><purpose>Observer lifetime should exceed the the testing execution timeframe. </purpose><description><para>
 </para></description></function>
-<function name="deregister_observer"><type>void</type><parameter name="to"><paramtype><classname>test_observer</classname> &amp;</paramtype><description><para>test observer object to exclude </para></description></parameter><purpose>Excldes the observer object form the framework's list of test observers. </purpose><description><para>
+<function name="deregister_observer"><type>void</type><parameter name="to"><paramtype><classname>test_observer</classname> &amp;</paramtype><description><para>test observer object to exclude </para></description></parameter><purpose>Excludes the observer object form the framework's list of test observers. </purpose><description><para>
+</para></description></function>
+<function name="register_global_fixture"><type>void</type><parameter name="tuf"><paramtype>test_unit_fixture &amp;</paramtype><description><para>fixture to add </para></description></parameter><purpose>Adds a new global fixture to be setup before any other tests starts and tore down after any other tests finished. Test unit fixture lifetime should exceed the testing execution timeframe. </purpose><description><para>
+</para></description></function>
+<function name="deregister_global_fixture"><type>void</type><parameter name="tuf"><paramtype>test_unit_fixture &amp;</paramtype><description><para>fixture to remove </para></description></parameter><purpose>Removes a test global fixture from the framework. </purpose><description><para>Test unit fixture lifetime should exceed the testing execution timeframe 
 </para></description></function>
 <function name="add_context"><type>int</type><parameter name="context_descr"><paramtype>lazy_ostream const &amp;</paramtype><description><para>context frame message </para></description></parameter><parameter name="sticky"><paramtype>bool</paramtype><description><para>is this sticky frame or not </para></description></parameter><purpose>Records context frame message. </purpose><description><para>Some context frames are sticky - they can only explicitly cleared by specifying context id. Other (non sticky) context frames cleared after every assertion. 
 
@@ -1530,6 +1535,8 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 <function name="get_context"><type><classname>context_generator</classname></type><purpose>Produces an instance of small "delegate" object, which facilitates access to collected context. </purpose></function>
 <function name="master_test_suite"><type><classname>master_test_suite_t</classname> &amp;</type><purpose>There is only only master test suite per test module. </purpose><description><para>
 </para></description><returns><para>a reference the master test suite instance </para></returns></function>
+<function name="current_test_unit"><type><classname>test_unit</classname> const &amp;</type><purpose>This function provides an access to the test unit currently being executed. </purpose><description><para>The difference with current_test_case is about the time between a test-suite is being set up or torn down (fixtures) and when the test-cases of that suite start. This function is only valid during test execution phase. <para><emphasis role="bold">See Also:</emphasis><para>current_test_case_id, current_test_case </para></para>
+</para></description></function>
 <function name="current_test_case"><type><classname>test_case</classname> const &amp;</type><purpose>This function provides an access to the test case currently being executed. </purpose><description><para>This function is only valid during test execution phase. <para><emphasis role="bold">See Also:</emphasis><para>current_test_case_id </para></para>
 </para></description></function>
 <function name="current_test_case_id"><type>test_unit_id</type><purpose>This function provides an access to an id of the test case currently being executed. </purpose><description><para>This function safer than current_test_case, cause if wont throw if no test case is being executed. <para><emphasis role="bold">See Also:</emphasis><para>current_test_case </para></para>
@@ -1548,6 +1555,7 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 <function name="assertion_result"><type>void</type><parameter name="ar"><paramtype>unit_test::assertion_result</paramtype></parameter></function>
 <function name="exception_caught"><type>void</type><parameter name=""><paramtype><classname>execution_exception</classname> const &amp;</paramtype></parameter><purpose>Reports uncaught exception to all test observers. </purpose></function>
 <function name="test_unit_aborted"><type>void</type><parameter name=""><paramtype><classname>test_unit</classname> const &amp;</paramtype></parameter><purpose>Reports aborted test unit to all test observers. </purpose></function>
+<function name="test_aborted"><type>void</type><purpose>Reports aborted test module to all test observers. </purpose></function>
 </namespace>
 <typedef name="init_unit_test_func"><purpose>Test module initialization routine signature. </purpose><description><para>Different depending on whether BOOST_TEST_ALTERNATIVE_INIT_API is defined or not </para></description><type><classname>test_suite</classname> *(*</type></typedef>
 
@@ -1605,10 +1613,10 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 <method name="entry_context_start" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><purpose>Invoked by Unit Test Framework to start log entry context report. </purpose><description><para>Unit Test Framework logs for failed assertions and uncaught exceptions context if one was defined by a test module. Context consists of multiple "scopes" identified by description messages assigned by the test module using BOOST_TEST_INFO/BOOST_TEST_CONTEXT statements. 
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_context, entry_context_finish </para></para>
 </para></description></method>
-<method name="log_entry_context" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="value"><paramtype>const_string</paramtype><description><para>context "scope" description </para></description></parameter><purpose>Invoked by Unit Test Framework to report log entry context "scope" description. </purpose><description><para>Each "scope" description is reported by separate call to log_entry_context. 
+<method name="log_entry_context" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><parameter name="value"><paramtype>const_string</paramtype><description><para>context "scope" description </para></description></parameter><purpose>Invoked by Unit Test Framework to report log entry context "scope" description. </purpose><description><para>Each "scope" description is reported by separate call to log_entry_context. 
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_start, entry_context_finish </para></para>
 </para></description></method>
-<method name="entry_context_finish" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><purpose>Invoked by Unit Test Framework to finish log entry context report. </purpose><description><para>
+<method name="entry_context_finish" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><purpose>Invoked by Unit Test Framework to finish log entry context report. </purpose><description><para>
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_start, entry_context_context </para></para>
 </para></description></method>
 <method name="test_unit_skipped" specifiers="virtual"><type>void</type><parameter name=""><paramtype>std::ostream &amp;</paramtype></parameter><parameter name=""><paramtype><classname>test_unit</classname> const &amp;</paramtype></parameter><purpose>Deprecated version of this interface. </purpose></method>
@@ -1698,10 +1706,10 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 <method name="entry_context_start" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><purpose>Invoked by Unit Test Framework to start log entry context report. </purpose><description><para>Unit Test Framework logs for failed assertions and uncaught exceptions context if one was defined by a test module. Context consists of multiple "scopes" identified by description messages assigned by the test module using BOOST_TEST_INFO/BOOST_TEST_CONTEXT statements. 
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_context, entry_context_finish </para></para>
 </para></description></method>
-<method name="log_entry_context" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="value"><paramtype>const_string</paramtype><description><para>context "scope" description </para></description></parameter><purpose>Invoked by Unit Test Framework to report log entry context "scope" description. </purpose><description><para>Each "scope" description is reported by separate call to log_entry_context. 
+<method name="log_entry_context" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><parameter name="value"><paramtype>const_string</paramtype><description><para>context "scope" description </para></description></parameter><purpose>Invoked by Unit Test Framework to report log entry context "scope" description. </purpose><description><para>Each "scope" description is reported by separate call to log_entry_context. 
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_start, entry_context_finish </para></para>
 </para></description></method>
-<method name="entry_context_finish" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><purpose>Invoked by Unit Test Framework to finish log entry context report. </purpose><description><para>
+<method name="entry_context_finish" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><purpose>Invoked by Unit Test Framework to finish log entry context report. </purpose><description><para>
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_start, entry_context_context </para></para>
 </para></description></method>
 <method name="test_unit_skipped" specifiers="virtual"><type>void</type><parameter name=""><paramtype>std::ostream &amp;</paramtype></parameter><parameter name=""><paramtype><classname>test_unit</classname> const &amp;</paramtype></parameter><purpose>Deprecated version of this interface. </purpose></method>
@@ -1817,6 +1825,7 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 <method name="BOOST_READONLY_PROPERTY"><type>typedef</type><parameter name=""><paramtype>counter_t</paramtype></parameter><parameter name=""><paramtype>(<classname>results_collector_t</classname>)(<classname>test_results</classname>)(results_collect_helper)</paramtype></parameter><purpose>Type representing counter like public property. </purpose></method>
 <method name="BOOST_READONLY_PROPERTY"><type>typedef</type><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>(<classname>results_collector_t</classname>)(<classname>test_results</classname>)(results_collect_helper)</paramtype></parameter><purpose>Type representing boolean like public property. </purpose></method>
 <method name="passed" cv="const"><type>bool</type><purpose>Returns true if test unit passed. </purpose></method>
+<method name="aborted" cv="const"><type>bool</type><purpose>Returns true if the test unit was aborted (hard failure) </purpose></method>
 <method name="result_code" cv="const"><type>int</type><purpose>Produces result code for the test unit execution. </purpose><description><para>This methhod return one of the result codes defined in <computeroutput>boost/cstdlib.hpp</computeroutput> 
 </para></description><returns><para><itemizedlist>
 <listitem><para><computeroutput>boost::exit_success</computeroutput> on success,</para></listitem><listitem><para><computeroutput>boost::exit_exception_failure</computeroutput> in case test unit was aborted for any reason (incuding uncaught exception)</para></listitem><listitem><para>and <computeroutput>boost::exit_test_failure</computeroutput> otherwise </para></listitem></itemizedlist>
@@ -1839,7 +1848,7 @@ em.register_exception_translator&lt;MyException&gt;( myExceptTr );
 </para></description></method>
 <method name="assertion_result" specifiers="virtual"><type>void</type><parameter name=""><paramtype>unit_test::assertion_result</paramtype></parameter></method>
 <method name="exception_caught" specifiers="virtual"><type>void</type><parameter name=""><paramtype><classname>execution_exception</classname> const &amp;</paramtype></parameter><purpose>Called when an exception is intercepted. </purpose><description><para>In case an exception is intercepted, this call happens before the call to test_unit_aborted in order to log additional data about the exception. </para></description></method>
-<method name="priority" specifiers="virtual"><type>int</type></method>
+<method name="priority" specifiers="virtual"><type>int</type><purpose>The priority indicates the order at which this observer is initialized and tore down in the UTF framework. The order is lowest to highest priority. </purpose></method>
 <method name="results" cv="const"><type><classname>test_results</classname> const &amp;</type><parameter name="tu_id"><paramtype>test_unit_id</paramtype><description><para>id of a test unit </para></description></parameter><purpose>Results access per test unit. </purpose><description><para>
 </para></description></method>
 <method name="test_finish" specifiers="virtual"><type>void</type><purpose>Called after the framework ends executing the test cases. </purpose><description><para><note><para>The call is made with a reversed priority order. </para></note>
@@ -2088,7 +2097,7 @@ What is reported by <computeroutput>tested_rel_diff</computeroutput> in case of 
 </para></description></method>
 <method name="assertion_result" specifiers="virtual"><type>void</type><parameter name="ar"><paramtype>unit_test::assertion_result</paramtype></parameter></method>
 <method name="exception_caught" specifiers="virtual"><type>void</type><parameter name=""><paramtype><classname>execution_exception</classname> const &amp;</paramtype></parameter><purpose>Called when an exception is intercepted. </purpose><description><para>In case an exception is intercepted, this call happens before the call to test_unit_aborted in order to log additional data about the exception. </para></description></method>
-<method name="priority" specifiers="virtual"><type>int</type></method>
+<method name="priority" specifiers="virtual"><type>int</type><purpose>The priority indicates the order at which this observer is initialized and tore down in the UTF framework. The order is lowest to highest priority. </purpose></method>
 </method-group>
 <method-group name="protected member functions">
 <method name="assertion_result" specifiers="virtual"><type>void</type><parameter name=""><paramtype>bool</paramtype></parameter><purpose>Deprecated. </purpose></method>
@@ -2328,6 +2337,10 @@ What is reported by <computeroutput>tested_rel_diff</computeroutput> in case of 
 
 
 
+
+
+
+
 </namespace>
 <typedef name="test_unit_id_list"><type>std::vector&lt; test_unit_id &gt;</type></typedef>
 
@@ -2383,7 +2396,7 @@ Users/developers willing to implement their own formatter need to:<itemizedlist>
 <listitem><para>a strong assertion (with <computeroutput>REQUIRE</computeroutput>) fails, which indicates that the test case cannot continue</para></listitem><listitem><para>an unexpected exception is caught by the Boost.Test framework </para></listitem></itemizedlist>
 </para></description></method>
 <method name="exception_caught" specifiers="virtual"><type>void</type><parameter name=""><paramtype><classname>execution_exception</classname> const &amp;</paramtype></parameter><purpose>Called when an exception is intercepted. </purpose><description><para>In case an exception is intercepted, this call happens before the call to test_unit_aborted in order to log additional data about the exception. </para></description></method>
-<method name="priority" specifiers="virtual"><type>int</type></method>
+<method name="priority" specifiers="virtual"><type>int</type><purpose>The priority indicates the order at which this observer is initialized and tore down in the UTF framework. The order is lowest to highest priority. </purpose></method>
 <method name="set_stream"><type>void</type><parameter name=""><paramtype>std::ostream &amp;</paramtype></parameter><purpose>Sets the stream for all loggers. </purpose><description><para>This will override the log sink/stream of all loggers, whether enabled or not. </para></description></method>
 <method name="set_stream"><type>void</type><parameter name=""><paramtype>output_format</paramtype></parameter><parameter name=""><paramtype>std::ostream &amp;</paramtype></parameter><purpose>Sets the stream for specific logger. </purpose><description><para><note><para>Has no effect if the specified format is not found </para></note>
 <formalpara><title>Since Boost 1.62 </title><para/></formalpara>
@@ -2512,10 +2525,10 @@ Users/developers willing to implement their own formatter need to:<itemizedlist>
 <method name="entry_context_start" cv="= 0" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><purpose>Invoked by Unit Test Framework to start log entry context report. </purpose><description><para>Unit Test Framework logs for failed assertions and uncaught exceptions context if one was defined by a test module. Context consists of multiple "scopes" identified by description messages assigned by the test module using BOOST_TEST_INFO/BOOST_TEST_CONTEXT statements. 
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_context, entry_context_finish </para></para>
 </para></description></method>
-<method name="log_entry_context" cv="= 0" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="value"><paramtype>const_string</paramtype><description><para>context "scope" description </para></description></parameter><purpose>Invoked by Unit Test Framework to report log entry context "scope" description. </purpose><description><para>Each "scope" description is reported by separate call to log_entry_context. 
+<method name="log_entry_context" cv="= 0" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><parameter name="value"><paramtype>const_string</paramtype><description><para>context "scope" description </para></description></parameter><purpose>Invoked by Unit Test Framework to report log entry context "scope" description. </purpose><description><para>Each "scope" description is reported by separate call to log_entry_context. 
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_start, entry_context_finish </para></para>
 </para></description></method>
-<method name="entry_context_finish" cv="= 0" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><purpose>Invoked by Unit Test Framework to finish log entry context report. </purpose><description><para>
+<method name="entry_context_finish" cv="= 0" specifiers="virtual"><type>void</type><parameter name="os"><paramtype>std::ostream &amp;</paramtype><description><para>output stream to write a messages into </para></description></parameter><parameter name="l"><paramtype>log_level</paramtype><description><para>entry log_level, to be used to fine tune the message </para></description></parameter><purpose>Invoked by Unit Test Framework to finish log entry context report. </purpose><description><para>
 <para><emphasis role="bold">See Also:</emphasis><para>log_entry_start, entry_context_context </para></para>
 </para></description></method>
 <method name="set_log_level" specifiers="virtual"><type>void</type><parameter name="new_log_level"><paramtype>log_level</paramtype></parameter><purpose>Sets the log level of the logger/formatter. </purpose><description><para>Some loggers need to manage the log level by their own. This member function let the implementation decide of that. <formalpara><title>Since Boost 1.62 </title><para/></formalpara>
@@ -2659,6 +2672,7 @@ The wildcard is the symbol '*'. Only a unique wildcard per string is supported. 
 
 </namespace>
 </namespace>
+<macro name="BOOST_TEST_BIND1ST" kind="functionlike"><macro-parameter name="F"/><macro-parameter name="A"/></macro>
 </header>
 <header name="boost/test/utils/is_forward_iterable.hpp">
 <para>Defines the is_forward_iterable collection type trait. </para><namespace name="boost">
@@ -2669,7 +2683,39 @@ The wildcard is the symbol '*'. Only a unique wildcard per string is supported. 
 <typedef name="T_ref"><type>std::remove_reference&lt; T &gt;::type</type></typedef>
 <typedef name="is_fwd_it_t"><type><emphasis>unspecified</emphasis></type></typedef>
 <typedef name="type"><type>mpl::bool_&lt; is_fwd_it_t::value &gt;</type></typedef>
-</struct>
+</struct><struct name="is_container_forward_iterable"><template>
+      <template-type-parameter name="T"/>
+    </template><description><para>Indicates that a specific type implements the forward iterable concept. </para></description><enum name="@12"><enumvalue name="value"><default>= is_fwd_it_t::value</default></enumvalue></enum>
+<typedef name="T_ref"><type>std::remove_reference&lt; T &gt;::type</type></typedef>
+<typedef name="is_fwd_it_t"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="type"><type>mpl::bool_&lt; is_fwd_it_t::value &gt;</type></typedef>
+</struct><struct name="bt_iterator_traits"><template>
+      <template-type-parameter name="T"/>
+      <template-nontype-parameter name="is_forward_iterable"><type>bool</type><default><classname alt="boost::unit_test::is_forward_iterable">is_forward_iterable</classname>&lt;T&gt;::value</default></template-nontype-parameter>
+    </template></struct><struct-specialization name="bt_iterator_traits"><template>
+      <template-type-parameter name="T"/>
+    </template><specialization><template-arg>T</template-arg><template-arg>true</template-arg></specialization><typedef name="const_iterator"><type>T::const_iterator</type></typedef>
+<typedef name="value_type"><type>T::value_type</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>(<classname>is_forward_iterable</classname>&lt; T &gt;::value)</paramtype></parameter></method>
+</method-group>
+<method-group name="public static functions">
+<method name="begin" specifiers="static"><type>const_iterator</type><parameter name="container"><paramtype>T const &amp;</paramtype></parameter></method>
+<method name="end" specifiers="static"><type>const_iterator</type><parameter name="container"><paramtype>T const &amp;</paramtype></parameter></method>
+<method name="size" specifiers="static"><type>std::size_t</type><parameter name="container"><paramtype>T const &amp;</paramtype></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="bt_iterator_traits"><template>
+      <template-type-parameter name="T"/>
+      <template-nontype-parameter name="N"><type>std::size_t</type></template-nontype-parameter>
+    </template><specialization><template-arg>T[N]</template-arg><template-arg>true</template-arg></specialization><typedef name="T_const"><type>boost::add_const&lt; T &gt;::type</type></typedef>
+<typedef name="const_iterator"><type>boost::add_pointer&lt; T_const &gt;::type</type></typedef>
+<typedef name="value_type"><type>T</type></typedef>
+<method-group name="public static functions">
+<method name="begin" specifiers="static"><type>const_iterator</type><parameter name="array"><paramtype>T_const(&amp;)</paramtype></parameter></method>
+<method name="end" specifiers="static"><type>const_iterator</type><parameter name="array"><paramtype>T_const(&amp;)</paramtype></parameter></method>
+<method name="size" specifiers="static"><type>std::size_t</type><parameter name=""><paramtype>T_const(&amp;)</paramtype></parameter></method>
+</method-group>
+</struct-specialization>
 
 
 

@@ -206,19 +206,22 @@
         <span class="identifier">BOOST_ASSERT_MSG</span><span class="special">(</span> <span class="identifier">yt_</span><span class="special">.</span><span class="identifier">ec_</span><span class="special">,</span>
                           <span class="string">"Must inject boost::system::error_code* "</span>
                           <span class="string">"before calling yield_handler_base::operator()()"</span><span class="special">);</span>
-        <span class="comment">// If originating fiber is busy testing completed_ flag, wait until it</span>
-        <span class="comment">// has observed (! completed_).</span>
+        <span class="comment">// If originating fiber is busy testing state_ flag, wait until it</span>
+        <span class="comment">// has observed (completed != state_).</span>
         <span class="identifier">yield_completion</span><span class="special">::</span><span class="identifier">lock_t</span> <span class="identifier">lk</span><span class="special">{</span> <span class="identifier">ycomp_</span><span class="special">-&gt;</span><span class="identifier">mtx_</span> <span class="special">};</span>
+        <span class="identifier">yield_completion</span><span class="special">::</span><span class="identifier">state_t</span> <span class="identifier">state</span> <span class="special">=</span> <span class="identifier">ycomp_</span><span class="special">-&gt;</span><span class="identifier">state_</span><span class="special">;</span>
         <span class="comment">// Notify a subsequent yield_completion::wait() call that it need not</span>
         <span class="comment">// suspend.</span>
-        <span class="identifier">ycomp_</span><span class="special">-&gt;</span><span class="identifier">completed_</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+        <span class="identifier">ycomp_</span><span class="special">-&gt;</span><span class="identifier">state_</span> <span class="special">=</span> <span class="identifier">yield_completion</span><span class="special">::</span><span class="identifier">complete</span><span class="special">;</span>
         <span class="comment">// set the error_code bound by yield_t</span>
         <span class="special">*</span> <span class="identifier">yt_</span><span class="special">.</span><span class="identifier">ec_</span> <span class="special">=</span> <span class="identifier">ec</span><span class="special">;</span>
+        <span class="comment">// unlock the lock that protects state_</span>
+        <span class="identifier">lk</span><span class="special">.</span><span class="identifier">unlock</span><span class="special">();</span>
         <span class="comment">// If ctx_ is still active, e.g. because the async operation</span>
         <span class="comment">// immediately called its callback (this method!) before the asio</span>
         <span class="comment">// async function called async_result_base::get(), we must not set it</span>
         <span class="comment">// ready.</span>
-        <span class="keyword">if</span> <span class="special">(</span> <span class="identifier">fibers</span><span class="special">::</span><span class="identifier">context</span><span class="special">::</span><span class="identifier">active</span><span class="special">()</span> <span class="special">!=</span> <span class="identifier">ctx_</span> <span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">if</span> <span class="special">(</span> <span class="identifier">yield_completion</span><span class="special">::</span><span class="identifier">waiting</span> <span class="special">==</span> <span class="identifier">state</span><span class="special">)</span> <span class="special">{</span>
             <span class="comment">// wake the fiber</span>
             <span class="identifier">fibers</span><span class="special">::</span><span class="identifier">context</span><span class="special">::</span><span class="identifier">active</span><span class="special">()-&gt;</span><span class="identifier">schedule</span><span class="special">(</span> <span class="identifier">ctx_</span><span class="special">);</span>
         <span class="special">}</span>
@@ -229,7 +232,7 @@
     <span class="identifier">yield_t</span>                         <span class="identifier">yt_</span><span class="special">;</span>
     <span class="comment">// We depend on this pointer to yield_completion, which will be injected</span>
     <span class="comment">// by async_result.</span>
-    <span class="identifier">yield_completion</span>            <span class="special">*</span>   <span class="identifier">ycomp_</span><span class="special">{</span> <span class="keyword">nullptr</span> <span class="special">};</span>
+    <span class="identifier">yield_completion</span><span class="special">::</span><span class="identifier">ptr_t</span>         <span class="identifier">ycomp_</span><span class="special">{};</span>
 <span class="special">};</span>
 </pre>
 <p>
@@ -282,10 +285,11 @@
 <span class="comment">// async_result&lt;yield_handler&lt;void&gt;&gt;</span>
 <span class="keyword">class</span> <span class="identifier">async_result_base</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
-    <span class="keyword">explicit</span> <span class="identifier">async_result_base</span><span class="special">(</span> <span class="identifier">yield_handler_base</span> <span class="special">&amp;</span> <span class="identifier">h</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">explicit</span> <span class="identifier">async_result_base</span><span class="special">(</span> <span class="identifier">yield_handler_base</span> <span class="special">&amp;</span> <span class="identifier">h</span><span class="special">)</span> <span class="special">:</span>
+            <span class="identifier">ycomp_</span><span class="special">{</span> <span class="keyword">new</span> <span class="identifier">yield_completion</span><span class="special">{}</span> <span class="special">}</span> <span class="special">{</span>
         <span class="comment">// Inject ptr to our yield_completion instance into this</span>
         <span class="comment">// yield_handler&lt;&gt;.</span>
-        <span class="identifier">h</span><span class="special">.</span><span class="identifier">ycomp_</span> <span class="special">=</span> <span class="special">&amp;</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">ycomp_</span><span class="special">;</span>
+        <span class="identifier">h</span><span class="special">.</span><span class="identifier">ycomp_</span> <span class="special">=</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">ycomp_</span><span class="special">;</span>
         <span class="comment">// if yield_t didn't bind an error_code, make yield_handler_base's</span>
         <span class="comment">// error_code* point to an error_code local to this object so</span>
         <span class="comment">// yield_handler_base::operator() can unconditionally store through</span>
@@ -298,7 +302,7 @@
     <span class="keyword">void</span> <span class="identifier">get</span><span class="special">()</span> <span class="special">{</span>
         <span class="comment">// Unless yield_handler_base::operator() has already been called,</span>
         <span class="comment">// suspend the calling fiber until that call.</span>
-        <span class="identifier">ycomp_</span><span class="special">.</span><span class="identifier">wait</span><span class="special">();</span>
+        <span class="identifier">ycomp_</span><span class="special">-&gt;</span><span class="identifier">wait</span><span class="special">();</span>
         <span class="comment">// The only way our own ec_ member could have a non-default value is</span>
         <span class="comment">// if our yield_handler did not have a bound error_code AND the</span>
         <span class="comment">// completion callback passed a non-default error_code.</span>
@@ -310,9 +314,7 @@
 <span class="keyword">private</span><span class="special">:</span>
     <span class="comment">// If yield_t does not bind an error_code instance, store into here.</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span>       <span class="identifier">ec_</span><span class="special">{};</span>
-    <span class="comment">// async_result_base owns the yield_completion because, unlike</span>
-    <span class="comment">// yield_handler&lt;&gt;, async_result&lt;&gt; is only instantiated once.</span>
-    <span class="identifier">yield_completion</span>                <span class="identifier">ycomp_</span><span class="special">{};</span>
+    <span class="identifier">yield_completion</span><span class="special">::</span><span class="identifier">ptr_t</span>         <span class="identifier">ycomp_</span><span class="special">;</span>
 <span class="special">};</span>
 </pre>
 <p>
@@ -359,22 +361,44 @@
 </p>
 <pre class="programlisting"><span class="comment">// Bundle a completion bool flag with a spinlock to protect it.</span>
 <span class="keyword">struct</span> <span class="identifier">yield_completion</span> <span class="special">{</span>
-    <span class="keyword">typedef</span> <span class="identifier">fibers</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">spinlock</span>    <span class="identifier">mutex_t</span><span class="special">;</span>
-    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span> <span class="identifier">mutex_t</span> <span class="special">&gt;</span> <span class="identifier">lock_t</span><span class="special">;</span>
+    <span class="keyword">enum</span> <span class="identifier">state_t</span> <span class="special">{</span>
+        <span class="identifier">init</span><span class="special">,</span>
+        <span class="identifier">waiting</span><span class="special">,</span>
+        <span class="identifier">complete</span>
+    <span class="special">};</span>
 
-    <span class="identifier">mutex_t</span> <span class="identifier">mtx_</span><span class="special">{};</span>
-    <span class="keyword">bool</span>    <span class="identifier">completed_</span><span class="special">{</span> <span class="keyword">false</span> <span class="special">};</span>
+    <span class="keyword">typedef</span> <span class="identifier">fibers</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">spinlock</span>                    <span class="identifier">mutex_t</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">unique_lock</span><span class="special">&lt;</span> <span class="identifier">mutex_t</span> <span class="special">&gt;</span>                 <span class="identifier">lock_t</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">intrusive_ptr</span><span class="special">&lt;</span> <span class="identifier">yield_completion</span> <span class="special">&gt;</span>    <span class="identifier">ptr_t</span><span class="special">;</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">atomic</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&gt;</span>  <span class="identifier">use_count_</span><span class="special">{</span> <span class="number">0</span> <span class="special">};</span>
+    <span class="identifier">mutex_t</span>                     <span class="identifier">mtx_</span><span class="special">{};</span>
+    <span class="identifier">state_t</span>                     <span class="identifier">state_</span><span class="special">{</span> <span class="identifier">init</span> <span class="special">};</span>
 
     <span class="keyword">void</span> <span class="identifier">wait</span><span class="special">()</span> <span class="special">{</span>
-        <span class="comment">// yield_handler_base::operator()() will set completed_ true and</span>
+        <span class="comment">// yield_handler_base::operator()() will set state_ `complete` and</span>
         <span class="comment">// attempt to wake a suspended fiber. It would be Bad if that call</span>
-        <span class="comment">// happened between our detecting (! completed_) and suspending.</span>
+        <span class="comment">// happened between our detecting (complete != state_) and suspending.</span>
         <span class="identifier">lock_t</span> <span class="identifier">lk</span><span class="special">{</span> <span class="identifier">mtx_</span> <span class="special">};</span>
-        <span class="comment">// If completed_ is already set, we're done here: don't suspend.</span>
-        <span class="keyword">if</span> <span class="special">(</span> <span class="special">!</span> <span class="identifier">completed_</span><span class="special">)</span> <span class="special">{</span>
+        <span class="comment">// If state_ is already set, we're done here: don't suspend.</span>
+        <span class="keyword">if</span> <span class="special">(</span> <span class="identifier">complete</span> <span class="special">!=</span> <span class="identifier">state_</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">state_</span> <span class="special">=</span> <span class="identifier">waiting</span><span class="special">;</span>
             <span class="comment">// suspend(unique_lock&lt;spinlock&gt;) unlocks the lock in the act of</span>
             <span class="comment">// resuming another fiber</span>
             <span class="identifier">fibers</span><span class="special">::</span><span class="identifier">context</span><span class="special">::</span><span class="identifier">active</span><span class="special">()-&gt;</span><span class="identifier">suspend</span><span class="special">(</span> <span class="identifier">lk</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+
+    <span class="keyword">friend</span> <span class="keyword">void</span> <span class="identifier">intrusive_ptr_add_ref</span><span class="special">(</span> <span class="identifier">yield_completion</span> <span class="special">*</span> <span class="identifier">yc</span><span class="special">)</span> <span class="keyword">noexcept</span> <span class="special">{</span>
+        <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="keyword">nullptr</span> <span class="special">!=</span> <span class="identifier">yc</span><span class="special">);</span>
+        <span class="identifier">yc</span><span class="special">-&gt;</span><span class="identifier">use_count_</span><span class="special">.</span><span class="identifier">fetch_add</span><span class="special">(</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">memory_order_relaxed</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">friend</span> <span class="keyword">void</span> <span class="identifier">intrusive_ptr_release</span><span class="special">(</span> <span class="identifier">yield_completion</span> <span class="special">*</span> <span class="identifier">yc</span><span class="special">)</span> <span class="keyword">noexcept</span> <span class="special">{</span>
+        <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="keyword">nullptr</span> <span class="special">!=</span> <span class="identifier">yc</span><span class="special">);</span>
+        <span class="keyword">if</span> <span class="special">(</span> <span class="number">1</span> <span class="special">==</span> <span class="identifier">yc</span><span class="special">-&gt;</span><span class="identifier">use_count_</span><span class="special">.</span><span class="identifier">fetch_sub</span><span class="special">(</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">memory_order_release</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">atomic_thread_fence</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">memory_order_acquire</span><span class="special">);</span>
+            <span class="keyword">delete</span> <span class="identifier">yc</span><span class="special">;</span>
         <span class="special">}</span>
     <span class="special">}</span>
 <span class="special">};</span>
@@ -413,7 +437,7 @@
       </p>
 <p>
         If the stored fiber context <code class="computeroutput"><span class="identifier">yield_handler_base</span><span class="special">::</span><span class="identifier">ctx_</span></code>
-        is not already running, it is marked as ready to run by passing it to <a class="link" href="../scheduling.html#context_set_ready"><code class="computeroutput">context::set_ready()</code></a>.
+        is not already running, it is marked as ready to run by passing it to <a class="link" href="../scheduling.html#context_schedule"><code class="computeroutput">context::schedule()</code></a>.
         Control then returns from <code class="computeroutput"><span class="identifier">yield_handler_base</span><span class="special">::</span><span class="keyword">operator</span><span class="special">()</span></code>: the callback is done.
       </p>
 <p>
@@ -499,7 +523,7 @@
 <span class="comment">//private:</span>
     <span class="comment">// pointer to destination for eventual value</span>
     <span class="comment">// this must be injected by async_result before operator()() is called</span>
-    <span class="identifier">T</span>                           <span class="special">*</span>   <span class="identifier">value_</span><span class="special">{</span> <span class="keyword">nullptr</span> <span class="special">};</span>
+    <span class="identifier">T</span>   <span class="special">*</span>   <span class="identifier">value_</span><span class="special">{</span> <span class="keyword">nullptr</span> <span class="special">};</span>
 <span class="special">};</span>
 </pre>
 <p>

@@ -30,12 +30,11 @@
         Boost.Asio includes classes for creating and manipulating serial ports in
         a portable manner. For example, a serial port may be opened using:
       </p>
-<pre class="programlisting"><span class="identifier">serial_port</span> <span class="identifier">port</span><span class="special">(</span><span class="identifier">my_io_service</span><span class="special">,</span> <span class="identifier">name</span><span class="special">);</span>
+<pre class="programlisting">serial_port port(my_io_context, name);
 </pre>
 <p>
-        where name is something like <code class="computeroutput"><span class="string">"COM1"</span></code>
-        on Windows, and <code class="computeroutput"><span class="string">"/dev/ttyS0"</span></code>
-        on POSIX platforms.
+        where name is something like <code class="computeroutput">"COM1"</code> on Windows, and
+        <code class="computeroutput">"/dev/ttyS0"</code> on POSIX platforms.
       </p>
 <p>
         Once opened, the serial port may be used as a <a class="link" href="core/streams.html" title="Streams, Short Reads and Short Writes">stream</a>.
@@ -56,8 +55,6 @@
       </h5>
 <p>
         <a class="link" href="../reference/serial_port.html" title="serial_port">serial_port</a>, <a class="link" href="../reference/serial_port_base.html" title="serial_port_base">serial_port_base</a>,
-        <a class="link" href="../reference/basic_serial_port.html" title="basic_serial_port">basic_serial_port</a>,
-        <a class="link" href="../reference/serial_port_service.html" title="serial_port_service">serial_port_service</a>,
         <a class="link" href="../reference/serial_port_base__baud_rate.html" title="serial_port_base::baud_rate">serial_port_base::baud_rate</a>,
         <a class="link" href="../reference/serial_port_base__flow_control.html" title="serial_port_base::flow_control">serial_port_base::flow_control</a>,
         <a class="link" href="../reference/serial_port_base__parity.html" title="serial_port_base::parity">serial_port_base::parity</a>,
@@ -71,8 +68,8 @@
 <p>
         Serial ports are available on all POSIX platforms. For Windows, serial ports
         are only available at compile time when the I/O completion port backend is
-        used (which is the default). A program may test for the macro <code class="computeroutput"><span class="identifier">BOOST_ASIO_HAS_SERIAL_PORT</span></code> to determine
-        whether they are supported.
+        used (which is the default). A program may test for the macro <code class="computeroutput">BOOST_ASIO_HAS_SERIAL_PORT</code>
+        to determine whether they are supported.
       </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

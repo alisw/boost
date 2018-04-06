@@ -109,7 +109,7 @@ void zlib_base::before( const char*& src_begin, const char* src_end,
 void zlib_base::after(const char*& src_begin, char*& dest_begin, bool compress)
 {
     z_stream* s = static_cast<z_stream*>(stream_);
-    char* next_in = reinterpret_cast<char*>(s->next_in);
+    const char* next_in = reinterpret_cast<const char*>(s->next_in);
     char* next_out = reinterpret_cast<char*>(s->next_out);
     if (calculate_crc_) {
         const zlib::byte* buf = compress ?
@@ -124,7 +124,7 @@ void zlib_base::after(const char*& src_begin, char*& dest_begin, bool compress)
     }
     total_in_ = s->total_in;
     total_out_ = s->total_out;
-    src_begin = const_cast<const char*>(next_in);
+    src_begin = next_in;
     dest_begin = next_out;
 }
 
@@ -154,9 +154,7 @@ void zlib_base::reset(bool compress, bool realloc)
 
 void zlib_base::do_init
     ( const zlib_params& p, bool compress, 
-      #if !BOOST_WORKAROUND(BOOST_MSVC, < 1300)
-          zlib::xalloc_func /* alloc */, zlib::xfree_func /* free*/, 
-      #endif
+      zlib::xalloc_func /* alloc */, zlib::xfree_func /* free*/, 
       void* derived )
 {
     calculate_crc_ = p.calculate_crc;
@@ -164,13 +162,10 @@ void zlib_base::do_init
 
     // Current interface for customizing memory management 
     // is non-conforming and has been disabled:
-    //#if !BOOST_WORKAROUND(BOOST_MSVC, < 1300)
     //    s->zalloc = alloc;
     //    s->zfree = free;
-    //#else
         s->zalloc = 0;
         s->zfree = 0;
-    //#endif
     s->opaque = derived;
     int window_bits = p.noheader? -p.window_bits : p.window_bits;
     zlib_error::check BOOST_PREVENT_MACRO_SUBSTITUTION(

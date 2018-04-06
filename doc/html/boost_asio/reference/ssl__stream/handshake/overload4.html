@@ -30,12 +30,12 @@
 <p>
             Perform SSL handshaking.
           </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../../ConstBufferSequence.html" title="Constant buffer sequence requirements">ConstBufferSequence</a><span class="special">&gt;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">handshake</span><span class="special">(</span>
-    <span class="identifier">handshake_type</span> <span class="identifier">type</span><span class="special">,</span>
-    <span class="keyword">const</span> <span class="identifier">ConstBufferSequence</span> <span class="special">&amp;</span> <span class="identifier">buffers</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="../../ConstBufferSequence.html" title="Constant buffer sequence requirements">ConstBufferSequence</a>&gt;
+void handshake(
+    handshake_type type,
+    const ConstBufferSequence &amp; buffers,
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
             This function is used to perform SSL handshaking on the stream. The function

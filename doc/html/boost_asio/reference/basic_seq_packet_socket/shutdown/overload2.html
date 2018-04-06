@@ -33,9 +33,9 @@
 <p>
             Disable sends or receives on the socket.
           </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">shutdown</span><span class="special">(</span>
-    <span class="identifier">shutdown_type</span> <span class="identifier">what</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void shutdown(
+    shutdown_type what,
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
             This function is used to disable send operations, receive operations,
@@ -65,14 +65,14 @@
 <p>
             Shutting down the send side of the socket:
           </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">;</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">shutdown</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">::</span><span class="identifier">shutdown_send</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span>
-<span class="keyword">if</span> <span class="special">(</span><span class="identifier">ec</span><span class="special">)</span>
-<span class="special">{</span>
-  <span class="comment">// An error occurred.</span>
-<span class="special">}</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+...
+boost::system::error_code ec;
+socket.shutdown(boost::asio::ip::tcp::socket::shutdown_send, ec);
+if (ec)
+{
+  // An error occurred.
+}
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

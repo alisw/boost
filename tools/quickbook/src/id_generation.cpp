@@ -14,9 +14,6 @@
 #include <boost/foreach.hpp>
 #include <boost/range/algorithm.hpp>
 
-// TODO: This should possibly try to always generate valid XML ids:
-// http://www.w3.org/TR/REC-xml/#NT-NameStartChar
-
 namespace quickbook {
     //
     // The maximum size of a generated part of an id.
@@ -73,7 +70,7 @@ namespace quickbook {
     {
         std::vector<unsigned>& order;
 
-        placeholder_compare(std::vector<unsigned>& order) : order(order) {}
+        placeholder_compare(std::vector<unsigned>& order_) : order(order_) {}
 
         bool operator()(id_placeholder const* x, id_placeholder const* y) const
         {
@@ -95,10 +92,10 @@ namespace quickbook {
         std::vector<unsigned>& order;
         unsigned count;
 
-        get_placeholder_order_callback(document_state_impl const& state,
-                std::vector<unsigned>& order)
-          : state(state),
-            order(order),
+        get_placeholder_order_callback(document_state_impl const& state_,
+                std::vector<unsigned>& order_)
+          : state(state_),
+            order(order_),
             count(0)
         {}
 
@@ -146,8 +143,8 @@ namespace quickbook {
         chosen_id_map chosen_ids;
         std::vector<std::string>& generated_ids;
 
-        generate_id_block_type(std::vector<std::string>& generated_ids) :
-            generated_ids(generated_ids) {}
+        explicit generate_id_block_type(std::vector<std::string>& generated_ids_) :
+            generated_ids(generated_ids_) {}
 
         void generate(placeholder_index::iterator begin,
             placeholder_index::iterator end);
@@ -227,7 +224,7 @@ namespace quickbook {
         // Since we're adding digits, don't want an id that ends in
         // a digit.
 
-        unsigned int length = base_id.size();
+        std::string::size_type length = base_id.size();
 
         if (length > 0 && std::isdigit(base_id[length - 1])) {
             if (length < max_size - 1) {
@@ -243,7 +240,7 @@ namespace quickbook {
 
         unsigned count = 0;
 
-        while (true)
+        for (;;)
         {
             std::string postfix =
                 boost::lexical_cast<std::string>(count++);
@@ -287,13 +284,13 @@ namespace quickbook {
     {
         document_state_impl const& state;
         std::vector<std::string> const* ids;
-        quickbook::string_view::const_iterator source_pos;
+        string_iterator source_pos;
         std::string result;
 
-        replace_ids_callback(document_state_impl const& state,
-                std::vector<std::string> const* ids)
-          : state(state),
-            ids(ids),
+        replace_ids_callback(document_state_impl const& state_,
+                std::vector<std::string> const* ids_)
+          : state(state_),
+            ids(ids_),
             source_pos(),
             result()
         {}

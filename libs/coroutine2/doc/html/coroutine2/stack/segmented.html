@@ -24,7 +24,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="coroutine2.stack.segmented"></a><a class="link" href="segmented.html" title="Class segmented_stack">Class <span class="emphasis"><em>segmented_stack</em></span></a>
+<a name="coroutine2.stack.segmented"></a><a name="segmented"></a><a class="link" href="segmented.html" title="Class segmented_stack">Class
+      <span class="emphasis"><em>segmented_stack</em></span></a>
 </h3></div></div></div>
 <p>
         <span class="bold"><strong>Boost.Coroutine2</strong></span> supports usage of a <span class="emphasis"><em>segmented_stack</em></span>,
@@ -41,12 +42,14 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           Segmented stacks are currently only supported by <span class="bold"><strong>gcc</strong></span>
-          from version <span class="bold"><strong>4.7</strong></span> and <span class="bold"><strong>clang</strong></span>
+          from version <span class="bold"><strong>4.7</strong></span> <span class="bold"><strong>clang</strong></span>
           from version <span class="bold"><strong>3.4</strong></span> onwards. In order to
-          use a <span class="emphasis"><em>segmented-stack</em></span> <span class="bold"><strong>Boost.Coroutine2</strong></span>
+          use a <span class="emphasis"><em>segmented-stack</em></span> <span class="bold"><strong>Boost.Context</strong></span>
           must be built with property <code class="computeroutput"><span class="identifier">segmented</span><span class="special">-</span><span class="identifier">stacks</span></code>,
-          e.g. <span class="bold"><strong>toolset=gcc segmented-stacks=on</strong></span> at
-          b2/bjam command line.
+          e.g. <span class="bold"><strong>toolset=gcc segmented-stacks=on</strong></span> and
+          applying <code class="computeroutput"><span class="identifier">BOOST_USE_SEGMENTED_STACKS</span></code>
+          and <code class="computeroutput"><span class="identifier">BOOST_USE_UCONTEXT</span></code>
+          at b2/bjam command line.
         </p></td></tr>
 </table></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">coroutine2</span><span class="special">/</span><span class="identifier">segmented_stack</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>

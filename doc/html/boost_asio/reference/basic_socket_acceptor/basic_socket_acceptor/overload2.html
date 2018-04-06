@@ -30,9 +30,9 @@
 <p>
             Construct an open acceptor.
           </p>
-<pre class="programlisting"><span class="identifier">basic_socket_acceptor</span><span class="special">(</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span> <span class="special">&amp;</span> <span class="identifier">io_service</span><span class="special">,</span>
-    <span class="keyword">const</span> <span class="identifier">protocol_type</span> <span class="special">&amp;</span> <span class="identifier">protocol</span><span class="special">);</span>
+<pre class="programlisting">basic_socket_acceptor(
+    boost::asio::io_context &amp; io_context,
+    const protocol_type &amp; protocol);
 </pre>
 <p>
             This constructor creates an acceptor and automatically opens it.
@@ -44,11 +44,11 @@
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl class="variablelist">
-<dt><span class="term">io_service</span></dt>
+<dt><span class="term">io_context</span></dt>
 <dd><p>
-                  The <a class="link" href="../../io_service.html" title="io_service"><code class="computeroutput"><span class="identifier">io_service</span></code></a> object that
-                  the acceptor will use to dispatch handlers for any asynchronous
-                  operations performed on the acceptor.
+                  The <a class="link" href="../../io_context.html" title="io_context"><code class="computeroutput">io_context</code></a>
+                  object that the acceptor will use to dispatch handlers for any
+                  asynchronous operations performed on the acceptor.
                 </p></dd>
 <dt><span class="term">protocol</span></dt>
 <dd><p>

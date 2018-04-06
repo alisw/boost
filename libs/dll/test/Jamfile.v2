@@ -77,10 +77,9 @@ project
         [ run ../example/tutorial6/tutorial6.cpp : : on_unload_lib : <link>shared ]
         [ run ../example/tutorial7/tutorial7.cpp : : library1 library2 : <link>shared ]
         [ run ../example/tutorial8/tutorial8.cpp : : refcounting_plugin : <link>shared ]
-        [ run ../example/tutorial8/tutorial8_static.cpp
-                :
-                :
-                : <link>static <variant>release <library>static_refcounting_plugin $(RDYNAMIC) <test-info>always_show_run_output
+        [ run ../example/tutorial8/tutorial8_static.cpp : : : <link>static <variant>release $(RDYNAMIC) <test-info>always_show_run_output <library>static_refcounting_plugin
+            # Known problem: unsupported __dllexport__ with weak symbols + GNU linker features (no non-weak unresolved symbols in executable => no need to link libraries)
+            <toolset>gcc-mingw:<build>no
         ]
         [ run ../example/tutorial9/tutorial9.cpp ]
         # test for shared libraries

@@ -32,6 +32,8 @@
 <dt><span class="section"><a href="coroutine/asymmetric/pull_coro.html">Class <code class="computeroutput"><span class="identifier">coroutine</span><span class="special">&lt;&gt;::</span><span class="identifier">pull_type</span></code></a></span></dt>
 <dt><span class="section"><a href="coroutine/asymmetric/push_coro.html">Class <code class="computeroutput"><span class="identifier">coroutine</span><span class="special">&lt;&gt;::</span><span class="identifier">push_type</span></code></a></span></dt>
 </dl></dd>
+<dt><span class="section"><a href="coroutine/implementations__fcontext_t__ucontext_t_and_winfiber.html">Implementations:
+      fcontext_t, ucontext_t and WinFiber</a></span></dt>
 </dl></div>
 <p>
       <span class="bold"><strong>Boost.Coroutine2</strong></span> provides asymmetric coroutines.
@@ -99,7 +101,8 @@
       stack (macro SIGSTKSZ on POSIX).
     </p>
 <p>
-      At this time of writing only GCC (4.7) <a href="#ftn.coroutine2.coroutine.f1" class="footnote" name="coroutine2.coroutine.f1"><sup class="footnote">[6]</sup></a> is known to support segmented stacks. With version 1.54 <span class="bold"><strong>Boost.Coroutine2</strong></span> provides support for segmented stacks.
+      At this time of writing only GCC (4.7) <a href="#ftn.coroutine2.coroutine.f1" class="footnote" name="coroutine2.coroutine.f1"><sup class="footnote">[6]</sup></a> is known to support segmented stacks. With version 1.54 <span class="bold"><strong>Boost.Coroutine2</strong></span> provides support for <a class="link" href="stack/segmented.html#segmented"><span class="emphasis"><em>segmented
+      stacks</em></span></a>.
     </p>
 <p>
       The destructor releases the associated stack. The implementer is free to deallocate
@@ -113,23 +116,6 @@
 <p>
       A coroutine saves and restores registers according to the underlying ABI on
       each context switch (using <span class="bold"><strong>Boost.Context</strong></span>).
-    </p>
-<p>
-      Some applications do not use floating-point registers and can disable preserving
-      FPU registers for performance reasons.
-    </p>
-<div class="note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-        According to the calling convention the FPU registers are preserved by default.
-      </p></td></tr>
-</table></div>
-<p>
-      On POSIX systems, the coroutine context switch does not preserve signal masks
-      for performance reasons.
     </p>
 <p>
       A context switch is done via <span class="emphasis"><em>coroutine&lt;&gt;::push_type::operator()</em></span>
@@ -152,7 +138,7 @@
     </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">coroutines2</span><span class="special">::</span><span class="identifier">coroutine</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;::</span><span class="identifier">push_type</span> <span class="identifier">coro</span><span class="special">(</span>
     <span class="special">[&amp;](</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">coroutines2</span><span class="special">::</span><span class="identifier">coroutine</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;::</span><span class="identifier">pull_type</span><span class="special">&amp;</span> <span class="identifier">yield</span><span class="special">){</span>
-        <span class="identifier">coro</span><span class="special">();</span>
+        <span class="identifier">yield</span><span class="special">();</span>
 <span class="special">});</span>
 <span class="identifier">coro</span><span class="special">();</span>
 </pre>

@@ -30,11 +30,12 @@
           <span class="emphasis"><em>Inherited from socket_base.</em></span>
         </p>
 <p>
-          <a class="indexterm" name="idp109783360"></a> 
-Socket option to allow the socket to
-          be bound to an address that is already in use.
+          <a class="indexterm" name="boost_asio.indexterm.basic_seq_packet_socket.reuse_address"></a> 
+Socket
+          option to allow the socket to be bound to an address that is already in
+          use.
         </p>
-<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">implementation_defined</span> <span class="identifier">reuse_address</span><span class="special">;</span>
+<pre class="programlisting">typedef implementation_defined reuse_address;
 </pre>
 <p>
           Implements the SOL_SOCKET/SO_REUSEADDR socket option.
@@ -46,19 +47,19 @@ Socket option to allow the socket to
 <p>
           Setting the option:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">acceptor</span> <span class="identifier">acceptor</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">socket_base</span><span class="special">::</span><span class="identifier">reuse_address</span> <span class="identifier">option</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
-<span class="identifier">acceptor</span><span class="special">.</span><span class="identifier">set_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::ip::tcp::acceptor acceptor(io_context);
+...
+boost::asio::socket_base::reuse_address option(true);
+acceptor.set_option(option);
 </pre>
 <p>
           Getting the current option value:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">acceptor</span> <span class="identifier">acceptor</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">socket_base</span><span class="special">::</span><span class="identifier">reuse_address</span> <span class="identifier">option</span><span class="special">;</span>
-<span class="identifier">acceptor</span><span class="special">.</span><span class="identifier">get_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
-<span class="keyword">bool</span> <span class="identifier">is_set</span> <span class="special">=</span> <span class="identifier">option</span><span class="special">.</span><span class="identifier">value</span><span class="special">();</span>
+<pre class="programlisting">boost::asio::ip::tcp::acceptor acceptor(io_context);
+...
+boost::asio::socket_base::reuse_address option;
+acceptor.get_option(option);
+bool is_set = option.value();
 </pre>
 <h6>
 <a name="boost_asio.reference.basic_seq_packet_socket.reuse_address.h1"></a>

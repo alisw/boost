@@ -4,7 +4,7 @@
 <title>List Parser (a % b)</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../../index.html" title="Spirit 2.5.2">
+<link rel="home" href="../../../../index.html" title="Spirit 2.5.4">
 <link rel="up" href="../operator.html" title="Parser Operators">
 <link rel="prev" href="kleene.html" title="Kleene Parser (*a)">
 <link rel="next" href="not_predicate.html" title="Not-Predicate Parser (!a)">
@@ -104,11 +104,27 @@
                       Match a list of one or more repetitions of <code class="computeroutput"><span class="identifier">a</span></code>
                       separated by occurrences of <code class="computeroutput"><span class="identifier">b</span></code>.
                       This is equivalent to <code class="computeroutput"><span class="identifier">a</span>
-                      <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="identifier">b</span> <span class="special">&gt;&gt;</span>
-                      <span class="identifier">a</span><span class="special">)</span></code>.
+                      <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="identifier">omit</span><span class="special">[</span><span class="identifier">b</span><span class="special">]</span>
+                      <span class="special">&gt;&gt;</span> <span class="identifier">a</span><span class="special">)</span></code>.
                     </p>
                   </td>
 </tr></tbody>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              The list operator <code class="computeroutput"><span class="identifier">a</span> <span class="special">%</span> <span class="identifier">b</span></code>
+              omits the attribute of parser <code class="computeroutput"><span class="identifier">b</span></code>.
+              If you need <code class="computeroutput"><span class="identifier">b</span></code> to contribute
+              to the result attribute choose <code class="computeroutput"><span class="identifier">a</span>
+              <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="identifier">b</span> <span class="special">&gt;&gt;</span>
+              <span class="identifier">a</span><span class="special">)</span></code>
+              over the list operator <code class="computeroutput"><span class="identifier">a</span>
+              <span class="special">%</span> <span class="identifier">b</span></code>.
+            </p></td></tr>
 </table></div>
 <h6>
 <a name="spirit.qi.reference.operator.list.h4"></a>

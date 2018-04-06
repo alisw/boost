@@ -47,11 +47,14 @@
 <dt><span class="section"><a href="unordered/buckets.html">The Data Structure</a></span></dt>
 <dt><span class="section"><a href="unordered/hash_equality.html">Equality Predicates and Hash Functions</a></span></dt>
 <dt><span class="section"><a href="unordered/comparison.html">Comparison with Associative Containers</a></span></dt>
-<dt><span class="section"><a href="unordered/compliance.html">C++11 Compliance</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html">Standard Compliance</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.move">Move emulation</a></span></dt>
 <dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.allocator_compliance">Use of allocators</a></span></dt>
-<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.pairs">Pairs</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.construction">Construction/Destruction
+      using allocators</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.pointer_traits">Pointer Traits</a></span></dt>
+<dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.pairs0">Pairs</a></span></dt>
 <dt><span class="section"><a href="unordered/compliance.html#unordered.compliance.misc">Miscellaneous</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="unordered/rationale.html">Implementation Rationale</a></span></dt>
@@ -87,7 +90,7 @@
 <p>
       With this in mind, unordered associative containers were added to the C++ standard.
       This is an implementation of the containers described in C++11, with some
-      <a class="link" href="unordered/compliance.html" title="C++11 Compliance">deviations from the standard</a> in
+      <a class="link" href="unordered/compliance.html" title="Standard Compliance">deviations from the standard</a> in
       order to work with non-C++11 compilers and libraries.
     </p>
 <p>
@@ -138,8 +141,6 @@
 <p>
       The containers are used in a similar manner to the normal associative containers:
     </p>
-<p>
-</p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unordered_map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">map</span><span class="special">;</span>
 <span class="identifier">map</span> <span class="identifier">x</span><span class="special">;</span>
 <span class="identifier">x</span><span class="special">[</span><span class="string">"one"</span><span class="special">]</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
@@ -150,18 +151,12 @@
 <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">find</span><span class="special">(</span><span class="string">"missing"</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">x</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
 </pre>
 <p>
-    </p>
-<p>
       But since the elements aren't ordered, the output of:
     </p>
-<p>
-</p>
 <pre class="programlisting"><span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">map</span><span class="special">::</span><span class="identifier">value_type</span> <span class="identifier">i</span><span class="special">,</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">&lt;&lt;</span><span class="identifier">i</span><span class="special">.</span><span class="identifier">first</span><span class="special">&lt;&lt;</span><span class="string">","</span><span class="special">&lt;&lt;</span><span class="identifier">i</span><span class="special">.</span><span class="identifier">second</span><span class="special">&lt;&lt;</span><span class="string">"\n"</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
-<p>
-    </p>
 <p>
       can be in any order. For example, it might be:
     </p>
@@ -170,7 +165,7 @@
 <span class="identifier">three</span><span class="special">,</span><span class="number">3</span>
 </pre>
 <p>
-      To store an object in an unordered associative container requires both an key
+      To store an object in an unordered associative container requires both a key
       equality function and a hash function. The default function objects in the
       standard containers support a few basic types including integer types, floating
       point types, pointer types, and the standard strings. Since Boost.Unordered
@@ -188,7 +183,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: April 17, 2017 at 02:30:57 GMT</small></p></td>
+<td align="left"><p><small>Last revised: December 14, 2017 at 00:05:58 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

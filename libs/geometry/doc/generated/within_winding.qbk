@@ -16,11 +16,12 @@
 [section:strategy_within_winding strategy::within::winding]
 
 '''<indexterm><primary>strategy</primary></indexterm><indexterm><primary>within</primary></indexterm><indexterm><primary>winding</primary></indexterm>'''
-Within detection using winding rule. 
+Within detection using winding rule. Side strategy used internally is choosen based on Point's coordinate system. 
 
 [heading Synopsis]
-``template<typename Point, typename PointOfSegment, typename SideStrategy, typename CalculationType>
+``template<typename Point, typename PointOfSegment, typename CalculationType>
 class strategy::within::winding
+      : public within::detail::winding_base_type::type< Point, PointOfSegment, CalculationType >
 {
   // ...
 };
@@ -31,8 +32,7 @@ class strategy::within::winding
 [[Parameter] [Default] [Description]]
 [[typename Point] [] [Any type fulfilling a Point Concept ]]
 [[typename PointOfSegment] [Point] [segment point type ]]
-[[typename SideStrategy] [typename strategy::side::services::default_strategy <                                    typename cs_tag<Point>::type                                >::type] [Side strategy ]]
-[[typename CalculationType] [void] [numeric type for calculation (e.g. high precision); if [*void] then it is extracted automatically from the coordinate type and (if necessary) promoted to floating point ]]
+[[typename CalculationType] [void] [numeric type for calculation (e.g. high precision); if [*void] then it is extracted automatically from the coordinate type and (if necessary) promoted to floating point]]
 ]
 
 [heading Constructor(s)]
@@ -43,45 +43,14 @@ class strategy::within::winding
 ] [] [
 
 ]]
-[[``winding(SideStrategy const & side_strategy)``
+[[``template<typename Model>
+winding(Model const & model)``
 
-] [] [[* SideStrategy const &]: ['side_strategy]:  
+] [] [[* Model const &]: ['model]:  
 
 
 
 ]]
-]
-
-[heading Member Function(s)]
-[table
-[[Function] [Description] [Parameters]  [Returns]]
-[[``bool apply(Point const & point, PointOfSegment const & s1, PointOfSegment const & s2,
-           counter & state)``
-
-] [] [[* Point const &]: ['point]:  
-
-[* PointOfSegment const &]: ['s1]:  
-
-[* PointOfSegment const &]: ['s2]:  
-
-[* counter &]: ['state]:  
-
-
-
-][
-
-]
-]
-[[``int result(counter const & state)``
-
-] [] [[* counter const &]: ['state]:  
-
-
-
-][
-
-]
-]
 ]
 
 [heading Header]

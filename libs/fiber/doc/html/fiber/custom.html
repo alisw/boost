@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Fiber">
 <link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Fiber">
-<link rel="prev" href="performance/tweaking.html" title="Tweaking">
+<link rel="prev" href="tuning.html" title="Tuning">
 <link rel="next" href="rationale.html" title="Rationale">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="performance/tweaking.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tuning.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -61,7 +61,7 @@
     </h4>
 <p>
       The first essential point is that we must associate an integer priority with
-      each fiber.<a href="#ftn.fiber.custom.f0" class="footnote" name="fiber.custom.f0"><sup class="footnote">[8]</sup></a>
+      each fiber.<a href="#ftn.fiber.custom.f0" class="footnote" name="fiber.custom.f0"><sup class="footnote">[11]</sup></a>
     </p>
 <p>
       One might suggest deriving a custom <a class="link" href="fiber_mgmt/fiber.html#class_fiber"><code class="computeroutput">fiber</code></a> subclass to store such
@@ -374,7 +374,7 @@
 <p>
       Given a <a class="link" href="fiber_mgmt/fiber.html#class_fiber"><code class="computeroutput">fiber</code></a> instance still connected with a running fiber (that
       is, not <a class="link" href="fiber_mgmt/fiber.html#fiber_detach"><code class="computeroutput">fiber::detach()</code></a>ed), you may access that fiber's properties
-      using <a class="link" href="fiber_mgmt/fiber.html#fiber_properties"><code class="computeroutput">fiber::properties()</code></a>. As with <code class="computeroutput"><span class="identifier">this_fiber</span><span class="special">::</span><span class="identifier">properties</span><span class="special">&lt;&gt;()</span></code>, you must pass your <code class="computeroutput"><span class="identifier">fiber_properties</span></code> subclass as the template
+      using <a class="link" href="fiber_mgmt/fiber.html#fiber_properties"><code class="computeroutput">fiber::properties()</code></a>. As with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">this_fiber</span><span class="special">::</span><span class="identifier">properties</span><span class="special">&lt;&gt;()</span></code>, you must pass your <code class="computeroutput"><span class="identifier">fiber_properties</span></code> subclass as the template
       parameter.
     </p>
 <p>
@@ -401,7 +401,7 @@
     </p>
 <div class="footnotes">
 <br><hr style="width:100; text-align:left;margin-left: 0">
-<div id="ftn.fiber.custom.f0" class="footnote"><p><a href="#fiber.custom.f0" class="para"><sup class="para">[8] </sup></a>
+<div id="ftn.fiber.custom.f0" class="footnote"><p><a href="#fiber.custom.f0" class="para"><sup class="para">[11] </sup></a>
         A previous version of the Fiber library implicitly tracked an int priority
         for each fiber, even though the default scheduler ignored it. This has been
         dropped, since the library now supports arbitrary scheduler-specific fiber
@@ -419,7 +419,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="performance/tweaking.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tuning.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -27,8 +27,9 @@
 <a name="geometry.reference.strategies.strategy_within_winding"></a><a class="link" href="strategy_within_winding.html" title="strategy::within::winding">strategy::within::winding</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="idp123406256"></a><a class="indexterm" name="idp123406944"></a><a class="indexterm" name="idp123407632"></a>
-Within detection using winding rule.
+          <a class="indexterm" name="idp139413088"></a><a class="indexterm" name="idp139413776"></a><a class="indexterm" name="idp139414464"></a>
+Within detection using winding rule. Side strategy used internally is choosen
+          based on Point's coordinate system.
         </p>
 <h6>
 <a name="geometry.reference.strategies.strategy_within_winding.h0"></a>
@@ -36,8 +37,9 @@ Within detection using winding rule.
         </h6>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Point</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointOfSegment</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">SideStrategy</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CalculationType</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Point</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointOfSegment</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CalculationType</span><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">strategy</span><span class="special">::</span><span class="identifier">within</span><span class="special">::</span><span class="identifier">winding</span>
+      <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">within</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">winding_base_type</span><span class="special">::</span><span class="identifier">type</span><span class="special">&lt;</span> <span class="identifier">Point</span><span class="special">,</span> <span class="identifier">PointOfSegment</span><span class="special">,</span> <span class="identifier">CalculationType</span> <span class="special">&gt;</span>
 <span class="special">{</span>
   <span class="comment">// ...</span>
 <span class="special">};</span>
@@ -107,24 +109,6 @@ Within detection using winding rule.
 <tr>
 <td>
                   <p>
-                    typename SideStrategy
-                  </p>
-                </td>
-<td>
-                  <p>
-                    typename strategy::side::services::default_strategy &lt; typename
-                    cs_tag&lt;Point&gt;::type &gt;::type
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Side strategy
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
                     typename CalculationType
                   </p>
                 </td>
@@ -188,7 +172,8 @@ Within detection using winding rule.
 <td>
                   <p>
 </p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">winding</span><span class="special">(</span><span class="identifier">SideStrategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">side_strategy</span><span class="special">)</span></pre>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Model</span><span class="special">&gt;</span>
+<span class="identifier">winding</span><span class="special">(</span><span class="identifier">Model</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">model</span><span class="special">)</span></pre>
 <p>
                   </p>
                 </td>
@@ -196,7 +181,7 @@ Within detection using winding rule.
                 </td>
 <td>
                   <p>
-                    <span class="bold"><strong>SideStrategy const &amp;</strong></span>: <span class="emphasis"><em>side_strategy</em></span>:
+                    <span class="bold"><strong>Model const &amp;</strong></span>: <span class="emphasis"><em>model</em></span>:
                   </p>
                 </td>
 </tr>
@@ -204,98 +189,13 @@ Within detection using winding rule.
 </table></div>
 <h6>
 <a name="geometry.reference.strategies.strategy_within_winding.h3"></a>
-          <span class="phrase"><a name="geometry.reference.strategies.strategy_within_winding.member_function_s_"></a></span><a class="link" href="strategy_within_winding.html#geometry.reference.strategies.strategy_within_winding.member_function_s_">Member
-          Function(s)</a>
-        </h6>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-                  <p>
-                    Function
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Description
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Parameters
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Returns
-                  </p>
-                </th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-                  <p>
-</p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">bool</span> <span class="identifier">apply</span><span class="special">(</span><span class="identifier">Point</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">point</span><span class="special">,</span> <span class="identifier">PointOfSegment</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">s1</span><span class="special">,</span> <span class="identifier">PointOfSegment</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">s2</span><span class="special">,</span>
-           <span class="identifier">counter</span> <span class="special">&amp;</span> <span class="identifier">state</span><span class="special">)</span></pre>
-<p>
-                  </p>
-                </td>
-<td>
-                </td>
-<td>
-                  <p>
-                    <span class="bold"><strong>Point const &amp;</strong></span>: <span class="emphasis"><em>point</em></span>:
-                  </p>
-                  <p>
-                    <span class="bold"><strong>PointOfSegment const &amp;</strong></span>:
-                    <span class="emphasis"><em>s1</em></span>:
-                  </p>
-                  <p>
-                    <span class="bold"><strong>PointOfSegment const &amp;</strong></span>:
-                    <span class="emphasis"><em>s2</em></span>:
-                  </p>
-                  <p>
-                    <span class="bold"><strong>counter &amp;</strong></span>: <span class="emphasis"><em>state</em></span>:
-                  </p>
-                </td>
-<td>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-</p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">int</span> <span class="identifier">result</span><span class="special">(</span><span class="identifier">counter</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">state</span><span class="special">)</span></pre>
-<p>
-                  </p>
-                </td>
-<td>
-                </td>
-<td>
-                  <p>
-                    <span class="bold"><strong>counter const &amp;</strong></span>: <span class="emphasis"><em>state</em></span>:
-                  </p>
-                </td>
-<td>
-                </td>
-</tr>
-</tbody>
-</table></div>
-<h6>
-<a name="geometry.reference.strategies.strategy_within_winding.h4"></a>
           <span class="phrase"><a name="geometry.reference.strategies.strategy_within_winding.header"></a></span><a class="link" href="strategy_within_winding.html#geometry.reference.strategies.strategy_within_winding.header">Header</a>
         </h6>
 <p>
           <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">geometry</span><span class="special">/</span><span class="identifier">strategies</span><span class="special">/</span><span class="identifier">agnostic</span><span class="special">/</span><span class="identifier">point_in_poly_winding</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
         </p>
 <h6>
-<a name="geometry.reference.strategies.strategy_within_winding.h5"></a>
+<a name="geometry.reference.strategies.strategy_within_winding.h4"></a>
           <span class="phrase"><a name="geometry.reference.strategies.strategy_within_winding.see_also"></a></span><a class="link" href="strategy_within_winding.html#geometry.reference.strategies.strategy_within_winding.see_also">See
           also</a>
         </h6>

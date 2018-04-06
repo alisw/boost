@@ -5,6 +5,10 @@
 
 #include "./test.hpp"
 
+#if defined(BOOST_CONVERT_IS_NOT_SUPPORTED)
+int main(int, char const* []) { return 0; }
+#else
+
 #include <boost/convert.hpp>
 #include <boost/convert/lexical_cast.hpp>
 #include <boost/detail/lightweight_test.hpp>
@@ -12,7 +16,7 @@
 using std::string;
 using boost::convert;
 
-struct boost::cnv::by_default : public boost::cnv::lexical_cast {};
+struct boost::cnv::by_default : boost::cnv::lexical_cast {};
 
 static
 void
@@ -69,3 +73,5 @@ main(int, char const* [])
 
     return boost::report_errors();
 }
+
+#endif

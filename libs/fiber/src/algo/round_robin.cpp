@@ -7,6 +7,7 @@
 #include "boost/fiber/algo/round_robin.hpp"
 
 #include <boost/assert.hpp>
+#include <boost/context/detail/prefetch.hpp>
 
 #ifdef BOOST_HAS_ABI_HEADERS
 #  include BOOST_ABI_PREFIX
@@ -19,8 +20,8 @@ namespace algo {
 void
 round_robin::awakened( context * ctx) noexcept {
     BOOST_ASSERT( nullptr != ctx);
-
     BOOST_ASSERT( ! ctx->ready_is_linked() );
+    BOOST_ASSERT( ctx->is_resumable() );
     ctx->ready_link( rqueue_);
 }
 
@@ -30,8 +31,10 @@ round_robin::pick_next() noexcept {
     if ( ! rqueue_.empty() ) {
         victim = & rqueue_.front();
         rqueue_.pop_front();
+        boost::context::detail::prefetch_range( victim, sizeof( context) );
         BOOST_ASSERT( nullptr != victim);
         BOOST_ASSERT( ! victim->ready_is_linked() );
+        BOOST_ASSERT( victim->is_resumable() );
     }
     return victim;
 }

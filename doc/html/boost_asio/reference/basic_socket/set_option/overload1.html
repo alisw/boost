@@ -30,10 +30,10 @@
 <p>
             Set an option on the socket.
           </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../../SettableSocketOption.html" title="Settable socket option requirements">SettableSocketOption</a><span class="special">&gt;</span>
-<span class="keyword">void</span> <span class="identifier">set_option</span><span class="special">(</span>
-    <span class="keyword">const</span> <span class="identifier">SettableSocketOption</span> <span class="special">&amp;</span> <span class="identifier">option</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="../../SettableSocketOption.html" title="Settable socket option requirements">SettableSocketOption</a>&gt;
+void set_option(
+    const SettableSocketOption &amp; option);
 </pre>
 <p>
             This function is used to set an option on the socket.
@@ -71,10 +71,10 @@
 <p>
             Setting the IPPROTO_TCP/TCP_NODELAY option:
           </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">no_delay</span> <span class="identifier">option</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">set_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+...
+boost::asio::ip::tcp::no_delay option(true);
+socket.set_option(option);
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

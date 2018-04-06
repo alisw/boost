@@ -2,19 +2,19 @@
 <library-reference id="local_time_reference"><title>Local Time Reference</title><header name="boost/date_time/local_time/conversion.hpp">
 <namespace name="boost">
 <namespace name="local_time">
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="to_tm"><type>std::tm</type><parameter name="lt"><paramtype>const <classname>local_date_time</classname> &amp;</paramtype></parameter><purpose>Function that creates a tm struct from a local_date_time. </purpose></function>
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
@@ -43,8 +43,7 @@
 </method-group>
 <constructor><parameter name="zone_names"><paramtype>const time_zone_names &amp;</paramtype></parameter><parameter name="utc_offset"><paramtype>const time_duration_type &amp;</paramtype></parameter><parameter name="dst_shift"><paramtype>const dst_adjustment_offsets &amp;</paramtype></parameter><parameter name="calc_rule"><paramtype>boost::shared_ptr&lt; dst_calc_rule &gt;</paramtype></parameter></constructor>
 <destructor/>
-</class><typedef name="dst_adjustment_offsets"><type>boost::date_time::dst_adjustment_offsets&lt; boost::posix_time::time_duration &gt;</type></typedef>
-<typedef name="dst_calc_rule_ptr"><type>boost::shared_ptr&lt; dst_calc_rule &gt;</type></typedef>
+</class><typedef name="dst_calc_rule_ptr"><type>boost::shared_ptr&lt; dst_calc_rule &gt;</type></typedef>
 <typedef name="custom_time_zone"><type><classname>custom_time_zone_base</classname>&lt; char &gt;</type></typedef>
 
 
@@ -66,6 +65,9 @@
 <para>Operators for local_date_time and optional gregorian types. Operators use snap-to-end-of-month behavior. Further details on this behavior can be found in reference for date_time/date_duration_types.hpp and documentation for month and year iterators. </para><namespace name="boost">
 <namespace name="local_time">
 
+
+
+
 <function name="operator+"><type><classname>local_date_time</classname></type><parameter name="t"><paramtype>const <classname>local_date_time</classname> &amp;</paramtype></parameter><parameter name="m"><paramtype>const boost::gregorian::months &amp;</paramtype></parameter><description><para>Adds a months object and a local_date_time. Result will be same day-of-month as local_date_time unless original day was the last day of month. see date_time::months_duration for more details </para></description></function>
 <function name="operator+="><type><classname>local_date_time</classname></type><parameter name="t"><paramtype><classname>local_date_time</classname> &amp;</paramtype></parameter><parameter name="m"><paramtype>const boost::gregorian::months &amp;</paramtype></parameter><description><para>Adds a months object to a local_date_time. Result will be same day-of-month as local_date_time unless original day was the last day of month. see date_time::months_duration for more details </para></description></function>
 <function name="operator-"><type><classname>local_date_time</classname></type><parameter name="t"><paramtype>const <classname>local_date_time</classname> &amp;</paramtype></parameter><parameter name="m"><paramtype>const boost::gregorian::months &amp;</paramtype></parameter><description><para>Subtracts a months object and a local_date_time. Result will be same day-of-month as local_date_time unless original day was the last day of month. see date_time::months_duration for more details </para></description></function>
@@ -74,9 +76,6 @@
 <function name="operator+="><type><classname>local_date_time</classname></type><parameter name="t"><paramtype><classname>local_date_time</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const boost::gregorian::years &amp;</paramtype></parameter><description><para>Adds a years object to a local_date_time. Result will be same month and day-of-month as local_date_time unless original day was the last day of month. see date_time::years_duration for more details </para></description></function>
 <function name="operator-"><type><classname>local_date_time</classname></type><parameter name="t"><paramtype>const <classname>local_date_time</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const boost::gregorian::years &amp;</paramtype></parameter><description><para>Subtracts a years object and a local_date_time. Result will be same month and day-of-month as local_date_time unless original day was the last day of month. see date_time::years_duration for more details </para></description></function>
 <function name="operator-="><type><classname>local_date_time</classname></type><parameter name="t"><paramtype><classname>local_date_time</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const boost::gregorian::years &amp;</paramtype></parameter><description><para>Subtracts a years object from a local_date_time. Result will be same month and day-of-month as local_date_time unless original day was the last day of month. see date_time::years_duration for more details </para></description></function>
-
-
-
 
 </namespace>
 </namespace>
@@ -210,15 +209,6 @@
 <typedef name="local_time_facet"><type>boost::date_time::time_facet&lt; <classname>local_date_time</classname>, char &gt;</type></typedef>
 <typedef name="wlocal_time_input_facet"><type>boost::date_time::time_input_facet&lt; local_date_time::utc_time_type, wchar_t &gt;</type></typedef>
 <typedef name="local_time_input_facet"><type>boost::date_time::time_input_facet&lt; local_date_time::utc_time_type, char &gt;</type></typedef>
-
-
-
-
-
-
-
-
-
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; CharT, TraitsT &gt; &amp;</type><template>
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="TraitsT"/>
@@ -235,6 +225,15 @@
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="Traits"/>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="tp"><paramtype>boost::local_time::local_time_period &amp;</paramtype></parameter><purpose>input operator for local_time_period </purpose></function>
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
@@ -331,7 +330,8 @@
 <method-group name="private static functions">
 <method name="td_as_string" specifiers="static"><type>std::string</type><parameter name="td"><paramtype>const time_duration_type &amp;</paramtype></parameter><purpose>helper function used when throwing exceptions </purpose></method>
 </method-group>
-</class><typedef name="posix_time_zone"><type><classname>posix_time_zone_base</classname>&lt; char &gt;</type></typedef>
+</class><typedef name="dst_adjustment_offsets"><type>boost::date_time::dst_adjustment_offsets&lt; boost::posix_time::time_duration &gt;</type></typedef>
+<typedef name="posix_time_zone"><type><classname>posix_time_zone_base</classname>&lt; char &gt;</type></typedef>
 
 
 

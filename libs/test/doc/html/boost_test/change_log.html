@@ -28,12 +28,95 @@
 </h2></div></div></div>
 <h5>
 <a name="boost_test.change_log.h0"></a>
+      <span class="phrase"><a name="boost_test.change_log.boost_test_v3_6_boost_1_65"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_6_boost_1_65">Boost.Test
+      v3.6 / boost 1.65</a>
+    </h5>
+<h6>
+<a name="boost_test.change_log.h1"></a>
+      <span class="phrase"><a name="boost_test.change_log.breaking_changes"></a></span><a class="link" href="change_log.html#boost_test.change_log.breaking_changes">Breaking
+      changes</a>
+    </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a class="link" href="utf_reference/test_org_reference/test_org_boost_global_fixture.html" title="BOOST_GLOBAL_FIXTURE"><code class="computeroutput"><span class="identifier">BOOST_GLOBAL_FIXTURE</span></code></a> is flagged
+          as deprecated and will be removed in a later version
+        </li>
+<li class="listitem">
+          Using test assertions and macros is not allowed when used inside <a class="link" href="utf_reference/test_org_reference/test_org_boost_global_fixture.html" title="BOOST_GLOBAL_FIXTURE"><code class="computeroutput"><span class="identifier">BOOST_GLOBAL_FIXTURE</span></code></a>. Please use
+          <a class="link" href="utf_reference/test_org_reference/test_org_boost_test_global_fixture.html" title="BOOST_TEST_GLOBAL_FIXTURE"><code class="computeroutput"><span class="identifier">BOOST_TEST_GLOBAL_FIXTURE</span></code></a> instead
+          (see below).
+        </li>
+<li class="listitem">
+          the interface for loggers has slightly changed to take into account the
+          current log level. This is for addressing <a href="https://svn.boost.org/trac/boost/ticket/12631" target="_top">#12631</a>.
+        </li>
+</ul></div>
+<h6>
+<a name="boost_test.change_log.h2"></a>
+      <span class="phrase"><a name="boost_test.change_log.new_features"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features">New
+      features</a>
+    </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          VS2017 / C++17 compatibility (thanks to Daniela Engert)
+        </li>
+<li class="listitem">
+          Deprecating <a class="link" href="utf_reference/test_org_reference/test_org_boost_global_fixture.html" title="BOOST_GLOBAL_FIXTURE"><code class="computeroutput"><span class="identifier">BOOST_GLOBAL_FIXTURE</span></code></a> in favor
+          of <a class="link" href="utf_reference/test_org_reference/test_org_boost_test_global_fixture.html" title="BOOST_TEST_GLOBAL_FIXTURE"><code class="computeroutput"><span class="identifier">BOOST_TEST_GLOBAL_FIXTURE</span></code></a> and
+          <a class="link" href="utf_reference/link_references/link_boost_test_global_configuration.html" title="BOOST_TEST_GLOBAL_CONFIGURATION"><code class="computeroutput"><span class="identifier">BOOST_TEST_GLOBAL_CONFIGURATION</span></code></a>.
+          This helps separating the logic of the fixtures associated to the master
+          test suite, from the one used for setting up the logging and reporting
+          facility, and results in a general cleaner design.
+        </li>
+<li class="listitem">
+          It is possible to use now the <a class="link" href="utf_reference/testing_tool_ref/assertion_boost_test_universal_macro.html" title="BOOST_TEST"><code class="computeroutput"><span class="identifier">BOOST_TEST</span></code></a> check to comparing
+          a collection with respect to regular arrays. See <a class="link" href="testing_tools/extended_comparison/collections.html#ref_boost_test_coll_c_arrays">this
+          section</a> for more details.
+        </li>
+</ul></div>
+<h6>
+<a name="boost_test.change_log.h3"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests">Bugfixes
+      and feature requests</a>
+    </h6>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+          <a href="https://github.com/boostorg/test/pull/106" target="_top">#PR-106</a> replace deprecated binders and adapters, and <code class="computeroutput"><span class="identifier">random_shuffle</span></code>
+          by more modern equivalents
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/5282" target="_top">#5282</a> Test fixtures do not support virtual inheritance
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/5563" target="_top">#5563</a> using a test macro in a global fixture crashes Boost.Test
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/11471" target="_top">#11471</a> array is a sequence
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/11962" target="_top">#11962</a> <code class="computeroutput"><span class="identifier">BOOST_TEST_MESSAGE</span></code>
+          in fixture constructor - invalid XML
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/12228" target="_top">#12228</a> Some test headers fail to compile independently
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/12631" target="_top">#12631</a> <code class="computeroutput"><span class="identifier">BOOST_TEST_MESSAGE</span></code>
+          generates incorrect output when used in <code class="computeroutput"><span class="identifier">BOOST_DATA_TEST_CASE</span></code>
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/13011" target="_top">#13011</a> <code class="computeroutput"><span class="identifier">BOOST_TEST</span></code> broken
+          with floating point relational operators
+        </li>
+</ol></div>
+<h5>
+<a name="boost_test.change_log.h4"></a>
       <span class="phrase"><a name="boost_test.change_log.boost_test_v3_5_boost_1_64"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_5_boost_1_64">Boost.Test
       v3.5 / boost 1.64</a>
     </h5>
 <h6>
-<a name="boost_test.change_log.h1"></a>
-      <span class="phrase"><a name="boost_test.change_log.new_features"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features">New
+<a name="boost_test.change_log.h5"></a>
+      <span class="phrase"><a name="boost_test.change_log.new_features0"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features0">New
       features</a>
     </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -56,8 +139,8 @@
         </li>
 </ul></div>
 <h6>
-<a name="boost_test.change_log.h2"></a>
-      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests">Bugfixes
+<a name="boost_test.change_log.h6"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests0"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests0">Bugfixes
       and feature requests</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -89,13 +172,13 @@
         </li>
 </ol></div>
 <h5>
-<a name="boost_test.change_log.h3"></a>
+<a name="boost_test.change_log.h7"></a>
       <span class="phrase"><a name="boost_test.change_log.boost_test_v3_4_boost_1_63"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_4_boost_1_63">Boost.Test
       v3.4 / boost 1.63</a>
     </h5>
 <h6>
-<a name="boost_test.change_log.h4"></a>
-      <span class="phrase"><a name="boost_test.change_log.breaking_changes"></a></span><a class="link" href="change_log.html#boost_test.change_log.breaking_changes">Breaking
+<a name="boost_test.change_log.h8"></a>
+      <span class="phrase"><a name="boost_test.change_log.breaking_changes0"></a></span><a class="link" href="change_log.html#boost_test.change_log.breaking_changes0">Breaking
       changes</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
@@ -107,8 +190,8 @@
           See <a href="https://svn.boost.org/trac/boost/ticket/12531" target="_top">#12531</a> for more details.
         </li></ol></div>
 <h6>
-<a name="boost_test.change_log.h5"></a>
-      <span class="phrase"><a name="boost_test.change_log.new_features0"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features0">New
+<a name="boost_test.change_log.h9"></a>
+      <span class="phrase"><a name="boost_test.change_log.new_features1"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features1">New
       features</a>
     </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
@@ -119,8 +202,8 @@
           comparison</a> for more details.
         </li></ul></div>
 <h6>
-<a name="boost_test.change_log.h6"></a>
-      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests0"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests0">Bugfixes
+<a name="boost_test.change_log.h10"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests1"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests1">Bugfixes
       and feature requests</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -158,13 +241,13 @@
         </li>
 </ol></div>
 <h5>
-<a name="boost_test.change_log.h7"></a>
+<a name="boost_test.change_log.h11"></a>
       <span class="phrase"><a name="boost_test.change_log.boost_test_v3_3_boost_1_62"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_3_boost_1_62">Boost.Test
       v3.3 / boost 1.62</a>
     </h5>
 <h6>
-<a name="boost_test.change_log.h8"></a>
-      <span class="phrase"><a name="boost_test.change_log.new_features1"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features1">New
+<a name="boost_test.change_log.h12"></a>
+      <span class="phrase"><a name="boost_test.change_log.new_features2"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features2">New
       features</a>
     </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -198,8 +281,8 @@
         </li>
 </ul></div>
 <h6>
-<a name="boost_test.change_log.h9"></a>
-      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests1"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests1">Bugfixes
+<a name="boost_test.change_log.h13"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests2"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests2">Bugfixes
       and feature requests</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -252,13 +335,13 @@
         </li>
 </ol></div>
 <h5>
-<a name="boost_test.change_log.h10"></a>
+<a name="boost_test.change_log.h14"></a>
       <span class="phrase"><a name="boost_test.change_log.boost_test_v3_2_boost_1_61"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_2_boost_1_61">Boost.Test
       v3.2 / boost 1.61</a>
     </h5>
 <h6>
-<a name="boost_test.change_log.h11"></a>
-      <span class="phrase"><a name="boost_test.change_log.new_features2"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features2">New
+<a name="boost_test.change_log.h15"></a>
+      <span class="phrase"><a name="boost_test.change_log.new_features3"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_features3">New
       features</a>
     </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -276,8 +359,8 @@
         </li>
 </ul></div>
 <h6>
-<a name="boost_test.change_log.h12"></a>
-      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests2"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests2">Bugfixes
+<a name="boost_test.change_log.h16"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests3"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests3">Bugfixes
       and feature requests</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -307,12 +390,12 @@
         </li>
 </ol></div>
 <h5>
-<a name="boost_test.change_log.h13"></a>
+<a name="boost_test.change_log.h17"></a>
       <span class="phrase"><a name="boost_test.change_log.boost_test_v3_1_boost_1_60"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_1_boost_1_60">Boost.Test
       v3.1 / boost 1.60</a>
     </h5>
 <h6>
-<a name="boost_test.change_log.h14"></a>
+<a name="boost_test.change_log.h18"></a>
       <span class="phrase"><a name="boost_test.change_log.new_major_features"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_major_features">New
       major features</a>
     </h6>
@@ -368,8 +451,8 @@
         </li>
 </ul></div>
 <h6>
-<a name="boost_test.change_log.h15"></a>
-      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests3"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests3">Bugfixes
+<a name="boost_test.change_log.h19"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests4"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests4">Bugfixes
       and feature requests</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -425,12 +508,12 @@
         </li>
 </ol></div>
 <h5>
-<a name="boost_test.change_log.h16"></a>
+<a name="boost_test.change_log.h20"></a>
       <span class="phrase"><a name="boost_test.change_log.boost_test_v3_boost_1_59"></a></span><a class="link" href="change_log.html#boost_test.change_log.boost_test_v3_boost_1_59">Boost.Test
       v3 / boost 1.59</a>
     </h5>
 <h6>
-<a name="boost_test.change_log.h17"></a>
+<a name="boost_test.change_log.h21"></a>
       <span class="phrase"><a name="boost_test.change_log.new_major_features0"></a></span><a class="link" href="change_log.html#boost_test.change_log.new_major_features0">New
       major features</a>
     </h6>
@@ -474,8 +557,8 @@
         </li>
 </ul></div>
 <h6>
-<a name="boost_test.change_log.h18"></a>
-      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests4"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests4">Bugfixes
+<a name="boost_test.change_log.h22"></a>
+      <span class="phrase"><a name="boost_test.change_log.bugfixes_and_feature_requests5"></a></span><a class="link" href="change_log.html#boost_test.change_log.bugfixes_and_feature_requests5">Bugfixes
       and feature requests</a>
     </h6>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -758,7 +841,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2016 Boost.Test contributors<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2017 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

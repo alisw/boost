@@ -27,21 +27,22 @@
 <a name="boost_asio.reference.basic_waitable_timer.async_wait"></a><a class="link" href="async_wait.html" title="basic_waitable_timer::async_wait">basic_waitable_timer::async_wait</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="idp130858832"></a> 
-Start an asynchronous wait on the timer.
+          <a class="indexterm" name="boost_asio.indexterm.basic_waitable_timer.async_wait"></a> 
+Start
+          an asynchronous wait on the timer.
         </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../WaitHandler.html" title="Wait handler requirements">WaitHandler</a><span class="special">&gt;</span>
-<a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.return_type_of_an_initiating_function"><span class="emphasis"><em>void-or-deduced</em></span></a> <span class="identifier">async_wait</span><span class="special">(</span>
-    <span class="identifier">WaitHandler</span> <span class="identifier">handler</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="../WaitHandler.html" title="Wait handler requirements">WaitHandler</a>&gt;
+<a class="link" href="../asynchronous_operations/automatic_deduction_of_initiating_function_return_type.html" title="Automatic deduction of initiating function return type"><span class="emphasis"><em>DEDUCED</em></span></a> async_wait(
+    WaitHandler &amp;&amp; handler);
 </pre>
 <p>
           This function may be used to initiate an asynchronous wait against the
           timer. It always returns immediately.
         </p>
 <p>
-          For each call to <code class="computeroutput"><span class="identifier">async_wait</span><span class="special">()</span></code>, the supplied handler will be called
-          exactly once. The handler will be called when:
+          For each call to <code class="computeroutput">async_wait()</code>, the supplied handler will be
+          called exactly once. The handler will be called when:
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -49,7 +50,7 @@ Start an asynchronous wait on the timer.
             </li>
 <li class="listitem">
               The timer was cancelled, in which case the handler is passed the error
-              code <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span></code>.
+              code <code class="computeroutput">boost::asio::error::operation_aborted</code>.
             </li>
 </ul></div>
 <h6>
@@ -66,15 +67,15 @@ Start an asynchronous wait on the timer.
                 of the handler as required. The function signature of the handler
                 must be:
 </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
-  <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">error</span> <span class="comment">// Result of operation.</span>
-<span class="special">);</span>
+<pre class="programlisting">void handler(
+  const boost::system::error_code&amp; error // Result of operation.
+);
 </pre>
 <p>
                 Regardless of whether the asynchronous operation completes immediately
                 or not, the handler will not be invoked from within this function.
                 Invocation of the handler will be performed in a manner equivalent
-                to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_service</span><span class="special">::</span><span class="identifier">post</span><span class="special">()</span></code>.
+                to using <code class="computeroutput">boost::asio::io_context::post()</code>.
               </p>
 </dd>
 </dl>

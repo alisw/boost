@@ -40,15 +40,7 @@
 <header name="boost/property_tree/id_translator.hpp">
 <namespace name="boost">
 <namespace name="property_tree">
-<struct name="id_translator"><template>
-      <template-type-parameter name="T"/>
-    </template><purpose>Simple implementation of the Translator concept. It does no translation. </purpose><typedef name="internal_type"><type>T</type></typedef>
-<typedef name="external_type"><type>T</type></typedef>
-<method-group name="public member functions">
-<method name="get_value"><type>boost::optional&lt; T &gt;</type><parameter name="v"><paramtype>const T &amp;</paramtype></parameter></method>
-<method name="put_value"><type>boost::optional&lt; T &gt;</type><parameter name="v"><paramtype>const T &amp;</paramtype></parameter></method>
-</method-group>
-</struct><struct-specialization name="translator_between"><template>
+<struct-specialization name="translator_between"><template>
       <template-type-parameter name="T"/>
     </template><specialization><template-arg>T</template-arg><template-arg>T</template-arg></specialization><typedef name="type"><type><classname>id_translator</classname>&lt; T &gt;</type></typedef>
 </struct-specialization><struct-specialization name="translator_between"><template>
@@ -207,18 +199,24 @@
 <header name="boost/property_tree/ptree.hpp">
 <namespace name="boost">
 <namespace name="property_tree">
+
+
+
+
+
+
+
+</namespace>
+</namespace>
+</header>
+<header name="boost/property_tree/ptree_fwd.hpp">
+<namespace name="boost">
+<namespace name="property_tree">
 <class name="basic_ptree"><template>
       <template-type-parameter name="Key"/>
       <template-type-parameter name="Data"/>
-      <template-type-parameter name="KeyCompare"/>
-    </template><description><para>Property tree main structure. A property tree is a hierarchical data structure which has one element of type <computeroutput>Data</computeroutput> in each node, as well as an ordered sequence of sub-nodes, which are additionally identified by a non-unique key of type <computeroutput>Key</computeroutput>.</para><para>Key equivalency is defined by <computeroutput>KeyCompare</computeroutput>, a predicate defining a strict weak ordering.</para><para>Property tree defines a Container-like interface to the (key-node) pairs of its direct sub-nodes. The iterators are bidirectional. The sequence of nodes is held in insertion order, not key order. </para></description><typedef name="self_type"><description><para>Simpler way to refer to this <classname alt="boost::property_tree::basic_ptree">basic_ptree</classname>&lt;C,K,P,A&gt; type. Note that this is private, and made public only for doxygen. </para></description><type><classname>basic_ptree</classname>&lt; Key, Data, KeyCompare &gt;</type></typedef>
-<typedef name="key_type"><type>Key</type></typedef>
-<typedef name="data_type"><type>Data</type></typedef>
-<typedef name="key_compare"><type>KeyCompare</type></typedef>
-<typedef name="value_type"><type>std::pair&lt; const Key, self_type &gt;</type></typedef>
-<typedef name="size_type"><type>std::size_t</type></typedef>
-<typedef name="path_type"><type><classname>path_of</classname>&lt; Key &gt;::type</type></typedef>
-<method-group name="public member functions">
+      <template-type-parameter name="KeyCompare"><default>std::less&lt;Key&gt;</default></template-type-parameter>
+    </template><description><para>Property tree main structure. A property tree is a hierarchical data structure which has one element of type <computeroutput>Data</computeroutput> in each node, as well as an ordered sequence of sub-nodes, which are additionally identified by a non-unique key of type <computeroutput>Key</computeroutput>.</para><para>Key equivalency is defined by <computeroutput>KeyCompare</computeroutput>, a predicate defining a strict weak ordering.</para><para>Property tree defines a Container-like interface to the (key-node) pairs of its direct sub-nodes. The iterators are bidirectional. The sequence of nodes is held in insertion order, not key order. </para></description><method-group name="public member functions">
 <method name="swap"><type>void</type><parameter name="rhs"><paramtype>self_type &amp;</paramtype></parameter><description><para>Swap with other tree. Only constant-time and nothrow if the data type's swap is. </para></description></method>
 <method name="size" cv="const"><type>size_type</type><description><para>The number of direct children of this node. </para></description></method>
 <method name="max_size" cv="const"><type>size_type</type></method>
@@ -396,44 +394,13 @@ return boost::null;
 <method name="walk_path" cv="const"><type>self_type *</type><parameter name="p"><paramtype>path_type &amp;</paramtype></parameter></method>
 <method name="force_path"><type>self_type &amp;</type><parameter name="p"><paramtype>path_type &amp;</paramtype></parameter></method>
 </method-group>
-</class>
-
-
-
-
-
-
-</namespace>
-</namespace>
-</header>
-<header name="boost/property_tree/ptree_fwd.hpp">
-<namespace name="boost">
-<namespace name="property_tree">
-<class name="string_path"><template>
-      <template-type-parameter name="String"><purpose><para>Any Sequence. If the sequence does not support random- access iteration, concatenation of paths assumes that insertions at the end preserve iterator validity. </para></purpose></template-type-parameter>
-      <template-type-parameter name="Translator"><purpose><para>A translator with internal_type == String. </para></purpose></template-type-parameter>
-    </template><purpose>Default path class. A path is a sequence of values. Groups of values are separated by the separator value, which defaults to '.' cast to the sequence's value type. The group of values is then passed to the translator to get a key. </purpose><description><para>If instantiated with std::string and <classname alt="boost::property_tree::id_translator">id_translator</classname>&lt;std::string&gt;, it accepts paths of the form "one.two.three.four".</para><para>
-</para></description><method-group name="private member functions">
-<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>(is_same&lt; String, typename Translator::internal_type &gt;::value)</paramtype></parameter></method>
-<method name="cstart" cv="const"><type>s_c_iter</type></method>
+</class><struct name="id_translator"><template>
+      <template-type-parameter name="T"/>
+    </template><purpose>Simple implementation of the Translator concept. It does no translation. </purpose><method-group name="public member functions">
+<method name="get_value"><type>boost::optional&lt; T &gt;</type><parameter name="v"><paramtype>const T &amp;</paramtype></parameter></method>
+<method name="put_value"><type>boost::optional&lt; T &gt;</type><parameter name="v"><paramtype>const T &amp;</paramtype></parameter></method>
 </method-group>
-<method-group name="public member functions">
-<method name="reduce"><type>key_type</type><purpose>Take a single element off the path at the front and return it. </purpose></method>
-<method name="empty" cv="const"><type>bool</type><purpose>Test if the path is empty. </purpose></method>
-<method name="single" cv="const"><type>bool</type><purpose>Test if the path contains a single element, i.e. no separators. </purpose></method>
-<method name="separator" cv="const"><type>char_type</type><purpose>Get the separator used by this path. </purpose></method>
-<method name="dump" cv="const"><type>std::string</type></method>
-<method name="operator/="><type><classname>string_path</classname> &amp;</type><parameter name="o"><paramtype>const <classname>string_path</classname> &amp;</paramtype></parameter><purpose>Append a second path to this one. </purpose><description><para>
-</para></description><requires><para>o's separator is the same as this one's, or o has no separators </para></requires></method>
-</method-group>
-<constructor specifiers="explicit"><parameter name="separator"><paramtype>char_type</paramtype><default>char_type('.')</default></parameter><purpose>Create an empty path. </purpose></constructor>
-<constructor><parameter name="value"><paramtype>const String &amp;</paramtype><description><para>A sequence, possibly with separators, that describes the path, e.g. "one.two.three". </para></description></parameter><parameter name="separator"><paramtype>char_type</paramtype><default>char_type('.')</default><description><para>The separator used in parsing. Defaults to '.'. </para></description></parameter><parameter name="tr"><paramtype>Translator</paramtype><default>Translator()</default><description><para>The translator used by this path to convert the individual parts to keys. </para></description></parameter><purpose>Create a path by parsing the given string. </purpose><description><para>
-</para></description></constructor>
-<constructor><parameter name="value"><paramtype>const char_type *</paramtype><description><para>A zero-terminated array of values. Only use if zero- termination makes sense for your type, and your sequence supports construction from it. Intended for string literals. </para></description></parameter><parameter name="separator"><paramtype>char_type</paramtype><default>char_type('.')</default><description><para>The separator used in parsing. Defaults to '.'. </para></description></parameter><parameter name="tr"><paramtype>Translator</paramtype><default>Translator()</default><description><para>The translator used by this path to convert the individual parts to keys. </para></description></parameter><purpose>Create a path by parsing the given string. </purpose><description><para>
-</para></description></constructor>
-<constructor><parameter name="o"><paramtype>const <classname>string_path</classname> &amp;</paramtype></parameter></constructor>
-<copy-assignment><type><classname>string_path</classname> &amp;</type><parameter name="o"><paramtype>const <classname>string_path</classname> &amp;</paramtype></parameter></copy-assignment>
-</class><struct name="path_of"><template>
+</struct><struct name="path_of"><template>
       <template-type-parameter name="Key"/>
     </template><purpose>If you want to use a custom key type, specialize this struct for it and give it a 'type' typedef that specifies your path type. The path type must conform to the Path concept described in the documentation. This is already specialized for std::basic_string. </purpose></struct><struct name="translator_between"><template>
       <template-type-parameter name="Internal"/>
@@ -446,23 +413,25 @@ return boost::null;
 </para></description><type><classname>basic_ptree</classname>&lt; std::wstring, std::wstring &gt;</type></typedef>
 <typedef name="wiptree"><description><para>A property tree with std::wstring for key and data, and case-insensitive comparison. <note><para>The type only exists if the platform supports <computeroutput>wchar_t</computeroutput>. </para></note>
 </para></description><type><emphasis>unspecified</emphasis></type></typedef>
+
+
+
+
+
+
 <function name="swap"><type>void</type><template>
           <template-type-parameter name="K"/>
           <template-type-parameter name="D"/>
           <template-type-parameter name="C"/>
         </template><parameter name="pt1"><paramtype><classname>basic_ptree</classname>&lt; K, D, C &gt; &amp;</paramtype></parameter><parameter name="pt2"><paramtype><classname>basic_ptree</classname>&lt; K, D, C &gt; &amp;</paramtype></parameter><description><para>Swap two property tree instances. </para></description></function>
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
 <header name="boost/property_tree/ptree_serialization.hpp">
 <namespace name="boost">
 <namespace name="property_tree">
+
+
 
 <function name="save"><type>void</type><template>
           <template-type-parameter name="Archive"/>
@@ -489,8 +458,6 @@ return boost::null;
           <template-type-parameter name="C"/>
         </template><parameter name="ar"><paramtype>Archive &amp;</paramtype><description><para>The archive from which to load or save the serialized property tree. The type of this archive will determine whether saving or loading is performed. </para></description></parameter><parameter name="t"><paramtype><classname>basic_ptree</classname>&lt; K, D, C &gt; &amp;</paramtype><description><para>The property tree to load or save. </para></description></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype><description><para>file_version for the archive. </para></description></parameter><description><para>Load or store the property tree using the given archive. 
 </para></description></function>
-
-
 
 </namespace>
 </namespace>
@@ -574,17 +541,39 @@ return boost::null;
 <header name="boost/property_tree/string_path.hpp">
 <namespace name="boost">
 <namespace name="property_tree">
-<struct-specialization name="path_of"><template>
+<class name="string_path"><template>
+      <template-type-parameter name="String"><purpose><para>Any Sequence. If the sequence does not support random- access iteration, concatenation of paths assumes that insertions at the end preserve iterator validity. </para></purpose></template-type-parameter>
+      <template-type-parameter name="Translator"><purpose><para>A translator with internal_type == String. </para></purpose></template-type-parameter>
+    </template><purpose>Default path class. A path is a sequence of values. Groups of values are separated by the separator value, which defaults to '.' cast to the sequence's value type. The group of values is then passed to the translator to get a key. </purpose><description><para>If instantiated with std::string and <classname alt="boost::property_tree::id_translator">id_translator</classname>&lt;std::string&gt;, it accepts paths of the form "one.two.three.four".</para><para>
+</para></description><typedef name="key_type"><type>Translator::external_type</type></typedef>
+<typedef name="char_type"><type>String::value_type</type></typedef>
+<method-group name="private member functions">
+<method name="BOOST_STATIC_ASSERT"><type/><parameter name=""><paramtype>(is_same&lt; String, typename Translator::internal_type &gt;::value)</paramtype></parameter></method>
+<method name="cstart" cv="const"><type>s_c_iter</type></method>
+</method-group>
+<method-group name="public member functions">
+<method name="reduce"><type>key_type</type><purpose>Take a single element off the path at the front and return it. </purpose></method>
+<method name="empty" cv="const"><type>bool</type><purpose>Test if the path is empty. </purpose></method>
+<method name="single" cv="const"><type>bool</type><purpose>Test if the path contains a single element, i.e. no separators. </purpose></method>
+<method name="separator" cv="const"><type>char_type</type><purpose>Get the separator used by this path. </purpose></method>
+<method name="dump" cv="const"><type>std::string</type></method>
+<method name="operator/="><type><classname>string_path</classname> &amp;</type><parameter name="o"><paramtype>const <classname>string_path</classname> &amp;</paramtype></parameter><purpose>Append a second path to this one. </purpose><description><para>
+</para></description><requires><para>o's separator is the same as this one's, or o has no separators </para></requires></method>
+</method-group>
+<constructor specifiers="explicit"><parameter name="separator"><paramtype>char_type</paramtype><default>char_type('.')</default></parameter><purpose>Create an empty path. </purpose></constructor>
+<constructor><parameter name="value"><paramtype>const String &amp;</paramtype><description><para>A sequence, possibly with separators, that describes the path, e.g. "one.two.three". </para></description></parameter><parameter name="separator"><paramtype>char_type</paramtype><default>char_type('.')</default><description><para>The separator used in parsing. Defaults to '.'. </para></description></parameter><parameter name="tr"><paramtype>Translator</paramtype><default>Translator()</default><description><para>The translator used by this path to convert the individual parts to keys. </para></description></parameter><purpose>Create a path by parsing the given string. </purpose><description><para>
+</para></description></constructor>
+<constructor><parameter name="value"><paramtype>const char_type *</paramtype><description><para>A zero-terminated array of values. Only use if zero- termination makes sense for your type, and your sequence supports construction from it. Intended for string literals. </para></description></parameter><parameter name="separator"><paramtype>char_type</paramtype><default>char_type('.')</default><description><para>The separator used in parsing. Defaults to '.'. </para></description></parameter><parameter name="tr"><paramtype>Translator</paramtype><default>Translator()</default><description><para>The translator used by this path to convert the individual parts to keys. </para></description></parameter><purpose>Create a path by parsing the given string. </purpose><description><para>
+</para></description></constructor>
+<constructor><parameter name="o"><paramtype>const <classname>string_path</classname> &amp;</paramtype></parameter></constructor>
+<copy-assignment><type><classname>string_path</classname> &amp;</type><parameter name="o"><paramtype>const <classname>string_path</classname> &amp;</paramtype></parameter></copy-assignment>
+</class><struct-specialization name="path_of"><template>
       <template-type-parameter name="Ch"/>
       <template-type-parameter name="Traits"/>
       <template-type-parameter name="Alloc"/>
     </template><specialization><template-arg>std::basic_string&lt; Ch</template-arg><template-arg>Traits</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="_string"><type>std::basic_string&lt; Ch, Traits, Alloc &gt;</type></typedef>
 <typedef name="type"><type><classname>string_path</classname>&lt; _string, <classname>id_translator</classname>&lt; _string &gt; &gt;</type></typedef>
-</struct-specialization>
-
-
-
-<function name="operator/"><type><classname>string_path</classname>&lt; String, Translator &gt;</type><template>
+</struct-specialization><function name="operator/"><type><classname>string_path</classname>&lt; String, Translator &gt;</type><template>
           <template-type-parameter name="String"/>
           <template-type-parameter name="Translator"/>
         </template><parameter name="p1"><paramtype><classname>string_path</classname>&lt; String, Translator &gt;</paramtype></parameter><parameter name="p2"><paramtype>const <classname>string_path</classname>&lt; String, Translator &gt; &amp;</paramtype></parameter></function>
@@ -596,6 +585,10 @@ return boost::null;
           <template-type-parameter name="String"/>
           <template-type-parameter name="Translator"/>
         </template><parameter name="p1"><paramtype>const typename String::value_type *</paramtype></parameter><parameter name="p2"><paramtype>const <classname>string_path</classname>&lt; String, Translator &gt; &amp;</paramtype></parameter></function>
+
+
+
+
 </namespace>
 </namespace>
 </header>

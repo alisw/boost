@@ -5,7 +5,7 @@
 #ifndef BOOST_CONVERT_TEST_HPP
 #define BOOST_CONVERT_TEST_HPP
 
-#include <boost/convert/detail/forward.hpp>
+#include <boost/convert/detail/config.hpp>
 #include <boost/make_default.hpp>
 #include <boost/static_assert.hpp>
 #include <string>
@@ -23,6 +23,7 @@
 #   pragma warning(disable: 4706)
 #   pragma warning(disable: 4005)
 #   pragma warning(disable: 4459) // declaration hides global declaration
+#   pragma warning(disable: 4456) // declaration hides previous local declaration
 #endif
 
 //[change_declaration

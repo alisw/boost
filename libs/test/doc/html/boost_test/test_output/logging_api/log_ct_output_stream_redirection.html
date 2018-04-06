@@ -45,7 +45,7 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            See <code class="computeroutput"><a class="link" href="../../../boost/unit_test/unit_test_log_t.html#idp58180480-bb">boost::unit_test::unit_test_log_t::set_stream</a></code>
+            See <code class="computeroutput"><a class="link" href="../../../boost/unit_test/unit_test_log_t.html#idp41738784-bb">boost::unit_test::unit_test_log_t::set_stream</a></code>
             and <code class="computeroutput"><a class="link" href="../../../header/boost/test/detail/global_typedef_hpp.html#boost.unit_test.output_format">boost::unit_test::output_format</a></code>
             for more details
           </p></td></tr>
@@ -83,24 +83,19 @@
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">fstream</span><span class="special">&gt;</span>
 
-<span class="keyword">struct</span> <span class="identifier">MyConfig</span>
-<span class="special">{</span>
-  <span class="identifier">MyConfig</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">test_log</span><span class="special">(</span> <span class="string">"example.log"</span> <span class="special">)</span>
-  <span class="special">{</span>
+<span class="keyword">struct</span> <span class="identifier">MyConfig</span> <span class="special">{</span>
+  <span class="identifier">MyConfig</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">test_log</span><span class="special">(</span> <span class="string">"example.log"</span> <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">unit_test_log</span><span class="special">.</span><span class="identifier">set_stream</span><span class="special">(</span> <span class="identifier">test_log</span> <span class="special">);</span>
   <span class="special">}</span>
-  <span class="special">~</span><span class="identifier">MyConfig</span><span class="special">()</span>
-  <span class="special">{</span>
+  <span class="special">~</span><span class="identifier">MyConfig</span><span class="special">()</span> <span class="special">{</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">unit_test_log</span><span class="special">.</span><span class="identifier">set_stream</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">);</span>
   <span class="special">}</span>
-
   <span class="identifier">std</span><span class="special">::</span><span class="identifier">ofstream</span> <span class="identifier">test_log</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="identifier">BOOST_GLOBAL_FIXTURE</span><span class="special">(</span> <span class="identifier">MyConfig</span> <span class="special">);</span>
+<span class="identifier">BOOST_TEST_GLOBAL_CONFIGURATION</span><span class="special">(</span> <span class="identifier">MyConfig</span> <span class="special">);</span>
 
-<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case</span> <span class="special">)</span>
-<span class="special">{</span>
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case</span> <span class="special">)</span> <span class="special">{</span>
   <span class="identifier">BOOST_TEST</span><span class="special">(</span> <span class="keyword">false</span> <span class="special">);</span>
 <span class="special">}</span>
 </pre>
@@ -119,14 +114,14 @@
 <span class="special">***</span> <span class="number">1</span> <span class="identifier">failures</span> <span class="identifier">is</span> <span class="identifier">detected</span> <span class="identifier">in</span> <span class="identifier">test</span> <span class="identifier">suite</span> <span class="string">"example"</span>
 <span class="special">&gt;</span> <span class="identifier">cat</span> <span class="identifier">example</span><span class="special">.</span><span class="identifier">log</span>
 <span class="identifier">Running</span> <span class="number">1</span> <span class="identifier">test</span> <span class="keyword">case</span><span class="special">...</span>
-<span class="identifier">test</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">(</span><span class="number">20</span><span class="special">):</span> <span class="identifier">error</span> <span class="identifier">in</span> <span class="string">"test_case"</span><span class="special">:</span> <span class="identifier">check</span> <span class="keyword">false</span> <span class="identifier">failed</span>
+<span class="identifier">test</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">(</span><span class="number">26</span><span class="special">):</span> <span class="identifier">error</span> <span class="identifier">in</span> <span class="string">"test_case"</span><span class="special">:</span> <span class="identifier">check</span> <span class="keyword">false</span> <span class="identifier">failed</span>
 </pre>
                 </td></tr></tbody>
 </table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2016 Boost.Test contributors<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2017 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

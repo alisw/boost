@@ -5,6 +5,10 @@
 
 #include "./test.hpp"
 
+#if defined(BOOST_CONVERT_IS_NOT_SUPPORTED)
+int main(int, char const* []) { return 0; }
+#else
+
 #include <boost/convert.hpp>
 #include <boost/convert/spirit.hpp>
 #include <boost/detail/lightweight_test.hpp>
@@ -17,7 +21,7 @@ using boost::convert;
 namespace cnv = boost::cnv;
 namespace arg = boost::cnv::parameter;
 
-struct boost::cnv::by_default : public boost::cnv::spirit {};
+struct boost::cnv::by_default : boost::cnv::spirit {};
 
 int
 main(int, char const* [])
@@ -79,3 +83,5 @@ main(int, char const* [])
 
     return boost::report_errors();
 }
+
+#endif

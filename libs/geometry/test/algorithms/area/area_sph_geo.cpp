@@ -83,7 +83,7 @@ void test_spherical_geo()
 
     // Geographic total area of earth is about 510065626583900.6 (WGS84 ellipsoid)
     // (510072000 in https://en.wikipedia.org/wiki/Earth)
-    // So the 1/8 is 6.375820332×10^13 and here we get something close to it
+    // So the 1/8 is 6.375820332*10^13 and here we get something close to it
     bg::read_wkt(poly, geometry_geo);
     area = bg::area(geometry_geo, area_geographic);
     //GeoGraphicLib gives: 63758202715511.055
@@ -388,6 +388,21 @@ void test_spherical_geo()
         // SQL Server gives: 1481.55595960659
         // for select geography::STGeomFromText('POLYGON((4.892 52.373,4.23 52.08,
         //      4.479 51.930,5.119 52.093,4.892 52.373))',4326).STArea()/1000000.0
+    }
+
+    {
+        bg::model::polygon<pt, false> geometry_sph;
+        std::string wkt = "POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))";
+        bg::read_wkt(wkt, geometry_sph);
+
+        area = bg::area(geometry_sph, bg::strategy::area::spherical<pt>(6371228.0));
+        BOOST_CHECK_CLOSE(area, 308932296103.83051, 0.0001);
+        
+        bg::model::polygon<pt_geo, false> geometry_geo;
+        bg::read_wkt(wkt, geometry_geo);
+
+        area = bg::area(geometry_geo, bg::strategy::area::geographic<pt_geo>(bg::srs::spheroid<double>(6371228.0, 6371228.0)));
+        BOOST_CHECK_CLOSE(area, 308932296103.82574, 0.001);
     }
 }
 

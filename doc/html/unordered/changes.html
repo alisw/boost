@@ -208,7 +208,7 @@
           rewritten to use templates instead of macros for the implementation classes.
         </li>
 <li class="listitem">
-          The container objcet is now smaller thanks to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">compressed_pair</span></code>
+          The container object is now smaller thanks to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">compressed_pair</span></code>
           for EBO and a slightly different function buffer - now using a bool instead
           of a member pointer.
         </li>
@@ -292,7 +292,7 @@
     </h3>
 <p>
       This is major change which has been converted to use Boost.Move's move emulation,
-      and be more compliant with the C++11 standard. See the <a class="link" href="compliance.html" title="C++11 Compliance">compliance
+      and be more compliant with the C++11 standard. See the <a class="link" href="compliance.html" title="Standard Compliance">compliance
       section</a> for details.
     </p>
 <p>
@@ -330,7 +330,7 @@
           the variadic pair constructors that appeared in early C++0x drafts. Since
           they were removed it no longer does so. It does emulate the new <code class="computeroutput"><span class="identifier">piecewise_construct</span></code> pair constructors
           - only you need to use <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">piecewise_construct</span></code>.
-          To use the old emulation of the variadic consturctors define <code class="computeroutput"><span class="identifier">BOOST_UNORDERED_DEPRECATED_PAIR_CONSTRUCT</span></code>.
+          To use the old emulation of the variadic constructors define <code class="computeroutput"><span class="identifier">BOOST_UNORDERED_DEPRECATED_PAIR_CONSTRUCT</span></code>.
         </li>
 </ul></div>
 <h3>
@@ -412,7 +412,7 @@
           Remove a <code class="computeroutput"><span class="keyword">try</span><span class="special">..</span><span class="keyword">catch</span></code> to support compiling without exceptions.
         </li>
 <li class="listitem">
-          Adjust SFINAE use to try to supprt g++ 3.4 (<a href="https://svn.boost.org/trac/boost/ticket/7175" target="_top">#7175</a>).
+          Adjust SFINAE use to try to support g++ 3.4 (<a href="https://svn.boost.org/trac/boost/ticket/7175" target="_top">#7175</a>).
         </li>
 <li class="listitem">
           Updated to use the new config macros.
@@ -645,11 +645,49 @@
 <li class="listitem">
           Initial support for <code class="computeroutput"><span class="identifier">merge</span></code>
           and <code class="computeroutput"><span class="identifier">extract</span></code>. Does not include
-          transfering nodes between <code class="computeroutput"><span class="identifier">unordered_map</span></code>
+          transferring nodes between <code class="computeroutput"><span class="identifier">unordered_map</span></code>
           and <code class="computeroutput"><span class="identifier">unordered_multimap</span></code>
           or between <code class="computeroutput"><span class="identifier">unordered_set</span></code>
           and <code class="computeroutput"><span class="identifier">unordered_multiset</span></code>
           yet. That will hopefully be in the next version of Boost.
+        </li>
+</ul></div>
+<h3>
+<a name="unordered.changes.h25"></a>
+      <span class="phrase"><a name="unordered.changes.boost_1_65_0"></a></span><a class="link" href="changes.html#unordered.changes.boost_1_65_0">Boost
+      1.65.0</a>
+    </h3>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Add deprecated attributes to <code class="computeroutput"><span class="identifier">quick_erase</span></code>
+          and <code class="computeroutput"><span class="identifier">erase_return_void</span></code>.
+          I really will remove them in a future version this time.
+        </li>
+<li class="listitem">
+          Small standards compliance fixes:
+          <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                <code class="computeroutput"><span class="identifier">noexpect</span></code> specs for
+                <code class="computeroutput"><span class="identifier">swap</span></code> free functions.
+              </li>
+<li class="listitem">
+                Add missing <code class="computeroutput"><span class="identifier">insert</span><span class="special">(</span><span class="identifier">P</span><span class="special">&amp;&amp;)</span></code> methods.
+              </li>
+</ul></div>
+        </li>
+</ul></div>
+<h3>
+<a name="unordered.changes.h26"></a>
+      <span class="phrase"><a name="unordered.changes.boost_1_66_0"></a></span><a class="link" href="changes.html#unordered.changes.boost_1_66_0">Boost
+      1.66.0</a>
+    </h3>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Simpler move construction implementation.
+        </li>
+<li class="listitem">
+          Documentation fixes (<a href="https://github.com/boostorg/unordered/pull/6" target="_top">GitHub
+          #6</a>).
         </li>
 </ul></div>
 </div>

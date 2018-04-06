@@ -246,14 +246,7 @@
 <header name="boost/icl/dynamic_interval_traits.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="bounded_value"><template>
-      <template-type-parameter name="DomainT"/>
-    </template><method-group name="public member functions">
-<method name="value" cv="const"><type>domain_type</type></method>
-<method name="bound" cv="const"><type><classname>interval_bounds</classname></type></method>
-</method-group>
-<constructor><parameter name="value"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="bound"><paramtype><classname>interval_bounds</classname></paramtype></parameter></constructor>
-</class><struct name="dynamic_interval_traits"><template>
+<struct name="dynamic_interval_traits"><template>
       <template-type-parameter name="Type"/>
     </template><typedef name="domain_type"><type>Type::domain_type</type></typedef>
 <typedef name="domain_compare"><type>Type::domain_compare</type></typedef>
@@ -279,12 +272,18 @@
 <namespace name="icl">
 <struct name="identity_based_inplace_combine"><template>
       <template-type-parameter name="Type"/>
-    </template><inherit access="public">std::binary_function&lt; Type &amp;, const Type &amp;, void &gt;</inherit><method-group name="public static functions">
+    </template><typedef name="first_argument_type"><type>Type &amp;</type></typedef>
+<typedef name="second_argument_type"><type>const Type &amp;</type></typedef>
+<typedef name="result_type"><type>void</type></typedef>
+<method-group name="public static functions">
 <method name="identity_element" specifiers="static"><type>Type</type></method>
 </method-group>
 </struct><struct name="unit_element_based_inplace_combine"><template>
       <template-type-parameter name="Type"/>
-    </template><inherit access="public">std::binary_function&lt; Type &amp;, const Type &amp;, void &gt;</inherit><method-group name="public static functions">
+    </template><typedef name="first_argument_type"><type>Type &amp;</type></typedef>
+<typedef name="second_argument_type"><type>const Type &amp;</type></typedef>
+<typedef name="result_type"><type>void</type></typedef>
+<method-group name="public static functions">
 <method name="identity_element" specifiers="static"><type>Type</type></method>
 </method-group>
 </struct><struct name="inplace_identity"><template>
@@ -561,16 +560,16 @@
 </method-group>
 </struct-specialization><struct-specialization name="size_type_of"><template>
     </template><specialization><template-arg>boost::gregorian::date_duration</template-arg></specialization><typedef name="type"><type>boost::gregorian::date_duration</type></typedef>
-</struct-specialization><function name="operator++"><type>boost::gregorian::date</type><parameter name="x"><paramtype>boost::gregorian::date &amp;</paramtype></parameter></function>
+</struct-specialization>
+
+
+
+
+
+<function name="operator++"><type>boost::gregorian::date</type><parameter name="x"><paramtype>boost::gregorian::date &amp;</paramtype></parameter></function>
 <function name="operator--"><type>boost::gregorian::date</type><parameter name="x"><paramtype>boost::gregorian::date &amp;</paramtype></parameter></function>
 <function name="operator++"><type>boost::gregorian::date_duration</type><parameter name="x"><paramtype>boost::gregorian::date_duration &amp;</paramtype></parameter></function>
 <function name="operator--"><type>boost::gregorian::date_duration</type><parameter name="x"><paramtype>boost::gregorian::date_duration &amp;</paramtype></parameter></function>
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
@@ -1119,6 +1118,15 @@
 <method name="right_open" specifiers="static"><type><classname>interval_bounds</classname></type></method>
 <method name="closed" specifiers="static"><type><classname>interval_bounds</classname></type></method>
 </method-group>
+</class><class name="bounded_value"><template>
+      <template-type-parameter name="DomainT"/>
+    </template><typedef name="domain_type"><type>DomainT</type></typedef>
+<typedef name="type"><type><classname>bounded_value</classname>&lt; DomainT &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="value" cv="const"><type>domain_type</type></method>
+<method name="bound" cv="const"><type><classname>interval_bounds</classname></type></method>
+</method-group>
+<constructor><parameter name="value"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="bound"><paramtype><classname>interval_bounds</classname></paramtype></parameter></constructor>
 </class><typedef name="bound_type"><type>unsigned char</type></typedef>
 
 
@@ -1159,51 +1167,7 @@
 <header name="boost/icl/interval_map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="split_interval_map"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><inherit access="public">boost::icl::interval_base_map&lt; split_interval_map&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</inherit><purpose>implements a map as a map of intervals - on insertion overlapping intervals are split and associated values are combined. </purpose><method-group name="public member functions">
-<method name="ICL_INTERVAL_TYPE"><type>typedef</type><parameter name=""><paramtype>Interval</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter><parameter name=""><paramtype>Compare</paramtype></parameter></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="SubType"/>
-        </template><parameter name="src"><paramtype>const <classname>interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &amp;</paramtype></parameter><purpose>Assignment from a base <classname alt="boost::icl::interval_map">interval_map</classname>. </purpose></method>
-</method-group>
-<constructor><purpose>Default constructor for the empty object. </purpose></constructor>
-<constructor><parameter name="src"><paramtype>const <classname>split_interval_map</classname> &amp;</paramtype></parameter><purpose>Copy constructor. </purpose></constructor>
-<constructor specifiers="explicit"><parameter name="base_pair"><paramtype>const <classname>domain_mapping_type</classname> &amp;</paramtype></parameter></constructor>
-<constructor specifiers="explicit"><parameter name="value_pair"><paramtype>const value_type &amp;</paramtype></parameter></constructor>
-<copy-assignment><type><classname>split_interval_map</classname> &amp;</type><template>
-          <template-type-parameter name="SubType"/>
-        </template><parameter name="src"><paramtype>const <classname>interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &amp;</paramtype></parameter><purpose>Assignment operator for base type. </purpose></copy-assignment>
-<constructor><parameter name="src"><paramtype><classname>split_interval_map</classname> &amp;&amp;</paramtype></parameter><purpose>Move constructor. </purpose></constructor>
-<copy-assignment><type><classname>split_interval_map</classname> &amp;</type><parameter name="src"><paramtype><classname>split_interval_map</classname></paramtype></parameter><purpose>Move assignment operator. </purpose></copy-assignment>
-<method-group name="private member functions">
-<method name="handle_inserted" cv="const"><type>iterator</type><parameter name="it_"><paramtype>iterator</paramtype></parameter></method>
-<method name="handle_inserted" cv="const"><type>void</type><parameter name=""><paramtype>iterator</paramtype></parameter><parameter name=""><paramtype>iterator</paramtype></parameter></method>
-<method name="handle_left_combined"><type>void</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="it_"><paramtype>iterator</paramtype></parameter></method>
-<method name="handle_combined"><type>void</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="it_"><paramtype>iterator</paramtype></parameter></method>
-<method name="handle_preceeded_combined"><type>void</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="it_"><paramtype>iterator &amp;</paramtype></parameter></method>
-<method name="handle_succeeded_combined"><type>void</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="it_"><paramtype>iterator</paramtype></parameter><parameter name=""><paramtype>iterator</paramtype></parameter></method>
-<method name="handle_reinserted"><type>void</type><parameter name=""><paramtype>iterator</paramtype></parameter></method>
-<method name="gap_insert_at"><type>void</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="it_"><paramtype>iterator &amp;</paramtype></parameter><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="end_gap"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="co_val"><paramtype>const codomain_type &amp;</paramtype></parameter></method>
-</method-group>
-</class><class name="interval_map"><template>
+<class name="interval_map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"><default><classname alt="boost::icl::partial_absorber">icl::partial_absorber</classname></default></template-type-parameter>
@@ -1212,7 +1176,7 @@
       <template-nontype-parameter name="Section"><type>ICL_SECTION</type><default>ICL_SECTION_INSTANCE(<classname alt="boost::icl::inter_section">icl::inter_section</classname>, CodomainT)</default></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type><default>std::allocator</default></template-nontype-parameter>
-    </template><inherit access="public">boost::icl::interval_base_map&lt; interval_map&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</inherit><purpose>implements a map as a map of intervals - on insertion overlapping intervals are split and associated values are combined. </purpose><enum name="@0"><enumvalue name="fineness"><default>= 1</default></enumvalue></enum>
+    </template><inherit access="public">boost::icl::interval_base_map&lt; interval_map&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</inherit><purpose>implements a map as a map of intervals - on insertion overlapping intervals are split and associated values are combined. </purpose><enum name="@12"><enumvalue name="fineness"><default>= 1</default></enumvalue></enum>
 <typedef name="traits"><type>Traits</type></typedef>
 <typedef name="type"><type><classname>interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</type></typedef>
 <typedef name="split_type"><type><classname>split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</type></typedef>
@@ -1369,7 +1333,7 @@
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type><default>std::allocator</default></template-nontype-parameter>
-    </template><inherit access="public">boost::icl::interval_base_set&lt; interval_set&lt; DomainT, Compare, Interval, Alloc &gt;, DomainT, Compare, Interval, Alloc &gt;</inherit><purpose>Implements a set as a set of intervals - merging adjoining intervals. </purpose><enum name="@1"><enumvalue name="fineness"><default>= 1</default></enumvalue></enum>
+    </template><inherit access="public">boost::icl::interval_base_set&lt; interval_set&lt; DomainT, Compare, Interval, Alloc &gt;, DomainT, Compare, Interval, Alloc &gt;</inherit><purpose>Implements a set as a set of intervals - merging adjoining intervals. </purpose><enum name="@11"><enumvalue name="fineness"><default>= 1</default></enumvalue></enum>
 <typedef name="type"><type><classname>interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt;</type></typedef>
 <typedef name="base_type"><purpose>The base_type of this class. </purpose><type><classname>interval_base_set</classname>&lt; <classname>type</classname>, DomainT, Compare, Interval, Alloc &gt;</type></typedef>
 <typedef name="overloadable_type"><type><classname>type</classname></type></typedef>
@@ -1606,14 +1570,14 @@
 <header name="boost/icl/map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct name="partial_absorber"><enum name="@2"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
-<enum name="@3"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
-</struct><struct name="partial_enricher"><enum name="@4"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
-<enum name="@5"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
-</struct><struct name="total_absorber"><enum name="@6"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
-<enum name="@7"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
-</struct><struct name="total_enricher"><enum name="@8"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
-<enum name="@9"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
+<struct name="partial_absorber"><enum name="@3"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
+<enum name="@4"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
+</struct><struct name="partial_enricher"><enum name="@5"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
+<enum name="@6"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
+</struct><struct name="total_absorber"><enum name="@7"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
+<enum name="@8"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
+</struct><struct name="total_enricher"><enum name="@9"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
+<enum name="@10"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
 </struct><class name="map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
@@ -1971,16 +1935,16 @@
 </method-group>
 </struct-specialization><struct-specialization name="size_type_of"><template>
     </template><specialization><template-arg>boost::posix_time::time_duration</template-arg></specialization><typedef name="type"><type>boost::posix_time::time_duration</type></typedef>
-</struct-specialization>
-
-
-
-
-
-<function name="operator++"><type>boost::posix_time::ptime</type><parameter name="x"><paramtype>boost::posix_time::ptime &amp;</paramtype></parameter></function>
+</struct-specialization><function name="operator++"><type>boost::posix_time::ptime</type><parameter name="x"><paramtype>boost::posix_time::ptime &amp;</paramtype></parameter></function>
 <function name="operator--"><type>boost::posix_time::ptime</type><parameter name="x"><paramtype>boost::posix_time::ptime &amp;</paramtype></parameter></function>
 <function name="operator++"><type>boost::posix_time::time_duration</type><parameter name="x"><paramtype>boost::posix_time::time_duration &amp;</paramtype></parameter></function>
 <function name="operator--"><type>boost::posix_time::time_duration</type><parameter name="x"><paramtype>boost::posix_time::time_duration &amp;</paramtype></parameter></function>
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
@@ -2093,7 +2057,7 @@
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type><default>std::allocator</default></template-nontype-parameter>
-    </template><inherit access="public">boost::icl::interval_base_set&lt; separate_interval_set&lt; DomainT, Compare, Interval, Alloc &gt;, DomainT, Compare, Interval, Alloc &gt;</inherit><purpose>Implements a set as a set of intervals - leaving adjoining intervals separate. </purpose><enum name="@10"><enumvalue name="fineness"><default>= 2</default></enumvalue></enum>
+    </template><inherit access="public">boost::icl::interval_base_set&lt; separate_interval_set&lt; DomainT, Compare, Interval, Alloc &gt;, DomainT, Compare, Interval, Alloc &gt;</inherit><purpose>Implements a set as a set of intervals - leaving adjoining intervals separate. </purpose><enum name="@2"><enumvalue name="fineness"><default>= 2</default></enumvalue></enum>
 <typedef name="type"><type><classname>separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt;</type></typedef>
 <typedef name="base_type"><type><classname>interval_base_set</classname>&lt; <classname>type</classname>, DomainT, Compare, Interval, Alloc &gt;</type></typedef>
 <typedef name="overloadable_type"><type><classname>type</classname></type></typedef>
@@ -2191,7 +2155,70 @@
 <header name="boost/icl/split_interval_map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct-specialization name="is_map"><template>
+<class name="split_interval_map"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"><default><classname alt="boost::icl::partial_absorber">icl::partial_absorber</classname></default></template-type-parameter>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type><default>ICL_COMBINE_INSTANCE(<classname alt="boost::icl::inplace_plus">icl::inplace_plus</classname>, CodomainT)</default></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type><default>ICL_SECTION_INSTANCE(<classname alt="boost::icl::inter_section">icl::inter_section</classname>, CodomainT)</default></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type><default>std::allocator</default></template-nontype-parameter>
+    </template><inherit access="public">boost::icl::interval_base_map&lt; split_interval_map&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</inherit><purpose>implements a map as a map of intervals - on insertion overlapping intervals are split and associated values are combined. </purpose><enum name="@1"><enumvalue name="fineness"><default>= 3</default></enumvalue></enum>
+<typedef name="traits"><type>Traits</type></typedef>
+<typedef name="type"><type><classname>split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</type></typedef>
+<typedef name="joint_type"><type><classname>interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</type></typedef>
+<typedef name="overloadable_type"><type><classname>type</classname></type></typedef>
+<typedef name="base_type"><type><classname>interval_base_map</classname>&lt; <classname>type</classname>, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;</type></typedef>
+<typedef name="domain_type"><type>DomainT</type></typedef>
+<typedef name="codomain_type"><type>CodomainT</type></typedef>
+<typedef name="iterator"><type>base_type::iterator</type></typedef>
+<typedef name="value_type"><type>base_type::value_type</type></typedef>
+<typedef name="element_type"><type>base_type::element_type</type></typedef>
+<typedef name="segment_type"><type>base_type::segment_type</type></typedef>
+<typedef name="domain_mapping_type"><type>base_type::domain_mapping_type</type></typedef>
+<typedef name="interval_mapping_type"><type>base_type::interval_mapping_type</type></typedef>
+<typedef name="ImplMapT"><type>base_type::ImplMapT</type></typedef>
+<typedef name="codomain_combine"><type>base_type::codomain_combine</type></typedef>
+<typedef name="interval_set_type"><type><classname>interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt;</type></typedef>
+<typedef name="set_type"><type><classname>interval_set_type</classname></type></typedef>
+<typedef name="key_object_type"><type><classname>set_type</classname></type></typedef>
+<method-group name="public member functions">
+<method name="ICL_INTERVAL_TYPE"><type>typedef</type><parameter name=""><paramtype>Interval</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter><parameter name=""><paramtype>Compare</paramtype></parameter></method>
+<method name="assign"><type>void</type><template>
+          <template-type-parameter name="SubType"/>
+        </template><parameter name="src"><paramtype>const <classname>interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &amp;</paramtype></parameter><purpose>Assignment from a base <classname alt="boost::icl::interval_map">interval_map</classname>. </purpose></method>
+</method-group>
+<constructor><purpose>Default constructor for the empty object. </purpose></constructor>
+<constructor><parameter name="src"><paramtype>const <classname>split_interval_map</classname> &amp;</paramtype></parameter><purpose>Copy constructor. </purpose></constructor>
+<constructor specifiers="explicit"><parameter name="base_pair"><paramtype>const <classname>domain_mapping_type</classname> &amp;</paramtype></parameter></constructor>
+<constructor specifiers="explicit"><parameter name="value_pair"><paramtype>const value_type &amp;</paramtype></parameter></constructor>
+<copy-assignment><type><classname>split_interval_map</classname> &amp;</type><template>
+          <template-type-parameter name="SubType"/>
+        </template><parameter name="src"><paramtype>const <classname>interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &amp;</paramtype></parameter><purpose>Assignment operator for base type. </purpose></copy-assignment>
+<constructor><parameter name="src"><paramtype><classname>split_interval_map</classname> &amp;&amp;</paramtype></parameter><purpose>Move constructor. </purpose></constructor>
+<copy-assignment><type><classname>split_interval_map</classname> &amp;</type><parameter name="src"><paramtype><classname>split_interval_map</classname></paramtype></parameter><purpose>Move assignment operator. </purpose></copy-assignment>
+<method-group name="private member functions">
+<method name="handle_inserted" cv="const"><type>iterator</type><parameter name="it_"><paramtype>iterator</paramtype></parameter></method>
+<method name="handle_inserted" cv="const"><type>void</type><parameter name=""><paramtype>iterator</paramtype></parameter><parameter name=""><paramtype>iterator</paramtype></parameter></method>
+<method name="handle_left_combined"><type>void</type><template>
+          <template-type-parameter name="Combiner"/>
+        </template><parameter name="it_"><paramtype>iterator</paramtype></parameter></method>
+<method name="handle_combined"><type>void</type><template>
+          <template-type-parameter name="Combiner"/>
+        </template><parameter name="it_"><paramtype>iterator</paramtype></parameter></method>
+<method name="handle_preceeded_combined"><type>void</type><template>
+          <template-type-parameter name="Combiner"/>
+        </template><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="it_"><paramtype>iterator &amp;</paramtype></parameter></method>
+<method name="handle_succeeded_combined"><type>void</type><template>
+          <template-type-parameter name="Combiner"/>
+        </template><parameter name="it_"><paramtype>iterator</paramtype></parameter><parameter name=""><paramtype>iterator</paramtype></parameter></method>
+<method name="handle_reinserted"><type>void</type><parameter name=""><paramtype>iterator</paramtype></parameter></method>
+<method name="gap_insert_at"><type>void</type><template>
+          <template-type-parameter name="Combiner"/>
+        </template><parameter name="it_"><paramtype>iterator &amp;</paramtype></parameter><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="end_gap"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="co_val"><paramtype>const codomain_type &amp;</paramtype></parameter></method>
+</method-group>
+</class><struct-specialization name="is_map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"/>
@@ -2302,7 +2329,7 @@
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type><default>std::allocator</default></template-nontype-parameter>
-    </template><inherit access="public">boost::icl::interval_base_set&lt; split_interval_set&lt; DomainT, Compare, Interval, Alloc &gt;, DomainT, Compare, Interval, Alloc &gt;</inherit><purpose>implements a set as a set of intervals - on insertion overlapping intervals are split </purpose><enum name="@12"><enumvalue name="fineness"><default>= 3</default></enumvalue></enum>
+    </template><inherit access="public">boost::icl::interval_base_set&lt; split_interval_set&lt; DomainT, Compare, Interval, Alloc &gt;, DomainT, Compare, Interval, Alloc &gt;</inherit><purpose>implements a set as a set of intervals - on insertion overlapping intervals are split </purpose><enum name="@0"><enumvalue name="fineness"><default>= 3</default></enumvalue></enum>
 <typedef name="type"><type><classname>split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt;</type></typedef>
 <typedef name="base_type"><type><classname>interval_base_set</classname>&lt; <classname>type</classname>, DomainT, Compare, Interval, Alloc &gt;</type></typedef>
 <typedef name="joint_type"><type><classname>interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt;</type></typedef>

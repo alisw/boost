@@ -27,38 +27,37 @@
 <a name="boost_asio.overview.cpp2011.futures"></a><a class="link" href="futures.html" title="Futures">Futures</a>
 </h4></div></div></div>
 <p>
-          The <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">use_future</span></code> special value provides first-class
-          support for returning a C++11 <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">future</span></code>
-          from an asynchronous operation's initiating function.
+          The <code class="computeroutput">boost::asio::use_future</code> special value provides first-class
+          support for returning a C++11 <code class="computeroutput">std::future</code> from an asynchronous
+          operation's initiating function.
         </p>
 <p>
-          To use <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">use_future</span></code>, pass it to an asynchronous
+          To use <code class="computeroutput">boost::asio::use_future</code>, pass it to an asynchronous
           operation instead of a normal completion handler. For example:
         </p>
-<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">future</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span> <span class="identifier">length</span> <span class="special">=</span>
-  <span class="identifier">my_socket</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">my_buffer</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">use_future</span><span class="special">);</span>
+<pre class="programlisting">std::future&lt;std::size_t&gt; length =
+  my_socket.async_read_some(my_buffer, boost::asio::use_future);
 </pre>
 <p>
           Where a handler signature has the form:
         </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">,</span> <span class="identifier">result_type</span> <span class="identifier">result</span><span class="special">);</span>
+<pre class="programlisting">void handler(boost::system::error_code ec, result_type result);
 </pre>
 <p>
-          the initiating function returns a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">future</span></code>
-          templated on <code class="computeroutput"><span class="identifier">result_type</span></code>.
-          In the above example, this is <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span></code>.
-          If the asynchronous operation fails, the <code class="computeroutput"><span class="identifier">error_code</span></code>
-          is converted into a <code class="computeroutput"><span class="identifier">system_error</span></code>
-          exception and passed back to the caller through the future.
+          the initiating function returns a <code class="computeroutput">std::future</code> templated on
+          <code class="computeroutput">result_type</code>. In the above example, this is <code class="computeroutput">std::size_t</code>.
+          If the asynchronous operation fails, the <code class="computeroutput">error_code</code> is converted
+          into a <code class="computeroutput">system_error</code> exception and passed back to the caller
+          through the future.
         </p>
 <p>
           Where a handler signature has the form:
         </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void handler(boost::system::error_code ec);
 </pre>
 <p>
-          the initiating function returns <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">future</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span></code>. As above, an error is passed back
-          in the future as a <code class="computeroutput"><span class="identifier">system_error</span></code>
+          the initiating function returns <code class="computeroutput">std::future&lt;void&gt;</code>. As
+          above, an error is passed back in the future as a <code class="computeroutput">system_error</code>
           exception.
         </p>
 <p>

@@ -27,10 +27,11 @@
 <a name="boost_asio.reference.handler_type.type"></a><a class="link" href="type.html" title="handler_type::type">handler_type::type</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="idp144319008"></a> 
-The handler type for the specific signature.
+          <a class="indexterm" name="boost_asio.indexterm.handler_type.type"></a> 
+The handler type
+          for the specific signature.
         </p>
-<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">Handler</span> <span class="identifier">type</span><span class="special">;</span>
+<pre class="programlisting">typedef conditional&lt; is_same&lt; CompletionToken, typename decay&lt; CompletionToken &gt;::type &gt;::value, decay&lt; CompletionToken &gt;, handler_type&lt; typename decay&lt; CompletionToken &gt;::type, Signature &gt; &gt;::type::type type;
 </pre>
 <h6>
 <a name="boost_asio.reference.handler_type.type.h0"></a>

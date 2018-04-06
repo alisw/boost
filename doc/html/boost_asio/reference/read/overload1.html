@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>read (1 of 8 overloads)</title>
+<title>read (1 of 12 overloads)</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../read.html" title="read">
 <link rel="prev" href="../read.html" title="read">
-<link rel="next" href="overload2.html" title="read (2 of 8 overloads)">
+<link rel="next" href="overload2.html" title="read (2 of 12 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -24,17 +24,19 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="boost_asio.reference.read.overload1"></a><a class="link" href="overload1.html" title="read (1 of 8 overloads)">read (1 of 8 overloads)</a>
+<a name="boost_asio.reference.read.overload1"></a><a class="link" href="overload1.html" title="read (1 of 12 overloads)">read (1 of 12
+        overloads)</a>
 </h4></div></div></div>
 <p>
           Attempt to read a certain amount of data from a stream before returning.
         </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="../SyncReadStream.html" title="Buffer-oriented synchronous read stream requirements">SyncReadStream</a><span class="special">,</span>
-    <span class="keyword">typename</span> <a class="link" href="../MutableBufferSequence.html" title="Mutable buffer sequence requirements">MutableBufferSequence</a><span class="special">&gt;</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">read</span><span class="special">(</span>
-    <span class="identifier">SyncReadStream</span> <span class="special">&amp;</span> <span class="identifier">s</span><span class="special">,</span>
-    <span class="keyword">const</span> <span class="identifier">MutableBufferSequence</span> <span class="special">&amp;</span> <span class="identifier">buffers</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="../SyncReadStream.html" title="Buffer-oriented synchronous read stream requirements">SyncReadStream</a>,
+    typename <a class="link" href="../MutableBufferSequence.html" title="Mutable buffer sequence requirements">MutableBufferSequence</a>&gt;
+std::size_t read(
+    SyncReadStream &amp; s,
+    const MutableBufferSequence &amp; buffers,
+    typename enable_if&lt; is_mutable_buffer_sequence&lt; MutableBufferSequence &gt;::value &gt;::type *  = 0);
 </pre>
 <p>
           This function is used to read a certain number of bytes of data from a
@@ -99,12 +101,13 @@
           <span class="phrase"><a name="boost_asio.reference.read.overload1.example"></a></span><a class="link" href="overload1.html#boost_asio.reference.read.overload1.example">Example</a>
         </h6>
 <p>
-          To read into a single data buffer use the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput"><span class="identifier">buffer</span></code></a> function as follows:
+          To read into a single data buffer use the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput">buffer</code></a>
+          function as follows:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read</span><span class="special">(</span><span class="identifier">s</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">data</span><span class="special">,</span> <span class="identifier">size</span><span class="special">));</span>
+<pre class="programlisting">boost::asio::read(s, boost::asio::buffer(data, size));
 </pre>
 <p>
-          See the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput"><span class="identifier">buffer</span></code></a>
+          See the <a class="link" href="../buffer.html" title="buffer"><code class="computeroutput">buffer</code></a>
           documentation for information on reading into multiple buffers in one go,
           and how to use it with arrays, boost::array or std::vector.
         </p>
@@ -115,9 +118,9 @@
 <p>
           This overload is equivalent to calling:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read</span><span class="special">(</span>
-    <span class="identifier">s</span><span class="special">,</span> <span class="identifier">buffers</span><span class="special">,</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">transfer_all</span><span class="special">());</span>
+<pre class="programlisting">boost::asio::read(
+    s, buffers,
+    boost::asio::transfer_all());
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

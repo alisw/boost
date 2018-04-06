@@ -33,8 +33,8 @@
 <p>
             Get the local endpoint of the socket.
           </p>
-<pre class="programlisting"><span class="identifier">endpoint_type</span> <span class="identifier">local_endpoint</span><span class="special">(</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<pre class="programlisting">endpoint_type local_endpoint(
+    boost::system::error_code &amp; ec) const;
 </pre>
 <p>
             This function is used to obtain the locally bound endpoint of the socket.
@@ -65,14 +65,14 @@
 <a name="boost_asio.reference.basic_stream_socket.local_endpoint.overload2.h2"></a>
             <span class="phrase"><a name="boost_asio.reference.basic_stream_socket.local_endpoint.overload2.example"></a></span><a class="link" href="overload2.html#boost_asio.reference.basic_stream_socket.local_endpoint.overload2.example">Example</a>
           </h6>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">endpoint</span> <span class="identifier">endpoint</span> <span class="special">=</span> <span class="identifier">socket</span><span class="special">.</span><span class="identifier">local_endpoint</span><span class="special">(</span><span class="identifier">ec</span><span class="special">);</span>
-<span class="keyword">if</span> <span class="special">(</span><span class="identifier">ec</span><span class="special">)</span>
-<span class="special">{</span>
-  <span class="comment">// An error occurred.</span>
-<span class="special">}</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+...
+boost::system::error_code ec;
+boost::asio::ip::tcp::endpoint endpoint = socket.local_endpoint(ec);
+if (ec)
+{
+  // An error occurred.
+}
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

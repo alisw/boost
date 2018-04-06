@@ -689,7 +689,7 @@
 <p>
       The five traits classes mentioned in the previous sections form together the
       Point Concept. Any point type for which specializations are implemented in
-      the traits namespace should be accepted a as valid type. So the Point Concept
+      the traits namespace should be accepted as a valid type. So the Point Concept
       consists of:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -814,6 +814,26 @@
     </p>
 <h4>
 <a name="geometry.design.h9"></a>
+      <span class="phrase"><a name="geometry.design.axis_order"></a></span><a class="link" href="design.html#geometry.design.axis_order">Axis
+      Order</a>
+    </h4>
+<p>
+      This is an important note for users who develop GIS applications, require compliance
+      with OGC standards or use variety of coordinate reference systems (CRS).
+    </p>
+<p>
+      Boost.Geometry convention is that coordinate values of 2D tuple is always given
+      according to mathematical axis order: X,Y. Considering GIS applications, that
+      always means easting,northing or, in terms of geographic coordinate system:
+      longitude,latitude. Boost.Geometry does not allow or respect coordinate values
+      listed in the axis order as specified by coordinate reference system (CRS).
+    </p>
+<p>
+      In practice, users may easily adapt point types with alternate axis ordering
+      and specify coordinate access in order as expected by Boost.Geometry.
+    </p>
+<h4>
+<a name="geometry.design.h10"></a>
       <span class="phrase"><a name="geometry.design.summary"></a></span><a class="link" href="design.html#geometry.design.summary">Summary</a>
     </h4>
 <p>

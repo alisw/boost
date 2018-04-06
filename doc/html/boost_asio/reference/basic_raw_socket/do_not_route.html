@@ -30,11 +30,11 @@
           <span class="emphasis"><em>Inherited from socket_base.</em></span>
         </p>
 <p>
-          <a class="indexterm" name="idp101998000"></a> 
-Socket option to prevent routing, use local
-          interfaces only.
+          <a class="indexterm" name="boost_asio.indexterm.basic_raw_socket.do_not_route"></a> 
+Socket
+          option to prevent routing, use local interfaces only.
         </p>
-<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">implementation_defined</span> <span class="identifier">do_not_route</span><span class="special">;</span>
+<pre class="programlisting">typedef implementation_defined do_not_route;
 </pre>
 <p>
           Implements the SOL_SOCKET/SO_DONTROUTE socket option.
@@ -46,19 +46,19 @@ Socket option to prevent routing, use local
 <p>
           Setting the option:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">socket_base</span><span class="special">::</span><span class="identifier">do_not_route</span> <span class="identifier">option</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">set_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::ip::udp::socket socket(io_context);
+...
+boost::asio::socket_base::do_not_route option(true);
+socket.set_option(option);
 </pre>
 <p>
           Getting the current option value:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">udp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">socket_base</span><span class="special">::</span><span class="identifier">do_not_route</span> <span class="identifier">option</span><span class="special">;</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">get_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
-<span class="keyword">bool</span> <span class="identifier">is_set</span> <span class="special">=</span> <span class="identifier">option</span><span class="special">.</span><span class="identifier">value</span><span class="special">();</span>
+<pre class="programlisting">boost::asio::ip::udp::socket socket(io_context);
+...
+boost::asio::socket_base::do_not_route option;
+socket.get_option(option);
+bool is_set = option.value();
 </pre>
 <h6>
 <a name="boost_asio.reference.basic_raw_socket.do_not_route.h1"></a>

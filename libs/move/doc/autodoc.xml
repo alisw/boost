@@ -1,6 +1,18 @@
 <?xml version="1.0" standalone="yes"?>
 <library-reference><header name="boost/move/adl_move_swap.hpp">
 <namespace name="boost">
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="adl_move_swap"><type>void</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="x"><paramtype>T &amp;</paramtype></parameter><parameter name="y"><paramtype>T &amp;</paramtype></parameter><description><para>Exchanges the values of a and b, using Argument Dependent Lookup (ADL) to select a specialized swap function if available. If no specialized swap function is available, std::swap is used.</para><para><emphasis role="bold">Exception</emphasis>: If T uses Boost.Move's move emulation and the compiler has no rvalue references then:</para><para><itemizedlist>
@@ -16,18 +28,6 @@
           <template-type-parameter name="BidirIt1"/>
           <template-type-parameter name="BidirIt2"/>
         </template><parameter name="first1"><paramtype>BidirIt1</paramtype></parameter><parameter name="last1"><paramtype>BidirIt1</paramtype></parameter><parameter name="last2"><paramtype>BidirIt2</paramtype></parameter></function>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -67,6 +67,9 @@
 
 
 
+
+
+
 <function name="adaptive_merge"><type>void</type><template>
           <template-type-parameter name="RandIt"/>
           <template-type-parameter name="Compare"/>
@@ -75,7 +78,6 @@
 </para><para><emphasis role="bold">Parameters</emphasis>:<itemizedlist>
 <listitem><para>first: the beginning of the first sorted range.</para></listitem><listitem><para>middle: the end of the first sorted range and the beginning of the second</para></listitem><listitem><para>last: the end of the second sorted range</para></listitem><listitem><para>comp: comparison function object which returns true if the first argument is is ordered before the second.</para></listitem><listitem><para>uninitialized, uninitialized_len: raw storage starting on "uninitialized", able to hold "uninitialized_len" elements of type iterator_traits&lt;RandIt&gt;::value_type. Maximum performance is achieved when uninitialized_len is min(std::distance(first, middle), std::distance(middle, last)).</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Throws</emphasis>: If comp throws or the move constructor, move assignment or swap of the type of dereferenced RandIt throws.</para><para><emphasis role="bold">Complexity</emphasis>: Always K x O(N) comparisons and move assignments/constructors/swaps. Constant factor for comparisons and data movement is minimized when uninitialized_len is min(std::distance(first, middle), std::distance(middle, last)). Pretty good enough performance is achieved when uninitialized_len is ceil(sqrt(std::distance(first, last)))*2.</para><para><emphasis role="bold">Caution</emphasis>: Experimental implementation, not production-ready. </para></description></function>
-
 </namespace>
 
 
@@ -134,12 +136,171 @@
 
 <function name="adaptive_sort"><type>void</type><template>
           <template-type-parameter name="RandIt"/>
+          <template-type-parameter name="RandRawIt"/>
           <template-type-parameter name="Compare"/>
-        </template><parameter name="first"><paramtype>RandIt</paramtype></parameter><parameter name="last"><paramtype>RandIt</paramtype></parameter><parameter name="comp"><paramtype>Compare</paramtype></parameter><parameter name="uninitialized"><paramtype>typename iterator_traits&lt; RandIt &gt;::value_type *</paramtype><default>0</default></parameter><parameter name="uninitialized_len"><paramtype>std::size_t</paramtype><default>0</default></parameter><description><para><emphasis role="bold">Effects</emphasis>: Sorts the elements in the range [first, last) in ascending order according to comparison functor "comp". The sort is stable (order of equal elements is guaranteed to be preserved). Performance is improved if additional raw storage is provided.</para><para><emphasis role="bold">Requires</emphasis>:<itemizedlist>
+        </template><parameter name="first"><paramtype>RandIt</paramtype></parameter><parameter name="last"><paramtype>RandIt</paramtype></parameter><parameter name="comp"><paramtype>Compare</paramtype></parameter><parameter name="uninitialized"><paramtype>RandRawIt</paramtype></parameter><parameter name="uninitialized_len"><paramtype>std::size_t</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Sorts the elements in the range [first, last) in ascending order according to comparison functor "comp". The sort is stable (order of equal elements is guaranteed to be preserved). Performance is improved if additional raw storage is provided.</para><para><emphasis role="bold">Requires</emphasis>:<itemizedlist>
 <listitem><para>RandIt must meet the requirements of ValueSwappable and RandomAccessIterator.</para></listitem><listitem><para>The type of dereferenced RandIt must meet the requirements of MoveAssignable and MoveConstructible.</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Parameters</emphasis>:<itemizedlist>
 <listitem><para>first, last: the range of elements to sort</para></listitem><listitem><para>comp: comparison function object which returns true if the first argument is is ordered before the second.</para></listitem><listitem><para>uninitialized, uninitialized_len: raw storage starting on "uninitialized", able to hold "uninitialized_len" elements of type iterator_traits&lt;RandIt&gt;::value_type. Maximum performance is achieved when uninitialized_len is ceil(std::distance(first, last)/2).</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Throws</emphasis>: If comp throws or the move constructor, move assignment or swap of the type of dereferenced RandIt throws.</para><para><emphasis role="bold">Complexity</emphasis>: Always K x O(Nxlog(N)) comparisons and move assignments/constructors/swaps. Comparisons are close to minimum even with no additional memory. Constant factor for data movement is minimized when uninitialized_len is ceil(std::distance(first, last)/2). Pretty good enough performance is achieved when ceil(sqrt(std::distance(first, last)))*2.</para><para><emphasis role="bold">Caution</emphasis>: Experimental implementation, not production-ready. </para></description></function>
+<function name="adaptive_sort"><type>void</type><template>
+          <template-type-parameter name="RandIt"/>
+          <template-type-parameter name="Compare"/>
+        </template><parameter name="first"><paramtype>RandIt</paramtype></parameter><parameter name="last"><paramtype>RandIt</paramtype></parameter><parameter name="comp"><paramtype>Compare</paramtype></parameter></function>
+
+</namespace>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</namespace>
+</header>
+<header name="boost/move/algo/predicate.hpp">
+<namespace name="boost">
+<namespace name="movelib">
+<struct name="antistable"><template>
+      <template-type-parameter name="Comp"/>
+    </template><method-group name="public member functions">
+<method name="operator()"><type>bool</type><template>
+          <template-type-parameter name="U"/>
+          <template-type-parameter name="V"/>
+        </template><parameter name="u"><paramtype>const U &amp;</paramtype></parameter><parameter name="v"><paramtype>const V &amp;</paramtype></parameter></method>
+</method-group>
+<constructor specifiers="explicit"><parameter name="comp"><paramtype>Comp &amp;</paramtype></parameter></constructor>
+<method-group name="private member functions">
+</method-group>
+<copy-assignment><type>antistable &amp;</type><parameter name=""><paramtype>const antistable &amp;</paramtype></parameter></copy-assignment>
+</struct><class name="negate"><template>
+      <template-type-parameter name="Comp"/>
+    </template><method-group name="public member functions">
+<method name="operator()"><type>bool</type><template>
+          <template-type-parameter name="T1"/>
+          <template-type-parameter name="T2"/>
+        </template><parameter name="l"><paramtype>const T1 &amp;</paramtype></parameter><parameter name="r"><paramtype>const T2 &amp;</paramtype></parameter></method>
+</method-group>
+<constructor/>
+<constructor specifiers="explicit"><parameter name="comp"><paramtype>Comp</paramtype></parameter></constructor>
+</class><class name="inverse"><template>
+      <template-type-parameter name="Comp"/>
+    </template><method-group name="public member functions">
+<method name="operator()"><type>bool</type><template>
+          <template-type-parameter name="T1"/>
+          <template-type-parameter name="T2"/>
+        </template><parameter name="l"><paramtype>const T1 &amp;</paramtype></parameter><parameter name="r"><paramtype>const T2 &amp;</paramtype></parameter></method>
+</method-group>
+<constructor/>
+<constructor specifiers="explicit"><parameter name="comp"><paramtype>Comp</paramtype></parameter></constructor>
+</class>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</namespace>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</namespace>
+</header>
+<header name="boost/move/algo/unique.hpp">
+<namespace name="boost">
+<namespace name="movelib">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<function name="unique"><type>ForwardIterator</type><template>
+          <template-type-parameter name="ForwardIterator"/>
+          <template-type-parameter name="BinaryPredicate"/>
+        </template><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name="pred"><paramtype>BinaryPredicate</paramtype></parameter><description><para><emphasis role="bold">Requires</emphasis>: The comparison function shall be an equivalence relation. The type of *first shall satisfy the MoveAssignable requirements</para><para><emphasis role="bold">Effects</emphasis>: For a nonempty range, eliminates all but the first element from every consecutive group of equivalent elements referred to by the iterator i in the range [first + 1, last) for which the following conditions hold: pred(*(i - 1), *i) != false.</para><para><emphasis role="bold">Returns</emphasis>: The end of the resulting range.</para><para><emphasis role="bold">Complexity</emphasis>: For nonempty ranges, exactly (last - first) - 1 applications of the corresponding predicate. </para></description></function>
+
+
+
 </namespace>
 
 
@@ -166,6 +327,11 @@
 
 
 
+
+
+
+
+
 <function name="uninitialized_copy_or_move"><type>F</type><template>
           <template-type-parameter name="I"/>
           <template-type-parameter name="F"/>
@@ -187,11 +353,6 @@
         </template><parameter name="f"><paramtype>I</paramtype></parameter><parameter name="l"><paramtype>I</paramtype></parameter><parameter name="r"><paramtype>F</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: <programlisting language="c++">for (; first != last; ++result, ++first)
    *result = *first;
 </programlisting></para><para><emphasis role="bold">Returns</emphasis>: result</para><para><emphasis role="bold">Note</emphasis>: This function is provided because <emphasis>std::uninitialized_copy</emphasis> from some STL implementations is not compatible with <emphasis><classname alt="boost::move_iterator">move_iterator</classname></emphasis> </para></description></function>
-
-
-
-
-
 
 
 
@@ -269,6 +430,8 @@
 <listitem><para>If T is not an array type and U* is implicitly convertible to T*.</para></listitem><listitem><para>If T is an array type and U* is a more CV qualified pointer to remove_extent&lt;T&gt;::type. </para></listitem></itemizedlist>
 </para></description></copy-assignment>
 </struct>
+
+
 
 
 
@@ -402,9 +565,6 @@
 
 
 
-
-
-
 <function name="make_move_iterator"><type><classname>move_iterator</classname>&lt; It &gt;</type><template>
           <template-type-parameter name="It"/>
         </template><parameter name="it"><paramtype>const It &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns</emphasis>: move_iterator&lt;It&gt;(i). </para></description></function>
@@ -424,11 +584,33 @@
 
 
 
+
+
+
 </namespace>
 </header>
 <header name="boost/move/make_unique.hpp">
 <para>Defines "make_unique" functions, which are factories to create instances of unique_ptr depending on the passed arguments.</para><para>This header can be a bit heavyweight in C++03 compilers due to the use of the preprocessor library, that's why it's a a separate header from <computeroutput>unique_ptr.hpp</computeroutput> </para><namespace name="boost">
 <namespace name="movelib">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="make_unique"><type><classname>unique_ptr</classname>&lt; T &gt;</type><template>
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
@@ -471,23 +653,6 @@
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
         </template><parameter name="..."><paramtype>Args &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Remarks</emphasis>: This function shall not participate in overload resolution unless T is an array of known bound. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -657,19 +822,7 @@
 <listitem><para><computeroutput>unique_ptr&lt;U, E&gt;::pointer</computeroutput> is implicitly convertible to pointer and</para></listitem><listitem><para>U is not an array type.</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Effects</emphasis>: Transfers ownership from u to *this as if by calling <computeroutput>reset(u.release())</computeroutput> followed by <computeroutput>get_deleter() = std::forward&lt;E&gt;(u.get_deleter())</computeroutput>.</para><para><emphasis role="bold">Returns</emphasis>: *this. </para></description></copy-assignment>
 <copy-assignment cv="noexcept"><type><classname>unique_ptr</classname> &amp;</type><parameter name=""><paramtype>std::nullptr_t</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: <computeroutput>reset()</computeroutput>.</para><para><emphasis role="bold">Postcondition</emphasis>: <computeroutput>get() == nullptr</computeroutput></para><para><emphasis role="bold">Returns</emphasis>: *this. </para></description></copy-assignment>
-</class>
-
-
-
-
-
-
-
-
-
-
-
-<function name="swap"><type>void</type><template>
+</class><function name="swap"><type>void</type><template>
           <template-type-parameter name="T"/>
           <template-type-parameter name="D"/>
         </template><parameter name="x"><paramtype><classname>unique_ptr</classname>&lt; T, D &gt; &amp;</paramtype></parameter><parameter name="y"><paramtype><classname>unique_ptr</classname>&lt; T, D &gt; &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Calls <computeroutput>x.swap(y)</computeroutput>. </para></description></function>
@@ -759,6 +912,20 @@
         </template><parameter name=""><paramtype>std::nullptr_t</paramtype></parameter><parameter name="x"><paramtype>const <classname>unique_ptr</classname>&lt; T, D &gt; &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns</emphasis>: <computeroutput>!(nullptr &lt; x)</computeroutput>. </para></description></function>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 
 
@@ -785,17 +952,17 @@
 
 
 
-
-
-
-
-
-
-
-
 <function name="move_if_noexcept"><type>rvalue_reference_or_const_lvalue_reference</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name=""><paramtype>input_reference</paramtype></parameter><description><para>This function provides a way to convert a reference into a rvalue reference in compilers with rvalue references. For other compilers converts T &amp; into <emphasis>::boost::rv&lt;T&gt; &amp;</emphasis> so that move emulation is activated. Reference would be converted to rvalue reference only if input type is nothrow move constructible or if it has no copy constructor. In all other cases const reference would be returned </para></description></function>
+
+
+
+
+
+
+
+
 
 
 
@@ -809,19 +976,7 @@
 <struct name="enable_move_utility_emulation"><template>
       <template-type-parameter name="T"/>
     </template><description><para>This trait's internal boolean <computeroutput>value</computeroutput> is false in compilers with rvalue references and true in compilers without rvalue references.</para><para>A user can specialize this trait for a type T to false to SFINAE out <computeroutput>move</computeroutput> and <computeroutput>forward</computeroutput> so that the user can define a different move emulation for that type in namespace boost (e.g. another Boost library for its types) and avoid any overload ambiguity. </para></description><data-member name="value" specifiers="static"><type>const bool</type></data-member>
-</struct>
-
-
-
-
-
-
-
-
-
-
-
-<function name="move"><type>rvalue_reference</type><template>
+</struct><function name="move"><type>rvalue_reference</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name=""><paramtype>input_reference</paramtype></parameter><description><para>This function provides a way to convert a reference into a rvalue reference in compilers with rvalue references. For other compilers if <computeroutput>T</computeroutput> is Boost.Move enabled type then it converts <computeroutput>T&amp;</computeroutput> into <computeroutput>::boost::rv&lt;T&gt; &amp;</computeroutput> so that move emulation is activated, else it returns <computeroutput>T &amp;</computeroutput>. </para></description></function>
 <function name="forward"><type>output_reference</type><template>
@@ -832,6 +987,18 @@
 <function name="move_if_not_lvalue_reference"><type>output_reference</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name=""><paramtype>input_reference</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Calls <computeroutput>boost::move</computeroutput> if <computeroutput>input_reference</computeroutput> is not a lvalue reference. Otherwise returns the reference </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

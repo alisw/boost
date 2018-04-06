@@ -15,7 +15,126 @@
 <constructor><parameter name="val"><paramtype>const value_type &amp;</paramtype></parameter></constructor>
 <constructor><parameter name="source"><paramtype>const this_type &amp;</paramtype></parameter></constructor>
 <copy-assignment><type>this_type &amp;</type><parameter name="source"><paramtype>const this_type &amp;</paramtype></parameter></copy-assignment>
-</class><function name="operator+"><type><classname>absolute</classname>&lt; Y &gt;</type><template>
+</class>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<function name="operator+"><type><classname>absolute</classname>&lt; Y &gt;</type><template>
           <template-type-parameter name="Y"/>
         </template><parameter name="aval"><paramtype>const <classname>absolute</classname>&lt; Y &gt; &amp;</paramtype></parameter><parameter name="rval"><paramtype>const Y &amp;</paramtype></parameter><purpose>add a relative value to an absolute one </purpose></function>
 <function name="operator+"><type><classname>absolute</classname>&lt; Y &gt;</type><template>
@@ -42,125 +161,6 @@
           <template-type-parameter name="Traits"/>
           <template-type-parameter name="Y"/>
         </template><parameter name="os"><paramtype>std::basic_ostream&lt; Char, Traits &gt; &amp;</paramtype></parameter><parameter name="aval"><paramtype>const <classname>absolute</classname>&lt; Y &gt; &amp;</paramtype></parameter><purpose>Print an absolute unit. </purpose></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 <macro name="BOOST_UNITS_DEFINE_CONVERSION_OFFSET" kind="functionlike"><macro-parameter name="From"/><macro-parameter name="To"/><macro-parameter name="type_"/><macro-parameter name="value_"/><description><para>Macro to define the offset between two absolute units. Requires the value to be in the destination units e.g <programlisting language="c++">BOOST_UNITS_DEFINE_CONVERSION_OFFSET(celsius_base_unit, fahrenheit_base_unit, double, 32.0);
@@ -458,6 +458,70 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="isfinite"><type>bool</type><template>
           <template-type-parameter name="Unit"/>
           <template-type-parameter name="Y"/>
@@ -655,70 +719,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
@@ -803,25 +803,25 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="conversion_factor"><type><emphasis>unspecified</emphasis></type><template>
           <template-type-parameter name="FromUnit"/>
           <template-type-parameter name="ToUnit"/>
         </template><parameter name=""><paramtype>const FromUnit &amp;</paramtype></parameter><parameter name=""><paramtype>const ToUnit &amp;</paramtype></parameter><purpose>Find the conversion factor between two units. </purpose></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1186,14 +1186,6 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
     </template><description><para>Reduce dimension list to cardinal form. This algorithm collapses duplicate base dimension tags and sorts the resulting list by the tag ordinal value. Dimension lists that resolve to the same dimension are guaranteed to be represented by an identical type.</para><para>The argument should be an MPL forward sequence containing instances of the <computeroutput>dim</computeroutput> template.</para><para>The result is also an MPL forward sequence. It also supports the following metafunctions to allow use as a dimension.</para><para><itemizedlist>
 <listitem><para><computeroutput>mpl::plus</computeroutput> is defined only on two equal dimensions and returns the argument unchanged.</para></listitem><listitem><para><computeroutput>mpl::minus</computeroutput> is defined only for two equal dimensions and returns the argument unchanged.</para></listitem><listitem><para><computeroutput>mpl::negate</computeroutput> will return its argument unchanged.</para></listitem><listitem><para><computeroutput>mpl::times</computeroutput> is defined for any dimensions and adds corresponding exponents.</para></listitem><listitem><para><computeroutput>mpl::divides</computeroutput> is defined for any dimensions and subtracts the exponents of the right had argument from the corresponding exponents of the left had argument. Missing base dimension tags are assumed to have an exponent of zero.</para></listitem><listitem><para><computeroutput><classname alt="boost::units::static_power">static_power</classname></computeroutput> takes a dimension and a <classname alt="boost::units::static_rational">static_rational</classname> and multiplies all the exponents of the dimension by the <classname alt="boost::units::static_rational">static_rational</classname>.</para></listitem><listitem><para><computeroutput><classname alt="boost::units::static_root">static_root</classname></computeroutput> takes a dimension and a <classname alt="boost::units::static_rational">static_rational</classname> and divides all the exponents of the dimension by the <classname alt="boost::units::static_rational">static_rational</classname>. </para></listitem></itemizedlist>
 </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct><struct name="static_power"><template>
-      <template-type-parameter name="DL"/>
-      <template-type-parameter name="Ex"/>
-    </template><purpose>Raise a dimension list to a scalar power. </purpose><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct><struct name="static_root"><template>
-      <template-type-parameter name="DL"/>
-      <template-type-parameter name="Rt"/>
-    </template><purpose>Take a scalar root of a dimension list. </purpose><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
 </struct>
 
 
@@ -2024,9 +2016,7 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 <namespace name="mpl">
 </namespace>
 <namespace name="units">
-<struct name="heterogeneous_system"><template>
-      <template-type-parameter name="T"/>
-    </template><inherit access="public">T</inherit><description><para>A system that can represent any possible combination of units at the expense of not preserving information about how it was created. Do not create specializations of this template directly. Instead use <computeroutput><classname alt="boost::units::reduce_unit">reduce_unit</classname></computeroutput> and <computeroutput>base_unit&lt;...&gt;::unit_type</computeroutput>. </para></description></struct>
+
 
 
 
@@ -2160,7 +2150,13 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 <namespace name="units">
 <struct name="homogeneous_system"><template>
       <template-type-parameter name="L"/>
-    </template><description><para>A system that can uniquely represent any unit which can be composed from a linearly independent set of base units. It is safe to rebind a unit with such a system to different dimensions.</para><para>Do not construct this template directly. Use <classname alt="boost::units::make_system">make_system</classname> instead. </para></description></struct>
+    </template><description><para>A system that can uniquely represent any unit which can be composed from a linearly independent set of base units. It is safe to rebind a unit with such a system to different dimensions.</para><para>Do not construct this template directly. Use <classname alt="boost::units::make_system">make_system</classname> instead. </para></description></struct><struct name="static_power"><template>
+      <template-type-parameter name="T"/>
+      <template-type-parameter name="E"/>
+    </template><purpose>Raise a dimension list to a scalar power. </purpose></struct><struct name="static_root"><template>
+      <template-type-parameter name="T"/>
+      <template-type-parameter name="R"/>
+    </template><purpose>Take a scalar root of a dimension list. </purpose></struct>
 
 
 
@@ -2304,24 +2300,8 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
         </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="q"><paramtype><classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &amp;</paramtype></parameter><parameter name="int"><paramtype>const unsigned</paramtype></parameter><purpose>Boost Serialization library support for quantities. </purpose></function>
 </namespace>
 <namespace name="units">
-<struct name="base_unit_info"><template>
-      <template-type-parameter name="BaseUnit"/>
-    </template><purpose>traits template for unit names. </purpose><method-group name="public static functions">
-<method name="name" specifiers="static"><type>std::string</type><purpose>The full name of the unit (returns BaseUnit::name() by default) </purpose></method>
-<method name="symbol" specifiers="static"><type>std::string</type><purpose>The symbol for the base unit (Returns BaseUnit::symbol() by default) </purpose><description><para>
-</para></description><returns><para>BaseUnit::symbol(), for example "m" </para></returns></method>
-</method-group>
-</struct><enum name="format_mode"><enumvalue name="symbol_fmt"><default>= 0</default></enumvalue><enumvalue name="name_fmt"><default>= 1</default><purpose>default - reduces unit names to known symbols for both base and derived units. </purpose></enumvalue><enumvalue name="raw_fmt"><default>= 2</default><purpose>output full unit names for base and derived units, for example "meter". </purpose></enumvalue><enumvalue name="typename_fmt"><default>= 3</default><purpose>output only symbols for base units (but not derived units), for example "m". </purpose></enumvalue><enumvalue name="fmt_mask"><default>= 3</default><purpose>output demangled typenames (useful only for diagnosis). </purpose></enumvalue><purpose>format of output of units, for example "m" or "meter". </purpose></enum>
+<enum name="format_mode"><enumvalue name="symbol_fmt"><default>= 0</default></enumvalue><enumvalue name="name_fmt"><default>= 1</default><purpose>default - reduces unit names to known symbols for both base and derived units. </purpose></enumvalue><enumvalue name="raw_fmt"><default>= 2</default><purpose>output full unit names for base and derived units, for example "meter". </purpose></enumvalue><enumvalue name="typename_fmt"><default>= 3</default><purpose>output only symbols for base units (but not derived units), for example "m". </purpose></enumvalue><enumvalue name="fmt_mask"><default>= 3</default><purpose>output demangled typenames (useful only for diagnosis). </purpose></enumvalue><purpose>format of output of units, for example "m" or "meter". </purpose></enum>
 <enum name="autoprefix_mode"><enumvalue name="autoprefix_none"><default>= 0</default></enumvalue><enumvalue name="autoprefix_engineering"><default>= 4</default><purpose>No automatic prefix. </purpose></enumvalue><enumvalue name="autoprefix_binary"><default>= 8</default><purpose>Scale and prefix with 10^3 multiples, 1234.5 m output as 1.2345 km. </purpose></enumvalue><enumvalue name="autoprefix_mask"><default>= 12</default><purpose>Scale and prefix with 2^10 (1024) multiples, 1024 as 1 kb. </purpose></enumvalue><purpose>automatic scaling and prefix (controlled by value of quantity) a, if any, </purpose></enum>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2428,6 +2408,15 @@ for @c typename_format  outputs the typename itself (currently demangled only on
           <template-type-parameter name="Unit"/>
           <template-type-parameter name="T"/>
         </template><parameter name="os"><paramtype>std::basic_ostream&lt; Char, Traits &gt; &amp;</paramtype></parameter><parameter name="q"><paramtype>const <classname>quantity</classname>&lt; Unit, T &gt; &amp;</paramtype></parameter><purpose>Print a <computeroutput>quantity</computeroutput>. </purpose><description><para>Prints the value followed by the unit. If the engineering_prefix, or binary_prefix is set, tries to scale the value appropriately. For example, it might print 12.345 km instead of 12345 m. (Note does <emphasis role="bold">not</emphasis> attempt to automatically scale scalars like double, float...) </para></description></function>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4238,44 +4227,6 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="operator*"><type>const <classname>multiply_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt;, boost::lambda::lambda_functor&lt; Arg &gt; &gt;::type</type><template>
           <template-type-parameter name="System"/>
           <template-type-parameter name="Dim"/>
@@ -4306,6 +4257,44 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
           <template-type-parameter name="Dim"/>
           <template-type-parameter name="Arg"/>
         </template><parameter name="a"><paramtype>const <classname>boost::units::absolute</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt; &amp;</paramtype></parameter><parameter name="b"><paramtype>const boost::lambda::lambda_functor&lt; Arg &gt; &amp;</paramtype></parameter><description><para>Disambiguating overload for action absolute&lt;unit&lt;Dim, System&gt; &gt; * lambda_functor&lt;Arg&gt; based on &lt;boost/lambda/detail/operators.hpp&gt;. </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4899,54 +4888,6 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="pow"><type><classname>power_typeof_helper</classname>&lt; Y, Rat &gt;::type</type><template>
           <template-type-parameter name="Rat"/>
           <template-type-parameter name="Y"/>
@@ -4963,6 +4904,54 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
           <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
           <template-type-parameter name="Y"/>
         </template><parameter name="x"><paramtype>const Y &amp;</paramtype></parameter><purpose>take the integer root of a value. </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5155,84 +5144,6 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="quantity_cast"><type>X</type><template>
           <template-type-parameter name="X"/>
           <template-type-parameter name="Y"/>
@@ -5362,6 +5273,84 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
           <template-type-parameter name="X"/>
           <template-type-parameter name="Y"/>
         </template><parameter name="val1"><paramtype>const <classname>quantity</classname>&lt; Unit, X &gt; &amp;</paramtype></parameter><parameter name="val2"><paramtype>const <classname>quantity</classname>&lt; Unit, Y &gt; &amp;</paramtype></parameter><purpose>runtime operator&gt;= </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5514,14 +5503,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <header name="boost/units/scale.hpp">
 <para>10^3 Engineering &amp; 2^10 binary scaling factors for autoprefixing. </para><namespace name="boost">
 <namespace name="units">
-<struct name="scaled_base_unit"><template>
-      <template-type-parameter name="S"/>
-      <template-type-parameter name="Scale"/>
-    </template><method-group name="public static functions">
-<method name="symbol" specifiers="static"><type>std::string</type></method>
-<method name="name" specifiers="static"><type>std::string</type></method>
-</method-group>
-</struct><struct name="scale"><template>
+<struct name="scale"><template>
       <template-nontype-parameter name="Base"><type>long</type></template-nontype-parameter>
       <template-type-parameter name="Exponent"/>
     </template><description><para>class representing a scaling factor such as 10^3 The exponent must be a static rational. </para></description><typedef name="exponent"><type>Exponent</type></typedef>
@@ -5531,112 +5513,6 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <method name="value" specifiers="static"><type>value_type</type></method>
 </method-group>
 </struct>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5662,13 +5538,141 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
 <header name="boost/units/scaled_base_unit.hpp">
 <namespace name="boost">
 <namespace name="units">
-
+<struct name="heterogeneous_system"><template>
+      <template-type-parameter name="T"/>
+    </template><inherit access="public">T</inherit><description><para>A system that can represent any possible combination of units at the expense of not preserving information about how it was created. Do not create specializations of this template directly. Instead use <computeroutput><classname alt="boost::units::reduce_unit">reduce_unit</classname></computeroutput> and <computeroutput>base_unit&lt;...&gt;::unit_type</computeroutput>. </para></description></struct><struct name="base_unit_info"><template>
+      <template-type-parameter name="T"/>
+    </template><purpose>traits template for unit names. </purpose><method-group name="public static functions">
+<method name="name" specifiers="static"><type>std::string</type><purpose>The full name of the unit (returns BaseUnit::name() by default) </purpose></method>
+<method name="symbol" specifiers="static"><type>std::string</type><purpose>The symbol for the base unit (Returns BaseUnit::symbol() by default) </purpose><description><para>
+</para></description><returns><para>BaseUnit::symbol(), for example "m" </para></returns></method>
+</method-group>
+</struct><struct name="scaled_base_unit"><template>
+      <template-type-parameter name="S"/>
+      <template-type-parameter name="Scale"/>
+    </template><typedef name="type"><type><classname>scaled_base_unit</classname></type></typedef>
+<typedef name="tag"><type><classname>scaled_base_unit_tag</classname></type></typedef>
+<typedef name="system_type"><type>S</type></typedef>
+<typedef name="scale_type"><type>Scale</type></typedef>
+<typedef name="dimension_type"><type>S::dimension_type</type></typedef>
+<typedef name="unit_type"><type><emphasis>unspecified</emphasis></type></typedef>
+<method-group name="public static functions">
+<method name="symbol" specifiers="static"><type>std::string</type></method>
+<method name="name" specifiers="static"><type>std::string</type></method>
+</method-group>
+</struct>
 
 
 
@@ -5833,120 +5837,120 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="value"><type><classname>divide_typeof_helper</classname>&lt; T, T &gt;::type</type><template>
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="N"><type>integer_type</type></template-nontype-parameter>
           <template-nontype-parameter name="D"><type>integer_type</type></template-nontype-parameter>
         </template><parameter name=""><paramtype>const <classname>static_rational</classname>&lt; N, D &gt; &amp;</paramtype></parameter><purpose>get decimal value of <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput> </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5996,125 +6000,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <method-group name="public static functions">
 <method name="value" specifiers="static"><type>type</type><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter></method>
 </method-group>
-</struct-specialization>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<function name="operator+"><type><classname>unary_plus_typeof_helper</classname>&lt; <classname>unit</classname>&lt; Dim, System &gt; &gt;::type</type><template>
+</struct-specialization><function name="operator+"><type><classname>unary_plus_typeof_helper</classname>&lt; <classname>unit</classname>&lt; Dim, System &gt; &gt;::type</type><template>
           <template-type-parameter name="Dim"/>
           <template-type-parameter name="System"/>
         </template><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter><purpose>unit runtime unary plus </purpose></function>
@@ -6158,6 +6044,124 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
           <template-type-parameter name="System1"/>
           <template-type-parameter name="System2"/>
         </template><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim1, System1 &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim2, System2 &gt; &amp;</paramtype></parameter><purpose>unit runtime <computeroutput>operator!=</computeroutput> </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>

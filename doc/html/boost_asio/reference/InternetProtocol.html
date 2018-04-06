@@ -28,18 +28,17 @@
       requirements</a>
 </h3></div></div></div>
 <p>
-        An internet protocol must meet the requirements for a <a class="link" href="Protocol.html" title="Protocol requirements">protocol</a>
+        A type <code class="computeroutput">X</code> meets the <code class="computeroutput">InternetProtocol</code> requirements
+        if it satisfies the requirements of <a class="link" href="AcceptableProtocol.html" title="Acceptable protocol requirements"><code class="computeroutput">AcceptableProtocol</code></a>,
         as well as the additional requirements listed below.
       </p>
 <p>
-        In the table below, <code class="computeroutput"><span class="identifier">X</span></code> denotes
-        an internet protocol class, <code class="computeroutput"><span class="identifier">a</span></code>
-        denotes a value of type <code class="computeroutput"><span class="identifier">X</span></code>,
-        and <code class="computeroutput"><span class="identifier">b</span></code> denotes a value of
-        type <code class="computeroutput"><span class="identifier">X</span></code>.
+        In the table below, <code class="computeroutput">a</code> denotes a (possibly const) value of type
+        <code class="computeroutput">X</code>, and <code class="computeroutput">b</code> denotes a (possibly const) value of type
+        <code class="computeroutput">X</code>.
       </p>
 <div class="table">
-<a name="boost_asio.reference.InternetProtocol.t0"></a><p class="title"><b>Table&#160;15.&#160;InternetProtocol requirements</b></p>
+<a name="boost_asio.reference.InternetProtocol.t0"></a><p class="title"><b>Table&#160;18.&#160;InternetProtocol requirements</b></p>
 <div class="table-contents"><table class="table" summary="InternetProtocol requirements">
 <colgroup>
 <col>
@@ -67,12 +66,12 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">resolver</span></code>
+                  <code class="computeroutput">X::resolver</code>
                 </p>
               </td>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver</span><span class="special">&lt;</span><span class="identifier">X</span><span class="special">&gt;</span></code>
+                  <code class="computeroutput">ip::basic_resolver&lt;X&gt;</code>
                 </p>
               </td>
 <td>
@@ -84,12 +83,12 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">v4</span><span class="special">()</span></code>
+                  <code class="computeroutput">X::v4()</code>
                 </p>
               </td>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span></code>
+                  <code class="computeroutput">X</code>
                 </p>
               </td>
 <td>
@@ -101,12 +100,12 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span><span class="special">::</span><span class="identifier">v6</span><span class="special">()</span></code>
+                  <code class="computeroutput">X::v6()</code>
                 </p>
               </td>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">X</span></code>
+                  <code class="computeroutput">X</code>
                 </p>
               </td>
 <td>
@@ -118,37 +117,35 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">a</span> <span class="special">==</span>
-                  <span class="identifier">b</span></code>
+                  <code class="computeroutput">a == b</code>
                 </p>
               </td>
 <td>
                 <p>
-                  convertible to <code class="computeroutput"><span class="keyword">bool</span></code>
+                  convertible to <code class="computeroutput">bool</code>
                 </p>
               </td>
 <td>
                 <p>
-                  Returns whether two protocol objects are equal.
+                  Returns <code class="computeroutput">true</code> if <code class="computeroutput">a</code> and <code class="computeroutput">b</code>
+                  represent the same IP protocol version, otherwise <code class="computeroutput">false</code>.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">a</span> <span class="special">!=</span>
-                  <span class="identifier">b</span></code>
+                  <code class="computeroutput">a != b</code>
                 </p>
               </td>
 <td>
                 <p>
-                  convertible to <code class="computeroutput"><span class="keyword">bool</span></code>
+                  convertible to <code class="computeroutput">bool</code>
                 </p>
               </td>
 <td>
                 <p>
-                  Returns <code class="computeroutput"><span class="special">!(</span><span class="identifier">a</span>
-                  <span class="special">==</span> <span class="identifier">b</span><span class="special">)</span></code>.
+                  Returns <code class="computeroutput">!(a == b)</code>.
                 </p>
               </td>
 </tr>

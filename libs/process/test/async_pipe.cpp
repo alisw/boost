@@ -9,6 +9,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include <iostream>
 #include <thread>
+#include <vector>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <boost/process/async_pipe.hpp>
@@ -24,7 +25,7 @@ namespace asio = boost::asio;
 
 BOOST_AUTO_TEST_CASE(plain_async, *boost::unit_test::timeout(5))
 {
-    asio::io_service ios;
+    asio::io_context ios;
     bp::async_pipe pipe{ios};
 
     std::string st = "test-string\n";
@@ -47,7 +48,7 @@ BOOST_AUTO_TEST_CASE(plain_async, *boost::unit_test::timeout(5))
 
 BOOST_AUTO_TEST_CASE(closed_transform)
 {
-    asio::io_service ios;
+    asio::io_context ios;
 
     bp::async_pipe ap{ios};
 
@@ -63,3 +64,22 @@ BOOST_AUTO_TEST_CASE(closed_transform)
 
 }
 
+BOOST_AUTO_TEST_CASE(multithreaded_async_pipe)
+{
+    asio::io_context ioc;
+
+    std::vector<std::thread> threads;
+    for (int i = 0; i < std::thread::hardware_concurrency(); i++)
+    {
+        threads.emplace_back([&ioc]
+        {
+            std::vector<bp::async_pipe*> pipes;
+            for (size_t i = 0; i < 100; i++)
+                pipes.push_back(new bp::async_pipe(ioc));
+            for (auto &p : pipes)
+                delete p;
+        });
+    }
+    for (auto &t : threads)
+        t.join();
+}

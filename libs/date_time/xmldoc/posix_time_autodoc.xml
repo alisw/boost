@@ -2,6 +2,48 @@
 <library-reference id="posix_time_reference"><title>Posix Time Reference</title><header name="boost/date_time/posix_time/conversion.hpp">
 <namespace name="boost">
 <namespace name="posix_time">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="from_time_t"><type><classname>ptime</classname></type><parameter name="t"><paramtype>std::time_t</paramtype></parameter><purpose>Function that converts a time_t into a ptime. </purpose></function>
 <function name="to_time_t"><type>std::time_t</type><parameter name="pt"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Function that converts a ptime into a time_t. </purpose></function>
 <function name="to_tm"><type>std::tm</type><parameter name="t"><paramtype>const <classname>boost::posix_time::ptime</classname> &amp;</paramtype></parameter><purpose>Convert a time to a tm structure truncating any fractional seconds. </purpose></function>
@@ -10,56 +52,42 @@
 <function name="from_ftime"><type>TimeT</type><template>
           <template-type-parameter name="TimeT"/>
           <template-type-parameter name="FileTimeT"/>
-        </template><parameter name="ft"><paramtype>const FileTimeT &amp;</paramtype></parameter><purpose>Function to create a time object from an initialized FILETIME struct. </purpose><description><para>Function to create a time object from an initialized FILETIME struct. A FILETIME struct holds 100-nanosecond units (0.0000001). When built with microsecond resolution the FILETIME's sub second value will be truncated. Nanosecond resolution has no truncation.</para><para><note><para>FILETIME is part of the Win32 API, so it is not portable to non-windows platforms.</para><para>The function is templated on the FILETIME type, so that it can be used with both native FILETIME and the ad-hoc boost::date_time::winapi::file_time type. </para></note>
+        </template><parameter name="ft"><paramtype>const FileTimeT &amp;</paramtype></parameter><purpose>Function to create a time object from an initialized FILETIME struct. </purpose><description><para>Function to create a time object from an initialized FILETIME struct. A FILETIME struct holds 100-nanosecond units (0.0000001). When built with microsecond resolution the FILETIME's sub second value will be truncated. Nanosecond resolution has no truncation.</para><para><note><para>FILETIME is part of the Win32 API, so it is not portable to non-windows platforms.</para><para>The function is templated on the FILETIME type, so that it can be used with both native FILETIME and the ad-hoc boost::detail::winapi::FILETIME_ type. </para></note>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
 <header name="boost/date_time/posix_time/date_duration_operators.hpp">
 <para>Operators for ptime and optional gregorian types. Operators use snap-to-end-of-month behavior. Further details on this behavior can be found in reference for date_time/date_duration_types.hpp and documentation for month and year iterators. </para><namespace name="boost">
 <namespace name="posix_time">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -74,34 +102,6 @@
 <function name="operator+="><type><classname>ptime</classname></type><parameter name="t"><paramtype><classname>ptime</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const boost::gregorian::years &amp;</paramtype></parameter><description><para>Adds a years object to a ptime. Result will be same month and day-of-month as ptime unless original day was the last day of month. see date_time::years_duration for more details </para></description></function>
 <function name="operator-"><type><classname>ptime</classname></type><parameter name="t"><paramtype>const <classname>ptime</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const boost::gregorian::years &amp;</paramtype></parameter><description><para>Subtracts a years object and a ptime. Result will be same month and day-of-month as ptime unless original day was the last day of month. see date_time::years_duration for more details </para></description></function>
 <function name="operator-="><type><classname>ptime</classname></type><parameter name="t"><paramtype><classname>ptime</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const boost::gregorian::years &amp;</paramtype></parameter><description><para>Subtracts a years object from a ptime. Result will be same month and day-of-month as ptime unless original day was the last day of month. see date_time::years_duration for more details </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -304,6 +304,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; CharT, TraitsT &gt; &amp;</type><template>
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="TraitsT"/>
@@ -342,26 +356,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
 <header name="boost/date_time/posix_time/posix_time_legacy_io.hpp">
 <namespace name="boost">
 <namespace name="posix_time">
+
+
 
 
 
@@ -403,8 +405,6 @@
 <function name="operator&gt;&gt;"><type>std::basic_istream&lt; charT &gt; &amp;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; charT &gt; &amp;</paramtype></parameter><parameter name="tp"><paramtype>time_period &amp;</paramtype></parameter><description><para>operator&gt;&gt; for time_period. time_period must be in "[date time_duration/date time_duration]" format. </para></description></function>
-
-
 
 
 
@@ -621,52 +621,52 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="to_simple_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter></function>
-<function name="to_simple_string"><type>std::string</type><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter><purpose>Time duration to string -hh::mm::ss.fffffff. Example: 10:09:03.0123456. </purpose></function>
 <function name="to_iso_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter></function>
-<function name="to_iso_string"><type>std::string</type><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter><purpose>Time duration in iso format -hhmmss,fffffff Example: 10:09:03,0123456. </purpose></function>
 <function name="to_simple_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Time to simple format CCYY-mmm-dd hh:mm:ss.fffffff. </purpose></function>
-<function name="to_simple_string"><type>std::string</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Time to simple format CCYY-mmm-dd hh:mm:ss.fffffff. </purpose></function>
 <function name="to_simple_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="tp"><paramtype>time_period</paramtype></parameter></function>
-<function name="to_simple_string"><type>std::string</type><parameter name="tp"><paramtype>time_period</paramtype></parameter><purpose>Convert to string of form [YYYY-mmm-DD HH:MM::SS.ffffff/YYYY-mmm-DD HH:MM::SS.fffffff]. </purpose></function>
 <function name="to_iso_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter></function>
-<function name="to_iso_string"><type>std::string</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Convert iso short form YYYYMMDDTHHMMSS where T is the date-time separator. </purpose></function>
 <function name="to_iso_extended_string_type"><type>std::basic_string&lt; charT &gt;</type><template>
           <template-type-parameter name="charT"/>
         </template><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter></function>
-<function name="to_iso_extended_string"><type>std::string</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Convert to form YYYY-MM-DDTHH:MM:SS where T is the date-time separator. </purpose></function>
 <function name="to_simple_wstring"><type>std::wstring</type><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter><purpose>Time duration to wstring -hh::mm::ss.fffffff. Example: 10:09:03.0123456. </purpose></function>
 <function name="to_iso_wstring"><type>std::wstring</type><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter><purpose>Time duration in iso format -hhmmss,fffffff Example: 10:09:03,0123456. </purpose></function>
 <function name="to_simple_wstring"><type>std::wstring</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter></function>
 <function name="to_simple_wstring"><type>std::wstring</type><parameter name="tp"><paramtype>time_period</paramtype></parameter><purpose>Convert to wstring of form [YYYY-mmm-DD HH:MM::SS.ffffff/YYYY-mmm-DD HH:MM::SS.fffffff]. </purpose></function>
 <function name="to_iso_wstring"><type>std::wstring</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Convert iso short form YYYYMMDDTHHMMSS where T is the date-time separator. </purpose></function>
 <function name="to_iso_extended_wstring"><type>std::wstring</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Convert to form YYYY-MM-DDTHH:MM:SS where T is the date-time separator. </purpose></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -681,12 +681,12 @@
 
 
 
-
-
-
-
-
-
+<function name="to_simple_string"><type>std::string</type><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter><purpose>Time duration to string -hh::mm::ss.fffffff. Example: 10:09:03.0123456. </purpose></function>
+<function name="to_iso_string"><type>std::string</type><parameter name="td"><paramtype><classname>time_duration</classname></paramtype></parameter><purpose>Time duration in iso format -hhmmss,fffffff Example: 10:09:03,0123456. </purpose></function>
+<function name="to_simple_string"><type>std::string</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Time to simple format CCYY-mmm-dd hh:mm:ss.fffffff. </purpose></function>
+<function name="to_simple_string"><type>std::string</type><parameter name="tp"><paramtype>time_period</paramtype></parameter><purpose>Convert to string of form [YYYY-mmm-DD HH:MM::SS.ffffff/YYYY-mmm-DD HH:MM::SS.fffffff]. </purpose></function>
+<function name="to_iso_string"><type>std::string</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Convert iso short form YYYYMMDDTHHMMSS where T is the date-time separator. </purpose></function>
+<function name="to_iso_extended_string"><type>std::string</type><parameter name="t"><paramtype><classname>ptime</classname></paramtype></parameter><purpose>Convert to form YYYY-MM-DDTHH:MM:SS where T is the date-time separator. </purpose></function>
 
 
 
@@ -731,54 +731,54 @@
 <header name="boost/date_time/posix_time/time_parsers.hpp">
 <namespace name="boost">
 <namespace name="posix_time">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="duration_from_string"><type><classname>time_duration</classname></type><parameter name="s"><paramtype>const std::string &amp;</paramtype></parameter><purpose>Creates a <classname alt="boost::posix_time::time_duration">time_duration</classname> object from a delimited string. </purpose><description><para>Expected format for string is "[-]h[h][:mm][:ss][.fff]". A negative duration will be created if the first character in string is a '-', all other '-' will be treated as delimiters. Accepted delimiters are "-:,.". </para></description></function>
 <function name="time_from_string"><type><classname>ptime</classname></type><parameter name="s"><paramtype>const std::string &amp;</paramtype></parameter></function>
 <function name="from_iso_string"><type><classname>ptime</classname></type><parameter name="s"><paramtype>const std::string &amp;</paramtype></parameter></function>
 <function name="from_iso_extended_string"><type><classname>ptime</classname></type><parameter name="s"><paramtype>const std::string &amp;</paramtype></parameter></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>

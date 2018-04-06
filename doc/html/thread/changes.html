@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../thread.html" title="Chapter&#160;38.&#160;Thread 4.7.2">
+<link rel="up" href="../thread.html" title="Chapter&#160;39.&#160;Thread 4.8.0">
 <link rel="prev" href="build.html" title="Using and building the library">
 <link rel="next" href="future.html" title="Future">
 </head>
@@ -29,6 +29,134 @@
 </h2></div></div></div>
 <h4>
 <a name="thread.changes.h0"></a>
+      <span class="phrase"><a name="thread.changes.version_4_8_0___boost_1_66"></a></span><a class="link" href="changes.html#thread.changes.version_4_8_0___boost_1_66">Version
+      4.8.0 - boost 1.66</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Know Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/3926" target="_top">#3926</a>
+          thread_specific_ptr + dlopen library causes a SIGSEGV.
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/10964" target="_top">#10964</a>
+          future&lt;future&lt;T&gt;&gt;::unwrap().then() Deadlocks
+        </li>
+</ul></div>
+<p>
+      Please take a look at <a href="https://svn.boost.org/trac/boost/query?status=assigned&amp;status=new&amp;status=reopened&amp;component=thread&amp;type=!Feature+Requests&amp;col=id&amp;col=summary&amp;order=id" target="_top">thread
+      Know Bugs</a> to see the current state.
+    </p>
+<p>
+      Please take a look at <a href="http://www.boost.org/development/tests/master/developer/thread.html" target="_top">thread
+      master regression test</a> to see the last regression test snapshot.
+    </p>
+<p>
+      <span class="bold"><strong>Fixed Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/12976" target="_top">#12976</a>
+          Boost Thread Executors documentation mistakes
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/12949" target="_top">#12949</a>
+          using sleep_for in a thread context without including boost/thread/thread.hpp
+          yields incorrect behaviour when BOOST_THREAD_HAS_CONDATTR_SET_CLOCK_MONOTONIC
+          is defined
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/13019" target="_top">#13019</a>
+          ABI compatibility for BOOST_THREAD_PROVIDES_INTERRUPTIONS incomplete
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/13163" target="_top">#13163</a>
+          boost::detail::heap_new does not have a variadic variant
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>New Experimental Features:</strong></span>
+    </p>
+<h4>
+<a name="thread.changes.h1"></a>
+      <span class="phrase"><a name="thread.changes.version_4_7_5___boost_1_65_1"></a></span><a class="link" href="changes.html#thread.changes.version_4_7_5___boost_1_65_1">Version
+      4.7.5 - boost 1.65.1</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Fixed Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          <a href="https://github.com/boostorg/thread/issues/130" target="_top">#130</a>
+          windows: Bug in boost::condition_variable on Windows
+        </li></ul></div>
+<h4>
+<a name="thread.changes.h2"></a>
+      <span class="phrase"><a name="thread.changes.version_4_7_4___boost_1_65"></a></span><a class="link" href="changes.html#thread.changes.version_4_7_4___boost_1_65">Version
+      4.7.4 - boost 1.65</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Fixed Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/6787" target="_top">#6787</a>
+          boost::thread::sleep() hangs if system time is rolled back
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/12519" target="_top">#12519</a>
+          boost::thread::try_join_for does not return after timeout
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/12874" target="_top">#12874</a>
+          future&lt;&gt; extension constructor must be under BOOST_THREAD_PROVIDES_FUTURE_UNWRAP
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/12888" target="_top">#12888</a>
+          Linking with boost thread does not work on mingw/gcc 4.4
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/12958" target="_top">#12958</a>
+          sync_bounded_queue::wait_pull_front( lve ) might throw
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/13077" target="_top">#13077</a>
+          Linking to static 64bit libboost_thread fails DLL initialization
+        </li>
+<li class="listitem">
+          <a href="http://svn.boost.org/trac/boost/ticket/13155" target="_top">#13155</a>
+          log doesn't build on a system with pthreads
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/thread/issues/121" target="_top">#121</a>
+          on_tls_prepare is broken under VS2017
+        </li>
+</ul></div>
+<h4>
+<a name="thread.changes.h3"></a>
+      <span class="phrase"><a name="thread.changes.version_4_7_3___boost_1_64"></a></span><a class="link" href="changes.html#thread.changes.version_4_7_3___boost_1_64">Version
+      4.7.3 - boost 1.64</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Fixed Bugs:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="https://github.com/boostorg/thread/issues/113" target="_top">#113</a>
+          Add a Thread template on all the scoped thread and thread guard classes
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/thread/issues/117" target="_top">#117</a>
+          loop_executor should block on it's work_queue instead of polling
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/thread/issues/119" target="_top">#119</a>
+          basic_condition_variable::relocker::~relocker can throw an exception
+        </li>
+</ul></div>
+<h4>
+<a name="thread.changes.h4"></a>
       <span class="phrase"><a name="thread.changes.version_4_7_2___boost_1_63"></a></span><a class="link" href="changes.html#thread.changes.version_4_7_2___boost_1_63">Version
       4.7.2 - boost 1.63</a>
     </h4>
@@ -50,7 +178,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h1"></a>
+<a name="thread.changes.h5"></a>
       <span class="phrase"><a name="thread.changes.version_4_7_1___boost_1_62"></a></span><a class="link" href="changes.html#thread.changes.version_4_7_1___boost_1_62">Version
       4.7.1 - boost 1.62</a>
     </h4>
@@ -71,7 +199,7 @@
     </p>
 <p>
       Please take a look at <a href="http://www.boost.org/development/tests/master/developer/thread.html" target="_top">thread
-      trunk regression test</a> to see the last regression test snapshot.
+      master regression test</a> to see the last regression test snapshot.
     </p>
 <p>
       <span class="bold"><strong>Fixed Bugs:</strong></span>
@@ -155,7 +283,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h2"></a>
+<a name="thread.changes.h6"></a>
       <span class="phrase"><a name="thread.changes.version_4_7_0___boost_1_61"></a></span><a class="link" href="changes.html#thread.changes.version_4_7_0___boost_1_61">Version
       4.7.0 - boost 1.61</a>
     </h4>
@@ -225,7 +353,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h3"></a>
+<a name="thread.changes.h7"></a>
       <span class="phrase"><a name="thread.changes.version_4_6_0___boost_1_60"></a></span><a class="link" href="changes.html#thread.changes.version_4_6_0___boost_1_60">Version
       4.6.0 - boost 1.60</a>
     </h4>
@@ -430,7 +558,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h4"></a>
+<a name="thread.changes.h8"></a>
       <span class="phrase"><a name="thread.changes.version_4_5_0___boost_1_58"></a></span><a class="link" href="changes.html#thread.changes.version_4_5_0___boost_1_58">Version
       4.5.0 - boost 1.58</a>
     </h4>
@@ -578,7 +706,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h5"></a>
+<a name="thread.changes.h9"></a>
       <span class="phrase"><a name="thread.changes.version_4_4_0___boost_1_57"></a></span><a class="link" href="changes.html#thread.changes.version_4_4_0___boost_1_57">Version
       4.4.0 - boost 1.57</a>
     </h4>
@@ -786,7 +914,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h6"></a>
+<a name="thread.changes.h10"></a>
       <span class="phrase"><a name="thread.changes.version_4_3_0___boost_1_56"></a></span><a class="link" href="changes.html#thread.changes.version_4_3_0___boost_1_56">Version
       4.3.0 - boost 1.56</a>
     </h4>
@@ -958,7 +1086,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h7"></a>
+<a name="thread.changes.h11"></a>
       <span class="phrase"><a name="thread.changes.version_4_2_0___boost_1_55"></a></span><a class="link" href="changes.html#thread.changes.version_4_2_0___boost_1_55">Version
       4.2.0 - boost 1.55</a>
     </h4>
@@ -1126,7 +1254,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h8"></a>
+<a name="thread.changes.h12"></a>
       <span class="phrase"><a name="thread.changes.version_4_1_0___boost_1_54"></a></span><a class="link" href="changes.html#thread.changes.version_4_1_0___boost_1_54">Version
       4.1.0 - boost 1.54</a>
     </h4>
@@ -1287,7 +1415,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h9"></a>
+<a name="thread.changes.h13"></a>
       <span class="phrase"><a name="thread.changes.version_4_0_0___boost_1_53"></a></span><a class="link" href="changes.html#thread.changes.version_4_0_0___boost_1_53">Version
       4.0.0 - boost 1.53</a>
     </h4>
@@ -1484,7 +1612,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h10"></a>
+<a name="thread.changes.h14"></a>
       <span class="phrase"><a name="thread.changes.version_3_1_0___boost_1_52"></a></span><a class="link" href="changes.html#thread.changes.version_3_1_0___boost_1_52">Version
       3.1.0 - boost 1.52</a>
     </h4>
@@ -1649,7 +1777,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h11"></a>
+<a name="thread.changes.h15"></a>
       <span class="phrase"><a name="thread.changes.version_3_0_1___boost_1_51"></a></span><a class="link" href="changes.html#thread.changes.version_3_0_1___boost_1_51">Version
       3.0.1 - boost 1.51</a>
     </h4>
@@ -1740,7 +1868,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h12"></a>
+<a name="thread.changes.h16"></a>
       <span class="phrase"><a name="thread.changes.version_3_0_0___boost_1_50"></a></span><a class="link" href="changes.html#thread.changes.version_3_0_0___boost_1_50">Version
       3.0.0 - boost 1.50</a>
     </h4>
@@ -1953,7 +2081,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h13"></a>
+<a name="thread.changes.h17"></a>
       <span class="phrase"><a name="thread.changes.version_2_1_1___boost_1_49"></a></span><a class="link" href="changes.html#thread.changes.version_2_1_1___boost_1_49">Version
       2.1.1 - boost 1.49</a>
     </h4>
@@ -2051,7 +2179,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h14"></a>
+<a name="thread.changes.h18"></a>
       <span class="phrase"><a name="thread.changes.version_2_1_0___changes_since_boost_1_40"></a></span><a class="link" href="changes.html#thread.changes.version_2_1_0___changes_since_boost_1_40">Version 2.1.0
       - Changes since boost 1.40</a>
     </h4>
@@ -2060,7 +2188,7 @@
       a few minor changes.
     </p>
 <h4>
-<a name="thread.changes.h15"></a>
+<a name="thread.changes.h19"></a>
       <span class="phrase"><a name="thread.changes.changes_since_boost_1_35"></a></span><a class="link" href="changes.html#thread.changes.changes_since_boost_1_35">Changes
       since boost 1.35</a>
     </h4>
@@ -2097,7 +2225,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h16"></a>
+<a name="thread.changes.h20"></a>
       <span class="phrase"><a name="thread.changes.version_2_0_0___changes_since_boost_1_34"></a></span><a class="link" href="changes.html#thread.changes.version_2_0_0___changes_since_boost_1_34">Version 2.0.0
       - Changes since boost 1.34</a>
     </h4>
@@ -2108,7 +2236,7 @@
       with the old code. The new features and breaking changes are described below.
     </p>
 <h4>
-<a name="thread.changes.h17"></a>
+<a name="thread.changes.h21"></a>
       <span class="phrase"><a name="thread.changes.new_features"></a></span><a class="link" href="changes.html#thread.changes.new_features">New
       Features</a>
     </h4>
@@ -2151,7 +2279,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="thread.changes.h18"></a>
+<a name="thread.changes.h22"></a>
       <span class="phrase"><a name="thread.changes.breaking_changes"></a></span><a class="link" href="changes.html#thread.changes.breaking_changes">Breaking
       Changes</a>
     </h4>
@@ -2219,7 +2347,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -16 Vicente J. Botet Escriba<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007 -11 Anthony Williams<br>Copyright &#169; 2011 -17 Vicente J. Botet Escriba<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

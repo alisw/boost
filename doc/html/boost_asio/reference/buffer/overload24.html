@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>buffer (24 of 28 overloads)</title>
+<title>buffer (24 of 32 overloads)</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../buffer.html" title="buffer">
-<link rel="prev" href="overload23.html" title="buffer (23 of 28 overloads)">
-<link rel="next" href="overload25.html" title="buffer (25 of 28 overloads)">
+<link rel="prev" href="overload23.html" title="buffer (23 of 32 overloads)">
+<link rel="next" href="overload25.html" title="buffer (25 of 32 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -24,30 +24,30 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="boost_asio.reference.buffer.overload24"></a><a class="link" href="overload24.html" title="buffer (24 of 28 overloads)">buffer (24
-        of 28 overloads)</a>
+<a name="boost_asio.reference.buffer.overload24"></a><a class="link" href="overload24.html" title="buffer (24 of 32 overloads)">buffer (24
+        of 32 overloads)</a>
 </h4></div></div></div>
 <p>
           Create a new modifiable buffer that represents the given POD vector.
         </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <span class="identifier">PodType</span><span class="special">,</span>
-    <span class="keyword">typename</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
-<span class="identifier">mutable_buffers_1</span> <span class="identifier">buffer</span><span class="special">(</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">PodType</span><span class="special">,</span> <span class="identifier">Allocator</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <span class="identifier">data</span><span class="special">,</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">max_size_in_bytes</span><span class="special">);</span>
+<pre class="programlisting">template&lt;
+    typename PodType,
+    typename Allocator&gt;
+mutable_buffer buffer(
+    std::vector&lt; PodType, Allocator &gt; &amp; data,
+    std::size_t max_size_in_bytes);
 </pre>
 <h6>
 <a name="boost_asio.reference.buffer.overload24.h0"></a>
           <span class="phrase"><a name="boost_asio.reference.buffer.overload24.return_value"></a></span><a class="link" href="overload24.html#boost_asio.reference.buffer.overload24.return_value">Return Value</a>
         </h6>
 <p>
-          A <a class="link" href="../mutable_buffers_1.html" title="mutable_buffers_1"><code class="computeroutput"><span class="identifier">mutable_buffers_1</span></code></a> value equivalent
-          to:
+          A <a class="link" href="../mutable_buffer.html" title="mutable_buffer"><code class="computeroutput">mutable_buffer</code></a>
+          value equivalent to:
         </p>
-<pre class="programlisting"><span class="identifier">mutable_buffers_1</span><span class="special">(</span>
-    <span class="identifier">data</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">?</span> <span class="special">&amp;</span><span class="identifier">data</span><span class="special">[</span><span class="number">0</span><span class="special">]</span> <span class="special">:</span> <span class="number">0</span><span class="special">,</span>
-    <span class="identifier">min</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">*</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">PodType</span><span class="special">),</span> <span class="identifier">max_size_in_bytes</span><span class="special">));</span>
+<pre class="programlisting">mutable_buffer(
+    data.size() ? &amp;data[0] : 0,
+    min(data.size() * sizeof(PodType), max_size_in_bytes));
 </pre>
 <h6>
 <a name="boost_asio.reference.buffer.overload24.h1"></a>

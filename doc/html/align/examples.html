@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../align.html" title="Chapter&#160;4.&#160;Boost.Align">
+<link rel="up" href="../align.html" title="Chapter&#160;3.&#160;Boost.Align">
 <link rel="prev" href="rationale.html" title="Rationale">
 <link rel="next" href="reference.html" title="Reference">
 </head>
@@ -79,27 +79,15 @@
       use the <code class="computeroutput"><span class="identifier">aligned_allocator_adaptor</span></code>
       class template:
     </p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-          <code class="computeroutput"><span class="identifier">Allocator</span><span class="special">&lt;</span><span class="identifier">int128_t</span><span class="special">&gt;</span>
-          <span class="identifier">first</span><span class="special">;</span></code>
-        </li>
-<li class="listitem">
-          <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">alignment</span><span class="special">::</span><span class="identifier">aligned_allocator_adaptor</span><span class="special">&lt;</span><span class="identifier">Allocator</span><span class="special">&lt;</span><span class="identifier">int128_t</span><span class="special">&gt;</span>
-          <span class="special">&gt;</span> <span class="identifier">second</span><span class="special">(</span><span class="identifier">first</span><span class="special">);</span></code>
-        </li>
-</ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">alignment</span><span class="special">::</span><span class="identifier">aligned_allocator_adaptor</span><span class="special">&lt;</span><span class="identifier">First</span><span class="special">&gt;</span> <span class="identifier">second</span><span class="special">(</span><span class="identifier">first</span><span class="special">);</span></code>
+        </li></ol></div>
 <p>
       This template allows specifying minimum alignment for all dynamic allocations:
     </p>
-<div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
-          <code class="computeroutput"><span class="identifier">Allocator</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">first</span><span class="special">;</span></code>
-        </li>
-<li class="listitem">
-          <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">alignment</span><span class="special">::</span><span class="identifier">aligned_allocator_adaptor</span><span class="special">&lt;</span><span class="identifier">Allocator</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;,</span> <span class="number">64</span><span class="special">&gt;</span> <span class="identifier">second</span><span class="special">(</span><span class="identifier">first</span><span class="special">);</span></code>
-        </li>
-</ol></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">alignment</span><span class="special">::</span><span class="identifier">aligned_allocator_adaptor</span><span class="special">&lt;</span><span class="identifier">First</span><span class="special">,</span> <span class="number">64</span><span class="special">&gt;</span> <span class="identifier">second</span><span class="special">(</span><span class="identifier">first</span><span class="special">);</span></code>
+        </li></ol></div>
 <h4>
 <a name="align.examples.h3"></a>
       <span class="phrase"><a name="align.examples.aligned_deleter"></a></span><a class="link" href="examples.html#align.examples.aligned_deleter">Aligned

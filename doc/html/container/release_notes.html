@@ -6,9 +6,9 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../container.html" title="Chapter&#160;10.&#160;Boost.Container">
+<link rel="up" href="../container.html" title="Chapter&#160;9.&#160;Boost.Container">
 <link rel="prev" href="acknowledgements_notes.html" title="Acknowledgements, notes and links">
-<link rel="next" href="../conversion.html" title="Chapter&#160;11.&#160;The Conversion Library 1.6">
+<link rel="next" href="../conversion.html" title="Chapter&#160;10.&#160;The Conversion Library 1.6">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -28,6 +28,10 @@
 <a name="container.release_notes"></a><a class="link" href="release_notes.html" title="Release Notes">Release Notes</a>
 </h2></div></div></div>
 <div class="toc"><dl class="toc">
+<dt><span class="section"><a href="release_notes.html#container.release_notes.release_notes_boost_1_66_00">Boost
+      1.66 Release</a></span></dt>
+<dt><span class="section"><a href="release_notes.html#container.release_notes.release_notes_boost_1_65_00">Boost
+      1.65 Release</a></span></dt>
 <dt><span class="section"><a href="release_notes.html#container.release_notes.release_notes_boost_1_64_00">Boost
       1.64 Release</a></span></dt>
 <dt><span class="section"><a href="release_notes.html#container.release_notes.release_notes_boost_1_63_00">Boost
@@ -63,6 +67,77 @@
 <dt><span class="section"><a href="release_notes.html#container.release_notes.release_notes_boost_1_48_00">Boost
       1.48 Release</a></span></dt>
 </dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.release_notes.release_notes_boost_1_66_00"></a><a class="link" href="release_notes.html#container.release_notes.release_notes_boost_1_66_00" title="Boost 1.66 Release">Boost
+      1.66 Release</a>
+</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <span class="emphasis"><em>flat_[multi</em></span>map/set] can now work as container adaptors,
+            as proposed in <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0429r1.pdf" target="_top">P0429R1</a>.
+            The allocator argument is checked for <span class="emphasis"><em>size()</em></span> and
+            <span class="emphasis"><em>empty()</em></span> members. If so, the argument is interpreted
+            as the required underlying container. This means that <span class="emphasis"><em>static_vector</em></span>,
+            <span class="emphasis"><em>stable_vector</em></span> and <span class="emphasis"><em>small_vector</em></span>
+            can be used now with flat associative containers.
+          </li>
+<li class="listitem">
+            Fixed bugs:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/pull/54" target="_top">GitHub
+                  #54: <span class="emphasis"><em>"no sbrk() in VxWorks, configure dlmalloc to
+                  use only mmap"</em></span></a>.
+                </li>
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/issues/58" target="_top">GitHub
+                  #58: <span class="emphasis"><em>"Comparing strings does not compile in gcc
+                  7+ in C++17 mode"</em></span></a>.
+                </li>
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/issues/59" target="_top">GitHub
+                  #59: <span class="emphasis"><em>"basic_string::npos is missing its definition"</em></span></a>.
+                </li>
+</ul></div>
+          </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.release_notes.release_notes_boost_1_65_00"></a><a class="link" href="release_notes.html#container.release_notes.release_notes_boost_1_65_00" title="Boost 1.65 Release">Boost
+      1.65 Release</a>
+</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            Implemented <code class="computeroutput"><span class="identifier">extract_sequence</span></code>,
+            <code class="computeroutput"><span class="identifier">adopt_sequence</span></code> functions
+            for flat_[multi]map/set associative containers.
+          </li>
+<li class="listitem">
+            Fixed bugs:
+            <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/pull/48" target="_top">GitHub
+                  #48: <span class="emphasis"><em>"Replace deprecated/removed C++98 binders"</em></span></a>.
+                </li>
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/pull/49" target="_top">GitHub
+                  #49: <span class="emphasis"><em>"Remove useless allocator copy in map"</em></span></a>.
+                </li>
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/pull/50" target="_top">GitHub
+                  #50: <span class="emphasis"><em>"Fixed bug Trac #13038"</em></span></a>.
+                </li>
+<li class="listitem">
+                  <a href="https://github.com/boostorg/container/pull/51" target="_top">GitHub
+                  #51: <span class="emphasis"><em>"Fix integer rollover that triggers clang ubsan
+                  when U is unsigned"</em></span></a>.
+                </li>
+</ul></div>
+          </li>
+</ul></div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="container.release_notes.release_notes_boost_1_64_00"></a><a class="link" href="release_notes.html#container.release_notes.release_notes_boost_1_64_00" title="Boost 1.64 Release">Boost
@@ -128,9 +203,6 @@
 </ul></div>
           </li></ul></div>
 </div>
-<p>
-      https://svn.boost.org/trac/boost/ticket/12577#comment:1
-    </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="container.release_notes.release_notes_boost_1_62_00"></a><a class="link" href="release_notes.html#container.release_notes.release_notes_boost_1_62_00" title="Boost 1.62 Release">Boost

@@ -7,7 +7,7 @@
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="ip__basic_endpoint/size.html" title="ip::basic_endpoint::size">
-<link rel="next" href="ip__basic_resolver/async_resolve.html" title="ip::basic_resolver::async_resolve">
+<link rel="next" href="ip__basic_resolver/address_configured.html" title="ip::basic_resolver::address_configured">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ip__basic_endpoint/size.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="ip__basic_resolver/async_resolve.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="ip__basic_endpoint/size.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="ip__basic_resolver/address_configured.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -29,11 +29,10 @@
 <p>
         Provides endpoint resolution functionality.
       </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">typename</span> <a class="link" href="InternetProtocol.html" title="Internet protocol requirements">InternetProtocol</a><span class="special">,</span>
-    <span class="keyword">typename</span> <a class="link" href="ResolverService.html" title="Resolver service requirements">ResolverService</a> <span class="special">=</span> <span class="identifier">resolver_service</span><span class="special">&lt;</span><span class="identifier">InternetProtocol</span><span class="special">&gt;&gt;</span>
-<span class="keyword">class</span> <span class="identifier">basic_resolver</span> <span class="special">:</span>
-  <span class="keyword">public</span> <span class="identifier">basic_io_object</span><span class="special">&lt;</span> <span class="identifier">ResolverService</span> <span class="special">&gt;</span>
+<pre class="programlisting">template&lt;
+    typename <a class="link" href="InternetProtocol.html" title="Internet protocol requirements">InternetProtocol</a>&gt;
+class basic_resolver :
+  public ip::resolver_base
 </pre>
 <h5>
 <a name="boost_asio.reference.ip__basic_resolver.h0"></a>
@@ -72,12 +71,24 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/implementation_type.html" title="ip::basic_resolver::implementation_type"><span class="bold"><strong>implementation_type</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/executor_type.html" title="ip::basic_resolver::executor_type"><span class="bold"><strong>executor_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  The underlying implementation type of I/O object.
+                  The type of the executor associated with the object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/flags.html" title="ip::basic_resolver::flags"><span class="bold"><strong>flags</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  A bitmask type (C++ Std [lib.bitmask.types]).
                 </p>
               </td>
 </tr>
@@ -89,7 +100,7 @@
               </td>
 <td>
                 <p>
-                  The iterator type.
+                  (Deprecated.) The iterator type.
                 </p>
               </td>
 </tr>
@@ -113,19 +124,19 @@
               </td>
 <td>
                 <p>
-                  The query type.
+                  (Deprecated.) The query type.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/service_type.html" title="ip::basic_resolver::service_type"><span class="bold"><strong>service_type</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/results_type.html" title="ip::basic_resolver::results_type"><span class="bold"><strong>results_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  The type of the service that will be used to provide I/O operations.
+                  The results type.
                 </p>
               </td>
 </tr>
@@ -162,6 +173,10 @@
               </td>
 <td>
                 <p>
+                  (Deprecated.) Asynchronously perform forward resolution of a query
+                  to a list of entries.
+                </p>
+                <p>
                   Asynchronously perform forward resolution of a query to a list
                   of entries.
                 </p>
@@ -181,6 +196,9 @@
                 <p>
                   Constructor.
                 </p>
+                <p>
+                  Move-construct a basic_resolver from another.
+                </p>
               </td>
 </tr>
 <tr>
@@ -198,12 +216,50 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="ip__basic_resolver/get_executor.html" title="ip::basic_resolver::get_executor"><span class="bold"><strong>get_executor</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Get the executor associated with the object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/get_io_context.html" title="ip::basic_resolver::get_io_context"><span class="bold"><strong>get_io_context</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  (Deprecated: Use get_executor().) Get the io_context associated
+                  with the object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="ip__basic_resolver/get_io_service.html" title="ip::basic_resolver::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  Get the io_service associated with the object.
+                  (Deprecated: Use get_executor().) Get the io_context associated
+                  with the object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/operator_eq_.html" title="ip::basic_resolver::operator="><span class="bold"><strong>operator=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Move-assign a basic_resolver from another.
                 </p>
               </td>
 </tr>
@@ -215,6 +271,10 @@
               </td>
 <td>
                 <p>
+                  (Deprecated.) Perform forward resolution of a query to a list of
+                  entries.
+                </p>
+                <p>
                   Perform forward resolution of a query to a list of entries.
                 </p>
                 <p>
@@ -222,12 +282,23 @@
                 </p>
               </td>
 </tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/_basic_resolver.html" title="ip::basic_resolver::~basic_resolver"><span class="bold"><strong>~basic_resolver</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Destroys the resolver.
+                </p>
+              </td>
+</tr>
 </tbody>
 </table></div>
 <h5>
 <a name="boost_asio.reference.ip__basic_resolver.h2"></a>
-        <span class="phrase"><a name="boost_asio.reference.ip__basic_resolver.protected_member_functions"></a></span><a class="link" href="ip__basic_resolver.html#boost_asio.reference.ip__basic_resolver.protected_member_functions">Protected
-        Member Functions</a>
+        <span class="phrase"><a name="boost_asio.reference.ip__basic_resolver.data_members"></a></span><a class="link" href="ip__basic_resolver.html#boost_asio.reference.ip__basic_resolver.data_members">Data Members</a>
       </h5>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -250,86 +321,101 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/get_implementation.html" title="ip::basic_resolver::get_implementation"><span class="bold"><strong>get_implementation</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/address_configured.html" title="ip::basic_resolver::address_configured"><span class="bold"><strong>address_configured</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  Get the underlying implementation of the I/O object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="ip__basic_resolver/get_service.html" title="ip::basic_resolver::get_service"><span class="bold"><strong>get_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Get the service associated with the I/O object.
-                </p>
-              </td>
-</tr>
-</tbody>
-</table></div>
-<h5>
-<a name="boost_asio.reference.ip__basic_resolver.h3"></a>
-        <span class="phrase"><a name="boost_asio.reference.ip__basic_resolver.protected_data_members"></a></span><a class="link" href="ip__basic_resolver.html#boost_asio.reference.ip__basic_resolver.protected_data_members">Protected
-        Data Members</a>
-      </h5>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-                <p>
-                  Name
-                </p>
-              </th>
-<th>
-                <p>
-                  Description
-                </p>
-              </th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="ip__basic_resolver/implementation.html" title="ip::basic_resolver::implementation"><span class="bold"><strong>implementation</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_implementation().) The underlying implementation
-                  of the I/O object.
+                  Only return IPv4 addresses if a non-loopback IPv4 address is configured
+                  for the system. Only return IPv6 addresses if a non-loopback IPv6
+                  address is configured for the system.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <a class="link" href="ip__basic_resolver/service.html" title="ip::basic_resolver::service"><span class="bold"><strong>service</strong></span></a>
+                  <a class="link" href="ip__basic_resolver/all_matching.html" title="ip::basic_resolver::all_matching"><span class="bold"><strong>all_matching</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  (Deprecated: Use get_service().) The service associated with the
-                  I/O object.
+                  If used with v4_mapped, return all matching IPv6 and IPv4 addresses.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/canonical_name.html" title="ip::basic_resolver::canonical_name"><span class="bold"><strong>canonical_name</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Determine the canonical name of the host specified in the query.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/numeric_host.html" title="ip::basic_resolver::numeric_host"><span class="bold"><strong>numeric_host</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Host name should be treated as a numeric string defining an IPv4
+                  or IPv6 address and no name resolution should be attempted.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/numeric_service.html" title="ip::basic_resolver::numeric_service"><span class="bold"><strong>numeric_service</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Service name should be treated as a numeric string defining a port
+                  number and no name resolution should be attempted.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/passive.html" title="ip::basic_resolver::passive"><span class="bold"><strong>passive</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicate that returned endpoint is intended for use as a locally
+                  bound socket endpoint.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="ip__basic_resolver/v4_mapped.html" title="ip::basic_resolver::v4_mapped"><span class="bold"><strong>v4_mapped</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  If the query protocol family is specified as IPv6, return IPv4-mapped
+                  IPv6 addresses on finding no IPv6 addresses.
                 </p>
               </td>
 </tr>
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="ip__basic_resolver.html" title="ip::basic_resolver"><code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">basic_resolver</span></code></a>
+        The <a class="link" href="ip__basic_resolver.html" title="ip::basic_resolver"><code class="computeroutput">ip::basic_resolver</code></a>
         class template provides the ability to resolve a query to a list of endpoints.
       </p>
 <h5>
-<a name="boost_asio.reference.ip__basic_resolver.h4"></a>
+<a name="boost_asio.reference.ip__basic_resolver.h3"></a>
         <span class="phrase"><a name="boost_asio.reference.ip__basic_resolver.thread_safety"></a></span><a class="link" href="ip__basic_resolver.html#boost_asio.reference.ip__basic_resolver.thread_safety">Thread Safety</a>
       </h5>
 <p>
@@ -339,7 +425,7 @@
         <span class="emphasis"><em>Shared</em></span> <span class="emphasis"><em>objects:</em></span> Unsafe.
       </p>
 <h5>
-<a name="boost_asio.reference.ip__basic_resolver.h5"></a>
+<a name="boost_asio.reference.ip__basic_resolver.h4"></a>
         <span class="phrase"><a name="boost_asio.reference.ip__basic_resolver.requirements"></a></span><a class="link" href="ip__basic_resolver.html#boost_asio.reference.ip__basic_resolver.requirements">Requirements</a>
       </h5>
 <p>
@@ -359,7 +445,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ip__basic_endpoint/size.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="ip__basic_resolver/async_resolve.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="ip__basic_endpoint/size.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="ip__basic_resolver/address_configured.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

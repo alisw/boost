@@ -30,13 +30,13 @@
 <p>
             Cancel all asynchronous operations associated with the acceptor.
           </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="identifier">cancel</span><span class="special">(</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">);</span>
+<pre class="programlisting">void cancel(
+    boost::system::error_code &amp; ec);
 </pre>
 <p>
             This function causes all outstanding asynchronous connect, send and receive
             operations to finish immediately, and the handlers for cancelled operations
-            will be passed the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">operation_aborted</span></code>
+            will be passed the <code class="computeroutput">boost::asio::error::operation_aborted</code>
             error.
           </p>
 <h6>

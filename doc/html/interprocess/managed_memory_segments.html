@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../interprocess.html" title="Chapter&#160;18.&#160;Boost.Interprocess">
+<link rel="up" href="../interprocess.html" title="Chapter&#160;17.&#160;Boost.Interprocess">
 <link rel="prev" href="synchronization_mechanisms.html" title="Synchronization mechanisms">
 <link rel="next" href="allocators_containers.html" title="Allocators, containers and memory allocation algorithms">
 </head>
@@ -380,13 +380,13 @@
 <p>
           Windows users might also want to use native windows shared memory instead
           of the portable <code class="computeroutput"><a class="link" href="../boost/interprocess/shared_memory_object.html" title="Class shared_memory_object">shared_memory_object</a></code>
-          managed memory. This is achieved through the <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp43969488.html" title="Class template basic_managed_windows_shared_memory">basic_managed_windows_shared_memory</a></code>
+          managed memory. This is achieved through the <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55546096.html" title="Class template basic_managed_windows_shared_memory">basic_managed_windows_shared_memory</a></code>
           class. To use it just include:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_windows_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          This class has the same interface as <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp43911744.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
+          This class has the same interface as <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55488352.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
           but uses native windows shared memory. Note that this managed class has
           the same lifetime issues as the windows shared memory: when the last process
           attached to the windows shared memory is detached from the memory (or ends/crashes)
@@ -407,18 +407,18 @@
 <p>
           Unix users might also want to use XSI (system V) instead of the portable
           <code class="computeroutput"><a class="link" href="../boost/interprocess/shared_memory_object.html" title="Class shared_memory_object">shared_memory_object</a></code>
-          managed memory. This is achieved through the <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp44018208.html" title="Class template basic_managed_xsi_shared_memory">basic_managed_xsi_shared_memory</a></code>
+          managed memory. This is achieved through the <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55594816.html" title="Class template basic_managed_xsi_shared_memory">basic_managed_xsi_shared_memory</a></code>
           class. To use it just include:
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_xsi_shared_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          This class has nearly the same interface as <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp43911744.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
+          This class has nearly the same interface as <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55488352.html" title="Class template basic_managed_shared_memory">basic_managed_shared_memory</a></code>
           but uses XSI shared memory as backend.
         </p>
 </div>
 <p>
-        For more information about managed XSI shared memory capabilities, see <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp44018208.html" title="Class template basic_managed_xsi_shared_memory">basic_managed_xsi_shared_memory</a></code>
+        For more information about managed XSI shared memory capabilities, see <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55594816.html" title="Class template basic_managed_xsi_shared_memory">basic_managed_xsi_shared_memory</a></code>
         class reference.
       </p>
 </div>
@@ -521,7 +521,9 @@
 <span class="comment">//    file to implement managed features.</span>
 <span class="comment">//!!  If anything fails, throws interprocess_exception</span>
 <span class="comment">//</span>
-<span class="identifier">managed_mapped_file</span> <span class="identifier">mfile</span>      <span class="special">(</span><span class="identifier">create_only</span><span class="special">,</span>      <span class="string">"MyMappedFile"</span><span class="special">,</span>   <span class="comment">//Mapped file name      65536);           //Mapped file size</span>
+<span class="identifier">managed_mapped_file</span> <span class="identifier">mfile</span>      <span class="special">(</span> <span class="identifier">create_only</span>
+                               <span class="special">,</span> <span class="string">"MyMappedFile"</span> <span class="comment">//Mapped file name</span>
+                               <span class="special">,</span> <span class="number">65536</span><span class="special">);</span>        <span class="comment">//Mapped file size</span>
 </pre>
 <pre class="programlisting"><span class="comment">//1.  Opens a file</span>
 <span class="comment">//    called "MyMappedFile".</span>
@@ -531,15 +533,18 @@
 <span class="comment">//    to implement managed features.</span>
 <span class="comment">//!!  If anything fails, throws interprocess_exception</span>
 <span class="comment">//</span>
-<span class="identifier">managed_mapped_file</span> <span class="identifier">mfile</span>      <span class="special">(</span><span class="identifier">open_only</span><span class="special">,</span>      <span class="string">"MyMappedFile"</span><span class="special">);</span>  <span class="comment">//Mapped file name[c++]</span>
-
-<span class="comment">//1.  If the file was previously created</span>
+<span class="identifier">managed_mapped_file</span> <span class="identifier">mfile</span>      <span class="special">(</span> <span class="identifier">open_only</span>
+                               <span class="special">,</span> <span class="string">"MyMappedFile"</span><span class="special">);</span> <span class="comment">//Mapped file name</span>
+</pre>
+<pre class="programlisting"><span class="comment">//1.  If the file was previously created</span>
 <span class="comment">//    equivalent to "open_only".</span>
 <span class="comment">//2.  Otherwise, equivalent to "open_only" (size is ignored)</span>
 <span class="comment">//</span>
 <span class="comment">//!!  If anything fails, throws interprocess_exception</span>
 <span class="comment">//</span>
-<span class="identifier">managed_mapped_file</span> <span class="identifier">mfile</span>      <span class="special">(</span><span class="identifier">open_or_create</span><span class="special">,</span>      <span class="string">"MyMappedFile"</span><span class="special">,</span>   <span class="comment">//Mapped file name      65536);           //Mapped file size</span>
+<span class="identifier">managed_mapped_file</span> <span class="identifier">mfile</span>      <span class="special">(</span><span class="identifier">open_or_create</span>
+                               <span class="special">,</span> <span class="string">"MyMappedFile"</span> <span class="comment">//Mapped file name</span>
+                               <span class="special">,</span> <span class="number">65536</span><span class="special">);</span>        <span class="comment">//Mapped file size</span>
 </pre>
 <p>
           When the <code class="computeroutput"><span class="identifier">managed_mapped_file</span></code>
@@ -810,7 +815,7 @@
           That is, the mutex type used to synchronize named/unique allocations is
           defined by the <code class="computeroutput"><span class="identifier">MemoryAlgorithm</span><span class="special">::</span><span class="identifier">mutex_family</span><span class="special">::</span><span class="identifier">recursive_mutex_type</span></code>
           type. For shared memory, and memory mapped file based managed segments
-          this recursive mutex is defined as <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_r_idp45215584.html" title="Class interprocess_recursive_mutex">interprocess_recursive_mutex</a></code>.
+          this recursive mutex is defined as <code class="computeroutput"><a class="link" href="../boost/interprocess/interprocess_r_idp56793568.html" title="Class interprocess_recursive_mutex">interprocess_recursive_mutex</a></code>.
         </p>
 <p>
           If two processes can call:
@@ -2169,7 +2174,7 @@
           can also be used to place STL compatible containers in the user segment.
         </p>
 <p>
-          <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp43803232.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code>
+          <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55379840.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code>
           can be also useful to build small databases for embedded systems limiting
           the size of the used memory to a predefined memory chunk, instead of letting
           the database fragment the heap memory.
@@ -2227,7 +2232,7 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">interprocess</span><span class="special">/</span><span class="identifier">managed_heap_memory</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 </pre>
 <p>
-          The use is exactly the same as <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp43803232.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code>,
+          The use is exactly the same as <code class="computeroutput"><a class="link" href="../boost/interprocess/basic_managed__idp55379840.html" title="Class template basic_managed_external_buffer">basic_managed_external_buffer</a></code>,
           except that memory is created by the managed memory segment itself using
           dynamic (new/delete) memory.
         </p>

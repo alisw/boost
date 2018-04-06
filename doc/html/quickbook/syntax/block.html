@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../../quickbook.html" title="Chapter&#160;51.&#160;Quickbook 1.6">
+<link rel="up" href="../../quickbook.html" title="Chapter&#160;51.&#160;Quickbook 1.7">
 <link rel="prev" href="phrase.html" title="Phrase Level Elements">
 <link rel="next" href="../versions.html" title="Language Versions">
 </head>
@@ -74,7 +74,7 @@
         current quickbook file:
       </p>
 <pre class="programlisting">[article Article with xincludes
-[quickbook 1.6]
+[quickbook 1.7]
 [xmlbase .]
 ]
 
@@ -131,6 +131,8 @@
         lists</a></span></dt>
 <dt><span class="section"><a href="block.html#quickbook.syntax.block.lists.mixed_lists">Mixed
         lists</a></span></dt>
+<dt><span class="section"><a href="block.html#quickbook.syntax.block.lists.list_paragraphs">Paragraphs
+        in lists</a></span></dt>
 <dt><span class="section"><a href="block.html#quickbook.syntax.block.lists.list_tags">Explicit
         list tags</a></span></dt>
 </dl></div>
@@ -390,6 +392,45 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
+<a name="quickbook.syntax.block.lists.list_paragraphs"></a><a name="quickbook.ref.list_paragraphs"></a><a class="link" href="block.html#quickbook.syntax.block.lists.list_paragraphs" title="Paragraphs in lists">Paragraphs
+        in lists</a>
+</h4></div></div></div>
+<p>
+          In quickbook 1.7 onwards, you can nest paragraphs in lists by separating
+          them with blank lines:
+        </p>
+<pre class="programlisting">* List item 1, paragraph 1
+
+  List item 1, paragraph 2
+
+* List item 2, paragraph 1
+
+  List item 2, paragraph 2
+</pre>
+<p>
+          will generate:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+<p class="simpara">
+              List item 1, paragraph 1
+            </p>
+<p class="simpara">
+              List item 1, paragraph 2
+            </p>
+</li>
+<li class="listitem">
+<p class="simpara">
+              List item 2, paragraph 1
+            </p>
+<p class="simpara">
+              List item 2, paragraph 2
+            </p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
 <a name="quickbook.syntax.block.lists.list_tags"></a><a name="quickbook.ref.list_tags"></a><a class="link" href="block.html#quickbook.syntax.block.lists.list_tags" title="Explicit list tags">Explicit
         list tags</a>
 </h4></div></div></div>
@@ -457,6 +498,40 @@
       </p>
 <pre class="programlisting">using <a href="http://www.boost.org/libs/libraries.htm" target="_top">boost</a>::<a href="http://www.boost.org/doc/html/array/reference.html" target="_top">array</a>;
 </pre>
+<p>
+        In quickbook 1.7 and later, you can include <a class="link" href="block.html#quickbook.ref.callouts">callouts</a>
+        in code blocks, like so:
+      </p>
+<pre class="programlisting">[!c++]
+    std::string foo_bar() /*&lt; The /Mythical/ FooBar.
+                          See [@http://en.wikipedia.org/wiki/Foobar Foobar for details] &gt;*/
+    {
+        return "foo-bar"; /*&lt; return 'em, foo-bar man! &gt;*/
+    }
+</pre>
+<p>
+        Which will generate:
+      </p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">foo_bar</span><span class="special">()</span> <a class="co" name="quickbook.syntax.block.code.c0" href="block.html#quickbook.syntax.block.code.c1"><img src="../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="string">"foo-bar"</span><span class="special">;</span> <a class="co" name="quickbook.syntax.block.code.c2" href="block.html#quickbook.syntax.block.code.c3"><img src="../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
+<span class="special">}</span>
+</pre>
+<div class="calloutlist"><table border="0" summary="Callout list">
+<tr>
+<td width="5%" valign="top" align="left"><p><a name="quickbook.syntax.block.code.c1"></a><a href="#quickbook.syntax.block.code.c0"><img src="../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td valign="top" align="left"><p>
+            The <span class="emphasis"><em>Mythical</em></span> FooBar. See <a href="http://en.wikipedia.org/wiki/Foobar" target="_top">Foobar
+            for details</a>
+          </p></td>
+</tr>
+<tr>
+<td width="5%" valign="top" align="left"><p><a name="quickbook.syntax.block.code.c3"></a><a href="#quickbook.syntax.block.code.c2"><img src="../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td valign="top" align="left"><p>
+            return 'em, foo-bar man!
+          </p></td>
+</tr>
+</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -836,7 +911,7 @@ sf_logo
               </td>
 <td>
                 <p>
-                  2017-Apr-17
+                  2017-Dec-14
                 </p>
               </td>
 </tr>
@@ -853,7 +928,7 @@ sf_logo
               </td>
 <td>
                 <p>
-                  02:30:57 AM
+                  12:08:24 AM
                 </p>
               </td>
 </tr>
@@ -1224,7 +1299,7 @@ for the journey to old age.]]]
 <p>
         will generate this:
       </p>
-<div class="sidebar">
+<div class="blurb">
 <div class="titlepage"><div><div><p class="title"><b></b></p></div></div></div>
 <p>
         <span class="inlinemediaobject"><img src="../../../src/images/smiley.png"></span>
@@ -1753,7 +1828,7 @@ some code here
         <span class="emphasis"><em><span class="emphasis"><em>id</em></span></em></span>. The comment <code class="computeroutput">//]</code>
         ends a code-snippet This too will not be visible in quickbook.
       </p>
-<h4>
+<a name="quickbook.ref.callouts"></a><h4>
 <a name="quickbook.syntax.block.import.h2"></a>
         <span class="phrase"><a name="quickbook.syntax.block.import.special_comments"></a></span><a class="link" href="block.html#quickbook.syntax.block.import.special_comments">Special
         Comments</a>
@@ -1965,7 +2040,7 @@ Content
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2002, 2004, 2006 Joel de Guzman,
-      Eric Niebler<br>Copyright &#169; 2010, 2011 Daniel James<p>
+      Eric Niebler<br>Copyright &#169; 2010-2017 Daniel James<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

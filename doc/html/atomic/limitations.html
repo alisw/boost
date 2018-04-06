@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../atomic.html" title="Chapter&#160;7.&#160;Boost.Atomic">
+<link rel="up" href="../atomic.html" title="Chapter&#160;6.&#160;Boost.Atomic">
 <link rel="prev" href="usage_examples.html" title="Usage examples">
 <link rel="next" href="porting.html" title="Porting">
 </head>
@@ -29,8 +29,8 @@
 </h2></div></div></div>
 <p>
       While <span class="bold"><strong>Boost.Atomic</strong></span> strives to implement the
-      atomic operations from C++11 as faithfully as possible, there are a few limitations
-      that cannot be lifted without compiler support:
+      atomic operations from C++11 and later as faithfully as possible, there are
+      a few limitations that cannot be lifted without compiler support:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -45,10 +45,18 @@
           Crucially, <code class="computeroutput"><span class="identifier">memory_order_consume</span></code>
           only affects computationally-dependent operations, but in general there
           is nothing preventing a compiler from transforming a computation dependency
-          into a control dependency. A C++11 compiler would be forbidden from such
-          a transformation. <span class="bold"><strong>Advise</strong></span>: Use <code class="computeroutput"><span class="identifier">memory_order_consume</span></code> only in conjunction
-          with pointer values, as the compiler cannot speculate and transform these
-          into control dependencies.
+          into a control dependency. A fully compliant C++11 compiler would be forbidden
+          from such a transformation, but in practice most if not all compilers have
+          chosen to promote <code class="computeroutput"><span class="identifier">memory_order_consume</span></code>
+          to <code class="computeroutput"><span class="identifier">memory_order_acquire</span></code>
+          instead (see <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59448" target="_top">this</a>
+          gcc bug for example). In the current implementation <span class="bold"><strong>Boost.Atomic</strong></span>
+          follows that trend, but this may change in the future. <span class="bold"><strong>Advice</strong></span>:
+          In general, avoid <code class="computeroutput"><span class="identifier">memory_order_consume</span></code>
+          and use <code class="computeroutput"><span class="identifier">memory_order_acquire</span></code>
+          instead. Use <code class="computeroutput"><span class="identifier">memory_order_consume</span></code>
+          only in conjunction with pointer values, and only if you can ensure that
+          the compiler cannot speculate and transform these into control dependencies.
         </li>
 <li class="listitem">
           <span class="bold"><strong>Fence operations enforce "too strong" compiler
@@ -66,7 +74,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Helge Bahmann<br>Copyright &#169; 2012 Tim Blechmann<br>Copyright &#169; 2013 Andrey Semashev<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Helge Bahmann<br>Copyright &#169; 2012 Tim Blechmann<br>Copyright &#169; 2013, 2017 Andrey Semashev<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

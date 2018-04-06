@@ -27,10 +27,11 @@
 <a name="boost_asio.reference.socket_base.debug"></a><a class="link" href="debug.html" title="socket_base::debug">socket_base::debug</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="idp166591760"></a> 
-Socket option to enable socket-level debugging.
+          <a class="indexterm" name="boost_asio.indexterm.socket_base.debug"></a> 
+Socket option to
+          enable socket-level debugging.
         </p>
-<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">implementation_defined</span> <span class="identifier">debug</span><span class="special">;</span>
+<pre class="programlisting">typedef implementation_defined debug;
 </pre>
 <p>
           Implements the SOL_SOCKET/SO_DEBUG socket option.
@@ -42,19 +43,19 @@ Socket option to enable socket-level debugging.
 <p>
           Setting the option:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">socket_base</span><span class="special">::</span><span class="identifier">debug</span> <span class="identifier">option</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">set_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+...
+boost::asio::socket_base::debug option(true);
+socket.set_option(option);
 </pre>
 <p>
           Getting the current option value:
         </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="special">...</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">socket_base</span><span class="special">::</span><span class="identifier">debug</span> <span class="identifier">option</span><span class="special">;</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">get_option</span><span class="special">(</span><span class="identifier">option</span><span class="special">);</span>
-<span class="keyword">bool</span> <span class="identifier">is_set</span> <span class="special">=</span> <span class="identifier">option</span><span class="special">.</span><span class="identifier">value</span><span class="special">();</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+...
+boost::asio::socket_base::debug option;
+socket.get_option(option);
+bool is_set = option.value();
 </pre>
 <h6>
 <a name="boost_asio.reference.socket_base.debug.h1"></a>

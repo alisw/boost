@@ -267,8 +267,8 @@
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>avl_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>avl_set</classname> &amp;</type><parameter name="x"><paramtype><classname>avl_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>avl_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>avl_set</classname> &amp;</type><parameter name="x"><paramtype><classname>avl_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>avl_set</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -443,8 +443,8 @@
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>avl_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>avl_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>avl_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>avl_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>avl_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>avl_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>avl_multiset</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -459,7 +459,49 @@
       <template-type-parameter name="T"/>
       <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
     </template><description><para>Helper metafunction to define a <computeroutput><classname alt="boost::intrusive::avl_multiset">avl_multiset</classname></computeroutput> that yields to the same type when the same options (either explicitly or implicitly) are used. </para></description><typedef name="type"><type>implementation_defined</type></typedef>
-</struct><function name="operator!="><type>bool</type><template>
+</struct>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<function name="operator!="><type>bool</type><template>
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype>const <classname>avl_set</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype>const <classname>avl_set</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
@@ -499,48 +541,6 @@
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype><classname>avl_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype><classname>avl_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
@@ -811,8 +811,8 @@
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>avltree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>avltree</classname> &amp;</type><parameter name="x"><paramtype><classname>avltree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>avltree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>avltree</classname> &amp;</type><parameter name="x"><paramtype><classname>avltree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>avltree</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -1199,8 +1199,8 @@
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>bs_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>bs_set</classname> &amp;</type><parameter name="x"><paramtype><classname>bs_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>bs_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>bs_set</classname> &amp;</type><parameter name="x"><paramtype><classname>bs_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>bs_set</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -1374,8 +1374,8 @@
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>bs_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>bs_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>bs_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>bs_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>bs_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>bs_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>bs_multiset</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -1391,6 +1391,28 @@
       <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
     </template><description><para>Helper metafunction to define a <computeroutput><classname alt="boost::intrusive::bs_multiset">bs_multiset</classname></computeroutput> that yields to the same type when the same options (either explicitly or implicitly) are used. </para></description><typedef name="type"><type>implementation_defined</type></typedef>
 </struct>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1440,28 +1462,6 @@
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype><classname>bs_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype><classname>bs_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1750,8 +1750,8 @@
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>bstree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>bstree</classname> &amp;</type><parameter name="x"><paramtype><classname>bstree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>bstree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>bstree</classname> &amp;</type><parameter name="x"><paramtype><classname>bstree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>bstree</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -2476,8 +2476,8 @@ header------------------------------&gt;|         |
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="b_traits"><paramtype>const <classname>bucket_traits</classname> &amp;</paramtype></parameter><parameter name="hash_func"><paramtype>const hasher &amp;</paramtype><default>hasher()</default></parameter><parameter name="equal_func"><paramtype>const key_equal &amp;</paramtype><default>key_equal()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: buckets must not be being used by any other resource and dereferencing iterator must yield an lvalue of type value_type.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: If N is distance(b, e): Average case is O(N) (with a good hash function and with buckets_len &gt;= N),worst case O(N^2).</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor or invocation of hasher or key_equal throws.</para><para><emphasis role="bold">Notes</emphasis>: buckets array must be disposed only after *this is disposed. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>hashtable</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>hashtable</classname> &amp;</type><parameter name="x"><paramtype><classname>hashtable</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>hashtable</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal value traits, bucket traits, hasher and comparison are move constructed and nodes belonging to x are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of value traits, bucket traits, hasher or comparison throws. </para></description></constructor>
+<copy-assignment><type><classname>hashtable</classname> &amp;</type><parameter name="x"><paramtype><classname>hashtable</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap. </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the <classname alt="boost::intrusive::unordered_set">unordered_set</classname> are not deleted (i.e. no destructors are called).</para><para><emphasis role="bold">Complexity</emphasis>: Linear to the number of elements in the <classname alt="boost::intrusive::unordered_set">unordered_set</classname>, if it's a safe-mode or auto-unlink value. Otherwise constant.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="s_local_iterator_to" specifiers="static"><type>local_iterator</type><parameter name="value"><paramtype>reference</paramtype></parameter><description><para><emphasis role="bold">Requires</emphasis>: value must be an lvalue and shall be in a <classname alt="boost::intrusive::unordered_set">unordered_set</classname> of appropriate type. Otherwise the behavior is undefined.</para><para><emphasis role="bold">Effects</emphasis>: Returns: a valid local_iterator belonging to the <classname alt="boost::intrusive::unordered_set">unordered_set</classname> that points to the value</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Note</emphasis>: This static function is available only if the <emphasis>value traits</emphasis> is stateless. </para></description></method>
@@ -2828,8 +2828,8 @@ header------------------------------&gt;|         |
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type.</para><para><emphasis role="bold">Effects</emphasis>: Constructs a list equal to the range [first,last).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in distance(b, e). No copy constructors are called.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks). </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>list</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>list</classname> &amp;</type><parameter name="x"><paramtype><classname>list</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>list</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of value traits throws. </para></description></constructor>
+<copy-assignment><type><classname>list</classname> &amp;</type><parameter name="x"><paramtype><classname>list</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: If it's not a safe-mode or an auto-unlink value_type the destructor does nothing (ie. no code is generated). Otherwise it detaches all elements from this. In this case the objects in the list are not deleted (i.e. no destructors are called), but the hooks according to the ValueTraits template parameter are set to their default value.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to the number of elements in the list, if it's a safe-mode or auto-unlink value . Otherwise constant. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>list</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of list.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the list associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -3312,6 +3312,16 @@ BOOST_STATIC_ASSERT(( is_incremental == true ));
 
 
 
+
+
+
+
+
+
+
+
+
+
 <function name="get_parent_from_member"><type>Parent *</type><template>
           <template-type-parameter name="Parent"/>
           <template-type-parameter name="Member"/>
@@ -3320,16 +3330,6 @@ BOOST_STATIC_ASSERT(( is_incremental == true ));
           <template-type-parameter name="Parent"/>
           <template-type-parameter name="Member"/>
         </template><parameter name="member"><paramtype>const Member *</paramtype></parameter><parameter name="ptr_to_member"><paramtype>const Member Parent::*</paramtype></parameter><description><para>Given a const pointer to a member and its corresponding const pointer to data member, this function returns the const pointer of the parent containing that member. Note: this function does not work with pointer to members that rely on virtual inheritance. </para></description></function>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3919,8 +3919,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>rbtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>rbtree</classname> &amp;</type><parameter name="x"><paramtype><classname>rbtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>rbtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>rbtree</classname> &amp;</type><parameter name="x"><paramtype><classname>rbtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>rbtree</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -4308,8 +4308,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>set</classname> &amp;</type><parameter name="x"><paramtype><classname>set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>set</classname> &amp;</type><parameter name="x"><paramtype><classname>set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>set</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -4484,8 +4484,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>multiset</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -4501,8 +4501,6 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
       <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
     </template><description><para>Helper metafunction to define a <computeroutput>multiset</computeroutput> that yields to the same type when the same options (either explicitly or implicitly) are used. </para></description><typedef name="type"><type>implementation_defined</type></typedef>
 </struct>
-
-
 
 
 
@@ -4562,6 +4560,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype><classname>multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype><classname>multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
+
+
 
 
 
@@ -4849,8 +4849,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>sg_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>sg_set</classname> &amp;</type><parameter name="x"><paramtype><classname>sg_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>sg_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>sg_set</classname> &amp;</type><parameter name="x"><paramtype><classname>sg_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>sg_set</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -5029,8 +5029,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>sg_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>sg_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>sg_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>sg_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>sg_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>sg_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>sg_multiset</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -5046,28 +5046,6 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
       <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
     </template><description><para>Helper metafunction to define a <computeroutput><classname alt="boost::intrusive::sg_multiset">sg_multiset</classname></computeroutput> that yields to the same type when the same options (either explicitly or implicitly) are used. </para></description><typedef name="type"><type>implementation_defined</type></typedef>
 </struct>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5117,6 +5095,28 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype><classname>sg_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype><classname>sg_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5319,8 +5319,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>sgtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>sgtree</classname> &amp;</type><parameter name="x"><paramtype><classname>sgtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>sgtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>sgtree</classname> &amp;</type><parameter name="x"><paramtype><classname>sgtree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>sgtree</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -5702,8 +5702,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type.</para><para><emphasis role="bold">Effects</emphasis>: Constructs a list equal to [b ,e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in distance(b, e). No copy constructors are called.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks). </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>slist</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>slist</classname> &amp;</type><parameter name="x"><paramtype><classname>slist</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>slist</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of value traits throws. </para></description></constructor>
+<copy-assignment><type><classname>slist</classname> &amp;</type><parameter name="x"><paramtype><classname>slist</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: If it's a safe-mode or auto-unlink value, the destructor does nothing (ie. no code is generated). Otherwise it detaches all elements from this. In this case the objects in the list are not deleted (i.e. no destructors are called), but the hooks according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are set to their default value.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to the number of elements in the list, if it's a safe-mode or auto-unlink value. Otherwise constant. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>slist</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of slist.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the slist associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -6059,8 +6059,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>splay_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>splay_set</classname> &amp;</type><parameter name="x"><paramtype><classname>splay_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>splay_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>splay_set</classname> &amp;</type><parameter name="x"><paramtype><classname>splay_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>splay_set</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -6243,8 +6243,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>splay_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>splay_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>splay_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>splay_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>splay_multiset</classname> &amp;</type><parameter name="x"><paramtype><classname>splay_multiset</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>splay_multiset</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -6259,49 +6259,7 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
       <template-type-parameter name="T"/>
       <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
     </template><description><para>Helper metafunction to define a <computeroutput><classname alt="boost::intrusive::splay_multiset">splay_multiset</classname></computeroutput> that yields to the same type when the same options (either explicitly or implicitly) are used. </para></description><typedef name="type"><type>implementation_defined</type></typedef>
-</struct>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<function name="operator!="><type>bool</type><template>
+</struct><function name="operator!="><type>bool</type><template>
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype>const <classname>splay_set</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype>const <classname>splay_set</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
@@ -6341,6 +6299,48 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
           <template-type-parameter name="T"/>
           <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
         </template><parameter name="x"><paramtype><classname>splay_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter><parameter name="y"><paramtype><classname>splay_multiset</classname>&lt; T, Options...&gt; &amp;</paramtype></parameter></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
@@ -6538,8 +6538,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare object throws. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>splaytree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>splaytree</classname> &amp;</type><parameter name="x"><paramtype><classname>splaytree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>splaytree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>splaytree</classname> &amp;</type><parameter name="x"><paramtype><classname>splaytree</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>splaytree</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -6994,8 +6994,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="unique"><paramtype>bool</paramtype></parameter><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="cmp"><paramtype>const key_compare &amp;</paramtype><default>key_compare()</default></parameter><parameter name="pcmp"><paramtype>const priority_compare &amp;</paramtype><default>priority_compare()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: Dereferencing iterator must yield an lvalue of type value_type. cmp must be a comparison function that induces a strict weak ordering.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: Linear in N if [b, e) is already sorted using comp and otherwise N * log N, where N is the distance between first and last.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor/operator() of the key_compare/priority_compare objects throw. Basic guarantee. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>treap</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>treap</classname> &amp;</type><parameter name="x"><paramtype><classname>treap</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>treap</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal comparison object and value traits are move constructed and nodes belonging to x (except the node representing the "end") are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of the comparison objet throws. </para></description></constructor>
+<copy-assignment><type><classname>treap</classname> &amp;</type><parameter name="x"><paramtype><classname>treap</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the set are not deleted (i.e. no destructors are called), but the nodes according to the <classname alt="boost::intrusive::value_traits">value_traits</classname> template parameter are reinitialized and thus can be reused.</para><para><emphasis role="bold">Complexity</emphasis>: Linear to elements contained in *this.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="container_from_end_iterator" specifiers="static"><type><classname>treap</classname> &amp;</type><parameter name="end_iterator"><paramtype>iterator</paramtype></parameter><description><para><emphasis role="bold">Precondition</emphasis>: end_iterator must be a valid end iterator of the container.</para><para><emphasis role="bold">Effects</emphasis>: Returns a const reference to the container associated to the end iterator</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Complexity</emphasis>: Constant. </para></description></method>
@@ -7893,8 +7893,8 @@ typename rebind_pointer&lt;U&gt;::type</programlisting></description><type>U *</
 <constructor><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="b"><paramtype>Iterator</paramtype></parameter><parameter name="e"><paramtype>Iterator</paramtype></parameter><parameter name="b_traits"><paramtype>const bucket_traits &amp;</paramtype></parameter><parameter name="hash_func"><paramtype>const hasher &amp;</paramtype><default>hasher()</default></parameter><parameter name="equal_func"><paramtype>const key_equal &amp;</paramtype><default>key_equal()</default></parameter><parameter name="v_traits"><paramtype>const value_traits &amp;</paramtype><default>value_traits()</default></parameter><description><para><emphasis role="bold">Requires</emphasis>: buckets must not be being used by any other resource and dereferencing iterator must yield an lvalue of type value_type.</para><para><emphasis role="bold">Effects</emphasis>: Constructs an empty container and inserts elements from [b, e).</para><para><emphasis role="bold">Complexity</emphasis>: If N is distance(b, e): Average case is O(N) (with a good hash function and with buckets_len &gt;= N),worst case O(N^2).</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the copy constructor or invocation of hasher or key_equal throws.</para><para><emphasis role="bold">Notes</emphasis>: buckets array must be disposed only after *this is disposed. </para></description></constructor>
-<constructor><parameter name="x"><paramtype><classname>unordered_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></constructor>
-<copy-assignment><type><classname>unordered_set</classname> &amp;</type><parameter name="x"><paramtype><classname>unordered_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: to-do </para></description></copy-assignment>
+<constructor><parameter name="x"><paramtype><classname>unordered_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Constructs a container moving resources from another container. Internal value traits, bucket traits, hasher and comparison are move constructed and nodes belonging to x are linked to *this.</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: If value_traits::node_traits::node's move constructor throws (this does not happen with predefined Boost.Intrusive hooks) or the move constructor of value traits, bucket traits, hasher or comparison throws. </para></description></constructor>
+<copy-assignment><type><classname>unordered_set</classname> &amp;</type><parameter name="x"><paramtype><classname>unordered_set</classname> &amp;&amp;</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Equivalent to swap. </para></description></copy-assignment>
 <destructor><description><para><emphasis role="bold">Effects</emphasis>: Detaches all elements from this. The objects in the <classname alt="boost::intrusive::unordered_set">unordered_set</classname> are not deleted (i.e. no destructors are called).</para><para><emphasis role="bold">Complexity</emphasis>: Linear to the number of elements in the <classname alt="boost::intrusive::unordered_set">unordered_set</classname>, if it's a safe-mode or auto-unlink value. Otherwise constant.</para><para><emphasis role="bold">Throws</emphasis>: Nothing. </para></description></destructor>
 <method-group name="public static functions">
 <method name="s_local_iterator_to" specifiers="static"><type>local_iterator</type><parameter name="value"><paramtype>reference</paramtype></parameter><description><para><emphasis role="bold">Requires</emphasis>: value must be an lvalue and shall be in a <classname alt="boost::intrusive::unordered_set">unordered_set</classname> of appropriate type. Otherwise the behavior is undefined.</para><para><emphasis role="bold">Effects</emphasis>: Returns: a valid local_iterator belonging to the <classname alt="boost::intrusive::unordered_set">unordered_set</classname> that points to the value</para><para><emphasis role="bold">Complexity</emphasis>: Constant.</para><para><emphasis role="bold">Throws</emphasis>: Nothing.</para><para><emphasis role="bold">Note</emphasis>: This static function is available only if the <emphasis>value traits</emphasis> is stateless. </para></description></method>

@@ -27,22 +27,22 @@
 <a name="boost_asio.reference.asio_handler_deallocate"></a><a class="link" href="asio_handler_deallocate.html" title="asio_handler_deallocate">asio_handler_deallocate</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="idp89479504"></a> 
-Default deallocation function for handlers.
+        <a class="indexterm" name="boost_asio.indexterm.asio_handler_deallocate"></a> 
+Default
+        deallocation function for handlers.
       </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">asio_handler_deallocate</span><span class="special">(</span>
-    <span class="keyword">void</span> <span class="special">*</span> <span class="identifier">pointer</span><span class="special">,</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">,</span>
-    <span class="special">...</span> <span class="special">);</span>
+<pre class="programlisting">void asio_handler_deallocate(
+    void * pointer,
+    std::size_t size,
+    ... );
 </pre>
 <p>
         Implement asio_handler_allocate and asio_handler_deallocate for your own
         handlers to provide custom allocation for the associated temporary objects.
       </p>
 <p>
-        The default implementation of these allocation hooks uses <code class="computeroutput"><span class="keyword">operator</span>
-        <span class="keyword">new</span></code> and <code class="computeroutput"><span class="keyword">operator</span>
-        <span class="keyword">delete</span></code>.
+        The default implementation of these allocation hooks uses <code class="computeroutput">operator
+        new</code> and <code class="computeroutput">operator delete</code>.
       </p>
 <h5>
 <a name="boost_asio.reference.asio_handler_deallocate.h0"></a>

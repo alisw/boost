@@ -36,7 +36,33 @@ Your `algorithm` subclass is engaged on a particular thread by calling
         }
 
 A scheduler class must implement interface __algo__. __boost_fiber__ provides
-one scheduler: [class_link round_robin].
+schedulers: __round_robin__, __work_stealing__, __numa_work_stealing__ and
+__shared_work__.
+
+        void thread( std::uint32_t thread_count) {
+            // thread registers itself at work-stealing scheduler
+            boost::fibers::use_scheduling_algorithm< boost::fibers::algo::work_stealing >( thread_count);
+            ...
+        }
+
+        // count of logical cpus
+        std::uint32_t thread_count = std::thread::hardware_concurrency();
+        // start-thread registers itself at work-stealing scheduler
+        boost::fibers::use_scheduling_algorithm< boost::fibers::algo::work_stealing >( thread_count);
+        std::vector< std::thread > threads;
+        for ( std::uint32_t i = 1 /* count start-thread */; i < thread_count; ++i) {
+            // spawn thread
+            threads.emplace_back( thread, thread_count);
+        }
+        ...
+
+The example spawns as many threads as `std::thread::hardware_concurrency()`
+returns.
+Each thread runs a __work_stealing__ scheduler. Each instance of this
+scheduler needs to know how many threads run the work-stealing scheduler in the
+program.
+If the local queue of one thread runs out of ready fibers, the thread tries to
+steal a ready fiber from another thread running this scheduler.
 
 
 [class_heading algorithm]
@@ -218,14 +244,124 @@ wakes `suspend_until()` via
 ]
 
 
+
+[class_heading work_stealing]
+
+This class implements __algo__; if the local ready-queue runs out of ready fibers, ready fibers are stolen
+from other schedulers.[br]
+The victim scheduler (from which a ready fiber is stolen) is selected at random.
+
+[note Worker-threads are stored in a static variable, dynamically adding/removing worker threads is not supported.]
+
+        #include <boost/fiber/algo/work_stealing.hpp>
+
+        namespace boost {
+        namespace fibers {
+        namespace algo {
+
+        class work_stealing : public algorithm {
+        public:
+            work_stealing( std::uint32_t thread_count, bool suspend = false);
+
+            work_stealing( work_stealing const&) = delete;
+            work_stealing( work_stealing &&) = delete;
+
+            work_stealing & operator=( work_stealing const&) = delete;
+            work_stealing & operator=( work_stealing &&) = delete;
+
+            virtual void awakened( context *) noexcept;
+
+            virtual context * pick_next() noexcept;
+
+            virtual bool has_ready_fibers() const noexcept;
+
+            virtual void suspend_until( std::chrono::steady_clock::time_point const&) noexcept;
+
+            virtual void notify() noexcept;
+        };
+
+        }}}
+
+[heading Constructor]
+
+        work_stealing( std::uint32_t thread_count, bool suspend = false);
+
+[variablelist
+[[Effects:] [Constructs work-stealing scheduling algorithm. `thread_count` represents the number of threads
+running this algorithm.]]
+[[Throws:] [`system_error`]]
+[[Note:][If `suspend` is set to `true`, then the scheduler suspends if no ready fiber could be stolen.
+The scheduler will by woken up if a sleeping fiber times out or it was notified from remote (other thread or
+fiber scheduler).]]
+]
+
+[member_heading work_stealing..awakened]
+
+        virtual void awakened( context * f) noexcept;
+
+[variablelist
+[[Effects:] [Enqueues fiber `f` onto the shared ready queue.]]
+[[Throws:] [Nothing.]]
+]
+
+[member_heading work_stealing..pick_next]
+
+        virtual context * pick_next() noexcept;
+
+[variablelist
+[[Returns:] [the fiber at the head of the ready queue, or `nullptr` if the
+queue is empty.]]
+[[Throws:] [Nothing.]]
+[[Note:] [Placing ready fibers onto the tail of the sahred queue, and returning them
+from the head of that queue, shares the thread between ready fibers in
+round-robin fashion.]]
+]
+
+[member_heading work_stealing..has_ready_fibers]
+
+        virtual bool has_ready_fibers() const noexcept;
+
+[variablelist
+[[Returns:] [`true` if scheduler has fibers ready to run.]]
+[[Throws:] [Nothing.]]
+]
+
+[member_heading work_stealing..suspend_until]
+
+        virtual void suspend_until( std::chrono::steady_clock::time_point const& abs_time) noexcept;
+
+[variablelist
+[[Effects:] [Informs `work_stealing` that no ready fiber will be available until
+time-point `abs_time`. This implementation blocks in
+[@http://en.cppreference.com/w/cpp/thread/condition_variable/wait_until
+`std::condition_variable::wait_until()`].]]
+[[Throws:] [Nothing.]]
+]
+
+[member_heading work_stealing..notify]
+
+        virtual void notify() noexcept = 0;
+
+[variablelist
+[[Effects:] [Wake up a pending call to [member_link
+work_stealing..suspend_until], some fibers might be ready. This implementation
+wakes `suspend_until()` via
+[@http://en.cppreference.com/w/cpp/thread/condition_variable/notify_all
+`std::condition_variable::notify_all()`].]]
+[[Throws:] [Nothing.]]
+]
+
+
 [class_heading shared_work]
 
 [note Because of the non-locality of data, ['shared_work] is less performant
-than ['work_stealing].]
+than __work_stealing__.]
 
 This class implements __algo__, scheduling fibers in round-robin fashion.
 Ready fibers are shared between all instances (running on different threads)
 of shared_work, thus the work is distributed equally over all threads.
+
+[note Worker-threads are stored in a static variable, dynamically adding/removing worker threads is not supported.]
 
         #include <boost/fiber/algo/shared_work.hpp>
 
@@ -297,89 +433,6 @@ time-point `abs_time`. This implementation blocks in
 [variablelist
 [[Effects:] [Wake up a pending call to [member_link
 shared_work..suspend_until], some fibers might be ready. This implementation
-wakes `suspend_until()` via
-[@http://en.cppreference.com/w/cpp/thread/condition_variable/notify_all
-`std::condition_variable::notify_all()`].]]
-[[Throws:] [Nothing.]]
-]
-
-
-[class_heading work_stealing]
-
-This class implements __algo__; if the local ready-queue runs out of ready
-fibers, ready fibers are stolen from other schedulers.
-The victim scheduler (from which a ready fiber is stolen) is selected at random.
-
-        #include <boost/fiber/algo/work_stealing.hpp>
-
-        namespace boost {
-        namespace fibers {
-        namespace algo {
-
-        class work_stealing : public algorithm {
-            virtual void awakened( context *) noexcept;
-
-            virtual context * pick_next() noexcept;
-
-            virtual bool has_ready_fibers() const noexcept;
-
-            virtual void suspend_until( std::chrono::steady_clock::time_point const&) noexcept;
-
-            virtual void notify() noexcept;
-        };
-
-        }}}
-
-[member_heading work_stealing..awakened]
-
-        virtual void awakened( context * f) noexcept;
-
-[variablelist
-[[Effects:] [Enqueues fiber `f` onto the shared ready queue.]]
-[[Throws:] [Nothing.]]
-]
-
-[member_heading work_stealing..pick_next]
-
-        virtual context * pick_next() noexcept;
-
-[variablelist
-[[Returns:] [the fiber at the head of the ready queue, or `nullptr` if the
-queue is empty.]]
-[[Throws:] [Nothing.]]
-[[Note:] [Placing ready fibers onto the tail of the sahred queue, and returning them
-from the head of that queue, shares the thread between ready fibers in
-round-robin fashion.]]
-]
-
-[member_heading work_stealing..has_ready_fibers]
-
-        virtual bool has_ready_fibers() const noexcept;
-
-[variablelist
-[[Returns:] [`true` if scheduler has fibers ready to run.]]
-[[Throws:] [Nothing.]]
-]
-
-[member_heading work_stealing..suspend_until]
-
-        virtual void suspend_until( std::chrono::steady_clock::time_point const& abs_time) noexcept;
-
-[variablelist
-[[Effects:] [Informs `work_stealing` that no ready fiber will be available until
-time-point `abs_time`. This implementation blocks in
-[@http://en.cppreference.com/w/cpp/thread/condition_variable/wait_until
-`std::condition_variable::wait_until()`].]]
-[[Throws:] [Nothing.]]
-]
-
-[member_heading work_stealing..notify]
-
-        virtual void notify() noexcept = 0;
-
-[variablelist
-[[Effects:] [Wake up a pending call to [member_link
-work_stealing..suspend_until], some fibers might be ready. This implementation
 wakes `suspend_until()` via
 [@http://en.cppreference.com/w/cpp/thread/condition_variable/notify_all
 `std::condition_variable::notify_all()`].]]
@@ -654,7 +707,7 @@ of typical STL containers.
             void wait_unlink() noexcept;
 
             void suspend() noexcept;
-            void set_ready( context *) noexcept;
+            void schedule( context *) noexcept;
         };
 
         bool operator<( context const& l, context const& r) noexcept;
@@ -877,20 +930,20 @@ __boost_intrusive__.]]
 
 [variablelist
 [[Effects:] [Suspends the running fiber (the fiber associated with `*this`)
-until some other fiber passes `this` to [member_link context..set_ready].
+until some other fiber passes `this` to [member_link context..schedule].
 `*this` is marked as not-ready, and control passes to the scheduler to select
 another fiber to run.]]
 [[Throws:] [Nothing]]
 [[Note:] [This is a low-level API potentially useful for integration with
 other frameworks. It is not intended to be directly invoked by a typical
 application program.]]
-[[Note:] [The burden is on the caller to arrange for a call to `set_ready()`
+[[Note:] [The burden is on the caller to arrange for a call to `schedule()`
 with a pointer to `this` at some future time.]]
 ]
 
-[member_heading context..set_ready]
+[member_heading context..schedule]
 
-        void set_ready( context * ctx ) noexcept;
+        void schedule( context * ctx ) noexcept;
 
 [variablelist
 [[Effects:] [Mark the fiber associated with context `*ctx` as being ready to
@@ -902,11 +955,11 @@ returned from a call to [member_link algorithm..suspend_until]),
 [[Note:] [This is a low-level API potentially useful for integration with
 other frameworks. It is not intended to be directly invoked by a typical
 application program.]]
-[[Note:] [It is explicitly supported to call `set_ready(ctx)` from a thread
+[[Note:] [It is explicitly supported to call `schedule(ctx)` from a thread
 other than the one on which `*ctx` is currently suspended. The corresponding
 fiber will be resumed on its original thread in due course.]]
 [/[[Note:] [See [member_link context..migrate] for a way to migrate the
-suspended thread to the thread calling `set_ready()`.]]]
+suspended thread to the thread calling `schedule()`.]]]
 ]
 
 [hding context_less..Non-member function [`operator<()]]

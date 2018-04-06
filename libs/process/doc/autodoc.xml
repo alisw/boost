@@ -60,7 +60,7 @@ spawn("gcc", args+={"--version"});
 </namespace>
 </header>
 <header name="boost/process/async.hpp">
-<para>The header which provides the basic asynchrounous features. It provides the on_exit property, which allows callbacks when the process exits. It also implements the necessary traits for passing an boost::asio::io_service, which is needed for asynchronous communication.</para><para>It also pulls the <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/buffer.html">boost::asio::buffer</ulink> into the boost::process namespace for convenience.</para><para> 
+<para>The header which provides the basic asynchrounous features. It provides the on_exit property, which allows callbacks when the process exits. It also implements the necessary traits for passing an boost::asio::io_context, which is needed for asynchronous communication.</para><para>It also pulls the <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/buffer.html">boost::asio::buffer</ulink> into the boost::process namespace for convenience.</para><para> 
 <programlisting language="c++">
 namespace boost {
   namespace process {
@@ -72,17 +72,17 @@ namespace boost {
 
  </para><namespace name="boost">
 <namespace name="process">
-<data-member name="on_exit" specifiers="static"><type><emphasis>unspecified</emphasis></type><description><para>When an io_service is passed, the on_exit property can be used, to be notified when the child process exits.</para><para>The following syntax is valid</para><para><programlisting language="c++">on_exit=function;
+<data-member name="on_exit" specifiers="static"><type><emphasis>unspecified</emphasis></type><description><para>When an io_context is passed, the on_exit property can be used, to be notified when the child process exits.</para><para>The following syntax is valid</para><para><programlisting language="c++">on_exit=function;
 on_exit(function);
 </programlisting></para><para>with <computeroutput>function</computeroutput> being a callable object with the signature <computeroutput>(int, const std::error_code&amp;)</computeroutput> or an <computeroutput>std::future&lt;int&gt;</computeroutput>.</para><para><formalpara><title>Example</title><para/></formalpara>
-<programlisting language="c++">io_service ios;
+<programlisting language="c++">io_context ios;
 
 child c("ls", on_exit=[](int exit, const std::error_code&amp; ec_in){});
 
 std::future&lt;int&gt; exit_code;
 chlid c2("ls", on_exit=exit_code);
 </programlisting></para><para><note><para>The handler is not invoked when the launch fails. </para></note>
-<warning><para>When used ignore_error it might gte invoked on error. </para></warning>
+<warning><para>When used ignore_error it might get invoked on error. </para><para>All <computeroutput>on_exit</computeroutput> use one signal(SIGCHLD) on posix, which is only guaranteed to work when all use the same <computeroutput>io_context</computeroutput>. </para></warning>
 </para></description></data-member>
 
 
@@ -132,22 +132,22 @@ chlid c2("ls", on_exit=exit_code);
 <method name="source" cv="const"><type>const handle_type &amp;</type><purpose>Get the asio handle of the pipe source. </purpose></method>
 <method name="sink"><type>handle_type &amp;&amp;</type><purpose>Get the asio handle of the pipe sink. Qualified as rvalue. </purpose></method>
 <method name="source"><type>handle_type &amp;&amp;</type><purpose>Get the asio handle of the pipe source. Qualified as rvalue. </purpose></method>
-<method name="source"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_service &amp;</paramtype></parameter><purpose>Move the source out of this class and change the io_service. Qualified as rvalue. </purpose><description><para><note><para>Will always move. </para></note>
+<method name="source"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_context &amp;</paramtype></parameter><purpose>Move the source out of this class and change the io_context. Qualified as rvalue. </purpose><description><para><note><para>Will always move. </para></note>
 </para></description></method>
-<method name="sink"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_service &amp;</paramtype></parameter><purpose>Move the sink out of this class and change the io_service. Qualified as rvalue. </purpose><description><para><note><para>Will always move </para></note>
+<method name="sink"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_context &amp;</paramtype></parameter><purpose>Move the sink out of this class and change the io_context. Qualified as rvalue. </purpose><description><para><note><para>Will always move </para></note>
 </para></description></method>
-<method name="source" cv="const"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_service &amp;</paramtype></parameter><purpose>Copy the source out of this class and change the io_service. </purpose><description><para><note><para>Will always copy. </para></note>
+<method name="source" cv="const"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_context &amp;</paramtype></parameter><purpose>Copy the source out of this class and change the io_context. </purpose><description><para><note><para>Will always copy. </para></note>
 </para></description></method>
-<method name="sink" cv="const"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_service &amp;</paramtype></parameter><purpose>Copy the sink out of this class and change the io_service. </purpose><description><para><note><para>Will always copy </para></note>
+<method name="sink" cv="const"><type>handle_type</type><parameter name="ios"><paramtype>::boost::asio::io_context &amp;</paramtype></parameter><purpose>Copy the sink out of this class and change the io_context. </purpose><description><para><note><para>Will always copy </para></note>
 </para></description></method>
 </method-group>
-<constructor><parameter name="ios"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open the pipe. Initializes source and sink with the same io_service. <note><para>Windows creates a named pipe here, where the name is automatically generated. </para></note>
+<constructor><parameter name="ios"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open the pipe. Initializes source and sink with the same io_context. <note><para>Windows creates a named pipe here, where the name is automatically generated. </para></note>
 </para></description></constructor>
-<constructor><parameter name="ios_source"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="ios_sink"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open the pipe. <note><para>Windows creates a named pipe here, where the name is automatically generated. </para></note>
+<constructor><parameter name="ios_source"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="ios_sink"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open the pipe. <note><para>Windows creates a named pipe here, where the name is automatically generated. </para></note>
 </para></description></constructor>
-<constructor><parameter name="ios"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open. Initializes source and sink with the same io_service.</para><para><note><para>Windows restricts possible names. </para></note>
+<constructor><parameter name="ios"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open. Initializes source and sink with the same io_context.</para><para><note><para>Windows restricts possible names. </para></note>
 </para></description></constructor>
-<constructor><parameter name="ios_source"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="ios_sink"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open.</para><para><note><para>Windows restricts possible names. </para></note>
+<constructor><parameter name="ios_source"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="ios_sink"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><description><para>Construct a new <classname alt="boost::process::async_pipe">async_pipe</classname>, does automatically open.</para><para><note><para>Windows restricts possible names. </para></note>
 </para></description></constructor>
 <constructor><parameter name="lhs"><paramtype>const <classname>async_pipe</classname> &amp;</paramtype></parameter><description><para>Copy-Constructor of the async pipe. <note><para>Windows requires a named pipe for this, if a the wrong type is used an exception is thrown. </para></note>
 </para></description></constructor>
@@ -155,12 +155,12 @@ chlid c2("ls", on_exit=exit_code);
 <constructor specifiers="explicit"><template>
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="Traits"><default>std::char_traits&lt;CharT&gt;</default></template-type-parameter>
-        </template><parameter name="ios"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="p"><paramtype>const <classname>basic_pipe</classname>&lt; CharT, Traits &gt; &amp;</paramtype></parameter><description><para>Construct the async-pipe from a pipe. <note><para>Windows requires a named pipe for this, if a the wrong type is used an exception is thrown. </para></note>
+        </template><parameter name="ios"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="p"><paramtype>const <classname>basic_pipe</classname>&lt; CharT, Traits &gt; &amp;</paramtype></parameter><description><para>Construct the async-pipe from a pipe. <note><para>Windows requires a named pipe for this, if a the wrong type is used an exception is thrown. </para></note>
 </para></description></constructor>
 <constructor specifiers="explicit"><template>
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="Traits"><default>std::char_traits&lt;CharT&gt;</default></template-type-parameter>
-        </template><parameter name="ios_source"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="ios_sink"><paramtype>boost::asio::io_service &amp;</paramtype></parameter><parameter name="p"><paramtype>const <classname>basic_pipe</classname>&lt; CharT, Traits &gt; &amp;</paramtype></parameter><description><para>Construct the async-pipe from a pipe, with two different io_service objects. <note><para>Windows requires a named pipe for this, if a the wrong type is used an exception is thrown. </para></note>
+        </template><parameter name="ios_source"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="ios_sink"><paramtype>boost::asio::io_context &amp;</paramtype></parameter><parameter name="p"><paramtype>const <classname>basic_pipe</classname>&lt; CharT, Traits &gt; &amp;</paramtype></parameter><description><para>Construct the async-pipe from a pipe, with two different io_context objects. <note><para>Windows requires a named pipe for this, if a the wrong type is used an exception is thrown. </para></note>
 </para></description></constructor>
 <copy-assignment><type><classname>async_pipe</classname> &amp;</type><template>
           <template-type-parameter name="CharT"/>
@@ -184,18 +184,18 @@ chlid c2("ls", on_exit=exit_code);
 <header name="boost/process/async_system.hpp">
 <para>Defines the asynchrounous version of the system function. </para><namespace name="boost">
 <namespace name="process">
+
+
+
+
+
+
 <function name="async_system"><type><emphasis>unspecified</emphasis></type><template>
           <template-type-parameter name="ExitHandler"/>
           <template-nontype-parameter name="Args"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="ios"><paramtype>boost::asio::io_service &amp;</paramtype><description><para>A reference to an <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference.html">io_service</ulink> </para></description></parameter><parameter name="exit_handler"><paramtype>ExitHandler &amp;&amp;</paramtype><description><para>The exit-handler for the signature <computeroutput>void(boost::system::error_code, int)</computeroutput></para></description></parameter><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>This function provides an asynchronous interface to process launching.</para><para>It uses the same properties and parameters as the other launching function, but is similar to the asynchronous functions in <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio.html">boost.asio</ulink></para><para>It uses <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/async_result.html">asio::async_result</ulink> to determine the return value (from the second parameter, <computeroutput>exit_handler</computeroutput>).</para><para>
+        </template><parameter name="ios"><paramtype>boost::asio::io_context &amp;</paramtype><description><para>A reference to an <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference.html">io_context</ulink> </para></description></parameter><parameter name="exit_handler"><paramtype>ExitHandler &amp;&amp;</paramtype><description><para>The exit-handler for the signature <computeroutput>void(boost::system::error_code, int)</computeroutput></para></description></parameter><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>This function provides an asynchronous interface to process launching.</para><para>It uses the same properties and parameters as the other launching function, but is similar to the asynchronous functions in <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio.html">boost.asio</ulink></para><para>It uses <ulink url="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/async_result.html">asio::async_result</ulink> to determine the return value (from the second parameter, <computeroutput>exit_handler</computeroutput>).</para><para>
 <note><para>This function does not allow custom error handling, since those are done through the <computeroutput>exit_handler</computeroutput>. </para></note>
 </para></description></function>
-
-
-
-
-
-
 </namespace>
 </namespace>
 </header>
@@ -244,7 +244,8 @@ chlid c2("ls", on_exit=exit_code);
 <copy-assignment><type><classname>child</classname> &amp;</type><parameter name="lhs"><paramtype><classname>child</classname> &amp;&amp;</paramtype></parameter><description><para>Move assign. </para></description></copy-assignment>
 <destructor><description><para>Destructor. <note><para>Will call terminate (without warning) when the child was neither joined nor detached. </para></note>
 </para></description></destructor>
-</class>
+</class><typedef name="pid_t"><purpose>Typedef for the type of an pid_t. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
+
 
 
 
@@ -291,7 +292,7 @@ namespace boost {
 <listitem><para><ulink url="https://msdn.microsoft.com/en-US/library/windows/desktop/ms682653.aspx">windows</ulink></para></listitem><listitem><para><ulink url="http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html">posix</ulink> </para></listitem></itemizedlist>
 </para><namespace name="boost">
 <namespace name="process">
-<data-member name="env"><type><emphasis>unspecified</emphasis></type><description><para>The <computeroutput>env</computeroutput> property provides a functional way to modify the environment used by the child process. If none is passed the environment is inherited from the father process. Appending means that the environment will be interpreted as a ';' or ':' seperated list as used in <computeroutput>PATH</computeroutput>.</para><para>On both <computeroutput>posix</computeroutput> and <computeroutput>windows</computeroutput> the environment variables can be lists of strings, seperated by ';'. This is typically used for the <computeroutput>PATH</computeroutput> variable.</para><para>By default the environment will be inherited from the launching process, which is also true if environment are modified with this initializer.</para><sect1 id="namespaceboost_1_1process_1env_details">
+<data-member name="env"><type><emphasis>unspecified</emphasis></type><description><para>The <computeroutput>env</computeroutput> property provides a functional way to modify the environment used by the child process. If none is passed the environment is inherited from the father process. Appending means that the environment will be interpreted as a ';' or ':' separated list as used in <computeroutput>PATH</computeroutput>.</para><para>On both <computeroutput>posix</computeroutput> and <computeroutput>windows</computeroutput> the environment variables can be lists of strings, separated by ';'. This is typically used for the <computeroutput>PATH</computeroutput> variable.</para><para>By default the environment will be inherited from the launching process, which is also true if environment are modified with this initializer.</para><sect1 id="namespaceboost_1_1process_1env_details">
 <title>Details</title>
 <sect2 id="namespaceboost_1_1process_1env_operations">
 <title>Operations</title>
@@ -413,14 +414,14 @@ spawn("b2", e);
 <method name="entry" cv="= default"><type/><parameter name=""><paramtype>const entry &amp;</paramtype></parameter><purpose>Copy Constructor. </purpose></method>
 <method name="empty" cv="const"><type>bool</type><purpose>Check if the entry is empty. </purpose></method>
 <method name="assign"><type>void</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Assign a string to the value. </purpose></method>
-<method name="assign"><type>void</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be seperated by ';' or ':'. </purpose></method>
-<method name="append"><type>void</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will seperated by ';' or ':'. </purpose></method>
+<method name="assign"><type>void</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be separated by ';' or ':'. </purpose></method>
+<method name="append"><type>void</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will separated by ';' or ':'. </purpose></method>
 <method name="clear"><type>void</type><purpose>Reset the value. </purpose></method>
-<method name="operator+="><type>entry &amp;</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will seperated by ';' or ':'. </purpose></method>
+<method name="operator+="><type>entry &amp;</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will separated by ';' or ':'. </purpose></method>
 </method-group>
 <copy-assignment cv="= default"><type>entry &amp;</type><parameter name=""><paramtype>const entry &amp;</paramtype></parameter><purpose>Move Constructor. </purpose></copy-assignment>
 <copy-assignment><type>entry &amp;</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Assign a string to the entry. </purpose></copy-assignment>
-<copy-assignment><type>entry &amp;</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be seperated by ';' or ':'. </purpose></copy-assignment>
+<copy-assignment><type>entry &amp;</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be separated by ';' or ':'. </purpose></copy-assignment>
 </struct><typedef name="string_type"><type>std::basic_string&lt; Char &gt;</type></typedef>
 <typedef name="iterator"><type>boost::transform_iterator&lt; entry_maker, Char ** &gt;</type></typedef>
 <typedef name="const_iterator"><type>boost::transform_iterator&lt; const_entry_maker, Char ** &gt;</type></typedef>
@@ -483,14 +484,14 @@ spawn("b2", e);
 <method name="entry" cv="= default"><type/><parameter name=""><paramtype>const entry &amp;</paramtype></parameter><purpose>Copy Constructor. </purpose></method>
 <method name="empty" cv="const"><type>bool</type><purpose>Check if the entry is empty. </purpose></method>
 <method name="assign"><type>void</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Assign a string to the value. </purpose></method>
-<method name="assign"><type>void</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be seperated by ';' or ':'. </purpose></method>
-<method name="append"><type>void</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will seperated by ';' or ':'. </purpose></method>
+<method name="assign"><type>void</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be separated by ';' or ':'. </purpose></method>
+<method name="append"><type>void</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will separated by ';' or ':'. </purpose></method>
 <method name="clear"><type>void</type><purpose>Reset the value. </purpose></method>
-<method name="operator+="><type>entry &amp;</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will seperated by ';' or ':'. </purpose></method>
+<method name="operator+="><type>entry &amp;</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Append a string to the end of the entry, it will separated by ';' or ':'. </purpose></method>
 </method-group>
 <copy-assignment cv="= default"><type>entry &amp;</type><parameter name=""><paramtype>const entry &amp;</paramtype></parameter><purpose>Move Constructor. </purpose></copy-assignment>
 <copy-assignment><type>entry &amp;</type><parameter name="value"><paramtype>const string_type &amp;</paramtype></parameter><purpose>Assign a string to the entry. </purpose></copy-assignment>
-<copy-assignment><type>entry &amp;</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be seperated by ';' or ':'. </purpose></copy-assignment>
+<copy-assignment><type>entry &amp;</type><parameter name="value"><paramtype>const std::vector&lt; string_type &gt; &amp;</paramtype></parameter><purpose>Assign a set of strings to the entry; they will be separated by ';' or ':'. </purpose></copy-assignment>
 </struct><typedef name="string_type"><type>std::basic_string&lt; Char &gt;</type></typedef>
 <typedef name="iterator"><type>boost::transform_iterator&lt; entry_maker, Char ** &gt;</type></typedef>
 <typedef name="const_iterator"><type>boost::transform_iterator&lt; const_entry_maker, Char ** &gt;</type></typedef>
@@ -646,7 +647,7 @@ Please refer to the <link linkend="boost_process.extend">tutorial</link> for mor
 <note><para>It will be invoked from the new process. </para></note>
 </para></description></method>
 </method-group>
-</struct><struct name="require_io_service"><description><para>Inheriting the class will tell the launching process that an <computeroutput>io_service</computeroutput> is needed. This should always be used when get_io_service is used. </para></description></struct><struct name="async_handler"><inherit access="public">boost::process::extend::handler</inherit><inherit access="public">boost::process::extend::require_io_service</inherit><description><para>Inheriting this class will tell the launching function, that an event handler shall be invoked when the process exits. This automatically does also inherit <classname alt="boost::process::extend::require_io_service">require_io_service</classname>.</para><para>You must add the following function to your implementation:</para><para><programlisting language="c++">template&lt;typename Executor&gt;
+</struct><struct name="require_io_context"><description><para>Inheriting the class will tell the launching process that an <computeroutput>io_context</computeroutput> is needed. This should always be used when get_io_context is used. </para></description></struct><struct name="async_handler"><inherit access="public">boost::process::extend::handler</inherit><inherit access="public">boost::process::extend::require_io_context</inherit><description><para>Inheriting this class will tell the launching function, that an event handler shall be invoked when the process exits. This automatically does also inherit <classname alt="boost::process::extend::require_io_context">require_io_context</classname>.</para><para>You must add the following function to your implementation:</para><para><programlisting language="c++">template&lt;typename Executor&gt;
 std::function&lt;void(int, const std::error_code&amp;)&gt; on_exit_handler(Executor &amp; exec)
 {
     auto handler = this-&gt;handler;
@@ -756,7 +757,7 @@ else
 <data-member name="cmd_line"><type>char *const *</type><purpose>A pointer to the argument-vector. </purpose></data-member>
 <data-member name="env"><type>char **</type><purpose>A pointer to the environment variables, as default it is set to <ulink url="http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap08.html">environ</ulink> </purpose></data-member>
 <data-member name="pid"><type>pid_t</type><purpose>The pid of the process - it will be -1 before invoking <ulink url="http://pubs.opengroup.org/onlinepubs/009695399/functions/fork.html">fork</ulink>, and after forking either 0 for the new process or a positive value if in the current process. */. </purpose></data-member>
-<data-member name="exit_status"><type>std::shared_ptr&lt; std::atomic&lt; int &gt; &gt;</type><purpose>This shared-pointer holds the exit code. It's done this way, so it can be shared between an <computeroutput>asio::io_service</computeroutput> and <classname alt="boost::process::child">child</classname>. </purpose></data-member>
+<data-member name="exit_status"><type>std::shared_ptr&lt; std::atomic&lt; int &gt; &gt;</type><purpose>This shared-pointer holds the exit code. It's done this way, so it can be shared between an <computeroutput>asio::io_context</computeroutput> and <classname alt="boost::process::child">child</classname>. </purpose></data-member>
 <method-group name="public member functions">
 <method name="error" cv="const"><type>const std::error_code &amp;</type><purpose>This function returns a const reference to the error state of the executor. </purpose></method>
 <method name="set_error"><type>void</type><parameter name="ec"><paramtype>const std::error_code &amp;</paramtype></parameter><parameter name="msg"><paramtype>const std::string &amp;</paramtype></parameter><description><para>This function can be used to report an error to the executor. This will be handled according to the configuration of the executor, i.e. it might throw an exception. <note><para>This is the required way to handle errors in initializers. </para></note>
@@ -829,7 +830,7 @@ else
 <data-member name="thread_attrs"><type><emphasis>unspecified</emphasis></type><purpose>A pointer to the thread-attributes of type <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/aa379560.aspx">SECURITY_ATTRIBUTES</ulink>. It' null by default. </purpose></data-member>
 <data-member name="inherit_handles"><type><emphasis>unspecified</emphasis></type><purpose>A logical bool value setting whether handles shall be inherited or not. </purpose></data-member>
 <data-member name="proc_info"><type><emphasis>unspecified</emphasis></type><purpose>The element holding the process-information after process creation. The type is <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684873.aspx">PROCESS_INFORMATION</ulink> </purpose></data-member>
-<data-member name="exit_status"><type>std::shared_ptr&lt; std::atomic&lt; int &gt; &gt;</type><purpose>This shared-pointer holds the exit code. It's done this way, so it can be shared between an <computeroutput>asio::io_service</computeroutput> and <classname alt="boost::process::child">child</classname>. </purpose></data-member>
+<data-member name="exit_status"><type>std::shared_ptr&lt; std::atomic&lt; int &gt; &gt;</type><purpose>This shared-pointer holds the exit code. It's done this way, so it can be shared between an <computeroutput>asio::io_context</computeroutput> and <classname alt="boost::process::child">child</classname>. </purpose></data-member>
 <data-member name="creation_flags"><type><emphasis>unspecified</emphasis></type><purpose>The creation flags of the process. </purpose></data-member>
 <data-member name="startup_info"><type>startup_info_t</type><purpose>This element is an instance or a reference (if startup_info_ex exists) to the <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms686331.aspx">startup-info</ulink> for the process. </purpose></data-member>
 <data-member name="startup_info_ex"><type>startup_info_ex_t</type><purpose>This element is the instance of the <ulink url="https://msdn.microsoft.com/de-de/library/windows/desktop/ms686329.aspx">extended startup-info</ulink>. It is only available with a winapi-version equal or highter than 6. </purpose></data-member>
@@ -855,9 +856,9 @@ else
 
 </para></description><throws><simpara><classname>boost::process::process_error</classname> </simpara></throws></overloaded-function>
 
-<function name="get_io_service"><type>asio::io_service &amp;</type><template>
+<function name="get_io_context"><type>asio::io_context &amp;</type><template>
           <template-type-parameter name="Sequence"/>
-        </template><parameter name="seq"><paramtype>const Sequence &amp;</paramtype><description><para>The Sequence of the initializer. </para></description></parameter><description><para>This function gets the io_service from the initializer sequence.</para><para><note><para>Yields a compile-time error if no <computeroutput>io_service</computeroutput> is provided. </para></note>
+        </template><parameter name="seq"><paramtype>const Sequence &amp;</paramtype><description><para>The Sequence of the initializer. </para></description></parameter><description><para>This function gets the io_context from the initializer sequence.</para><para><note><para>Yields a compile-time error if no <computeroutput>io_context</computeroutput> is provided. </para></note>
 
 </para></description></function>
 </namespace>
@@ -961,12 +962,12 @@ str &gt;&gt; i;
 child c1("nm", "a.out", std_out&gt;p);
 child c2("c++filt", std_in&lt;p);
 </programlisting></para><para><formalpara><title>Asynchronous I/O</title><para/></formalpara>
-Utilizing <computeroutput>boost.asio</computeroutput> asynchronous I/O is provided.</para><para><programlisting language="c++">boost::asio::io_service ios;
+Utilizing <computeroutput>boost.asio</computeroutput> asynchronous I/O is provided.</para><para><programlisting language="c++">boost::asio::io_context ios;
 std::future&lt;std::string&gt; output;
 system("ls", std_out &gt; output, ios);
 
 auto res = fut.get();
-</programlisting></para><para><note><para><computeroutput>boost/process/asnyc.hpp</computeroutput> must also be included for this to work.</para></note>
+</programlisting></para><para><note><para><computeroutput>boost/process/async.hpp</computeroutput> must also be included for this to work.</para></note>
 <formalpara><title>Closing</title><para/></formalpara>
 Stream can be closed, so nothing can be read or written.</para><para><programlisting language="c++">system("foo", std_in.close());
 </programlisting></para><para><formalpara><title>Null</title><para/></formalpara>
@@ -1010,12 +1011,12 @@ std_err = buffer;
 (std_out &amp; std_err) &gt; buffer;
 (std_out &amp; std_err) = buffer;
 </programlisting></para><para><note><para>It is also possible to get a future for std_in, by chaining another <computeroutput>std::future&lt;void&gt;</computeroutput> onto it, so you can wait for the input to be completed. It looks like this: <programlisting language="c++">std::future&lt;void&gt; fut;
-boost::asio::io_service ios;
+boost::asio::io_context ios;
 std::string data;
 child c("prog", std_in &lt; buffer(data) &gt;  fut, ios);
 fut.get();
 </programlisting></para><para><computeroutput>boost::asio::buffer</computeroutput> is also available in the <computeroutput>boost::process</computeroutput> namespace.</para></note>
-<warning><para>This feature requires <computeroutput>boost/process/async.hpp</computeroutput> to be included and a reference to <computeroutput>boost::asio::io_service</computeroutput> to be passed to the launching function.</para></warning>
+<warning><para>This feature requires <computeroutput>boost/process/async.hpp</computeroutput> to be included and a reference to <computeroutput>boost::asio::io_context</computeroutput> to be passed to the launching function.</para></warning>
 </para></sect2>
 <sect2 id="namespaceboost_1_1process_1stdin_close">
 <title>Close</title>
@@ -1064,7 +1065,7 @@ std_err = buffer;
 (std_out &amp; std_err) &gt; buffer;
 (std_out &amp; std_err) = buffer;
 </programlisting></para><para><note><para><computeroutput>boost::asio::buffer</computeroutput> is also available in the <computeroutput>boost::process</computeroutput> namespace.</para></note>
-<warning><para>This feature requires <computeroutput>boost/process/async.hpp</computeroutput> to be included and a reference to <computeroutput>boost::asio::io_service</computeroutput> to be passed to the launching function.</para></warning>
+<warning><para>This feature requires <computeroutput>boost/process/async.hpp</computeroutput> to be included and a reference to <computeroutput>boost::asio::io_context</computeroutput> to be passed to the launching function.</para></warning>
 </para></sect2>
 <sect2 id="namespaceboost_1_1process_1stdout_close">
 <title>Close</title>
@@ -1095,11 +1096,11 @@ std_out.null();
 <namespace name="process">
 <typedef name="codecvt_type"><purpose>The internally used type for code conversion. </purpose><type>std::codecvt&lt; wchar_t, char, std::mbstate_t &gt;</type></typedef>
 
+
+
 <function name="codecvt_category"><type>const std::error_category &amp;</type><purpose>Internally used error cateory for code conversion. </purpose></function>
 <function name="codecvt"><type>const codecvt_type &amp;</type><purpose>Get a reference to the currently used code converter. </purpose></function>
 <function name="imbue"><type>std::locale</type><parameter name="loc"><paramtype>const std::locale &amp;</paramtype></parameter><purpose>Set the locale of the library. </purpose></function>
-
-
 
 </namespace>
 </namespace>
@@ -1177,7 +1178,7 @@ std_out.null();
 <typedef name="pos_type"><type>Traits::pos_type</type></typedef>
 <typedef name="off_type"><type>Traits::off_type</type></typedef>
 <method-group name="public member functions">
-<method name="rdbuf" cv="const"><type><classname>basic_pipebuf</classname>&lt; CharT, Traits &gt; *</type><purpose>Get access to the underlying stream_buf. </purpose></method>
+<method name="rdbuf"><type><classname>basic_pipebuf</classname>&lt; CharT, Traits &gt; *</type><purpose>Get access to the underlying stream_buf. </purpose></method>
 <method name="pipe"><type>void</type><parameter name="p"><paramtype><classname>pipe_type</classname> &amp;&amp;</paramtype></parameter><purpose>Set the pipe of the streambuf. </purpose></method>
 <method name="pipe"><type>void</type><parameter name="p"><paramtype>const <classname>pipe_type</classname> &amp;</paramtype></parameter><purpose>Set the pipe of the streambuf. </purpose></method>
 <method name="pipe"><type><classname>pipe_type</classname> &amp;</type><purpose>Get a reference to the pipe. </purpose></method>
@@ -1305,11 +1306,11 @@ sig(handler);
 <namespace name="process">
 
 
-
-
-<function name="search_path"><type>boost::filesystem::path</type><parameter name="filename"><paramtype>const boost::filesystem::path &amp;</paramtype><description><para>The base of the filename to find</para></description></parameter><parameter name="path"><paramtype>const std::vector&lt; boost::filesystem::path &gt;</paramtype><default>::boost::this_process::path()</default><description><para>the set of paths so search, defaults to "PATH" environment variable.</para></description></parameter><description><para>Searches for an executable in path.</para><para>filename must be a basename including the file extension. It must not include any directory separators (like a slash). On Windows the file extension may be omitted. The function will then try the various file extensions for executables on Windows to find filename.</para><para>
+<function name="search_path"><type>boost::filesystem::path</type><parameter name="filename"><paramtype>const boost::filesystem::path &amp;</paramtype><description><para>The base of the filename to find</para></description></parameter><parameter name="path"><paramtype>const std::vector&lt; boost::filesystem::path &gt;</paramtype><default>::boost::this_process::path()</default><description><para>the set of paths to search, defaults to the "PATH" environment variable.</para></description></parameter><description><para>Searches for an executable in path.</para><para>filename must be a basename including the file extension. It must not include any directory separators (like a slash). On Windows the file extension may be omitted. The function will then try the various file extensions for executables on Windows to find filename.</para><para>
 
 </para></description><returns><para>the absolute path to the executable filename or an empty string if filename isn't found </para></returns></function>
+
+
 
 
 </namespace>
@@ -1347,15 +1348,15 @@ shell_cmd = shell(ec);
 <para>Defines the spawn function. </para><namespace name="boost">
 <namespace name="process">
 
-
-
-
-
 <function name="spawn"><type>void</type><template>
           <template-nontype-parameter name="Args"><type>typename...</type></template-nontype-parameter>
         </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>Launch a process and detach it. Returns no handle.</para><para>This function starts a process and immediately detaches it. It thereby prevents the system from creating a zombie process, but will also cause the system to be unable to wait for the child to exit.</para><para><note><para>This will set <computeroutput>SIGCHLD</computeroutput> to <computeroutput>SIGIGN</computeroutput> on posix.</para></note>
-<warning><para>This function does not allow asynchronous operations, since it cannot wait for the end of the process. It will fail to compile if a reference to <computeroutput>boost::asio::io_service</computeroutput> is passed. </para></warning>
+<warning><para>This function does not allow asynchronous operations, since it cannot wait for the end of the process. It will fail to compile if a reference to <computeroutput>boost::asio::io_context</computeroutput> is passed. </para></warning>
 </para></description></function>
+
+
+
+
 
 </namespace>
 </namespace>
@@ -1387,17 +1388,17 @@ start_dir(path)
 <header name="boost/process/system.hpp">
 <para>Defines a system function. </para><namespace name="boost">
 <namespace name="process">
-
-
-
-
-
-
 <function name="system"><type>int</type><template>
           <template-nontype-parameter name="Args"><type>typename...</type></template-nontype-parameter>
         </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>Launches a process and waits for its exit. It works as std::system, though it allows all the properties boost.process provides. It will execute the process and wait for it's exit; then return the exit_code.</para><para><programlisting language="c++">int ret = system("ls");
 </programlisting></para><para><note><para>Using this function with synchronous pipes leads to many potential deadlocks.</para></note>
-When using this function with an asynchronous properties and NOT passing an io_service object, the system function will create one and run it. When the io_service is passed to the function, the system function will check if it is active, and call the io_service::run function if not. </para></description></function>
+When using this function with an asynchronous properties and NOT passing an io_context object, the system function will create one and run it. When the io_context is passed to the function, the system function will check if it is active, and call the io_context::run function if not. </para></description></function>
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>

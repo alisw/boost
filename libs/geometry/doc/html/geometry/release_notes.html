@@ -28,6 +28,119 @@
 </h2></div></div></div>
 <h4>
 <a name="geometry.release_notes.h0"></a>
+      <span class="phrase"><a name="geometry.release_notes.boost_1_66"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_66">Boost
+      1.66</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Improvements</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          Add distance for geographic PointLike/AnyGeometry.
+        </li></ul></div>
+<p>
+      <span class="bold"><strong>Solved issues</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          <a href="https://svn.boost.org/trac10/ticket/12503" target="_top">12503</a> Validity
+          of complex polygon
+        </li></ul></div>
+<p>
+      <span class="bold"><strong>Bugfixes</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Fixes in validity of union/intersection/difference which were sometimes
+          invalid. In most cases, results are valid now.
+        </li>
+<li class="listitem">
+          Fixes in validity of buffer which were sometimes invalid. In most cases,
+          results are valid now.
+        </li>
+<li class="listitem">
+          Fixes in results of union/intersection/difference which could be incorrect
+          in very complex cases
+        </li>
+<li class="listitem">
+          Fixes in set and relational operations for non-cartesian coordinate systems.
+        </li>
+</ul></div>
+<h4>
+<a name="geometry.release_notes.h1"></a>
+      <span class="phrase"><a name="geometry.release_notes.boost_1_65"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_65">Boost
+      1.65</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Improvements</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Add correct() overload taking area strategy
+        </li>
+<li class="listitem">
+          Add is_convex() overload taking side strategy
+        </li>
+<li class="listitem">
+          Add missing relational operations (covered_by, crosses, equals, etc.) for
+          MultiPoint/AnyGeometry
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Solved issues</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/12410" target="_top">12410</a>
+          Lack of support of geographic coordinate system in correct()
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/13035" target="_top">13035</a>
+          Wrong result of non-cartesian intersection strategies for segments near
+          poles.
+        </li>
+<li class="listitem">
+          <a href="https://svn.boost.org/trac/boost/ticket/13057" target="_top">13057</a>
+          Wrong result of intersects() for linestrings caused by numerical issue
+          in disjoint() for boxes.
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Bugfixes</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Fix is_valid which could return false for multipolygons where an interior
+          ring touches another interior ring
+        </li>
+<li class="listitem">
+          Fix is_valid which could return false for multipolygons where a polygon
+          was located in an interior ring, all touching each other
+        </li>
+<li class="listitem">
+          Fix union which could produce invalid results (for some cases, this needs
+          to define BOOST_GEOMETRY_INCLUDE_SELF_TURNS)
+        </li>
+<li class="listitem">
+          Fix intersection (idem), but some cases are still not yet valid
+        </li>
+<li class="listitem">
+          Fix difference (idem), but some cases are still not yet valid
+        </li>
+<li class="listitem">
+          Fix propagation of area strategy into the internals of various algorithms
+          from intersection strategy
+        </li>
+<li class="listitem">
+          Fix uninitialized variable in relate and reference to temporary in overlay
+        </li>
+<li class="listitem">
+          Fix error in disjoint for geographic Segment/Box
+        </li>
+<li class="listitem">
+          Fix handling of non-cartesian geometries in various algorithms
+        </li>
+</ul></div>
+<h4>
+<a name="geometry.release_notes.h2"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_64"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_64">Boost
       1.64</a>
     </h4>
@@ -106,7 +219,7 @@
           Fix distance_measure in get_turn_info
         </li></ul></div>
 <h4>
-<a name="geometry.release_notes.h1"></a>
+<a name="geometry.release_notes.h3"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_63"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_63">Boost
       1.63</a>
     </h4>
@@ -135,7 +248,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h2"></a>
+<a name="geometry.release_notes.h4"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_62"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_62">Boost
       1.62</a>
     </h4>
@@ -183,7 +296,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h3"></a>
+<a name="geometry.release_notes.h5"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_61"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_61">Boost
       1.61</a>
     </h4>
@@ -286,7 +399,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h4"></a>
+<a name="geometry.release_notes.h6"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_60"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_60">Boost
       1.60</a>
     </h4>
@@ -345,7 +458,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h5"></a>
+<a name="geometry.release_notes.h7"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_59"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_59">Boost
       1.59</a>
     </h4>
@@ -464,7 +577,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h6"></a>
+<a name="geometry.release_notes.h8"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_58"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_58">Boost
       1.58</a>
     </h4>
@@ -678,7 +791,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h7"></a>
+<a name="geometry.release_notes.h9"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_57"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_57">Boost
       1.57</a>
     </h4>
@@ -785,7 +898,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h8"></a>
+<a name="geometry.release_notes.h10"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_56"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_56">Boost
       1.56</a>
     </h4>
@@ -936,7 +1049,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h9"></a>
+<a name="geometry.release_notes.h11"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_55"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_55">Boost
       1.55</a>
     </h4>
@@ -1037,7 +1150,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h10"></a>
+<a name="geometry.release_notes.h12"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_54"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_54">Boost
       1.54</a>
     </h4>
@@ -1122,7 +1235,7 @@
           length, num_points)
         </li></ul></div>
 <h4>
-<a name="geometry.release_notes.h11"></a>
+<a name="geometry.release_notes.h13"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_53"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_53">Boost
       1.53</a>
     </h4>
@@ -1177,7 +1290,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h12"></a>
+<a name="geometry.release_notes.h14"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_51"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_51">Boost
       1.51</a>
     </h4>
@@ -1210,7 +1323,7 @@
           spherical distance, fixed (by patch of Karsten Ahnert)
         </li></ul></div>
 <h4>
-<a name="geometry.release_notes.h13"></a>
+<a name="geometry.release_notes.h15"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_50"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_50">Boost
       1.50</a>
     </h4>
@@ -1265,7 +1378,7 @@
           added algorithm "touches" (OGC SF compliant) for *polygon/*polygon
         </li></ul></div>
 <h4>
-<a name="geometry.release_notes.h14"></a>
+<a name="geometry.release_notes.h16"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_49"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_49">Boost
       1.49</a>
     </h4>
@@ -1385,7 +1498,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="geometry.release_notes.h15"></a>
+<a name="geometry.release_notes.h17"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_48"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_48">Boost
       1.48</a>
     </h4>
@@ -1477,7 +1590,7 @@
           Basic (limited) support for Boost.Rational
         </li></ul></div>
 <h4>
-<a name="geometry.release_notes.h16"></a>
+<a name="geometry.release_notes.h18"></a>
       <span class="phrase"><a name="geometry.release_notes.boost_1_47"></a></span><a class="link" href="release_notes.html#geometry.release_notes.boost_1_47">Boost
       1.47</a>
     </h4>

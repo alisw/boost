@@ -2,6 +2,112 @@
 <library-reference id="header_reference"><title>Header Reference</title><header name="boost/compute/algorithm/accumulate.hpp">
 <namespace name="boost">
 <namespace name="compute">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="accumulate"><signature><type>T</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
@@ -18,114 +124,9 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;int&gt;()); // fast
 // with vec = boost::compute::vector&lt;float&gt;
 accumulate(vec.begin(), vec.end(), 0, plus&lt;float&gt;());   // slow
 reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>reduce() </para></para>
+</programlisting></para><para>Space complexity: (1)<sbr/>
+ Space complexity when optimized to <computeroutput>reduce()</computeroutput>: (n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>reduce() </para></para>
 </para></description><returns><para>the accumulated result value</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -160,6 +161,108 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
 <namespace name="compute">
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="adjacent_difference"><signature><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -169,110 +272,9 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Stores the difference of each pair of consecutive values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput>. If <computeroutput>op</computeroutput> is not provided, <computeroutput>minus&lt;T&gt;</computeroutput> is used.</para><para>
 
-<para><emphasis role="bold">See Also:</emphasis><para>adjacent_find() </para></para>
+Space complexity: (1)<sbr/>
+ Space complexity when <computeroutput>result</computeroutput> == <computeroutput>first:</computeroutput> (n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>adjacent_find() </para></para>
 </para></description><returns><para><computeroutput>OutputIterator</computeroutput> to the end of the result range</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -311,6 +313,104 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="adjacent_find"><signature><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Compare"/>
@@ -318,106 +418,8 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
           <template-type-parameter name="InputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Searches the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for two identical adjacent elements and returns an iterator pointing to the first.</para><para>
 
-<para><emphasis role="bold">See Also:</emphasis><para>find(), adjacent_difference() </para></para>
+Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>find(), adjacent_difference() </para></para>
 </para></description><returns><para><computeroutput>InputIteratorm</computeroutput> to the first element which compares equal to the following element. If none are equal, returns <computeroutput>last</computeroutput>.</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -460,106 +462,106 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="all_of"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> for all of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>any_of(), none_of() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> for all of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>any_of(), none_of() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -604,104 +606,104 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="any_of"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> for any of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>For example, to test if a vector contains any negative values:</para><para><programlisting language="c++"/> <para><emphasis role="bold">See Also:</emphasis><para>all_of(), none_of() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> for any of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>For example, to test if a vector contains any negative values:</para><para><programlisting language="c++"/> Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>all_of(), none_of() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -748,101 +750,101 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="binary_search"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>value</computeroutput> is in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>). </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>value</computeroutput> is in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -891,6 +893,94 @@ reduce(vec.begin(), vec.end(), &amp;result, plus&lt;float&gt;()); // fast
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="copy"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -921,101 +1011,13 @@ boost::compute::copy(
 boost::compute::copy(
     device_vector.begin(), device_vector.end(), host_vector.begin(), queue
 );
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>copy_n(), copy_if(), copy_async() </para></para>
+</programlisting></para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>copy_n(), copy_if(), copy_async() </para></para>
 </para></description><returns><para><computeroutput>OutputIterator</computeroutput> to the end of the result range</para></returns></function>
 <function name="copy_async"><type><classname>future</classname>&lt; OutputIterator &gt;</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput>. The copy is performed asynchronously.</para><para><para><emphasis role="bold">See Also:</emphasis><para>copy() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1067,96 +1069,96 @@ boost::compute::copy(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="copy_if"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="Predicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> to the range beginning at <computeroutput>result</computeroutput>. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> to the range beginning at <computeroutput>result</computeroutput>.</para><para>Space complexity: (2n) </para></description></function>
 
 
 
@@ -1211,6 +1213,89 @@ boost::compute::copy(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="copy_n"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Size"/>
@@ -1221,91 +1306,8 @@ float values[4] = { 1.f, 2.f, 3.f, 4.f };
 
 // copy from the host to the device
 boost::compute::copy_n(values, 4, vec.begin(), queue);
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>copy() </para></para>
+</programlisting></para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>copy() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1362,92 +1364,93 @@ boost::compute::copy_n(values, 4, vec.begin(), queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="count"><type>size_t</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns the number of occurrences of <computeroutput>value</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>count_if() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns the number of occurrences of <computeroutput>value</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity on CPUs: (1)<sbr/>
+ Space complexity on GPUs: (n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>count_if() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1506,89 +1509,90 @@ boost::compute::copy_n(values, 4, vec.begin(), queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="count_if"><type>size_t</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Predicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns the number of elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput>. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns the number of elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput>.</para><para>Space complexity on CPUs: (1)<sbr/>
+ Space complexity on GPUs: (n) </para></description></function>
 
 
 
@@ -1649,89 +1653,89 @@ boost::compute::copy_n(values, 4, vec.begin(), queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="equal"><signature><type>bool</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
         </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><signature><type>bool</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns <computeroutput>true</computeroutput> if the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) and the range beginning at <computeroutput>first2</computeroutput> are equal. </para></description></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns <computeroutput>true</computeroutput> if the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) and the range beginning at <computeroutput>first2</computeroutput> are equal.</para><para>Space complexity: (1) </para></description></overloaded-function>
 
 
 
@@ -1796,83 +1800,83 @@ boost::compute::copy_n(values, 4, vec.begin(), queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="equal_range"><type>std::pair&lt; InputIterator, InputIterator &gt;</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns a pair of iterators containing the range of values equal to <computeroutput>value</computeroutput> in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>). </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns a pair of iterators containing the range of values equal to <computeroutput>value</computeroutput> in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -1939,6 +1943,75 @@ boost::compute::copy_n(values, 4, vec.begin(), queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="exclusive_scan"><signature><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -1953,77 +2026,10 @@ boost::compute::copy_n(values, 4, vec.begin(), queue);
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Performs an exclusive scan of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) and stores the results in the range beginning at <computeroutput>result</computeroutput>.</para><para>Each element in the output is assigned to the sum of all the previous values in the input.</para><para>
 
-The default operation is to add the elements up.</para><para><programlisting language="c++"/> But different associative operation can be specified as <computeroutput>binary_op</computeroutput> instead (e.g., multiplication, maximum, minimum). Also value used to initialized the scan sequence can be specified.</para><para><programlisting language="c++"/> <para><emphasis role="bold">See Also:</emphasis><para>inclusive_scan() </para></para>
+The default operation is to add the elements up.</para><para><programlisting language="c++"/> But different associative operation can be specified as <computeroutput>binary_op</computeroutput> instead (e.g., multiplication, maximum, minimum). Also value used to initialized the scan sequence can be specified.</para><para><programlisting language="c++"/> Space complexity on GPUs: (n)<sbr/>
+ Space complexity on GPUs when <computeroutput>first</computeroutput> == <computeroutput>result:</computeroutput> (2n)<sbr/>
+ Space complexity on CPUs: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>inclusive_scan() </para></para>
 </para></description><returns><para><computeroutput>OutputIterator</computeroutput> to the end of the result range</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2096,6 +2102,70 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="fill"><type>void</type><template>
           <template-type-parameter name="BufferIterator"/>
           <template-type-parameter name="T"/>
@@ -2105,76 +2175,12 @@ For example, to fill a vector on the device with sevens: <programlisting languag
 
 // fill vector with sevens
 boost::compute::fill(vec.begin(), vec.end(), 7, queue);
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>boost::compute::fill_n() </para></para>
+</programlisting></para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>boost::compute::fill_n() </para></para>
 </para></description></function>
 <function name="fill_async"><type><classname>future</classname>&lt; void &gt;</type><template>
           <template-type-parameter name="BufferIterator"/>
           <template-type-parameter name="T"/>
         </template><parameter name="first"><paramtype>BufferIterator</paramtype></parameter><parameter name="last"><paramtype>BufferIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2250,73 +2256,73 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="fill_n"><type>void</type><template>
           <template-type-parameter name="BufferIterator"/>
           <template-type-parameter name="Size"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>BufferIterator</paramtype></parameter><parameter name="count"><paramtype>Size</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Fills the range [<computeroutput>first</computeroutput>, <computeroutput>first</computeroutput> + count) with <computeroutput>value</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>fill() </para></para>
+        </template><parameter name="first"><paramtype>BufferIterator</paramtype></parameter><parameter name="count"><paramtype>Size</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Fills the range [<computeroutput>first</computeroutput>, <computeroutput>first</computeroutput> + count) with <computeroutput>value</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>fill() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2395,69 +2401,69 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="find"><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) that equals <computeroutput>value</computeroutput>. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) that equals <computeroutput>value</computeroutput>.</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -2538,69 +2544,69 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="find_end"><type>TextIterator</type><template>
           <template-type-parameter name="TextIterator"/>
           <template-type-parameter name="PatternIterator"/>
-        </template><parameter name="t_first"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to start of text </para></description></parameter><parameter name="t_last"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to end of text </para></description></parameter><parameter name="p_first"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to start of pattern </para></description></parameter><parameter name="p_last"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to end of pattern </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Substring matching algorithm. </purpose><description><para>Searches for the last match of the pattern [p_first, p_last) in text [t_first, t_last). 
+        </template><parameter name="t_first"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to start of text </para></description></parameter><parameter name="t_last"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to end of text </para></description></parameter><parameter name="p_first"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to start of pattern </para></description></parameter><parameter name="p_last"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to end of pattern </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Substring matching algorithm. </purpose><description><para>Searches for the last match of the pattern [p_first, p_last) in text [t_first, t_last). 
 
-</para></description><returns><para>Iterator pointing to beginning of last occurence</para></returns></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Space complexity: (n) </para></description><returns><para>Iterator pointing to beginning of last occurence</para></returns></function>
 
 
 
@@ -2683,65 +2689,65 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="find_if"><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput>. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput>.</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -2826,64 +2832,64 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="find_if_not"><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>false</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>find_if() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>false</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>find_if() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2970,62 +2976,62 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="for_each"><type>UnaryFunction</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryFunction"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="function"><paramtype>UnaryFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Calls <computeroutput>function</computeroutput> on each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>transform() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="function"><paramtype>UnaryFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Calls <computeroutput>function</computeroutput> on each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>transform() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3114,61 +3120,61 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="for_each_n"><type>UnaryFunction</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Size"/>
           <template-type-parameter name="UnaryFunction"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="count"><paramtype>Size</paramtype></parameter><parameter name="function"><paramtype>UnaryFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Calls <computeroutput>function</computeroutput> on each element in the range [<computeroutput>first</computeroutput>, <computeroutput>first</computeroutput> <computeroutput>+</computeroutput> <computeroutput>count</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>for_each() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="count"><paramtype>Size</paramtype></parameter><parameter name="function"><paramtype>UnaryFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Calls <computeroutput>function</computeroutput> on each element in the range [<computeroutput>first</computeroutput>, <computeroutput>first</computeroutput> <computeroutput>+</computeroutput> <computeroutput>count</computeroutput>).</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>for_each() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3259,59 +3265,59 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="gather"><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="MapIterator"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first"><paramtype>MapIterator</paramtype></parameter><parameter name="last"><paramtype>MapIterator</paramtype></parameter><parameter name="input"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements using the indices from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> using the input values from the range beginning at <computeroutput>input</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>scatter() </para></para>
+        </template><parameter name="first"><paramtype>MapIterator</paramtype></parameter><parameter name="last"><paramtype>MapIterator</paramtype></parameter><parameter name="input"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements using the indices from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> using the input values from the range beginning at <computeroutput>input</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>scatter() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3404,55 +3410,55 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="generate"><type>void</type><template>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="Generator"/>
-        </template><parameter name="first"><paramtype>OutputIterator</paramtype></parameter><parameter name="last"><paramtype>OutputIterator</paramtype></parameter><parameter name="generator"><paramtype>Generator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Stores the result of <computeroutput>generator</computeroutput> for each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>). </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>OutputIterator</paramtype></parameter><parameter name="last"><paramtype>OutputIterator</paramtype></parameter><parameter name="generator"><paramtype>Generator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Stores the result of <computeroutput>generator</computeroutput> for each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -3547,54 +3553,54 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="generate_n"><type>void</type><template>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="Size"/>
           <template-type-parameter name="Generator"/>
-        </template><parameter name="first"><paramtype>OutputIterator</paramtype></parameter><parameter name="count"><paramtype>Size</paramtype></parameter><parameter name="generator"><paramtype>Generator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Stores the result of <computeroutput>generator</computeroutput> for each element in the range [<computeroutput>first</computeroutput>, <computeroutput>first</computeroutput> + <computeroutput>count</computeroutput>). </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>OutputIterator</paramtype></parameter><parameter name="count"><paramtype>Size</paramtype></parameter><parameter name="generator"><paramtype>Generator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Stores the result of <computeroutput>generator</computeroutput> for each element in the range [<computeroutput>first</computeroutput>, <computeroutput>first</computeroutput> + <computeroutput>count</computeroutput>).</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -3691,53 +3697,53 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="includes"><type>bool</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Includes algorithm. </purpose><description><para>Finds if the sorted range [first1, last1) includes the sorted range [first2, last2). In other words, it checks if [first1, last1) is a superset of [first2, last2).</para><para>
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Includes algorithm. </purpose><description><para>Finds if the sorted range [first1, last1) includes the sorted range [first2, last2). In other words, it checks if [first1, last1) is a superset of [first2, last2).</para><para>
 
-</para></description><returns><para>True, if [first1, last1) includes [first2, last2). False otherwise.</para></returns></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Space complexity: (distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>)) </para></description><returns><para>True, if [first1, last1) includes [first2, last2). False otherwise.</para></returns></function>
 
 
 
@@ -3836,6 +3842,44 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="inclusive_scan"><signature><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -3845,46 +3889,10 @@ boost::compute::fill(vec.begin(), vec.end(), 7, queue);
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Performs an inclusive scan of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) and stores the results in the range beginning at <computeroutput>result</computeroutput>.</para><para>Each element in the output is assigned to the sum of the current value in the input with the sum of every previous value in the input.</para><para>
 
-The default operation is to add the elements up.</para><para><programlisting language="c++"/> But different associative operation can be specified as <computeroutput>binary_op</computeroutput> instead (e.g., multiplication, maximum, minimum).</para><para><programlisting language="c++"/> <para><emphasis role="bold">See Also:</emphasis><para>exclusive_scan() </para></para>
+The default operation is to add the elements up.</para><para><programlisting language="c++"/> But different associative operation can be specified as <computeroutput>binary_op</computeroutput> instead (e.g., multiplication, maximum, minimum).</para><para><programlisting language="c++"/> Space complexity on GPUs: (n)<sbr/>
+ Space complexity on GPUs when <computeroutput>first</computeroutput> == <computeroutput>result:</computeroutput> (2n)<sbr/>
+ Space complexity on CPUs: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>exclusive_scan() </para></para>
 </para></description><returns><para><computeroutput>OutputIterator</computeroutput> to the end of the result range</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3987,6 +3995,40 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="inner_product"><signature><type>T</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
@@ -3997,41 +4039,8 @@ The default operation is to add the elements up.</para><para><programlisting lan
           <template-type-parameter name="T"/>
           <template-type-parameter name="BinaryAccumulateFunction"/>
           <template-type-parameter name="BinaryTransformFunction"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="init"><paramtype>T</paramtype></parameter><parameter name="accumulate_function"><paramtype>BinaryAccumulateFunction</paramtype></parameter><parameter name="transform_function"><paramtype>BinaryTransformFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns the inner product of the elements in the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) with the elements in the range beginning at <computeroutput>first2</computeroutput>. </para></description></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="init"><paramtype>T</paramtype></parameter><parameter name="accumulate_function"><paramtype>BinaryAccumulateFunction</paramtype></parameter><parameter name="transform_function"><paramtype>BinaryTransformFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns the inner product of the elements in the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) with the elements in the range beginning at <computeroutput>first2</computeroutput>.</para><para>Space complexity: (1)<sbr/>
+ Space complexity when binary operator is recognized as associative: (n) </para></description></overloaded-function>
 
 
 
@@ -4138,40 +4147,40 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="inplace_merge"><type>void</type><template>
           <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="middle"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Merges the sorted values in the range [<computeroutput>first</computeroutput>, <computeroutput>middle</computeroutput>) with the sorted values in the range [<computeroutput>middle</computeroutput>, <computeroutput>last</computeroutput>) in-place. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="middle"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Merges the sorted values in the range [<computeroutput>first</computeroutput>, <computeroutput>middle</computeroutput>) with the sorted values in the range [<computeroutput>middle</computeroutput>, <computeroutput>last</computeroutput>) in-place.</para><para>Space complexity: (n) </para></description></function>
 
 
 
@@ -4280,39 +4289,39 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="iota"><type>void</type><template>
           <template-type-parameter name="BufferIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>BufferIterator</paramtype></parameter><parameter name="last"><paramtype>BufferIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Fills the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) with sequential values starting at <computeroutput>value</computeroutput>.</para><para>For example, the following code: <programlisting language="c++"/> Will fill <computeroutput>vec</computeroutput> with the values (<computeroutput>0</computeroutput>, <computeroutput>1</computeroutput>, <computeroutput>2</computeroutput>, <computeroutput/>...). </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>BufferIterator</paramtype></parameter><parameter name="last"><paramtype>BufferIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Fills the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) with sequential values starting at <computeroutput>value</computeroutput>.</para><para>For example, the following code: <programlisting language="c++"/> Will fill <computeroutput>vec</computeroutput> with the values (<computeroutput>0</computeroutput>, <computeroutput>1</computeroutput>, <computeroutput>2</computeroutput>, <computeroutput/>...).</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -4423,37 +4432,37 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="is_partitioned"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if the values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) are partitioned according to <computeroutput>predicate</computeroutput>. </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if the values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) are partitioned according to <computeroutput>predicate</computeroutput>.</para><para>Space complexity: (1) </para></description></function>
 
 
 
@@ -4566,37 +4575,37 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="is_permutation"><type>bool</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first range </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first range </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second range </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second range </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Permutation checking algorithm. </purpose><description><para>Checks if the range [first1, last1) can be permuted into the range [first2, last2) 
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first range </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first range </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second range </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second range </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Permutation checking algorithm. </purpose><description><para>Checks if the range [first1, last1) can be permuted into the range [first2, last2) 
 
-</para></description><returns><para>True, if it can be permuted. False, otherwise.</para></returns></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Space complexity: (distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>)) </para></description><returns><para>True, if it can be permuted. False, otherwise.</para></returns></function>
 
 
 
@@ -4711,6 +4720,28 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="is_sorted"><signature><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Compare"/>
@@ -4718,30 +4749,8 @@ The default operation is to add the elements up.</para><para><programlisting lan
           <template-type-parameter name="InputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns <computeroutput>true</computeroutput> if the values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) are in sorted order.</para><para>
 
-<para><emphasis role="bold">See Also:</emphasis><para>sort() </para></para>
+Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort() </para></para>
 </para></description><returns><para><computeroutput>true</computeroutput> if the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) is sorted</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -4860,29 +4869,29 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="lexicographical_compare"><type>bool</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Checks if the first range [first1, last1) is lexicographically less than the second range [first2, last2). </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Checks if the first range [first1, last1) is lexicographically less than the second range [first2, last2).</para><para>Space complexity: (max(distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>), distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>))) </para></description></function>
 
 
 
@@ -5003,28 +5012,28 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <function name="lower_bound"><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) that is not less than <computeroutput>value</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>upper_bound() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) that is not less than <computeroutput>value</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>upper_bound() </para></para>
 </para></description></function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5147,6 +5156,20 @@ The default operation is to add the elements up.</para><para><programlisting lan
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="max_element"><signature><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Compare"/>
@@ -5164,22 +5187,9 @@ BOOST_COMPUTE_FUNCTION(bool, compare_first, (const int2_ &amp;a, const int2_ &am
 
 boost::compute::vector&lt;uint2_&gt;::iterator max =
     boost::compute::max_element(data.begin(), data.end(), compare_first, queue);
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>min_element() </para></para>
+</programlisting></para><para>Space complexity on CPUs: (1)<sbr/>
+ Space complexity on GPUs: (N)</para><para><para><emphasis role="bold">See Also:</emphasis><para>min_element() </para></para>
 </para></description></overloaded-function>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5306,6 +5316,16 @@ boost::compute::vector&lt;uint2_&gt;::iterator max =
 
 
 
+
+
+
+
+
+
+
+
+
+
 <overloaded-function name="merge"><signature><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
@@ -5317,18 +5337,8 @@ boost::compute::vector&lt;uint2_&gt;::iterator max =
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Merges the sorted values in the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) with the sorted values in the range [<computeroutput>first2</computeroutput>, last2) and stores the result in the range beginning at <computeroutput>result</computeroutput>. Values are compared using the <computeroutput>comp</computeroutput> function. If no comparision function is given, <computeroutput>less</computeroutput> is used.</para><para>
 
-<para><emphasis role="bold">See Also:</emphasis><para>inplace_merge() </para></para>
+Space complexity: (distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>))</para><para><para><emphasis role="bold">See Also:</emphasis><para>inplace_merge() </para></para>
 </para></description><returns><para><computeroutput>OutputIterator</computeroutput> to the end of the result range</para></returns></overloaded-function>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5459,6 +5469,12 @@ boost::compute::vector&lt;uint2_&gt;::iterator max =
 
 
 
+
+
+
+
+
+
 <overloaded-function name="min_element"><signature><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Compare"/>
@@ -5476,14 +5492,9 @@ BOOST_COMPUTE_FUNCTION(bool, compare_first, (const int2_ &amp;a, const int2_ &am
 
 boost::compute::vector&lt;uint2_&gt;::iterator min =
     boost::compute::min_element(data.begin(), data.end(), compare_first, queue);
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>max_element() </para></para>
+</programlisting></para><para>Space complexity on CPUs: (1)<sbr/>
+ Space complexity on GPUs: (N)</para><para><para><emphasis role="bold">See Also:</emphasis><para>max_element() </para></para>
 </para></description></overloaded-function>
-
-
-
-
-
-
 
 
 
@@ -5618,16 +5629,17 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
+
+
 <overloaded-function name="minmax_element"><signature><type>std::pair&lt; InputIterator, InputIterator &gt;</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="Compare"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype><description><para>first element in the input range </para></description></parameter><parameter name="last"><paramtype>InputIterator</paramtype><description><para>last element in the input range </para></description></parameter><parameter name="compare"><paramtype>Compare</paramtype><description><para>comparison function object which returns true if the first argument is less than (i.e. is ordered before) the second. </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>command queue to perform the operation</para></description></parameter></signature><signature><type>std::pair&lt; InputIterator, InputIterator &gt;</type><template>
           <template-type-parameter name="InputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns a pair of iterators with the first pointing to the minimum element and the second pointing to the maximum element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>
-<para><emphasis role="bold">See Also:</emphasis><para>max_element(), min_element() </para></para>
+Space complexity on CPUs: (1)<sbr/>
+ Space complexity on GPUs: (N)</para><para><para><emphasis role="bold">See Also:</emphasis><para>max_element(), min_element() </para></para>
 </para></description></overloaded-function>
-
-
 
 
 
@@ -5764,15 +5776,15 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
 <overloaded-function name="mismatch"><signature><type>std::pair&lt; InputIterator1, InputIterator2 &gt;</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
         </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><signature><type>std::pair&lt; InputIterator1, InputIterator2 &gt;</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns a pair of iterators pointing to the first position where the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) and the range starting at <computeroutput>first2</computeroutput> differ. </para></description></overloaded-function>
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns a pair of iterators pointing to the first position where the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) and the range starting at <computeroutput>first2</computeroutput> differ.</para><para>Space complexity: (1) </para></description></overloaded-function>
+
+
 
 
 
@@ -5908,16 +5920,16 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
 <function name="next_permutation"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to start of range </para></description></parameter><parameter name="last"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to end of range </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Permutation generating algorithm. </purpose><description><para>Transforms the range [first, last) into the next permutation from the set of all permutations arranged in lexicographic order 
+        </template><parameter name="first"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to start of range </para></description></parameter><parameter name="last"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to end of range </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Permutation generating algorithm. </purpose><description><para>Transforms the range [first, last) into the next permutation from the set of all permutations arranged in lexicographic order 
 
-</para></description><returns><para>Boolean value signifying if the last permutation was crossed and the range was reset</para></returns></function>
+Space complexity: (1) </para></description><returns><para>Boolean value signifying if the last permutation was crossed and the range was reset</para></returns></function>
+
+
+
+
+
 
 
 
@@ -6050,18 +6062,18 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
 <function name="none_of"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> for none of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>all_of(), any_of() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns <computeroutput>true</computeroutput> if <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> for none of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>all_of(), any_of() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
 
 
 
@@ -6191,22 +6203,22 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="nth_element"><signature><type>void</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="Compare"/>
         </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="nth"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="compare"><paramtype>Compare</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><signature><type>void</type><template>
           <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="nth"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Rearranges the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) such that the <computeroutput>nth</computeroutput> element would be in that position in a sorted sequence. </para></description></overloaded-function>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="nth"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Rearranges the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) such that the <computeroutput>nth</computeroutput> element would be in that position in a sorted sequence.</para><para>Space complexity: (3n) </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6334,23 +6346,25 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="partial_sum"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Calculates the cumulative sum of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) and writes the resulting values to the range beginning at <computeroutput>result</computeroutput>. </para></description></function>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Calculates the cumulative sum of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) and writes the resulting values to the range beginning at <computeroutput>result</computeroutput>.</para><para>Space complexity on GPUs: (n)<sbr/>
+ Space complexity on GPUs when <computeroutput>first</computeroutput> == <computeroutput>result:</computeroutput> (2n)<sbr/>
+ Space complexity on CPUs: (1) </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6475,26 +6489,26 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="partition"><type>Iterator</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Partitions the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) according to <computeroutput>predicate</computeroutput>. Order of the elements need not be preserved.</para><para><para><emphasis role="bold">See Also:</emphasis><para>is_partitioned() and stable_partition() </para></para>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Partitions the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) according to <computeroutput>predicate</computeroutput>. Order of the elements need not be preserved.</para><para>Space complexity: (3n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>is_partitioned() and stable_partition() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6617,30 +6631,30 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="partition_copy"><type>std::pair&lt; OutputIterator1, OutputIterator2 &gt;</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator1"/>
           <template-type-parameter name="OutputIterator2"/>
           <template-type-parameter name="UnaryPredicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="first_true"><paramtype>OutputIterator1</paramtype></parameter><parameter name="first_false"><paramtype>OutputIterator2</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies all of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> to the range beginning at <computeroutput>first_true</computeroutput> and all of the elements for which <computeroutput>predicate</computeroutput> returns <computeroutput>false</computeroutput> to the range beginning at <computeroutput>first_false</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>partition() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="first_true"><paramtype>OutputIterator1</paramtype></parameter><parameter name="first_false"><paramtype>OutputIterator2</paramtype></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies all of the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> to the range beginning at <computeroutput>first_true</computeroutput> and all of the elements for which <computeroutput>predicate</computeroutput> returns <computeroutput>false</computeroutput> to the range beginning at <computeroutput>first_false</computeroutput>.</para><para>Space complexity: (2n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>partition() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6761,32 +6775,32 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="partition_point"><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryPredicate"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to start of range </para></description></parameter><parameter name="last"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to end of range </para></description></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype><description><para>Unary predicate to be applied on each element </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Partition point algorithm. </purpose><description><para>Finds the end of true values in the partitioned range [first, last) 
 
-<para><emphasis role="bold">See Also:</emphasis><para>partition() and stable_partition() </para></para>
+Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>partition() and stable_partition() </para></para>
 </para></description><returns><para>Iterator pointing to end of true values</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6905,32 +6919,32 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="prev_permutation"><type>bool</type><template>
           <template-type-parameter name="InputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to start of range </para></description></parameter><parameter name="last"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to end of range </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Permutation generating algorithm. </purpose><description><para>Transforms the range [first, last) into the previous permutation from the set of all permutations arranged in lexicographic order 
+        </template><parameter name="first"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to start of range </para></description></parameter><parameter name="last"><paramtype>InputIterator</paramtype><description><para>Iterator pointing to end of range </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Permutation generating algorithm. </purpose><description><para>Transforms the range [first, last) into the previous permutation from the set of all permutations arranged in lexicographic order 
 
-</para></description><returns><para>Boolean value signifying if the first permutation was crossed and the range was reset</para></returns></function>
+Space complexity: (1) </para></description><returns><para>Boolean value signifying if the first permutation was crossed and the range was reset</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7047,33 +7061,33 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="random_shuffle"><type>void</type><template>
           <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Randomly shuffles the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>scatter() </para></para>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Randomly shuffles the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (2n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>scatter() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7187,32 +7201,6 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="reduce"><signature><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -7221,8 +7209,35 @@ boost::compute::vector&lt;uint2_&gt;::iterator min =
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Returns the result of applying <computeroutput>function</computeroutput> to the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>If no function is specified, <computeroutput>plus</computeroutput> will be used.</para><para>
-The <computeroutput>reduce()</computeroutput> algorithm assumes that the binary reduction function is associative. When used with non-associative functions the result may be non-deterministic and vary in precision. Notably this affects the <computeroutput>plus&lt;float&gt;()</computeroutput> function as floating-point addition is not associative and may produce slightly different results than a serial algorithm.</para><para>This algorithm supports both host and device iterators for the result argument. This allows for values to be reduced and copied to the host all with a single function call.</para><para>For example, to calculate the sum of the values in a device vector and copy the result to a value on the host:</para><para><programlisting language="c++"/> Note that while the the <computeroutput>reduce()</computeroutput> algorithm is conceptually identical to the <computeroutput>accumulate()</computeroutput> algorithm, its implementation is substantially more efficient on parallel hardware. For more information, see the documentation on the <computeroutput>accumulate()</computeroutput> algorithm.</para><para><para><emphasis role="bold">See Also:</emphasis><para>accumulate() </para></para>
+The <computeroutput>reduce()</computeroutput> algorithm assumes that the binary reduction function is associative. When used with non-associative functions the result may be non-deterministic and vary in precision. Notably this affects the <computeroutput>plus&lt;float&gt;()</computeroutput> function as floating-point addition is not associative and may produce slightly different results than a serial algorithm.</para><para>This algorithm supports both host and device iterators for the result argument. This allows for values to be reduced and copied to the host all with a single function call.</para><para>For example, to calculate the sum of the values in a device vector and copy the result to a value on the host:</para><para><programlisting language="c++"/> Note that while the the <computeroutput>reduce()</computeroutput> algorithm is conceptually identical to the <computeroutput>accumulate()</computeroutput> algorithm, its implementation is substantially more efficient on parallel hardware. For more information, see the documentation on the <computeroutput>accumulate()</computeroutput> algorithm.</para><para>Space complexity on GPUs: (n)<sbr/>
+ Space complexity on CPUs: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>accumulate() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7332,37 +7347,6 @@ The <computeroutput>reduce()</computeroutput> algorithm assumes that the binary 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="reduce_by_key"><signature><type>std::pair&lt; OutputKeyIterator, OutputValueIterator &gt;</type><template>
           <template-type-parameter name="InputKeyIterator"/>
           <template-type-parameter name="InputValueIterator"/>
@@ -7382,8 +7366,40 @@ The <computeroutput>reduce()</computeroutput> algorithm assumes that the binary 
           <template-type-parameter name="OutputKeyIterator"/>
           <template-type-parameter name="OutputValueIterator"/>
         </template><parameter name="keys_first"><paramtype>InputKeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>InputKeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>InputValueIterator</paramtype></parameter><parameter name="keys_result"><paramtype>OutputKeyIterator</paramtype></parameter><parameter name="values_result"><paramtype>OutputValueIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>The <computeroutput>reduce_by_key()</computeroutput> algorithm performs reduction for each contiguous subsequence of values determinate by equivalent keys.</para><para>Returns a pair of iterators at the end of the ranges [<computeroutput>keys_result</computeroutput>, keys_result_last) and [<computeroutput>values_result</computeroutput>, <computeroutput>values_result_last</computeroutput>).</para><para>If no function is specified, <computeroutput>plus</computeroutput> will be used. If no predicate is specified, <computeroutput>equal_to</computeroutput> will be used.</para><para>
-The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the binary reduction function is associative. When used with non-associative functions the result may be non-deterministic and vary in precision. Notably this affects the <computeroutput>plus&lt;float&gt;()</computeroutput> function as floating-point addition is not associative and may produce slightly different results than a serial algorithm.</para><para>For example, to calculate the sum of the values for each key:</para><para><programlisting language="c++"/> <para><emphasis role="bold">See Also:</emphasis><para>reduce() </para></para>
+The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the binary reduction function is associative. When used with non-associative functions the result may be non-deterministic and vary in precision. Notably this affects the <computeroutput>plus&lt;float&gt;()</computeroutput> function as floating-point addition is not associative and may produce slightly different results than a serial algorithm.</para><para>For example, to calculate the sum of the values for each key:</para><para><programlisting language="c++"/> Space complexity on GPUs: (2n)<sbr/>
+ Space complexity on CPUs: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>reduce() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7490,46 +7506,46 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="remove"><type>Iterator</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Removes each element equal to <computeroutput>value</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>remove_if() </para></para>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Removes each element equal to <computeroutput>value</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (3n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>remove_if() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7632,48 +7648,48 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="remove_if"><type>Iterator</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="Predicate"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Removes each element for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>remove() </para></para>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Removes each element for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (3n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>remove() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7774,49 +7790,49 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="replace"><type>void</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="old_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="new_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Replaces each instance of <computeroutput>old_value</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) with <computeroutput>new_value</computeroutput>. </para></description></function>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="old_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="new_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Replaces each instance of <computeroutput>old_value</computeroutput> in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) with <computeroutput>new_value</computeroutput>.</para><para>Space complexity: (1) </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7915,53 +7931,53 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="replace_copy"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="old_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="new_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the value in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> while replacing each instance of <computeroutput>old_value</computeroutput> with <computeroutput>new_value</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>replace() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="old_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="new_value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the value in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> while replacing each instance of <computeroutput>old_value</computeroutput> with <computeroutput>new_value</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>replace() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8058,53 +8074,53 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="reverse"><type>void</type><template>
           <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Reverses the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para><para><emphasis role="bold">See Also:</emphasis><para>reverse_copy() </para></para>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Reverses the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>).</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>reverse_copy() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8199,56 +8215,56 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="reverse_copy"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) in reversed order to the range beginning at <computeroutput>result</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>reverse() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) in reversed order to the range beginning at <computeroutput>result</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>reverse() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8341,57 +8357,57 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="rotate"><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="n_first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Performs left rotation such that element at <computeroutput>n_first</computeroutput> comes to the beginning.</para><para><para><emphasis role="bold">See Also:</emphasis><para>rotate_copy() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="n_first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Performs left rotation such that element at <computeroutput>n_first</computeroutput> comes to the beginning.</para><para>Space complexity: (distance(<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>))</para><para><para><emphasis role="bold">See Also:</emphasis><para>rotate_copy() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8482,60 +8498,60 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="rotate_copy"><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="n_first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Performs left rotation such that element at n_first comes to the beginning and the output is stored in range starting at result.</para><para><para><emphasis role="bold">See Also:</emphasis><para>rotate() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="n_first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Performs left rotation such that element at n_first comes to the beginning and the output is stored in range starting at result.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>rotate() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8624,63 +8640,63 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="scatter"><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="MapIterator"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="map"><paramtype>MapIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> using the output indices from the range beginning at <computeroutput>map</computeroutput>.</para><para><para><emphasis role="bold">See Also:</emphasis><para>gather() </para></para>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="map"><paramtype>MapIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> using the output indices from the range beginning at <computeroutput>map</computeroutput>.</para><para>Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>gather() </para></para>
 </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8766,73 +8782,73 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="scatter_if"><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="MapIterator"/>
           <template-type-parameter name="StencilIterator"/>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="Predicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="map"><paramtype>MapIterator</paramtype></parameter><parameter name="stencil"><paramtype>StencilIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> using the output indices from the range beginning at <computeroutput>map</computeroutput> if stencil is resolved to true. By default the predicate is an identity </para></description></function>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="map"><paramtype>MapIterator</paramtype></parameter><parameter name="stencil"><paramtype>StencilIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies the elements from the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) to the range beginning at <computeroutput>result</computeroutput> using the output indices from the range beginning at <computeroutput>map</computeroutput> if stencil is resolved to true. By default the predicate is an identity</para><para>Space complexity: (1) </para></description></function>
 <function name="scatter_if"><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="MapIterator"/>
           <template-type-parameter name="StencilIterator"/>
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="map"><paramtype>MapIterator</paramtype></parameter><parameter name="stencil"><paramtype>StencilIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8915,69 +8931,69 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="search"><type>TextIterator</type><template>
           <template-type-parameter name="TextIterator"/>
           <template-type-parameter name="PatternIterator"/>
-        </template><parameter name="t_first"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to start of text </para></description></parameter><parameter name="t_last"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to end of text </para></description></parameter><parameter name="p_first"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to start of pattern </para></description></parameter><parameter name="p_last"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to end of pattern </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Substring matching algorithm. </purpose><description><para>Searches for the first match of the pattern [p_first, p_last) in text [t_first, t_last). 
+        </template><parameter name="t_first"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to start of text </para></description></parameter><parameter name="t_last"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to end of text </para></description></parameter><parameter name="p_first"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to start of pattern </para></description></parameter><parameter name="p_last"><paramtype>PatternIterator</paramtype><description><para>Iterator pointing to end of pattern </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Substring matching algorithm. </purpose><description><para>Searches for the first match of the pattern [p_first, p_last) in text [t_first, t_last). 
 
-</para></description><returns><para>Iterator pointing to beginning of first occurrence</para></returns></function>
+Space complexity: (distance(<computeroutput>t_first</computeroutput>, <computeroutput>t_last</computeroutput>)) </para></description><returns><para>Iterator pointing to beginning of first occurrence</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9058,71 +9074,71 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="search_n"><type>TextIterator</type><template>
           <template-type-parameter name="TextIterator"/>
           <template-type-parameter name="ValueType"/>
-        </template><parameter name="t_first"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to start of text </para></description></parameter><parameter name="t_last"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to end of text </para></description></parameter><parameter name="n"><paramtype>size_t</paramtype><description><para>Number of times value repeats </para></description></parameter><parameter name="value"><paramtype>ValueType</paramtype><description><para>Value which repeats </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Substring matching algorithm. </purpose><description><para>Searches for the first occurrence of n consecutive occurrences of value in text [t_first, t_last). 
+        </template><parameter name="t_first"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to start of text </para></description></parameter><parameter name="t_last"><paramtype>TextIterator</paramtype><description><para>Iterator pointing to end of text </para></description></parameter><parameter name="n"><paramtype>size_t</paramtype><description><para>Number of times value repeats </para></description></parameter><parameter name="value"><paramtype>ValueType</paramtype><description><para>Value which repeats </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Substring matching algorithm. </purpose><description><para>Searches for the first occurrence of n consecutive occurrences of value in text [t_first, t_last). 
 
-</para></description><returns><para>Iterator pointing to beginning of first occurrence</para></returns></function>
+Space complexity: (distance(<computeroutput>t_first</computeroutput>, <computeroutput>t_last</computeroutput>)) </para></description><returns><para>Iterator pointing to beginning of first occurrence</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9201,74 +9217,74 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="set_difference"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the difference will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Set difference algorithm. </purpose><description><para>Finds the difference of the sorted range [first2, last2) from the sorted range [first1, last1) and stores it in range starting at result 
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the difference will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Set difference algorithm. </purpose><description><para>Finds the difference of the sorted range [first2, last2) from the sorted range [first1, last1) and stores it in range starting at result 
 
-</para></description><returns><para>Iterator pointing to end of difference</para></returns></function>
+Space complexity: (2(distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>))) </para></description><returns><para>Iterator pointing to end of difference</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9345,76 +9361,76 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="set_intersection"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the intersection will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Set intersection algorithm. </purpose><description><para>Finds the intersection of the sorted range [first1, last1) with the sorted range [first2, last2) and stores it in range starting at result 
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the intersection will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Set intersection algorithm. </purpose><description><para>Finds the intersection of the sorted range [first1, last1) with the sorted range [first2, last2) and stores it in range starting at result 
 
-</para></description><returns><para>Iterator pointing to end of intersection</para></returns></function>
+Space complexity: (2(distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>))) </para></description><returns><para>Iterator pointing to end of intersection</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9489,78 +9505,78 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="set_symmetric_difference"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the symmetric difference will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Set symmetric difference algorithm. </purpose><description><para>Finds the symmetric difference of the sorted range [first2, last2) from the sorted range [first1, last1) and stores it in range starting at result 
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the symmetric difference will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Set symmetric difference algorithm. </purpose><description><para>Finds the symmetric difference of the sorted range [first2, last2) from the sorted range [first1, last1) and stores it in range starting at result 
 
-</para></description><returns><para>Iterator pointing to end of symmetric difference</para></returns></function>
+Space complexity: (2(distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>))) </para></description><returns><para>Iterator pointing to end of symmetric difference</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9633,80 +9649,80 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="set_union"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator1"/>
           <template-type-parameter name="InputIterator2"/>
           <template-type-parameter name="OutputIterator"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the union will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute </para></description></parameter><purpose>Set union algorithm. </purpose><description><para>Finds the union of the sorted range [first1, last1) with the sorted range [first2, last2) and stores it in range starting at result 
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to start of first set </para></description></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype><description><para>Iterator pointing to end of first set </para></description></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to start of second set </para></description></parameter><parameter name="last2"><paramtype>InputIterator2</paramtype><description><para>Iterator pointing to end of second set </para></description></parameter><parameter name="result"><paramtype>OutputIterator</paramtype><description><para>Iterator pointing to start of range in which the union will be stored </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Set union algorithm. </purpose><description><para>Finds the union of the sorted range [first1, last1) with the sorted range [first2, last2) and stores it in range starting at result 
 
-</para></description><returns><para>Iterator pointing to end of union</para></returns></function>
+Space complexity: (2(distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) + distance(<computeroutput>first2</computeroutput>, <computeroutput>last2</computeroutput>))) </para></description><returns><para>Iterator pointing to end of union</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9776,76 +9792,6 @@ The <computeroutput>reduce_by_key()</computeroutput> algorithm assumes that the 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="sort"><signature><type>void</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="Compare"/>
@@ -9861,8 +9807,78 @@ boost::compute::sort(vec.begin(), vec.end(), queue);
 </programlisting></para><para>The sort() algorithm can also be directly used with host iterators. This example will automatically transfer the data to the device, sort it, and then transfer the data back to the host: <programlisting language="c++">std::vector&lt;int&gt; data = { 9, 3, 2, 5, 1, 4, 6, 7 };
 
 boost::compute::sort(data.begin(), data.end(), queue);
-</programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>is_sorted() </para></para>
+</programlisting></para><para>Space complexity: (n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>is_sorted() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9929,80 +9945,6 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="sort_by_key"><signature><type>void</type><template>
           <template-type-parameter name="KeyIterator"/>
           <template-type-parameter name="ValueIterator"/>
@@ -10010,8 +9952,82 @@ boost::compute::sort(data.begin(), data.end(), queue);
         </template><parameter name="keys_first"><paramtype>KeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>KeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>ValueIterator</paramtype></parameter><parameter name="compare"><paramtype>Compare</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><signature><type>void</type><template>
           <template-type-parameter name="KeyIterator"/>
           <template-type-parameter name="ValueIterator"/>
-        </template><parameter name="keys_first"><paramtype>KeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>KeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>ValueIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Performs a key-value sort using the keys in the range [<computeroutput>keys_first</computeroutput>, <computeroutput>keys_last</computeroutput>) on the values in the range [<computeroutput>values_first</computeroutput>, <computeroutput>values_first</computeroutput> <computeroutput>+</computeroutput> (<computeroutput>keys_last</computeroutput> <computeroutput>-</computeroutput> <computeroutput>keys_first</computeroutput>)) using <computeroutput>compare</computeroutput>.</para><para>If no compare function is specified, <computeroutput>less</computeroutput> is used.</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort() </para></para>
+        </template><parameter name="keys_first"><paramtype>KeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>KeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>ValueIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Performs a key-value sort using the keys in the range [<computeroutput>keys_first</computeroutput>, <computeroutput>keys_last</computeroutput>) on the values in the range [<computeroutput>values_first</computeroutput>, <computeroutput>values_first</computeroutput> <computeroutput>+</computeroutput> (<computeroutput>keys_last</computeroutput> <computeroutput>-</computeroutput> <computeroutput>keys_first</computeroutput>)) using <computeroutput>compare</computeroutput>.</para><para>If no compare function is specified, <computeroutput>less</computeroutput> is used.</para><para>Space complexity: (2n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10075,90 +10091,90 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="stable_partition"><type>Iterator</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="UnaryPredicate"/>
         </template><parameter name="first"><paramtype>Iterator</paramtype><description><para>Iterator pointing to start of range </para></description></parameter><parameter name="last"><paramtype>Iterator</paramtype><description><para>Iterator pointing to end of range </para></description></parameter><parameter name="predicate"><paramtype>UnaryPredicate</paramtype><description><para>Unary predicate to be applied on each element </para></description></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default><description><para>Queue on which to execute</para></description></parameter><purpose>Partitioning algorithm. </purpose><description><para>Partitions the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) according to <computeroutput>predicate</computeroutput>. The order of the elements is preserved. 
 
-<para><emphasis role="bold">See Also:</emphasis><para>is_partitioned() and partition() </para></para>
+Space complexity: (3n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>is_partitioned() and partition() </para></para>
 </para></description><returns><para>Iterator pointing to end of true values</para></returns></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10218,93 +10234,93 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="stable_sort"><signature><type>void</type><template>
           <template-type-parameter name="Iterator"/>
           <template-type-parameter name="Compare"/>
         </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="compare"><paramtype>Compare</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><signature><type>void</type><template>
           <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Sorts the values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) according to <computeroutput>compare</computeroutput>. The relative order of identical values is preserved.</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort(), is_sorted() </para></para>
+        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Sorts the values in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) according to <computeroutput>compare</computeroutput>. The relative order of identical values is preserved.</para><para>Space complexity: (n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort(), is_sorted() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10361,90 +10377,6 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="stable_sort_by_key"><signature><type>void</type><template>
           <template-type-parameter name="KeyIterator"/>
           <template-type-parameter name="ValueIterator"/>
@@ -10452,8 +10384,92 @@ boost::compute::sort(data.begin(), data.end(), queue);
         </template><parameter name="keys_first"><paramtype>KeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>KeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>ValueIterator</paramtype></parameter><parameter name="compare"><paramtype>Compare</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><signature><type>void</type><template>
           <template-type-parameter name="KeyIterator"/>
           <template-type-parameter name="ValueIterator"/>
-        </template><parameter name="keys_first"><paramtype>KeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>KeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>ValueIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Performs a key-value stable sort using the keys in the range [<computeroutput>keys_first</computeroutput>, <computeroutput>keys_last</computeroutput>) on the values in the range [<computeroutput>values_first</computeroutput>, <computeroutput>values_first</computeroutput> <computeroutput>+</computeroutput> (<computeroutput>keys_last</computeroutput> <computeroutput>-</computeroutput> <computeroutput>keys_first</computeroutput>)) using <computeroutput>compare</computeroutput>.</para><para>If no compare function is specified, <computeroutput>less</computeroutput> is used.</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort() </para></para>
+        </template><parameter name="keys_first"><paramtype>KeyIterator</paramtype></parameter><parameter name="keys_last"><paramtype>KeyIterator</paramtype></parameter><parameter name="values_first"><paramtype>ValueIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Performs a key-value stable sort using the keys in the range [<computeroutput>keys_first</computeroutput>, <computeroutput>keys_last</computeroutput>) on the values in the range [<computeroutput>values_first</computeroutput>, <computeroutput>values_first</computeroutput> <computeroutput>+</computeroutput> (<computeroutput>keys_last</computeroutput> <computeroutput>-</computeroutput> <computeroutput>keys_first</computeroutput>)) using <computeroutput>compare</computeroutput>.</para><para>If no compare function is specified, <computeroutput>less</computeroutput> is used.</para><para>Space complexity: (2n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>sort() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10507,97 +10523,97 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="swap_ranges"><type>Iterator2</type><template>
           <template-type-parameter name="Iterator1"/>
           <template-type-parameter name="Iterator2"/>
-        </template><parameter name="first1"><paramtype>Iterator1</paramtype></parameter><parameter name="last1"><paramtype>Iterator1</paramtype></parameter><parameter name="first2"><paramtype>Iterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Swaps the elements in the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) with the elements in the range beginning at <computeroutput>first2</computeroutput>. </para></description></function>
+        </template><parameter name="first1"><paramtype>Iterator1</paramtype></parameter><parameter name="last1"><paramtype>Iterator1</paramtype></parameter><parameter name="first2"><paramtype>Iterator2</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Swaps the elements in the range [<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>) with the elements in the range beginning at <computeroutput>first2</computeroutput>.</para><para>Space complexity: (distance(<computeroutput>first1</computeroutput>, <computeroutput>last1</computeroutput>)) </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10647,96 +10663,6 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="transform"><signature><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -10746,8 +10672,98 @@ boost::compute::sort(data.begin(), data.end(), queue);
           <template-type-parameter name="InputIterator2"/>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="BinaryOperator"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="op"><paramtype>BinaryOperator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Transforms the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) using operator <computeroutput>op</computeroutput> and stores the results in the range beginning at <computeroutput>result</computeroutput>.</para><para>For example, to calculate the absolute value for each element in a vector:</para><para><programlisting language="c++"/> <para><emphasis role="bold">See Also:</emphasis><para>copy() </para></para>
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="op"><paramtype>BinaryOperator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Transforms the elements in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) using operator <computeroutput>op</computeroutput> and stores the results in the range beginning at <computeroutput>result</computeroutput>.</para><para>For example, to calculate the absolute value for each element in a vector:</para><para><programlisting language="c++"/> Space complexity: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>copy() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10795,105 +10811,105 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="transform_if"><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="UnaryFunction"/>
           <template-type-parameter name="Predicate"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="function"><paramtype>UnaryFunction</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> to the range beginning at <computeroutput>result</computeroutput>. </para></description></function>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="function"><paramtype>UnaryFunction</paramtype></parameter><parameter name="predicate"><paramtype>Predicate</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Copies each element in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) for which <computeroutput>predicate</computeroutput> returns <computeroutput>true</computeroutput> to the range beginning at <computeroutput>result</computeroutput>.</para><para>Space complexity: O(2n) </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10937,102 +10953,6 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="transform_reduce"><signature><type>void</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -11044,8 +10964,105 @@ boost::compute::sort(data.begin(), data.end(), queue);
           <template-type-parameter name="OutputIterator"/>
           <template-type-parameter name="BinaryTransformFunction"/>
           <template-type-parameter name="BinaryReduceFunction"/>
-        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="transform_function"><paramtype>BinaryTransformFunction</paramtype></parameter><parameter name="reduce_function"><paramtype>BinaryReduceFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Transforms each value in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) with the unary <computeroutput>transform_function</computeroutput> and then reduces each transformed value with <computeroutput>reduce_function</computeroutput>.</para><para>For example, to calculate the sum of the absolute values of a vector of integers:</para><para><programlisting language="c++"/> <para><emphasis role="bold">See Also:</emphasis><para>reduce(), inner_product() </para></para>
+        </template><parameter name="first1"><paramtype>InputIterator1</paramtype></parameter><parameter name="last1"><paramtype>InputIterator1</paramtype></parameter><parameter name="first2"><paramtype>InputIterator2</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="transform_function"><paramtype>BinaryTransformFunction</paramtype></parameter><parameter name="reduce_function"><paramtype>BinaryReduceFunction</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Transforms each value in the range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) with the unary <computeroutput>transform_function</computeroutput> and then reduces each transformed value with <computeroutput>reduce_function</computeroutput>.</para><para>For example, to calculate the sum of the absolute values of a vector of integers:</para><para><programlisting language="c++"/> Space complexity on GPUs: (n)<sbr/>
+ Space complexity on CPUs: (1)</para><para><para><emphasis role="bold">See Also:</emphasis><para>reduce(), inner_product() </para></para>
 </para></description></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -11086,106 +11103,6 @@ boost::compute::sort(data.begin(), data.end(), queue);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="unique"><signature><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="BinaryPredicate"/>
@@ -11193,8 +11110,108 @@ boost::compute::sort(data.begin(), data.end(), queue);
           <template-type-parameter name="InputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Removes all consecutive duplicate elements (determined by <computeroutput>op</computeroutput>) from the range [first, last). If <computeroutput>op</computeroutput> is not provided, the equality operator is used.</para><para>
 
-<para><emphasis role="bold">See Also:</emphasis><para>unique_copy() </para></para>
+Space complexity: (4n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>unique_copy() </para></para>
 </para></description><returns><para><computeroutput>InputIterator</computeroutput> to the new logical end of the range</para></returns></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -11231,110 +11248,6 @@ boost::compute::sort(data.begin(), data.end(), queue);
 <namespace name="boost">
 <namespace name="compute">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <overloaded-function name="unique_copy"><signature><type>OutputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="OutputIterator"/>
@@ -11344,8 +11257,112 @@ boost::compute::sort(data.begin(), data.end(), queue);
           <template-type-parameter name="OutputIterator"/>
         </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="result"><paramtype>OutputIterator</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter></signature><description><para>Makes a copy of the range [first, last) and removes all consecutive duplicate elements (determined by <computeroutput>op</computeroutput>) from the copy. If <computeroutput>op</computeroutput> is not provided, the equality operator is used.</para><para>
 
-<para><emphasis role="bold">See Also:</emphasis><para>unique() </para></para>
+Space complexity: (4n)</para><para><para><emphasis role="bold">See Also:</emphasis><para>unique() </para></para>
 </para></description><returns><para><computeroutput>OutputIterator</computeroutput> to the end of the result range</para></returns></overloaded-function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -11379,117 +11396,117 @@ boost::compute::sort(data.begin(), data.end(), queue);
 <header name="boost/compute/algorithm/upper_bound.hpp">
 <namespace name="boost">
 <namespace name="compute">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <function name="upper_bound"><type>InputIterator</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) that is not less than or equal to <computeroutput>value</computeroutput>. </para></description></function>
+        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name="value"><paramtype>const T &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype><default>system::default_queue()</default></parameter><description><para>Returns an iterator pointing to the first element in the sorted range [<computeroutput>first</computeroutput>, <computeroutput>last</computeroutput>) that is not less than or equal to <computeroutput>value</computeroutput>.</para><para>Space complexity: (1) </para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -15239,6 +15256,8 @@ int data[] = { 1, 2, 3, 4 };
 
 
 
+
+
 <function name="bind"><type><emphasis>unspecified</emphasis></type><template>
           <template-type-parameter name="F"/>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
@@ -15247,8 +15266,6 @@ using boost::compute::placeholders::_1;
 
 auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 </programlisting> </para></description></function>
-
-
 
 
 
@@ -16547,7 +16564,6 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
-
 <function name="not1"><type><classname>unary_negate</classname>&lt; Predicate &gt;</type><template>
           <template-type-parameter name="Predicate"/>
         </template><parameter name="predicate"><paramtype>const Predicate &amp;</paramtype><description><para>the unary function to wrap</para></description></parameter><description><para>Returns a <classname alt="boost::compute::unary_negate">unary_negate</classname> adaptor around <computeroutput>predicate</computeroutput>.</para><para>
@@ -16558,6 +16574,7 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
         </template><parameter name="predicate"><paramtype>const Predicate &amp;</paramtype><description><para>the binary function to wrap</para></description></parameter><description><para>Returns a <classname alt="boost::compute::binary_negate">binary_negate</classname> adaptor around <computeroutput>predicate</computeroutput>.</para><para>
 
 </para></description><returns><para>a <classname alt="boost::compute::binary_negate">binary_negate</classname> wrapper around <computeroutput>predicate</computeroutput> </para></returns></function>
+
 
 
 
@@ -18221,11 +18238,11 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
+
 <function name="opengl_enqueue_acquire_gl_objects"><type>event</type><parameter name="num_objects"><paramtype>const uint_</paramtype></parameter><parameter name="mem_objects"><paramtype>const cl_mem *</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype></parameter><parameter name="events"><paramtype>const <classname>wait_list</classname> &amp;</paramtype><default><classname alt="boost::compute::wait_list">wait_list</classname>()</default></parameter><description><para>Enqueues a command to acquire the specified OpenGL memory objects.</para><para>See the documentation for <ulink url="http://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueAcquireGLObjects.html">clEnqueueAcquireGLObjects()</ulink> for more information. </para></description></function>
 <function name="opengl_enqueue_release_gl_objects"><type>event</type><parameter name="num_objects"><paramtype>const uint_</paramtype></parameter><parameter name="mem_objects"><paramtype>const cl_mem *</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype></parameter><parameter name="events"><paramtype>const <classname>wait_list</classname> &amp;</paramtype><default><classname alt="boost::compute::wait_list">wait_list</classname>()</default></parameter><description><para>Enqueues a command to release the specified OpenGL memory objects.</para><para>See the documentation for <ulink url="http://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueReleaseGLObjects.html">clEnqueueReleaseGLObjects()</ulink> for more information. </para></description></function>
 <function name="opengl_enqueue_acquire_buffer"><type>event</type><parameter name="buffer"><paramtype>const <classname>opengl_buffer</classname> &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype></parameter><parameter name="events"><paramtype>const <classname>wait_list</classname> &amp;</paramtype><default><classname alt="boost::compute::wait_list">wait_list</classname>()</default></parameter><description><para>Enqueues a command to acquire the specified OpenGL buffer.</para><para>See the documentation for <ulink url="http://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueAcquireGLObjects.html">clEnqueueAcquireGLObjects()</ulink> for more information. </para></description></function>
 <function name="opengl_enqueue_release_buffer"><type>event</type><parameter name="buffer"><paramtype>const <classname>opengl_buffer</classname> &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype></parameter><parameter name="events"><paramtype>const <classname>wait_list</classname> &amp;</paramtype><default><classname alt="boost::compute::wait_list">wait_list</classname>()</default></parameter><description><para>Enqueues a command to release the specified OpenGL buffer.</para><para>See the documentation for <ulink url="http://www.khronos.org/registry/cl/sdk/1.2/docs/man/xhtml/clEnqueueReleaseGLObjects.html">clEnqueueReleaseGLObjects()</ulink> for more information. </para></description></function>
-
 
 
 
@@ -18364,12 +18381,12 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
-
-
-
-
 <function name="opengl_create_shared_context"><type>context</type><description><para>Creates a shared OpenCL/OpenGL context for the currently active OpenGL context.</para><para>Once created, the shared context can be used to create OpenCL memory objects which can interact with OpenGL memory objects (e.g. VBOs).</para><para>
 </para></description><throws><simpara><classname>unsupported_extension_error</classname> if no CL-GL sharing capable devices are found. </simpara></throws></function>
+
+
+
+
 
 
 
@@ -18982,21 +18999,21 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
+
+
+
+
+
+
+
+
+
+
 <function name="make_buffer_iterator"><type><classname>buffer_iterator</classname>&lt; T &gt;</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="buffer"><paramtype>const buffer &amp;</paramtype><description><para>the buffer object </para></description></parameter><parameter name="index"><paramtype>size_t</paramtype><default>0</default><description><para>the index in the buffer</para></description></parameter><description><para>Creates a new <classname alt="boost::compute::buffer_iterator">buffer_iterator</classname> for <computeroutput>buffer</computeroutput> at <computeroutput>index</computeroutput>.</para><para>
 
 </para></description><returns><para>a <computeroutput><classname alt="boost::compute::buffer_iterator">buffer_iterator</classname></computeroutput> for <computeroutput>buffer</computeroutput> at <computeroutput>index</computeroutput> </para></returns></function>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -19154,19 +19171,19 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
+
+
+
+
+
+
+
+
 <function name="make_constant_buffer_iterator"><type><classname>constant_buffer_iterator</classname>&lt; T &gt;</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="buffer"><paramtype>const buffer &amp;</paramtype><description><para>the buffer object </para></description></parameter><parameter name="index"><paramtype>size_t</paramtype><default>0</default><description><para>the index in the buffer</para></description></parameter><description><para>Creates a new <classname alt="boost::compute::constant_buffer_iterator">constant_buffer_iterator</classname> for <computeroutput>buffer</computeroutput> at <computeroutput>index</computeroutput>.</para><para>
 
 </para></description><returns><para>a <computeroutput><classname alt="boost::compute::constant_buffer_iterator">constant_buffer_iterator</classname></computeroutput> for <computeroutput>buffer</computeroutput> at <computeroutput>index</computeroutput> </para></returns></function>
-
-
-
-
-
-
-
-
 
 
 
@@ -19313,17 +19330,17 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
+
+
+
+
+
+
 <function name="make_constant_iterator"><type><classname>constant_iterator</classname>&lt; T &gt;</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="value"><paramtype>const T &amp;</paramtype><description><para>the constant value </para></description></parameter><parameter name="index"><paramtype>size_t</paramtype><default>0</default><description><para>the iterators index</para></description></parameter><description><para>Returns a new <classname alt="boost::compute::constant_iterator">constant_iterator</classname> with <computeroutput>value</computeroutput> at <computeroutput>index</computeroutput>.</para><para>
 
 </para></description><returns><para>a <computeroutput><classname alt="boost::compute::constant_iterator">constant_iterator</classname></computeroutput> with <computeroutput>value</computeroutput> </para></returns></function>
-
-
-
-
-
-
 
 
 
@@ -19481,16 +19498,16 @@ auto less_than_seven = boost::compute::bind(less&lt;int&gt;(), _1, 7);
 
 
 
+
+
+
+
 <function name="make_counting_iterator"><type><classname>counting_iterator</classname>&lt; T &gt;</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="init"><paramtype>const T &amp;</paramtype><description><para>the initial value</para></description></parameter><description><para>Returns a new <classname alt="boost::compute::counting_iterator">counting_iterator</classname> starting at <computeroutput>init</computeroutput>.</para><para>
 
 For example, to create a counting iterator which returns unsigned integers and increments from one: <programlisting language="c++">auto iter = make_counting_iterator&lt;uint_&gt;(1);
 </programlisting> </para></description><returns><para>a <classname alt="boost::compute::counting_iterator">counting_iterator</classname> with <computeroutput>init</computeroutput>.</para></returns></function>
-
-
-
-
 
 
 
@@ -19639,11 +19656,11 @@ For example, to create a counting iterator which returns unsigned integers and i
 
 
 
+
+
 <function name="make_discard_iterator"><type><classname>discard_iterator</classname></type><parameter name="index"><paramtype>size_t</paramtype><default>0</default><description><para>the index of the iterator</para></description></parameter><description><para>Returns a new <classname alt="boost::compute::discard_iterator">discard_iterator</classname> with <computeroutput>index</computeroutput>.</para><para>
 
 </para></description><returns><para>a <computeroutput><classname alt="boost::compute::discard_iterator">discard_iterator</classname></computeroutput> at <computeroutput>index</computeroutput> </para></returns></function>
-
-
 
 
 
@@ -19972,14 +19989,14 @@ For example, to create a counting iterator which returns unsigned integers and i
 
 
 
-
-
 <function name="make_permutation_iterator"><type><classname>permutation_iterator</classname>&lt; ElementIterator, IndexIterator &gt;</type><template>
           <template-type-parameter name="ElementIterator"/>
           <template-type-parameter name="IndexIterator"/>
         </template><parameter name="e"><paramtype>ElementIterator</paramtype><description><para>the element range iterator </para></description></parameter><parameter name="i"><paramtype>IndexIterator</paramtype><description><para>the index range iterator</para></description></parameter><description><para>Returns a <classname alt="boost::compute::permutation_iterator">permutation_iterator</classname> for <computeroutput>e</computeroutput> using indices from <computeroutput>i</computeroutput>.</para><para>
 
 </para></description><returns><para>a <computeroutput><classname alt="boost::compute::permutation_iterator">permutation_iterator</classname></computeroutput> for <computeroutput>e</computeroutput> using <computeroutput>i</computeroutput> </para></returns></function>
+
+
 
 
 
@@ -20141,11 +20158,6 @@ For example, to create a counting iterator which returns unsigned integers and i
 
 
 
-
-
-
-
-
 <function name="make_strided_iterator"><type><classname>strided_iterator</classname>&lt; Iterator &gt;</type><template>
           <template-type-parameter name="Iterator"/>
         </template><parameter name="iterator"><paramtype>Iterator</paramtype><description><para>the underlying iterator </para></description></parameter><parameter name="stride"><paramtype>typename std::iterator_traits&lt; Iterator &gt;::difference_type</paramtype><description><para>the iteration step for <classname alt="boost::compute::strided_iterator">strided_iterator</classname></para></description></parameter><description><para>Returns a <classname alt="boost::compute::strided_iterator">strided_iterator</classname> for <computeroutput>iterator</computeroutput> with <computeroutput>stride</computeroutput>.</para><para>
@@ -20168,6 +20180,11 @@ boost::compute::copy(
         queue
 );
 </programlisting> </para></description><returns><para>a <computeroutput><classname alt="boost::compute::strided_iterator">strided_iterator</classname></computeroutput> referring to element that would follow the last element accessible through <classname alt="boost::compute::strided_iterator">strided_iterator</classname> for <computeroutput>first</computeroutput> iterator with <computeroutput>stride</computeroutput>.</para></returns></function>
+
+
+
+
+
 
 
 
@@ -20323,14 +20340,6 @@ boost::compute::copy(
 
 
 
-
-
-
-
-
-
-
-
 <function name="make_transform_iterator"><type><classname>transform_iterator</classname>&lt; InputIterator, UnaryFunction &gt;</type><template>
           <template-type-parameter name="InputIterator"/>
           <template-type-parameter name="UnaryFunction"/>
@@ -20338,6 +20347,14 @@ boost::compute::copy(
 
 For example, to create an iterator which returns the square-root of each value in a <computeroutput>vector&lt;int&gt;</computeroutput>: <programlisting language="c++">auto sqrt_iterator = make_transform_iterator(vec.begin(), sqrt&lt;int&gt;());
 </programlisting> </para></description><returns><para>a <computeroutput><classname alt="boost::compute::transform_iterator">transform_iterator</classname></computeroutput> for <computeroutput>iterator</computeroutput> with <computeroutput>transform</computeroutput> </para></returns></function>
+
+
+
+
+
+
+
+
 
 
 
@@ -20493,16 +20510,6 @@ For example, to create an iterator which returns the square-root of each value i
 
 
 
-
-
-
-
-
-
-
-
-
-
 <function name="make_zip_iterator"><type><classname>zip_iterator</classname>&lt; IteratorTuple &gt;</type><template>
           <template-type-parameter name="IteratorTuple"/>
         </template><parameter name="iterators"><paramtype>IteratorTuple</paramtype><description><para>a tuple of input iterators to zip together</para></description></parameter><description><para>Creates a <classname alt="boost::compute::zip_iterator">zip_iterator</classname> for <computeroutput>iterators</computeroutput>.</para><para>
@@ -20511,6 +20518,16 @@ For example, to zip together iterators from three vectors (<computeroutput>a</co
     boost::make_tuple(a.begin(), b.begin(), c.begin())
 );
 </programlisting> </para></description><returns><para>a <computeroutput><classname alt="boost::compute::zip_iterator">zip_iterator</classname></computeroutput> for <computeroutput>iterators</computeroutput> </para></returns></function>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -20684,6 +20701,8 @@ kernel.set_arg(0, local_buffer&lt;float&gt;(32));
 <method name="operator+"><type>svm_ptr&lt; T &gt;</type><parameter name="n"><paramtype>difference_type</paramtype></parameter></method>
 <method name="operator-"><type>difference_type</type><parameter name="other"><paramtype>svm_ptr&lt; T &gt;</paramtype></parameter></method>
 <method name="get_context" cv="const"><type>context &amp;</type></method>
+<method name="operator==" cv="const"><type>bool</type><parameter name="other"><paramtype>const svm_ptr&lt; T &gt; &amp;</paramtype></parameter></method>
+<method name="operator!=" cv="const"><type>bool</type><parameter name="other"><paramtype>const svm_ptr&lt; T &gt; &amp;</paramtype></parameter></method>
 </method-group>
 <constructor/>
 <constructor><parameter name="ptr"><paramtype>void *</paramtype></parameter><parameter name="context"><paramtype>const context &amp;</paramtype></parameter></constructor>
@@ -23230,12 +23249,12 @@ result_of&lt;plus(int, int)&gt;::type == int
 
 
 
+
 <function name="type_definition"><type>std::string</type><template>
           <template-type-parameter name="T"/>
         </template><description><para>Returns the OpenCL type definition for <computeroutput>T</computeroutput>.</para><para>
 <para><emphasis role="bold">See Also:</emphasis><para>type_name&lt;T&gt;() </para></para>
 </para></description><returns><para>a string containing the type definition for <computeroutput>T</computeroutput> </para></returns></function>
-
 
 
 </namespace>
@@ -23373,7 +23392,6 @@ result_of&lt;plus(int, int)&gt;::type == int
 
 
 
-
 <function name="type_name"><type>const char *</type><template>
           <template-type-parameter name="T"/>
         </template><description><para>Returns the OpenCL type name for the type <computeroutput>T</computeroutput> as a string.</para><para>
@@ -23381,6 +23399,7 @@ For example: <programlisting language="c++">type_name&lt;float&gt;() == "float"
 type_name&lt;float4_&gt;() == "float4"
 </programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para>type_definition&lt;T&gt;() </para></para>
 </para></description><returns><para>a string containing the type name for <computeroutput>T</computeroutput> </para></returns></function>
+
 
 
 </namespace>
@@ -23668,12 +23687,12 @@ vector_size&lt;float4_&gt;::value == 4
 
 
 
+
 <function name="dim"><type><classname>extents</classname>&lt; sizeof...(Args)&gt;</type><template>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
         </template><parameter name="args"><paramtype>Args...</paramtype></parameter><description><para>The variadic <computeroutput>dim()</computeroutput> function provides a concise syntax for creating <classname alt="boost::compute::extents">extents</classname> objects.</para><para>For example, <programlisting language="c++">extents&lt;2&gt; region = dim(640, 480); // region == (640, 480)
 </programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::compute::extents">extents&lt;N&gt;</classname> </para></para>
 </para></description></function>
-
 </namespace>
 </namespace>
 </header>
@@ -23979,12 +23998,12 @@ vector_size&lt;float4_&gt;::value == 4
 
 
 
-
 <function name="invoke"><type><classname>result_of</classname>&lt; Function(Args...)&gt;::type</type><template>
           <template-type-parameter name="Function"/>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
         </template><parameter name="function"><paramtype>const Function &amp;</paramtype></parameter><parameter name="queue"><paramtype>command_queue &amp;</paramtype></parameter><parameter name="args"><paramtype>const Args &amp;...</paramtype></parameter><description><para>Invokes <computeroutput>function</computeroutput> with <computeroutput>args</computeroutput> on <computeroutput>queue</computeroutput>.</para><para>For example, to invoke the builtin abs() function: <programlisting language="c++">int result = invoke(abs&lt;int&gt;(), queue, -10); // returns 10
 </programlisting> </para></description></function>
+
 </namespace>
 </namespace>
 <macro name="BOOST_COMPUTE_DETAIL_INVOKE_ARG" kind="functionlike"><macro-parameter name="z"/><macro-parameter name="n"/><macro-parameter name="unused"/></macro>

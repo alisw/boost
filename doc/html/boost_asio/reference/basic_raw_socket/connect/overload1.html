@@ -33,8 +33,8 @@
 <p>
             Connect the socket to the specified endpoint.
           </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">connect</span><span class="special">(</span>
-    <span class="keyword">const</span> <span class="identifier">endpoint_type</span> <span class="special">&amp;</span> <span class="identifier">peer_endpoint</span><span class="special">);</span>
+<pre class="programlisting">void connect(
+    const endpoint_type &amp; peer_endpoint);
 </pre>
 <p>
             This function is used to connect a socket to the specified remote endpoint.
@@ -76,10 +76,10 @@
 <a name="boost_asio.reference.basic_raw_socket.connect.overload1.h2"></a>
             <span class="phrase"><a name="boost_asio.reference.basic_raw_socket.connect.overload1.example"></a></span><a class="link" href="overload1.html#boost_asio.reference.basic_raw_socket.connect.overload1.example">Example</a>
           </h6>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">socket</span><span class="special">(</span><span class="identifier">io_service</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">endpoint</span> <span class="identifier">endpoint</span><span class="special">(</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">address</span><span class="special">::</span><span class="identifier">from_string</span><span class="special">(</span><span class="string">"1.2.3.4"</span><span class="special">),</span> <span class="number">12345</span><span class="special">);</span>
-<span class="identifier">socket</span><span class="special">.</span><span class="identifier">connect</span><span class="special">(</span><span class="identifier">endpoint</span><span class="special">);</span>
+<pre class="programlisting">boost::asio::ip::tcp::socket socket(io_context);
+boost::asio::ip::tcp::endpoint endpoint(
+    boost::asio::ip::address::from_string("1.2.3.4"), 12345);
+socket.connect(endpoint);
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
