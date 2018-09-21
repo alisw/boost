@@ -177,13 +177,16 @@ handle_request(
     if(ec)
         return send(server_error(ec.message()));
 
+    // Cache the size since we need it after the move
+    auto const size = body.size();
+
     // Respond to HEAD request
     if(req.method() == http::verb::head)
     {
         http::response<http::empty_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, mime_type(path));
-        res.content_length(body.size());
+        res.content_length(size);
         res.keep_alive(req.keep_alive());
         return send(std::move(res));
     }
@@ -195,7 +198,7 @@ handle_request(
         std::make_tuple(http::status::ok, req.version())};
     res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(http::field::content_type, mime_type(path));
-    res.content_length(body.size());
+    res.content_length(size);
     res.keep_alive(req.keep_alive());
     return send(std::move(res));
 }
@@ -260,7 +263,7 @@ class session
     boost::asio::strand<
         boost::asio::io_context::executor_type> strand_;
     boost::beast::flat_buffer buffer_;
-    std::string const& doc_root_;
+    std::shared_ptr<std::string const> doc_root_;
     http::request<http::string_body> req_;
     std::shared_ptr<void> res_;
     send_lambda lambda_;
@@ -270,7 +273,7 @@ public:
     explicit
     session(
         tcp::socket socket,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : socket_(std::move(socket))
         , strand_(socket_.get_executor())
         , doc_root_(doc_root)
@@ -297,6 +300,10 @@ public:
         {
             for(;;)
             {
+                // Make the request empty before reading,
+                // otherwise the operation behavior is undefined.
+                req_ = {};
+
                 // Read a request
                 yield http::async_read(socket_, buffer_, req_,
                     boost::asio::bind_executor(
@@ -316,7 +323,7 @@ public:
                     return fail(ec, "read");
 
                 // Send the response
-                yield handle_request(doc_root_, std::move(req_), lambda_);
+                yield handle_request(*doc_root_, std::move(req_), lambda_);
                 if(ec)
                     return fail(ec, "write");
                 if(close)
@@ -348,13 +355,13 @@ class listener
 {
     tcp::acceptor acceptor_;
     tcp::socket socket_;
-    std::string const& doc_root_;
+    std::shared_ptr<std::string const> doc_root_;
 
 public:
     listener(
         boost::asio::io_context& ioc,
         tcp::endpoint endpoint,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : acceptor_(ioc)
         , socket_(ioc)
         , doc_root_(doc_root)
@@ -366,6 +373,14 @@ public:
         if(ec)
         {
             fail(ec, "open");
+            return;
+        }
+
+        // Allow address reuse
+        acceptor_.set_option(boost::asio::socket_base::reuse_address(true), ec);
+        if(ec)
+        {
+            fail(ec, "set_option");
             return;
         }
 
@@ -441,7 +456,7 @@ int main(int argc, char* argv[])
     }
     auto const address = boost::asio::ip::make_address(argv[1]);
     auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
-    std::string const doc_root = argv[3];
+    auto const doc_root = std::make_shared<std::string>(argv[3]);
     auto const threads = std::max<int>(1, std::atoi(argv[4]));
 
     // The io_context is required for all I/O

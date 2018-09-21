@@ -22,7 +22,7 @@ Spherical area calculation.
 Calculates area on the surface of a sphere using the trapezoidal rule 
 
 [heading Synopsis]
-``template<typename PointOfSegment, typename CalculationType>
+``template<typename RadiusTypeOrSphere, typename CalculationType>
 class strategy::area::spherical
 {
   // ...
@@ -32,7 +32,7 @@ class strategy::area::spherical
 [heading Template parameter(s)]
 [table
 [[Parameter] [Default] [Description]]
-[[typename PointOfSegment] [] [segment point type ]]
+[[typename RadiusTypeOrSphere] [double] [numeric type for radius (of sphere, earth) or sphere model ]]
 [[typename CalculationType] [void] [numeric type for calculation (e.g. high precision); if [*void] then it is extracted automatically from the coordinate type and (if necessary) promoted to floating point]]
 ]
 
@@ -44,17 +44,10 @@ class strategy::area::spherical
 ] [] [
 
 ]]
-[[``template<typename T>
-spherical(geometry::srs::sphere< T > const & sphere)``
+[[``template<typename RadiusOrSphere>
+spherical(RadiusOrSphere const & radius_or_sphere)``
 
-] [] [[* geometry::srs::sphere< T > const &]: ['sphere]:  
-
-
-
-]]
-[[``spherical(CT const & radius)``
-
-] [] [[* CT const &]: ['radius]:  
+] [] [[* RadiusOrSphere const &]: ['radius_or_sphere]:  
 
 
 
@@ -64,13 +57,14 @@ spherical(geometry::srs::sphere< T > const & sphere)``
 [heading Member Function(s)]
 [table
 [[Function] [Description] [Parameters]  [Returns]]
-[[``void apply(PointOfSegment const & p1, PointOfSegment const & p2, excess_sum & state)``
+[[``template<typename PointOfSegment, typename Geometry>
+void apply(PointOfSegment const & p1, PointOfSegment const & p2, state< Geometry > & st)``
 
 ] [] [[* PointOfSegment const &]: ['p1]:  
 
 [* PointOfSegment const &]: ['p2]:  
 
-[* excess_sum &]: ['state]:  
+[* state< Geometry > &]: ['st]:  
 
 
 
@@ -78,9 +72,10 @@ spherical(geometry::srs::sphere< T > const & sphere)``
 
 ]
 ]
-[[``return_type result(excess_sum const & state)``
+[[``template<typename Geometry>
+result_type< Geometry >::type result(state< Geometry > const & st)``
 
-] [] [[* excess_sum const &]: ['state]:  
+] [] [[* state< Geometry > const &]: ['st]:  
 
 
 

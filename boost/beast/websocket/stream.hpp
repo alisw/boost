@@ -15,11 +15,13 @@
 #include <boost/beast/websocket/option.hpp>
 #include <boost/beast/websocket/role.hpp>
 #include <boost/beast/websocket/rfc6455.hpp>
+#include <boost/beast/websocket/stream_fwd.hpp>
 #include <boost/beast/websocket/detail/frame.hpp>
 #include <boost/beast/websocket/detail/hybi13.hpp>
 #include <boost/beast/websocket/detail/mask.hpp>
 #include <boost/beast/websocket/detail/pausation.hpp>
 #include <boost/beast/websocket/detail/pmd_extension.hpp>
+#include <boost/beast/websocket/detail/stream_base.hpp>
 #include <boost/beast/websocket/detail/utf8_checker.hpp>
 #include <boost/beast/core/static_buffer.hpp>
 #include <boost/beast/core/string.hpp>
@@ -28,8 +30,6 @@
 #include <boost/beast/http/message.hpp>
 #include <boost/beast/http/string_body.hpp>
 #include <boost/beast/http/detail/type_traits.hpp>
-#include <boost/beast/zlib/deflate_stream.hpp>
-#include <boost/beast/zlib/inflate_stream.hpp>
 #include <boost/asio/async_result.hpp>
 #include <boost/asio/error.hpp>
 #include <algorithm>
@@ -38,15 +38,9 @@
 #include <limits>
 #include <type_traits>
 
-#include <boost/asio/io_context.hpp> // DEPRECATED
-
 namespace boost {
 namespace beast {
 namespace websocket {
-
-namespace detail {
-class frame_test;
-}
 
 /// The type of object holding HTTP Upgrade requests
 using request_type = http::request<http::empty_body>;
@@ -70,6 +64,10 @@ enum class frame_type
     /// A pong frame was received
     pong
 };
+
+namespace detail {
+class frame_test;
+} // detail
 
 //--------------------------------------------------------------------
 
@@ -109,6 +107,12 @@ enum class frame_type
     For asynchronous operations, the type must support the
     @b AsyncStream concept.
 
+    @tparam deflateSupported A `bool` indicating whether or not the
+    stream will be capable of negotiating the permessage-deflate websocket
+    extension. Note that even if this is set to `true`, the permessage
+    deflate options (set by the caller at runtime) must still have the
+    feature enabled for a successful negotiation to occur.
+
     @note A stream object must not be moved or destroyed while there
     are pending asynchronous operations associated with it.
 
@@ -117,16 +121,22 @@ enum class frame_type
         @b DynamicBuffer,
         @b SyncStream
 */
-template<class NextLayer>
+template<
+    class NextLayer,
+    bool deflateSupported>
 class stream
+#if ! BOOST_BEAST_DOXYGEN
+    : private detail::stream_base<deflateSupported>
+#endif
 {
     friend class close_test;
     friend class frame_test;
     friend class ping_test;
-    friend class read_test;
+    friend class read1_test;
+    friend class read2_test;
     friend class stream_test;
     friend class write_test;
-
+    
     /*  The read buffer has to be at least as large
         as the largest possible control frame including
         the frame header.
@@ -134,35 +144,8 @@ class stream
     static std::size_t constexpr max_control_frame_size = 2 + 8 + 4 + 125;
     static std::size_t constexpr tcp_frame_size = 1536;
 
-    struct op {};
-
     using control_cb_type =
         std::function<void(frame_type, string_view)>;
-
-    // tokens are used to order reads and writes
-    class token
-    {
-        unsigned char id_ = 0;
-    public:
-        token() = default;
-        token(token const&) = default;
-        explicit token(unsigned char id) : id_(id) {}
-        operator bool() const { return id_ != 0; }
-        bool operator==(token const& t) { return id_ == t.id_; }
-        bool operator!=(token const& t) { return id_ != t.id_; }
-        token unique() { token t{id_++}; if(id_ == 0) ++id_; return t; }
-        void reset() { id_ = 0; }
-    };
-
-    // State information for the permessage-deflate extension
-    struct pmd_t
-    {
-        // `true` if current read message is compressed
-        bool rd_set = false;
-
-        zlib::deflate_stream zo;
-        zlib::inflate_stream zi;
-    };
 
     enum class status
     {
@@ -183,8 +166,7 @@ class stream
     std::uint64_t           rd_remain_      // message frame bytes left in current frame
                                 = 0;
     detail::frame_header    rd_fh_;         // current frame header
-    detail::prepared_key    rd_key_         // current stateful mask key
-                                = 0;
+    detail::prepared_key    rd_key_;        // current stateful mask key
     detail::frame_buffer    rd_fb_;         // to write control frames (during reads)
     detail::utf8_checker    rd_utf8_;       // to validate utf8
     static_buffer<
@@ -197,15 +179,14 @@ class stream
                                 = true;
     bool                    rd_close_       // did we read a close frame?
                                 = false;
-    token                   rd_block_;      // op currenly reading
+    detail::soft_mutex      rd_block_;      // op currently reading
 
-    token                   tok_;           // used to order asynchronous ops
     role_type               role_           // server or client
                                 = role_type::client;
     status                  status_
                                 = status::closed;
 
-    token                   wr_block_;      // op currenly writing
+    detail::soft_mutex      wr_block_;      // op currently writing
     bool                    wr_close_       // did we write a close frame?
                                 = false;
     bool                    wr_cont_        // next write is a continuation
@@ -225,27 +206,25 @@ class stream
     std::size_t             wr_buf_opt_     // write buffer size option setting
                                 = 4096;
     detail::fh_buffer       wr_fb_;         // header buffer used for writes
-    detail::maskgen         wr_gen_;        // source of mask keys
 
     detail::pausation       paused_rd_;     // paused read op
     detail::pausation       paused_wr_;     // paused write op
     detail::pausation       paused_ping_;   // paused ping op
     detail::pausation       paused_close_;  // paused close op
-    detail::pausation       paused_r_rd_;   // paused read op (read)
-    detail::pausation       paused_r_close_;// paused close op (read)
-
-    std::unique_ptr<pmd_t>  pmd_;           // pmd settings or nullptr
-    permessage_deflate      pmd_opts_;      // local pmd options
-    detail::pmd_offer       pmd_config_;    // offer (client) or negotiation (server)
+    detail::pausation       paused_r_rd_;   // paused read op (async read)
+    detail::pausation       paused_r_close_;// paused close op (async read)
 
 public:
+    /// Indicates if the permessage-deflate extension is supported
+    using is_deflate_supported =
+        std::integral_constant<bool, deflateSupported>;
+
     /// The type of the next layer.
     using next_layer_type =
         typename std::remove_reference<NextLayer>::type;
 
     /// The type of the lowest layer.
-    using lowest_layer_type =
-        typename get_lowest_layer<next_layer_type>::type;
+    using lowest_layer_type = get_lowest_layer<next_layer_type>;
 
     /// The type of the executor associated with the object.
     using executor_type = typename next_layer_type::executor_type;
@@ -444,7 +423,11 @@ public:
     */
     std::size_t
     read_size_hint(
-        std::size_t initial_size = +tcp_frame_size) const;
+        std::size_t initial_size = +tcp_frame_size) const
+    {
+        return read_size_hint(initial_size,
+            is_deflate_supported{});
+    }
 
     /** Returns a suggested maximum buffer size for the next call to read.
 
@@ -475,15 +458,22 @@ public:
     //
     //--------------------------------------------------------------------------
 
-    /// Set the permessage-deflate extension options
+    /** Set the permessage-deflate extension options
+
+        @throws invalid_argument if `deflateSupported == false`, and either
+        `client_enable` or `server_enable` is `true`.
+    */
     void
-    set_option(permessage_deflate const& o);
+    set_option(permessage_deflate const& o)
+    {
+        set_option(o, is_deflate_supported{});
+    }
 
     /// Get the permessage-deflate extension options
     void
     get_option(permessage_deflate& o)
     {
-        o = pmd_opts_;
+        get_option(o, is_deflate_supported{});
     }
 
     /** Set the automatic fragmentation option.
@@ -518,7 +508,7 @@ public:
         return wr_frag_opt_;
     }
 
-    /** Set the binary message option.
+    /** Set the binary message write option.
 
         This controls whether or not outgoing message opcodes
         are set to binary or text. The setting is only applied
@@ -545,7 +535,7 @@ public:
             detail::opcode::text;
     }
 
-    /// Returns `true` if the binary message option is set.
+    /// Returns `true` if the binary message write option is set.
     bool
     binary() const
     {
@@ -580,27 +570,26 @@ public:
             string_view payload    // The payload in the frame
         );
         @endcode
-        The implementation type-erases the callback without requiring
-        a dynamic allocation. For this reason, the callback object is
-        passed by a non-constant reference.
+        The implementation type-erases the callback which may require
+        a dynamic allocation. To prevent the possiblity of a dynamic
+        allocation, use `std::ref` to wrap the callback.
         If the read operation which receives the control frame is
         an asynchronous operation, the callback will be invoked using
         the same method as that used to invoke the final handler.
 
-        @note It is not necessary to send a close frame upon receipt
-        of a close frame. The implementation does this automatically.
-        Attempting to send a close frame after a close frame is
-        received will result in undefined behavior.
+        @note Incoming ping and close frames are automatically
+        handled. Pings are responded to with pongs, and a close frame
+        is responded to with a close frame leading to the closure of
+        the stream. It is not necessary to manually send pings, pongs,
+        or close frames from inside the control callback.
+        Attempting to manually send a close frame from inside the
+        control callback after receiving a close frame will result
+        in undefined behavior.
     */
-    template<class Callback>
     void
-    control_callback(Callback& cb)
+    control_callback(std::function<void(frame_type, string_view)> cb)
     {
-        // Callback may not be constant, caller is responsible for
-        // managing the lifetime of the callback. Copies are not made.
-        BOOST_STATIC_ASSERT(! std::is_const<Callback>::value);
-
-        ctrl_cb_ = std::ref(cb);
+        ctrl_cb_ = std::move(cb);
     }
 
     /** Reset the control frame callback.
@@ -641,6 +630,37 @@ public:
     read_message_max() const
     {
         return rd_msg_max_;
+    }
+
+    /** Set whether the PRNG is cryptographically secure
+
+        This controls whether or not the source of pseudo-random
+        numbers used to produce the masks required by the WebSocket
+        protocol are of cryptographic quality. When the setting is
+        `true`, a strong algorithm is used which cannot be guessed
+        by observing outputs. When the setting is `false`, a much
+        faster algorithm is used.
+        Masking is only performed by streams operating in the client
+        mode. For streams operating in the server mode, this setting
+        has no effect.
+        By default, newly constructed streams use a secure PRNG.
+
+        If the WebSocket stream is used with an encrypted SSL or TLS
+        next layer, if it is known to the application that intermediate
+        proxies are not vulnerable to cache poisoning, or if the
+        application is designed such that an attacker cannot send
+        arbitrary inputs to the stream interface, then the faster
+        algorithm may be used.
+
+        For more information please consult the WebSocket protocol RFC.
+
+        @param value `true` if the PRNG algorithm should be
+        cryptographically secure.
+    */
+    void
+    secure_prng(bool value)
+    {
+        this->secure_prng_ = value;
     }
 
     /** Set the write buffer size option.
@@ -684,7 +704,7 @@ public:
         return wr_buf_opt_;
     }
 
-    /** Set the text message option.
+    /** Set the text message write option.
 
         This controls whether or not outgoing message opcodes
         are set to binary or text. The setting is only applied
@@ -711,7 +731,7 @@ public:
             detail::opcode::binary;
     }
 
-    /// Returns `true` if the text message option is set.
+    /// Returns `true` if the text message write option is set.
     bool
     text() const
     {
@@ -1183,9 +1203,9 @@ public:
         required by the HTTP protocol. Copies of this parameter may
         be made as needed.
 
-        @param handler The handler to be called when the request completes.
-        Copies will be made of the handler as required. The equivalent
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -1235,9 +1255,9 @@ public:
         required by the HTTP protocol. Copies of this parameter may
         be made as needed.
 
-        @param handler The handler to be called when the request completes.
-        Copies will be made of the handler as required. The equivalent
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec     // Result of operation
         ); @endcode
@@ -1293,9 +1313,9 @@ public:
             request_type& req
         ); @endcode
 
-        @param handler The handler to be called when the request completes.
-        Copies will be made of the handler as required. The equivalent
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec     // Result of operation
         ); @endcode
@@ -1355,9 +1375,9 @@ public:
             request_type& req
         ); @endcode
 
-        @param handler The handler to be called when the request completes.
-        Copies will be made of the handler as required. The equivalent
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec     // Result of operation
         ); @endcode
@@ -1930,9 +1950,9 @@ public:
         @ref http::read or @ref http::async_read, then call @ref accept
         or @ref async_accept with the request.
 
-        @param handler The handler to be called when the request
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -1991,9 +2011,9 @@ public:
             response_type& res
         ); @endcode
 
-        @param handler The handler to be called when the request
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -2054,9 +2074,9 @@ public:
         then to received WebSocket frames. The implementation will
         copy the caller provided data before the function returns.
 
-        @param handler The handler to be called when the request
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -2132,9 +2152,9 @@ public:
             response_type& res
         ); @endcode
 
-        @param handler The handler to be called when the request
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -2193,9 +2213,9 @@ public:
         Ownership is not transferred, the implementation will not access
         this object from other threads.
 
-        @param handler The handler to be called when the request
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -2256,9 +2276,9 @@ public:
             response_type& res
         ); @endcode
 
-        @param handler The handler to be called when the request
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec    // Result of operation
         ); @endcode
@@ -2358,8 +2378,8 @@ public:
         next layer's `async_write_some` functions, and is known as a
         <em>composed operation</em>. The program must ensure that the
         stream performs no other write operations (such as @ref async_ping,
-        @ref stream::async_write, @ref stream::async_write_some, or
-        @ref stream::async_close) until this operation completes.
+        @ref async_write, @ref async_write_some, or @ref async_close)
+        until this operation completes.
 
         If the close reason specifies a close code other than
         @ref beast::websocket::close_code::none, the close frame is
@@ -2373,9 +2393,9 @@ public:
 
         @param cr The reason for the close.
 
-        @param handler The handler to be called when the close operation
-        completes. Copies will be made of the handler as required. The
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The function signature of the handler must be:
         @code
         void handler(
             error_code const& ec     // Result of operation
@@ -2451,9 +2471,9 @@ public:
 
         @param payload The payload of the ping message, which may be empty.
 
-        @param handler The handler to be called when the read operation
-        completes. Copies will be made of the handler as required. The
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The function signature of the handler must be:
         @code
         void handler(
             error_code const& ec     // Result of operation
@@ -2544,9 +2564,9 @@ public:
 
         @param payload The payload of the pong message, which may be empty.
 
-        @param handler The handler to be called when the read operation
-        completes. Copies will be made of the handler as required. The
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The function signature of the handler must be:
         @code
         void handler(
             error_code const& ec     // Result of operation
@@ -2702,9 +2722,9 @@ public:
         any masking or decompression has been applied. This object must
         remain valid until the handler is called.
 
-        @param handler The handler to be called when the read operation
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code
         void handler(
             error_code const& ec,       // Result of operation
@@ -2882,9 +2902,9 @@ public:
         will append into the buffer. If this value is zero, then a reasonable
         size will be chosen automatically.
 
-        @param handler The handler to be called when the read operation
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code
         void handler(
             error_code const& ec,       // Result of operation
@@ -3055,9 +3075,9 @@ public:
         locations pointed to by the buffer sequence remains valid
         until the completion handler is called.
 
-        @param handler The handler to be called when the read operation
-        completes. Copies will be made of the handler as required. The
-        equivalent function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code
         void handler(
             error_code const& ec,       // Result of operation
@@ -3177,8 +3197,8 @@ public:
         to the next layer's `async_write_some` functions, and is known
         as a <em>composed operation</em>. The program must ensure that
         the stream performs no other write operations (such as
-        stream::async_write, stream::async_write_some, or
-        stream::async_close).
+        @ref async_write, @ref async_write_some, or
+        @ref async_close).
 
         The current setting of the @ref binary option controls
         whether the message opcode is set to text or binary. If the
@@ -3193,9 +3213,9 @@ public:
         the memory locations pointed to by buffers remains valid
         until the completion handler is called.
 
-        @param handler The handler to be called when the write operation
-        completes. Copies will be made of the handler as required. The
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The function signature of the handler must be:
         @code
         void handler(
             error_code const& ec,           // Result of operation
@@ -3306,8 +3326,8 @@ public:
         as a <em>composed operation</em>. The actual payload sent
         may be transformed as per the WebSocket protocol settings. The
         program must ensure that the stream performs no other write
-        operations (such as stream::async_write, stream::async_write_some,
-        or stream::async_close).
+        operations (such as @ref async_write, @ref async_write_some,
+        or @ref async_close).
 
         If this is the beginning of a new message, the message opcode
         will be set to text or binary as per the current setting of
@@ -3323,9 +3343,9 @@ public:
         the caller, which must guarantee that they remain valid until
         the handler is called.
 
-        @param handler The handler to be called when the write completes.
-        Copies will be made of the handler as required. The equivalent
-        function signature of the handler must be:
+        @param handler Invoked when the operation completes.
+        The handler may be moved or copied as needed.
+        The equivalent function signature of the handler must be:
         @code void handler(
             error_code const& ec,           // Result of operation
             std::size_t bytes_transferred   // Number of bytes written from the
@@ -3343,10 +3363,8 @@ public:
 private:
     template<class, class>  class accept_op;
     template<class>         class close_op;
-    template<class>         class fail_op;
     template<class>         class handshake_op;
     template<class>         class ping_op;
-    template<class>         class read_fh_op;
     template<class, class>  class read_some_op;
     template<class, class>  class read_op;
     template<class>         class response_op;
@@ -3356,10 +3374,65 @@ private:
     static void default_decorate_req(request_type&) {}
     static void default_decorate_res(response_type&) {}
 
+    void
+    set_option(permessage_deflate const& o, std::true_type);
+
+    void
+    set_option(permessage_deflate const&, std::false_type);
+
+    void
+    get_option(permessage_deflate& o, std::true_type)
+    {
+        o = this->pmd_opts_;
+    }
+
+    void
+    get_option(permessage_deflate& o, std::false_type)
+    {
+        o = {};
+        o.client_enable = false;
+        o.server_enable = false;
+    }
+
     void open(role_type role);
+
+    void open_pmd(std::true_type);
+
+    void open_pmd(std::false_type)
+    {
+    }
+
     void close();
+
+    void close_pmd(std::true_type)
+    {
+        this->pmd_.reset();
+    }
+
+    void close_pmd(std::false_type)
+    {
+    }
+    
     void reset();
-    void begin_msg();
+
+    void begin_msg()
+    {
+        begin_msg(is_deflate_supported{});
+    }
+
+    void begin_msg(std::true_type);
+
+    void begin_msg(std::false_type);
+
+    std::size_t
+    read_size_hint(
+        std::size_t initial_size,
+        std::true_type) const;
+
+    std::size_t
+    read_size_hint(
+        std::size_t initial_size,
+        std::false_type) const;
 
     bool
     check_open(error_code& ec)
@@ -3387,8 +3460,10 @@ private:
 
     template<class DynamicBuffer>
     bool
-    parse_fh(detail::frame_header& fh,
-        DynamicBuffer& b, close_code& code);
+    parse_fh(
+        detail::frame_header& fh,
+        DynamicBuffer& b,
+        error_code& ec);
 
     template<class DynamicBuffer>
     void
@@ -3399,6 +3474,10 @@ private:
     write_ping(DynamicBuffer& b,
         detail::opcode op, ping_data const& data);
 
+    //
+    // upgrade
+    //
+
     template<class Decorator>
     request_type
     build_request(detail::sec_ws_key_type& key,
@@ -3406,28 +3485,95 @@ private:
             string_view target,
                 Decorator const& decorator);
 
-    template<class Body,
-        class Allocator, class Decorator>
-    response_type
-    build_response(http::request<Body,
-        http::basic_fields<Allocator>> const& req,
-            Decorator const& decorator);
+    void
+    build_request_pmd(request_type& req, std::true_type);
 
     void
-    on_response(response_type const& resp,
-        detail::sec_ws_key_type const& key, error_code& ec);
+    build_request_pmd(request_type&, std::false_type)
+    {
+    }
+
+    template<
+        class Body, class Allocator, class Decorator>
+    response_type
+    build_response(
+        http::request<Body,
+            http::basic_fields<Allocator>> const& req,
+        Decorator const& decorator,
+        error_code& ec);
+
+    template<class Body, class Allocator>
+    void
+    build_response_pmd(
+        response_type& res,
+        http::request<Body,
+            http::basic_fields<Allocator>> const& req,
+        std::true_type);
+
+    template<class Body, class Allocator>
+    void
+    build_response_pmd(
+        response_type&,
+        http::request<Body,
+            http::basic_fields<Allocator>> const&,
+        std::false_type)
+    {
+    }
+
+    void
+    on_response(
+        response_type const& res,
+        detail::sec_ws_key_type const& key,
+        error_code& ec);
+
+    void
+    on_response_pmd(
+        response_type const& res,
+        std::true_type);
+
+    void
+    on_response_pmd(
+        response_type const&,
+        std::false_type)
+    {
+    }
+
+    //
+    // accept / handshake
+    //
+
+    template<class Allocator>
+    void
+    do_pmd_config(
+        http::basic_fields<Allocator> const& h,
+        std::true_type)
+    {
+        pmd_read(this->pmd_config_, h);
+    }
+
+    template<class Allocator>
+    void
+    do_pmd_config(
+        http::basic_fields<Allocator> const&,
+        std::false_type)
+    {
+    }
 
     template<class Decorator>
     void
-    do_accept(Decorator const& decorator,
+    do_accept(
+        Decorator const& decorator,
         error_code& ec);
 
-    template<class Body, class Allocator,
+    template<
+        class Body, class Allocator,
         class Decorator>
     void
-    do_accept(http::request<Body,
-        http::basic_fields<Allocator>> const& req,
-            Decorator const& decorator, error_code& ec);
+    do_accept(
+        http::request<Body,
+            http::basic_fields<Allocator>> const& req,
+        Decorator const& decorator,
+        error_code& ec);
 
     template<class RequestDecorator>
     void
@@ -3436,12 +3582,46 @@ private:
             RequestDecorator const& decorator,
                 error_code& ec);
 
+    //
+    // fail
+    //
+
     void
     do_fail(
         std::uint16_t code,
         error_code ev,
         error_code& ec);
 };
+
+/** Manually provide a one-time seed to initialize the PRNG
+
+    This function invokes the specified seed sequence to produce a seed
+    suitable for use with the pseudo-random number generator used to
+    create masks and perform WebSocket protocol handshakes.
+
+    If a seed is not manually provided, the implementation will
+    perform a one-time seed generation using `std::random_device`. This
+    function may be used when the application runs in an environment
+    where the random device is unreliable or does not provide sufficient
+    entropy.
+
+    @par Preconditions
+
+    This function may not be called after any websocket @ref stream objects
+    have been constructed.
+
+    @param ss A reference to a `std::seed_seq` which will be used to seed
+    the pseudo-random number generator. The seed sequence should have at
+    least 256 bits of entropy.
+
+    @see stream::secure_prng
+*/
+inline
+void
+seed_prng(std::seed_seq& ss)
+{
+    detail::stream_prng::seed(&ss);
+}
 
 } // websocket
 } // beast

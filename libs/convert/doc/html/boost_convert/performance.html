@@ -45,17 +45,16 @@
         for string conversions to basic types and to a user-defined type.
       </p>
 <p>
-        In turn, the relative and absolute performance of every particular converter
-        depends on the platform, the compiler used and the particular implementation
-        of the underlying conversion component (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stream</span></code>,
-        <code class="computeroutput"><span class="identifier">printf</span></code>, <span class="emphasis"><em>Boost.Spirit</em></span>,
-        etc.). Consequently, the results below are only an approximate indication
-        of <span class="emphasis"><em>relative</em></span> performance of the mentioned converters
-        on the tested platforms.
+        In turn, the performance of every particular converter depends on the platform,
+        the compiler used and the particular implementation of the underlying conversion
+        component (<code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stream</span></code>, <code class="computeroutput"><span class="identifier">printf</span></code>,
+        <span class="emphasis"><em>Boost.Spirit</em></span>, etc.). Consequently, the results below
+        are only an approximate indication of <span class="emphasis"><em>relative</em></span> performance
+        of the mentioned converters on the tested platforms.
       </p>
 <p>
-        Compiled with gcc-5.4.0 on 64-bit Ubuntu 16.04 laptop tests produced the
-        following relative results:
+        When compiled with gcc-5.4.0 on 64-bit Ubuntu 16.04, tests produced the following
+        results:
       </p>
 <pre class="programlisting"><span class="identifier">str</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="keyword">int</span><span class="special">:</span> <span class="identifier">spirit</span><span class="special">/</span><span class="identifier">strtol</span><span class="special">/</span><span class="identifier">lcast</span><span class="special">/</span><span class="identifier">scanf</span><span class="special">/</span><span class="identifier">stream</span><span class="special">=</span> <span class="number">0.27</span><span class="special">/</span> <span class="number">0.35</span><span class="special">/</span>  <span class="number">0.92</span><span class="special">/</span>  <span class="number">2.11</span><span class="special">/</span>  <span class="number">2.09</span> <span class="identifier">seconds</span><span class="special">.</span>
 <span class="identifier">str</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="identifier">lng</span><span class="special">:</span> <span class="identifier">spirit</span><span class="special">/</span><span class="identifier">strtol</span><span class="special">/</span><span class="identifier">lcast</span><span class="special">/</span><span class="identifier">scanf</span><span class="special">/</span><span class="identifier">stream</span><span class="special">=</span> <span class="number">0.69</span><span class="special">/</span> <span class="number">0.31</span><span class="special">/</span>  <span class="number">1.28</span><span class="special">/</span>  <span class="number">2.07</span><span class="special">/</span>  <span class="number">2.50</span> <span class="identifier">seconds</span><span class="special">.</span>
@@ -86,14 +85,14 @@
 <li class="listitem">
             the <code class="computeroutput"><span class="identifier">strtol</span></code>-inspired converter
             was reasonably fast and with formatting support might be an attractive
-            all-rounder. It should be noted that it is nowhere as mature as <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">stream</span></code>.
+            all-rounder. It should be noted that it is nowhere as mature as <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> or <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">stream</span></code>.
             So, bugs are to be expected.
           </li>
 </ul></div>
 <p>
         For user-defined types <code class="computeroutput"><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>,
         <code class="computeroutput"><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">cstream</span></code> and <code class="computeroutput"><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">strtol</span></code>
-        were tested with the following relative results:
+        were tested with the following results:
       </p>
 <pre class="programlisting"><span class="identifier">str</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="identifier">user</span><span class="special">-</span><span class="identifier">type</span><span class="special">:</span> <span class="identifier">lcast</span><span class="special">/</span><span class="identifier">stream</span><span class="special">/</span><span class="identifier">strtol</span><span class="special">=</span><span class="number">0.36</span><span class="special">/</span><span class="number">0.18</span><span class="special">/</span><span class="number">0.07</span> <span class="identifier">seconds</span><span class="special">.</span>
 <span class="identifier">user</span><span class="special">-</span><span class="identifier">type</span><span class="special">-</span><span class="identifier">to</span><span class="special">-</span><span class="identifier">str</span><span class="special">:</span> <span class="identifier">lcast</span><span class="special">/</span><span class="identifier">stream</span><span class="special">/</span><span class="identifier">strtol</span><span class="special">=</span><span class="number">0.58</span><span class="special">/</span><span class="number">0.09</span><span class="special">/</span><span class="number">0.06</span> <span class="identifier">seconds</span><span class="special">.</span>
@@ -103,11 +102,11 @@
         conversions the first two deploy the same standard <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">iostream</span></code>
         library. However, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">cnv</span><span class="special">::</span><span class="identifier">cstream</span></code>
         considerably outperforms <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>
-        in these tests. The results probably reflect different underlying designs.
-        Namely, the standard <span class="emphasis"><em>Boost.Convert</em></span> deployment pattern
-        is to create a converter or converters once and then re-use them. <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>, on the other hand, due to
-        its design, creates and then destroys a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stream</span></code>
-        instance every time the function is called and the <a href="http://www.boost.org/doc/libs/1_55_0/doc/html/boost_lexical_cast/performance.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> performance</a> table
+        in these tests. The results reflect different underlying designs. Namely,
+        the standard <span class="emphasis"><em>Boost.Convert</em></span> deployment pattern is to
+        create a converter or converters once and then re-use them. <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code>, on the other hand, creates
+        and then destroys a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">stream</span></code> instance every time the function
+        is called and the <a href="http://www.boost.org/doc/libs/1_55_0/doc/html/boost_lexical_cast/performance.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">lexical_cast</span></code> performance</a> table
         indicates that the "std::stringstream <span class="emphasis"><em>with construction</em></span>"
         operation is considerably more expensive compared to "std::stringstream
         <span class="emphasis"><em>without construction</em></span>".

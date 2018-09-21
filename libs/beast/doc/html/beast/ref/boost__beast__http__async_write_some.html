@@ -27,7 +27,7 @@
 <a name="beast.ref.boost__beast__http__async_write_some"></a><a class="link" href="boost__beast__http__async_write_some.html" title="http::async_write_some">http::async_write_some</a>
 </h4></div></div></div>
 <p>
-        <a class="indexterm" name="idp96145920"></a>
+        <a class="indexterm" name="idp117020288"></a>
 Write part of a message to a stream asynchronously
         using a serializer.
       </p>
@@ -44,7 +44,7 @@ Write part of a message to a stream asynchronously
     <span class="keyword">class</span> <a class="link" href="../concepts/Body.html" title="Body"><span class="bold"><strong>Body</strong></span></a><span class="special">,</span>
     <span class="keyword">class</span> <a class="link" href="../concepts/Fields.html" title="Fields"><span class="bold"><strong>Fields</strong></span></a><span class="special">,</span>
     <span class="keyword">class</span> <a href="../../../../../../doc/html/boost_asio/reference/WriteHandler.html" target="_top"><span class="bold"><strong>WriteHandler</strong></span></a><span class="special">&gt;</span>
-<a href="http://www.boost.org/doc/libs/1_60_0/doc/html/boost_asio/reference/asynchronous_operations.html#boost_asio.reference.asynchronous_operations.return_type_of_an_initiating_function" target="_top"><span class="emphasis"><em>void-or-deduced</em></span></a>
+<a href="../../../../../../doc/html/boost_asio/reference/asynchronous_operations/automatic_deduction_of_initiating_function_return_type.html" target="_top"><span class="emphasis"><em>DEDUCED</em></span></a>
 <span class="identifier">async_write_some</span><span class="special">(</span>
     <span class="identifier">AsyncWriteStream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">,</span>
     <span class="identifier">serializer</span><span class="special">&lt;</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Body</span><span class="special">,</span> <span class="identifier">Fields</span> <span class="special">&gt;&amp;</span> <span class="identifier">sr</span><span class="special">,</span>
@@ -141,9 +141,9 @@ Write part of a message to a stream asynchronously
               </td>
 <td>
                 <p>
-                  The handler to be called when the operation completes. Copies will
-                  be made of the handler as required. The equivalent function signature
-                  of the handler must be:
+                  Invoked when the operation completes. The handler may be moved
+                  or copied as needed. The equivalent function signature of the handler
+                  must be:
                 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"> <span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
     <span class="identifier">error_code</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">,</span>        <span class="comment">// result of operation</span>

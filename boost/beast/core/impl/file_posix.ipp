@@ -24,6 +24,7 @@
 # endif
 #endif
 
+#include <boost/core/exchange.hpp>
 #include <limits>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -65,9 +66,8 @@ file_posix::
 inline
 file_posix::
 file_posix(file_posix&& other)
-    : fd_(other.fd_)
+    : fd_(boost::exchange(other.fd_, -1))
 {
-    other.fd_ = -1;
 }
 
 inline
@@ -224,7 +224,7 @@ size(error_code& ec) const
 {
     if(fd_ == -1)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     struct stat st;
@@ -244,7 +244,7 @@ pos(error_code& ec) const
 {
     if(fd_ == -1)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     auto const result = ::lseek(fd_, 0, SEEK_CUR);
@@ -264,7 +264,7 @@ seek(std::uint64_t offset, error_code& ec)
 {
     if(fd_ == -1)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return;
     }
     auto const result = ::lseek(fd_, offset, SEEK_SET);
@@ -283,7 +283,7 @@ read(void* buffer, std::size_t n, error_code& ec) const
 {
     if(fd_ == -1)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     std::size_t nread = 0;
@@ -307,7 +307,7 @@ read(void* buffer, std::size_t n, error_code& ec) const
         }
         n -= result;
         nread += result;
-        buffer = reinterpret_cast<char*>(buffer) + result;
+        buffer = static_cast<char*>(buffer) + result;
     }
     return nread;
 }
@@ -319,7 +319,7 @@ write(void const* buffer, std::size_t n, error_code& ec)
 {
     if(fd_ == -1)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     std::size_t nwritten = 0;
@@ -338,7 +338,7 @@ write(void const* buffer, std::size_t n, error_code& ec)
         }
         n -= result;
         nwritten += result;
-        buffer = reinterpret_cast<char const*>(buffer) + result;
+        buffer = static_cast<char const*>(buffer) + result;
     }
     return nwritten;
 }

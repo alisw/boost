@@ -495,7 +495,16 @@
       <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
     </template><purpose>skew heap </purpose><description><para>The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
 <listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::store_parent_pointer&lt;&gt;</computeroutput>, defaults to <computeroutput>store_parent_pointer&lt;true&gt;</computeroutput>. Maintaining a parent pointer adds some maintenance and size overhead, but iterating a heap is more efficient.</para></listitem><listitem><para><computeroutput>boost::heap::mutable&lt;&gt;</computeroutput>, defaults to <computeroutput>mutable&lt;false&gt;</computeroutput>. </para></listitem></itemizedlist>
-</para></description><struct name="implementation_defined"><typedef name="value_type"><type>T</type></typedef>
+</para></description><struct name="implementation_defined"><template>
+      <template-type-parameter name="T"/>
+      <template-type-parameter name="A0"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A1"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A2"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A3"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A4"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A5"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A6"><default>boost::parameter::void_</default></template-type-parameter>
+    </template><typedef name="value_type"><type>T</type></typedef>
 <typedef name="value_compare"><type>base_maker::compare_argument</type></typedef>
 <typedef name="allocator_type"><type>base_maker::allocator_type</type></typedef>
 <typedef name="node"><type>base_maker::node_type</type></typedef>
@@ -509,6 +518,36 @@
 <typedef name="ordered_iterator"><type><emphasis>unspecified</emphasis></type></typedef>
 <typedef name="reference"><type><emphasis>unspecified</emphasis></type></typedef>
 <typedef name="handle_type"><type><emphasis>unspecified</emphasis></type></typedef>
+</struct><struct name="push_handle"><template>
+      <template-type-parameter name="T"/>
+      <template-type-parameter name="A0"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A1"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A2"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A3"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A4"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A5"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A6"><default>boost::parameter::void_</default></template-type-parameter>
+    </template><method-group name="public static functions">
+<method name="push" specifiers="static"><type>handle_type</type><parameter name="self"><paramtype><classname>skew_heap</classname> *</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter></method>
+<method name="emplace" specifiers="static"><type>handle_type</type><template>
+          <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
+        </template><parameter name="self"><paramtype><classname>skew_heap</classname> *</paramtype></parameter><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter></method>
+</method-group>
+</struct><struct name="push_void"><template>
+      <template-type-parameter name="T"/>
+      <template-type-parameter name="A0"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A1"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A2"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A3"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A4"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A5"><default>boost::parameter::void_</default></template-type-parameter>
+      <template-type-parameter name="A6"><default>boost::parameter::void_</default></template-type-parameter>
+    </template><method-group name="public static functions">
+<method name="push" specifiers="static"><type>void</type><parameter name="self"><paramtype><classname>skew_heap</classname> *</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter></method>
+<method name="emplace" specifiers="static"><type>void</type><template>
+          <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
+        </template><parameter name="self"><paramtype><classname>skew_heap</classname> *</paramtype></parameter><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter></method>
+</method-group>
 </struct><typedef name="value_type"><type>T</type></typedef>
 <typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
 <typedef name="difference_type"><type>implementation_defined::difference_type</type></typedef>
@@ -581,6 +620,19 @@
 <destructor><parameter name=""><paramtype>void</paramtype></parameter></destructor>
 <method-group name="public static functions">
 <method name="s_handle_from_iterator" specifiers="static"><type>handle_type</type><parameter name="it"><paramtype>iterator const &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Casts an iterator to a node handle.</para><para><emphasis role="bold">Complexity:</emphasis> Constant.</para><para><emphasis role="bold">Requirement:</emphasis> data structure must be configured as mutable </para></description></method>
+</method-group>
+<method-group name="private member functions">
+<method name="push_internal"><type>node_pointer</type><parameter name="v"><paramtype>const_reference</paramtype></parameter></method>
+<method name="emplace_internal"><type>node_pointer</type><template>
+          <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
+        </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter></method>
+<method name="unlink_node"><type>void</type><parameter name="node"><paramtype>node_pointer</paramtype></parameter></method>
+<method name="clone_tree"><type>void</type><parameter name="rhs"><paramtype><classname>skew_heap</classname> const &amp;</paramtype></parameter></method>
+<method name="merge_node"><type>void</type><parameter name="other"><paramtype>node_pointer</paramtype></parameter></method>
+<method name="merge_nodes"><type>node_pointer</type><parameter name="node1"><paramtype>node_pointer</paramtype></parameter><parameter name="node2"><paramtype>node_pointer</paramtype></parameter><parameter name="new_parent"><paramtype>node_pointer</paramtype></parameter></method>
+<method name="merge_children"><type>node_pointer</type><parameter name="node"><paramtype>node_pointer</paramtype></parameter></method>
+<method name="merge_nodes_recursive"><type>node_pointer</type><parameter name="node1"><paramtype>node_pointer</paramtype></parameter><parameter name="node2"><paramtype>node_pointer</paramtype></parameter><parameter name="new_parent"><paramtype>node_pointer</paramtype></parameter></method>
+<method name="sanity_check"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter></method>
 </method-group>
 </class>
 </namespace>

@@ -34,7 +34,7 @@
 </dl></div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp79597968"></a>Authors</h3></div></div></div>
+<a name="idp92831056"></a>Authors</h3></div></div></div>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
           Glen Fernandes
         </li></ul></div>
@@ -48,8 +48,11 @@
         <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">pointer_traits</span></code> to facilitate use of pointer-like
         types. The C++11 standard library introduced <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pointer_traits</span></code>
         along with an allocator model which supported pointer-like types in addition
-        to plain raw pointers. This implementation also supports C++98, and adds
-        additional functionality for obtaining raw pointers from pointers.
+        to plain raw pointers. This implementation also supports C++98.
+      </p>
+<p>
+        It also provides the function template <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">to_address</span></code>
+        to obtain a raw pointer from an object of any pointer-like type.
       </p>
 </div>
 <div class="section">
@@ -82,7 +85,6 @@
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">using</span> <span class="identifier">rebind</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">rebind_to</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">;</span>
 
     <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">pointer_to</span><span class="special">(</span><span class="emphasis"><em>see below</em></span> <span class="identifier">v</span><span class="special">);</span>
-    <span class="keyword">static</span> <span class="identifier">element_type</span><span class="special">*</span> <span class="identifier">to_address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">pointer</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
   <span class="special">};</span>
 
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">pointer_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">*&gt;</span> <span class="special">{</span>
@@ -94,11 +96,13 @@
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="keyword">using</span> <span class="identifier">rebind</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">rebind_to</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">;</span>
 
     <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">pointer_to</span><span class="special">(</span><span class="emphasis"><em>see below</em></span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
-    <span class="keyword">static</span> <span class="identifier">element_type</span><span class="special">*</span> <span class="identifier">to_address</span><span class="special">(</span><span class="identifier">pointer</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
   <span class="special">};</span>
 
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
-  <span class="keyword">typename</span> <span class="identifier">pointer_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">element_type</span><span class="special">*</span> <span class="identifier">to_address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">constexpr</span> <span class="identifier">T</span><span class="special">*</span> <span class="identifier">to_address</span><span class="special">(</span><span class="identifier">T</span><span class="special">*</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+  <span class="keyword">auto</span> <span class="identifier">to_address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <div class="section">
@@ -144,10 +148,10 @@
         functions</a>
 </h4></div></div></div>
 <div class="variablelist">
-<p class="title"><b>pointer_traits</b></p>
+<p class="title"><b></b></p>
 <dl class="variablelist">
 <dt><span class="term"><code class="computeroutput"><span class="keyword">static</span> <span class="identifier">pointer</span>
-            <span class="identifier">pointer_to</span><span class="special">(</span></code><span class="emphasis"><em>see
+            <span class="identifier">pointer_traits</span><span class="special">::</span><span class="identifier">pointer_to</span><span class="special">(</span></code><span class="emphasis"><em>see
             below</em></span> <code class="computeroutput"><span class="identifier">v</span><span class="special">);</span></code></span></dt>
 <dd><div class="variablelist">
 <p class="title"><b></b></p>
@@ -165,31 +169,8 @@
                     </p></dd>
 </dl>
 </div></dd>
-<dt><span class="term"><code class="computeroutput"><span class="keyword">static</span> <span class="identifier">element_type</span><span class="special">*</span> <span class="identifier">to_address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">pointer</span><span class="special">&amp;</span>
-            <span class="identifier">v</span><span class="special">)</span>
-            <span class="keyword">noexcept</span><span class="special">;</span></code></span></dt>
-<dd><div class="variablelist">
-<p class="title"><b></b></p>
-<dl class="variablelist">
-<dt><span class="term">Requires</span></dt>
-<dd><p>
-                      <code class="computeroutput"><span class="identifier">v</span></code> is not a
-                      null pointer.
-                    </p></dd>
-<dt><span class="term">Returns</span></dt>
-<dd><p>
-                      A pointer of type <code class="computeroutput"><span class="identifier">element_type</span><span class="special">*</span></code> that references the same location
-                      as the argument.
-                    </p></dd>
-</dl>
-</div></dd>
-</dl>
-</div>
-<div class="variablelist">
-<p class="title"><b>pointer_traits&lt;T*&gt;</b></p>
-<dl class="variablelist">
 <dt><span class="term"><code class="computeroutput"><span class="keyword">static</span> <span class="identifier">pointer</span>
-            <span class="identifier">pointer_to</span><span class="special">(</span></code><span class="emphasis"><em>see
+            <span class="identifier">pointer_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">*&gt;::</span><span class="identifier">pointer_to</span><span class="special">(</span></code><span class="emphasis"><em>see
             below</em></span> <code class="computeroutput"><span class="identifier">v</span><span class="special">)</span>
             <span class="keyword">noexcept</span><span class="special">;</span></code></span></dt>
 <dd><div class="variablelist">
@@ -203,10 +184,21 @@
                     </p></dd>
 <dt><span class="term">Returns</span></dt>
 <dd><p>
-                      The result of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">addressof</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span></code>.
+                      <code class="computeroutput"><span class="identifier">addressof</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span></code>.
                     </p></dd>
 </dl>
 </div></dd>
+</dl>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="core.pointer_traits.reference.optional_members"></a><a class="link" href="pointer_traits.html#core.pointer_traits.reference.optional_members" title="Optional members">Optional
+        members</a>
+</h4></div></div></div>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
 <dt><span class="term"><code class="computeroutput"><span class="keyword">static</span> <span class="identifier">element_type</span><span class="special">*</span> <span class="identifier">to_address</span><span class="special">(</span><span class="identifier">pointer</span>
             <span class="identifier">v</span><span class="special">)</span>
             <span class="keyword">noexcept</span><span class="special">;</span></code></span></dt>
@@ -215,7 +207,14 @@
 <dl class="variablelist">
 <dt><span class="term">Returns</span></dt>
 <dd><p>
-                      The value of <code class="computeroutput"><span class="identifier">v</span></code>.
+                      A pointer of type <code class="computeroutput"><span class="identifier">element_type</span><span class="special">*</span></code> that references the same location
+                      as the argument <code class="computeroutput"><span class="identifier">p</span></code>.
+                    </p></dd>
+<dt><span class="term">Note</span></dt>
+<dd><p>
+                      This function should be the inverse of <code class="computeroutput"><span class="identifier">pointer_to</span></code>.
+                      If defined, it customizes the behavior of the non-member function
+                      <code class="computeroutput"><span class="identifier">to_address</span></code>.
                     </p></dd>
 </dl>
 </div></dd>
@@ -230,15 +229,26 @@
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl class="variablelist">
-<dt><span class="term"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">typename</span>
-            <span class="identifier">pointer_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">element_type</span><span class="special">*</span>
-            <span class="identifier">to_address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></code></span></dt>
+<dt><span class="term"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">constexpr</span>
+            <span class="identifier">T</span><span class="special">*</span>
+            <span class="identifier">to_address</span><span class="special">(</span><span class="identifier">T</span><span class="special">*</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></code></span></dt>
 <dd><div class="variablelist">
 <p class="title"><b></b></p>
 <dl class="variablelist">
 <dt><span class="term">Returns</span></dt>
 <dd><p>
-                      <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">pointer_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">to_address</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span></code>.
+                      <code class="computeroutput"><span class="identifier">v</span></code>.
+                    </p></dd>
+</dl>
+</div></dd>
+<dt><span class="term"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">auto</span> <span class="identifier">to_address</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">v</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></code></span></dt>
+<dd><div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
+<dt><span class="term">Returns</span></dt>
+<dd><p>
+                      <code class="computeroutput"><span class="identifier">pointer_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">to_address</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span></code> if that expression is well-formed,
+                      otherwise <code class="computeroutput"><span class="identifier">to_address</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="keyword">operator</span><span class="special">-&gt;())</span></code>.
                     </p></dd>
 </dl>
 </div></dd>
@@ -252,7 +262,8 @@
 </h3></div></div></div>
 <p>
         Glen Fernandes implemented <code class="computeroutput"><span class="identifier">pointer_traits</span></code>
-        with reviews and guidance from Peter Dimov.
+        and <code class="computeroutput"><span class="identifier">to_address</span></code> with reviews
+        and guidance from Peter Dimov.
       </p>
 </div>
 </div>

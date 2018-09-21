@@ -55,14 +55,18 @@ int main(int argc, char* argv[])
     }
 </pre>
 <p>
-        All programs that use asio need to have at least one boost::asio::io_service
+        All programs that use asio need to have at least one <a class="link" href="../reference/io_context.html" title="io_context">io_context</a>
         object.
       </p>
+<pre class="programlisting">    boost::asio::io_context io_context;
+</pre>
 <p>
         We need to turn the server name that was specified as a parameter to the
         application, into a TCP endpoint. To do this we use an <a class="link" href="../reference/ip__tcp/resolver.html" title="ip::tcp::resolver">ip::tcp::resolver</a>
         object.
       </p>
+<pre class="programlisting">    tcp::resolver resolver(io_context);
+</pre>
 <p>
         A resolver takes a query object and turns it into a list of endpoints. We
         construct a query using the name of the server, specified in <code class="computeroutput">argv[1]</code>,
@@ -111,7 +115,7 @@ int main(int argc, char* argv[])
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

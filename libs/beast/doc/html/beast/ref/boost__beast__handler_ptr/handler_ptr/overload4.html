@@ -28,27 +28,33 @@
           (4 of 4 overloads)</a>
 </h6></div></div></div>
 <p>
-            Construct a new <a class="link" href="../../boost__beast__handler_ptr.html" title="handler_ptr"><code class="computeroutput"><span class="identifier">handler_ptr</span></code></a>.
+            Constructor.
           </p>
 <h7><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.synopsis"></a></span><a class="link" href="overload4.html#beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.synopsis">Synopsis</a>
           </h7><pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">class</span> <span class="identifier">DeducedHandler</span><span class="special">,</span>
     <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
 <span class="identifier">handler_ptr</span><span class="special">(</span>
-    <span class="identifier">Handler</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">handler</span><span class="special">,</span>
+    <span class="identifier">DeducedHandler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span><span class="special">,</span>
     <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 </pre>
 <h7><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.description"></a></span><a class="link" href="overload4.html#beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.description">Description</a>
           </h7><p>
-            This creates a new <a class="link" href="../../boost__beast__handler_ptr.html" title="handler_ptr"><code class="computeroutput"><span class="identifier">handler_ptr</span></code></a> with an owned object
-            of type <code class="computeroutput"><span class="identifier">T</span></code>. The allocator
-            associated with the handler will be used to allocate memory for the owned
-            object. The constructor for the owned object will be called thusly:
+            This creates a new container with an owned object of type <code class="computeroutput"><span class="identifier">T</span></code>. The allocator associated with the
+            handler will be used to allocate memory for the owned object. The constructor
+            for the owned object will be called with the following equivalent signature:
           </p>
-<pre class="programlisting"><span class="identifier">T</span><span class="special">(</span><span class="identifier">handler</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;(</span><span class="identifier">args</span><span class="special">)...)</span>
+<pre class="programlisting"><span class="identifier">T</span><span class="special">::</span><span class="identifier">T</span><span class="special">(</span><span class="identifier">Handler</span> <span class="keyword">const</span><span class="special">&amp;,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...)</span>
 </pre>
 <h7><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.h2"></a>
+            <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.exception_safety"></a></span><a class="link" href="overload4.html#beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.exception_safety">Exception
+            Safety</a>
+          </h7><p>
+            Strong guarantee.
+          </p>
+<h7><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.h3"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.parameters"></a></span><a class="link" href="overload4.html#beast.ref.boost__beast__handler_ptr.handler_ptr.overload4.parameters">Parameters</a>
           </h7><div class="informaltable"><table class="table">
 <colgroup>
@@ -77,7 +83,7 @@
 <td>
                     <p>
                       The handler to associate with the owned object. The argument
-                      will be copied.
+                      will be moved if it is an xvalue.
                     </p>
                   </td>
 </tr>

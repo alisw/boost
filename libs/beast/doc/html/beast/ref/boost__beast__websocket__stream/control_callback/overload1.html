@@ -32,11 +32,9 @@
           </p>
 <h7><a name="beast.ref.boost__beast__websocket__stream.control_callback.overload1.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.control_callback.overload1.synopsis"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__websocket__stream.control_callback.overload1.synopsis">Synopsis</a>
-          </h7><pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">class</span> <span class="identifier">Callback</span><span class="special">&gt;</span>
-<span class="keyword">void</span>
+          </h7><pre class="programlisting"><span class="keyword">void</span>
 <span class="identifier">control_callback</span><span class="special">(</span>
-    <span class="identifier">Callback</span><span class="special">&amp;</span> <span class="identifier">cb</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span> <span class="keyword">void</span><span class="special">(</span><span class="identifier">frame_type</span><span class="special">,</span> <span class="identifier">string_view</span><span class="special">)&gt;</span> <span class="identifier">cb</span><span class="special">);</span>
 </pre>
 <h7><a name="beast.ref.boost__beast__websocket__stream.control_callback.overload1.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.control_callback.overload1.description"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__websocket__stream.control_callback.overload1.description">Description</a>
@@ -105,12 +103,13 @@
 <span class="special">);</span>
 </pre>
                     <p>
-                      The implementation type-erases the callback without requiring
-                      a dynamic allocation. For this reason, the callback object
-                      is passed by a non-constant reference. If the read operation
-                      which receives the control frame is an asynchronous operation,
-                      the callback will be invoked using the same method as that
-                      used to invoke the final handler.
+                      The implementation type-erases the callback which may require
+                      a dynamic allocation. To prevent the possiblity of a dynamic
+                      allocation, use <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ref</span></code>
+                      to wrap the callback. If the read operation which receives
+                      the control frame is an asynchronous operation, the callback
+                      will be invoked using the same method as that used to invoke
+                      the final handler.
                     </p>
                   </td>
 </tr></tbody>
@@ -118,9 +117,12 @@
 <h7><a name="beast.ref.boost__beast__websocket__stream.control_callback.overload1.h3"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.control_callback.overload1.remarks"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__websocket__stream.control_callback.overload1.remarks">Remarks</a>
           </h7><p>
-            It is not necessary to send a close frame upon receipt of a close frame.
-            The implementation does this automatically. Attempting to send a close
-            frame after a close frame is received will result in undefined behavior.
+            Incoming ping and close frames are automatically handled. Pings are responded
+            to with pongs, and a close frame is responded to with a close frame leading
+            to the closure of the stream. It is not necessary to manually send pings,
+            pongs, or close frames from inside the control callback. Attempting to
+            manually send a close frame from inside the control callback after receiving
+            a close frame will result in undefined behavior.
           </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

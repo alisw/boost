@@ -97,10 +97,13 @@
             type meets the requirements of <a href="../../../../../../doc/html/boost_asio/reference/ConstBufferSequence.html" target="_top"><span class="bold"><strong>ConstBufferSequence</strong></span></a>
           </li>
 <li class="listitem">
-            <code class="computeroutput"><span class="identifier">m</span></code> denotes a value of
-            type <code class="computeroutput"><span class="identifier">message</span><span class="special">&amp;</span></code>
-            where <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="keyword">decltype</span><span class="special">(</span><span class="identifier">m</span><span class="special">.</span><span class="identifier">body</span><span class="special">),</span> <span class="identifier">Body</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">==</span>
-            <span class="keyword">true</span></code>.
+            <code class="computeroutput"><span class="identifier">h</span></code> denotes a value of
+            type <code class="computeroutput"><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span>
+            <span class="identifier">Fields</span><span class="special">&gt;&amp;</span></code>.
+          </li>
+<li class="listitem">
+            <code class="computeroutput"><span class="identifier">v</span></code> denotes a value of
+            type <code class="computeroutput"><span class="identifier">Body</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&amp;</span></code>.
           </li>
 <li class="listitem">
             <code class="computeroutput"><span class="identifier">n</span></code> is a value of type
@@ -140,26 +143,20 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">R</span><span class="special">{</span><span class="identifier">m</span><span class="special">};</span></code>
+                  <code class="computeroutput"><span class="identifier">R</span><span class="special">{</span><span class="identifier">h</span><span class="special">,</span><span class="identifier">v</span><span class="special">};</span></code>
                 </p>
               </td>
 <td>
               </td>
 <td>
                 <p>
-                  Constructible from <code class="computeroutput"><span class="identifier">m</span></code>.
-                  The lifetime of <code class="computeroutput"><span class="identifier">m</span></code>
-                  is guaranteed to end no earlier than after the <code class="computeroutput"><span class="identifier">R</span></code>
-                  is destroyed. The constructor will be called after a complete header
-                  is stored in <code class="computeroutput"><span class="identifier">m</span></code>,
-                  and before parsing body octets for messages indicating that a body
-                  is present The reader shall not access the contents of <code class="computeroutput"><span class="identifier">m</span></code> before the first call to <code class="computeroutput"><span class="identifier">init</span></code>, permitting lazy construction
-                  of the message.
-                </p>
-                <p>
-                  The function will ensure that <code class="computeroutput"><span class="special">!</span><span class="identifier">ec</span></code> is <code class="computeroutput"><span class="keyword">true</span></code>
-                  if there was no error or set to the appropriate error code if there
-                  was one.
+                  Constructible from <code class="computeroutput"><span class="identifier">h</span></code>
+                  and <code class="computeroutput"><span class="identifier">v</span></code>. The lifetime
+                  of <code class="computeroutput"><span class="identifier">h</span></code> and <code class="computeroutput"><span class="identifier">v</span></code> is guaranteed to end no earlier
+                  than after the <code class="computeroutput"><span class="identifier">R</span></code>
+                  is destroyed. The reader shall not access the contents of <code class="computeroutput"><span class="identifier">h</span></code> or <code class="computeroutput"><span class="identifier">v</span></code>
+                  before the first call to <code class="computeroutput"><span class="identifier">init</span></code>,
+                  permitting lazy construction of the message.
                 </p>
               </td>
 </tr>
@@ -261,11 +258,12 @@
 <span class="special">{</span>
     <span class="comment">/** Construct the reader.
 
-        @param msg The message whose body is to be parsed.
+        @param h The header for the message being parsed
+
+        @param body The body to store the parsed results into
     */</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Body</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
-    <span class="keyword">explicit</span>
-    <span class="identifier">BodyReader</span><span class="special">(</span><span class="identifier">message</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Body</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">msg</span><span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
+    <span class="identifier">BodyReader</span><span class="special">(</span><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">h</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">body</span><span class="special">);</span>
 
     <span class="comment">/** Initialize the reader.
 

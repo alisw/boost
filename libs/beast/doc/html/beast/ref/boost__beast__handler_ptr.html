@@ -71,7 +71,7 @@
               </td>
 <td>
                 <p>
-                  The type of element this object stores.
+                  The type of element stored.
                 </p>
               </td>
 </tr>
@@ -83,7 +83,7 @@
               </td>
 <td>
                 <p>
-                  The type of handler this object stores.
+                  The type of handler stored.
                 </p>
               </td>
 </tr>
@@ -119,7 +119,7 @@
               </td>
 <td>
                 <p>
-                  Returns a pointer to the owned object.
+                  Return a pointer to the owned object.
                 </p>
               </td>
 </tr>
@@ -131,7 +131,7 @@
               </td>
 <td>
                 <p>
-                  Returns a reference to the handler.
+                  Return a reference to the handler.
                 </p>
               </td>
 </tr>
@@ -143,13 +143,28 @@
               </td>
 <td>
                 <p>
+                  Default constructor (deleted).
+                </p>
+                <p>
                   Move constructor.
                 </p>
                 <p>
-                  Copy constructor.
+                  Copy constructor (deleted).
                 </p>
                 <p>
-                  Construct a new handler_ptr.
+                  Constructor.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="boost__beast__handler_ptr/has_value.html" title="handler_ptr::has_value"><span class="bold"><strong>has_value</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Return true if *this owns an object.
                 </p>
               </td>
 </tr>
@@ -162,18 +177,6 @@
 <td>
                 <p>
                   Invoke the handler in the owned object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="boost__beast__handler_ptr/operator_bool.html" title="handler_ptr::operator bool"><span class="bold"><strong>operator bool</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Returns true if *this owns an object.
                 </p>
               </td>
 </tr>
@@ -209,7 +212,10 @@
               </td>
 <td>
                 <p>
-                  Copy assignment (disallowed).
+                  Copy assignment (deleted).
+                </p>
+                <p>
+                  Move assignment (deleted).
                 </p>
               </td>
 </tr>
@@ -221,7 +227,7 @@
               </td>
 <td>
                 <p>
-                  Release ownership of the handler.
+                  Return ownership of the handler.
                 </p>
               </td>
 </tr>
@@ -233,7 +239,7 @@
               </td>
 <td>
                 <p>
-                  Destructs the owned object if no more handler_ptr link to it.
+                  Destructor.
                 </p>
               </td>
 </tr>
@@ -244,11 +250,10 @@
         <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.description"></a></span><a class="link" href="boost__beast__handler_ptr.html#beast.ref.boost__beast__handler_ptr.description">Description</a>
       </h5>
 <p>
-        This is a smart pointer that retains shared ownership of an object through
-        a pointer. Memory is managed using the allocation and deallocation functions
-        associated with a completion handler, which is also stored in the object.
-        The managed object is destroyed and its memory deallocated when one of the
-        following happens:
+        This is a smart pointer that retains unique ownership of an object through
+        a pointer. Memory is managed using the allocator associated with a completion
+        handler stored in the object. The managed object is destroyed and its memory
+        deallocated when one of the following occurs:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -258,21 +263,24 @@
             The function <a class="link" href="boost__beast__handler_ptr/release_handler.html" title="handler_ptr::release_handler"><code class="computeroutput"><span class="identifier">handler_ptr</span><span class="special">::</span><span class="identifier">release_handler</span></code></a> is called.
           </li>
 <li class="listitem">
-            The last remaining container owning the object is destroyed.
+            The container is destroyed.
           </li>
 </ul></div>
 <p>
-        Objects of this type are used in the implementation of composed operations.
-        Typically the composed operation's shared state is managed by the <a class="link" href="boost__beast__handler_ptr.html" title="handler_ptr"><code class="computeroutput"><span class="identifier">handler_ptr</span></code></a> and an allocator associated
-        with the final handler is used to create the managed object.
+        Objects of this type are used in the implementation of composed operations
+        with states that are expensive or impossible to move. This container manages
+        that non-trivial state on behalf of the composed operation.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__handler_ptr.h4"></a>
-        <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.remarks"></a></span><a class="link" href="boost__beast__handler_ptr.html#beast.ref.boost__beast__handler_ptr.remarks">Remarks</a>
+        <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.thread_safety"></a></span><a class="link" href="boost__beast__handler_ptr.html#beast.ref.boost__beast__handler_ptr.thread_safety">Thread
+        Safety</a>
       </h5>
 <p>
-        The reference count is stored using a 16 bit unsigned integer. Making more
-        than 2^16 copies of one object results in undefined behavior.
+        <span class="emphasis"><em>Distinct</em></span> <span class="emphasis"><em>objects:</em></span> Safe.
+      </p>
+<p>
+        <span class="emphasis"><em>Shared</em></span> <span class="emphasis"><em>objects:</em></span> Unsafe.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__handler_ptr.h5"></a>
@@ -305,7 +313,7 @@
               </td>
 <td>
                 <p>
-                  The type of the owned object.
+                  The type of the owned object. Must be noexcept destructible.
                 </p>
               </td>
 </tr>

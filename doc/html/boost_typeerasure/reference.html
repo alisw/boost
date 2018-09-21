@@ -8,7 +8,7 @@
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../boost_typeerasure.html" title="Chapter&#160;40.&#160;Boost.TypeErasure">
 <link rel="prev" href="predef.html" title="Predefined Concepts">
-<link rel="next" href="../boost/type_erasure/any_Conc_1_3_41_13_1_1_1_1.html" title="Class template any&lt;Concept, T &amp;&gt;">
+<link rel="next" href="../boost/type_erasure/any.html" title="Class template any">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -21,7 +21,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="predef.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeerasure.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../boost/type_erasure/any_Conc_1_3_41_13_1_1_1_1.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="predef.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeerasure.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../boost/type_erasure/any.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -63,8 +63,23 @@
 <dt><span class="section"><a href="reference.html#header.boost.type_erasure.tuple_hpp">Header &lt;boost/type_erasure/tuple.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.type_erasure.typeid_of_hpp">Header &lt;boost/type_erasure/typeid_of.hpp&gt;</a></span></dt>
 </dl></div>
-<div class="section"><div class="titlepage"><div><div><h3 class="title">
-<a name="header.boost.type_erasure.any_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/any.hpp" target="_top">boost/type_erasure/any.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.type_erasure.any_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/any.hpp" target="_top">boost/type_erasure/any.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T <span class="special">=</span> <a class="link" href="../boost/type_erasure/_self.html" title="Struct _self">_self</a><span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/any.html" title="Class template any">any</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/any_Conc_1_3_41_13_1_1_1_2.html" title="Class template any&lt;Concept, T &amp;&gt;">any</a><span class="special">&lt;</span><span class="identifier">Concept</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/any_Conc_1_3_41_13_1_1_1_3.html" title="Class template any&lt;Concept, const T &amp;&gt;">any</a><span class="special">&lt;</span><span class="identifier">Concept</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/any_Conc_1_3_41_13_1_1_1_4.html" title="Class template any&lt;Concept, T &amp;&amp;&gt;">any</a><span class="special">&lt;</span><span class="identifier">Concept</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <a class="link" href="../boost/any.html" title="Class any">any</a><span class="special">&lt;</span> <span class="identifier">Concept</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;</span> <span class="special">&gt;</span> <a name="boost.type_erasure.any_ref"></a><span class="identifier">any_ref</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <a class="link" href="../boost/any.html" title="Class any">any</a><span class="special">&lt;</span> <span class="identifier">Concept</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <span class="special">&gt;</span> <a name="boost.type_erasure.any_cref"></a><span class="identifier">any_cref</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <a class="link" href="../boost/any.html" title="Class any">any</a><span class="special">&lt;</span> <span class="identifier">Concept</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;&amp;</span> <span class="special">&gt;</span> <a name="boost.type_erasure.any_rvref"></a><span class="identifier">any_rvref</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.type_erasure.any_cast_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/any_cast.hpp" target="_top">boost/type_erasure/any_cast.hpp</a>&gt;</h3></div></div></div>
@@ -81,8 +96,15 @@
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
-<div class="section"><div class="titlepage"><div><div><h3 class="title">
-<a name="header.boost.type_erasure.binding_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/binding.hpp" target="_top">boost/type_erasure/binding.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.type_erasure.binding_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/binding.hpp" target="_top">boost/type_erasure/binding.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/binding.html" title="Class template binding">binding</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.type_erasure.binding_of_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/binding_of.hpp" target="_top">boost/type_erasure/binding_of.hpp</a>&gt;</h3></div></div></div>
@@ -100,7 +122,8 @@
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T <span class="special">=</span> <a class="link" href="../boost/type_erasure/_self.html" title="Struct _self">_self</a><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/destructible.html" title="Struct template destructible">destructible</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T <span class="special">=</span> <a class="link" href="../boost/type_erasure/_self.html" title="Struct _self">_self</a><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/copy_constructible.html" title="Struct template copy_constructible">copy_constructible</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T <span class="special">=</span> <a class="link" href="../boost/type_erasure/_self.html" title="Struct _self">_self</a><span class="special">,</span> <span class="keyword">typename</span> U <span class="special">=</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/assignable.html" title="Struct template assignable">assignable</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T <span class="special">=</span> <a class="link" href="../boost/type_erasure/_self.html" title="Struct _self">_self</a><span class="special">,</span> <span class="keyword">typename</span> U <span class="special">=</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/assignable.html" title="Struct template assignable">assignable</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T <span class="special">=</span> <a class="link" href="../boost/type_erasure/_self.html" title="Struct _self">_self</a><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/typeid_.html" title="Struct template typeid_">typeid_</a><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -129,7 +152,6 @@
 <a name="header.boost.type_erasure.check_match_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/check_match.hpp" target="_top">boost/type_erasure/check_match.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/typeid_.html" title="Struct template typeid_">typeid_</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> U<span class="special">&gt;</span> 
       <span class="keyword">bool</span> <a class="link" href="../boost/type_erasure/check_match.html" title="Function check_match"><span class="identifier">check_match</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/type_erasure/binding.html" title="Class template binding">binding</a><span class="special">&lt;</span> <span class="identifier">Concept</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Op</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">U</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> U<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="../boost/type_erasure/check_match.html" title="Function check_match"><span class="identifier">check_match</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Op</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">U</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
@@ -153,6 +175,8 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/concept_of.html" title="Struct template concept_of">concept_of</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="keyword">typename</span><span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_erasure</span><span class="special">::</span><span class="identifier">concept_of</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.type_erasure.concept_of_t"></a><span class="identifier">concept_of_t</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -189,6 +213,8 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/derived.html" title="Struct template derived">derived</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">T</span><span class="special">::</span><span class="identifier">_boost_type_erasure_derived_type</span> <a name="boost.type_erasure.derived_t"></a><span class="identifier">derived_t</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -227,7 +253,7 @@
 <a name="header.boost.type_erasure.free_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/free.hpp" target="_top">boost/type_erasure/free.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis">
 
-<a class="link" href="../BOOST_TYPE_ERASURE_FREE.html" title="Macro BOOST_TYPE_ERASURE_FREE">BOOST_TYPE_ERASURE_FREE</a>(qualified_name, function_name, N)</pre>
+<a class="link" href="../BOOST_TYPE_ERASURE_FREE.html" title="Macro BOOST_TYPE_ERASURE_FREE">BOOST_TYPE_ERASURE_FREE</a>(concept_name, function_name)</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -284,7 +310,7 @@
 <a name="header.boost.type_erasure.member_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/member.hpp" target="_top">boost/type_erasure/member.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis">
 
-<a class="link" href="../BOOST_TYPE_ERASURE_MEMBER.html" title="Macro BOOST_TYPE_ERASURE_MEMBER">BOOST_TYPE_ERASURE_MEMBER</a>(qualified_name, member, N)</pre>
+<a class="link" href="../BOOST_TYPE_ERASURE_MEMBER.html" title="Macro BOOST_TYPE_ERASURE_MEMBER">BOOST_TYPE_ERASURE_MEMBER</a>(concept_name, member)</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -338,7 +364,11 @@
 <a name="header.boost.type_erasure.param_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/param.hpp" target="_top">boost/type_erasure/param.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/param.html" title="Class template param">param</a><span class="special">;</span>
+
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Any<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/as_param.html" title="Struct template as_param">as_param</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="keyword">typename</span><span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_erasure</span><span class="special">::</span><span class="identifier">as_param</span><span class="special">&lt;</span> <span class="identifier">Any</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.type_erasure.as_param_t"></a><span class="identifier">as_param_t</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -364,9 +394,9 @@
 <a name="header.boost.type_erasure.placeholder_of_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/placeholder_of.hpp" target="_top">boost/type_erasure/placeholder_of.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/param.html" title="Class template param">param</a><span class="special">;</span>
-
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/placeholder_of.html" title="Struct template placeholder_of">placeholder_of</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="keyword">typename</span><span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_erasure</span><span class="special">::</span><span class="identifier">placeholder_of</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.type_erasure.placeholder_of_t"></a><span class="identifier">placeholder_of_t</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -375,9 +405,9 @@
 <a name="header.boost.type_erasure.rebind_any_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/rebind_any.hpp" target="_top">boost/type_erasure/rebind_any.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/any.html" title="Class template any">any</a><span class="special">;</span>
-
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Any<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/type_erasure/rebind_any.html" title="Struct template rebind_any">rebind_any</a><span class="special">;</span>
+
+    <span class="keyword">typedef</span> <span class="keyword">typename</span><span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">type_erasure</span><span class="special">::</span><span class="identifier">rebind_any</span><span class="special">&lt;</span> <span class="identifier">Any</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.type_erasure.rebind_any_t"></a><span class="identifier">rebind_any_t</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -407,7 +437,6 @@
 <a name="header.boost.type_erasure.require_match_hpp"></a>Header &lt;<a href="../../../boost/type_erasure/require_match.hpp" target="_top">boost/type_erasure/require_match.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">type_erasure</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/type_erasure/binding.html" title="Class template binding">binding</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Concept<span class="special">,</span> <span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> U<span class="special">&gt;</span> 
       <span class="keyword">void</span> <a class="link" href="../boost/type_erasure/require_match.html" title="Function require_match"><span class="identifier">require_match</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/type_erasure/binding.html" title="Class template binding">binding</a><span class="special">&lt;</span> <span class="identifier">Concept</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Op</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">U</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> U<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="../boost/type_erasure/require_match.html" title="Function require_match"><span class="identifier">require_match</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Op</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">U</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
@@ -469,7 +498,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="predef.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeerasure.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../boost/type_erasure/any_Conc_1_3_41_13_1_1_1_1.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="predef.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_typeerasure.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../boost/type_erasure/any.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
 <link rel="up" href="../boost__beast__handler_ptr.html" title="handler_ptr">
-<link rel="prev" href="handler.html" title="handler_ptr::handler">
+<link rel="prev" href="handler/overload2.html" title="handler_ptr::handler (2 of 2 overloads)">
 <link rel="next" href="handler_ptr/overload1.html" title="handler_ptr::handler_ptr (1 of 4 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,41 +20,42 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="handler.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr/overload1.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="handler/overload2.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr/overload1.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="beast.ref.boost__beast__handler_ptr.handler_ptr"></a><a class="link" href="handler_ptr.html" title="handler_ptr::handler_ptr">handler_ptr::handler_ptr</a>
 </h5></div></div></div>
 <p>
-          <a class="indexterm" name="idp94825936"></a>
-Move constructor.
+          <a class="indexterm" name="idp115646624"></a>
+Default constructor (deleted).
         </p>
-<pre class="programlisting"><a class="link" href="handler_ptr/overload1.html" title="handler_ptr::handler_ptr (1 of 4 overloads)">handler_ptr</a><span class="special">(</span>
-    <span class="identifier">handler_ptr</span><span class="special">&amp;&amp;</span> <span class="identifier">other</span><span class="special">);</span>
+<pre class="programlisting"><a class="link" href="handler_ptr/overload1.html" title="handler_ptr::handler_ptr (1 of 4 overloads)">handler_ptr</a><span class="special">();</span>
   <span class="emphasis"><em>&#187; <a class="link" href="handler_ptr/overload1.html" title="handler_ptr::handler_ptr (1 of 4 overloads)">more...</a></em></span>
 </pre>
 <p>
-          Copy constructor.
+          Move constructor.
         </p>
 <pre class="programlisting"><a class="link" href="handler_ptr/overload2.html" title="handler_ptr::handler_ptr (2 of 4 overloads)">handler_ptr</a><span class="special">(</span>
-    <span class="identifier">handler_ptr</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">);</span>
+    <span class="identifier">handler_ptr</span><span class="special">&amp;&amp;</span> <span class="identifier">other</span><span class="special">);</span>
   <span class="emphasis"><em>&#187; <a class="link" href="handler_ptr/overload2.html" title="handler_ptr::handler_ptr (2 of 4 overloads)">more...</a></em></span>
 </pre>
 <p>
-          Construct a new <a class="link" href="../boost__beast__handler_ptr.html" title="handler_ptr"><code class="computeroutput"><span class="identifier">handler_ptr</span></code></a>.
+          Copy constructor (deleted).
+        </p>
+<pre class="programlisting"><a class="link" href="handler_ptr/overload3.html" title="handler_ptr::handler_ptr (3 of 4 overloads)">handler_ptr</a><span class="special">(</span>
+    <span class="identifier">handler_ptr</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">);</span>
+  <span class="emphasis"><em>&#187; <a class="link" href="handler_ptr/overload3.html" title="handler_ptr::handler_ptr (3 of 4 overloads)">more...</a></em></span>
+</pre>
+<p>
+          Constructor.
         </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">class</span> <span class="identifier">DeducedHandler</span><span class="special">,</span>
     <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
-<a class="link" href="handler_ptr/overload3.html" title="handler_ptr::handler_ptr (3 of 4 overloads)">handler_ptr</a><span class="special">(</span>
-    <span class="identifier">Handler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span><span class="special">,</span>
-    <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
-  <span class="emphasis"><em>&#187; <a class="link" href="handler_ptr/overload3.html" title="handler_ptr::handler_ptr (3 of 4 overloads)">more...</a></em></span>
-
-<span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="keyword">explicit</span>
 <a class="link" href="handler_ptr/overload4.html" title="handler_ptr::handler_ptr (4 of 4 overloads)">handler_ptr</a><span class="special">(</span>
-    <span class="identifier">Handler</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">handler</span><span class="special">,</span>
+    <span class="identifier">DeducedHandler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span><span class="special">,</span>
     <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
   <span class="emphasis"><em>&#187; <a class="link" href="handler_ptr/overload4.html" title="handler_ptr::handler_ptr (4 of 4 overloads)">more...</a></em></span>
 </pre>
@@ -69,7 +70,7 @@ Move constructor.
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="handler.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr/overload1.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="handler/overload2.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr/overload1.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

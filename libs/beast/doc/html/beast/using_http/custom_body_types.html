@@ -383,8 +383,8 @@
 
     <span class="comment">// Constructor.</span>
     <span class="comment">//</span>
-    <span class="comment">// `m` holds the message we are serializing, which will</span>
-    <span class="comment">// always have the `basic_file_body` as the body type.</span>
+    <span class="comment">// `h` holds the headers of the message we are</span>
+    <span class="comment">// serializing, while `b` holds the body.</span>
     <span class="comment">//</span>
     <span class="comment">// Note that the message is passed by non-const reference.</span>
     <span class="comment">// This is intentional, because reading from the file</span>
@@ -406,8 +406,7 @@
     <span class="comment">// a time.</span>
     <span class="comment">//</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
-    <span class="identifier">writer</span><span class="special">(</span><span class="identifier">message</span><span class="special">&lt;</span>
-        <span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">basic_file_body</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">);</span>
+    <span class="identifier">writer</span><span class="special">(</span><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">h</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 
     <span class="comment">// Initializer</span>
     <span class="comment">//</span>
@@ -439,9 +438,11 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
 <span class="identifier">basic_file_body</span><span class="special">&lt;</span><span class="identifier">File</span><span class="special">&gt;::</span>
 <span class="identifier">writer</span><span class="special">::</span>
-<span class="identifier">writer</span><span class="special">(</span><span class="identifier">message</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">basic_file_body</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">)</span>
-    <span class="special">:</span> <span class="identifier">body_</span><span class="special">(</span><span class="identifier">m</span><span class="special">.</span><span class="identifier">body</span><span class="special">())</span>
+<span class="identifier">writer</span><span class="special">(</span><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">h</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">)</span>
+    <span class="special">:</span> <span class="identifier">body_</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span>
 <span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ignore_unused</span><span class="special">(</span><span class="identifier">h</span><span class="special">);</span>
+
     <span class="comment">// The file must already be open</span>
     <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">body_</span><span class="special">.</span><span class="identifier">file_</span><span class="special">.</span><span class="identifier">is_open</span><span class="special">());</span>
 
@@ -543,13 +544,12 @@
     <span class="comment">//</span>
     <span class="comment">// This is called after the header is parsed and</span>
     <span class="comment">// indicates that a non-zero sized body may be present.</span>
-    <span class="comment">// `m` holds the message we are receiving, which will</span>
-    <span class="comment">// always have the `basic_file_body` as the body type.</span>
+    <span class="comment">// `h` holds the received message headers.</span>
+    <span class="comment">// `b` is an instance of `basic_file_body`.</span>
     <span class="comment">//</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
     <span class="keyword">explicit</span>
-    <span class="identifier">reader</span><span class="special">(</span>
-        <span class="identifier">message</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">basic_file_body</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">);</span>
+    <span class="identifier">reader</span><span class="special">(</span><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span><span class="identifier">h</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">);</span>
 
     <span class="comment">// Initializer</span>
     <span class="comment">//</span>
@@ -591,9 +591,10 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
 <span class="identifier">basic_file_body</span><span class="special">&lt;</span><span class="identifier">File</span><span class="special">&gt;::</span>
 <span class="identifier">reader</span><span class="special">::</span>
-<span class="identifier">reader</span><span class="special">(</span><span class="identifier">message</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">basic_file_body</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span><span class="special">)</span>
-    <span class="special">:</span> <span class="identifier">body_</span><span class="special">(</span><span class="identifier">m</span><span class="special">.</span><span class="identifier">body</span><span class="special">())</span>
+<span class="identifier">reader</span><span class="special">(</span><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;&amp;</span> <span class="identifier">h</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&amp;</span> <span class="identifier">body</span><span class="special">)</span>
+    <span class="special">:</span> <span class="identifier">body_</span><span class="special">(</span><span class="identifier">body</span><span class="special">)</span>
 <span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ignore_unused</span><span class="special">(</span><span class="identifier">h</span><span class="special">);</span>
 <span class="special">}</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">File</span><span class="special">&gt;</span>

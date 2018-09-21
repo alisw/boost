@@ -81,9 +81,8 @@ public:
     public:
         template<bool isRequest, class Fields>
         explicit
-        reader(message<isRequest,
-                basic_string_body, Fields>& m)
-            : body_(m.body())
+        reader(header<isRequest, Fields>&, value_type& b)
+            : body_(b)
         {
         }
 
@@ -134,7 +133,7 @@ public:
             CharT* dest = &body_[size];
             for(auto b : beast::detail::buffers_range(buffers))
             {
-                Traits::copy(dest, reinterpret_cast<
+                Traits::copy(dest, static_cast<
                     CharT const*>(b.data()), b.size());
                 dest += b.size();
             }
@@ -166,9 +165,8 @@ public:
 
         template<bool isRequest, class Fields>
         explicit
-        writer(message<isRequest,
-                basic_string_body, Fields> const& msg)
-            : body_(msg.body())
+        writer(header<isRequest, Fields> const&, value_type const& b)
+            : body_(b)
         {
         }
 

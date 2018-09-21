@@ -10,6 +10,7 @@
 #ifndef BOOST_BEAST_CORE_IMPL_FILE_STDIO_IPP
 #define BOOST_BEAST_CORE_IMPL_FILE_STDIO_IPP
 
+#include <boost/core/exchange.hpp>
 #include <limits>
 
 namespace boost {
@@ -26,9 +27,8 @@ file_stdio::
 inline
 file_stdio::
 file_stdio(file_stdio&& other)
-    : f_(other.f_)
+    : f_(boost::exchange(other.f_, nullptr))
 {
-    other.f_ = nullptr;
 }
 
 inline
@@ -122,7 +122,7 @@ size(error_code& ec) const
 {
     if(! f_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     long pos = std::ftell(f_);
@@ -159,7 +159,7 @@ pos(error_code& ec) const
 {
     if(! f_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     long pos = std::ftell(f_);
@@ -179,7 +179,7 @@ seek(std::uint64_t offset, error_code& ec)
 {
     if(! f_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return;
     }
     if(offset > (std::numeric_limits<long>::max)())
@@ -202,7 +202,7 @@ read(void* buffer, std::size_t n, error_code& ec) const
 {
     if(! f_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     auto nread = std::fread(buffer, 1, n, f_);
@@ -221,7 +221,7 @@ write(void const* buffer, std::size_t n, error_code& ec)
 {
     if(! f_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     auto nwritten = std::fwrite(buffer, 1, n, f_);

@@ -175,13 +175,16 @@ handle_request(
     if(ec)
         return send(server_error(ec.message()));
 
+    // Cache the size since we need it after the move
+    auto const size = body.size();
+
     // Respond to HEAD request
     if(req.method() == http::verb::head)
     {
         http::response<http::empty_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, mime_type(path));
-        res.content_length(body.size());
+        res.content_length(size);
         res.keep_alive(req.keep_alive());
         return send(std::move(res));
     }
@@ -193,7 +196,7 @@ handle_request(
         std::make_tuple(http::status::ok, req.version())};
     res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(http::field::content_type, mime_type(path));
-    res.content_length(body.size());
+    res.content_length(size);
     res.keep_alive(req.keep_alive());
     return send(std::move(res));
 }
@@ -247,7 +250,7 @@ void
 do_session(
     tcp::socket& socket,
     ssl::context& ctx,
-    std::string const& doc_root)
+    std::shared_ptr<std::string const> const& doc_root)
 {
     bool close = false;
     boost::system::error_code ec;
@@ -277,7 +280,7 @@ do_session(
             return fail(ec, "read");
 
         // Send the response
-        handle_request(doc_root, std::move(req), lambda);
+        handle_request(*doc_root, std::move(req), lambda);
         if(ec)
             return fail(ec, "write");
         if(close)
@@ -313,7 +316,7 @@ int main(int argc, char* argv[])
         }
         auto const address = boost::asio::ip::make_address(argv[1]);
         auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
-        std::string const doc_root = argv[3];
+        auto const doc_root = std::make_shared<std::string>(argv[3]);
 
         // The io_context is required for all I/O
         boost::asio::io_context ioc{1};

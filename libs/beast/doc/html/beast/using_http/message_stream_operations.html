@@ -79,7 +79,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="../ref/boost__beast__http__write/overload1.html" title="http::write (1 of 4 overloads)"><span class="bold"><strong>write</strong></span></a>
+                  <a class="link" href="../ref/boost__beast__http__write/overload1.html" title="http::write (1 of 6 overloads)"><span class="bold"><strong>write</strong></span></a>
                 </p>
               </td>
 <td>
@@ -117,7 +117,8 @@
         Because a serialized header is not length-prefixed, algorithms which parse
         messages from a stream may read past the end of a message for efficiency.
         To hold this surplus data, all stream read operations use a passed-in <a class="link" href="../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="bold"><strong>DynamicBuffer</strong></span></a>
-        which must be persisted between calls. Each read operation may consume bytes
+        which must be persisted between calls until the end of stream is reached
+        or the stream object is destroyed. Each read operation may consume bytes
         remaining in the buffer, and leave behind new bytes. In this example we declare
         the buffer and a message variable, then read a complete HTTP request synchronously:
       </p>

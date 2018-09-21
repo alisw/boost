@@ -42,11 +42,10 @@
       The code above is straightforward and self-explanatory but, strictly speaking,
       is not entirely correct as -1 might be the result of a conversion failure or
       the successful conversion of the "-1" string. Still, in reality "spare"
-      values (outside the valid/sensible range) are quite often available to be used
-      to indicate conversion failures. If so, such straightorward deployment might
-      be adequate. Alternatively, it might be not that uncommon to ignore conversion
-      failures altogether and to simply log the event and to proceed with the supplied
-      fallback value.
+      values (outside the valid/sensible range) are often available to indicate conversion
+      failures. If so, such straightorward deployment might be adequate. Alternatively,
+      it might be not that uncommon to ignore conversion failures altogether and
+      to simply log the event and to proceed with the supplied fallback value.
     </p>
 <p>
       Applications outside these mentioned categories still require conversion failure
@@ -131,8 +130,8 @@
       to the user. It is not unimaginable that, on the library level, propagating
       the conversion-failure exception might be the only available option. On the
       application level though, in my personal experience, the choice has overwhelmingly
-      been to handle conversion failures <span class="emphasis"><em>locally</em></span>, i.e. to avoid
-      conversion-failure exception propagation or, better still, to avoid exceptions
+      been to handle conversion failures <span class="emphasis"><em>locally</em></span>, i.e. avoiding
+      conversion-failure exception propagation or, better still, avoiding exceptions
       altogether with program flows similar to:
     </p>
 <p>

@@ -10,6 +10,7 @@
 #ifndef BOOST_BEAST_CORE_IMPL_FILE_WIN32_IPP
 #define BOOST_BEAST_CORE_IMPL_FILE_WIN32_IPP
 
+#include <boost/core/exchange.hpp>
 #include <boost/winapi/access_rights.hpp>
 #include <boost/winapi/error_codes.hpp>
 #include <boost/winapi/file_management.hpp>
@@ -61,9 +62,8 @@ file_win32::
 inline
 file_win32::
 file_win32(file_win32&& other)
-    : h_(other.h_)
+    : h_(boost::exchange(other.h_, boost::winapi::INVALID_HANDLE_VALUE_))
 {
-    other.h_ = boost::winapi::INVALID_HANDLE_VALUE_;
 }
 
 inline
@@ -216,7 +216,7 @@ size(error_code& ec) const
 {
     if(h_ == boost::winapi::INVALID_HANDLE_VALUE_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     boost::winapi::LARGE_INTEGER_ fileSize;
@@ -237,7 +237,7 @@ pos(error_code& ec)
 {
     if(h_ == boost::winapi::INVALID_HANDLE_VALUE_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     boost::winapi::LARGE_INTEGER_ in;
@@ -261,7 +261,7 @@ seek(std::uint64_t offset, error_code& ec)
 {
     if(h_ == boost::winapi::INVALID_HANDLE_VALUE_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return;
     }
     boost::winapi::LARGE_INTEGER_ in;
@@ -283,7 +283,7 @@ read(void* buffer, std::size_t n, error_code& ec)
 {
     if(h_ == boost::winapi::INVALID_HANDLE_VALUE_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     std::size_t nread = 0;
@@ -300,9 +300,9 @@ read(void* buffer, std::size_t n, error_code& ec)
         boost::winapi::DWORD_ bytesRead;
         if(! ::ReadFile(h_, buffer, amount, &bytesRead, 0))
         {
-            auto const dwError = ::GetLastError();
+            auto const dwError = boost::winapi::GetLastError();
             if(dwError != boost::winapi::ERROR_HANDLE_EOF_)
-                ec.assign(::GetLastError(), system_category());
+                ec.assign(dwError, system_category());
             else
                 ec.assign(0, ec.category());
             return nread;
@@ -311,7 +311,7 @@ read(void* buffer, std::size_t n, error_code& ec)
             return nread;
         n -= bytesRead;
         nread += bytesRead;
-        buffer = reinterpret_cast<char*>(buffer) + bytesRead;
+        buffer = static_cast<char*>(buffer) + bytesRead;
     }
     ec.assign(0, ec.category());
     return nread;
@@ -324,7 +324,7 @@ write(void const* buffer, std::size_t n, error_code& ec)
 {
     if(h_ == boost::winapi::INVALID_HANDLE_VALUE_)
     {
-        ec.assign(errc::invalid_argument, generic_category());
+        ec = make_error_code(errc::invalid_argument);
         return 0;
     }
     std::size_t nwritten = 0;
@@ -341,9 +341,9 @@ write(void const* buffer, std::size_t n, error_code& ec)
         boost::winapi::DWORD_ bytesWritten;
         if(! ::WriteFile(h_, buffer, amount, &bytesWritten, 0))
         {
-            auto const dwError = ::GetLastError();
+            auto const dwError = boost::winapi::GetLastError();
             if(dwError != boost::winapi::ERROR_HANDLE_EOF_)
-                ec.assign(::GetLastError(), system_category());
+                ec.assign(dwError, system_category());
             else
                 ec.assign(0, ec.category());
             return nwritten;
@@ -352,7 +352,7 @@ write(void const* buffer, std::size_t n, error_code& ec)
             return nwritten;
         n -= bytesWritten;
         nwritten += bytesWritten;
-        buffer = reinterpret_cast<char const*>(buffer) + bytesWritten;
+        buffer = static_cast<char const*>(buffer) + bytesWritten;
     }
     ec.assign(0, ec.category());
     return nwritten;

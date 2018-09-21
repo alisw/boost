@@ -7,6 +7,13 @@
 // See http://www.boost.org/libs/container for documentation.
 //
 //////////////////////////////////////////////////////////////////////////////
+
+// the tests trigger deprecation warnings when compiled with msvc in C++17 mode
+#if defined(_MSVC_LANG) && _MSVC_LANG > 201402
+// warning STL4009: std::allocator<void> is deprecated in C++17
+# define _SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING
+#endif
+
 #include <memory>
 #include <iostream>
 
@@ -38,12 +45,8 @@ template class boost::container::vector
    < test::movable_and_copyable_int
    , allocator<test::movable_and_copyable_int> >;
 
-namespace container_detail {
-
 template class vec_iterator<int*, true >;
 template class vec_iterator<int*, false>;
-
-}
 
 }}
 
@@ -247,5 +250,31 @@ int main()
          return 1;
       }
    }
+
+#if __cplusplus >= 201703L
+   ////////////////////////////////////
+   //    Constructor Template Auto Deduction testing
+   ////////////////////////////////////
+   {
+      auto gold = std::vector{ 1, 2, 3 };
+      auto test = boost::container::vector(gold.begin(), gold.end());
+      if (test.size() != 3) {
+         return 1;
+      }
+      if (!(test[0] == 1 && test[1] == 2 && test[2] == 3)) {
+         return 1;
+      }
+   }
+   {
+      auto gold = std::vector{ 1, 2, 3 };
+      auto test = boost::container::vector(gold.begin(), gold.end(), boost::container::new_allocator<int>());
+      if (test.size() != 3) {
+         return 1;
+      }
+      if (!(test[0] == 1 && test[1] == 2 && test[2] == 3)) {
+         return 1;
+      }
+   }
+#endif
    return 0;
 }

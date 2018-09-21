@@ -11,12 +11,14 @@
 #include <boost/beast/core/buffered_read_stream.hpp>
 
 #include <boost/beast/core/multi_buffer.hpp>
-#include <boost/beast/test/stream.hpp>
+#include <boost/beast/experimental/test/stream.hpp>
 #include <boost/beast/test/yield_to.hpp>
 #include <boost/beast/unit_test/suite.hpp>
 #include <boost/asio/buffer.hpp>
+#include <boost/asio/io_service.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/asio/spawn.hpp>
+#include <boost/asio/strand.hpp>
 #include <boost/optional.hpp>
 
 namespace boost {
@@ -55,7 +57,7 @@ public:
         unit_test::suite& suite_;
         boost::asio::io_context& ioc_;
         boost::optional<test::stream> ts_;
-        boost::optional<test::fail_counter> fc_;
+        boost::optional<test::fail_count> fc_;
         boost::optional<buffered_read_stream<
             test::stream&, multi_buffer>> brs_;
 
@@ -131,13 +133,13 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream ts(ioc_, fc, ", world!");
             buffered_read_stream<
                 test::stream&, multi_buffer> srs(ts);
             srs.buffer().commit(buffer_copy(
                 srs.buffer().prepare(5), buffer("Hello", 5)));
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             boost::asio::read(srs, buffer(&s[0], s.size()), ec);
             if(! ec)
             {
@@ -149,14 +151,14 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream ts(ioc_, fc, ", world!");
             buffered_read_stream<
                 test::stream&, multi_buffer> srs(ts);
             srs.capacity(3);
             srs.buffer().commit(buffer_copy(
                 srs.buffer().prepare(5), buffer("Hello", 5)));
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             boost::asio::read(srs, buffer(&s[0], s.size()), ec);
             if(! ec)
             {
@@ -168,13 +170,13 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream ts(ioc_, fc, ", world!");
             buffered_read_stream<
                 test::stream&, multi_buffer> srs(ts);
             srs.buffer().commit(buffer_copy(
                 srs.buffer().prepare(5), buffer("Hello", 5)));
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             boost::asio::async_read(
                 srs, buffer(&s[0], s.size()), do_yield[ec]);
             if(! ec)
@@ -187,14 +189,14 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream ts(ioc_, fc, ", world!");
             buffered_read_stream<
                 test::stream&, multi_buffer> srs(ts);
             srs.capacity(3);
             srs.buffer().commit(buffer_copy(
                 srs.buffer().prepare(5), buffer("Hello", 5)));
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             boost::asio::async_read(
                 srs, buffer(&s[0], s.size()), do_yield[ec]);
             if(! ec)
@@ -206,6 +208,30 @@ public:
         BEAST_EXPECT(n < limit);
     }
 
+    struct copyable_handler
+    {
+        template<class... Args>
+        void
+        operator()(Args&&...) const
+        {
+        }
+    };
+
+    void
+    testAsioHandlerInvoke()
+    {
+        // make sure things compile, also can set a
+        // breakpoint in asio_handler_invoke to make sure
+        // it is instantiated.
+        boost::asio::io_context ioc;
+        boost::asio::io_service::strand s{ioc};
+        test::stream ts{ioc};
+        buffered_read_stream<
+            test::stream&, multi_buffer> brs(ts);
+        brs.async_read_some(boost::asio::mutable_buffer{},
+            s.wrap(copyable_handler{}));
+    }
+
     void run() override
     {
         testSpecialMembers();
@@ -214,6 +240,7 @@ public:
             testRead(yield);});
 
         testAsyncLoop();
+        testAsioHandlerInvoke();
     }
 };
 

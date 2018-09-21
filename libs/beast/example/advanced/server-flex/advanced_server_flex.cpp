@@ -15,17 +15,19 @@
 
 #include "example/common/detect_ssl.hpp"
 #include "example/common/server_certificate.hpp"
-#include "example/common/ssl_stream.hpp"
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/websocket.hpp>
 #include <boost/beast/version.hpp>
+#include <boost/beast/experimental/core/ssl_stream.hpp>
 #include <boost/asio/bind_executor.hpp>
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/signal_set.hpp>
 #include <boost/asio/ssl/stream.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/asio/steady_timer.hpp>
+#include <boost/make_unique.hpp>
 #include <boost/config.hpp>
 #include <algorithm>
 #include <cstdlib>
@@ -185,13 +187,16 @@ handle_request(
     if(ec)
         return send(server_error(ec.message()));
 
+    // Cache the size since we need it after the move
+    auto const size = body.size();
+
     // Respond to HEAD request
     if(req.method() == http::verb::head)
     {
         http::response<http::empty_body> res{http::status::ok, req.version()};
         res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
         res.set(http::field::content_type, mime_type(path));
-        res.content_length(body.size());
+        res.content_length(size);
         res.keep_alive(req.keep_alive());
         return send(std::move(res));
     }
@@ -203,7 +208,7 @@ handle_request(
         std::make_tuple(http::status::ok, req.version())};
     res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
     res.set(http::field::content_type, mime_type(path));
-    res.content_length(body.size());
+    res.content_length(size);
     res.keep_alive(req.keep_alive());
     return send(std::move(res));
 }
@@ -234,6 +239,7 @@ class websocket_session
     }
 
     boost::beast::multi_buffer buffer_;
+    char ping_state_ = 0;
 
 protected:
     boost::asio::strand<
@@ -255,6 +261,15 @@ public:
     void
     do_accept(http::request<Body, http::basic_fields<Allocator>> req)
     {
+        // Set the control callback. This will be called
+        // on every incoming ping, pong, and close frame.
+        derived().ws().control_callback(
+            std::bind(
+                &websocket_session::on_control_callback,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2));
+
         // Set the timer
         timer_.expires_after(std::chrono::seconds(15));
 
@@ -265,27 +280,6 @@ public:
                 strand_,
                 std::bind(
                     &websocket_session::on_accept,
-                    derived().shared_from_this(),
-                    std::placeholders::_1)));
-    }
-
-    // Called when the timer expires.
-    void
-    on_timer(boost::system::error_code ec)
-    {
-        if(ec && ec != boost::asio::error::operation_aborted)
-            return fail(ec, "timer");
-
-        // Verify that the timer really expired since the deadline may have moved.
-        if(timer_.expiry() <= std::chrono::steady_clock::now())
-            derived().do_timeout();
-
-        // Wait on the timer
-        timer_.async_wait(
-            boost::asio::bind_executor(
-                strand_,
-                std::bind(
-                    &websocket_session::on_timer,
                     derived().shared_from_this(),
                     std::placeholders::_1)));
     }
@@ -304,12 +298,106 @@ public:
         do_read();
     }
 
+    // Called when the timer expires.
+    void
+    on_timer(boost::system::error_code ec)
+    {
+        if(ec && ec != boost::asio::error::operation_aborted)
+            return fail(ec, "timer");
+
+        // See if the timer really expired since the deadline may have moved.
+        if(timer_.expiry() <= std::chrono::steady_clock::now())
+        {
+            // If this is the first time the timer expired,
+            // send a ping to see if the other end is there.
+            if(derived().ws().is_open() && ping_state_ == 0)
+            {
+                // Note that we are sending a ping
+                ping_state_ = 1;
+
+                // Set the timer
+                timer_.expires_after(std::chrono::seconds(15));
+
+                // Now send the ping
+                derived().ws().async_ping({},
+                    boost::asio::bind_executor(
+                        strand_,
+                        std::bind(
+                            &websocket_session::on_ping,
+                            derived().shared_from_this(),
+                            std::placeholders::_1)));
+            }
+            else
+            {
+                // The timer expired while trying to handshake,
+                // or we sent a ping and it never completed or
+                // we never got back a control frame, so close.
+
+                derived().do_timeout();
+                return;
+            }
+        }
+
+        // Wait on the timer
+        timer_.async_wait(
+            boost::asio::bind_executor(
+                strand_,
+                std::bind(
+                    &websocket_session::on_timer,
+                    derived().shared_from_this(),
+                    std::placeholders::_1)));
+    }
+
+    // Called to indicate activity from the remote peer
+    void
+    activity()
+    {
+        // Note that the connection is alive
+        ping_state_ = 0;
+
+        // Set the timer
+        timer_.expires_after(std::chrono::seconds(15));
+    }
+
+    // Called after a ping is sent.
+    void
+    on_ping(boost::system::error_code ec)
+    {
+        // Happens when the timer closes the socket
+        if(ec == boost::asio::error::operation_aborted)
+            return;
+
+        if(ec)
+            return fail(ec, "ping");
+
+        // Note that the ping was sent.
+        if(ping_state_ == 1)
+        {
+            ping_state_ = 2;
+        }
+        else
+        {
+            // ping_state_ could have been set to 0
+            // if an incoming control frame was received
+            // at exactly the same time we sent a ping.
+            BOOST_ASSERT(ping_state_ == 0);
+        }
+    }
+
+    void
+    on_control_callback(
+        websocket::frame_type kind,
+        boost::beast::string_view payload)
+    {
+        boost::ignore_unused(kind, payload);
+
+        // Note that there is activity
+        activity();
+    }
+
     void
     do_read()
     {
-        // Set the timer
-        timer_.expires_after(std::chrono::seconds(15));
-
         // Read a message into our buffer
         derived().ws().async_read(
             buffer_,
@@ -339,6 +427,9 @@ public:
 
         if(ec)
             fail(ec, "read");
+
+        // Note that there is activity
+        activity();
 
         // Echo the message
         derived().ws().text(derived().ws().got_text());
@@ -454,7 +545,7 @@ class ssl_websocket_session
     : public websocket_session<ssl_websocket_session>
     , public std::enable_shared_from_this<ssl_websocket_session>
 {
-    websocket::stream<ssl_stream<tcp::socket>> ws_;
+    websocket::stream<boost::beast::ssl_stream<tcp::socket>> ws_;
     boost::asio::strand<
         boost::asio::io_context::executor_type> strand_;
     bool eof_ = false;
@@ -462,7 +553,7 @@ class ssl_websocket_session
 public:
     // Create the http_session
     explicit
-    ssl_websocket_session(ssl_stream<tcp::socket> stream)
+    ssl_websocket_session(boost::beast::ssl_stream<tcp::socket> stream)
         : websocket_session<ssl_websocket_session>(
             stream.get_executor().context())
         , ws_(std::move(stream))
@@ -471,7 +562,7 @@ public:
     }
 
     // Called by the base class
-    websocket::stream<ssl_stream<tcp::socket>>&
+    websocket::stream<boost::beast::ssl_stream<tcp::socket>>&
     ws()
     {
         return ws_;
@@ -549,7 +640,7 @@ make_websocket_session(
 template<class Body, class Allocator>
 void
 make_websocket_session(
-    ssl_stream<tcp::socket> stream,
+    boost::beast::ssl_stream<tcp::socket> stream,
     http::request<Body, http::basic_fields<Allocator>> req)
 {
     std::make_shared<ssl_websocket_session>(
@@ -656,7 +747,8 @@ class http_session
             };
 
             // Allocate and store the work
-            items_.emplace_back(new work_impl(self_, std::move(msg)));
+            items_.push_back(
+                boost::make_unique<work_impl>(self_, std::move(msg)));
 
             // If there was no previous work, start this one
             if(items_.size() == 1)
@@ -664,7 +756,7 @@ class http_session
         }
     };
 
-    std::string const& doc_root_;
+    std::shared_ptr<std::string const> doc_root_;
     http::request<http::string_body> req_;
     queue queue_;
 
@@ -679,7 +771,7 @@ public:
     http_session(
         boost::asio::io_context& ioc,
         boost::beast::flat_buffer buffer,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : doc_root_(doc_root)
         , queue_(*this)
         , timer_(ioc,
@@ -694,6 +786,10 @@ public:
     {
         // Set the timer
         timer_.expires_after(std::chrono::seconds(15));
+
+        // Make the request empty before reading,
+        // otherwise the operation behavior is undefined.
+        req_ = {};
 
         // Read a request
         http::async_read(
@@ -753,7 +849,7 @@ public:
         }
 
         // Send the response
-        handle_request(doc_root_, std::move(req_), queue_);
+        handle_request(*doc_root_, std::move(req_), queue_);
 
         // If we aren't at the queue limit, try to pipeline another request
         if(! queue_.is_full())
@@ -800,7 +896,7 @@ public:
     plain_http_session(
         tcp::socket socket,
         boost::beast::flat_buffer buffer,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : http_session<plain_http_session>(
             socket.get_executor().context(),
             std::move(buffer),
@@ -828,6 +924,15 @@ public:
     void
     run()
     {
+        // Make sure we run on the strand
+        if(! strand_.running_in_this_thread())
+            return boost::asio::post(
+                boost::asio::bind_executor(
+                    strand_,
+                    std::bind(
+                        &plain_http_session::run,
+                        shared_from_this())));
+
         // Run the timer. The timer is operated
         // continuously, this simplifies the code.
         on_timer({});
@@ -861,7 +966,7 @@ class ssl_http_session
     : public http_session<ssl_http_session>
     , public std::enable_shared_from_this<ssl_http_session>
 {
-    ssl_stream<tcp::socket> stream_;
+    boost::beast::ssl_stream<tcp::socket> stream_;
     boost::asio::strand<
         boost::asio::io_context::executor_type> strand_;
     bool eof_ = false;
@@ -872,7 +977,7 @@ public:
         tcp::socket socket,
         ssl::context& ctx,
         boost::beast::flat_buffer buffer,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : http_session<ssl_http_session>(
             socket.get_executor().context(),
             std::move(buffer),
@@ -883,14 +988,14 @@ public:
     }
 
     // Called by the base class
-    ssl_stream<tcp::socket>&
+    boost::beast::ssl_stream<tcp::socket>&
     stream()
     {
         return stream_;
     }
 
     // Called by the base class
-    ssl_stream<tcp::socket>
+    boost::beast::ssl_stream<tcp::socket>
     release_stream()
     {
         return std::move(stream_);
@@ -900,6 +1005,15 @@ public:
     void
     run()
     {
+        // Make sure we run on the strand
+        if(! strand_.running_in_this_thread())
+            return boost::asio::post(
+                boost::asio::bind_executor(
+                    strand_,
+                    std::bind(
+                        &ssl_http_session::run,
+                        shared_from_this())));
+
         // Run the timer. The timer is operated
         // continuously, this simplifies the code.
         on_timer({});
@@ -993,7 +1107,7 @@ class detect_session : public std::enable_shared_from_this<detect_session>
     ssl::context& ctx_;
     boost::asio::strand<
         boost::asio::io_context::executor_type> strand_;
-    std::string const& doc_root_;
+    std::shared_ptr<std::string const> doc_root_;
     boost::beast::flat_buffer buffer_;
 
 public:
@@ -1001,7 +1115,7 @@ public:
     detect_session(
         tcp::socket socket,
         ssl::context& ctx,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : socket_(std::move(socket))
         , ctx_(ctx)
         , strand_(socket_.get_executor())
@@ -1057,14 +1171,14 @@ class listener : public std::enable_shared_from_this<listener>
     ssl::context& ctx_;
     tcp::acceptor acceptor_;
     tcp::socket socket_;
-    std::string const& doc_root_;
+    std::shared_ptr<std::string const> doc_root_;
 
 public:
     listener(
         boost::asio::io_context& ioc,
         ssl::context& ctx,
         tcp::endpoint endpoint,
-        std::string const& doc_root)
+        std::shared_ptr<std::string const> const& doc_root)
         : ctx_(ctx)
         , acceptor_(ioc)
         , socket_(ioc)
@@ -1077,6 +1191,14 @@ public:
         if(ec)
         {
             fail(ec, "open");
+            return;
+        }
+
+        // Allow address reuse
+        acceptor_.set_option(boost::asio::socket_base::reuse_address(true), ec);
+        if(ec)
+        {
+            fail(ec, "set_option");
             return;
         }
 
@@ -1154,7 +1276,7 @@ int main(int argc, char* argv[])
     }
     auto const address = boost::asio::ip::make_address(argv[1]);
     auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
-    std::string const doc_root = argv[3];
+    auto const doc_root = std::make_shared<std::string>(argv[3]);
     auto const threads = std::max<int>(1, std::atoi(argv[4]));
 
     // The io_context is required for all I/O
@@ -1173,6 +1295,17 @@ int main(int argc, char* argv[])
         tcp::endpoint{address, port},
         doc_root)->run();
 
+    // Capture SIGINT and SIGTERM to perform a clean shutdown
+    boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
+    signals.async_wait(
+        [&](boost::system::error_code const&, int)
+        {
+            // Stop the `io_context`. This will cause `run()`
+            // to return immediately, eventually destroying the
+            // `io_context` and all of the sockets in it.
+            ioc.stop();
+        });
+
     // Run the I/O service on the requested number of threads
     std::vector<std::thread> v;
     v.reserve(threads - 1);
@@ -1183,6 +1316,12 @@ int main(int argc, char* argv[])
             ioc.run();
         });
     ioc.run();
+
+    // (If we get here, it means we got a SIGINT or SIGTERM)
+
+    // Block until all the threads exit
+    for(auto& t : v)
+        t.join();
 
     return EXIT_SUCCESS;
 }

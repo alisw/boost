@@ -41,16 +41,41 @@ using boost::asio::ip::udp;
         The start of the application is essentially the same as for the TCP daytime
         client.
       </p>
+<pre class="programlisting">int main(int argc, char* argv[])
+{
+  try
+  {
+    if (argc != 2)
+    {
+      std::cerr &lt;&lt; "Usage: client &lt;host&gt;" &lt;&lt; std::endl;
+      return 1;
+    }
+
+    boost::asio::io_context io_context;
+</pre>
 <p>
         We use an <a class="link" href="../reference/ip__udp/resolver.html" title="ip::udp::resolver">ip::udp::resolver</a>
         object to find the correct remote endpoint to use based on the host and service
         names. The query is restricted to return only IPv4 endpoints by the <a class="link" href="../reference/ip__udp/v4.html" title="ip::udp::v4">ip::udp::v4()</a> argument.
       </p>
+<pre class="programlisting">    udp::resolver resolver(io_context);
+    udp::endpoint receiver_endpoint =
+      *resolver.resolve(udp::v4(), argv[1], "daytime").begin();
+</pre>
 <p>
         The <a class="link" href="../reference/ip__basic_resolver/resolve.html" title="ip::basic_resolver::resolve">ip::udp::resolver::resolve()</a>
         function is guaranteed to return at least one endpoint in the list if it
         does not fail. This means it is safe to dereference the return value directly.
       </p>
+<pre class="programlisting">    udp::socket socket(io_context);
+    socket.open(udp::v4());
+
+    boost::array&lt;char, 1&gt; send_buf  = {{ 0 }};
+    socket.send_to(boost::asio::buffer(send_buf), receiver_endpoint);
+
+    boost::array&lt;char, 128&gt; recv_buf;
+    udp::endpoint sender_endpoint;
+</pre>
 <p>
         Since UDP is datagram-oriented, we will not be using a stream socket. Create
         an <a class="link" href="../reference/ip__udp/socket.html" title="ip::udp::socket">ip::udp::socket</a>
@@ -81,7 +106,7 @@ using boost::asio::ip::udp;
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

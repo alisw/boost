@@ -316,6 +316,25 @@ bool flat_tree_ordered_insertion_test()
       int_set4.insert(int_even_set.begin(), int_even_set.end());
       if(!CheckEqualContainers(int_set4, fset))
          return false;
+
+      //add even/odd values with not enough capacity 
+      flat_set<int>().swap(fset);
+      int_set4.clear();
+      int_set.clear();
+
+      fset.reserve(int_even_set.size());
+      fset.insert(ordered_unique_range, int_even_set.begin(), int_even_set.end());
+      int_set4.insert(int_even_set.begin(), int_even_set.end());
+
+      for(std::size_t i = 0; i < NumElements*2; i+=2){
+         int_set.insert(static_cast<int>(i));
+         int_set.insert(static_cast<int>(i+1));
+      }
+
+      fset.insert(ordered_unique_range, int_set.begin(), int_set.end());
+      int_set4.insert(int_set.begin(), int_set.end());
+      if(!CheckEqualContainers(int_set4, fset))
+         return false;
    }
 
    return true;
@@ -431,6 +450,84 @@ bool flat_tree_extract_adopt_test()
    return true;
 }
 
+bool test_heterogeneous_lookups()
+{
+   typedef flat_set<int, test::less_transparent> set_t;
+   typedef flat_multiset<int, test::less_transparent> mset_t;
+
+   set_t set1;
+   mset_t mset1;
+
+   const set_t &cset1 = set1;
+   const mset_t &cmset1 = mset1;
+
+   set1.insert(1);
+   set1.insert(1);
+   set1.insert(2);
+   set1.insert(2);
+   set1.insert(3);
+
+   mset1.insert(1);
+   mset1.insert(1);
+   mset1.insert(2);
+   mset1.insert(2);
+   mset1.insert(3);
+
+   const test::non_copymovable_int find_me(2);
+
+   //find
+   if(*set1.find(find_me) != 2)
+      return false;
+   if(*cset1.find(find_me) != 2)
+      return false;
+   if(*mset1.find(find_me) != 2)
+      return false;
+   if(*cmset1.find(find_me) != 2)
+      return false;
+
+   //count
+   if(set1.count(find_me) != 1)
+      return false;
+   if(cset1.count(find_me) != 1)
+      return false;
+   if(mset1.count(find_me) != 2)
+      return false;
+   if(cmset1.count(find_me) != 2)
+      return false;
+
+   //lower_bound
+   if(*set1.lower_bound(find_me) != 2)
+      return false;
+   if(*cset1.lower_bound(find_me) != 2)
+      return false;
+   if(*mset1.lower_bound(find_me) != 2)
+      return false;
+   if(*cmset1.lower_bound(find_me) != 2)
+      return false;
+
+   //upper_bound
+   if(*set1.upper_bound(find_me) != 3)
+      return false;
+   if(*cset1.upper_bound(find_me) != 3)
+      return false;
+   if(*mset1.upper_bound(find_me) != 3)
+      return false;
+   if(*cmset1.upper_bound(find_me) != 3)
+      return false;
+
+   //equal_range
+   if(*set1.equal_range(find_me).first != 2)
+      return false;
+   if(*cset1.equal_range(find_me).second != 3)
+      return false;
+   if(*mset1.equal_range(find_me).first != 2)
+      return false;
+   if(*cmset1.equal_range(find_me).second != 3)
+      return false;
+
+   return true;
+}
+
 }}}
 
 template<class VoidAllocatorOrContainer>
@@ -441,12 +538,12 @@ struct GetSetContainer
    {
       typedef flat_set < ValueType
                        , std::less<ValueType>
-                       , typename boost::container::container_detail::container_or_allocator_rebind<VoidAllocatorOrContainer, ValueType>::type
+                       , typename boost::container::dtl::container_or_allocator_rebind<VoidAllocatorOrContainer, ValueType>::type
                         > set_type;
 
       typedef flat_multiset < ValueType
                             , std::less<ValueType>
-                            , typename boost::container::container_detail::container_or_allocator_rebind<VoidAllocatorOrContainer, ValueType>::type
+                            , typename boost::container::dtl::container_or_allocator_rebind<VoidAllocatorOrContainer, ValueType>::type
                             > multiset_type;
    };
 };
@@ -617,6 +714,10 @@ int main()
    if (!boost::container::test::instantiate_constructors<flat_set<int>, flat_multiset<int> >())
       return 1;
 
+   if(!test_heterogeneous_lookups()){
+      return 1;
+   }
+
    ////////////////////////////////////
    //    Testing allocator implementations
    ////////////////////////////////////
@@ -675,6 +776,30 @@ int main()
          return 1;
       }
    }
+
+#if __cplusplus >= 201703L
+   ////////////////////////////////////
+   //    Constructor Template Auto Deduction
+   ////////////////////////////////////
+   {
+      auto gold = std::set({ 1, 2, 3 });
+      auto test = boost::container::flat_set(gold.begin(), gold.end());
+      if (test.size() != 3)
+         return 1;
+      test = boost::container::flat_set(ordered_unique_range, gold.begin(), gold.end());
+      if (test.size() != 3)
+         return 1;
+   }
+   {
+      auto gold = std::multiset({ 1, 2, 3 });
+      auto test = boost::container::flat_multiset(gold.begin(), gold.end());
+      if (test.size() != 3)
+         return 1;
+      test = boost::container::flat_multiset(ordered_range, gold.begin(), gold.end());
+      if (test.size() != 3)
+         return 1;
+   }
+#endif
 
    return 0;
 }

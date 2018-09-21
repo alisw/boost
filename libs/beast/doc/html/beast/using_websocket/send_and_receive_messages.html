@@ -120,11 +120,24 @@
         messages using the message oriented interface. This interface requires that
         all of the buffers representing the message are known ahead of time:
       </p>
-<pre class="programlisting"><span class="identifier">multi_buffer</span> <span class="identifier">buffer</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">// This DynamicBuffer will hold the received message</span>
+<span class="identifier">multi_buffer</span> <span class="identifier">buffer</span><span class="special">;</span>
+
+<span class="comment">// Read a complete message into the buffer's input area</span>
 <span class="identifier">ws</span><span class="special">.</span><span class="identifier">read</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
 
+<span class="comment">// Set text mode if the received message was also text,</span>
+<span class="comment">// otherwise binary mode will be set.</span>
 <span class="identifier">ws</span><span class="special">.</span><span class="identifier">text</span><span class="special">(</span><span class="identifier">ws</span><span class="special">.</span><span class="identifier">got_text</span><span class="special">());</span>
+
+<span class="comment">// Echo the received message back to the peer. If the received</span>
+<span class="comment">// message was in text mode, the echoed message will also be</span>
+<span class="comment">// in text mode, otherwise it will be in binary mode.</span>
 <span class="identifier">ws</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
+
+<span class="comment">// Discard all of the bytes stored in the dynamic buffer,</span>
+<span class="comment">// otherwise the next call to read will append to the existing</span>
+<span class="comment">// data instead of building a fresh message.</span>
 <span class="identifier">buffer</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">.</span><span class="identifier">size</span><span class="special">());</span>
 </pre>
 <div class="important"><table border="0" summary="Important">
@@ -133,8 +146,9 @@
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          Calls to <a class="link" href="../ref/boost__beast__websocket__stream/set_option.html" title="websocket::stream::set_option"><code class="computeroutput"><span class="identifier">set_option</span></code></a> must be made from the
-          same implicit or explicit strand as that used to perform other operations.
+          <a class="link" href="../ref/boost__beast__websocket__stream.html" title="websocket::stream"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span></code></a> is not thread-safe. Calls
+          to stream member functions must all be made from the same implicit or explicit
+          strand.
         </p></td></tr>
 </table></div>
 <h5>
@@ -160,26 +174,56 @@
         For these cases, the partial data oriented interface may be used. This example
         reads and echoes a complete message using this interface:
       </p>
-<pre class="programlisting"><span class="identifier">multi_buffer</span> <span class="identifier">buffer</span><span class="special">;</span>
-<span class="keyword">for</span><span class="special">(;;)</span>
-    <span class="keyword">if</span><span class="special">(</span><span class="identifier">ws</span><span class="special">.</span><span class="identifier">read_some</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">,</span> <span class="number">0</span><span class="special">))</span>
-        <span class="keyword">break</span><span class="special">;</span>
+<pre class="programlisting"><span class="comment">// This DynamicBuffer will hold the received message</span>
+<span class="identifier">multi_buffer</span> <span class="identifier">buffer</span><span class="special">;</span>
+
+<span class="comment">// Read the next message in pieces</span>
+<span class="keyword">do</span>
+<span class="special">{</span>
+    <span class="comment">// Append up to 512 bytes of the message into the buffer</span>
+    <span class="identifier">ws</span><span class="special">.</span><span class="identifier">read_some</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">,</span> <span class="number">512</span><span class="special">);</span>
+<span class="special">}</span>
+<span class="keyword">while</span><span class="special">(!</span> <span class="identifier">ws</span><span class="special">.</span><span class="identifier">is_message_done</span><span class="special">());</span>
+
+<span class="comment">// At this point we have a complete message in the buffer, now echo it</span>
+
+<span class="comment">// The echoed message will be sent in binary mode if the received</span>
+<span class="comment">// message was in binary mode, otherwise we will send in text mode.</span>
 <span class="identifier">ws</span><span class="special">.</span><span class="identifier">binary</span><span class="special">(</span><span class="identifier">ws</span><span class="special">.</span><span class="identifier">got_binary</span><span class="special">());</span>
+
+<span class="comment">// This buffer adapter allows us to iterate through buffer in pieces</span>
 <span class="identifier">buffers_suffix</span><span class="special">&lt;</span><span class="identifier">multi_buffer</span><span class="special">::</span><span class="identifier">const_buffers_type</span><span class="special">&gt;</span> <span class="identifier">cb</span><span class="special">{</span><span class="identifier">buffer</span><span class="special">.</span><span class="identifier">data</span><span class="special">()};</span>
+
+<span class="comment">// Echo the received message in pieces.</span>
+<span class="comment">// This will cause the message to be broken up into multiple frames.</span>
 <span class="keyword">for</span><span class="special">(;;)</span>
 <span class="special">{</span>
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">;</span>
     <span class="keyword">if</span><span class="special">(</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">cb</span><span class="special">)</span> <span class="special">&gt;</span> <span class="number">512</span><span class="special">)</span>
     <span class="special">{</span>
+        <span class="comment">// There are more than 512 bytes left to send, just</span>
+        <span class="comment">// send the next 512 bytes. The value `false` informs</span>
+        <span class="comment">// the stream that the message is not complete.</span>
         <span class="identifier">ws</span><span class="special">.</span><span class="identifier">write_some</span><span class="special">(</span><span class="keyword">false</span><span class="special">,</span> <span class="identifier">buffers_prefix</span><span class="special">(</span><span class="number">512</span><span class="special">,</span> <span class="identifier">cb</span><span class="special">));</span>
+
+        <span class="comment">// This efficiently discards data from the adapter by</span>
+        <span class="comment">// simply ignoring it, but does not actually affect the</span>
+        <span class="comment">// underlying dynamic buffer.</span>
         <span class="identifier">cb</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="number">512</span><span class="special">);</span>
     <span class="special">}</span>
     <span class="keyword">else</span>
     <span class="special">{</span>
+        <span class="comment">// Only 512 bytes or less remain, so write the whole</span>
+        <span class="comment">// thing and inform the stream that this piece represents</span>
+        <span class="comment">// the end of the message by passing `true`.</span>
         <span class="identifier">ws</span><span class="special">.</span><span class="identifier">write_some</span><span class="special">(</span><span class="keyword">true</span><span class="special">,</span> <span class="identifier">cb</span><span class="special">);</span>
         <span class="keyword">break</span><span class="special">;</span>
     <span class="special">}</span>
 <span class="special">}</span>
+
+<span class="comment">// Discard all of the bytes stored in the dynamic buffer,</span>
+<span class="comment">// otherwise the next call to read will append to the existing</span>
+<span class="comment">// data instead of building a fresh message.</span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

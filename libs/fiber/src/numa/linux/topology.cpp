@@ -20,16 +20,20 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
 
+#include "boost/fiber/exceptions.hpp"
+
 #ifdef BOOST_HAS_ABI_HEADERS
 # include BOOST_ABI_PREFIX
 #endif
+
+#if !defined(BOOST_NO_CXX11_HDR_REGEX)
 
 namespace al = boost::algorithm;
 namespace fs = boost::filesystem;
 
 namespace {
 
-class directory_iterator : public std::iterator< std::input_iterator_tag, const std::pair< std::uint32_t, fs::path > > {
+class directory_iterator {
 private:
     fs::directory_iterator          i_;
     fs::directory_iterator          e_;
@@ -47,6 +51,12 @@ private:
     }
 
 public:
+    typedef std::input_iterator_tag iterator_category;
+    typedef const std::pair< std::uint32_t, fs::path > value_type;
+    typedef std::ptrdiff_t difference_type;
+    typedef value_type * pointer;
+    typedef value_type & reference;
+
     directory_iterator() :
         i_(), e_(), exp_(), idx_() {
     }
@@ -189,6 +199,31 @@ std::vector< node > topology() {
 }
 
 }}}
+
+#else
+
+namespace boost {
+namespace fibers {
+namespace numa {
+
+#if BOOST_COMP_CLANG || \
+    BOOST_COMP_GNUC || \
+    BOOST_COMP_INTEL ||  \
+    BOOST_COMP_MSVC
+# pragma message "topology() not supported without <regex>"
+#endif
+
+BOOST_FIBERS_DECL
+std::vector< node > topology() {
+    throw fiber_error{
+        std::make_error_code( std::errc::function_not_supported),
+            "boost fiber: topology() not supported without <regex>" };
+    return std::vector< node >{};
+}
+
+}}}
+
+#endif
 
 #ifdef BOOST_HAS_ABI_HEADERS
 # include BOOST_ABI_SUFFIX

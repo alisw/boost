@@ -232,7 +232,8 @@ The C++ standard library does not provide a standards conforming
 The platform does not have a conforming version of `std::distance`.
 ]]
 [[`BOOST_NO_STD_ITERATOR`][Standard library][
-The C++ implementation fails to provide the `std::iterator` class.
+The C++ implementation fails to provide the `std::iterator` class.  
+Note that post C++17, this macro is re-purposed to indicate that std::iterator has been removed or deprecated.
 ]]
 [[`BOOST_NO_STD_ITERATOR_TRAITS`][Standard library][
 The compiler does not provide a standard compliant implementation of
@@ -624,6 +625,9 @@ deleted (`= delete`) functions.
 [[`BOOST_NO_CXX11_DEFAULTED_FUNCTIONS`][The compiler does not support
 defaulted (`= default`) functions.
 ]]
+[[`BOOST_NO_CXX11_DEFAULTED_MOVES`][The compiler does not support
+defaulted move constructor or assignment. Other defaulted functions may still be supported.
+]]
 [[`BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS`][The compiler does not support 
 explicit conversion operators (`explicit operator T()`).
 ]] 
@@ -946,6 +950,7 @@ that are not yet supported by a particular compiler or library.
 [[`BOOST_NO_CXX17_STD_APPLY`][The compiler does not support `std::apply()`.]]
 [[`BOOST_NO_CXX17_STD_INVOKE`][The compiler does not support `std::invoke()`.]]
 [[`BOOST_NO_CXX17_ITERATOR_TRAITS`][The compiler does not support SFINAE-friendly `std::iterator_traits`.]]
+[[`BOOST_NO_CXX17_IF_CONSTEXPR`][The compiler does not support `if constexpr`.]]
 ]
 
 [endsect]
@@ -979,7 +984,7 @@ workarounds for compiler/standard library defects.
 This macro is used where a compiler specific workaround is required that is not otherwise
 described by one of the other Boost.Config macros.  To use the macro you must first
 ``
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 ``
 usage is then:
 ``
@@ -1001,7 +1006,7 @@ For example
 of `__BORLANDC__` /unless/ the macro `BOOST_DETECT_OUTDATED_WORKAROUNDS` is defined, in which case evaluates to
 `(__BORLANDC__ <= 0x590)`.
 
-[*Note]: the ultimate source of documentation for this macro is in [@../../../../boost/detail/workaround.hpp boost/detail/workaround.hpp].
+[*Note]: the ultimate source of documentation for this macro is in [@../../../../boost/config/workaround.hpp boost/config/workaround.hpp].
 ]]
 [[`BOOST_PREVENT_MACRO_SUBSTITUTION`][
 Sometimes you have a function name with the same name as a C macro, for example "min" and "max"
@@ -1095,8 +1100,11 @@ In either case this macro has no effect on runtime behavior and performance
 of code. 
 ]] 
 [[`BOOST_EXPLICIT_TEMPLATE_TYPE(t)`
+
   `BOOST_EXPLICIT_TEMPLATE_NON_TYPE(t,v)`
+
   `BOOST_APPEND_EXPLICIT_TEMPLATE_TYPE(t)`
+
   `BOOST_APPEND_EXPLICIT_TEMPLATE_NON_TYPE(t,v)`][
 Some compilers silently "fold" different function template instantiations if
 some of the template parameters don't appear in the function parameter list.
@@ -1247,6 +1255,7 @@ If the compiler does not support this markup, `BOOST_NORETURN` is defined empty 
 additional macro `BOOST_NO_NORETURN` is defined.
 ]]
 [[`BOOST_LIKELY(X)`
+
   `BOOST_UNLIKELY(X)`][
 These macros communicate to the compiler that the conditional expression `X` is likely
 or unlikely to yield a positive result. The expression should result in a boolean value.
@@ -1275,6 +1284,23 @@ Usage example:
   typedef unsigned int BOOST_MAY_ALIAS aliasing_uint;
 ``
 ]]
+[[`BOOST_PRAGMA_MESSAGE(M)`][Defined in header `<boost/config/pragma_message.hpp>`,
+this macro expands to the equivalent of `#pragma message(M)`. `M` must be a string
+literal.
+
+Example: `BOOST_PRAGMA_MESSAGE("This header is deprecated.")`
+
+The messages issued by `BOOST_PRAGMA_MESSAGE` can be suppressed by defining the macro
+`BOOST_DISABLE_PRAGMA_MESSAGE`.]]
+
+[[`BOOST_HEADER_DEPRECATED(A)`][Defined in header `<boost/config/header_deprecated.hpp>`,
+this macro issues the message "This header is deprecated. Use `A` instead." via
+`BOOST_PRAGMA_MESSAGE`. `A` must be a string literal.
+
+Example: `BOOST_HEADER_DEPRECATED("<boost/config/workaround.hpp>")`
+
+The messages issued by `BOOST_HEADER_DEPRECATED` can be suppressed by defining the macro
+`BOOST_ALLOW_DEPRECATED_HEADERS`.]]
 ]
 
 [endsect]

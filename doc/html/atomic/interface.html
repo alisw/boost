@@ -132,6 +132,20 @@
 <tr>
 <td>
                 <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_NO_FLOATING_POINT</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  When defined, support for floating point operations is disabled.
+                  Floating point types shall be treated similar to trivially copyable
+                  structs and no capability macros will be defined.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_FORCE_FALLBACK</span></code>
                 </p>
               </td>
@@ -307,6 +321,102 @@
 </tbody>
 </table></div>
 <p>
+        For compilers that support C++11 scoped enums, the library also defines scoped
+        synonyms that are preferred in modern programs:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Pre-C++11 constant
+                </p>
+              </th>
+<th>
+                <p>
+                  C++11 equivalent
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order_relaxed</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order</span><span class="special">::</span><span class="identifier">relaxed</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order_release</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order</span><span class="special">::</span><span class="identifier">release</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order_acquire</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order</span><span class="special">::</span><span class="identifier">acquire</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order_consume</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order</span><span class="special">::</span><span class="identifier">consume</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order_acq_rel</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order</span><span class="special">::</span><span class="identifier">acq_rel</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">memory_order</span><span class="special">::</span><span class="identifier">seq_cst</span></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
         See section <a class="link" href="thread_coordination.html" title="Thread coordination using Boost.Atomic"><span class="emphasis"><em>happens-before</em></span></a>
         for explanation of the various ordering constraints.
       </p>
@@ -434,6 +544,8 @@
         template class</a></span></dt>
 <dt><span class="section"><a href="interface.html#atomic.interface.interface_atomic_object.interface_atomic_integral"><code class="literal">boost::atomic&lt;<span class="emphasis"><em>integral</em></span>&gt;</code>
         template class</a></span></dt>
+<dt><span class="section"><a href="interface.html#atomic.interface.interface_atomic_object.interface_atomic_floating_point"><code class="literal">boost::atomic&lt;<span class="emphasis"><em>floating-point</em></span>&gt;</code>
+        template class</a></span></dt>
 <dt><span class="section"><a href="interface.html#atomic.interface.interface_atomic_object.interface_atomic_pointer"><code class="literal">boost::atomic&lt;<span class="emphasis"><em>pointer</em></span>&gt;</code>
         template class</a></span></dt>
 <dt><span class="section"><a href="interface.html#atomic.interface.interface_atomic_object.interface_atomic_convenience_typedefs"><code class="literal">boost::atomic&lt;<span class="emphasis"><em>T</em></span>&gt;</code>
@@ -462,7 +574,8 @@
         Note that classes with virtual functions or virtual base classes do not satisfy
         the requirements. Also be warned that structures with "padding"
         between data members may compare non-equal via <code class="literal">memcmp</code>
-        even though all members are equal.
+        even though all members are equal. This may also be the case with some floating
+        point types, which include padding bits themselves.
       </p>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -679,8 +792,8 @@
           In addition to these explicit operations, each <code class="literal">atomic&lt;<span class="emphasis"><em>T</em></span>&gt;</code>
           object also supports implicit <code class="literal">store</code> and <code class="literal">load</code>
           through the use of "assignment" and "conversion to <code class="literal">T</code>"
-          operators. Avoid using these operators, as they do not allow explicit specification
-          of a memory ordering constraint.
+          operators. Avoid using these operators, as they do not allow to specify
+          a memory ordering constraint which always defaults to <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code>.
         </p>
 </div>
 <div class="section">
@@ -841,6 +954,109 @@
 <tr>
 <td>
                   <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">negate</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Change the sign of the value stored in the variable, returning
+                    the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">add</span><span class="special">(</span><span class="identifier">I</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
+                    returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">sub</span><span class="special">(</span><span class="identifier">I</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
+                    variable, returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">bitwise_and</span><span class="special">(</span><span class="identifier">I</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Apply bit-wise "and" with <code class="computeroutput"><span class="identifier">v</span></code>
+                    to variable, returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">bitwise_or</span><span class="special">(</span><span class="identifier">I</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Apply bit-wise "or" with <code class="computeroutput"><span class="identifier">v</span></code>
+                    to variable, returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">bitwise_xor</span><span class="special">(</span><span class="identifier">I</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Apply bit-wise "xor" with <code class="computeroutput"><span class="identifier">v</span></code>
+                    to variable, returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">I</span> <span class="identifier">bitwise_complement</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Set the variable to the one's complement of the current value,
+                    returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_negate</span><span class="special">(</span><span class="identifier">memory_order</span>
                     <span class="identifier">order</span><span class="special">)</span></code>
                   </p>
@@ -849,20 +1065,6 @@
                   <p>
                     Change the sign of the value stored in the variable, returning
                     nothing
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_complement</span><span class="special">(</span><span class="identifier">memory_order</span>
-                    <span class="identifier">order</span><span class="special">)</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Set the variable to the one's complement of the current value,
-                    returning nothing
                   </p>
                 </td>
 </tr>
@@ -944,6 +1146,36 @@
 <tr>
 <td>
                   <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_complement</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Set the variable to the one's complement of the current value,
+                    returning nothing
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">negate_and_test</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Change the sign of the value stored in the variable, returning
+                    <code class="computeroutput"><span class="keyword">true</span></code> if the result
+                    is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    otherwise
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">add_and_test</span><span class="special">(</span><span class="identifier">I</span>
                     <span class="identifier">v</span><span class="special">,</span>
                     <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
@@ -953,7 +1185,7 @@
                   <p>
                     Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
                     returning <code class="computeroutput"><span class="keyword">true</span></code> if
-                    the result is zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    the result is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise
                   </p>
                 </td>
@@ -970,7 +1202,7 @@
                   <p>
                     Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
                     variable, returning <code class="computeroutput"><span class="keyword">true</span></code>
-                    if the result is zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    if the result is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise
                   </p>
                 </td>
@@ -987,7 +1219,7 @@
                   <p>
                     Apply bit-wise "and" with <code class="computeroutput"><span class="identifier">v</span></code>
                     to variable, returning <code class="computeroutput"><span class="keyword">true</span></code>
-                    if the result is zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    if the result is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise
                   </p>
                 </td>
@@ -1004,7 +1236,7 @@
                   <p>
                     Apply bit-wise "or" with <code class="computeroutput"><span class="identifier">v</span></code>
                     to variable, returning <code class="computeroutput"><span class="keyword">true</span></code>
-                    if the result is zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    if the result is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise
                   </p>
                 </td>
@@ -1021,7 +1253,23 @@
                   <p>
                     Apply bit-wise "xor" with <code class="computeroutput"><span class="identifier">v</span></code>
                     to variable, returning <code class="computeroutput"><span class="keyword">true</span></code>
-                    if the result is zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    if the result is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
+                    otherwise
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">complement_and_test</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Set the variable to the one's complement of the current value,
+                    returning <code class="computeroutput"><span class="keyword">true</span></code> if
+                    the result is non-zero and <code class="computeroutput"><span class="keyword">false</span></code>
                     otherwise
                   </p>
                 </td>
@@ -1079,6 +1327,25 @@
 </tr>
 </tbody>
 </table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            In Boost.Atomic 1.66 the <code class="literal"><span class="emphasis"><em>op</em></span>_and_test</code>
+            operations returned the opposite value (i.e. <code class="computeroutput"><span class="keyword">true</span></code>
+            if the result is zero). This was changed to the current behavior in 1.67
+            for consistency with other operations in Boost.Atomic, as well as with
+            conventions taken in the C++ standard library. Boost.Atomic 1.66 was
+            the only release shipped with the old behavior. Users upgrading from
+            Boost 1.66 to a later release can define <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_HIGHLIGHT_OP_AND_TEST</span></code>
+            macro when building their code to generate deprecation warnings on the
+            <code class="literal"><span class="emphasis"><em>op</em></span>_and_test</code> function calls (the
+            functions are not actually deprecated though; this is just a way to highlight
+            their use).
+          </p></td></tr>
+</table></div>
 <p>
           <code class="computeroutput"><span class="identifier">order</span></code> always has <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code> as default parameter.
         </p>
@@ -1096,8 +1363,240 @@
           object also supports implicit pre-/post- increment/decrement, as well as
           the operators <code class="computeroutput"><span class="special">+=</span></code>, <code class="computeroutput"><span class="special">-=</span></code>, <code class="computeroutput"><span class="special">&amp;=</span></code>,
           <code class="computeroutput"><span class="special">|=</span></code> and <code class="computeroutput"><span class="special">^=</span></code>.
-          Avoid using these operators, as they do not allow explicit specification
-          of a memory ordering constraint which always defaults to <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code>.
+          Avoid using these operators, as they do not allow to specify a memory ordering
+          constraint which always defaults to <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code>.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="atomic.interface.interface_atomic_object.interface_atomic_floating_point"></a><a class="link" href="interface.html#atomic.interface.interface_atomic_object.interface_atomic_floating_point" title="boost::atomic&lt;floating-point&gt; template class"><code class="literal">boost::atomic&lt;<span class="emphasis"><em>floating-point</em></span>&gt;</code>
+        template class</a>
+</h4></div></div></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The support for floating point types is optional and can be disabled
+            by defining <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_NO_FLOATING_POINT</span></code>.
+          </p></td></tr>
+</table></div>
+<p>
+          In addition to the operations applicable to all atomic objects, <code class="literal">boost::atomic&lt;<span class="emphasis"><em>F</em></span>&gt;</code>
+          for floating point types <code class="literal"><span class="emphasis"><em>F</em></span></code> supports
+          the following operations, which correspond to <code class="literal">std::atomic&lt;<span class="emphasis"><em>F</em></span>&gt;</code>:
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Syntax
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">F</span> <span class="identifier">fetch_add</span><span class="special">(</span><span class="identifier">F</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
+                    returning previous value
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">F</span> <span class="identifier">fetch_sub</span><span class="special">(</span><span class="identifier">F</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
+                    variable, returning previous value
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          Additionally, as a <span class="bold"><strong>Boost.Atomic</strong></span> extension,
+          the following operations are also provided:
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Syntax
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">F</span> <span class="identifier">fetch_negate</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Change the sign of the value stored in the variable, returning
+                    previous value
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">F</span> <span class="identifier">negate</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Change the sign of the value stored in the variable, returning
+                    the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">F</span> <span class="identifier">add</span><span class="special">(</span><span class="identifier">F</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
+                    returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">F</span> <span class="identifier">sub</span><span class="special">(</span><span class="identifier">F</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
+                    variable, returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_negate</span><span class="special">(</span><span class="identifier">memory_order</span>
+                    <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Change the sign of the value stored in the variable, returning
+                    nothing
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_add</span><span class="special">(</span><span class="identifier">F</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
+                    returning nothing
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_sub</span><span class="special">(</span><span class="identifier">F</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
+                    variable, returning nothing
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          <code class="computeroutput"><span class="identifier">order</span></code> always has <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code> as default parameter.
+        </p>
+<p>
+          The <code class="literal">opaque_<span class="emphasis"><em>op</em></span></code> variants of the operations
+          may result in a more efficient code on some architectures because the original
+          value of the atomic variable is not preserved.
+        </p>
+<p>
+          In addition to these explicit operations, each <code class="literal">boost::atomic&lt;<span class="emphasis"><em>F</em></span>&gt;</code>
+          object also supports operators <code class="computeroutput"><span class="special">+=</span></code>
+          and <code class="computeroutput"><span class="special">-=</span></code>. Avoid using these
+          operators, as they do not allow to specify a memory ordering constraint
+          which always defaults to <code class="computeroutput"><span class="identifier">memory_order_seq_cst</span></code>.
+        </p>
+<p>
+          When using atomic operations with floating point types, bear in mind that
+          <span class="bold"><strong>Boost.Atomic</strong></span> always performs bitwise comparison
+          of the stored values. This means that operations like <code class="computeroutput"><span class="identifier">compare_exchange</span><span class="special">*</span></code> may fail if the stored value and comparand
+          have different binary representation, even if they would normally compare
+          equal. This is typically the case when either of the numbers is <a href="https://en.wikipedia.org/wiki/Denormal_number" target="_top">denormalized</a>.
+          This also means that the behavior with regard to special floating point
+          values like NaN and signed zero is also different from normal C++.
+        </p>
+<p>
+          Another source of the problem is padding bits that are added to some floating
+          point types for alignment. One widespread example of that is Intel x87
+          extended double format, which is typically stored as 80 bits of value padded
+          with 16 or 48 unused bits. These padding bits are often uninitialized and
+          contain garbage, which makes two equal numbers have different binary representation.
+          The library attempts to account for the known such cases, but in general
+          it is possible that some platforms are not covered. Note that the C++ standard
+          makes no guarantees about reliability of <code class="computeroutput"><span class="identifier">compare_exchange</span><span class="special">*</span></code> operations in the face of padding or trap
+          bits.
         </p>
 </div>
 <div class="section">
@@ -1106,7 +1605,7 @@
         template class</a>
 </h4></div></div></div>
 <p>
-          In addition to the operations applicable to all atomic object, <code class="literal">boost::atomic&lt;<span class="emphasis"><em>P</em></span>&gt;</code>
+          In addition to the operations applicable to all atomic objects, <code class="literal">boost::atomic&lt;<span class="emphasis"><em>P</em></span>&gt;</code>
           for pointer types <code class="literal"><span class="emphasis"><em>P</em></span></code> (other than
           pointers to <code class="literal">void</code>, function or member pointers) support
           the following operations, which correspond to <code class="literal">std::atomic&lt;<span class="emphasis"><em>P</em></span>&gt;</code>:
@@ -1186,6 +1685,36 @@
 <tr>
 <td>
                   <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">add</span><span class="special">(</span><span class="identifier">ptrdiff_t</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
+                    returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">sub</span><span class="special">(</span><span class="identifier">ptrdiff_t</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
+                    variable, returning the result
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">opaque_add</span><span class="special">(</span><span class="identifier">ptrdiff_t</span>
                     <span class="identifier">v</span><span class="special">,</span>
                     <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
@@ -1210,6 +1739,40 @@
                   <p>
                     Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
                     variable, returning nothing
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">add_and_test</span><span class="special">(</span><span class="identifier">ptrdiff_t</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Add <code class="computeroutput"><span class="identifier">v</span></code> to variable,
+                    returning <code class="computeroutput"><span class="keyword">true</span></code> if
+                    the result is non-null and <code class="computeroutput"><span class="keyword">false</span></code>
+                    otherwise
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">sub_and_test</span><span class="special">(</span><span class="identifier">ptrdiff_t</span>
+                    <span class="identifier">v</span><span class="special">,</span>
+                    <span class="identifier">memory_order</span> <span class="identifier">order</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Subtract <code class="computeroutput"><span class="identifier">v</span></code> from
+                    variable, returning <code class="computeroutput"><span class="keyword">true</span></code>
+                    if the result is non-null and <code class="computeroutput"><span class="keyword">false</span></code>
+                    otherwise
                   </p>
                 </td>
 </tr>
@@ -1658,11 +2221,76 @@
         is a type that fits storage of contiguous <code class="computeroutput"><span class="identifier">N</span></code>
         bits, suitably aligned for atomic operations.
       </p>
+<p>
+        For floating-point types the following macros are similarly defined:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Macro
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_FLOAT_LOCK_FREE</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicate whether <code class="computeroutput"><span class="identifier">atomic</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;</span></code> is lock-free.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_DOUBLE_LOCK_FREE</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicate whether <code class="computeroutput"><span class="identifier">atomic</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span></code> is lock-free.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">BOOST_ATOMIC_LONG_DOUBLE_LOCK_FREE</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Indicate whether <code class="computeroutput"><span class="identifier">atomic</span><span class="special">&lt;</span><span class="keyword">long</span>
+                  <span class="keyword">double</span><span class="special">&gt;</span></code>
+                  is lock-free.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        These macros are not defined when support for floating point types is disabled
+        by user.
+      </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Helge Bahmann<br>Copyright &#169; 2012 Tim Blechmann<br>Copyright &#169; 2013, 2017 Andrey Semashev<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Helge Bahmann<br>Copyright &#169; 2012 Tim Blechmann<br>Copyright &#169; 2013, 2017, 2018 Andrey Semashev<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

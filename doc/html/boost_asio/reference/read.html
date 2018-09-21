@@ -79,7 +79,7 @@ template&lt;
 std::size_t <a class="link" href="read/overload5.html" title="read (5 of 12 overloads)">read</a>(
     SyncReadStream &amp; s,
     DynamicBuffer &amp;&amp; buffers,
-    typename enable_if&lt; is_dynamic_buffer&lt; DynamicBuffer &gt;::value &gt;::type *  = 0);
+    typename enable_if&lt; is_dynamic_buffer&lt; typename decay&lt; DynamicBuffer &gt;::type &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="read/overload5.html" title="read (5 of 12 overloads)">more...</a></em></span>
 
 template&lt;
@@ -89,7 +89,7 @@ std::size_t <a class="link" href="read/overload6.html" title="read (6 of 12 over
     SyncReadStream &amp; s,
     DynamicBuffer &amp;&amp; buffers,
     boost::system::error_code &amp; ec,
-    typename enable_if&lt; is_dynamic_buffer&lt; DynamicBuffer &gt;::value &gt;::type *  = 0);
+    typename enable_if&lt; is_dynamic_buffer&lt; typename decay&lt; DynamicBuffer &gt;::type &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="read/overload6.html" title="read (6 of 12 overloads)">more...</a></em></span>
 
 template&lt;
@@ -100,7 +100,7 @@ std::size_t <a class="link" href="read/overload7.html" title="read (7 of 12 over
     SyncReadStream &amp; s,
     DynamicBuffer &amp;&amp; buffers,
     CompletionCondition completion_condition,
-    typename enable_if&lt; is_dynamic_buffer&lt; DynamicBuffer &gt;::value &gt;::type *  = 0);
+    typename enable_if&lt; is_dynamic_buffer&lt; typename decay&lt; DynamicBuffer &gt;::type &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="read/overload7.html" title="read (7 of 12 overloads)">more...</a></em></span>
 
 template&lt;
@@ -112,7 +112,7 @@ std::size_t <a class="link" href="read/overload8.html" title="read (8 of 12 over
     DynamicBuffer &amp;&amp; buffers,
     CompletionCondition completion_condition,
     boost::system::error_code &amp; ec,
-    typename enable_if&lt; is_dynamic_buffer&lt; DynamicBuffer &gt;::value &gt;::type *  = 0);
+    typename enable_if&lt; is_dynamic_buffer&lt; typename decay&lt; DynamicBuffer &gt;::type &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="read/overload8.html" title="read (8 of 12 overloads)">more...</a></em></span>
 
 template&lt;
@@ -166,7 +166,7 @@ std::size_t <a class="link" href="read/overload12.html" title="read (12 of 12 ov
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

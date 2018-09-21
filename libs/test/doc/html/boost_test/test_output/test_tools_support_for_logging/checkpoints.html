@@ -107,10 +107,19 @@
 <span class="special">{</span>
 <span class="special">}</span>
 
+<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
+<span class="comment">// VS2017+ compiler optimizations may cause this code NOT to crash.</span>
+<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">off</span><span class="special">)</span>
+<span class="preprocessor">#endif</span>
+
 <span class="keyword">void</span> <span class="identifier">foo</span><span class="special">(</span> <span class="keyword">int</span> <span class="identifier">i</span> <span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">goo</span><span class="special">(</span> <span class="number">2</span><span class="special">/(</span><span class="identifier">i</span><span class="special">-</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
 <span class="special">}</span>
+
+<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
+<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">on</span><span class="special">)</span>
+<span class="preprocessor">#endif</span>
 </pre>
                 </td></tr></tbody>
 </table></div>
@@ -165,7 +174,17 @@
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MODULE</span> <span class="identifier">example</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
+<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
+<span class="comment">// VS2017+ compiler optimizations may cause this code NOT to crash.</span>
+<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">off</span><span class="special">)</span>
+<span class="preprocessor">#endif</span>
+
+
 <span class="keyword">void</span> <span class="identifier">foo</span><span class="special">(</span> <span class="keyword">int</span> <span class="special">)</span> <span class="special">{}</span>
+
+<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
+<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">on</span><span class="special">)</span>
+<span class="preprocessor">#endif</span>
 
 <span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case</span> <span class="special">)</span>
 <span class="special">{</span>
@@ -203,7 +222,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2017 Boost.Test contributors<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2018 Boost.Test contributors<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

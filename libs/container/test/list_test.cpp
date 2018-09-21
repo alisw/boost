@@ -34,7 +34,7 @@ template class boost::container::list
    < test::movable_and_copyable_int
    , adaptive_pool<test::movable_and_copyable_int> >;
 
-namespace container_detail {
+namespace dtl {
 
 template class iterator_from_iiterator
    <intrusive_list_type< std::allocator<int> >::container_type::iterator, true >;
@@ -210,6 +210,44 @@ int main ()
          return 1;
       }
    }
+
+#if __cplusplus >= 201703L
+   ////////////////////////////////////
+   //    Constructor Template Auto Deduction Tests
+   ////////////////////////////////////
+   {
+      auto gold = std::list{ 1, 2, 3 };
+      auto test = boost::container::list(gold.begin(), gold.end());
+      if (test.size() != 3) {
+         return 1;
+      }
+      if (test.front() != 1)
+         return 1;
+      test.pop_front();
+      if (test.front() != 2)
+         return 1;
+      test.pop_front();
+      if (test.front() != 3)
+         return 1;
+      test.pop_front();
+   }
+   {
+      auto gold = std::list{ 1, 2, 3 };
+      auto test = boost::container::list(gold.begin(), gold.end(), new_allocator<int>());
+      if (test.size() != 3) {
+         return 1;
+      }
+      if (test.front() != 1)
+         return 1;
+      test.pop_front();
+      if (test.front() != 2)
+         return 1;
+      test.pop_front();
+      if (test.front() != 3)
+         return 1;
+      test.pop_front();
+   }
+#endif
 
    return 0;
 }

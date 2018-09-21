@@ -690,6 +690,73 @@
           #6</a>).
         </li>
 </ul></div>
+<h3>
+<a name="unordered.changes.h27"></a>
+      <span class="phrase"><a name="unordered.changes.boost_1_67_0"></a></span><a class="link" href="changes.html#unordered.changes.boost_1_67_0">Boost
+      1.67.0</a>
+    </h3>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Improved C++17 support:
+          <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                Add template deduction guides from the standard.
+              </li>
+<li class="listitem">
+                Use a simple implementation of <code class="computeroutput"><span class="identifier">optional</span></code>
+                in node handles, so that they're closer to the standard.
+              </li>
+<li class="listitem">
+                Add missing <code class="computeroutput"><span class="keyword">noexcept</span></code>
+                specifications to <code class="computeroutput"><span class="identifier">swap</span></code>,
+                <code class="computeroutput"><span class="keyword">operator</span><span class="special">=</span></code>
+                and node handles, and change the implementation to match. Using
+                <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator_traits</span><span class="special">::</span><span class="identifier">is_always_equal</span></code>, or our own implementation
+                when not available, and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_nothrow_swappable</span></code>
+                in the implementation.
+              </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          Improved C++20 support:
+          <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem">
+                Use <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">to_address</span></code>, which has the proposed
+                C++20 semantics, rather than the old custom implementation.
+              </li></ul></div>
+        </li>
+<li class="listitem">
+          Add <code class="computeroutput"><span class="identifier">element_type</span></code> to iterators,
+          so that <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pointer_traits</span></code> will work.
+        </li>
+<li class="listitem">
+          Use <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">piecewise_construct</span></code> on recent versions
+          of Visual C++, and other uses of the Dinkumware standard library, now using
+          Boost.Predef to check compiler and library versions.
+        </li>
+<li class="listitem">
+          Use <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span></code> rather than the boost
+          iterator traits in order to remove dependency on Boost.Iterator.
+        </li>
+<li class="listitem">
+          Remove iterators' inheritance from <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator</span></code>,
+          which is deprecated in C++17, thanks to Daniela Engert (<a href="https://github.com/boostorg/unordered/pull/7" target="_top">PR#7</a>).
+        </li>
+<li class="listitem">
+          Stop using <code class="computeroutput"><span class="identifier">BOOST_DEDUCED_TYPENAME</span></code>.
+        </li>
+<li class="listitem">
+          Update some Boost include paths.
+        </li>
+<li class="listitem">
+          Rename some internal methods, and variables.
+        </li>
+<li class="listitem">
+          Various testing improvements.
+        </li>
+<li class="listitem">
+          Miscellaneous internal changes.
+        </li>
+</ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

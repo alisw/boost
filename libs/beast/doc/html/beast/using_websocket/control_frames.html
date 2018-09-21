@@ -71,13 +71,12 @@
         <a class="link" href="../ref/boost__beast__websocket__stream/control_callback.html" title="websocket::stream::control_callback"><code class="computeroutput"><span class="identifier">control_callback</span></code></a>. The object provided
         with this option should be callable with the following signature:
       </p>
-<pre class="programlisting"><span class="keyword">auto</span> <span class="identifier">cb</span> <span class="special">=</span>
+<pre class="programlisting"><span class="identifier">ws</span><span class="special">.</span><span class="identifier">control_callback</span><span class="special">(</span>
     <span class="special">[](</span><span class="identifier">frame_type</span> <span class="identifier">kind</span><span class="special">,</span> <span class="identifier">string_view</span> <span class="identifier">payload</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="comment">// Do something with the payload</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ignore_unused</span><span class="special">(</span><span class="identifier">kind</span><span class="special">,</span> <span class="identifier">payload</span><span class="special">);</span>
-    <span class="special">};</span>
-<span class="identifier">ws</span><span class="special">.</span><span class="identifier">control_callback</span><span class="special">(</span><span class="identifier">cb</span><span class="special">);</span>
+    <span class="special">});</span>
 </pre>
 <p>
         When a control callback is registered, it will be invoked for all pings,

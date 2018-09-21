@@ -86,11 +86,11 @@
 <p>
         Consider the following code:
       </p>
-<pre class="programlisting"><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">sin</span><span class="special">(</span><span class="identifier">asin</span><span class="special">(</span><span class="number">180.0</span> <span class="special">*</span> <span class="identifier">degrees</span><span class="special">));</span>
+<pre class="programlisting"><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">asin</span><span class="special">(</span><span class="identifier">sin</span><span class="special">(</span><span class="number">90.0</span> <span class="special">*</span> <span class="identifier">degrees</span><span class="special">));</span>
 </pre>
 <p>
         What should this print? If only heterogeneous systems are available it would
-        print 3.14159+ rad Why? Well, <code class="computeroutput"><span class="identifier">asin</span></code>
+        print 1.5708 rad Why? Well, <code class="computeroutput"><span class="identifier">sin</span></code>
         would return a <code class="computeroutput"><span class="identifier">quantity</span><span class="special">&lt;</span><span class="identifier">dimensionless</span><span class="special">&gt;</span></code>
         effectively losing the information that degrees are being used. In order
         to propogate this extra information we need homogeneous systems.

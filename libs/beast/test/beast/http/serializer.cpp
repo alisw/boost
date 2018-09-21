@@ -30,7 +30,7 @@ public:
                 boost::asio::const_buffer;
 
             template<bool isRequest, class Fields>
-            writer(message<isRequest, const_body, Fields> const&);
+            writer(header<isRequest, Fields> const&, value_type const&);
 
             void
             init(error_code& ec);
@@ -50,7 +50,7 @@ public:
                 boost::asio::const_buffer;
 
             template<bool isRequest, class Fields>
-            writer(message<isRequest, mutable_body, Fields>&);
+            writer(header<isRequest, Fields>&, value_type&);
 
             void
             init(error_code& ec);

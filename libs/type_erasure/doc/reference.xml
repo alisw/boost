@@ -2,7 +2,82 @@
 <library-reference><header name="boost/type_erasure/any.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
-<class-specialization name="any"><template>
+<class name="any"><template>
+      <template-type-parameter name="Concept"><purpose><para>The <link linkend="boost_typeerasure.conceptdef">Concept</link> that the stored type should model. </para></purpose></template-type-parameter>
+      <template-type-parameter name="T"><default><classname alt="boost::type_erasure::_self">_self</classname></default><purpose><para>A <classname alt="boost::type_erasure::placeholder">placeholder</classname> specifying which type this is.</para></purpose></template-type-parameter>
+    </template><description><para>The class template <classname alt="boost::type_erasure::any">any</classname> can store any object that models a specific <link linkend="boost_typeerasure.conceptdef">Concept</link>. It dispatches all the functions defined by the <link linkend="boost_typeerasure.conceptdef">Concept</link> to the contained type at runtime.</para><para>
+<para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::type_erasure::concept_of">concept_of</classname>, <classname alt="boost::type_erasure::placeholder_of">placeholder_of</classname>, <functionname alt="boost::type_erasure::any_cast">any_cast</functionname>, <functionname alt="boost::type_erasure::is_empty">is_empty</functionname>, <functionname alt="boost::type_erasure::binding_of">binding_of</functionname>, <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname> </para></para>
+</para></description><method-group name="public member functions">
+</method-group>
+<constructor><description><para>Constructs an empty <classname alt="boost::type_erasure::any">any</classname>.</para><para>Except as otherwise noted, all operations on an empty <classname alt="boost::type_erasure::any">any</classname> result in a <classname alt="boost::type_erasure::bad_function_call">bad_function_call</classname> exception. The copy-constructor of an empty <classname alt="boost::type_erasure::any">any</classname> creates another null <classname alt="boost::type_erasure::any">any</classname>. The destructor of an empty <classname alt="boost::type_erasure::any">any</classname> is a no-op. Comparison operators treat all empty <classname alt="boost::type_erasure::any">anys</classname> as equal.  <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname> applied to an empty <classname alt="boost::type_erasure::any">any</classname> returns <computeroutput>typeid(void)</computeroutput>.</para><para>An <classname alt="boost::type_erasure::any">any</classname> which does not include <classname alt="boost::type_erasure::relaxed">relaxed</classname> in its  <link linkend="boost_typeerasure.conceptdef">Concept</link> can never be null.</para><para>
+
+<para><emphasis role="bold">See Also:</emphasis><para> <functionname alt="boost::type_erasure::is_empty">is_empty</functionname> </para></para>
+</para></description><requires><para><classname alt="boost::type_erasure::relaxed">relaxed</classname> must be in <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="U"/>
+        </template><parameter name="data"><paramtype>U &amp;&amp;</paramtype><description><para>The object to store in the <classname alt="boost::type_erasure::any">any</classname>.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> to hold a copy of <computeroutput>data</computeroutput>. The <computeroutput>Concept</computeroutput> will be instantiated with the placeholder <computeroutput>T</computeroutput> bound to U.</para><para>
+
+
+<note><para>This constructor never matches if the argument is an <classname alt="boost::type_erasure::any">any</classname>, <classname alt="boost::type_erasure::binding">binding</classname>, or <classname alt="boost::type_erasure::static_binding">static_binding</classname>. </para></note>
+</para></description><requires><para><computeroutput>U</computeroutput> is a model of <computeroutput>Concept</computeroutput>. </para><para><computeroutput>U</computeroutput> must be <ulink url="../../doc/html/CopyConstructible.html">CopyConstructible</ulink>. </para><para><computeroutput>Concept</computeroutput> must not refer to any non-deduced placeholder besides <computeroutput>T</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of <computeroutput>U</computeroutput> throws.</simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="U"/>
+          <template-type-parameter name="Map"/>
+        </template><parameter name="data"><paramtype>U &amp;&amp;</paramtype><description><para>The object to store in the <classname alt="boost::type_erasure::any">any</classname>. </para></description></parameter><parameter name="binding"><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype><description><para>Specifies the types that all the placeholders should bind to.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> to hold a copy of <computeroutput>data</computeroutput> with explicitly specified placeholder bindings.</para><para>
+
+
+<note><para>This constructor never matches if the argument is an <classname alt="boost::type_erasure::any">any</classname>. </para></note>
+</para></description><requires><para><computeroutput>U</computeroutput> is a model of <computeroutput>Concept</computeroutput>. </para><para><computeroutput>U</computeroutput> must be <ulink url="../../doc/html/CopyConstructible.html">CopyConstructible</ulink>. </para><para><computeroutput>Map</computeroutput> is an MPL map with an entry for every non-deduced placeholder referred to by <computeroutput>Concept</computeroutput>. </para><para><computeroutput><computeroutput>T</computeroutput> must</computeroutput> map to <computeroutput>U</computeroutput> in <computeroutput>Map</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of <computeroutput>U</computeroutput> throws.</simpara></throws></constructor>
+<constructor><parameter name="other"><paramtype>const <classname>any</classname> &amp;</paramtype><description><para>The object to make a copy of.</para></description></parameter><description><para>Copies an <classname alt="boost::type_erasure::any">any</classname>.</para><para>
+
+
+</para></description><requires><para><computeroutput>Concept</computeroutput> must contain <classname alt="boost::type_erasure::constructible">constructible&lt;T(const T&amp;)&gt;</classname>. (This is included in <classname alt="boost::type_erasure::copy_constructible">copy_constructible&lt;T&gt;</classname>)</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws. </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Concept2"/>
+          <template-type-parameter name="Tag2"/>
+        </template><parameter name="other"><paramtype>const <classname>any</classname>&lt; Concept2, Tag2 &gt; &amp;</paramtype><description><para>The object to make a copy of.</para></description></parameter><description><para>Upcasts from an <classname alt="boost::type_erasure::any">any</classname> with stricter requirements to an <classname alt="boost::type_erasure::any">any</classname> with weaker requirements.</para><para>
+
+
+</para></description><requires><para><computeroutput>Concept</computeroutput> must contain <classname alt="boost::type_erasure::constructible">constructible&lt;T(const T&amp;)&gt;</classname>. </para><para><computeroutput>Concept</computeroutput> must not refer to any non-deduced placeholder besides <computeroutput>T</computeroutput>. </para><para>After substituting <computeroutput>T</computeroutput> for <computeroutput>Tag2</computeroutput>, the requirements of <computeroutput>Concept2</computeroutput> must be a superset of the requirements of <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws. </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Concept2"/>
+          <template-type-parameter name="Tag2"/>
+          <template-type-parameter name="Map"/>
+        </template><parameter name="other"><paramtype>const <classname>any</classname>&lt; Concept2, Tag2 &gt; &amp;</paramtype><description><para>The object to make a copy of. </para></description></parameter><parameter name="binding"><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype><description><para>Specifies the mapping between the placeholders used by the two concepts.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> from another <classname alt="boost::type_erasure::any">any</classname>.</para><para>
+
+
+</para></description><requires><para><computeroutput>Concept</computeroutput> must contain <classname alt="boost::type_erasure::constructible">constructible&lt;T(const T&amp;)&gt;</classname>. </para><para><computeroutput>Map</computeroutput> must be an MPL map with keys for all the non-deduced placeholders used by <computeroutput>Concept</computeroutput> and values for the corresponding placeholders in <computeroutput>Concept2</computeroutput>. </para><para>After substituting placeholders according to <computeroutput>Map</computeroutput>, the requirements of <computeroutput>Concept2</computeroutput> must be a superset of the requirements of <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws. </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Concept2"/>
+          <template-type-parameter name="Tag2"/>
+        </template><parameter name="other"><paramtype>const <classname>any</classname>&lt; Concept2, Tag2 &gt; &amp;</paramtype><description><para>The object to make a copy of. </para></description></parameter><parameter name="binding"><paramtype>const <classname>binding</classname>&lt; Concept &gt; &amp;</paramtype><description><para>Specifies the bindings of placeholders to actual types.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> from another <classname alt="boost::type_erasure::any">any</classname>.</para><para>
+
+
+
+<warning><para>This constructor is potentially dangerous, as it cannot check at compile time whether the arguments match. </para></warning>
+</para></description><requires><para><computeroutput>Concept</computeroutput> must contain <classname alt="boost::type_erasure::constructible">constructible&lt;T(const T&amp;)&gt;</classname>. </para><para>The type stored in <computeroutput>other</computeroutput> must match the type expected by <computeroutput>binding</computeroutput>.</para></requires><postconditions><para>binding_of(*this) == <computeroutput>binding</computeroutput> </para></postconditions><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws.</simpara></throws></constructor>
+<constructor specifiers="explicit"><template>
+          <template-nontype-parameter name="U"><type>class...</type></template-nontype-parameter>
+        </template><parameter name="arg"><paramtype>U &amp;&amp;...</paramtype><description><para>The arguments to be passed to the underlying constructor.</para></description></parameter><description><para>Calls a constructor of the contained type. The bindings will be deduced from the arguments.</para><para>
+
+
+<note><para>This constructor is never chosen if any other constructor can be called instead. </para></note>
+</para></description><requires><para><computeroutput>Concept</computeroutput> must contain an instance of <classname alt="boost::type_erasure::constructible">constructible</classname> which can be called with these arguments. </para><para>At least one of the arguments must by an <classname alt="boost::type_erasure::any">any</classname> with the same <computeroutput>Concept</computeroutput> as this. </para><para>The bindings of all the arguments that are <classname alt="boost::type_erasure::any">any</classname>'s, must be the same.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the constructor of the contained type throws.</simpara></throws></constructor>
+<constructor specifiers="explicit"><template>
+          <template-nontype-parameter name="U"><type>class...</type></template-nontype-parameter>
+        </template><parameter name="binding"><paramtype>const <classname>binding</classname>&lt; Concept &gt; &amp;</paramtype><description><para>Specifies the bindings of placeholders to actual types. </para></description></parameter><parameter name="arg"><paramtype>U &amp;&amp;...</paramtype><description><para>The arguments to be passed to the underlying constructor.</para></description></parameter><description><para>Calls a constructor of the contained type.</para><para>
+
+
+
+</para></description><requires><para><computeroutput>Concept</computeroutput> must contain a matching instance of <classname alt="boost::type_erasure::constructible">constructible</classname>. </para><para>The contained type of every argument that is an <classname alt="boost::type_erasure::any">any</classname>, must be the same as that specified by <computeroutput>binding</computeroutput>.</para></requires><postconditions><para>binding_of(*this) == <computeroutput>binding</computeroutput> </para></postconditions><throws><simpara><classname>std::bad_alloc</classname> or whatever that the constructor of the contained type throws. </simpara></throws></constructor>
+<copy-assignment><type><classname>any</classname> &amp;</type><template>
+          <template-type-parameter name="U"/>
+        </template><parameter name="other"><paramtype>U &amp;&amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para><note><para>If <computeroutput>U</computeroutput> is an <classname alt="boost::type_erasure::any">any</classname>, then this can decide dynamically whether to use construction based on the type stored in other.</para></note>
+
+</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput> or whatever the move (or copy) constructor of the contained type throws. In this case move assignment provides the strong exception guarantee. When calling a (move) assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
+<destructor><description><para>
+</para></description><requires><para><computeroutput>Concept</computeroutput> includes <classname alt="boost::type_erasure::destructible">destructible&lt;T&gt;</classname>. </para></requires></destructor>
+</class><class-specialization name="any"><template>
       <template-type-parameter name="Concept"/>
       <template-type-parameter name="T"/>
     </template><specialization><template-arg>Concept</template-arg><template-arg>T &amp;</template-arg></specialization><method-group name="public member functions">
@@ -72,16 +147,10 @@
 
 
 </para></description><requires><para>The type stored in <computeroutput>other</computeroutput> must match the type expected by <computeroutput>binding</computeroutput>.</para></requires><postconditions><para>binding_of(*this) == <computeroutput>binding</computeroutput> </para></postconditions><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
-<copy-assignment><type><classname>any</classname> &amp;</type><parameter name="other"><paramtype>const <classname>any</classname> &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
 <copy-assignment><type><classname>any</classname> &amp;</type><template>
           <template-type-parameter name="U"/>
-        </template><parameter name="other"><paramtype>U &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
-<copy-assignment><type><classname>any</classname> &amp;</type><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="other"><paramtype>const U &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
+        </template><parameter name="other"><paramtype>U &amp;&amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
+</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, can only throw <computeroutput>std::bad_alloc</computeroutput> if <computeroutput>U</computeroutput> is an <classname alt="boost::type_erasure::any">any</classname> that uses a different <computeroutput>Concept</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
 </class-specialization><class-specialization name="any"><template>
       <template-type-parameter name="Concept"/>
       <template-type-parameter name="T"/>
@@ -212,17 +281,14 @@
 
 
 </para></description><requires><para>The type stored in <computeroutput>other</computeroutput> must match the type expected by <computeroutput>binding</computeroutput>.</para></requires><postconditions><para>binding_of(*this) == <computeroutput>binding</computeroutput> </para></postconditions><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
-<copy-assignment><type><classname>any</classname> &amp;</type><parameter name="other"><paramtype>const <classname>any</classname> &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
 <copy-assignment><type><classname>any</classname> &amp;</type><template>
           <template-type-parameter name="U"/>
-        </template><parameter name="other"><paramtype>U &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
-<copy-assignment><type><classname>any</classname> &amp;</type><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="other"><paramtype>const U &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
-</class-specialization>
+        </template><parameter name="other"><paramtype>U &amp;&amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
+</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, can only throw <computeroutput>std::bad_alloc</computeroutput> if <computeroutput>U</computeroutput> is an <classname alt="boost::type_erasure::any">any</classname> that uses a different <computeroutput>Concept</computeroutput>. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
+</class-specialization><typedef name="any_ref"><type><classname>any</classname>&lt; Concept, T &amp; &gt;</type></typedef>
+<typedef name="any_cref"><type><classname>any</classname>&lt; Concept, const T &amp; &gt;</type></typedef>
+<typedef name="any_rvref"><type><classname>any</classname>&lt; Concept, T &amp;&amp; &gt;</type></typedef>
+
 
 
 
@@ -291,7 +357,7 @@ any_cast&lt;void*&gt;(&amp;x);   // returns a pointer to the contents of x
 any_cast&lt;double*&gt;(&amp;x); // returns NULL
 </programlisting></para><para>
 
-</para></description><requires><para>if <computeroutput>arg</computeroutput> is a pointer, <computeroutput>T</computeroutput> must be a pointer type. </para><para><computeroutput>Concept</computeroutput> must contain typeid_<computeroutput/>&lt;Tag&gt;.</para></requires><throws><simpara><classname>bad_any_cast</classname> if <computeroutput>arg</computeroutput> doesn't contain an object of type <computeroutput>T</computeroutput> and we're casting to a value or reference. </simpara></throws></overloaded-function>
+</para></description><requires><para>if <computeroutput>arg</computeroutput> is a pointer, <computeroutput>T</computeroutput> must be a pointer type. </para><para><computeroutput>Concept</computeroutput> must contain <classname alt="boost::type_erasure::typeid_">typeid_&lt;Tag&gt;</classname>.</para></requires><throws><simpara><classname>bad_any_cast</classname> if <computeroutput>arg</computeroutput> doesn't contain an object of type <computeroutput>T</computeroutput> and we're casting to a value or reference. </simpara></throws></overloaded-function>
 
 
 
@@ -301,7 +367,50 @@ any_cast&lt;double*&gt;(&amp;x); // returns NULL
 <header name="boost/type_erasure/binding.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
+<class name="binding"><template>
+      <template-type-parameter name="Concept"/>
+    </template><description><para>Stores the binding of a <computeroutput>Concept</computeroutput> to a set of actual types. <computeroutput>Concept</computeroutput> is interpreted in the same way as with <classname alt="boost::type_erasure::any">any</classname>. </para></description><method-group name="friend functions">
+<method name="operator=="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><description><para>
 
+</para></description><returns><para>true iff the sets of types that the placeholders bind to are the same for both arguments.</para></returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
+<method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><description><para>
+
+</para></description><returns><para>true iff the arguments do not map to identical sets of types.</para></returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
+</method-group>
+<method-group name="public member functions">
+</method-group>
+<constructor><description><para>
+
+</para></description><requires><para><classname alt="boost::type_erasure::relaxed">relaxed</classname> must be in <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
+<constructor specifiers="explicit"><template>
+          <template-type-parameter name="Map"/>
+        </template><parameter name=""><paramtype>const Map &amp;</paramtype></parameter><description><para>
+
+</para></description><requires><para><computeroutput>Map</computeroutput> must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Map"/>
+        </template><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter><description><para>
+
+</para></description><requires><para><computeroutput>Map</computeroutput> must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Concept2"/>
+          <template-type-parameter name="Map"/>
+        </template><parameter name="other"><paramtype>const <classname>binding</classname>&lt; Concept2 &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const Map &amp;</paramtype></parameter><description><para>Converts from another set of bindings.</para><para>
+
+</para></description><requires><para>Map must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>. The mapped type should be the corresponding placeholder in Concept2.</para></requires><throws><simpara><classname>std::bad_alloc</classname> </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Concept2"/>
+          <template-type-parameter name="Map"/>
+        </template><parameter name="other"><paramtype>const <classname>binding</classname>&lt; Concept2 &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter><description><para>Converts from another set of bindings.</para><para>
+
+</para></description><requires><para>Map must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>. The mapped type should be the corresponding placeholder in Concept2.</para></requires><throws><simpara><classname>std::bad_alloc</classname> </simpara></throws></constructor>
+<constructor><template>
+          <template-type-parameter name="Placeholders"/>
+          <template-type-parameter name="Map"/>
+        </template><parameter name="other"><paramtype>const <classname>dynamic_binding</classname>&lt; Placeholders &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter><description><para>Converts from another set of bindings.</para><para>
+
+</para></description><requires><para>Map must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>. The mapped type should be the corresponding placeholder in Concept2.</para></requires><throws><simpara><classname>std::bad_alloc</classname> </simpara></throws></constructor>
+</class>
 
 
 
@@ -370,9 +479,14 @@ any_cast&lt;double*&gt;(&amp;x); // returns NULL
     </template><inherit access="public">boost::mpl::vector&lt; constructible&lt; T(const T &amp;)&gt;, destructible&lt; T &gt; &gt;</inherit><description><para>The <classname alt="boost::type_erasure::copy_constructible">copy_constructible</classname> concept allows objects to be copied and destroyed.</para><para><note><para>This concept is defined to match C++ 2003, [lib.copyconstructible]. It is not equivalent to the concept of the same name in C++11. </para></note>
 </para></description></struct><struct name="assignable"><template>
       <template-type-parameter name="T"><default><classname alt="boost::type_erasure::_self">_self</classname></default></template-type-parameter>
-      <template-type-parameter name="U"><default>T</default></template-type-parameter>
+      <template-type-parameter name="U"><default>const T&amp;</default></template-type-parameter>
     </template><description><para>Enables assignment of <classname alt="boost::type_erasure::any">any</classname> types. </para></description><method-group name="public static functions">
-<method name="apply" specifiers="static"><type>void</type><parameter name="dst"><paramtype>T &amp;</paramtype></parameter><parameter name="src"><paramtype>const U &amp;</paramtype></parameter></method>
+<method name="apply" specifiers="static"><type>void</type><parameter name="dst"><paramtype>T &amp;</paramtype></parameter><parameter name="src"><paramtype>U</paramtype></parameter></method>
+</method-group>
+</struct><struct name="typeid_"><template>
+      <template-type-parameter name="T"><default><classname alt="boost::type_erasure::_self">_self</classname></default></template-type-parameter>
+    </template><description><para>Enables runtime type information. This is required if you want to use <functionname alt="boost::type_erasure::any_cast">any_cast</functionname> or <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname>.</para><para><note><para><classname alt="boost::type_erasure::typeid_">typeid_</classname> cannot be specialized because several library components including <functionname alt="boost::type_erasure::any_cast">any_cast</functionname> would not work correctly if its behavior changed. There is no need to specialize it anyway, since it works for all types. <classname alt="boost::type_erasure::typeid_">typeid_</classname> also cannot be passed to <functionname alt="boost::type_erasure::call">call</functionname>. To access it, use <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname>. </para></note>
+</para></description><method-group name="public static functions">
 </method-group>
 </struct>
 
@@ -475,12 +589,7 @@ any&lt;concept, _b&gt; b(call(addable&lt;_a, int, _b&gt;(), a, 10));
 <header name="boost/type_erasure/check_match.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
-<struct name="typeid_"><template>
-      <template-type-parameter name="T"/>
-    </template><description><para>Enables runtime type information. This is required if you want to use <functionname alt="boost::type_erasure::any_cast">any_cast</functionname> or <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname>.</para><para><note><para><classname alt="boost::type_erasure::typeid_">typeid_</classname> cannot be specialized because several library components including <functionname alt="boost::type_erasure::any_cast">any_cast</functionname> would not work correctly if its behavior changed. There is no need to specialize it anyway, since it works for all types. <classname alt="boost::type_erasure::typeid_">typeid_</classname> also cannot be passed to <functionname alt="boost::type_erasure::call">call</functionname>. To access it, use <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname>. </para></note>
-</para></description><method-group name="public static functions">
-</method-group>
-</struct>
+
 
 
 
@@ -550,7 +659,8 @@ The metafunctions <classname alt="boost::type_erasure::derived">derived</classna
 <struct name="concept_of"><template>
       <template-type-parameter name="T"/>
     </template><description><para>A metafunction returning the concept corresponding to an <classname alt="boost::type_erasure::any">any</classname>. It will also work for all bases of <classname alt="boost::type_erasure::any">any</classname>, so it can be applied to the <computeroutput>Base</computeroutput> parameter of <classname alt="boost::type_erasure::concept_interface">concept_interface</classname>. </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct>
+</struct><typedef name="concept_of_t"><type>typename::boost::type_erasure::concept_of&lt; T &gt;::type</type></typedef>
+
 
 
 
@@ -646,7 +756,8 @@ The metafunctions <classname alt="boost::type_erasure::derived">derived</classna
       <template-type-parameter name="T"/>
     </template><description><para>A metafunction which returns the full <classname alt="boost::type_erasure::any">any</classname> type, when given any of its base classes. This is primarily intended to be used when implementing <classname alt="boost::type_erasure::concept_interface">concept_interface</classname>.</para><para><para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::type_erasure::rebind_any">rebind_any</classname>, <classname alt="boost::type_erasure::as_param">as_param</classname> </para></para>
 </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct>
+</struct><typedef name="derived_t"><type>typename T::_boost_type_erasure_derived_type</type></typedef>
+
 
 
 
@@ -705,7 +816,7 @@ typedef any&lt;
 auto y = dynamic_any_cast&lt;incrementable_any&gt;(x);
 ++y;
 assert(any_cast&lt;int&gt;(y) == 2);
-</programlisting> </para></description><requires><para><computeroutput>R</computeroutput> and <computeroutput>Any</computeroutput> must both be specializations of <classname alt="boost::type_erasure::any">any</classname>. </para><para>PlaceholderMap must be an MPL map with a key for every non-deduced placeholder used by R. The value associated with each key should be the corresponding placeholder in Any. </para><para>The concept of Any must include <classname alt="boost::type_erasure::typeid_">typeid_</classname>, for every <classname alt="boost::type_erasure::placeholder">placeholder</classname> which is used by R.</para></requires><throws><simpara><classname>bad_any_cast</classname> if the concepts used by R were not previously registered via a call to register_binding.</simpara></throws></overloaded-function>
+</programlisting> </para></description><requires><para><computeroutput>R</computeroutput> and <computeroutput>Any</computeroutput> must both be specializations of <classname alt="boost::type_erasure::any">any</classname>. </para><para>PlaceholderMap must be an MPL map with a key for every non-deduced placeholder used by R. The value associated with each key should be the corresponding placeholder in Any. </para><para>The concept of Any must include <classname alt="boost::type_erasure::typeid_">typeid_</classname>, for every <classname alt="boost::type_erasure::placeholder">placeholder</classname> which is used by R.</para></requires><throws><simpara><classname>bad_any_cast</classname> if the concepts used by R were not previously registered via a call to  <functionname alt="boost::type_erasure::register_binding">register_binding</functionname>.</simpara></throws></overloaded-function>
 
 
 
@@ -814,11 +925,14 @@ assert(any_cast&lt;int&gt;(y) == 2);
 
 </namespace>
 </namespace>
-<macro name="BOOST_TYPE_ERASURE_FREE" kind="functionlike"><macro-parameter name="qualified_name"><description><para>should be a preprocessor sequence of the form (namespace1)(namespace2)...(concept_name). </para></description></macro-parameter><macro-parameter name="function_name"><description><para>is the name of the function. </para></description></macro-parameter><macro-parameter name="N"><description><para>is the number of arguments of the function.</para></description></macro-parameter><purpose>Defines a primitive concept for a free function. </purpose><description><para>
+<macro name="BOOST_TYPE_ERASURE_FREE" kind="functionlike"><macro-parameter name="concept_name"><description><para>is the name of the concept to declare. If it is omitted it defaults to <computeroutput>has_ ## function_name</computeroutput> </para></description></macro-parameter><macro-parameter name="function_name"><description><para>is the name of the function.</para></description></macro-parameter><purpose>Defines a primitive concept for a free function. </purpose><description><para>
 The declaration of the concept is <programlisting language="c++">template&lt;class Sig&gt;
-struct ::namespace1::namespace2::...::concept_name;
-</programlisting> where Sig is a function type giving the signature of the function.</para><para>This macro can only be used in the global namespace.</para><para>Example:</para><para><programlisting language="c++">BOOST_TYPE_ERASURE_FREE((boost)(has_to_string), to_string, 1)
-</programlisting> </para></description></macro>
+struct concept_name;
+</programlisting> where Sig is a function type giving the signature of the function.</para><para>This macro can only be used at namespace scope.</para><para>Example:</para><para><programlisting language="c++">BOOST_TYPE_ERASURE_FREE(to_string)
+typedef has_to_string&lt;std::string(_self const&amp;)&gt; to_string_concept;
+</programlisting></para><para>In C++03, the macro can only be used in the global namespace and is defined as:</para><para><programlisting language="c++">#define BOOST_TYPE_ERASURE_FREE(qualified_name, function_name, N)
+</programlisting></para><para>Example:</para><para><programlisting language="c++">BOOST_TYPE_ERASURE_FREE((boost)(has_to_string), to_string, 1)
+</programlisting></para><para>For backwards compatibility, this form is always accepted. </para></description></macro>
 </header>
 <header name="boost/type_erasure/is_empty.hpp">
 <namespace name="boost">
@@ -854,7 +968,7 @@ struct ::namespace1::namespace2::...::concept_name;
 <namespace name="type_erasure">
 <struct name="is_placeholder"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">boost::is_base_and_derived&lt; placeholder, T &gt;</inherit><description><para>A metafunction that indicates whether a type is a <classname alt="boost::type_erasure::placeholder">placeholder</classname>. </para></description></struct>
+    </template><description><para>A metafunction that indicates whether a type is a <classname alt="boost::type_erasure::placeholder">placeholder</classname>. </para></description></struct>
 
 
 
@@ -967,13 +1081,21 @@ The value_type of the iterator is deduced. To force it to be a specific type, us
 </namespace>
 </header>
 <header name="boost/type_erasure/member.hpp">
-<macro name="BOOST_TYPE_ERASURE_MEMBER" kind="functionlike"><macro-parameter name="qualified_name"><description><para>should be a preprocessor sequence of the form (namespace1)(namespace2)...(concept_name). </para></description></macro-parameter><macro-parameter name="member"><description><para>is the name of the member function. </para></description></macro-parameter><macro-parameter name="N"><description><para>is the number of arguments of the function.</para></description></macro-parameter><purpose>Defines a primitive concept for a member function. </purpose><description><para>
+<macro name="BOOST_TYPE_ERASURE_MEMBER" kind="functionlike"><macro-parameter name="concept_name"><description><para>is the name of the concept to declare. If it is omitted it defaults to <computeroutput>has_ ## member</computeroutput> </para></description></macro-parameter><macro-parameter name="member"><description><para>is the name of the member function.</para></description></macro-parameter><purpose>Defines a primitive concept for a member function. </purpose><description><para>
 The declaration of the concept is <programlisting language="c++">template&lt;class Sig, class T = _self&gt;
-struct ::namespace1::namespace2::...::concept_name;
-</programlisting> where Sig is a function type giving the signature of the member function, and T is the object type. T may be const-qualified for const member functions.</para><para>This macro can only be used in the global namespace.</para><para>Example:</para><para><programlisting language="c++">BOOST_TYPE_ERASURE_MEMBER((boost)(has_push_back), push_back, 1)
+struct concept_name;
+</programlisting> where <computeroutput>Sig</computeroutput> is a function type giving the signature of the member function, and <computeroutput>T</computeroutput> is the object type. <computeroutput>T</computeroutput> may be const-qualified for const member functions. <computeroutput>concept_name&lt;R(A...) const, T&gt;</computeroutput> is an alias for <computeroutput>concept_name&lt;R(A...), const T&gt;</computeroutput>.</para><para>This macro can only be used at namespace scope.</para><para>Example:</para><para><programlisting language="c++">namespace boost {
+BOOST_TYPE_ERASURE_MEMBER(push_back)
+}
+typedef boost::has_push_back&lt;void(int)&gt; push_back_concept;
+</programlisting></para><para>The concept defined by this function may be specialized to provide a concept_map. The class object will be passed by reference as the first parameter.</para><para><programlisting language="c++">template&lt;&gt;
+struct has_push_back&lt;void(int), std::list&lt;int&gt; &gt; {
+  static void apply(std::list&lt;int&gt;&amp; l, int i) { l.push_back(i); }
+};
+</programlisting></para><para>In C++03, the macro can only be used in the global namespace and is defined as:</para><para><programlisting language="c++">#define BOOST_TYPE_ERASURE_MEMBER(qualified_name, member, N)
+</programlisting></para><para>Example:</para><para><programlisting language="c++">BOOST_TYPE_ERASURE_MEMBER((boost)(has_push_back), push_back, 1)
 typedef boost::has_push_back&lt;void(int), _self&gt; push_back_concept;
-</programlisting></para><para><note><para>In C++11 the argument N is ignored and may be omitted. BOOST_TYPE_ERASURE_MEMBER will always define a variadic concept. </para></note>
-</para></description></macro>
+</programlisting></para><para>For backwards compatibility, this form is always accepted. </para></description></macro>
 </header>
 <header name="boost/type_erasure/operators.hpp">
 <namespace name="boost">
@@ -1194,12 +1316,39 @@ typedef boost::has_push_back&lt;void(int), _self&gt; push_back_concept;
 <header name="boost/type_erasure/param.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
-<struct name="as_param"><template>
+<class name="param"><template>
+      <template-type-parameter name="Concept"/>
+      <template-type-parameter name="T"/>
+    </template><purpose>A wrapper to help with overload resolution for functions operating on an <classname alt="boost::type_erasure::any">any</classname>. </purpose><description><para>The template arguments are interpreted in the same way as <classname alt="boost::type_erasure::any">any</classname>.</para><para>A parameter of type <classname alt="boost::type_erasure::param">param</classname> can be initialized with an <classname alt="boost::type_erasure::any">any</classname> that has the same <computeroutput>Concept</computeroutput> and base placeholder when there exists a corresponding standard conversion for the placeholder. A conversion sequence from <classname alt="boost::type_erasure::any">any&lt;C, P&gt;</classname> to <classname alt="boost::type_erasure::param">param&lt;C, P1&gt;</classname> is a better conversion sequence than <classname alt="boost::type_erasure::any">any&lt;C, P&gt;</classname> to <classname alt="boost::type_erasure::param">param&lt;C, P2&gt;</classname> iff the corresponding placeholder standard conversion sequence from P to P1 is a better conversion sequence than P to P2.</para><para><note><para>Overloading based on cv-qualifiers and rvalue-ness is only supported in C++11. In C++03, all conversion sequences from <classname alt="boost::type_erasure::any">any</classname> to <classname alt="boost::type_erasure::param">param</classname> have the same rank.</para></note>
+Example:</para><para><programlisting language="c++">void f(param&lt;C, _a&amp;&gt;);
+void f(param&lt;C, const _a&amp;&gt;);
+void g(param&lt;C, const _a&amp;&gt;);
+void g(param&lt;C, _a&amp;&amp;&gt;);
+
+any&lt;C, _a&gt; a;
+f(any&lt;C, _a&gt;()); // calls void f(param&lt;C, const _a&amp;&gt;);
+f(a);            // calls void f(param&lt;C, _a&amp;&gt;); (ambiguous in C++03)
+g(any&lt;C, _a&gt;()); // calls void g(param&lt;C, _a&amp;&amp;&gt;); (ambiguous in C++03)
+g(a);            // calls void g(param&lt;C, const _a&amp;&gt;);
+</programlisting> </para></description><method-group name="public member functions">
+<method name="get" cv="const"><type><classname>any</classname>&lt; Concept, T &gt;</type><description><para>Returns the stored <classname alt="boost::type_erasure::any">any</classname>. </para></description></method>
+</method-group>
+<constructor><template>
+          <template-type-parameter name="U"/>
+        </template><parameter name="a"><paramtype><classname>any</classname>&lt; Concept, U &gt; &amp;</paramtype></parameter></constructor>
+<constructor><template>
+          <template-type-parameter name="U"/>
+        </template><parameter name="a"><paramtype>const <classname>any</classname>&lt; Concept, U &gt; &amp;</paramtype></parameter></constructor>
+<constructor><template>
+          <template-type-parameter name="U"/>
+        </template><parameter name="a"><paramtype><classname>any</classname>&lt; Concept, U &gt; &amp;&amp;</paramtype></parameter></constructor>
+</class><struct name="as_param"><template>
       <template-type-parameter name="Any"/>
       <template-type-parameter name="T"/>
-    </template><purpose>Metafunction that creates a <classname alt="boost::type_erasure::param">param</classname>. </purpose><description><para>If <computeroutput>T</computeroutput> is a (cv/reference qualifed) placeholder, returns <classname alt="boost::type_erasure::param">param</classname>&lt;<classname alt="boost::type_erasure::concept_of">concept_of&lt;Any&gt;::type</classname>, T&gt;, otherwise, returns T. This metafunction is intended to be used for function arguments in specializations of <classname alt="boost::type_erasure::concept_interface">concept_interface</classname>.</para><para><para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::type_erasure::derived">derived</classname>, <classname alt="boost::type_erasure::rebind_any">rebind_any</classname> </para></para>
+    </template><purpose>Metafunction that creates a <classname alt="boost::type_erasure::param">param</classname>. </purpose><description><para>If <computeroutput>T</computeroutput> is a (cv/reference qualified) placeholder, returns <classname alt="boost::type_erasure::param">param</classname>&lt;<classname alt="boost::type_erasure::concept_of">concept_of&lt;Any&gt;::type</classname>, T&gt;, otherwise, returns T. This metafunction is intended to be used for function arguments in specializations of <classname alt="boost::type_erasure::concept_interface">concept_interface</classname>.</para><para><para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::type_erasure::derived">derived</classname>, <classname alt="boost::type_erasure::rebind_any">rebind_any</classname> </para></para>
 </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct>
+</struct><typedef name="as_param_t"><type>typename::boost::type_erasure::as_param&lt; Any, T &gt;::type</type></typedef>
+
 
 
 
@@ -1254,36 +1403,11 @@ typedef boost::has_push_back&lt;void(int), _self&gt; push_back_concept;
 <header name="boost/type_erasure/placeholder_of.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
-<class name="param"><template>
-      <template-type-parameter name="Concept"/>
-      <template-type-parameter name="T"/>
-    </template><purpose>A wrapper to help with overload resolution for functions operating on an <classname alt="boost::type_erasure::any">any</classname>. </purpose><description><para>The template arguments are interpreted in the same way as <classname alt="boost::type_erasure::any">any</classname>.</para><para>A parameter of type <classname alt="boost::type_erasure::param">param</classname> can be initialized with an <classname alt="boost::type_erasure::any">any</classname> that has the same <computeroutput>Concept</computeroutput> and base placeholder when there exists a corresponding standard conversion for the placeholder. A conversion sequence from any&lt;C, P&gt; to param&lt;C, P1&gt; is a better conversion sequence than any&lt;C, P&gt; to param&lt;C, P2&gt; iff the corresponding placeholder standard conversion sequence from P to P1 is a better conversion sequence than P to P2.</para><para><note><para>Overloading based on cv-qualifiers and rvalue-ness is only supported in C++11. In C++03, all conversion sequences from <classname alt="boost::type_erasure::any">any</classname> to <classname alt="boost::type_erasure::param">param</classname> have the same rank.</para></note>
-Example:</para><para><programlisting language="c++">void f(param&lt;C, _a&amp;&gt;);
-void f(param&lt;C, const _a&amp;&gt;);
-void g(param&lt;C, const _a&amp;&gt;);
-void g(param&lt;C, _a&amp;&amp;&gt;);
-
-any&lt;C, _a&gt; a;
-f(any&lt;C, _a&gt;()); // calls void f(param&lt;C, const _a&amp;&gt;);
-f(a);            // calls void f(param&lt;C, _a&amp;&gt;); (ambiguous in C++03)
-g(any&lt;C, _a&gt;()); // calls void g(param&lt;C, _a&amp;&amp;&gt;); (ambiguous in C++03)
-g(a);            // calls void g(param&lt;C, const _a&amp;&gt;);
-</programlisting> </para></description><method-group name="public member functions">
-<method name="get" cv="const"><type><classname>any</classname>&lt; Concept, T &gt;</type><description><para>Returns the stored <classname alt="boost::type_erasure::any">any</classname>. </para></description></method>
-</method-group>
-<constructor><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="a"><paramtype><classname>any</classname>&lt; Concept, U &gt; &amp;</paramtype></parameter></constructor>
-<constructor><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="a"><paramtype>const <classname>any</classname>&lt; Concept, U &gt; &amp;</paramtype></parameter></constructor>
-<constructor><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="a"><paramtype><classname>any</classname>&lt; Concept, U &gt; &amp;&amp;</paramtype></parameter></constructor>
-</class><struct name="placeholder_of"><template>
+<struct name="placeholder_of"><template>
       <template-type-parameter name="T"/>
     </template><description><para>A metafunction returning the (const/reference qualified) placeholder corresponding to an <classname alt="boost::type_erasure::any">any</classname>. It will also work for all bases of <classname alt="boost::type_erasure::any">any</classname>, so it can be applied to the <computeroutput>Base</computeroutput> parameter of <classname alt="boost::type_erasure::concept_interface">concept_interface</classname>. </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct>
+</struct><typedef name="placeholder_of_t"><type>typename::boost::type_erasure::placeholder_of&lt; T &gt;::type</type></typedef>
+
 
 
 
@@ -1310,92 +1434,18 @@ g(a);            // calls void g(param&lt;C, const _a&amp;&gt;);
 <header name="boost/type_erasure/rebind_any.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
-<class name="any"><template>
-      <template-type-parameter name="Concept"><purpose><para>The <link linkend="boost_typeerasure.conceptdef">Concept</link> that the stored type should model. </para></purpose></template-type-parameter>
-      <template-type-parameter name="T"><purpose><para>A <classname alt="boost::type_erasure::placeholder">placeholder</classname> specifying which type this is.</para></purpose></template-type-parameter>
-    </template><description><para>The class template <classname alt="boost::type_erasure::any">any</classname> can store any object that models a specific <link linkend="boost_typeerasure.conceptdef">Concept</link>. It dispatches all the functions defined by the <link linkend="boost_typeerasure.conceptdef">Concept</link> to the contained type at runtime.</para><para>
-<para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::type_erasure::concept_of">concept_of</classname>, <classname alt="boost::type_erasure::placeholder_of">placeholder_of</classname>, <functionname alt="boost::type_erasure::any_cast">any_cast</functionname>, <functionname alt="boost::type_erasure::is_empty">is_empty</functionname>, <functionname alt="boost::type_erasure::binding_of">binding_of</functionname>, <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname> </para></para>
-</para></description><method-group name="public member functions">
-</method-group>
-<constructor><description><para>Constructs an empty <classname alt="boost::type_erasure::any">any</classname>.</para><para>Except as otherwise noted, all operations on an empty <classname alt="boost::type_erasure::any">any</classname> result in a <classname alt="boost::type_erasure::bad_function_call">bad_function_call</classname> exception. The copy-constructor of an empty <classname alt="boost::type_erasure::any">any</classname> creates another null <classname alt="boost::type_erasure::any">any</classname>. The destructor of an empty <classname alt="boost::type_erasure::any">any</classname> is a no-op. Comparison operators treat all empty <classname alt="boost::type_erasure::any">anys</classname> as equal.  <functionname alt="boost::type_erasure::typeid_of">typeid_of</functionname> applied to an empty <classname alt="boost::type_erasure::any">any</classname> returns <computeroutput>typeid(void)</computeroutput>.</para><para>An <classname alt="boost::type_erasure::any">any</classname> which does not include <classname alt="boost::type_erasure::relaxed">relaxed</classname> in its  <link linkend="boost_typeerasure.conceptdef">Concept</link> can never be null.</para><para>
-
-<para><emphasis role="bold">See Also:</emphasis><para> <functionname alt="boost::type_erasure::is_empty">is_empty</functionname> </para></para>
-</para></description><requires><para><classname alt="boost::type_erasure::relaxed">relaxed</classname> must be in <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="data"><paramtype>U &amp;&amp;</paramtype><description><para>The object to store in the <classname alt="boost::type_erasure::any">any</classname>.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> to hold a copy of <computeroutput>data</computeroutput>. The <computeroutput>Concept</computeroutput> will be instantiated with the placeholder <computeroutput>T</computeroutput> bound to U.</para><para>
-
-
-<note><para>This constructor never matches if the argument is an <classname alt="boost::type_erasure::any">any</classname>, <classname alt="boost::type_erasure::binding">binding</classname>, or <classname alt="boost::type_erasure::static_binding">static_binding</classname>. </para></note>
-</para></description><requires><para><computeroutput>U</computeroutput> is a model of <computeroutput>Concept</computeroutput>. </para><para><computeroutput>U</computeroutput> must be <ulink url="../../doc/html/CopyConstructible.html">CopyConstructible</ulink>. </para><para><computeroutput>Concept</computeroutput> must not refer to any non-deduced placeholder besides <computeroutput>T</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of <computeroutput>U</computeroutput> throws.</simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="U"/>
-          <template-type-parameter name="Map"/>
-        </template><parameter name="data"><paramtype>U &amp;&amp;</paramtype><description><para>The object to store in the <classname alt="boost::type_erasure::any">any</classname>. </para></description></parameter><parameter name="binding"><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype><description><para>Specifies the types that all the placeholders should bind to.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> to hold a copy of <computeroutput>data</computeroutput> with explicitly specified placeholder bindings.</para><para>
-
-
-<note><para>This constructor never matches if the argument is an <classname alt="boost::type_erasure::any">any</classname>. </para></note>
-</para></description><requires><para><computeroutput>U</computeroutput> is a model of <computeroutput>Concept</computeroutput>. </para><para><computeroutput>U</computeroutput> must be <ulink url="../../doc/html/CopyConstructible.html">CopyConstructible</ulink>. </para><para><computeroutput>Map</computeroutput> is an MPL map with an entry for every non-deduced placeholder referred to by <computeroutput>Concept</computeroutput>. </para><para><computeroutput><computeroutput>T</computeroutput> must</computeroutput> map to <computeroutput>U</computeroutput> in <computeroutput>Map</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of <computeroutput>U</computeroutput> throws.</simpara></throws></constructor>
-<constructor><parameter name="other"><paramtype>const <classname>any</classname> &amp;</paramtype><description><para>The object to make a copy of.</para></description></parameter><description><para>Copies an <classname alt="boost::type_erasure::any">any</classname>.</para><para>
-
-
-</para></description><requires><para><computeroutput>Concept</computeroutput> must contain <classname alt="boost::type_erasure::constructible">constructible&lt;T(const T&amp;)&gt;</classname>. (This is included in <classname alt="boost::type_erasure::copy_constructible">copy_constructible&lt;T&gt;</classname>)</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws. </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Concept2"/>
-          <template-type-parameter name="Tag2"/>
-        </template><parameter name="other"><paramtype>const <classname>any</classname>&lt; Concept2, Tag2 &gt; &amp;</paramtype><description><para>The object to make a copy of.</para></description></parameter><description><para>Upcasts from an <classname alt="boost::type_erasure::any">any</classname> with stricter requirements to an <classname alt="boost::type_erasure::any">any</classname> with weaker requirements.</para><para>
-
-
-</para></description><requires><para><computeroutput>Concept</computeroutput> must contain constructible&lt;T(const T&amp;)&gt;. </para><para><computeroutput>Concept</computeroutput> must not refer to any non-deduced placeholder besides <computeroutput>T</computeroutput>. </para><para>After substituting <computeroutput>T</computeroutput> for <computeroutput>Tag2</computeroutput>, the requirements of <computeroutput>Concept2</computeroutput> must be a superset of the requirements of <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws. </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Concept2"/>
-          <template-type-parameter name="Tag2"/>
-          <template-type-parameter name="Map"/>
-        </template><parameter name="other"><paramtype>const <classname>any</classname>&lt; Concept2, Tag2 &gt; &amp;</paramtype><description><para>The object to make a copy of. </para></description></parameter><parameter name="binding"><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype><description><para>Specifies the mapping between the placeholders used by the two concepts.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> from another <classname alt="boost::type_erasure::any">any</classname>.</para><para>
-
-
-</para></description><requires><para><computeroutput>Concept</computeroutput> must contain constructible&lt;T(const T&amp;)&gt;. </para><para><computeroutput>Map</computeroutput> must be an MPL map with keys for all the non-deduced placeholders used by <computeroutput>Concept</computeroutput> and values for the corresponding placeholders in <computeroutput>Concept2</computeroutput>. </para><para>After substituting placeholders according to <computeroutput>Map</computeroutput>, the requirements of <computeroutput>Concept2</computeroutput> must be a superset of the requirements of <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws. </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Concept2"/>
-          <template-type-parameter name="Tag2"/>
-        </template><parameter name="other"><paramtype>const <classname>any</classname>&lt; Concept2, Tag2 &gt; &amp;</paramtype><description><para>The object to make a copy of. </para></description></parameter><parameter name="binding"><paramtype>const <classname>binding</classname>&lt; Concept &gt; &amp;</paramtype><description><para>Specifies the bindings of placeholders to actual types.</para></description></parameter><description><para>Constructs an <classname alt="boost::type_erasure::any">any</classname> from another <classname alt="boost::type_erasure::any">any</classname>.</para><para>
-
-
-
-<warning><para>This constructor is potentially dangerous, as it cannot check at compile time whether the arguments match. </para></warning>
-</para></description><requires><para><computeroutput>Concept</computeroutput> must contain constructible&lt;T(const T&amp;)&gt;. </para><para>The type stored in <computeroutput>other</computeroutput> must match the type expected by <computeroutput>binding</computeroutput>.</para></requires><postconditions><para>binding_of(*this) == <computeroutput>binding</computeroutput> </para></postconditions><throws><simpara><classname>std::bad_alloc</classname> or whatever that the copy constructor of the contained type throws.</simpara></throws></constructor>
-<constructor specifiers="explicit"><template>
-          <template-nontype-parameter name="U"><type>class...</type></template-nontype-parameter>
-        </template><parameter name="arg"><paramtype>U &amp;&amp;...</paramtype><description><para>The arguments to be passed to the underlying constructor.</para></description></parameter><description><para>Calls a constructor of the contained type. The bindings will be deduced from the arguments.</para><para>
-
-
-<note><para>This constructor is never chosen if any other constructor can be called instead. </para></note>
-</para></description><requires><para><computeroutput>Concept</computeroutput> must contain an instance of <classname alt="boost::type_erasure::constructible">constructible</classname> which can be called with these arguments. </para><para>At least one of the arguments must by an <classname alt="boost::type_erasure::any">any</classname> with the same <computeroutput>Concept</computeroutput> as this. </para><para>The bindings of all the arguments that are <classname alt="boost::type_erasure::any">any</classname>'s, must be the same.</para></requires><throws><simpara><classname>std::bad_alloc</classname> or whatever that the constructor of the contained type throws.</simpara></throws></constructor>
-<constructor specifiers="explicit"><template>
-          <template-nontype-parameter name="U"><type>class...</type></template-nontype-parameter>
-        </template><parameter name="binding"><paramtype>const <classname>binding</classname>&lt; Concept &gt; &amp;</paramtype><description><para>Specifies the bindings of placeholders to actual types. </para></description></parameter><parameter name="arg"><paramtype>U &amp;&amp;...</paramtype><description><para>The arguments to be passed to the underlying constructor.</para></description></parameter><description><para>Calls a constructor of the contained type.</para><para>
-
-
-
-</para></description><requires><para><computeroutput>Concept</computeroutput> must contain a matching instance of <classname alt="boost::type_erasure::constructible">constructible</classname>. </para><para>The contained type of every argument that is an <classname alt="boost::type_erasure::any">any</classname>, must be the same as that specified by <computeroutput>binding</computeroutput>.</para></requires><postconditions><para>binding_of(*this) == <computeroutput>binding</computeroutput> </para></postconditions><throws><simpara><classname>std::bad_alloc</classname> or whatever that the constructor of the contained type throws. </simpara></throws></constructor>
-<copy-assignment><type><classname>any</classname> &amp;</type><parameter name="other"><paramtype>const <classname>any</classname> &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput> or whatever the copy constructor of the contained type throws. In this case assignment provides the strong exception guarantee. When calling the assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
-<copy-assignment><type><classname>any</classname> &amp;</type><template>
-          <template-type-parameter name="U"/>
-        </template><parameter name="other"><paramtype>const U &amp;</paramtype></parameter><description><para>Assigns to an <classname alt="boost::type_erasure::any">any</classname>.</para><para>If an appropriate overload of <classname alt="boost::type_erasure::assignable">assignable</classname> is not available and <classname alt="boost::type_erasure::relaxed">relaxed</classname> is in <computeroutput>Concept</computeroutput>, falls back on constructing from <computeroutput>other</computeroutput>.</para><para>
-</para></description><throws><simpara><classname>Whatever</classname> the assignment operator of the contained type throws. When falling back on construction, throws <computeroutput>std::bad_alloc</computeroutput> or whatever the copy constructor of the contained type throws. In this case assignment provides the strong exception guarantee. When calling an assignment operator of the contained type, the exception guarantee is whatever the contained type provides. </simpara></throws></copy-assignment>
-<destructor><description><para>
-</para></description><requires><para><computeroutput>Concept</computeroutput> includes <classname alt="boost::type_erasure::destructible">destructible&lt;T&gt;</classname>. </para></requires></destructor>
-</class><struct name="rebind_any"><template>
+<struct name="rebind_any"><template>
       <template-type-parameter name="Any"/>
       <template-type-parameter name="T"/>
     </template><description><para>A metafunction that changes the <classname alt="boost::type_erasure::placeholder">placeholder</classname> of an <classname alt="boost::type_erasure::any">any</classname>. If <computeroutput>T</computeroutput> is not a placeholder, returns <computeroutput>T</computeroutput> unchanged. This class is intended to be used in <classname alt="boost::type_erasure::concept_interface">concept_interface</classname> to deduce the argument types from the arguments of the concept.</para><para>
 <programlisting language="c++">rebind_any&lt;any&lt;Concept&gt;, _a&gt;::type -&gt; any&lt;Concept, _a&gt;
 rebind_any&lt;any&lt;Concept&gt;, _b&amp;&gt;::type -&gt; any&lt;Concept, _b&amp;&gt;
+rebind_any&lt;any&lt;Concept&gt;, _c&amp;&amp;&gt;::type -&gt; any&lt;Concept, _c&amp;&amp;&gt;
 rebind_any&lt;any&lt;Concept&gt;, int&gt;::type -&gt; int
 </programlisting></para><para><para><emphasis role="bold">See Also:</emphasis><para><classname alt="boost::type_erasure::derived">derived</classname>, <classname alt="boost::type_erasure::as_param">as_param</classname> </para></para>
 </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct>
+</struct><typedef name="rebind_any_t"><type>typename::boost::type_erasure::rebind_any&lt; Any, T &gt;::type</type></typedef>
+
 
 
 
@@ -1435,7 +1485,7 @@ rebind_any&lt;any&lt;Concept&gt;, int&gt;::type -&gt; int
         </template><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter></signature><signature><type>void</type><template>
           <template-type-parameter name="Concept"/>
           <template-type-parameter name="T"/>
-        </template></signature><description><para>Registers a model of a concept to allow downcasting <classname alt="boost::type_erasure::any">any</classname> via dynamic_any_cast. </para></description></overloaded-function>
+        </template></signature><description><para>Registers a model of a concept to allow downcasting <classname alt="boost::type_erasure::any">any</classname> via <functionname alt="boost::type_erasure::dynamic_any_cast">dynamic_any_cast</functionname>. </para></description></overloaded-function>
 
 
 
@@ -1458,7 +1508,7 @@ rebind_any&lt;any&lt;Concept&gt;, int&gt;::type -&gt; int
 <struct name="is_relaxed"><template>
       <template-type-parameter name="T"/>
     </template><description><para>A metafunction indicating whether <computeroutput>Concept</computeroutput> includes <classname alt="boost::type_erasure::relaxed">relaxed</classname>. </para></description></struct><struct name="relaxed"><inherit access="public">boost::mpl::vector0&lt;&gt;</inherit><description><para>This special concept enables various useful default behavior that makes <classname alt="boost::type_erasure::any">any</classname> act like an ordinary object. By default <classname alt="boost::type_erasure::any">any</classname> forwards all operations to the underlying type, and provides only the operations that are specified in its <computeroutput>Concept</computeroutput>.</para><para>In detail, <classname alt="boost::type_erasure::relaxed">relaxed</classname> enables the following:<itemizedlist>
-<listitem><para>A raw value can be assigned to an <classname alt="boost::type_erasure::any">any</classname>. This will replace the value stored by the <classname alt="boost::type_erasure::any">any</classname>. (But note that if <classname alt="boost::type_erasure::assignable">assignable</classname> is present, it takes priority.)</para></listitem><listitem><para>copy assignment of <classname alt="boost::type_erasure::any">any</classname> uses the copy constructor if it can't use <classname alt="boost::type_erasure::assignable">assignable</classname> (either because <classname alt="boost::type_erasure::assignable">assignable</classname> is missing, or because the stored types do not match).</para></listitem><listitem><para>default construction of <classname alt="boost::type_erasure::any">any</classname> is allowed and creates a null any.</para></listitem><listitem><para><classname alt="boost::type_erasure::equality_comparable">equality_comparable</classname>: If the types do not match, it will return false.</para></listitem><listitem><para><classname alt="boost::type_erasure::less_than_comparable">less_than_comparable</classname>: If the types do not match, the ordering will be according to <computeroutput>std::type_info::before</computeroutput>.</para></listitem><listitem><para>if the arguments to any other function do not match, it will throw a <classname alt="boost::type_erasure::bad_function_call">bad_function_call</classname> exception instead of having undefined behavior. </para></listitem></itemizedlist>
+<listitem><para>A raw value can be assigned to an <classname alt="boost::type_erasure::any">any</classname>. This will replace the value stored by the <classname alt="boost::type_erasure::any">any</classname>. (But note that if <classname alt="boost::type_erasure::assignable">assignable</classname> is present, it takes priority.)</para></listitem><listitem><para>assignment of <classname alt="boost::type_erasure::any">any</classname> uses the constructor if it can't use <classname alt="boost::type_erasure::assignable">assignable</classname> (either because <classname alt="boost::type_erasure::assignable">assignable</classname> is missing, or because the stored types do not match).</para></listitem><listitem><para>default construction of <classname alt="boost::type_erasure::any">any</classname> is allowed and creates a null any.</para></listitem><listitem><para><classname alt="boost::type_erasure::equality_comparable">equality_comparable</classname>: If the types do not match, it will return false.</para></listitem><listitem><para><classname alt="boost::type_erasure::less_than_comparable">less_than_comparable</classname>: If the types do not match, the ordering will be according to <computeroutput>std::type_info::before</computeroutput>.</para></listitem><listitem><para>if the arguments to any other function do not match, it will throw a <classname alt="boost::type_erasure::bad_function_call">bad_function_call</classname> exception instead of having undefined behavior. </para></listitem></itemizedlist>
 </para></description></struct>
 
 
@@ -1486,50 +1536,7 @@ rebind_any&lt;any&lt;Concept&gt;, int&gt;::type -&gt; int
 <header name="boost/type_erasure/require_match.hpp">
 <namespace name="boost">
 <namespace name="type_erasure">
-<class name="binding"><template>
-      <template-type-parameter name="Concept"/>
-    </template><description><para>Stores the binding of a <computeroutput>Concept</computeroutput> to a set of actual types. <computeroutput>Concept</computeroutput> is interpreted in the same way as with <classname alt="boost::type_erasure::any">any</classname>. </para></description><method-group name="friend functions">
-<method name="operator=="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><description><para>
 
-</para></description><returns><para>true iff the sets of types that the placeholders bind to are the same for both arguments.</para></returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
-<method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>binding</classname> &amp;</paramtype></parameter><description><para>
-
-</para></description><returns><para>true iff the arguments do not map to identical sets of types.</para></returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
-</method-group>
-<method-group name="public member functions">
-</method-group>
-<constructor><description><para>
-
-</para></description><requires><para><classname alt="boost::type_erasure::relaxed">relaxed</classname> must be in <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
-<constructor specifiers="explicit"><template>
-          <template-type-parameter name="Map"/>
-        </template><parameter name=""><paramtype>const Map &amp;</paramtype></parameter><description><para>
-
-</para></description><requires><para><computeroutput>Map</computeroutput> must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Map"/>
-        </template><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter><description><para>
-
-</para></description><requires><para><computeroutput>Map</computeroutput> must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>.</para></requires><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Concept2"/>
-          <template-type-parameter name="Map"/>
-        </template><parameter name="other"><paramtype>const <classname>binding</classname>&lt; Concept2 &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const Map &amp;</paramtype></parameter><description><para>Converts from another set of bindings.</para><para>
-
-</para></description><requires><para>Map must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>. The mapped type should be the corresponding placeholder in Concept2.</para></requires><throws><simpara><classname>std::bad_alloc</classname> </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Concept2"/>
-          <template-type-parameter name="Map"/>
-        </template><parameter name="other"><paramtype>const <classname>binding</classname>&lt; Concept2 &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter><description><para>Converts from another set of bindings.</para><para>
-
-</para></description><requires><para>Map must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>. The mapped type should be the corresponding placeholder in Concept2.</para></requires><throws><simpara><classname>std::bad_alloc</classname> </simpara></throws></constructor>
-<constructor><template>
-          <template-type-parameter name="Placeholders"/>
-          <template-type-parameter name="Map"/>
-        </template><parameter name="other"><paramtype>const <classname>dynamic_binding</classname>&lt; Placeholders &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const <classname>static_binding</classname>&lt; Map &gt; &amp;</paramtype></parameter><description><para>Converts from another set of bindings.</para><para>
-
-</para></description><requires><para>Map must be an MPL map with an entry for each placeholder referred to by <computeroutput>Concept</computeroutput>. The mapped type should be the corresponding placeholder in Concept2.</para></requires><throws><simpara><classname>std::bad_alloc</classname> </simpara></throws></constructor>
-</class>
 
 
 
@@ -1600,7 +1607,8 @@ rebind_any&lt;any&lt;Concept&gt;, int&gt;::type -&gt; int
 <struct name="static_binding"><template>
       <template-type-parameter name="Map"/>
     </template><description><para>Represents a mapping from placeholders to the actual types that they bind to.</para><para>
-</para></description></struct>
+</para></description><typedef name="map_type"><type>Map</type></typedef>
+</struct>
 
 
 

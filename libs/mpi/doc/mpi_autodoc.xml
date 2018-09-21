@@ -132,12 +132,183 @@
 
 
 
+
+
+
+
+
+
+
+</namespace>
+</namespace>
+</header>
+<header name="boost/mpi/cartesian_communicator.hpp">
+<para>This header defines facilities to support MPI communicators with cartesian topologies. If known at compiled time, the dimension of the implied grid can be statically enforced, through the templatized communicator class. Otherwise, a non template, dynamic, base class is provided. </para><namespace name="boost">
+<namespace name="mpi">
+<struct name="cartesian_dimension"><purpose>Specify the size and periodicity of the grid in a single dimension. </purpose><description><para>POD lightweight object. </para></description><data-member name="size"><type>int</type><description><para>The size of the grid n this dimension. </para></description></data-member>
+<data-member name="periodic"><type>bool</type><description><para>Is the grid periodic in this dimension. </para></description></data-member>
+<method-group name="public member functions">
+</method-group>
+<constructor><parameter name="sz"><paramtype>int</paramtype><default>0</default></parameter><parameter name="p"><paramtype>bool</paramtype><default>false</default></parameter></constructor>
+<method-group name="private member functions">
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="version"><paramtype>const unsigned int</paramtype></parameter></method>
+</method-group>
+</struct><struct-specialization name="is_mpi_datatype"><template>
+    </template><specialization><template-arg>cartesian_dimension</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><class name="cartesian_topology"><inherit access="private">std::vector&lt; cartesian_dimension &gt;</inherit><purpose>Describe the topology of a cartesian grid. </purpose><description><para>Behave mostly like a sequence of <computeroutput><classname alt="boost::mpi::cartesian_dimension">cartesian_dimension</classname></computeroutput> with the notable exception that its size is fixed. This is a lightweight object, so that any constructor that could be considered missing could be replaced with a function (move constructor provided when supported). </para></description><method-group name="public member functions">
+<method name="stl"><type>std::vector&lt; <classname>cartesian_dimension</classname> &gt; &amp;</type><description><para>Export as an stl sequence. </para></description></method>
+<method name="stl" cv="const"><type>std::vector&lt; <classname>cartesian_dimension</classname> &gt; const &amp;</type><description><para>Export as an stl sequence. </para></description></method>
+<method name="split" cv="const"><type>void</type><parameter name="dims"><paramtype>std::vector&lt; int &gt; &amp;</paramtype></parameter><parameter name="periodics"><paramtype>std::vector&lt; bool &gt; &amp;</paramtype></parameter><description><para>Split the topology in two sequences of sizes and periodicities. </para></description></method>
+</method-group>
+<constructor cv="= delete"/>
+<constructor cv="= default"><parameter name=""><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter></constructor>
+<copy-assignment cv="= default"><type><classname>cartesian_topology</classname> &amp;</type><parameter name=""><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter></copy-assignment>
+<constructor><parameter name="other"><paramtype><classname>cartesian_topology</classname> &amp;&amp;</paramtype></parameter></constructor>
+<copy-assignment><type><classname>cartesian_topology</classname> &amp;</type><parameter name="other"><paramtype><classname>cartesian_topology</classname> &amp;&amp;</paramtype></parameter></copy-assignment>
+<destructor/>
+<constructor><parameter name="ndim"><paramtype>int</paramtype></parameter><purpose>Create a N dimension space. Each dimension is initialized as non periodic of size 0. </purpose></constructor>
+<constructor><parameter name="dims"><paramtype>std::vector&lt; <classname>cartesian_dimension</classname> &gt; const &amp;</paramtype></parameter><purpose>Use the provided dimensions specification as initial values. </purpose></constructor>
+<constructor specifiers="explicit"><template>
+          <template-type-parameter name="InitArr"/>
+        </template><parameter name="dims"><paramtype>InitArr</paramtype></parameter><purpose>Use dimensions specification provided in the sequence container as initial values. #param dims must be a sequence container. </purpose></constructor>
+<constructor specifiers="explicit"><parameter name="dims"><paramtype>std::initializer_list&lt; <classname>cartesian_dimension</classname> &gt;</paramtype></parameter><purpose>Use dimensions specification provided in the initialization list as initial values. #param dims can be of the form { dim_1, false}, .... {dim_n, true}. </purpose></constructor>
+<constructor specifiers="explicit"><template>
+          <template-nontype-parameter name="NDIM"><type>int</type></template-nontype-parameter>
+        </template><parameter name="dims"><paramtype><classname>cartesian_dimension</classname>(&amp;)</paramtype></parameter><purpose>Use dimensions specification provided in the array. #param dims can be of the form { dim_1, false}, .... {dim_n, true}. </purpose></constructor>
+<constructor><template>
+          <template-type-parameter name="DimRg"/>
+          <template-type-parameter name="PerRg"/>
+        </template><parameter name="dim_rg"><paramtype>DimRg const &amp;</paramtype><description><para>the dimensions, values must convert to integers. </para></description></parameter><parameter name="period_rg"><paramtype>PerRg const &amp;</paramtype><description><para>the periodicities, values must convert to booleans. #param dims can be of the form { dim_1, false}, .... {dim_n, true} </para></description></parameter><purpose>Use dimensions specification provided in the input ranges The ranges do not need to be the same size. If the sizes are different, the missing values will be complete with zeros of the dim and assumed non periodic. </purpose><description><para>
+</para></description></constructor>
+<constructor><template>
+          <template-type-parameter name="DimIter"/>
+          <template-type-parameter name="PerIter"/>
+        </template><parameter name="dit"><paramtype>DimIter</paramtype><description><para>dimension iterator, value must convert to integer type. </para></description></parameter><parameter name="pit"><paramtype>PerIter</paramtype><description><para>periodicity iterator, value must convert to booleans.. </para></description></parameter><parameter name="n"><paramtype>int</paramtype></parameter><purpose>Iterator based initializer. Will use the first n iterated values. Both iterators can be single pass. </purpose><description><para>
+</para></description></constructor>
+</class><class name="cartesian_communicator"><inherit access="public">boost::mpi::communicator</inherit><purpose>An MPI communicator with a cartesian topology. </purpose><description><para>A <computeroutput><classname alt="boost::mpi::cartesian_communicator">cartesian_communicator</classname></computeroutput> is a communicator whose topology is expressed as a grid. Cartesian communicators have the same functionality as (intra)communicators, but also allow one to query the relationships among processes and the properties of the grid. </para></description><method-group name="public member functions">
+<method name="ndims" cv="const"><type>int</type><description><para>Retrive the number of dimension of the underlying toppology. </para></description></method>
+<method name="rank" cv="const"><type>int</type><parameter name="coords"><paramtype>const std::vector&lt; int &gt; &amp;</paramtype><description><para>the coordinates. the size must match the communicator's topology. </para></description></parameter><description><para>Return the rank of the process at the given coordinates. 
+</para></description></method>
+<method name="shifted_ranks" cv="const"><type>std::pair&lt; int, int &gt;</type><parameter name="dim"><paramtype>int</paramtype><description><para>the dimension in which the shift takes place. 0 &lt;= dim &lt;= ndim(). </para></description></parameter><parameter name="disp"><paramtype>int</paramtype><description><para>the shift displacement, can be positive (upward) or negative (downward). </para></description></parameter><description><para>Return the rank of the source and target destination process through a shift. 
+</para></description></method>
+<method name="coordinates" cv="const"><type>std::vector&lt; int &gt;</type><parameter name="rk"><paramtype>int</paramtype><description><para>the ranks in this communicator. </para></description></parameter><description><para>Provides the coordinates of the process with the given rank. 
+
+</para></description><returns><para>the coordinates. </para></returns></method>
+<method name="topology" cv="const"><type>void</type><parameter name="dims"><paramtype><classname>cartesian_topology</classname> &amp;</paramtype></parameter><parameter name="coords"><paramtype>std::vector&lt; int &gt; &amp;</paramtype></parameter><description><para>Retrieve the topology and coordinates of this process in the grid. </para></description></method>
+<method name="topology" cv="const"><type><classname>cartesian_topology</classname></type><description><para>Retrieve the topology of the grid. </para></description></method>
+</method-group>
+<constructor><parameter name="comm"><paramtype>const MPI_Comm &amp;</paramtype></parameter><parameter name="kind"><paramtype>comm_create_kind</paramtype></parameter><description><para>Build a new Boost.MPI cartesian communicator based on the MPI communicator <computeroutput>comm</computeroutput> with cartesian topology.</para><para><computeroutput>comm</computeroutput> may be any valid MPI communicator. If <computeroutput>comm</computeroutput> is MPI_COMM_NULL, an empty communicator (that cannot be used for communication) is created and the <computeroutput>kind</computeroutput> parameter is ignored. Otherwise, the <computeroutput>kind</computeroutput> parameter determines how the Boost.MPI communicator will be related to <computeroutput>comm:</computeroutput> </para><para><itemizedlist>
+<listitem><para>If <computeroutput>kind</computeroutput> is <computeroutput>comm_duplicate</computeroutput>, duplicate <computeroutput>comm</computeroutput> to create a new communicator. This new communicator will be freed when the Boost.MPI communicator (and all copies of it) is destroyed. This option is only permitted if the underlying MPI implementation supports MPI 2.0; duplication of intercommunicators is not available in MPI 1.x.</para></listitem><listitem><para>If <computeroutput>kind</computeroutput> is <computeroutput>comm_take_ownership</computeroutput>, take ownership of <computeroutput>comm</computeroutput>. It will be freed automatically when all of the Boost.MPI communicators go out of scope.</para></listitem><listitem><para>If <computeroutput>kind</computeroutput> is <computeroutput>comm_attach</computeroutput>, this Boost.MPI communicator will reference the existing MPI communicator <computeroutput>comm</computeroutput> but will not free <computeroutput>comm</computeroutput> when the Boost.MPI communicator goes out of scope. This option should only be used when the communicator is managed by the user. </para></listitem></itemizedlist>
+</para></description></constructor>
+<constructor><parameter name="comm"><paramtype>const <classname>communicator</classname> &amp;</paramtype><description><para>The communicator that the new, cartesian communicator will be based on.</para></description></parameter><parameter name="dims"><paramtype>const <classname>cartesian_topology</classname> &amp;</paramtype><description><para>the cartesian dimension of the new communicator. The size indicate the number of dimension. Some dimensions be set to zero, in which case the corresponding dimension value is left to the system.</para></description></parameter><parameter name="reorder"><paramtype>bool</paramtype><default>false</default><description><para>Whether MPI is permitted to re-order the process ranks within the returned communicator, to better optimize communication. If false, the ranks of each process in the returned process will match precisely the rank of that process within the original communicator. </para></description></parameter><description><para>Create a new communicator whose topology is described by the given cartesian. The indices of the vertices in the cartesian will be assumed to be the ranks of the processes within the communicator. There may be fewer vertices in the cartesian than there are processes in the communicator; in this case, the resulting communicator will be a NULL communicator.</para><para>
+</para></description></constructor>
+<constructor><parameter name="comm"><paramtype>const <classname>cartesian_communicator</classname> &amp;</paramtype><description><para>the original communicator. </para></description></parameter><parameter name="keep"><paramtype>const std::vector&lt; int &gt; &amp;</paramtype><description><para>and array containiing the dimension to keep from the existing communicator. </para></description></parameter><description><para>Create a new cartesian communicator whose topology is a subset of an existing cartesian cimmunicator. 
+</para></description></constructor>
+</class>
+
+<function name="operator=="><type>bool</type><parameter name="d1"><paramtype><classname>cartesian_dimension</classname> const &amp;</paramtype></parameter><parameter name="d2"><paramtype><classname>cartesian_dimension</classname> const &amp;</paramtype></parameter><purpose>Test if the dimensions values are identical. </purpose></function>
+<function name="operator!="><type>bool</type><parameter name="d1"><paramtype><classname>cartesian_dimension</classname> const &amp;</paramtype></parameter><parameter name="d2"><paramtype><classname>cartesian_dimension</classname> const &amp;</paramtype></parameter><purpose>Test if the dimension values are different. </purpose></function>
+<function name="operator&lt;&lt;"><type>std::ostream &amp;</type><parameter name="out"><paramtype>std::ostream &amp;</paramtype></parameter><parameter name="d"><paramtype><classname>cartesian_dimension</classname> const &amp;</paramtype></parameter><purpose>Pretty printing of a cartesian dimension (size, periodic) </purpose></function>
+<function name="operator=="><type>bool</type><parameter name="t1"><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter><parameter name="t2"><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter></function>
+<function name="operator!="><type>bool</type><parameter name="t1"><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter><parameter name="t2"><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter></function>
+<function name="operator&lt;&lt;"><type>std::ostream &amp;</type><parameter name="out"><paramtype>std::ostream &amp;</paramtype></parameter><parameter name="t"><paramtype><classname>cartesian_topology</classname> const &amp;</paramtype></parameter><purpose>Pretty printing of a cartesian topology. </purpose></function>
+<function name="cartesian_dimensions"><type>std::vector&lt; int &gt; &amp;</type><parameter name="nb_proc"><paramtype>int</paramtype><description><para>the numer of mpi processes.fill a sequence of dimension. </para></description></parameter><parameter name="dims"><paramtype>std::vector&lt; int &gt; &amp;</paramtype><description><para>a sequence of positive or null dimensions. Non zero dimension will be left untouched. </para></description></parameter><description><para>Given en number of processes, and a partially filled sequence of dimension, try to complete the dimension sequence. 
+</para></description></function>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
 <header name="boost/mpi/collectives.hpp">
 <para>This header contains MPI collective operations, which implement various parallel algorithms that require the coordination of all processes within a communicator. The header <computeroutput>collectives_fwd.hpp</computeroutput> provides forward declarations for each of these operations. To include only specific collective algorithms, use the headers <computeroutput>boost/mpi/collectives/algorithm_name.hpp</computeroutput>. </para><namespace name="boost">
 <namespace name="mpi">
+
+
+
+
+
+
+
 
 
 <overloaded-function name="all_gather"><signature><type>void</type><template>
@@ -473,6 +644,9 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 </para></description><returns><para>an <computeroutput>optional</computeroutput> containing the intercommunicator, if this communicator is in fact an intercommunicator. Otherwise, returns an empty <computeroutput>optional</computeroutput>. </para></returns></method>
 <method name="as_graph_communicator" cv="const"><type>optional&lt; <classname>graph_communicator</classname> &gt;</type><description><para>Determine if the communicator has a graph topology and, if so, return that <computeroutput><classname alt="boost::mpi::graph_communicator">graph_communicator</classname></computeroutput>. Even though the communicators have different types, they refer to the same underlying communication space and can be used interchangeably for communication.</para><para>
 </para></description><returns><para>an <computeroutput>optional</computeroutput> containing the graph communicator, if this communicator does in fact have a graph topology. Otherwise, returns an empty <computeroutput>optional</computeroutput>. </para></returns></method>
+<method name="has_graph_topology" cv="const"><type>bool</type><description><para>Determines whether this communicator has a Graph topology. </para></description></method>
+<method name="as_cartesian_communicator" cv="const"><type>optional&lt; <classname>cartesian_communicator</classname> &gt;</type><description><para>Determine if the communicator has a cartesian topology and, if so, return that <computeroutput><classname alt="boost::mpi::cartesian_communicator">cartesian_communicator</classname></computeroutput>. Even though the communicators have different types, they refer to the same underlying communication space and can be used interchangeably for communication.</para><para>
+</para></description><returns><para>an <computeroutput>optional</computeroutput> containing the cartesian communicator, if this communicator does in fact have a cartesian topology. Otherwise, returns an empty <computeroutput>optional</computeroutput>. </para></returns></method>
 <method name="has_cartesian_topology" cv="const"><type>bool</type><description><para>Determines whether this communicator has a Cartesian topology. </para></description></method>
 <method name="abort" cv="const"><type>void</type><parameter name="errcode"><paramtype>int</paramtype><description><para>The error code to return from aborted processes. </para></description></parameter><description><para>Abort all tasks in the group of this communicator.</para><para>Makes a "best attempt" to abort all of the tasks in the group of this communicator. Depending on the underlying MPI implementation, this may either abort the entire program (and possibly return <computeroutput>errcode</computeroutput> to the environment) or only abort some processes, allowing the others to continue. Consult the documentation for your MPI implementation. This is equivalent to a call to <computeroutput>MPI_Abort</computeroutput> </para><para>
 
@@ -491,6 +665,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 </para></description></enum>
 <data-member name="any_source"><type>const int</type><purpose>A constant representing "any process.". </purpose><description><para>This constant may be used for the <computeroutput>source</computeroutput> parameter of <computeroutput>receive</computeroutput> operations to indicate that a message may be received from any source. </para></description></data-member>
 <data-member name="any_tag"><type>const int</type><purpose>A constant representing "any tag.". </purpose><description><para>This constant may be used for the <computeroutput>tag</computeroutput> parameter of <computeroutput>receive</computeroutput> operations to indicate that a <computeroutput>send</computeroutput> with any tag will be matched by the receive. </para></description></data-member>
+
+
+
+
+
+
+
 
 
 
@@ -660,6 +841,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 <function name="get_mpi_datatype"><type>MPI_Datatype</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="x"><paramtype>const T &amp;</paramtype><description><para>for an optimized call, a constructed object of the type should be passed; otherwise, an object will be default-constructed.</para></description></parameter><purpose>Returns an MPI data type for a C++ type. </purpose><description><para>The function creates an MPI data type for the given object <computeroutput>x</computeroutput>. The first time it is called for a class <computeroutput>T</computeroutput>, the MPI data type is created and cached. Subsequent calls for objects of the same type <computeroutput>T</computeroutput> return the cached MPI data type. The type <computeroutput>T</computeroutput> must allow creation of an MPI data type. That is, it must be Serializable and <computeroutput>is_mpi_datatype&lt;T&gt;</computeroutput> must derive <computeroutput>mpl::true_</computeroutput>.</para><para>For fundamental MPI types, a copy of the MPI data type of the MPI library is returned.</para><para>Note that since the data types are cached, the caller should never call <computeroutput>MPI_Type_free()</computeroutput> for the MPI data type returned by this call.</para><para>
@@ -704,6 +892,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 <para>This header provides forward declarations for the contents of the header <computeroutput>datatype.hpp</computeroutput>. It is expected to be used primarily by user-defined C++ classes that need to specialize <computeroutput>is_mpi_datatype</computeroutput>. </para><namespace name="boost">
 <namespace name="mpi">
 <struct name="packed"><purpose>a dummy data type giving MPI_PACKED as its MPI_Datatype </purpose></struct>
+
+
+
+
+
+
+
 
 
 
@@ -829,12 +1024,20 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 </para></description><returns><para>the name of this processor. </para></returns></method>
 <method name="thread_level" specifiers="static"><type>threading::level</type><description><para>Query the current level of thread support. </para></description></method>
 <method name="is_main_thread" specifiers="static"><type>bool</type><description><para>Are we in the main thread? </para></description></method>
+<method name="version" specifiers="static"><type>std::pair&lt; int, int &gt;</type><purpose>MPI version. </purpose><description><para>Returns a pair with the version and sub-version number. </para></description></method>
 </method-group>
 </class><namespace name="threading">
 <enum name="level"><enumvalue name="single"><default>= MPI_THREAD_SINGLE</default><description><para>Only one thread will execute. </para></description></enumvalue><enumvalue name="funneled"><default>= MPI_THREAD_FUNNELED</default><description><para>Only main thread will do MPI calls.</para><para>The process may be multi-threaded, but only the main thread will make MPI calls (all MPI calls are ``funneled'' to the main thread). </para></description></enumvalue><enumvalue name="serialized"><default>= MPI_THREAD_SERIALIZED</default><description><para>Only one thread at the time do MPI calls.</para><para>The process may be multi-threaded, and multiple threads may make MPI calls, but only one at a time: MPI calls are not made concurrently from two distinct threads (all MPI calls are ``serialized''). </para></description></enumvalue><enumvalue name="multiple"><default>= MPI_THREAD_MULTIPLE</default><description><para>Multiple thread may do MPI calls.</para><para>Multiple threads may call MPI, with no restrictions. </para></description></enumvalue><purpose>specify the supported threading level. </purpose><description><para>Based on MPI 2 standard/8.7.3 </para></description></enum>
 <function name="operator&lt;&lt;"><type>std::ostream &amp;</type><parameter name="out"><paramtype>std::ostream &amp;</paramtype></parameter><parameter name="l"><paramtype>level</paramtype></parameter><description><para>Formated output for threading level. </para></description></function>
 <function name="operator&gt;&gt;"><type>std::istream &amp;</type><parameter name="in"><paramtype>std::istream &amp;</paramtype></parameter><parameter name="l"><paramtype>level &amp;</paramtype></parameter><description><para>Formated input for threading level. </para></description></function>
 </namespace>
+
+
+
+
+
+
+
 
 
 
@@ -1016,6 +1219,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 <macro name="BOOST_MPI_CHECK_RESULT" kind="functionlike"><macro-parameter name="MPIFunc"/><macro-parameter name="Args"/><description><para>Call the MPI routine MPIFunc with arguments Args (surrounded by parentheses). If the result is not MPI_SUCCESS, use boost::throw_exception to throw an exception or abort, depending on BOOST_NO_EXCEPTIONS. </para></description></macro>
@@ -1055,6 +1265,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 <method-group name="protected member functions">
 </method-group>
 </class>
+
+
+
+
+
+
+
 
 
 
@@ -1234,6 +1451,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 <function name="operator=="><type>BOOST_MPI_DECL bool</type><parameter name="g1"><paramtype>const <classname>group</classname> &amp;</paramtype></parameter><parameter name="g2"><paramtype>const <classname>group</classname> &amp;</paramtype></parameter><purpose>Determines whether two process groups are identical. </purpose><description><para>Equivalent to calling <computeroutput>MPI_Group_compare</computeroutput> and checking whether the result is <computeroutput>MPI_IDENT</computeroutput>.</para><para>
 </para></description><returns><para>True when the two process groups contain the same processes in the same order. </para></returns></function>
 <function name="operator!="><type>bool</type><parameter name="g1"><paramtype>const <classname>group</classname> &amp;</paramtype></parameter><parameter name="g2"><paramtype>const <classname>group</classname> &amp;</paramtype></parameter><purpose>Determines whether two process groups are not identical. </purpose><description><para>Equivalent to calling <computeroutput>MPI_Group_compare</computeroutput> and checking whether the result is not <computeroutput>MPI_IDENT</computeroutput>.</para><para>
@@ -1274,6 +1498,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 </method-group>
 <constructor><parameter name="inout"><paramtype>T *</paramtype></parameter></constructor>
 </struct-specialization>
+
+
+
+
+
+
+
 
 
 
@@ -1466,12 +1697,26 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
 <header name="boost/mpi/nonblocking.hpp">
 <para>This header defines operations for completing non-blocking communication requests. </para><namespace name="boost">
 <namespace name="mpi">
+
+
+
+
+
+
+
 
 
 
@@ -1605,41 +1850,66 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
       <template-type-parameter name="T"/>
     </template><inherit access="public">false_</inherit><purpose>Determine if a function object type is commutative. </purpose><description><para>This trait determines if an operation <computeroutput>Op</computeroutput> is commutative when applied to values of type <computeroutput>T</computeroutput>. Parallel operations such as <computeroutput>reduce</computeroutput> and <computeroutput>prefix_sum</computeroutput> can be implemented more efficiently with commutative operations. To mark an operation as commutative, users should specialize <computeroutput><classname alt="boost::mpi::is_commutative">is_commutative</classname></computeroutput> and derive from the class <computeroutput>mpl::true_</computeroutput>. </para></description></struct><struct name="maximum"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">std::binary_function&lt; T, T, T &gt;</inherit><purpose>Compute the maximum of two values. </purpose><description><para>This binary function object computes the maximum of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_MAX</computeroutput>. </para></description><method-group name="public member functions">
+    </template><purpose>Compute the maximum of two values. </purpose><description><para>This binary function object computes the maximum of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_MAX</computeroutput>. </para></description><typedef name="first_argument_type"><type>T</type></typedef>
+<typedef name="second_argument_type"><type>T</type></typedef>
+<typedef name="result_type"><type>T</type></typedef>
+<method-group name="public member functions">
 <method name="operator()" cv="const"><type>const T &amp;</type><parameter name="x"><paramtype>const T &amp;</paramtype></parameter><parameter name="y"><paramtype>const T &amp;</paramtype></parameter><description><para>
 </para></description><returns><para>the maximum of x and y. </para></returns></method>
 </method-group>
 </struct><struct name="minimum"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">std::binary_function&lt; T, T, T &gt;</inherit><purpose>Compute the minimum of two values. </purpose><description><para>This binary function object computes the minimum of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_MIN</computeroutput>. </para></description><method-group name="public member functions">
+    </template><purpose>Compute the minimum of two values. </purpose><description><para>This binary function object computes the minimum of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_MIN</computeroutput>. </para></description><typedef name="first_argument_type"><type>T</type></typedef>
+<typedef name="second_argument_type"><type>T</type></typedef>
+<typedef name="result_type"><type>T</type></typedef>
+<method-group name="public member functions">
 <method name="operator()" cv="const"><type>const T &amp;</type><parameter name="x"><paramtype>const T &amp;</paramtype></parameter><parameter name="y"><paramtype>const T &amp;</paramtype></parameter><description><para>
 </para></description><returns><para>the minimum of x and y. </para></returns></method>
 </method-group>
 </struct><struct name="bitwise_and"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">std::binary_function&lt; T, T, T &gt;</inherit><purpose>Compute the bitwise AND of two integral values. </purpose><description><para>This binary function object computes the bitwise AND of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_BAND</computeroutput>. </para></description><method-group name="public member functions">
+    </template><purpose>Compute the bitwise AND of two integral values. </purpose><description><para>This binary function object computes the bitwise AND of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_BAND</computeroutput>. </para></description><typedef name="first_argument_type"><type>T</type></typedef>
+<typedef name="second_argument_type"><type>T</type></typedef>
+<typedef name="result_type"><type>T</type></typedef>
+<method-group name="public member functions">
 <method name="operator()" cv="const"><type>T</type><parameter name="x"><paramtype>const T &amp;</paramtype></parameter><parameter name="y"><paramtype>const T &amp;</paramtype></parameter><description><para>
 </para></description><returns><para><computeroutput>x</computeroutput> &amp; y. </para></returns></method>
 </method-group>
 </struct><struct name="bitwise_or"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">std::binary_function&lt; T, T, T &gt;</inherit><purpose>Compute the bitwise OR of two integral values. </purpose><description><para>This binary function object computes the bitwise OR of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_BOR</computeroutput>. </para></description><method-group name="public member functions">
+    </template><purpose>Compute the bitwise OR of two integral values. </purpose><description><para>This binary function object computes the bitwise OR of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_BOR</computeroutput>. </para></description><typedef name="first_argument_type"><type>T</type></typedef>
+<typedef name="second_argument_type"><type>T</type></typedef>
+<typedef name="result_type"><type>T</type></typedef>
+<method-group name="public member functions">
 <method name="operator()" cv="const"><type>T</type><parameter name="x"><paramtype>const T &amp;</paramtype></parameter><parameter name="y"><paramtype>const T &amp;</paramtype></parameter><description><para>
 </para></description><returns><para>the <computeroutput>x</computeroutput> | y. </para></returns></method>
 </method-group>
 </struct><struct name="logical_xor"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">std::binary_function&lt; T, T, T &gt;</inherit><purpose>Compute the logical exclusive OR of two integral values. </purpose><description><para>This binary function object computes the logical exclusive of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_LXOR</computeroutput>. </para></description><method-group name="public member functions">
+    </template><purpose>Compute the logical exclusive OR of two integral values. </purpose><description><para>This binary function object computes the logical exclusive of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_LXOR</computeroutput>. </para></description><typedef name="first_argument_type"><type>T</type></typedef>
+<typedef name="second_argument_type"><type>T</type></typedef>
+<typedef name="result_type"><type>T</type></typedef>
+<method-group name="public member functions">
 <method name="operator()" cv="const"><type>T</type><parameter name="x"><paramtype>const T &amp;</paramtype></parameter><parameter name="y"><paramtype>const T &amp;</paramtype></parameter><description><para>
 </para></description><returns><para>the logical exclusive OR of x and y. </para></returns></method>
 </method-group>
 </struct><struct name="bitwise_xor"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">std::binary_function&lt; T, T, T &gt;</inherit><purpose>Compute the bitwise exclusive OR of two integral values. </purpose><description><para>This binary function object computes the bitwise exclusive OR of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_BXOR</computeroutput>. </para></description><method-group name="public member functions">
+    </template><purpose>Compute the bitwise exclusive OR of two integral values. </purpose><description><para>This binary function object computes the bitwise exclusive OR of the two values it is given. When used with MPI and a type <computeroutput>T</computeroutput> that has an associated, built-in MPI data type, translates to <computeroutput>MPI_BXOR</computeroutput>. </para></description><typedef name="first_argument_type"><type>T</type></typedef>
+<typedef name="second_argument_type"><type>T</type></typedef>
+<typedef name="result_type"><type>T</type></typedef>
+<method-group name="public member functions">
 <method name="operator()" cv="const"><type>T</type><parameter name="x"><paramtype>const T &amp;</paramtype></parameter><parameter name="y"><paramtype>const T &amp;</paramtype></parameter><description><para>
 </para></description><returns><para><computeroutput>x</computeroutput> ^ y. </para></returns></method>
 </method-group>
 </struct>
+
+
+
+
+
+
+
 
 
 
@@ -1832,6 +2102,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
@@ -1858,6 +2135,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 <constructor><parameter name="comm"><paramtype>MPI_Comm const &amp;</paramtype><description><para>The communicator over which this archive will be sent.</para></description></parameter><parameter name="flags"><paramtype>unsigned int</paramtype><default>boost::archive::no_header</default><description><para>Control the serialization of the data types. Refer to the Boost.Serialization documentation before changing the default flags. </para></description></parameter><description><para>Construct a <computeroutput><classname alt="boost::mpi::packed_oarchive">packed_oarchive</classname></computeroutput> for transmission over the given MPI communicator.</para><para>
 </para></description></constructor>
 </class><typedef name="oprimitive"><type>packed_oprimitive</type></typedef>
+
+
+
+
+
+
+
 
 
 
@@ -2040,6 +2324,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
@@ -2055,6 +2346,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 <method-group name="private static functions">
 </method-group>
 </class>
+
+
+
+
+
+
+
 
 
 
@@ -2255,6 +2553,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 <function name="skeleton"><type>const <classname>skeleton_proxy</classname>&lt; T &gt;</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="x"><paramtype>T &amp;</paramtype><description><para>the object whose structure will be transmitted.</para></description></parameter><purpose>Create a skeleton proxy object. </purpose><description><para>This routine creates an instance of the <classname alt="boost::mpi::skeleton_proxy">skeleton_proxy</classname> class. It will typically be used when calling <computeroutput>send</computeroutput>, <computeroutput>recv</computeroutput>, or <computeroutput>broadcast</computeroutput>, to indicate that only the skeleton (structure) of an object should be transmitted and not its contents.</para><para>
@@ -2273,6 +2578,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 <header name="boost/mpi/skeleton_and_content_fwd.hpp">
 <para>This header contains all of the forward declarations required to use transmit skeletons of data structures and the content of data structures separately. To actually transmit skeletons or content, include the header <computeroutput>boost/mpi/skeleton_and_content.hpp</computeroutput>. </para><namespace name="boost">
 <namespace name="mpi">
+
+
+
+
+
+
+
 
 
 
@@ -2460,6 +2772,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 
 
 
+
+
+
+
+
+
+
 </namespace>
 </namespace>
 </header>
@@ -2479,6 +2798,13 @@ If wrapped in a <computeroutput><classname alt="boost::mpi::inplace_t">inplace_t
 <method name="time_is_global" specifiers="static"><type>bool</type><description><para>Determines whether the elapsed time values are global times or local processor times. </para></description></method>
 </method-group>
 </class>
+
+
+
+
+
+
+
 
 
 

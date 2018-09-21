@@ -10,6 +10,9 @@
 // Test that header file is self-contained.
 #include <boost/beast/websocket/stream.hpp>
 
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/strand.hpp>
+
 #include "test.hpp"
 
 namespace boost {
@@ -19,7 +22,7 @@ namespace websocket {
 class write_test : public websocket_test_suite
 {
 public:
-    template<class Wrap>
+    template<bool deflateSupported, class Wrap>
     void
     doTestWrite(Wrap const& w)
     {
@@ -50,7 +53,8 @@ public:
         }
 
         // message
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             ws.auto_fragment(false);
             ws.binary(false);
@@ -59,14 +63,15 @@ public:
             multi_buffer b;
             w.read(ws, b);
             BEAST_EXPECT(ws.got_text());
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // empty message
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             ws.text(true);
-            w.write(ws, boost::asio::null_buffers{});
+            w.write(ws, boost::asio::const_buffer{});
             multi_buffer b;
             w.read(ws, b);
             BEAST_EXPECT(ws.got_text());
@@ -74,7 +79,8 @@ public:
         });
 
         // fragmented message
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             ws.auto_fragment(false);
             ws.binary(false);
@@ -84,11 +90,12 @@ public:
             multi_buffer b;
             w.read(ws, b);
             BEAST_EXPECT(ws.got_text());
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // continuation
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             std::string const s = "Hello";
             std::size_t const chop = 3;
@@ -99,22 +106,24 @@ public:
                 s.data() + chop, s.size() - chop));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // mask
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             ws.auto_fragment(false);
             std::string const s = "Hello";
             w.write(ws, buffer(s));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // mask (large)
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             ws.auto_fragment(false);
             ws.write_buffer_size(16);
@@ -122,25 +131,26 @@ public:
             w.write(ws, buffer(s));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // mask, autofrag
-        doTest(pmd, [&](ws_type& ws)
+        doTest<deflateSupported>(pmd,
+        [&](ws_type_t<deflateSupported>& ws)
         {
             ws.auto_fragment(true);
             std::string const s(16384, '*');
             w.write(ws, buffer(s));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // nomask
         doStreamLoop([&](test::stream& ts)
         {
             echo_server es{log, kind::async_client};
-            ws_type ws{ts};
+            ws_type_t<deflateSupported> ws{ts};
             ws.next_layer().connect(es.stream());
             try
             {
@@ -151,7 +161,7 @@ public:
                 w.write(ws, buffer(s));
                 flat_buffer b;
                 w.read(ws, b);
-                BEAST_EXPECT(to_string(b.data()) == s);
+                BEAST_EXPECT(buffers_to_string(b.data()) == s);
                 w.close(ws, {});
             }
             catch(...)
@@ -166,7 +176,7 @@ public:
         doStreamLoop([&](test::stream& ts)
         {
             echo_server es{log, kind::async_client};
-            ws_type ws{ts};
+            ws_type_t<deflateSupported> ws{ts};
             ws.next_layer().connect(es.stream());
             try
             {
@@ -177,7 +187,7 @@ public:
                 w.write(ws, buffer(s));
                 flat_buffer b;
                 w.read(ws, b);
-                BEAST_EXPECT(to_string(b.data()) == s);
+                BEAST_EXPECT(buffers_to_string(b.data()) == s);
                 w.close(ws, {});
             }
             catch(...)
@@ -187,7 +197,15 @@ public:
             }
             ts.close();
         });
+    }
 
+    template<class Wrap>
+    void
+    doTestWriteDeflate(Wrap const& w)
+    {
+        using boost::asio::buffer;
+
+        permessage_deflate pmd;
         pmd.client_enable = true;
         pmd.server_enable = true;
         pmd.compLevel = 1;
@@ -200,7 +218,7 @@ public:
             w.write(ws, buffer(s));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // deflate, continuation
@@ -217,7 +235,7 @@ public:
                 s.data() + chop, s.size() - chop));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
 
         // deflate, no context takeover
@@ -229,7 +247,7 @@ public:
             w.write(ws, buffer(s));
             flat_buffer b;
             w.read(ws, b);
-            BEAST_EXPECT(to_string(b.data()) == s);
+            BEAST_EXPECT(buffers_to_string(b.data()) == s);
         });
     }
 
@@ -238,11 +256,15 @@ public:
     {
         using boost::asio::buffer;
 
-        doTestWrite(SyncClient{});
+        doTestWrite<false>(SyncClient{});
+        doTestWrite<true>(SyncClient{});
+        doTestWriteDeflate(SyncClient{});
 
         yield_to([&](yield_context yield)
         {
-            doTestWrite(AsyncClient{yield});
+            doTestWrite<false>(AsyncClient{yield});
+            doTestWrite<true>(AsyncClient{yield});
+            doTestWriteDeflate(AsyncClient{yield});
         });
     }
 
@@ -252,7 +274,7 @@ public:
         using boost::asio::buffer;
 
         // suspend on ping
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -268,7 +290,7 @@ public:
                         BOOST_THROW_EXCEPTION(
                             system_error{ec});
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             BEAST_EXPECT(count == 0);
             ws.async_write(sbuf("*"),
                 [&](error_code ec, std::size_t n)
@@ -285,7 +307,7 @@ public:
         });
 
         // suspend on close
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -301,7 +323,7 @@ public:
                         BOOST_THROW_EXCEPTION(
                             system_error{ec});
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             BEAST_EXPECT(count == 0);
             ws.async_write(sbuf("*"),
                 [&](error_code ec, std::size_t)
@@ -317,7 +339,7 @@ public:
         });
 
         // suspend on read ping + message
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -337,7 +359,7 @@ public:
                         BOOST_THROW_EXCEPTION(
                             system_error{ec});
                 });
-            while(! ws.wr_block_)
+            while(! ws.wr_block_.is_locked())
             {
                 ioc.run_one();
                 if(! BEAST_EXPECT(! ioc.stopped()))
@@ -359,7 +381,7 @@ public:
         });
 
         // suspend on ping: nomask, nofrag
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log, kind::async_client};
             boost::asio::io_context ioc;
@@ -379,7 +401,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(n == 16384);
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             ws.async_ping("",
                 [&](error_code ec)
                 {
@@ -393,7 +415,7 @@ public:
         });
 
         // suspend on ping: nomask, frag
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log, kind::async_client};
             boost::asio::io_context ioc;
@@ -413,7 +435,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(n == 16384);
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             ws.async_ping("",
                 [&](error_code ec)
                 {
@@ -427,10 +449,9 @@ public:
         });
 
         // suspend on ping: mask, nofrag
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
-            error_code ec;
             boost::asio::io_context ioc;
             stream<test::stream> ws{ioc, fc};
             ws.next_layer().connect(es.stream());
@@ -447,7 +468,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(n == 16384);
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             ws.async_ping("",
                 [&](error_code ec)
                 {
@@ -460,10 +481,9 @@ public:
         });
 
         // suspend on ping: mask, frag
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
-            error_code ec;
             boost::asio::io_context ioc;
             stream<test::stream> ws{ioc, fc};
             ws.next_layer().connect(es.stream());
@@ -480,7 +500,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(n == 16384);
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             ws.async_ping("",
                 [&](error_code ec)
                 {
@@ -493,7 +513,7 @@ public:
         });
 
         // suspend on ping: deflate
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log, kind::async};
             boost::asio::io_context ioc;
@@ -518,7 +538,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(n == s.size());
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             ws.async_ping("",
                 [&](error_code ec)
                 {
@@ -549,7 +569,7 @@ public:
                 if(! BEAST_EXPECTS(! ec, ec.message()))
                     break;
                 ws.async_write_some(false,
-                    boost::asio::null_buffers{},
+                    boost::asio::const_buffer{},
                     [&](error_code, std::size_t)
                     {
                         fail();
@@ -600,7 +620,7 @@ public:
         {
             void operator()(error_code) {}
         };
-        
+
         char buf[32];
         stream<test::stream> ws{ioc_};
         stream<test::stream>::write_some_op<
@@ -613,6 +633,41 @@ public:
     }
 
     void
+    testMoveOnly()
+    {
+        boost::asio::io_context ioc;
+        stream<test::stream> ws{ioc};
+        ws.async_write_some(
+            true, boost::asio::const_buffer{},
+            move_only_handler{});
+    }
+
+    struct copyable_handler
+    {
+        template<class... Args>
+        void
+        operator()(Args&&...) const
+        {
+        }
+    };
+
+    void
+    testAsioHandlerInvoke()
+    {
+        // make sure things compile, also can set a
+        // breakpoint in asio_handler_invoke to make sure
+        // it is instantiated.
+        {
+            boost::asio::io_context ioc;
+            boost::asio::io_service::strand s{ioc};
+            stream<test::stream> ws{ioc};
+            flat_buffer b;
+            ws.async_write(boost::asio::const_buffer{},
+                s.wrap(copyable_handler{}));
+        }
+    }
+
+    void
     run() override
     {
         testWrite();
@@ -620,6 +675,7 @@ public:
         testAsyncWriteFrame();
         testIssue300();
         testContHook();
+        testMoveOnly();
     }
 };
 

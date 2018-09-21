@@ -28,7 +28,7 @@
           (with strategy)</a>
 </h5></div></div></div>
 <p>
-            <a class="indexterm" name="idp105686272"></a>
+            <a class="indexterm" name="idp109102272"></a>
 Calculates the area of a geometry using the specified strategy.
           </p>
 <h6>
@@ -49,7 +49,7 @@ Calculates the area of a geometry using the specified strategy.
 <p>
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Geometry</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Strategy</span><span class="special">&gt;</span>
-<span class="identifier">Strategy</span><span class="special">::</span><span class="identifier">return_type</span> <span class="identifier">area</span><span class="special">(</span><span class="identifier">Geometry</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">geometry</span><span class="special">,</span> <span class="identifier">Strategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">strategy</span><span class="special">)</span></pre>
+<span class="identifier">area_result</span><span class="special">&lt;</span><span class="identifier">Geometry</span><span class="special">,</span> <span class="identifier">Strategy</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">area</span><span class="special">(</span><span class="identifier">Geometry</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">geometry</span><span class="special">,</span> <span class="identifier">Strategy</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">strategy</span><span class="special">)</span></pre>
 <p>
           </p>
 <h6>
@@ -414,6 +414,22 @@ Calculates the area of a geometry using the specified strategy.
           </p>
 <h6>
 <a name="geometry.reference.algorithms.area.area_2_with_strategy.h9"></a>
+            <span class="phrase"><a name="geometry.reference.algorithms.area.area_2_with_strategy.available_strategies"></a></span><a class="link" href="area_2_with_strategy.html#geometry.reference.algorithms.area.area_2_with_strategy.available_strategies">Available
+            Strategies</a>
+          </h6>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+                <a class="link" href="../../strategies/strategy_area_cartesian.html" title="strategy::area::cartesian">Cartesian</a>
+              </li>
+<li class="listitem">
+                <a class="link" href="../../strategies/strategy_area_spherical.html" title="strategy::area::spherical">Spherical</a>
+              </li>
+<li class="listitem">
+                <a class="link" href="../../strategies/strategy_area_geographic.html" title="strategy::area::geographic">Geographic</a>
+              </li>
+</ul></div>
+<h6>
+<a name="geometry.reference.algorithms.area.area_2_with_strategy.h10"></a>
             <span class="phrase"><a name="geometry.reference.algorithms.area.area_2_with_strategy.example"></a></span><a class="link" href="area_2_with_strategy.html#geometry.reference.algorithms.area.area_2_with_strategy.example">Example</a>
           </h6>
 <p>
@@ -431,16 +447,27 @@ Calculates the area of a geometry using the specified strategy.
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
-    <span class="comment">// Calculate the area of a cartesian polygon</span>
-    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">polygon</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">d2</span><span class="special">::</span><span class="identifier">point_xy</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">poly</span><span class="special">;</span>
-    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">read_wkt</span><span class="special">(</span><span class="string">"POLYGON((0 0,0 7,4 2,2 0,0 0))"</span><span class="special">,</span> <span class="identifier">poly</span><span class="special">);</span>
-    <span class="keyword">double</span> <span class="identifier">area</span> <span class="special">=</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">area</span><span class="special">(</span><span class="identifier">poly</span><span class="special">);</span>
+    <span class="comment">// Create spherical polygon</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">polygon</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">point</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">cs</span><span class="special">::</span><span class="identifier">spherical_equatorial</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">degree</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">sph_poly</span><span class="special">;</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">read_wkt</span><span class="special">(</span><span class="string">"POLYGON((0 0,0 1,1 0,0 0))"</span><span class="special">,</span> <span class="identifier">sph_poly</span><span class="special">);</span>
+
+    <span class="comment">// Create spherical strategy with mean Earth radius in meters</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">strategy</span><span class="special">::</span><span class="identifier">area</span><span class="special">::</span><span class="identifier">spherical</span><span class="special">&lt;&gt;</span> <span class="identifier">sph_strategy</span><span class="special">(</span><span class="number">6371008.8</span><span class="special">);</span>
+
+    <span class="comment">// Calculate the area of a spherical polygon</span>
+    <span class="keyword">double</span> <span class="identifier">area</span> <span class="special">=</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">area</span><span class="special">(</span><span class="identifier">sph_poly</span><span class="special">,</span> <span class="identifier">sph_strategy</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Area: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">area</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 
-    <span class="comment">// Calculate the area of a spherical polygon (for latitude: 0 at equator)</span>
-    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">polygon</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">point</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">cs</span><span class="special">::</span><span class="identifier">spherical_equatorial</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">degree</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">sph_poly</span><span class="special">;</span>
-    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">read_wkt</span><span class="special">(</span><span class="string">"POLYGON((0 0,0 45,45 0,0 0))"</span><span class="special">,</span> <span class="identifier">sph_poly</span><span class="special">);</span>
-    <span class="identifier">area</span> <span class="special">=</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">area</span><span class="special">(</span><span class="identifier">sph_poly</span><span class="special">);</span>
+    <span class="comment">// Create geographic polygon</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">polygon</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">model</span><span class="special">::</span><span class="identifier">point</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">cs</span><span class="special">::</span><span class="identifier">geographic</span><span class="special">&lt;</span><span class="identifier">bg</span><span class="special">::</span><span class="identifier">degree</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">geo_poly</span><span class="special">;</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">read_wkt</span><span class="special">(</span><span class="string">"POLYGON((0 0,0 1,1 0,0 0))"</span><span class="special">,</span> <span class="identifier">geo_poly</span><span class="special">);</span>
+
+    <span class="comment">// Create geographic strategy with WGS84 spheroid</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">srs</span><span class="special">::</span><span class="identifier">spheroid</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">spheroid</span><span class="special">(</span><span class="number">6378137.0</span><span class="special">,</span> <span class="number">6356752.3142451793</span><span class="special">);</span>
+    <span class="identifier">bg</span><span class="special">::</span><span class="identifier">strategy</span><span class="special">::</span><span class="identifier">area</span><span class="special">::</span><span class="identifier">geographic</span><span class="special">&lt;&gt;</span> <span class="identifier">geo_strategy</span><span class="special">(</span><span class="identifier">spheroid</span><span class="special">);</span>
+
+    <span class="comment">// Calculate the area of a geographic polygon</span>
+    <span class="identifier">area</span> <span class="special">=</span> <span class="identifier">bg</span><span class="special">::</span><span class="identifier">area</span><span class="special">(</span><span class="identifier">geo_poly</span><span class="special">,</span> <span class="identifier">geo_strategy</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Area: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">area</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -457,23 +484,9 @@ Calculates the area of a geometry using the specified strategy.
 <p>
             Output:
           </p>
-<pre class="programlisting">Area: 16
-Area: 0.339837
+<pre class="programlisting">Area: 6.18249e+09
+Area: 6.15479e+09
 </pre>
-<h6>
-<a name="geometry.reference.algorithms.area.area_2_with_strategy.h10"></a>
-            <span class="phrase"><a name="geometry.reference.algorithms.area.area_2_with_strategy.available_strategies"></a></span><a class="link" href="area_2_with_strategy.html#geometry.reference.algorithms.area.area_2_with_strategy.available_strategies">Available
-            Strategies</a>
-          </h6>
-<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
-<li class="listitem">
-                <a class="link" href="../../strategies/strategy_area_surveyor.html" title="strategy::area::surveyor">Surveyor
-                (cartesian)</a>
-              </li>
-<li class="listitem">
-                <a class="link" href="../../strategies/strategy_area_spherical.html" title="strategy::area::spherical">Spherical</a>
-              </li>
-</ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

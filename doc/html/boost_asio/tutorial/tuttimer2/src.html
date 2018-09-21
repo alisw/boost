@@ -31,7 +31,7 @@
 // timer.cpp
 // ~~~~~~~~~
 //
-// Copyright (c) 2003-2017 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2018 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -39,7 +39,6 @@
 
 #include &lt;iostream&gt;
 #include &lt;boost/asio.hpp&gt;
-#include &lt;boost/date_time/posix_time/posix_time.hpp&gt;
 
 void print(const boost::system::error_code&amp; /*e*/)
 {
@@ -50,7 +49,7 @@ int main()
 {
   boost::asio::io_context io;
 
-  boost::asio::deadline_timer t(io, boost::posix_time::seconds(5));
+  boost::asio::steady_timer t(io, boost::asio::chrono::seconds(5));
   t.async_wait(&amp;print);
 
   io.run();
@@ -65,7 +64,7 @@ int main()
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -10,7 +10,7 @@
 
 #include <boost/mp11/integral.hpp>
 #include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 
 namespace boost
 {
@@ -53,6 +53,28 @@ template<bool C, class T, class... E> using mp_if_c = typename detail::mp_if_c_i
 template<class C, class T, class... E> using mp_if = typename detail::mp_if_c_impl<static_cast<bool>(C::value), T, E...>::type;
 
 // mp_valid
+
+#if BOOST_WORKAROUND(BOOST_INTEL, BOOST_TESTED_AT(1800))
+
+// contributed by Roland Schulz in https://github.com/boostorg/mp11/issues/17
+
+namespace detail
+{
+
+template<class...> using void_t = void;
+
+template<class, template<class...> class F, class... T>
+struct mp_valid_impl: mp_false {};
+
+template<template<class...> class F, class... T>
+struct mp_valid_impl<void_t<F<T...>>, F, T...>: mp_true {};
+
+} // namespace detail
+
+template<template<class...> class F, class... T> using mp_valid = typename detail::mp_valid_impl<void, F, T...>;
+
+#else
+
 // implementation by Bruno Dutra (by the name is_evaluable)
 namespace detail
 {
@@ -69,6 +91,8 @@ template<template<class...> class F, class... T> struct mp_valid_impl
 
 template<template<class...> class F, class... T> using mp_valid = typename detail::mp_valid_impl<F, T...>::type;
 
+#endif
+
 // mp_defer
 namespace detail
 {
@@ -82,9 +106,26 @@ struct mp_no_type
 {
 };
 
+#if BOOST_WORKAROUND( BOOST_CUDA_VERSION, >= 9000000 && BOOST_CUDA_VERSION < 10000000 )
+
+template<template<class...> class F, class... T> struct mp_defer_cuda_workaround
+{
+    using type = mp_if<mp_valid<F, T...>, detail::mp_defer_impl<F, T...>, detail::mp_no_type>;
+};
+
+#endif
+
 } // namespace detail
 
+#if BOOST_WORKAROUND( BOOST_CUDA_VERSION, >= 9000000 && BOOST_CUDA_VERSION < 10000000 )
+
+template<template<class...> class F, class... T> using mp_defer = typename detail::mp_defer_cuda_workaround< F, T...>::type;
+
+#else
+
 template<template<class...> class F, class... T> using mp_defer = mp_if<mp_valid<F, T...>, detail::mp_defer_impl<F, T...>, detail::mp_no_type>;
+
+#endif
 
 // mp_eval_if, mp_eval_if_c
 namespace detail

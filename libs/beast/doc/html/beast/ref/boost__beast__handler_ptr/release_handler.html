@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
 <link rel="up" href="../boost__beast__handler_ptr.html" title="handler_ptr">
-<link rel="prev" href="operator_eq_.html" title="handler_ptr::operator=">
+<link rel="prev" href="operator_eq_/overload2.html" title="handler_ptr::operator= (2 of 2 overloads)">
 <link rel="next" href="handler_ptr_dtor_.html" title="handler_ptr::~handler_ptr">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,15 +20,15 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="operator_eq_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr_dtor_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="operator_eq_/overload2.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr_dtor_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="beast.ref.boost__beast__handler_ptr.release_handler"></a><a class="link" href="release_handler.html" title="handler_ptr::release_handler">handler_ptr::release_handler</a>
 </h5></div></div></div>
 <p>
-          <a class="indexterm" name="idp95067792"></a>
-Release ownership of the handler.
+          <a class="indexterm" name="idp115901632"></a>
+Return ownership of the handler.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__handler_ptr.release_handler.h0"></a>
@@ -42,8 +42,8 @@ Release ownership of the handler.
           <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.release_handler.description"></a></span><a class="link" href="release_handler.html#beast.ref.boost__beast__handler_ptr.release_handler.description">Description</a>
         </h6>
 <p>
-          If <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-          owns an object, it is first destroyed.
+          Before this function returns, the owned object is destroyed, satisfying
+          the deallocation-before-invocation Asio guarantee.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__handler_ptr.release_handler.h2"></a>
@@ -52,6 +52,22 @@ Release ownership of the handler.
         </h6>
 <p>
           The released handler.
+        </p>
+<h6>
+<a name="beast.ref.boost__beast__handler_ptr.release_handler.h3"></a>
+          <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.release_handler.preconditions"></a></span><a class="link" href="release_handler.html#beast.ref.boost__beast__handler_ptr.release_handler.preconditions">Preconditions:</a>
+        </h6>
+<p>
+          <code class="computeroutput"><span class="identifier">has_value</span><span class="special">()</span>
+          <span class="special">==</span> <span class="keyword">true</span></code>
+        </p>
+<h6>
+<a name="beast.ref.boost__beast__handler_ptr.release_handler.h4"></a>
+          <span class="phrase"><a name="beast.ref.boost__beast__handler_ptr.release_handler.postconditions"></a></span><a class="link" href="release_handler.html#beast.ref.boost__beast__handler_ptr.release_handler.postconditions">Postconditions:</a>
+        </h6>
+<p>
+          <code class="computeroutput"><span class="identifier">has_value</span><span class="special">()</span>
+          <span class="special">==</span> <span class="keyword">false</span></code>
         </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -64,7 +80,7 @@ Release ownership of the handler.
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="operator_eq_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr_dtor_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="operator_eq_/overload2.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__handler_ptr.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="handler_ptr_dtor_.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

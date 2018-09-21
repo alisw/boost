@@ -82,7 +82,7 @@ child c("ls", on_exit=[](int exit, const std::error_code&amp; ec_in){});
 std::future&lt;int&gt; exit_code;
 chlid c2("ls", on_exit=exit_code);
 </programlisting></para><para><note><para>The handler is not invoked when the launch fails. </para></note>
-<warning><para>When used ignore_error it might get invoked on error. </para><para>All <computeroutput>on_exit</computeroutput> use one signal(SIGCHLD) on posix, which is only guaranteed to work when all use the same <computeroutput>io_context</computeroutput>. </para></warning>
+<warning><para>When used ignore_error it might get invoked on error. </para><para><computeroutput>on_exit</computeroutput> uses <computeroutput>boost::asio::signal_set</computeroutput> to listen for <computeroutput>SIGCHLD</computeroutput> on posix, and so has the same restrictions as that class (do not register a handler for <computeroutput>SIGCHLD</computeroutput> except by using <computeroutput>boost::asio::signal_set</computeroutput>). </para></warning>
 </para></description></data-member>
 
 
@@ -598,6 +598,8 @@ namespace boost {
 }
 </programlisting>
  </para><namespace name="boost">
+<namespace name="filesystem">
+</namespace>
 <namespace name="process">
 <data-member name="exe"><type><emphasis>unspecified</emphasis></type><description><para>The exe property allows to explicitly set the executable.</para><para>The overload form applies when to the first, when several strings are passed to a launching function.</para><para>The following expressions are valid, with <computeroutput>value</computeroutput> being either a C-String or a <computeroutput>std::basic_string</computeroutput> with <computeroutput>char</computeroutput> or <computeroutput>wchar_t</computeroutput> or a <computeroutput>boost::filesystem::path</computeroutput>.</para><para><programlisting language="c++">exe="value";
 exe(value);
@@ -1415,6 +1417,7 @@ namespace boost {
       <emphasis>unspecified</emphasis> <globalname alt="boost::process::windows::not_active">not_active</globalname>;
       <emphasis>unspecified</emphasis> <globalname alt="boost::process::windows::show">show</globalname>;
       <emphasis>unspecified</emphasis> <globalname alt="boost::process::windows::show_normal">show_normal</globalname>;
+      <emphasis>unspecified</emphasis> <globalname alt="boost::process::windows::create_no_window">create_no_window</globalname>;
     }
   }
 }
@@ -1430,6 +1433,7 @@ namespace boost {
 <data-member name="not_active"><type><emphasis>unspecified</emphasis></type><purpose>Displays a window in its most recent size and position. This value is similar to show_normal`, except that the window is not activated. </purpose></data-member>
 <data-member name="show"><type><emphasis>unspecified</emphasis></type><purpose>Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time. </purpose></data-member>
 <data-member name="show_normal"><type><emphasis>unspecified</emphasis></type><purpose>Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time. </purpose></data-member>
+<data-member name="create_no_window"><type><emphasis>unspecified</emphasis></type><purpose>Adds the <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684863(v=vs.85">CREATE_NO_WINDOW</ulink>.aspx) flag. </purpose></data-member>
 </namespace>
 
 

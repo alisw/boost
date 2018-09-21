@@ -10,6 +10,7 @@
 #ifndef BOOST_BEAST_WEBSOCKET_DETAIL_FRAME_HPP
 #define BOOST_BEAST_WEBSOCKET_DETAIL_FRAME_HPP
 
+#include <boost/beast/websocket/error.hpp>
 #include <boost/beast/websocket/rfc6455.hpp>
 #include <boost/beast/websocket/detail/utf8_checker.hpp>
 #include <boost/beast/core/buffers_suffix.hpp>
@@ -29,7 +30,7 @@ inline
 std::uint16_t
 big_uint16_to_native(void const* buf)
 {
-    auto const p = reinterpret_cast<
+    auto const p = static_cast<
         std::uint8_t const*>(buf);
     return (p[0]<<8) + p[1];
 }
@@ -38,7 +39,7 @@ inline
 std::uint64_t
 big_uint64_to_native(void const* buf)
 {
-    auto const p = reinterpret_cast<
+    auto const p = static_cast<
         std::uint8_t const*>(buf);
     return
         (static_cast<std::uint64_t>(p[0])<<56) +
@@ -55,7 +56,7 @@ inline
 std::uint32_t
 little_uint32_to_native(void const* buf)
 {
-    auto const p = reinterpret_cast<
+    auto const p = static_cast<
         std::uint8_t const*>(buf);
     return
                                     p[0] +
@@ -68,14 +69,14 @@ inline
 void
 native_to_little_uint32(std::uint32_t v, void* buf)
 {
-    auto p = reinterpret_cast<std::uint8_t*>(buf);
+    auto p = static_cast<std::uint8_t*>(buf);
     p[0] =  v        & 0xff;
     p[1] = (v >>  8) & 0xff;
     p[2] = (v >> 16) & 0xff;
     p[3] = (v >> 24) & 0xff;
 }
 
-/** WebSocket frame header opcodes. */
+// frame header opcodes
 enum class opcode : std::uint8_t
 {
     cont    = 0,
@@ -110,8 +111,7 @@ struct frame_header
 };
 
 // holds the largest possible frame header
-using fh_buffer =
-    flat_static_buffer<14>;
+using fh_buffer = flat_static_buffer<14>;
 
 // holds the largest possible control frame
 using frame_buffer =
@@ -245,8 +245,10 @@ read_ping(ping_data& data, Buffers const& bs)
 //
 template<class Buffers>
 void
-read_close(close_reason& cr,
-    Buffers const& bs, close_code& code)
+read_close(
+    close_reason& cr,
+    Buffers const& bs,
+    error_code& ec)
 {
     using boost::asio::buffer;
     using boost::asio::buffer_copy;
@@ -257,12 +259,13 @@ read_close(close_reason& cr,
     if(n == 0)
     {
         cr = close_reason{};
-        code = close_code::none;
+        ec.assign(0, ec.category());
         return;
     }
     if(n == 1)
     {
-        code = close_code::protocol_error;
+        // invalid payload size == 1
+        ec = error::bad_close_size;
         return;
     }
     buffers_suffix<Buffers> cb(bs);
@@ -274,7 +277,8 @@ read_close(close_reason& cr,
         n -= 2;
         if(! is_valid_close_code(cr.code))
         {
-            code = close_code::protocol_error;
+            // invalid close code
+            ec = error::bad_close_code;
             return;
         }
     }
@@ -285,7 +289,8 @@ read_close(close_reason& cr,
         if(! check_utf8(
             cr.reason.data(), cr.reason.size()))
         {
-            code = close_code::protocol_error;
+            // not valid utf-8
+            ec = error::bad_close_payload;
             return;
         }
     }
@@ -293,7 +298,7 @@ read_close(close_reason& cr,
     {
         cr.reason = "";
     }
-    code = close_code::none;
+    ec.assign(0, ec.category());
 }
 
 } // detail

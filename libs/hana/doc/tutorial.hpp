@@ -82,11 +82,10 @@ environment for development in the [README][Hana.hacking].
 a `HanaConfig.cmake` file for use with CMake and a `hana.pc` file for use with
 [pkg-config][].
 
-- Do not mix a system-wide installation of Hana with a system-wide installation
-of Boost, because both installations will clash. You won't know which version of
-Hana is being used, and that could break libraries that depend on the version of
-Hana provided with Boost (or vice-versa). Generally speaking, you should favor
-local installations whenever possible.
+- Do not mix a standalone installation of Hana (i.e. Hana not installed through
+  Boost) with a full installation of Boost. The Hana provided within Boost and
+  the standalone one may clash, and you won't know which version is used where.
+  This is asking for trouble.
 
 @subsection tutorial-installation-cmake Note for CMake users
 
@@ -1704,7 +1703,7 @@ that type and cast it to `void`, for the same reason as we did for non-static
 members.
 
 
-@subsubsection tutorial-introspection-is_valid-typename Nested type names
+@subsubsection tutorial-introspection-is_valid-nested-typename Nested type names
 
 Checking for a nested type name is not hard, but it is slightly more
 convoluted than the previous cases:
@@ -1717,13 +1716,28 @@ support types that can't be returned from functions, like array types or
 incomplete types.
 
 
-@subsubsection tutorial-introspection-is_valid-template Nested templates
+@subsubsection tutorial-introspection-is_valid-nested-template Nested templates
 
 Checking for a nested template name is similar to checking for a nested type
 name, except we use the `template_<...>` variable template instead of
 `type<...>` in the generic lambda:
 
 @snippet example/tutorial/introspection.cpp nested_template
+
+
+@subsubsection tutorial-introspection-is_valid-template Template specializations
+
+Checking whether a template specialization is valid can be done too, but we
+now pass a `template_<...>` to `is_valid` instead of a `type<...>`, because
+that's what we want to make the check on:
+
+@snippet example/tutorial/introspection.cpp template_specialization
+
+@note
+Doing this will not cause the template to be instantiated. Hence, it will only
+check whether the given template can be mentioned with the provided template
+arguments, not whether the instantiation of the template with those arguments
+is valid. Generally speaking, there is no way to check that programmatically.
 
 
 @subsection tutorial-introspection-sfinae Taking control of SFINAE
@@ -2025,7 +2039,10 @@ a container unspecified; they are explained in the
 [rationales](@ref tutorial-rationales-container_representation).
 When the representation of a container is implementation-defined, one must
 be careful not to make any assumptions about it, unless those assumption
-are explicitly allowed in the documentation of the container.
+are explicitly allowed in the documentation of the container. For example,
+assuming that one can safely inherit from a container or that the elements
+in the container are stored in the same order as specified in its template
+argument list is generally not safe.
 
 
 @subsubsection tutorial-containers-types-overloading Overloading on container types
@@ -2818,9 +2835,12 @@ very useful for porting existing code from e.g. Fusion/MPL to Hana:
 @snippet example/tutorial/ext/fusion_to_hana.cpp main
 
 @note
-At this time, only adapters to use data types from other libraries inside Hana
-are provided; adapters for the other way around (using Hana containers inside
-other libraries) are not provided.
+- At this time, only adapters to use data types from other libraries inside Hana
+  are provided; adapters for the other way around (using Hana containers inside
+  other libraries) are not provided.
+
+- The Fusion and MPL adapters are only guaranteed to work on the version of
+  Boost matching the version of Hana being used.
 
 However, using external adapters has a couple of pitfalls. For example, after
 a while using Hana, you might become used to comparing Hana tuples using the

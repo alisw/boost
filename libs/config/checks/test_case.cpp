@@ -1,4 +1,4 @@
-//  This file was automatically generated on Sun Jul  9 16:30:35 2017
+//  This file was automatically generated on Wed Apr 18 20:03:40 2018
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -24,6 +24,11 @@
 #ifdef TEST_BOOST_HAS_CLOCK_GETTIME
 #  ifndef BOOST_HAS_CLOCK_GETTIME
 #     error "Feature macro BOOST_HAS_CLOCK_GETTIME is not defined."
+#  endif
+#endif
+#ifdef TEST_BOOST_HAS_PRAGMA_DETECT_MISMATCH
+#  ifndef BOOST_HAS_PRAGMA_DETECT_MISMATCH
+#     error "Feature macro BOOST_HAS_PRAGMA_DETECT_MISMATCH is not defined."
 #  endif
 #endif
 #ifdef TEST_BOOST_HAS_DIRENT_H
@@ -291,6 +296,11 @@
 #     error "Defect macro BOOST_NO_CXX11_ATOMIC_SMART_PTR is defined."
 #  endif
 #endif
+#ifdef TEST_BOOST_NO_CXX11_DEFAULTED_MOVES
+#  ifdef BOOST_NO_CXX11_DEFAULTED_MOVES
+#     error "Defect macro BOOST_NO_CXX11_DEFAULTED_MOVES is defined."
+#  endif
+#endif
 #ifdef TEST_BOOST_NO_CXX11_FINAL
 #  ifdef BOOST_NO_CXX11_FINAL
 #     error "Defect macro BOOST_NO_CXX11_FINAL is defined."
@@ -504,6 +514,11 @@
 #ifdef TEST_BOOST_NO_CXX17_FOLD_EXPRESSIONS
 #  ifdef BOOST_NO_CXX17_FOLD_EXPRESSIONS
 #     error "Defect macro BOOST_NO_CXX17_FOLD_EXPRESSIONS is defined."
+#  endif
+#endif
+#ifdef TEST_BOOST_NO_CXX17_IF_CONSTEXPR
+#  ifdef BOOST_NO_CXX17_IF_CONSTEXPR
+#     error "Defect macro BOOST_NO_CXX17_IF_CONSTEXPR is defined."
 #  endif
 #endif
 #ifdef TEST_BOOST_NO_CXX17_INLINE_VARIABLES

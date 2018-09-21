@@ -88,6 +88,13 @@ class echo_op
         // The stream to read and write to
         AsyncStream& stream;
 
+        // Boost.Asio and the Networking TS require an object of
+        // type executor_work_guard<T>, where T is the type of
+        // executor returned by the stream's get_executor function,
+        // to persist for the duration of the asynchronous operation.
+        boost::asio::executor_work_guard<
+            decltype(std::declval<AsyncStream&>().get_executor())> work;
+
         // Indicates what step in the operation's state machine
         // to perform next, starting from zero.
         int step = 0;
@@ -107,8 +114,9 @@ class echo_op
         // contained object constructor is a reference to the
         // managed final completion handler.
         //
-        explicit state(Handler& handler, AsyncStream& stream_)
+        explicit state(Handler const& handler, AsyncStream& stream_)
             : stream(stream_)
+            , work(stream.get_executor())
             , buffer((std::numeric_limits<std::size_t>::max)(),
                 boost::asio::get_associated_allocator(handler))
         {
@@ -154,7 +162,7 @@ public:
     allocator_type
     get_allocator() const noexcept
     {
-        return boost::asio::get_associated_allocator(p_.handler());
+        return (boost::asio::get_associated_allocator)(p_.handler());
     }
 
     // Executor hook. This is Asio's system for customizing the
@@ -168,7 +176,7 @@ public:
 
     executor_type get_executor() const noexcept
     {
-        return boost::asio::get_associated_executor(
+        return (boost::asio::get_associated_executor)(
             p_.handler(), p_->stream.get_executor());
     }
 
@@ -215,7 +223,6 @@ operator()(boost::beast::error_code ec, std::size_t bytes_transferred)
             p.buffer.consume(bytes_transferred);
             break;
     }
-
     // Invoke the final handler. The implementation of `handler_ptr`
     // will deallocate the storage for the state before the handler
     // is invoked. This is necessary to provide the
@@ -226,6 +233,10 @@ operator()(boost::beast::error_code ec, std::size_t bytes_transferred)
     // from the `state`, they would have to be moved to the stack
     // first or else undefined behavior results.
     //
+    // The work guard is moved to the stack first, otherwise it would
+    // be destroyed before the handler is invoked.
+    //
+    auto work = std::move(p.work);
     p_.invoke(ec);
     return;
 }

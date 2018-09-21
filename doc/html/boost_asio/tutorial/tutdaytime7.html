@@ -36,16 +36,36 @@
         <span class="phrase"><a name="boost_asio.tutorial.tutdaytime7.the_main___function"></a></span><a class="link" href="tutdaytime7.html#boost_asio.tutorial.tutdaytime7.the_main___function">The
         main() function</a>
       </h5>
+<pre class="programlisting">int main()
+{
+  try
+  {
+    boost::asio::io_context io_context;
+</pre>
 <p>
         We will begin by creating a server object to accept a TCP client connection.
       </p>
+<pre class="programlisting">    tcp_server server1(io_context);
+</pre>
 <p>
         We also need a server object to accept a UDP client request.
       </p>
+<pre class="programlisting">    udp_server server2(io_context);
+</pre>
 <p>
-        We have created two lots of work for the boost::asio::io_service object to
-        do.
+        We have created two lots of work for the <a class="link" href="../reference/io_context.html" title="io_context">io_context</a>
+        object to do.
       </p>
+<pre class="programlisting">    io_context.run();
+  }
+  catch (std::exception&amp; e)
+  {
+    std::cerr &lt;&lt; e.what() &lt;&lt; std::endl;
+  }
+
+  return 0;
+}
+</pre>
 <h5>
 <a name="boost_asio.tutorial.tutdaytime7.h1"></a>
         <span class="phrase"><a name="boost_asio.tutorial.tutdaytime7.the_tcp_connection_and_tcp_server_classes"></a></span><a class="link" href="tutdaytime7.html#boost_asio.tutorial.tutdaytime7.the_tcp_connection_and_tcp_server_classes">The
@@ -156,7 +176,7 @@ private:
 
   void handle_receive(const boost::system::error_code&amp; error)
   {
-    if (!error || error == boost::asio::error::message_size)
+    if (!error)
     {
       boost::shared_ptr&lt;std::string&gt; message(
           new std::string(make_daytime_string()));
@@ -190,7 +210,7 @@ private:
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

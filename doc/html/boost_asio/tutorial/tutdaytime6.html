@@ -38,8 +38,7 @@
   {
 </pre>
 <p>
-        Create a server object to accept incoming client requests, and run the boost::asio::io_service
-        object.
+        Create a server object to accept incoming client requests, and run the <a class="link" href="../reference/io_context.html" title="io_context">io_context</a> object.
       </p>
 <pre class="programlisting">    boost::asio::io_context io_context;
     udp_server server(io_context);
@@ -78,10 +77,10 @@ private:
 <p>
         The function <a class="link" href="../reference/basic_datagram_socket/async_receive_from.html" title="basic_datagram_socket::async_receive_from">ip::udp::socket::async_receive_from()</a>
         will cause the application to listen in the background for a new request.
-        When such a request is received, the boost::asio::io_service object will
-        invoke the <code class="computeroutput">handle_receive()</code> function with two arguments: a value
-        of type boost::system::error_code indicating whether the operation succeeded
-        or failed, and a <code class="computeroutput">size_t</code> value <code class="computeroutput">bytes_transferred</code>
+        When such a request is received, the <a class="link" href="../reference/io_context.html" title="io_context">io_context</a>
+        object will invoke the <code class="computeroutput">handle_receive()</code> function with two arguments:
+        a value of type boost::system::error_code indicating whether the operation
+        succeeded or failed, and a <code class="computeroutput">size_t</code> value <code class="computeroutput">bytes_transferred</code>
         specifying the number of bytes received.
       </p>
 <pre class="programlisting">    socket_.async_receive_from(
@@ -101,11 +100,11 @@ private:
 <p>
         The <code class="computeroutput">error</code> parameter contains the result of the asynchronous
         operation. Since we only provide the 1-byte <code class="computeroutput">recv_buffer_</code> to
-        contain the client's request, the boost::asio::io_service object would return
-        an error if the client sent anything larger. We can ignore such an error
-        if it comes up.
+        contain the client's request, the <a class="link" href="../reference/io_context.html" title="io_context">io_context</a>
+        object would return an error if the client sent anything larger. We can ignore
+        such an error if it comes up.
       </p>
-<pre class="programlisting">    if (!error || error == boost::asio::error::message_size)
+<pre class="programlisting">    if (!error)
     {
 </pre>
 <p>
@@ -174,7 +173,7 @@ private:
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -35,7 +35,6 @@
 <pre class="programlisting">#include &lt;iostream&gt;
 #include &lt;boost/asio.hpp&gt;
 #include &lt;boost/bind.hpp&gt;
-#include &lt;boost/date_time/posix_time/posix_time.hpp&gt;
 </pre>
 <p>
         Instead of defining a free function <code class="computeroutput">print</code> as the callback handler,
@@ -47,12 +46,12 @@
 public:
 </pre>
 <p>
-        The constructor of this class will take a reference to the io_service object
+        The constructor of this class will take a reference to the io_context object
         and use it when initialising the <code class="computeroutput">timer_</code> member. The counter
         used to shut down the program is now also a member of the class.
       </p>
 <pre class="programlisting">  printer(boost::asio::io_context&amp; io)
-    : timer_(io, boost::posix_time::seconds(1)),
+    : timer_(io, boost::asio::chrono::seconds(1)),
       count_(0)
   {
 </pre>
@@ -92,19 +91,19 @@ public:
       std::cout &lt;&lt; count_ &lt;&lt; std::endl;
       ++count_;
 
-      timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
+      timer_.expires_at(timer_.expiry() + boost::asio::chrono::seconds(1));
       timer_.async_wait(boost::bind(&amp;printer::print, this));
     }
   }
 
 private:
-  boost::asio::deadline_timer timer_;
+  boost::asio::steady_timer timer_;
   int count_;
 };
 </pre>
 <p>
         The <code class="computeroutput">main</code> function is much simpler than before, as it now declares
-        a local <code class="computeroutput">printer</code> object before running the io_service as normal.
+        a local <code class="computeroutput">printer</code> object before running the io_context as normal.
       </p>
 <pre class="programlisting">int main()
 {
@@ -132,7 +131,7 @@ private:
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

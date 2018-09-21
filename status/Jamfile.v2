@@ -1,5 +1,5 @@
 # Copyright 2002. Dave Abrahams
-# Copyright 2016. Rene Rivera
+# Copyright 2016-2018. Rene Rivera
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
@@ -156,7 +156,7 @@ local rule find-targets ( target : libs * )
 
     for local lib in $(libs)
     {
-        local path = ../libs/$(lib)/test ;
+        local path = $(lib)/test ;
         local project = [ project.load $(path) ] ;
         local pt = [ project.target $(project) ] ;
         local mt = [ $(pt).main-target $(target) ] ;
@@ -194,23 +194,30 @@ libs-to-test = [ SORT $(libs-to-test) ] ;
 
 run-tests libs : $(libs-to-test)/test ;
 
-# Tests from Jamfiles in individual library test subdirectories
-# Please keep these in alphabetic order by test-suite name
-run-tests libs :
-    wave/test/build             # test-suite wave
-    ;
+# Tests from Jamfiles in tools/
+# Please keep these in alphabetical order
 
-run-tests tools :
-    bcp/test
-    ;
+local tools-to-test = ;
+for local tooldir in bcp check_build quickbook
+{
+    local jamfile = [ modules.peek project : JAMFILE ] ;
+    local jamfiles = [ path.glob [ path.join tools $(tooldir) test ] : $(jamfile) ] ;
+    if $(jamfiles)
+    {
+        tools-to-test += $(tooldir) ;
+    }
+}
+
+run-tests tools : $(tools-to-test)/test ;
+
 
 if $(check-libs-only-targets)
 {
     alias check-libs-only : $(check-libs-only-targets) ;
 }
 
-alias minimal : [ find-targets minimal : $(libs-to-test) ] ;
+alias minimal : [ find-targets minimal : ../libs/$(libs-to-test) ] ;
 explicit minimal ;
 
-alias quick : [ find-targets quick : $(libs-to-test) ] ;
+alias quick : [ find-targets quick : ../libs/$(libs-to-test) ../tools/$(tools-to-test) ] ;
 explicit quick ;

@@ -11,12 +11,14 @@
 #define BEAST_TEST_WEBSOCKET_TEST_HPP
 
 #include <boost/beast/core/buffers_prefix.hpp>
+#include <boost/beast/core/buffers_to_string.hpp>
 #include <boost/beast/core/ostream.hpp>
 #include <boost/beast/core/multi_buffer.hpp>
 #include <boost/beast/websocket/stream.hpp>
-#include <boost/beast/test/stream.hpp>
+#include <boost/beast/experimental/test/stream.hpp>
 #include <boost/beast/test/yield_to.hpp>
 #include <boost/beast/unit_test/suite.hpp>
+#include <boost/asio/executor_work_guard.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/spawn.hpp>
 #include <boost/optional.hpp>
@@ -35,8 +37,25 @@ class websocket_test_suite
     , public test::enable_yield_to
 {
 public:
+    template<bool deflateSupported>
+    using ws_type_t =
+        websocket::stream<test::stream&, deflateSupported>;
+
     using ws_type =
         websocket::stream<test::stream&>;
+
+    struct move_only_handler
+    {
+        move_only_handler() = default;
+        move_only_handler(move_only_handler&&) = default;
+        move_only_handler(move_only_handler const&) = delete;
+
+        template<class... Args>
+        void
+        operator()(Args&&...) const
+        {
+        }
+    };
 
     enum class kind
     {
@@ -54,9 +73,8 @@ public:
 
         std::ostream& log_;
         boost::asio::io_context ioc_;
-        boost::optional<
-            boost::asio::executor_work_guard<
-                boost::asio::io_context::executor_type>> work_;
+        boost::asio::executor_work_guard<
+            boost::asio::io_context::executor_type> work_;
         static_buffer<buf_size> buffer_;
         test::stream ts_;
         std::thread t_;
@@ -98,7 +116,7 @@ public:
 
         ~echo_server()
         {
-            work_ = boost::none;
+            work_.reset();
             t_.join();
         }
 
@@ -269,7 +287,7 @@ public:
         std::size_t n;
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             try
             {
                 f(fc);
@@ -278,7 +296,7 @@ public:
             catch(system_error const& se)
             {
                 BEAST_EXPECTS(
-                    se.code() == test::error::fail_error,
+                    se.code() == test::error::test_failure,
                     se.code().message());
             }
         }
@@ -294,7 +312,7 @@ public:
         static std::size_t constexpr limit = 200;
 
         doFailLoop(
-            [&](test::fail_counter& fc)
+            [&](test::fail_count& fc)
             {
                 test::stream ts{ioc_, fc};
                 f(ts);
@@ -303,7 +321,7 @@ public:
             , limit);
     }
 
-    template<class Test>
+    template<bool deflateSupported = true, class Test>
     void
     doTest(
         permessage_deflate const& pmd,
@@ -318,9 +336,9 @@ public:
             std::size_t n;
             for(n = 0; n < limit; ++n)
             {
-                test::fail_counter fc{n};
+                test::fail_count fc{n};
                 test::stream ts{ioc_, fc};
-                ws_type ws{ts};
+                ws_type_t<deflateSupported> ws{ts};
                 ws.set_option(pmd);
 
                 echo_server es{log, i==1 ?
@@ -332,7 +350,7 @@ public:
                 {
                     ts.close();
                     if( ! BEAST_EXPECTS(
-                            ec == test::error::fail_error,
+                            ec == test::error::test_failure,
                             ec.message()))
                         BOOST_THROW_EXCEPTION(system_error{ec});
                     continue;
@@ -346,7 +364,7 @@ public:
                 catch(system_error const& se)
                 {
                     BEAST_EXPECTS(
-                        se.code() == test::error::fail_error,
+                        se.code() == test::error::test_failure,
                         se.code().message());
                 }
                 catch(std::exception const& e)
@@ -361,19 +379,6 @@ public:
     }
 
     //--------------------------------------------------------------------------
-
-    template<class ConstBufferSequence>
-    std::string
-    to_string(ConstBufferSequence const& bs)
-    {
-        std::string s;
-        s.reserve(buffer_size(bs));
-        for(auto b : beast::detail::buffers_range(bs))
-            s.append(
-                reinterpret_cast<char const*>(b.data()),
-                b.size());
-        return s;
-    }
 
     template<std::size_t N>
     class cbuf_helper
@@ -481,146 +486,171 @@ public:
 
     struct SyncClient
     {
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        accept(stream<NextLayer>& ws) const
+        accept(
+            stream<NextLayer, deflateSupported>& ws) const
         {
             ws.accept();
         }
 
-        template<class NextLayer, class Buffers>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Buffers>
         typename std::enable_if<
             ! http::detail::is_header<Buffers>::value>::type
-        accept(stream<NextLayer>& ws,
+        accept(stream<NextLayer, deflateSupported>& ws,
             Buffers const& buffers) const
         {
             ws.accept(buffers);
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        accept(stream<NextLayer>& ws,
+        accept(
+            stream<NextLayer, deflateSupported>& ws,
             http::request<http::empty_body> const& req) const
         {
             ws.accept(req);
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             Decorator const& d) const
         {
             ws.accept_ex(d);
         }
 
-        template<class NextLayer,
+        template<
+            class NextLayer, bool deflateSupported,
             class Buffers, class Decorator>
         typename std::enable_if<
             ! http::detail::is_header<Buffers>::value>::type
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             Buffers const& buffers,
-                Decorator const& d) const
+            Decorator const& d) const
         {
             ws.accept_ex(buffers, d);
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             http::request<http::empty_body> const& req,
-                Decorator const& d) const
+            Decorator const& d) const
         {
             ws.accept_ex(req, d);
         }
 
-        template<class NextLayer,
+        template<
+            class NextLayer, bool deflateSupported,
             class Buffers, class Decorator>
         void
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             http::request<http::empty_body> const& req,
-                Buffers const& buffers,
-                    Decorator const& d) const
+            Buffers const& buffers,
+            Decorator const& d) const
         {
             ws.accept_ex(req, buffers, d);
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        handshake(stream<NextLayer>& ws,
+        handshake(
+            stream<NextLayer, deflateSupported>& ws,
             string_view uri,
-                string_view path) const
+            string_view path) const
         {
             ws.handshake(uri, path);
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        handshake(stream<NextLayer>& ws,
+        handshake(
+            stream<NextLayer, deflateSupported>& ws,
             response_type& res,
-                string_view uri,
-                    string_view path) const
+            string_view uri,
+            string_view path) const
         {
             ws.handshake(res, uri, path);
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        handshake_ex(stream<NextLayer>& ws,
+        handshake_ex(
+            stream<NextLayer, deflateSupported>& ws,
             string_view uri,
-                string_view path,
-                    Decorator const& d) const
+            string_view path,
+            Decorator const& d) const
         {
             ws.handshake_ex(uri, path, d);
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        handshake_ex(stream<NextLayer>& ws,
+        handshake_ex(
+            stream<NextLayer, deflateSupported>& ws,
             response_type& res,
-                string_view uri,
-                    string_view path,
-                        Decorator const& d) const
+            string_view uri,
+            string_view path,
+            Decorator const& d) const
         {
             ws.handshake_ex(res, uri, path, d);
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        ping(stream<NextLayer>& ws,
+        ping(stream<NextLayer, deflateSupported>& ws,
             ping_data const& payload) const
         {
             ws.ping(payload);
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        pong(stream<NextLayer>& ws,
+        pong(stream<NextLayer, deflateSupported>& ws,
             ping_data const& payload) const
         {
             ws.pong(payload);
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        close(stream<NextLayer>& ws,
+        close(stream<NextLayer, deflateSupported>& ws,
             close_reason const& cr) const
         {
             ws.close(cr);
         }
 
         template<
-            class NextLayer, class DynamicBuffer>
+            class NextLayer, bool deflateSupported,
+            class DynamicBuffer>
         std::size_t
-        read(stream<NextLayer>& ws,
+        read(stream<NextLayer, deflateSupported>& ws,
             DynamicBuffer& buffer) const
         {
             return ws.read(buffer);
         }
 
         template<
-            class NextLayer, class DynamicBuffer>
+            class NextLayer, bool deflateSupported,
+            class DynamicBuffer>
         std::size_t
-        read_some(stream<NextLayer>& ws,
+        read_some(
+            stream<NextLayer, deflateSupported>& ws,
             std::size_t limit,
             DynamicBuffer& buffer) const
         {
@@ -628,36 +658,45 @@ public:
         }
 
         template<
-            class NextLayer, class MutableBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class MutableBufferSequence>
         std::size_t
-        read_some(stream<NextLayer>& ws,
+        read_some(
+            stream<NextLayer, deflateSupported>& ws,
             MutableBufferSequence const& buffers) const
         {
             return ws.read_some(buffers);
         }
 
         template<
-            class NextLayer, class ConstBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class ConstBufferSequence>
         std::size_t
-        write(stream<NextLayer>& ws,
+        write(
+            stream<NextLayer, deflateSupported>& ws,
             ConstBufferSequence const& buffers) const
         {
             return ws.write(buffers);
         }
 
         template<
-            class NextLayer, class ConstBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class ConstBufferSequence>
         std::size_t
-        write_some(stream<NextLayer>& ws, bool fin,
+        write_some(
+            stream<NextLayer, deflateSupported>& ws,
+            bool fin,
             ConstBufferSequence const& buffers) const
         {
             return ws.write_some(fin, buffers);
         }
 
         template<
-            class NextLayer, class ConstBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class ConstBufferSequence>
         std::size_t
-        write_raw(stream<NextLayer>& ws,
+        write_raw(
+            stream<NextLayer, deflateSupported>& ws,
             ConstBufferSequence const& buffers) const
         {
             return boost::asio::write(
@@ -678,9 +717,9 @@ public:
         {
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        accept(stream<NextLayer>& ws) const
+        accept(stream<NextLayer, deflateSupported>& ws) const
         {
             error_code ec;
             ws.async_accept(yield_[ec]);
@@ -688,10 +727,13 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer, class Buffers>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Buffers>
         typename std::enable_if<
             ! http::detail::is_header<Buffers>::value>::type
-        accept(stream<NextLayer>& ws,
+        accept(
+            stream<NextLayer, deflateSupported>& ws,
             Buffers const& buffers) const
         {
             error_code ec;
@@ -700,9 +742,10 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        accept(stream<NextLayer>& ws,
+        accept(
+            stream<NextLayer, deflateSupported>& ws,
             http::request<http::empty_body> const& req) const
         {
             error_code ec;
@@ -711,10 +754,12 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer,
+        template<
+            class NextLayer, bool deflateSupported,
             class Decorator>
         void
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             Decorator const& d) const
         {
             error_code ec;
@@ -723,13 +768,15 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer,
+        template<
+            class NextLayer, bool deflateSupported,
             class Buffers, class Decorator>
         typename std::enable_if<
             ! http::detail::is_header<Buffers>::value>::type
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             Buffers const& buffers,
-                Decorator const& d) const
+            Decorator const& d) const
         {
             error_code ec;
             ws.async_accept_ex(buffers, d, yield_[ec]);
@@ -737,11 +784,14 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             http::request<http::empty_body> const& req,
-                Decorator const& d) const
+            Decorator const& d) const
         {
             error_code ec;
             ws.async_accept_ex(req, d, yield_[ec]);
@@ -749,13 +799,15 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer,
+        template<
+            class NextLayer, bool deflateSupported,
             class Buffers, class Decorator>
         void
-        accept_ex(stream<NextLayer>& ws,
+        accept_ex(
+            stream<NextLayer, deflateSupported>& ws,
             http::request<http::empty_body> const& req,
-                Buffers const& buffers,
-                    Decorator const& d) const
+            Buffers const& buffers,
+            Decorator const& d) const
         {
             error_code ec;
             ws.async_accept_ex(
@@ -764,11 +816,13 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer>
+        template<
+            class NextLayer, bool deflateSupported>
         void
-        handshake(stream<NextLayer>& ws,
+        handshake(
+            stream<NextLayer, deflateSupported>& ws,
             string_view uri,
-                string_view path) const
+            string_view path) const
         {
             error_code ec;
             ws.async_handshake(
@@ -777,12 +831,13 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        handshake(stream<NextLayer>& ws,
+        handshake(
+            stream<NextLayer, deflateSupported>& ws,
             response_type& res,
-                string_view uri,
-                    string_view path) const
+            string_view uri,
+            string_view path) const
         {
             error_code ec;
             ws.async_handshake(
@@ -791,12 +846,15 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        handshake_ex(stream<NextLayer>& ws,
+        handshake_ex(
+            stream<NextLayer, deflateSupported>& ws,
             string_view uri,
-                string_view path,
-                    Decorator const &d) const
+            string_view path,
+            Decorator const &d) const
         {
             error_code ec;
             ws.async_handshake_ex(
@@ -805,13 +863,16 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer, class Decorator>
+        template<
+            class NextLayer, bool deflateSupported,
+            class Decorator>
         void
-        handshake_ex(stream<NextLayer>& ws,
+        handshake_ex(
+            stream<NextLayer, deflateSupported>& ws,
             response_type& res,
-                string_view uri,
-                    string_view path,
-                        Decorator const &d) const
+            string_view uri,
+            string_view path,
+            Decorator const &d) const
         {
             error_code ec;
             ws.async_handshake_ex(
@@ -820,9 +881,10 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        ping(stream<NextLayer>& ws,
+        ping(
+            stream<NextLayer, deflateSupported>& ws,
             ping_data const& payload) const
         {
             error_code ec;
@@ -831,9 +893,10 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        pong(stream<NextLayer>& ws,
+        pong(
+            stream<NextLayer, deflateSupported>& ws,
             ping_data const& payload) const
         {
             error_code ec;
@@ -842,9 +905,10 @@ public:
                 throw system_error{ec};
         }
 
-        template<class NextLayer>
+        template<class NextLayer, bool deflateSupported>
         void
-        close(stream<NextLayer>& ws,
+        close(
+            stream<NextLayer, deflateSupported>& ws,
             close_reason const& cr) const
         {
             error_code ec;
@@ -854,9 +918,11 @@ public:
         }
 
         template<
-            class NextLayer, class DynamicBuffer>
+            class NextLayer, bool deflateSupported,
+            class DynamicBuffer>
         std::size_t
-        read(stream<NextLayer>& ws,
+        read(
+            stream<NextLayer, deflateSupported>& ws,
             DynamicBuffer& buffer) const
         {
             error_code ec;
@@ -868,9 +934,11 @@ public:
         }
 
         template<
-            class NextLayer, class DynamicBuffer>
+            class NextLayer, bool deflateSupported,
+            class DynamicBuffer>
         std::size_t
-        read_some(stream<NextLayer>& ws,
+        read_some(
+            stream<NextLayer, deflateSupported>& ws,
             std::size_t limit,
             DynamicBuffer& buffer) const
         {
@@ -883,9 +951,11 @@ public:
         }
 
         template<
-            class NextLayer, class MutableBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class MutableBufferSequence>
         std::size_t
-        read_some(stream<NextLayer>& ws,
+        read_some(
+            stream<NextLayer, deflateSupported>& ws,
             MutableBufferSequence const& buffers) const
         {
             error_code ec;
@@ -897,9 +967,11 @@ public:
         }
 
         template<
-            class NextLayer, class ConstBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class ConstBufferSequence>
         std::size_t
-        write(stream<NextLayer>& ws,
+        write(
+            stream<NextLayer, deflateSupported>& ws,
             ConstBufferSequence const& buffers) const
         {
             error_code ec;
@@ -911,9 +983,12 @@ public:
         }
 
         template<
-            class NextLayer, class ConstBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class ConstBufferSequence>
         std::size_t
-        write_some(stream<NextLayer>& ws, bool fin,
+        write_some(
+            stream<NextLayer, deflateSupported>& ws,
+            bool fin,
             ConstBufferSequence const& buffers) const
         {
             error_code ec;
@@ -925,9 +1000,11 @@ public:
         }
 
         template<
-            class NextLayer, class ConstBufferSequence>
+            class NextLayer, bool deflateSupported,
+            class ConstBufferSequence>
         std::size_t
-        write_raw(stream<NextLayer>& ws,
+        write_raw(
+            stream<NextLayer, deflateSupported>& ws,
             ConstBufferSequence const& buffers) const
         {
             error_code ec;

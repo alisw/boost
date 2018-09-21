@@ -71,14 +71,15 @@ public:
 #if BOOST_BEAST_DOXYGEN
     using value_type = implementation_defined;
 #else
-    using value_type =
-        typename std::conditional<
-            std::is_constructible<typename Body::writer,
-                message<isRequest, Body, Fields>&>::value &&
-            ! std::is_constructible<typename Body::writer,
-                message<isRequest, Body, Fields> const&>::value,
-            message<isRequest, Body, Fields>,
-            message<isRequest, Body, Fields> const>::type;
+    using value_type = typename std::conditional<
+        std::is_constructible<typename Body::writer,
+            header<isRequest, Fields>&,
+            typename Body::value_type&>::value &&
+        ! std::is_constructible<typename Body::writer,
+            header<isRequest, Fields> const&,
+            typename Body::value_type const&>::value,
+        message<isRequest, Body, Fields>,
+        message<isRequest, Body, Fields> const>::type;
 #endif
 
 private:
@@ -104,8 +105,8 @@ private:
         do_complete         = 120
     };
 
-    void frdinit(std::true_type);
-    void frdinit(std::false_type);
+    void fwrinit(std::true_type);
+    void fwrinit(std::false_type);
 
     template<std::size_t, class Visit>
     void
@@ -173,8 +174,8 @@ private:
     using pcb8_t = buffers_prefix_view<cb8_t const&>;
 
     value_type& m_;
-    writer rd_;
-    boost::optional<typename Fields::writer> frd_;
+    writer wr_;
+    boost::optional<typename Fields::writer> fwr_;
     beast::detail::variant<
         cb1_t, cb2_t, cb3_t, cb4_t,
         cb5_t ,cb6_t, cb7_t, cb8_t> v_;
@@ -347,9 +348,9 @@ public:
         @return A reference to the writer.
     */
     writer&
-    reader_impl()
+    writer_impl()
     {
-        return rd_;
+        return wr_;
     }
 };
 

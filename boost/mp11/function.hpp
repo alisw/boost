@@ -14,6 +14,7 @@
 #include <boost/mp11/detail/mp_count.hpp>
 #include <boost/mp11/detail/mp_plus.hpp>
 #include <boost/mp11/detail/mp_min_element.hpp>
+#include <boost/mp11/detail/mp_void.hpp>
 #include <type_traits>
 
 namespace boost
@@ -22,17 +23,7 @@ namespace mp11
 {
 
 // mp_void<T...>
-namespace detail
-{
-
-template<class... T> struct mp_void_impl
-{
-    using type = void;
-};
-
-} // namespace detail
-
-template<class... T> using mp_void = typename detail::mp_void_impl<T...>::type;
+//   in detail/mp_void.hpp
 
 // mp_and<T...>
 #if BOOST_WORKAROUND( BOOST_MSVC, < 1910 )
@@ -88,7 +79,7 @@ template<class... T> using mp_and = typename detail::mp_and_impl<mp_list<T...>>:
 #endif
 
 // mp_all<T...>
-#if BOOST_WORKAROUND( BOOST_MSVC, < 1920 ) || BOOST_WORKAROUND( BOOST_GCC, < 70300 )
+#if BOOST_WORKAROUND( BOOST_MSVC, < 1920 ) || BOOST_WORKAROUND( BOOST_GCC, < 80200 )
 
 template<class... T> using mp_all = mp_bool< mp_count_if< mp_list<T...>, mp_not >::value == 0 >;
 
@@ -133,7 +124,7 @@ template<class T1, class... T> struct mp_or_impl<T1, T...>
 } // namespace detail
 
 // mp_any<T...>
-#if defined( BOOST_MP11_HAS_FOLD_EXPRESSIONS ) && !BOOST_WORKAROUND( BOOST_GCC, < 70300 )
+#if defined( BOOST_MP11_HAS_FOLD_EXPRESSIONS ) && !BOOST_WORKAROUND( BOOST_GCC, < 80200 )
 
 template<class... T> using mp_any = mp_bool<(static_cast<bool>(T::value) || ...)>;
 

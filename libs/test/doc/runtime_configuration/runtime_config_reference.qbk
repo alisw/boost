@@ -136,7 +136,7 @@ The __UTF__ is able to produce color output on systems which support it. To enab
 
 [h4 Acceptable values]
 
-[link boolean_param_value Boolean] with default value [*no].
+[link boolean_param_value Boolean] with default value [*yes].
 
 [h4 Command line syntax]
 
@@ -281,7 +281,7 @@ The following /deliberately/ complicated example illustrates the purpose of the 
 directive. The SVG generated from the produced Graphviz/dot file can be downloaded
 [@images/boost_runtime_list_content.svg here].
 
-[bt_example boost_runtime_list_content..`--list_content` illustration..run-fail]
+[bt_example boost_runtime_list_content..`--list_content` illustration..run]
 
 [$images/boost_runtime_list_content.png [width 70%]]
 
@@ -509,6 +509,7 @@ log_sink      ::= 'stdout' | 'stderr' | filename
 ```
 
 Examples:
+
 * `--logger=HRF,all` will set the `all` log level for the `HRF` log format, and will use the default sink associated to `HRF` (`stdout`)
 * `--logger=JUNIT,,somefile.xml:HRF,warning` will use the default log level associated to the `JUNIT` log format, and will use the file `somefile.xml`
   as the log sink. It will also enable the `HRF` format with log level `warning`. The corresponding sink will be set to the `HRF` default (`stdout`).

@@ -28,13 +28,33 @@
 </h3></div></div></div>
 <p>
         The interface to the WebSocket implementation is a single template class
-        <a class="link" href="../ref/boost__beast__websocket__stream.html" title="websocket::stream"><code class="computeroutput"><span class="identifier">stream</span></code></a>
-        which wraps an existing network transport object or other type of octet oriented
-        stream. The wrapped object is called the "next layer" and must
-        meet the requirements of <a class="link" href="../concepts/streams.html#beast.concepts.streams.SyncStream"><span class="bold"><strong>SyncStream</strong></span></a> if synchronous operations are performed,
+        <a class="link" href="../ref/boost__beast__websocket__stream.html" title="websocket::stream"><code class="computeroutput"><span class="identifier">stream</span></code></a>:
+      </p>
+<pre class="programlisting"><span class="comment">// A WebSocket stream</span>
+<span class="keyword">template</span><span class="special">&lt;</span>
+    <span class="keyword">class</span> <span class="identifier">NextLayer</span><span class="special">,</span>
+    <span class="keyword">bool</span> <span class="identifier">deflateSupported</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">stream</span><span class="special">;</span>
+</pre>
+<p>
+        An instance of the stream wraps an existing network transport object or other
+        type of octet oriented stream. The wrapped object is called the "next
+        layer" and must meet the requirements of <a class="link" href="../concepts/streams.html#beast.concepts.streams.SyncStream"><span class="bold"><strong>SyncStream</strong></span></a> if synchronous operations are performed,
         <a class="link" href="../concepts/streams.html#beast.concepts.streams.AsyncStream"><span class="bold"><strong>AsyncStream</strong></span></a>
         if asynchronous operations are performed, or both. Any arguments supplied
-        during construction of the stream wrapper are passed to next layer's constructor.
+        to the constructor of the stream wrapper are forwarded to next layer's constructor.
+      </p>
+<p>
+        The value of <code class="computeroutput"><span class="identifier">deflateSupported</span></code>
+        determines if the stream will support (but not require) the permessage-deflate
+        extension (<a href="https://tools.ietf.org/html/rfc7692" target="_top">rfc7692</a>)
+        negotiation during handshaking. This extension allows messages to be optionally
+        automatically compressed using the deflate algorithm prior to transmission.
+        When this boolean value is <code class="computeroutput"><span class="keyword">false</span></code>,
+        the extension is disabled. Applications which do not intend to use the permessage-deflate
+        extension may set the value to <code class="computeroutput"><span class="keyword">false</span></code>
+        to enjoy a reduction in the size of the compiled output, as the necessary
+        compression code (included with Beast) will not be compiled in.
       </p>
 <p>
         Here we declare a websocket stream over a TCP/IP socket with ownership of
@@ -103,6 +123,14 @@
           being performed may result in undefined behavior.
         </p></td></tr>
 </table></div>
+<h5>
+<a name="beast.using_websocket.creating_streams.h2"></a>
+        <span class="phrase"><a name="beast.using_websocket.creating_streams.non_blocking_mode"></a></span><a class="link" href="creating_streams.html#beast.using_websocket.creating_streams.non_blocking_mode">Non-Blocking
+        Mode</a>
+      </h5>
+<p>
+        Please note that websocket streams do not support non-blocking modes.
+      </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

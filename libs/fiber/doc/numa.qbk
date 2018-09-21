@@ -35,6 +35,10 @@ local.
 Because only a subset of the NUMA-functionality is exposed by several operating systems,
 Boost.Fiber provides only a minimalistic NUMA API.
 
+[important In order to enable NUMA support, b2 property `numa=on` must be specified
+and linked against additional library `libboost_fiber_numa.so`.]
+[important MinGW using pthread implementation is not supported on Windows.]
+
 [table Supported functionality/operating systems
     [
         []
@@ -173,15 +177,16 @@ memory access).
     std::vector< node > topology();
 
     void pin_thread( std::uint32_t);
+    void pin_thread( std::uint32_t, std::thread::native_handle_type);
 
     }}}
 
-    #include <boost/fiber/algo/numa/work_stealing.hpp>
+    #include <boost/fiber/numa/algo/work_stealing.hpp>
 
     namespace boost {
     namespace fibers {
-    namespace algo {
     namespace numa {
+    namespace algo {
 
     class work_stealing;
 
@@ -275,14 +280,15 @@ system (each element represents a NUMA-node).]]
     namespace fibers {
     namespace numa {
 
-    void pin_thread( std::uint32_t);
+    void pin_thread( std::uint32_t cpu_id);
+    void pin_thread( std::uint32_t cpu_id, std::thread::native_handle_type h);
 
     }}}
 
 [variablelist
-[[Effects:] [Pins `this thread` to the logical cpu with ID `cpu_id`, e.g.
-the operating system scheduler will not migrate the thread to another
-logical cpu.]]
+[[Effects:] [First version pins `this thread` to the logical cpu with ID `cpu_id`, e.g.
+the operating system scheduler will not migrate the thread to another logical cpu.
+The second variant pins the thread with the native ID `h` to logical cpu with ID `cpu_id`.]]
 [[Throws:] [`system_error`]]
 ]
 
@@ -297,12 +303,12 @@ If no ready fibers can be stolen from the local NUMA-node, the algorithm selects
 schedulers running on other NUMA-nodes (remote memory access).[br]
 The victim scheduler (from which a ready fiber is stolen) is selected at random.
 
-        #include <boost/fiber/algo/numa/work_stealing.hpp>
+        #include <boost/fiber/numa/algo/work_stealing.hpp>
 
         namespace boost {
         namespace fibers {
-        namespace algo {
         namespace numa {
+        namespace algo {
 
         class work_stealing : public algorithm {
         public:

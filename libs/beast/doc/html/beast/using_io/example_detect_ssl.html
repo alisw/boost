@@ -40,6 +40,8 @@
         the detection algorithm to be used elsewhere.
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">beast</span><span class="special">/</span><span class="identifier">core</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">asio</span><span class="special">/</span><span class="identifier">coroutine</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">asio</span><span class="special">/</span><span class="identifier">executor_work_guard</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">logic</span><span class="special">/</span><span class="identifier">tribool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">/** Return `true` if a buffer contains a TLS/SSL client handshake.
@@ -228,8 +230,8 @@
     @param buffer The dynamic buffer to use. This type must meet the
     requirements of @b DynamicBuffer.
 
-    @param handler The handler to be called when the request
-    completes. Copies will be made of the handler as required.
+    @param handler Invoked when the operation completes.
+    The handler may be moved or copied as needed.
     The equivalent function signature of the handler must be:
     @code
     void handler(
@@ -339,23 +341,30 @@
         Now we will declare our composed operation. There is a considerable amount
         of necessary boilerplate to get this right, but the result is worth the effort.
       </p>
-<pre class="programlisting"><span class="comment">// Read from a stream to invoke is_tls_handshake asynchronously</span>
+<pre class="programlisting"><span class="comment">// Read from a stream to invoke is_tls_handshake asynchronously.</span>
+<span class="comment">// This will be implemented using Asio's "stackless coroutines"</span>
+<span class="comment">// which are based on macros forming a switch statement. The</span>
+<span class="comment">// operation is derived from `coroutine` for this reason.</span>
 <span class="comment">//</span>
 <span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">AsyncReadStream</span><span class="special">,</span>
     <span class="keyword">class</span> <span class="identifier">DynamicBuffer</span><span class="special">,</span>
     <span class="keyword">class</span> <span class="identifier">Handler</span><span class="special">&gt;</span>
-<span class="keyword">class</span> <span class="identifier">detect_ssl_op</span>
+<span class="keyword">class</span> <span class="identifier">detect_ssl_op</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">coroutine</span>
 <span class="special">{</span>
     <span class="comment">// This composed operation has trivial state,</span>
     <span class="comment">// so it is just kept inside the class and can</span>
     <span class="comment">// be cheaply copied as needed by the implementation.</span>
 
-    <span class="comment">// Indicates what step in the operation's state</span>
-    <span class="comment">// machine to perform next, starting from zero.</span>
-    <span class="keyword">int</span> <span class="identifier">step_</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
-
     <span class="identifier">AsyncReadStream</span><span class="special">&amp;</span> <span class="identifier">stream_</span><span class="special">;</span>
+
+    <span class="comment">// Boost.Asio and the Networking TS require an object of</span>
+    <span class="comment">// type executor_work_guard&lt;T&gt;, where T is the type of</span>
+    <span class="comment">// executor returned by the stream's get_executor function,</span>
+    <span class="comment">// to persist for the duration of the asynchronous operation.</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">executor_work_guard</span><span class="special">&lt;</span>
+        <span class="keyword">decltype</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">declval</span><span class="special">&lt;</span><span class="identifier">AsyncReadStream</span><span class="special">&amp;&gt;().</span><span class="identifier">get_executor</span><span class="special">())&gt;</span> <span class="identifier">work_</span><span class="special">;</span>
+
     <span class="identifier">DynamicBuffer</span><span class="special">&amp;</span> <span class="identifier">buffer_</span><span class="special">;</span>
     <span class="identifier">Handler</span> <span class="identifier">handler_</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">tribool</span> <span class="identifier">result_</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
@@ -373,6 +382,7 @@
         <span class="identifier">DynamicBuffer</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">,</span>
         <span class="identifier">DeducedHandler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span><span class="special">)</span>
         <span class="special">:</span> <span class="identifier">stream_</span><span class="special">(</span><span class="identifier">stream</span><span class="special">)</span>
+        <span class="special">,</span> <span class="identifier">work_</span><span class="special">(</span><span class="identifier">stream</span><span class="special">.</span><span class="identifier">get_executor</span><span class="special">())</span>
         <span class="special">,</span> <span class="identifier">buffer_</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">)</span>
         <span class="special">,</span> <span class="identifier">handler_</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">DeducedHandler</span><span class="special">&gt;(</span><span class="identifier">handler</span><span class="special">))</span>
     <span class="special">{</span>
@@ -390,7 +400,7 @@
     <span class="identifier">allocator_type</span>
     <span class="identifier">get_allocator</span><span class="special">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span>
     <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">get_associated_allocator</span><span class="special">(</span><span class="identifier">handler_</span><span class="special">);</span>
+        <span class="keyword">return</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">get_associated_allocator</span><span class="special">)(</span><span class="identifier">handler_</span><span class="special">);</span>
     <span class="special">}</span>
 
     <span class="comment">// Executor hook. This is Asio's system for customizing the</span>
@@ -404,29 +414,7 @@
 
     <span class="identifier">executor_type</span> <span class="identifier">get_executor</span><span class="special">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span>
     <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">get_associated_executor</span><span class="special">(</span><span class="identifier">handler_</span><span class="special">,</span> <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">get_executor</span><span class="special">());</span>
-    <span class="special">}</span>
-
-    <span class="comment">// Determines if the next asynchronous operation represents a</span>
-    <span class="comment">// continuation of the asynchronous flow of control associated</span>
-    <span class="comment">// with the final handler. If we are past step two, it means</span>
-    <span class="comment">// we have performed an asynchronous operation therefore any</span>
-    <span class="comment">// subsequent operation would represent a continuation.</span>
-    <span class="comment">// Otherwise, we propagate the handler's associated value of</span>
-    <span class="comment">// is_continuation. Getting this right means the implementation</span>
-    <span class="comment">// may schedule the invokation of the invoked functions more</span>
-    <span class="comment">// efficiently.</span>
-    <span class="comment">//</span>
-    <span class="keyword">friend</span> <span class="keyword">bool</span> <span class="identifier">asio_handler_is_continuation</span><span class="special">(</span><span class="identifier">detect_ssl_op</span><span class="special">*</span> <span class="identifier">op</span><span class="special">)</span>
-    <span class="special">{</span>
-        <span class="comment">// This next call is structured to permit argument</span>
-        <span class="comment">// dependent lookup to take effect.</span>
-        <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">asio_handler_is_continuation</span><span class="special">;</span>
-
-        <span class="comment">// Always use std::addressof to pass the pointer to the handler,</span>
-        <span class="comment">// otherwise an unwanted overload of operator&amp; may be called instead.</span>
-        <span class="keyword">return</span> <span class="identifier">op</span><span class="special">-&gt;</span><span class="identifier">step_</span> <span class="special">&gt;</span> <span class="number">2</span> <span class="special">||</span>
-            <span class="identifier">asio_handler_is_continuation</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">addressof</span><span class="special">(</span><span class="identifier">op</span><span class="special">-&gt;</span><span class="identifier">handler_</span><span class="special">));</span>
+        <span class="keyword">return</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">get_associated_executor</span><span class="special">)(</span><span class="identifier">handler_</span><span class="special">,</span> <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">get_executor</span><span class="special">());</span>
     <span class="special">}</span>
 
     <span class="comment">// Our main entry point. This will get called as our</span>
@@ -458,15 +446,14 @@
 <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">beast</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">beast</span><span class="special">;</span>
 
-    <span class="comment">// Execute the state machine</span>
-    <span class="keyword">switch</span><span class="special">(</span><span class="identifier">step_</span><span class="special">)</span>
+    <span class="comment">// This introduces the scope of the stackless coroutine</span>
+    <span class="identifier">BOOST_ASIO_CORO_REENTER</span><span class="special">(*</span><span class="keyword">this</span><span class="special">)</span>
     <span class="special">{</span>
-    <span class="comment">// Initial state</span>
-    <span class="keyword">case</span> <span class="number">0</span><span class="special">:</span>
-        <span class="comment">// See if we can detect the handshake</span>
+        <span class="comment">// There could already be data in the buffer</span>
+        <span class="comment">// so we do this first, before reading from the stream.</span>
         <span class="identifier">result_</span> <span class="special">=</span> <span class="identifier">is_ssl_handshake</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
 
-        <span class="comment">// If there's a result, call the handler</span>
+        <span class="comment">// If we got an answer, return it</span>
         <span class="keyword">if</span><span class="special">(!</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">indeterminate</span><span class="special">(</span><span class="identifier">result_</span><span class="special">))</span>
         <span class="special">{</span>
             <span class="comment">// We need to invoke the handler, but the guarantee</span>
@@ -476,63 +463,51 @@
             <span class="comment">// `bind_handler` lets us bind arguments in a safe way</span>
             <span class="comment">// that preserves the type customization hooks of the</span>
             <span class="comment">// original handler.</span>
-            <span class="identifier">step_</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
-            <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">post</span><span class="special">(</span>
+            <span class="identifier">BOOST_ASIO_CORO_YIELD</span>
+            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">post</span><span class="special">(</span>
                 <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">get_executor</span><span class="special">(),</span>
                 <span class="identifier">beast</span><span class="special">::</span><span class="identifier">bind_handler</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">),</span> <span class="identifier">ec</span><span class="special">,</span> <span class="number">0</span><span class="special">));</span>
         <span class="special">}</span>
-
-        <span class="comment">// The algorithm should never need more than 4 bytes</span>
-        <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;</span> <span class="number">4</span><span class="special">);</span>
-
-        <span class="identifier">step_</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
-
-    <span class="identifier">do_read</span><span class="special">:</span>
-        <span class="comment">// We need more bytes, but no more than four total.</span>
-        <span class="keyword">return</span> <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">read_size</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">,</span> <span class="number">1536</span><span class="special">)),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>
-
-    <span class="keyword">case</span> <span class="number">1</span><span class="special">:</span>
-        <span class="comment">// Call the handler</span>
-        <span class="keyword">break</span><span class="special">;</span>
-
-    <span class="keyword">case</span> <span class="number">2</span><span class="special">:</span>
-        <span class="comment">// Set this so that asio_handler_is_continuation knows that</span>
-        <span class="comment">// the next asynchronous operation represents a continuation</span>
-        <span class="comment">// of the initial asynchronous operation.</span>
-        <span class="identifier">step_</span> <span class="special">=</span> <span class="number">3</span><span class="special">;</span>
-        <span class="identifier">BOOST_FALLTHROUGH</span><span class="special">;</span>
-
-    <span class="keyword">case</span> <span class="number">3</span><span class="special">:</span>
-        <span class="keyword">if</span><span class="special">(</span><span class="identifier">ec</span><span class="special">)</span>
+        <span class="keyword">else</span>
         <span class="special">{</span>
-            <span class="comment">// Deliver the error to the handler</span>
-            <span class="identifier">result_</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
+            <span class="comment">// Loop until an error occurs or we get a definitive answer</span>
+            <span class="keyword">for</span><span class="special">(;;)</span>
+            <span class="special">{</span>
+                <span class="comment">// The algorithm should never need more than 4 bytes</span>
+                <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;</span> <span class="number">4</span><span class="special">);</span>
 
-            <span class="comment">// We don't need bind_handler here because we were invoked</span>
-            <span class="comment">// as a result of an intermediate asynchronous operation.</span>
-            <span class="keyword">break</span><span class="special">;</span>
+                <span class="identifier">BOOST_ASIO_CORO_YIELD</span>
+                <span class="special">{</span>
+                    <span class="comment">// Prepare the buffer's output area.</span>
+                    <span class="keyword">auto</span> <span class="keyword">const</span> <span class="identifier">mutable_buffer</span> <span class="special">=</span> <span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">read_size</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">,</span> <span class="number">1536</span><span class="special">));</span>
+
+                    <span class="comment">// Try to fill our buffer by reading from the stream</span>
+                    <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">mutable_buffer</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>
+                <span class="special">}</span>
+
+                <span class="comment">// Check for an error</span>
+                <span class="keyword">if</span><span class="special">(</span><span class="identifier">ec</span><span class="special">)</span>
+                    <span class="keyword">break</span><span class="special">;</span>
+
+                <span class="comment">// Commit what we read into the buffer's input area.</span>
+                <span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">bytes_transferred</span><span class="special">);</span>
+
+                <span class="comment">// See if we can detect the handshake</span>
+                <span class="identifier">result_</span> <span class="special">=</span> <span class="identifier">is_ssl_handshake</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
+
+                <span class="comment">// If it is detected, call the handler</span>
+                <span class="keyword">if</span><span class="special">(!</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">indeterminate</span><span class="special">(</span><span class="identifier">result_</span><span class="special">))</span>
+                <span class="special">{</span>
+                    <span class="comment">// We don't need bind_handler here because we were invoked</span>
+                    <span class="comment">// as a result of an intermediate asynchronous operation.</span>
+                    <span class="keyword">break</span><span class="special">;</span>
+                <span class="special">}</span>
+            <span class="special">}</span>
         <span class="special">}</span>
 
-        <span class="comment">// Commit the bytes that we read</span>
-        <span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">bytes_transferred</span><span class="special">);</span>
-
-        <span class="comment">// See if we can detect the handshake</span>
-        <span class="identifier">result_</span> <span class="special">=</span> <span class="identifier">is_ssl_handshake</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">data</span><span class="special">());</span>
-
-        <span class="comment">// If it is detected, call the handler</span>
-        <span class="keyword">if</span><span class="special">(!</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">indeterminate</span><span class="special">(</span><span class="identifier">result_</span><span class="special">))</span>
-        <span class="special">{</span>
-            <span class="comment">// We don't need bind_handler here because we were invoked</span>
-            <span class="comment">// as a result of an intermediate asynchronous operation.</span>
-            <span class="keyword">break</span><span class="special">;</span>
-        <span class="special">}</span>
-
-        <span class="comment">// Read some more</span>
-        <span class="keyword">goto</span> <span class="identifier">do_read</span><span class="special">;</span>
+        <span class="comment">// Invoke the final handler.</span>
+        <span class="identifier">handler_</span><span class="special">(</span><span class="identifier">ec</span><span class="special">,</span> <span class="identifier">result_</span><span class="special">);</span>
     <span class="special">}</span>
-
-    <span class="comment">// Invoke the final handler.</span>
-    <span class="identifier">handler_</span><span class="special">(</span><span class="identifier">ec</span><span class="special">,</span> <span class="identifier">result_</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>

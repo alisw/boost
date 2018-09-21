@@ -179,7 +179,10 @@ and illustrate the implementation of advanced features.
         [[itemized_list
             [HTTP pipelining]
             [Asynchronous timeouts]
-            [Dual protocols: HTTP and WebSocket]]]
+            [Dual protocols: HTTP and WebSocket]
+            [WebSocket use idle ping for timeout]
+            [Clean exit via SIGINT (CTRL+C) or SIGTERM (kill)]
+        ]]
         [[example_src example/advanced/server/advanced_server.cpp advanced_server.cpp]]
 ][
         [Advanced, flex (plain + SSL)]
@@ -187,7 +190,10 @@ and illustrate the implementation of advanced features.
             [HTTP pipelining]
             [Asynchronous timeouts]
             [Dual protocols: HTTP and WebSocket]
-            [Flexible ports; plain and SSL on the same port]]]
+            [WebSocket use idle ping for timeout]
+            [Flexible ports: plain and SSL on the same port]
+            [Clean exit via SIGINT (CTRL+C) or SIGTERM (kill)]
+        ]]
         [[example_src example/advanced/server-flex/advanced_server_flex.cpp advanced_server_flex.cpp]]
 ]]
 
@@ -227,13 +233,6 @@ listed here along with a description of their use:
         SSL server examples. It has not been validated by a Certificate
         Authority ("CA") so connecting to an example HTTP server using
         a browser may generate security warnings.
-    ]
-][
-    [[source_file example/common/ssl_stream.hpp]]
-    [
-        The `ssl_stream` is a replacement for __ssl_stream__ which
-        supports construction from a moved-froms ocket and is also
-        itself move constructible.
     ]
 ]]
 

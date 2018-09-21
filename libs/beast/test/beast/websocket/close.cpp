@@ -12,6 +12,9 @@
 
 #include "test.hpp"
 
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/strand.hpp>
+
 namespace boost {
 namespace beast {
 namespace websocket {
@@ -108,7 +111,7 @@ public:
             catch(system_error const& se)
             {
                 BEAST_EXPECTS(
-                    se.code() == error::failed,
+                    se.code() == error::bad_masked_frame,
                     se.code().message());
             }
         }
@@ -128,7 +131,7 @@ public:
             catch(system_error const& se)
             {
                 BEAST_EXPECTS(
-                    se.code() == error::failed,
+                    se.code() == error::bad_close_size,
                     se.code().message());
             }
         }
@@ -171,7 +174,7 @@ public:
         using boost::asio::buffer;
 
         // suspend on ping
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -187,7 +190,7 @@ public:
                         BOOST_THROW_EXCEPTION(
                             system_error{ec});
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             BEAST_EXPECT(count == 0);
             ws.async_close({},
                 [&](error_code ec)
@@ -203,7 +206,7 @@ public:
         });
 
         // suspend on write
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -220,7 +223,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(n == 1);
                 });
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             BEAST_EXPECT(count == 0);
             ws.async_close({},
                 [&](error_code ec)
@@ -236,7 +239,7 @@ public:
         });
 
         // suspend on read ping + message
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -256,7 +259,7 @@ public:
                         BOOST_THROW_EXCEPTION(
                             system_error{ec});
                 });
-            while(! ws.wr_block_)
+            while(! ws.wr_block_.is_locked())
             {
                 ioc.run_one();
                 if(! BEAST_EXPECT(! ioc.stopped()))
@@ -277,7 +280,7 @@ public:
         });
 
         // suspend on read bad message
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -292,12 +295,12 @@ public:
             ws.async_read(b,
                 [&](error_code ec, std::size_t)
                 {
-                    if(ec != error::failed)
+                    if(ec != error::bad_control_fragment)
                         BOOST_THROW_EXCEPTION(
                             system_error{ec});
                     BEAST_EXPECT(++count == 1);
                 });
-            while(! ws.wr_block_)
+            while(! ws.wr_block_.is_locked())
             {
                 ioc.run_one();
                 if(! BEAST_EXPECT(! ioc.stopped()))
@@ -318,7 +321,7 @@ public:
         });
 
         // suspend on read close #1
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -338,7 +341,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(++count == 1);
                 });
-            while(! ws.wr_block_)
+            while(! ws.wr_block_.is_locked())
             {
                 ioc.run_one();
                 if(! BEAST_EXPECT(! ioc.stopped()))
@@ -359,7 +362,7 @@ public:
         });
 
         // teardown on received close
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -403,7 +406,7 @@ public:
         });
 
         // check for deadlock
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -433,7 +436,7 @@ public:
                             system_error{ec});
                     BEAST_EXPECT(++count == 3);
                 });
-            BEAST_EXPECT(ws.rd_block_);
+            BEAST_EXPECT(ws.rd_block_.is_locked());
             ws.async_close({},
                 [&](error_code ec)
                 {
@@ -443,14 +446,14 @@ public:
                     BEAST_EXPECT(++count == 2);
                 });
             BEAST_EXPECT(ws.is_open());
-            BEAST_EXPECT(ws.wr_block_);
+            BEAST_EXPECT(ws.wr_block_.is_locked());
             BEAST_EXPECT(count == 0);
             ioc.run();
             BEAST_EXPECT(count == 3);
         });
 
         // Four-way: close, read, write, ping
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -498,7 +501,7 @@ public:
         });
 
         // Four-way: read, write, ping, close
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -518,7 +521,7 @@ public:
                             system_error{ec});
                     }
                     if(! ec)
-                        BEAST_EXPECT(to_string(b.data()) == s);
+                        BEAST_EXPECT(buffers_to_string(b.data()) == s);
                     ++count;
                     if(count == 4)
                         BEAST_EXPECT(
@@ -559,7 +562,7 @@ public:
         });
 
         // Four-way: ping, read, write, close
-        doFailLoop([&](test::fail_counter& fc)
+        doFailLoop([&](test::fail_count& fc)
         {
             echo_server es{log};
             boost::asio::io_context ioc;
@@ -623,11 +626,42 @@ public:
     }
 
     void
+    testMoveOnly()
+    {
+        boost::asio::io_context ioc;
+        stream<test::stream> ws{ioc};
+        ws.async_close({}, move_only_handler{});
+    }
+
+    struct copyable_handler
+    {
+        template<class... Args>
+        void
+        operator()(Args&&...) const
+        {
+        }
+    };
+
+    void
+    testAsioHandlerInvoke()
+    {
+        // make sure things compile, also can set a
+        // breakpoint in asio_handler_invoke to make sure
+        // it is instantiated.
+        boost::asio::io_context ioc;
+        boost::asio::io_service::strand s{ioc};
+        stream<test::stream> ws{ioc};
+        ws.async_close({}, s.wrap(copyable_handler{}));
+    }
+
+    void
     run() override
     {
         testClose();
         testSuspend();
         testContHook();
+        testMoveOnly();
+        testAsioHandlerInvoke();
     }
 };
 

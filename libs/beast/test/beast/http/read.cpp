@@ -18,10 +18,11 @@
 #include <boost/beast/http/dynamic_body.hpp>
 #include <boost/beast/http/parser.hpp>
 #include <boost/beast/http/string_body.hpp>
-#include <boost/beast/test/stream.hpp>
+#include <boost/beast/experimental/test/stream.hpp>
 #include <boost/beast/test/yield_to.hpp>
 #include <boost/beast/unit_test/suite.hpp>
-#include <boost/asio/spawn.hpp>
+#include <boost/asio/io_service.hpp>
+#include <boost/asio/strand.hpp>
 #include <atomic>
 
 namespace boost {
@@ -47,10 +48,10 @@ public:
             multi_buffer b;
             b.commit(buffer_copy(
                 b.prepare(len), buffer(s, len)));
-            test::fail_counter fc(n);
+            test::fail_count fc(n);
             test::stream ts{ioc_, fc};
             test_parser<isRequest> p(fc);
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             ts.close_remote();
             read(ts, b, p, ec);
             if(! ec)
@@ -63,11 +64,11 @@ public:
             multi_buffer b;
             b.commit(buffer_copy(
                 b.prepare(pre), buffer(s, pre)));
-            test::fail_counter fc(n);
+            test::fail_count fc(n);
             test::stream ts{ioc_, fc,
                 std::string(s + pre, len - pre)};
             test_parser<isRequest> p(fc);
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             ts.close_remote();
             read(ts, b, p, ec);
             if(! ec)
@@ -79,10 +80,10 @@ public:
             multi_buffer b;
             b.commit(buffer_copy(
                 b.prepare(len), buffer(s, len)));
-            test::fail_counter fc(n);
+            test::fail_count fc(n);
             test::stream ts{ioc_, fc};
             test_parser<isRequest> p(fc);
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             ts.close_remote();
             async_read(ts, b, p, do_yield[ec]);
             if(! ec)
@@ -94,10 +95,10 @@ public:
             multi_buffer b;
             b.commit(buffer_copy(
                 b.prepare(len), buffer(s, len)));
-            test::fail_counter fc(n);
+            test::fail_count fc(n);
             test::stream ts{ioc_, fc};
             test_parser<isRequest> p(fc);
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             ts.close_remote();
             async_read_header(ts, b, p, do_yield[ec]);
             if(! ec)
@@ -110,11 +111,11 @@ public:
             multi_buffer b;
             b.commit(buffer_copy(
                 b.prepare(pre), buffer(s, pre)));
-            test::fail_counter fc(n);
+            test::fail_count fc(n);
             test::stream ts(ioc_, fc,
                 std::string{s + pre, len - pre});
             test_parser<isRequest> p(fc);
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             ts.close_remote();
             async_read(ts, b, p, do_yield[ec]);
             if(! ec)
@@ -177,7 +178,7 @@ public:
                 "10\r\n"
                 "****************\r\n"
                 "0\r\n\r\n";
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             flat_static_buffer<10> b;
             request<string_body> req;
             read(c, b, req, ec);
@@ -253,7 +254,7 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream c{ioc_, fc,
                 "GET / HTTP/1.1\r\n"
                 "Host: localhost\r\n"
@@ -276,7 +277,7 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream ts{ioc_, fc,
                 "GET / HTTP/1.1\r\n"
                 "Host: localhost\r\n"
@@ -285,7 +286,7 @@ public:
                 "\r\n"
             };
             request<dynamic_body> m;
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             multi_buffer b;
             read(ts, b, m, ec);
             if(! ec)
@@ -295,7 +296,7 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream c{ioc_, fc,
                 "GET / HTTP/1.1\r\n"
                 "Host: localhost\r\n"
@@ -304,7 +305,7 @@ public:
                 "\r\n"
             };
             request<dynamic_body> m;
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             multi_buffer b;
             async_read(c, b, m, do_yield[ec]);
             if(! ec)
@@ -314,7 +315,7 @@ public:
 
         for(n = 0; n < limit; ++n)
         {
-            test::fail_counter fc{n};
+            test::fail_count fc{n};
             test::stream c{ioc_, fc,
                 "GET / HTTP/1.1\r\n"
                 "Host: localhost\r\n"
@@ -323,7 +324,7 @@ public:
                 "\r\n"
             };
             request_parser<dynamic_body> m;
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             multi_buffer b;
             async_read_some(c, b, m, do_yield[ec]);
             if(! ec)
@@ -434,7 +435,7 @@ public:
         for(std::size_t n = 1; n < s.size() - 1; ++n)
         {
             Parser p;
-            error_code ec = test::error::fail_error;
+            error_code ec = test::error::test_failure;
             flat_buffer b;
             test::stream ts{ioc_};
             ostream(ts.buffer()) << s;
@@ -480,6 +481,47 @@ public:
             });
     }
 
+    struct copyable_handler
+    {
+        template<class... Args>
+        void
+        operator()(Args&&...) const
+        {
+        }
+    };
+
+    void
+    testAsioHandlerInvoke()
+    {
+        // make sure things compile, also can set a
+        // breakpoint in asio_handler_invoke to make sure
+        // it is instantiated.
+        {
+            boost::asio::io_context ioc;
+            boost::asio::io_service::strand s{ioc};
+            test::stream ts{ioc};
+            flat_buffer b;
+            request_parser<dynamic_body> p;
+            async_read_some(ts, b, p, s.wrap(copyable_handler{}));
+        }
+        {
+            boost::asio::io_context ioc;
+            boost::asio::io_service::strand s{ioc};
+            test::stream ts{ioc};
+            flat_buffer b;
+            request_parser<dynamic_body> p;
+            async_read(ts, b, p, s.wrap(copyable_handler{}));
+        }
+        {
+            boost::asio::io_context ioc;
+            boost::asio::io_service::strand s{ioc};
+            test::stream ts{ioc};
+            flat_buffer b;
+            request<dynamic_body> m;
+            async_read(ts, b, m, s.wrap(copyable_handler{}));
+        }
+    }
+
     void
     run() override
     {
@@ -502,6 +544,7 @@ public:
         testIoService();
         testRegression430();
         testReadGrind();
+        testAsioHandlerInvoke();
     }
 };
 

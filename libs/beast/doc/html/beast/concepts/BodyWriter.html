@@ -98,9 +98,14 @@
             type <code class="computeroutput"><span class="identifier">W</span></code>.
           </li>
 <li class="listitem">
-            <code class="computeroutput"><span class="identifier">m</span></code> denotes a possibly
-            const value of type <code class="computeroutput"><span class="identifier">message</span><span class="special">&amp;</span></code> where <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="keyword">decltype</span><span class="special">(</span><span class="identifier">m</span><span class="special">.</span><span class="identifier">body</span><span class="special">),</span> <span class="identifier">Body</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&gt;:</span><span class="identifier">value</span>
-            <span class="special">==</span> <span class="keyword">true</span></code>.
+            <code class="computeroutput"><span class="identifier">h</span></code> denotes a const value
+            of type <code class="computeroutput"><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span>
+            <span class="identifier">Fields</span><span class="special">&gt;</span>
+            <span class="keyword">const</span><span class="special">&amp;</span></code>.
+          </li>
+<li class="listitem">
+            <code class="computeroutput"><span class="identifier">v</span></code> denotes a possibly
+            const value of type <code class="computeroutput"><span class="identifier">Body</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">&amp;</span></code>.
           </li>
 <li class="listitem">
             <code class="computeroutput"><span class="identifier">ec</span></code> is a value of type
@@ -155,34 +160,36 @@
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="identifier">W</span><span class="special">{</span><span class="identifier">m</span><span class="special">};</span></code>
+                  <code class="computeroutput"><span class="identifier">W</span><span class="special">{</span><span class="identifier">h</span><span class="special">,</span><span class="identifier">v</span><span class="special">};</span></code>
                 </p>
               </td>
 <td>
               </td>
 <td>
                 <p>
-                  Constructible from <code class="computeroutput"><span class="identifier">m</span></code>.
-                  The lifetime of <code class="computeroutput"><span class="identifier">m</span></code>
-                  is guaranteed to end no earlier than after the <code class="computeroutput"><span class="identifier">W</span></code>
-                  is destroyed. The writer shall not access the contents of <code class="computeroutput"><span class="identifier">m</span></code> before the first call to <code class="computeroutput"><span class="identifier">init</span></code>, permitting lazy construction
-                  of the message.
+                  Constructible from <code class="computeroutput"><span class="identifier">h</span></code>
+                  and <code class="computeroutput"><span class="identifier">v</span></code>. The lifetime
+                  of <code class="computeroutput"><span class="identifier">h</span></code> and <code class="computeroutput"><span class="identifier">v</span></code> are guaranteed to end no earlier
+                  than after the <code class="computeroutput"><span class="identifier">W</span></code>
+                  is destroyed. The writer shall not access the contents of <code class="computeroutput"><span class="identifier">h</span></code> or <code class="computeroutput"><span class="identifier">v</span></code>
+                  before the first call to <code class="computeroutput"><span class="identifier">init</span></code>,
+                  permitting lazy construction of the message.
                 </p>
                 <p>
-                  The constructor may optionally require that <code class="computeroutput"><span class="identifier">m</span></code>
-                  is const, which has these consequences:
-                </p>
-                <p>
-                  * If <code class="computeroutput"><span class="identifier">W</span></code> requires
-                  that <code class="computeroutput"><span class="identifier">m</span></code> is a const
-                  reference, then serializers constructed for messages with this
-                  body type will also require a const reference to a message, otherwise:
+                  The constructor may optionally require that <code class="computeroutput"><span class="identifier">h</span></code>
+                  and <code class="computeroutput"><span class="identifier">v</span></code> are <code class="computeroutput"><span class="keyword">const</span></code> references, with these consequences:
                 </p>
                 <p>
                   * If <code class="computeroutput"><span class="identifier">W</span></code> requires
-                  that <code class="computeroutput"><span class="identifier">m</span></code> is a non-const
-                  reference, then serializers constructed for messages with this
-                  body type will aso require a non-const reference to a message.
+                  that <code class="computeroutput"><span class="identifier">h</span></code> and <code class="computeroutput"><span class="identifier">v</span></code> are const references, then
+                  the corresponding serializer constructors for messages with this
+                  body type will will accept a const reference to a message, otherwise:
+                </p>
+                <p>
+                  * If <code class="computeroutput"><span class="identifier">W</span></code> requires
+                  that <code class="computeroutput"><span class="identifier">h</span></code> and <code class="computeroutput"><span class="identifier">v</span></code> are non-const references, then
+                  the corresponding serializer constructors for messages with this
+                  body type will require a non-const reference to a message.
                 </p>
               </td>
 </tr>
@@ -250,11 +257,12 @@
 
     <span class="comment">/** Construct the writer.
 
-        @param msg The message whose body is to be serialized.
+        @param h The header for the message being serialized
+
+        @param body The body being serialized
     */</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Body</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
-    <span class="keyword">explicit</span>
-    <span class="identifier">BodyWriter</span><span class="special">(</span><span class="identifier">message</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Body</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">msg</span><span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Fields</span><span class="special">&gt;</span>
+    <span class="identifier">BodyWriter</span><span class="special">(</span><span class="identifier">header</span><span class="special">&lt;</span><span class="identifier">isRequest</span><span class="special">,</span> <span class="identifier">Fields</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">h</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">body</span><span class="special">);</span>
 
     <span class="comment">/** Initialize the writer.
 

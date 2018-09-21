@@ -48,7 +48,6 @@ std::cout &lt;&lt; ti.pretty_name();  // Outputs 'Derived'
 
 
 </namespace>
-
 </namespace>
 <macro name="BOOST_TYPE_INDEX_REGISTER_CLASS"><description><para>BOOST_TYPE_INDEX_REGISTER_CLASS is used to help to emulate RTTI. Put this macro into the public section of polymorphic class to allow runtime type detection.</para><para>Depending on the typeid() availability this macro will expand to nothing or to virtual helper function <computeroutput>virtual const type_info&amp; boost_type_info_type_id_runtime_() const noexcept</computeroutput>.</para><para><emphasis role="bold">Example:</emphasis> <programlisting language="c++">class A {
 public:
@@ -136,7 +135,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 
 
 </namespace>
-
 </namespace>
 </header>
 <header name="boost/type_index/runtime_cast.hpp">
@@ -167,7 +165,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 
 </para></description><returns><para>If there exists a valid conversion from U* to T*, returns a boost::shared_ptr&lt;T&gt; that points to an address suitably offset from u. If no such conversion exists, returns boost::shared_ptr&lt;T&gt;(); </para></returns></function>
 </namespace>
-
 </namespace>
 </header>
 <header name="boost/type_index/runtime_cast/pointer_cast.hpp">
@@ -211,7 +208,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 </para></description><returns><para>If there exists a valid conversion from U const* to T const*, returns a T const* that points to an address suitably offset from u. If no such conversion exists, returns NULL. </para></returns></function>
 
 </namespace>
-
 </namespace>
 </header>
 <header name="boost/type_index/runtime_cast/reference_cast.hpp">
@@ -245,7 +241,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 
 
 </namespace>
-
 </namespace>
 </header>
 <header name="boost/type_index/runtime_cast/register_runtime_class.hpp">
@@ -269,7 +264,6 @@ See <ulink url="boost_typeindex/rtti_emulation_limitations.html">RTTI emulation 
 
 
 </namespace>
-
 </namespace>
 <macro name="BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS" kind="functionlike"><macro-parameter name="base_class_seq"><description><para>A Boost.Preprocessor sequence of the current class' direct bases, or BOOST_TYPE_INDEX_NO_BASE_CLASS if this class has no direct base classes. </para></description></macro-parameter><purpose>Macro used to make a class compatible with boost::typeindex::runtime_cast. </purpose><description><para>BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS generates a virtual function in the current class that, when combined with the supplied base class information, allows boost::typeindex::runtime_cast to accurately convert between dynamic types of instances of the current class.</para><para>BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS also adds support for boost::typeindex::type_id_runtime by including BOOST_TYPE_INDEX_REGISTER_CLASS. It is typical that these features are used together, but in the event that BOOST_TYPE_INDEX_REGISTER_CLASS is undesirable in the current class, BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST is provided.</para><para><emphasis role="bold">Example:</emphasis> <programlisting language="c++">struct base1 {
     BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
@@ -350,7 +344,6 @@ if(derived2* pb2 = boost::typeindex::runtime_cast&lt;derived2*&gt;(pb1))
 
 
 </namespace>
-
 </namespace>
 </header>
 <header name="boost/type_index/stl_type_index.hpp">
@@ -397,7 +390,6 @@ if(derived2* pb2 = boost::typeindex::runtime_cast&lt;derived2*&gt;(pb1))
 
 
 </namespace>
-
 </namespace>
 </header>
 <header name="boost/type_index/type_index_facade.hpp">
@@ -433,7 +425,7 @@ public:
 <method name="before" cv="const noexcept"><type>bool</type><parameter name="rhs"><paramtype>const Derived &amp;</paramtype></parameter><description><para><emphasis role="bold">Override:</emphasis> This function <emphasis role="bold">may</emphasis> be redefined in Derived class. Overrides <emphasis role="bold">must</emphasis> not throw. 
 </para></description><returns><para>True if rhs is greater than this. By default compares types by raw_name(). </para></returns></method>
 <method name="hash_code" cv="const noexcept"><type>std::size_t</type><description><para><emphasis role="bold">Override:</emphasis> This function <emphasis role="bold">may</emphasis> be redefined in Derived class. Overrides <emphasis role="bold">must</emphasis> not throw. 
-<note><para>Derived class header <emphasis role="bold">must</emphasis> include &lt;boost/functional/hash.hpp&gt;, <emphasis role="bold">unless</emphasis> this function is redefined in Derived class to not use boost::hash_range(). </para></note>
+<note><para>Derived class header <emphasis role="bold">must</emphasis> include &lt;boost/container_hash/hash.hpp&gt;, <emphasis role="bold">unless</emphasis> this function is redefined in Derived class to not use boost::hash_range(). </para></note>
 </para></description><returns><para>Hash code of a type. By default hashes types by raw_name(). </para></returns></method>
 </method-group>
 <method-group name="protected member functions">
@@ -474,7 +466,7 @@ public:
 <function name="hash_value"><type>std::size_t</type><template>
           <template-type-parameter name="Derived"/>
           <template-type-parameter name="TypeInfo"/>
-        </template><parameter name="lhs"><paramtype>const <classname>type_index_facade</classname>&lt; Derived, TypeInfo &gt; &amp;</paramtype></parameter><description><para>This free function is used by Boost's unordered containers. <note><para>&lt;boost/functional/hash.hpp&gt; has to be included if this function is used. </para></note>
+        </template><parameter name="lhs"><paramtype>const <classname>type_index_facade</classname>&lt; Derived, TypeInfo &gt; &amp;</paramtype></parameter><description><para>This free function is used by Boost's unordered containers. <note><para>&lt;boost/container_hash/hash.hpp&gt; has to be included if this function is used. </para></note>
 </para></description></function>
 
 
@@ -486,9 +478,6 @@ public:
 
 
 </namespace>
-<function name="hash_range"><type>std::size_t</type><template>
-          <template-type-parameter name="It"/>
-        </template><parameter name=""><paramtype>It</paramtype></parameter><parameter name=""><paramtype>It</paramtype></parameter></function>
 </namespace>
 </header>
 </library-reference>

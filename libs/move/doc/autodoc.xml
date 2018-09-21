@@ -28,6 +28,10 @@
           <template-type-parameter name="BidirIt1"/>
           <template-type-parameter name="BidirIt2"/>
         </template><parameter name="first1"><paramtype>BidirIt1</paramtype></parameter><parameter name="last1"><paramtype>BidirIt1</paramtype></parameter><parameter name="last2"><paramtype>BidirIt2</paramtype></parameter></function>
+<function name="adl_move_iter_swap"><type>void</type><template>
+          <template-type-parameter name="ForwardIt1"/>
+          <template-type-parameter name="ForwardIt2"/>
+        </template><parameter name="a"><paramtype>ForwardIt1</paramtype></parameter><parameter name="b"><paramtype>ForwardIt2</paramtype></parameter></function>
 
 
 
@@ -79,6 +83,7 @@
 <listitem><para>first: the beginning of the first sorted range.</para></listitem><listitem><para>middle: the end of the first sorted range and the beginning of the second</para></listitem><listitem><para>last: the end of the second sorted range</para></listitem><listitem><para>comp: comparison function object which returns true if the first argument is is ordered before the second.</para></listitem><listitem><para>uninitialized, uninitialized_len: raw storage starting on "uninitialized", able to hold "uninitialized_len" elements of type iterator_traits&lt;RandIt&gt;::value_type. Maximum performance is achieved when uninitialized_len is min(std::distance(first, middle), std::distance(middle, last)).</para></listitem></itemizedlist>
 </para><para><emphasis role="bold">Throws</emphasis>: If comp throws or the move constructor, move assignment or swap of the type of dereferenced RandIt throws.</para><para><emphasis role="bold">Complexity</emphasis>: Always K x O(N) comparisons and move assignments/constructors/swaps. Constant factor for comparisons and data movement is minimized when uninitialized_len is min(std::distance(first, middle), std::distance(middle, last)). Pretty good enough performance is achieved when uninitialized_len is ceil(sqrt(std::distance(first, last)))*2.</para><para><emphasis role="bold">Caution</emphasis>: Experimental implementation, not production-ready. </para></description></function>
 </namespace>
+
 
 
 
@@ -149,6 +154,7 @@
         </template><parameter name="first"><paramtype>RandIt</paramtype></parameter><parameter name="last"><paramtype>RandIt</paramtype></parameter><parameter name="comp"><paramtype>Compare</paramtype></parameter></function>
 
 </namespace>
+
 
 
 
@@ -258,6 +264,7 @@
 
 
 
+
 </namespace>
 </header>
 <header name="boost/move/algo/unique.hpp">
@@ -320,6 +327,7 @@
 
 
 
+
 </namespace>
 </header>
 <header name="boost/move/algorithm.hpp">
@@ -359,6 +367,7 @@
 
 
 
+
 </namespace>
 </header>
 <header name="boost/move/core.hpp">
@@ -370,6 +379,7 @@
       <template-type-parameter name="T"/>
     </template><data-member name="value" specifiers="static"><type>const bool</type></data-member>
 </struct>
+
 
 
 
@@ -465,6 +475,7 @@
 
 
 </namespace>
+
 
 
 
@@ -587,6 +598,7 @@
 
 
 
+
 </namespace>
 </header>
 <header name="boost/move/make_unique.hpp">
@@ -676,12 +688,14 @@
 
 
 
+
 </namespace>
 </header>
 <header name="boost/move/move.hpp">
 <para>A general library header that includes the rest of top-level headers. </para></header>
 <header name="boost/move/algo/move.hpp">
 <namespace name="boost">
+
 
 
 
@@ -722,6 +736,7 @@
       <template-type-parameter name="T"/>
     </template><description><programlisting>boost::is_nothrow_move_constructible&lt;T&gt;::value &amp;&amp; boost::is_nothrow_move_assignable&lt;T&gt;::value </programlisting></description><data-member name="value" specifiers="static"><type>const bool</type></data-member>
 </struct>
+
 
 
 
@@ -945,6 +960,7 @@
 
 
 
+
 </namespace>
 </header>
 <header name="boost/move/utility.hpp">
@@ -955,6 +971,7 @@
 <function name="move_if_noexcept"><type>rvalue_reference_or_const_lvalue_reference</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name=""><paramtype>input_reference</paramtype></parameter><description><para>This function provides a way to convert a reference into a rvalue reference in compilers with rvalue references. For other compilers converts T &amp; into <emphasis>::boost::rv&lt;T&gt; &amp;</emphasis> so that move emulation is activated. Reference would be converted to rvalue reference only if input type is nothrow move constructible or if it has no copy constructor. In all other cases const reference would be returned </para></description></function>
+
 
 
 
@@ -987,6 +1004,7 @@
 <function name="move_if_not_lvalue_reference"><type>output_reference</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name=""><paramtype>input_reference</paramtype></parameter><description><para><emphasis role="bold">Effects</emphasis>: Calls <computeroutput>boost::move</computeroutput> if <computeroutput>input_reference</computeroutput> is not a lvalue reference. Otherwise returns the reference </para></description></function>
+
 
 
 

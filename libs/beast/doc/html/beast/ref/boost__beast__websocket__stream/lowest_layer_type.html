@@ -27,20 +27,18 @@
 <a name="beast.ref.boost__beast__websocket__stream.lowest_layer_type"></a><a class="link" href="lowest_layer_type.html" title="websocket::stream::lowest_layer_type">websocket::stream::lowest_layer_type</a>
 </h5></div></div></div>
 <p>
-          <a class="indexterm" name="idp125252160"></a>
+          <a class="indexterm" name="idp150795136"></a>
 The type of the lowest layer.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__websocket__stream.lowest_layer_type.h0"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.lowest_layer_type.synopsis"></a></span><a class="link" href="lowest_layer_type.html#beast.ref.boost__beast__websocket__stream.lowest_layer_type.synopsis">Synopsis</a>
         </h6>
-<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">lowest_layer_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">get_lowest_layer</span><span class="special">&lt;</span> <span class="identifier">next_layer_type</span> <span class="special">&gt;::</span><span class="identifier">type</span><span class="special">;</span>
+<pre class="programlisting"><span class="keyword">using</span> <span class="identifier">lowest_layer_type</span> <span class="special">=</span> <span class="identifier">get_lowest_layer</span><span class="special">&lt;</span> <span class="identifier">next_layer_type</span> <span class="special">&gt;;</span>
 </pre>
 <p>
-          This will contain a nested <code class="computeroutput"><span class="identifier">type</span></code>
-          equal to <code class="computeroutput"><span class="identifier">T</span><span class="special">::</span><span class="identifier">lowest_layer_type</span></code> if it exists, else
-          <code class="computeroutput"><span class="identifier">type</span></code> will be equal to
-          <code class="computeroutput"><span class="identifier">T</span></code>.
+          This will be a type alias for <code class="computeroutput"><span class="identifier">T</span><span class="special">::</span><span class="identifier">lowest_layer_type</span></code>
+          if it exists, else it will be an alias for <code class="computeroutput"><span class="identifier">T</span></code>.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__websocket__stream.lowest_layer_type.h1"></a>
@@ -53,7 +51,7 @@ The type of the lowest layer.
 <span class="keyword">struct</span> <span class="identifier">stream_wrapper</span>
 <span class="special">{</span>
     <span class="keyword">using</span> <span class="identifier">next_layer_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">remove_reference</span><span class="special">&lt;</span><span class="identifier">Stream</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">;</span>
-    <span class="keyword">using</span> <span class="identifier">lowest_layer_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">get_lowest_layer</span><span class="special">&lt;</span><span class="identifier">stream_type</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">;</span>
+    <span class="keyword">using</span> <span class="identifier">lowest_layer_type</span> <span class="special">=</span> <span class="identifier">get_lowest_layer</span><span class="special">&lt;</span><span class="identifier">stream_type</span><span class="special">&gt;;</span>
 <span class="special">};</span>
 </pre>
 <p>
@@ -61,7 +59,7 @@ The type of the lowest layer.
         </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">using</span> <span class="identifier">is_stream_wrapper</span> <span class="special">:</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">integral_constant</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">,</span>
-    <span class="special">!</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">get_lowest_layer</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">&gt;</span> <span class="special">{};</span>
+    <span class="special">!</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">get_lowest_layer</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&gt;::</span><span class="identifier">value</span><span class="special">&gt;</span> <span class="special">{};</span>
 </pre>
 <h6>
 <a name="beast.ref.boost__beast__websocket__stream.lowest_layer_type.h2"></a>

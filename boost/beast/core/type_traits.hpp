@@ -52,7 +52,7 @@ template<class T, class Signature>
 using is_completion_handler = std::integral_constant<bool, ...>;
 #else
 using is_completion_handler = std::integral_constant<bool,
-    std::is_copy_constructible<typename std::decay<T>::type>::value &&
+    std::is_move_constructible<typename std::decay<T>::type>::value &&
     detail::is_invocable<T, Signature>::value>;
 #endif
 
@@ -118,14 +118,13 @@ struct has_get_executor : std::false_type {};
 
 template<class T>
 struct has_get_executor<T, beast::detail::void_t<decltype(
-        std::declval<T&>().get_executor(),
-    (void)0)>> : std::true_type {};
+        std::declval<T&>().get_executor())>> : std::true_type {};
 #endif
 
-/** Returns `T::lowest_layer_type` if it exists, else `T`
+/** Alias for `T::lowest_layer_type` if it exists, else `T`
 
-    This will contain a nested `type` equal to `T::lowest_layer_type`
-    if it exists, else `type` will be equal to `T`.
+    This will be a type alias for `T::lowest_layer_type`
+    if it exists, else it will be an alias for `T`.
 
     @par Example
 
@@ -136,7 +135,7 @@ struct has_get_executor<T, beast::detail::void_t<decltype(
     struct stream_wrapper
     {
         using next_layer_type = typename std::remove_reference<Stream>::type;
-        using lowest_layer_type = typename get_lowest_layer<stream_type>::type;
+        using lowest_layer_type = get_lowest_layer<stream_type>;
     };
     @endcode
 
@@ -146,25 +145,15 @@ struct has_get_executor<T, beast::detail::void_t<decltype(
     /// Alias for `std::true_type` if `T` wraps another stream
     template<class T>
     using is_stream_wrapper : std::integral_constant<bool,
-        ! std::is_same<T, typename get_lowest_layer<T>::type>::value> {};
+        ! std::is_same<T, get_lowest_layer<T>>::value> {};
     @endcode
 */
 #if BOOST_BEAST_DOXYGEN
 template<class T>
 struct get_lowest_layer;
 #else
-template<class T, class = void>
-struct get_lowest_layer
-{
-    using type = T;
-};
-
 template<class T>
-struct get_lowest_layer<T, detail::void_t<
-    typename T::lowest_layer_type>>
-{
-    using type = typename T::lowest_layer_type;
-};
+using get_lowest_layer = typename detail::get_lowest_layer_helper<T>::type;
 #endif
 
 /** Determine if `T` meets the requirements of @b AsyncReadStream.
@@ -205,8 +194,8 @@ template<class T>
 struct is_async_read_stream<T, detail::void_t<decltype(
     std::declval<T>().async_read_some(
         std::declval<detail::MutableBufferSequence>(),
-        std::declval<detail::ReadHandler>()),
-            (void)0)>> : std::integral_constant<bool,
+        std::declval<detail::ReadHandler>())
+            )>> : std::integral_constant<bool,
     has_get_executor<T>::value
         > {};
 #endif
@@ -249,8 +238,8 @@ template<class T>
 struct is_async_write_stream<T, detail::void_t<decltype(
     std::declval<T>().async_write_some(
         std::declval<detail::ConstBufferSequence>(),
-        std::declval<detail::WriteHandler>()),
-            (void)0)>> : std::integral_constant<bool,
+        std::declval<detail::WriteHandler>())
+            )>> : std::integral_constant<bool,
     has_get_executor<T>::value
         > {};
 #endif
@@ -295,8 +284,8 @@ struct is_sync_read_stream<T, detail::void_t<decltype(
         std::declval<detail::MutableBufferSequence>()),
     std::declval<std::size_t&>() = std::declval<T>().read_some(
         std::declval<detail::MutableBufferSequence>(),
-        std::declval<boost::system::error_code&>()),
-            (void)0)>> : std::true_type {};
+        std::declval<boost::system::error_code&>())
+            )>> : std::true_type {};
 #endif
 
 /** Determine if `T` meets the requirements of @b SyncWriteStream.
@@ -339,8 +328,8 @@ struct is_sync_write_stream<T, detail::void_t<decltype(
         std::declval<detail::ConstBufferSequence>()),
     std::declval<std::size_t&>() = std::declval<T&>().write_some(
         std::declval<detail::ConstBufferSequence>(),
-        std::declval<boost::system::error_code&>()),
-            (void)0)>> : std::true_type {};
+        std::declval<boost::system::error_code&>())
+            )>> : std::true_type {};
 #endif
 
 /** Determine if `T` meets the requirements of @b AsyncStream.
@@ -477,8 +466,8 @@ struct is_file<T, detail::void_t<decltype(
     std::declval<std::size_t&>() = std::declval<T&>().write(
         std::declval<void const*>(),
         std::declval<std::size_t>(),
-        std::declval<error_code&>()),
-            (void)0)>> : std::integral_constant<bool,
+        std::declval<error_code&>())
+            )>> : std::integral_constant<bool,
     std::is_default_constructible<T>::value &&
     std::is_destructible<T>::value
         > {};

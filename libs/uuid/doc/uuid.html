@@ -7,7 +7,7 @@
 </style>
 </head>
 <body>
-<h1><img src="../../boost.png" alt="Boost" WIDTH="277" HEIGHT="86">Uuid</h1>
+<h1><img src="../../../boost.png" alt="Boost" WIDTH="277" HEIGHT="86">Uuid</h1>
 
 <h2><a name="Contents">Contents</a></h2>
 
@@ -143,10 +143,10 @@ By default the library attempts to detect the availability of SIMD extensions in
 <h3><a name="Tagging">Tagging</a></h3>
 <pre>
 // example of tagging an object with a uuid
-// see <a href="./test/test_tagging.cpp"><tt>boost/libs/uuid/test/test_tagging.cpp</tt></a>
+// see <a href="../test/test_tagging.cpp"><tt>boost/libs/uuid/test/test_tagging.cpp</tt></a>
 
-#include &lt;<a href="./../../boost/uuid/uuid.hpp"><tt>boost/uuid/uuid.hpp</tt></a>&gt;
-#include &lt;<a href="./../../boost/uuid/uuid_generators.hpp"><tt>boost/uuid/uuid_generators.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/uuid.hpp"><tt>boost/uuid/uuid.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/uuid_generators.hpp"><tt>boost/uuid/uuid_generators.hpp</tt></a>&gt;
 
 class object
 {
@@ -207,14 +207,14 @@ the defined mechanisms.
 <p>
 Note that <tt>boost::is_pod</tt> is specialized for <tt>boost::uuids::uuid</tt>
 and depends on <a href="http://www.boost.org/libs/type_traits">Boost.TypeTraits</a>.
-Define <tt>BOOST_UUID_NO_TYPE_TRAITS</tt> before including <a href="./../../boost/uuid/uuid.hpp"><tt>boost/uuid/uuid.hpp</tt></a>
+Define <tt>BOOST_UUID_NO_TYPE_TRAITS</tt> before including <a href="../../../boost/uuid/uuid.hpp"><tt>boost/uuid/uuid.hpp</tt></a>
 to remove the dependency on <a href="http://www.boost.org/libs/type_traits">Boost.TypeTraits</a>.
 <pre>
 // example using memcpy and aggregate initializers
-// example of a class uuid see <a href="./test/test_uuid_class.cpp"><tt>boost/libs/uuid/test/test_uuid_class.cpp</tt></a>
+// example of a class uuid see <a href="../test/test_uuid_class.cpp"><tt>boost/libs/uuid/test/test_uuid_class.cpp</tt></a>
 
-#include &lt;<a href="./../../boost/uuid/uuid.hpp"><tt>boost/uuid/uuid.hpp</tt></a>&gt;
-#include &lt;<a href="./../../boost/uuid/uuid_generators.hpp"><tt>boost/uuid/uuid_generators.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/uuid.hpp"><tt>boost/uuid/uuid.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/uuid_generators.hpp"><tt>boost/uuid/uuid_generators.hpp</tt></a>&gt;
 
 { // example using memcpy
     unsigned char uuid_data[16];
@@ -278,7 +278,7 @@ std::copy(u.begin(), u.end(), v.begin());
 <p>Note: <tt>boost::uuids::uuid::size()</tt> always returns 16.
 
 <h2><a name="Reference">Reference</a></h2>
-<h3><a name="boost/uuid/uuid.hpp" href="./../../boost/uuid/uuid.hpp">boost/uuid/uuid.hpp</a></h3>
+<h3><a name="boost/uuid/uuid.hpp" href="../../../boost/uuid/uuid.hpp">boost/uuid/uuid.hpp</a></h3>
 <h4><a name="Synopsis">Synopsis</a></h4>
 <pre>
 namespace boost {
@@ -424,17 +424,17 @@ boost::hash&lt;boost::uuids::uuid&gt; uuid_hasher;
 std::size_t uuid_hash_value = uuid_hasher(boost::uuids::uuid());
 </pre>
 
-<h3><a name="boost/uuid/uuid_generators.hpp" href="./../../boost/uuid/uuid_generators.hpp">boost/uuid/uuid_generators.hpp</a></h3>
+<h3><a name="boost/uuid/uuid_generators.hpp" href="../../../boost/uuid/uuid_generators.hpp">boost/uuid/uuid_generators.hpp</a></h3>
 <h4><a name="Synopsis_generators">Synopsis</a></h4>
 This file includes all the <b>uuid</b> generators for convenience.
 <pre>
-#include &lt;<a href="./../../boost/uuid/nil_generator.hpp"><tt>boost/uuid/nil_generator.hpp</tt></a>&gt;
-#include &lt;<a href="./../../boost/uuid/string_generator.hpp"><tt>boost/uuid/string_generator.hpp</tt></a>&gt;
-#include &lt;<a href="./../../boost/uuid/name_generator.hpp"><tt>boost/uuid/name_generator.hpp</tt></a>&gt;
-#include &lt;<a href="./../../boost/uuid/random_generator.hpp"><tt>boost/uuid/random_generator.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/nil_generator.hpp"><tt>boost/uuid/nil_generator.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/string_generator.hpp"><tt>boost/uuid/string_generator.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/name_generator.hpp"><tt>boost/uuid/name_generator.hpp</tt></a>&gt;
+#include &lt;<a href="../../../boost/uuid/random_generator.hpp"><tt>boost/uuid/random_generator.hpp</tt></a>&gt;
 </pre>
 
-<h3><a name="boost/uuid/nil_generator.hpp" href="./../../boost/uuid/nil_generator.hpp">boost/uuid/nil_generator.hpp</a></h3>
+<h3><a name="boost/uuid/nil_generator.hpp" href="../../../boost/uuid/nil_generator.hpp">boost/uuid/nil_generator.hpp</a></h3>
 <h4><a name="Synopsis_nil_generator">Synopsis</a></h4>
 <pre>
 namespace boost {
@@ -462,7 +462,7 @@ boost::uuids::uuid u = boost::uuids::nil_uuid();
 assert(u.is_nil() == true);
 </pre>
 
-<h3><a name="boost/uuid/string_generator.hpp" href="./../../boost/uuid/string_generator.hpp">boost/uuid/string_generator.hpp</a></h3>
+<h3><a name="boost/uuid/string_generator.hpp" href="../../../boost/uuid/string_generator.hpp">boost/uuid/string_generator.hpp</a></h3>
 <h4><a name="Synopsis_string_generator">Synopsis</a></h4>
 
 <pre>
@@ -503,7 +503,7 @@ boost::uuids::uuid u4 = gen(std::wstring(L"01234567-89AB-CDEF-0123-456789ABCDEF"
 </pre>
 Invalid input will generate a <tt>std::runtime_error</tt> exception.
 
-<h3><a name="boost/uuid/name_generator.hpp" href="./../../boost/uuid/name_generator.hpp">boost/uuid/name_generator.hpp</a></h3>
+<h3><a name="boost/uuid/name_generator.hpp" href="../../../boost/uuid/name_generator.hpp">boost/uuid/name_generator.hpp</a></h3>
 <h4><a name="Synopsis_name_generator">Synopsis</a></h4>
 
 <pre>
@@ -583,12 +583,18 @@ produces the output:
 boost.org uuid in dns namespace, sha1 version: 0043f363-bbb4-5369-840a-322df6ec1926
 </pre>
 
-<h3><a name="boost/uuid/random_generator.hpp" href="./../../boost/uuid/random_generator.hpp">boost/uuid/random_generator.hpp</a></h3>
+<h3><a name="boost/uuid/random_generator.hpp" href="../../../boost/uuid/random_generator.hpp">boost/uuid/random_generator.hpp</a></h3>
 <h4><a name="Synopsis_random_generator">Synopsis</a></h4>
 
 <pre>
 namespace boost {
 namespace uuids {
+
+class random_generator {
+public:
+    typedef uuid result_type;
+    result_type operator()();
+};
 
 template &lt;typename UniformRandomNumberGenerator&gt;
 class basic_random_generator {
@@ -599,37 +605,112 @@ public:
     explicit basic_random_generator(UniformRandomNumberGenerator&amp; gen);
     explicit basic_random_generator(UniformRandomNumberGenerator* pGen);
 
-    uuid operator()();
+    result_type operator()();
 };
-typedef basic_random_generator&lt;mt19937&gt; random_generator;
+
+typedef basic_random_generator&lt;boost::mt19937&gt; random_generator_mt19937;
 
 }} // namespace boost::uuids
 </pre>
 
 <h4><a name="Random Generator">Random Generator</a></h4>
-<p>
-The <tt>boost::uuids::basic_random_generator</tt> class generates a random number
-based uuid from a random number generator (one that conforms to the
-<a href="http://www.boost.org/libs/random/random-concepts.html#uniform-rng">UniformRandomNumberGenerator</a>
-concept).
+    <p>
+        <tt>boost::uuids::random_generator</tt> class generates uuids using
+        operating system provided entropy.  For the majority of use cases this
+        should be sufficient, as this generator has very low startup overhead
+        when compared to a generator with seeding requirements.
+    </p>
+    <p>
+        <tt>boost::uuids::basic_random_generator</tt> class generates a random number
+        based uuid from a random number generator (one that conforms to the
+        <a href="http://www.boost.org/libs/random/random-concepts.html#uniform-rng">UniformRandomNumberGenerator</a>
+        concept).  The default constructor will properly seed the random number generator
+        if it requires the behavior for proper operation.  Additional constructors allow you
+        to provide your own <tt>UniformRandomNumberGenerator</tt> and you are responsible for
+        properly seeding it if necessary.
+    </p>
+    <p>
+        <tt>boost::uuids::random_generator_mt19937</tt> is a type definition for:
+        <tt>boost::uuids::basic_random_generator&lt;mt19937&gt;</tt> and is provided for
+        convenience.
+    </p>
+
+<h5>Platforms</h5>
+    <p>
+        The following platforms are supported and entropy selection logic explained:
+        <ul>
+            <li>CloudABI</li>
+            <li>Unix
+                <ul>
+                    <li>OpenBSD: use <a href="https://man.openbsd.org/arc4random.3"><tt>arc4random(3)</tt></a></li>
+                    <li>Linux 3.17 or later: use <a href="http://man7.org/linux/man-pages/man2/getrandom.2.html"><tt>getrandom(2)</tt></a></li>
+                    <li>Other systems with glibc 2.25 or later: use <tt>getentropy(3)</tt></li>
+                    <li>All other cases: use <tt>/dev/urandom</tt></li>
+                </ul>
+            </li>
+            <li>Windows (UWP Compatible): use BCrypt if available, otherwise use Wincrypt
+        </ul>
+    </p>
+
+<h5>Preprocessor Macros</h5>
+    <p>
+        <ul>
+            <li>
+                <tt>BOOST_UUID_RANDOM_PROVIDER_FORCE_POSIX</tt>: on Unix this will force the
+                selection of <tt>/dev/*random</tt> over <tt>getrandom(2)</tt> or <tt>getentropy(3)</tt>.
+            </li>
+            <li>
+                <tt>BOOST_UUID_RANDOM_PROVIDER_FORCE_WINCRYPT</tt>: on Windows this will force the
+                selection of Wincrypt over BCrypt.
+            </li>
+            <li>
+                <tt>BOOST_UUID_RANDOM_PROVIDER_NO_LIB</tt> (or <tt>BOOST_ALL_NO_LIB</tt>): disable Windows auto linking.
+            </li>
+        </ul>
+    </p>
+
+<h5>Performance</h5>
+    <p>
+        In most cases <tt>random_generator</tt> will be optimal.  A benchmark can be found 
+        in the tests (test_bench_random) that will determine the cutoff point where
+        <tt>random_generator_mt19937</tt> outperforms <tt>random_generator</tt> in wall time.
+    </p>
+    <p>
+        On Windows when using the wincrypt entropy provider, a measurable delay may occur the
+        first time a <tt>random_generator</tt> is constructed within a running instance.  This
+        has been observed using <tt>test_bench_random</tt> and was so significant that the
+        benchmark was changed to throw out the first loop of measurements.
+    </p>
+
+<h5>Exceptions</h5>
+    <p>
+        The exception <tt>boost::uuids::entropy_error</tt> is thrown if there is an error 
+        getting entropy from the operating system.
+    </p>
+
+<h5>Examples</h5>
 <pre>
-//default construct the random number generator and seed it
-boost::uuids::basic_random_generator&lt;boost::mt19937&gt; gen;
-boost::uuids::uuid u = gen();
-
-//for convenience boost::uuids::random_generator
-//is equivalent to boost::uuids::basic_random_generator&lt;boost::mt19937&gt;
+// Depending on the platform there may be a setup cost in
+// initializing the generator so plan to reuse it if you can.
 boost::uuids::random_generator gen;
-boost::uuids::uuid u = gen();
+boost::uuids::uuid id = gen();
+std::cout << id << std::endl;
+boost::uuids::uuid id2 = gen();
+std::cout << id2 << std::endl;
+assert(id != id2);
 
-//use an existing random number generator
-//pass either a reference or a pointer to the random number generator
-boost::mt19937 ran;
-boost::uuids::basic_random_generator&lt;boost::mt19937&gt; gen(&amp;ran);
-boost::uuids::uuid u = gen();
+// You can still use a PseudoRandomNumberGenerator to create
+// UUIDs, however this is not the preferred mechanism.
+boost::uuids::random_generator_mt19937 bulkgen;
+for (size_t i = 0; i < 1000; ++i)
+{
+    boost::uuids::uuid u = bulkgen();
+    // do something with u
+    boost::ignore_unused(u);
+}
 </pre>
 
-<h3><a name="boost/uuid/uuid_io.hpp" href="./../../boost/uuid/uuid_io.hpp">boost/uuid/uuid_io.hpp</a></h3>
+<h3><a name="boost/uuid/uuid_io.hpp" href="../../../boost/uuid/uuid_io.hpp">boost/uuid/uuid_io.hpp</a></h3>
 <h4><a name="Synopsis_io">Synopsis</a></h4>
 <pre>
 namespace boost {
@@ -650,7 +731,7 @@ std::wstring to_wstring(uuid const&amp; u);
 <h4><a name="Stream_operators">Stream Operators</a></h4>
 <p>
 The standard input and output stream operators <tt>&lt;&lt;</tt> and <tt>&gt;&gt;</tt>
-are provided by including <a href="../../boost/uuid/uuid_io.hpp"><tt>boost/uuid/uuid_io.hpp</tt></a>.
+are provided by including <a href="../../../boost/uuid/uuid_io.hpp"><tt>boost/uuid/uuid_io.hpp</tt></a>.
 The string representation of a <b>uuid</b> is <tt>hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh</tt>
 where <tt>h</tt> is hexadecimal.
 <pre>
@@ -689,7 +770,7 @@ std::string s1 = to_string(u);
 std::wstring s2 = to_wstring(u);
 </pre>
 
-<h3><a name="boost/uuid/uuid_serialize.hpp" href="./../../boost/uuid/uuid_serialize.hpp">boost/uuid/uuid_serialize.hpp</a></h3>
+<h3><a name="boost/uuid/uuid_serialize.hpp" href="../../../boost/uuid/uuid_serialize.hpp">boost/uuid/uuid_serialize.hpp</a></h3>
 <h4><a name="Synopsis_serialize">Synopsis</a></h4>
 <pre>
 namespace boost {
@@ -707,7 +788,7 @@ Boost Serialization</a> library.  A <b>uuid</b> is serialized as a
 <a href="http://www.boost.org/libs/serialization/doc/serialization.html#primitiveoperators">
 primitive type</a>, thus only the <b>uuid</b> value will be saved to/loaded from an archive.
 <p>
-Include <a href="../../boost/uuid/uuid_serialize.hpp"><tt>boost/uuid/uuid_serialize.hpp</tt></a> to enable serialization for <b>uuid</b>s.
+Include <a href="../../../boost/uuid/uuid_serialize.hpp"><tt>boost/uuid/uuid_serialize.hpp</tt></a> to enable serialization for <b>uuid</b>s.
 
 <h2><A name="Concepts">Concepts</a></h2>
 This section describes all of the concepts defined by the library.
@@ -753,24 +834,6 @@ The document, <a href="http://www.itu.int/ITU-T/studygroups/com17/oid/X.667-E.pd
 http://www.itu.int/ITU-T/studygroups/com17/oid/X.667-E.pdf</a>, was used to design
 and implement the <b>boost::uuids::uuid</b> struct.
 
-<p>The <tt>boost::uuids::basic_random_generator</tt> class' default constructor
-seeds the random number generator with a SHA-1 hash of a number of different
-values including <tt>std::time(0)</tt>, <tt>std::clock()</tt>, uninitialized
-data, value return from <tt>new unsigned int</tt>, etc..
-
-<p>Using <a href="http://valgrind.org/">Valgrind</a> produces a number of false
-positives with the default constructor of <tt>boost::uuids::basic_random_generator</tt>.
-One solution is to suppress the errors as described in
-<a href="http://valgrind.org/docs/manual/manual-core.html#manual-core.suppress">Valgrind's documentation</a>.
-Another solution is to use a different constructor of <tt>boost::uuids::basic_random_generator</tt>
-and explicitly pass in a random number generator.
-<pre>
-boost::mt19937 ran;
-ran.seed(time(NULL)); // one should likely seed in a better way
-boost::uuids::basic_random_generator&lt;boost::mt19937&gt; gen(&ran);
-boost::uuids::uuid u = gen();
-</pre>
-
 <p>All functions are re-entrant.  Classes are as thread-safe as an int.  That is an
 instance can not be shared between threads without proper synchronization.
 
@@ -779,13 +842,13 @@ instance can not be shared between threads without proper synchronization.
 A number of people on the <a href="http://www.boost.org/">boost.org</a>
 mailing list provided useful comments and greatly helped to shape the library.
 
-<p>Revised September 26, 2017</p>
+<p>Revised November 8, 2017</p>
 
 <hr>
 <p>© Copyright Andy Tompkins, 2006</p>
-<p>© Copyright James E. King, III - 2017</p>
+<p>© Copyright 2017 James E. King III</p>
 <p> Distributed under the Boost Software
-License, Version 1.0. (See accompanying file <a href="../../LICENSE_1_0.txt">LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">
+License, Version 1.0. (See accompanying file <a href="../../../LICENSE_1_0.txt">LICENSE_1_0.txt</a> or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">
 www.boost.org/LICENSE_1_0.txt</a>)</p>
 </body>
 </html>

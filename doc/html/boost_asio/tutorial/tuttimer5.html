@@ -28,16 +28,16 @@
       handlers in multithreaded programs</a>
 </h3></div></div></div>
 <p>
-        This tutorial demonstrates the use of the boost::asio::io_service::strand
+        This tutorial demonstrates the use of the <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>
         class to synchronise callback handlers in a multithreaded program.
       </p>
 <p>
         The previous four tutorials avoided the issue of handler synchronisation
-        by calling the <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a>
+        by calling the <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a>
         function from one thread only. As you already know, the asio library provides
         a guarantee that callback handlers will only be called from threads that
-        are currently calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a>.
-        Consequently, calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a>
+        are currently calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a>.
+        Consequently, calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a>
         from only one thread ensures that callback handlers cannot run concurrently.
       </p>
 <p>
@@ -55,7 +55,7 @@
 </ul></div>
 <p>
         If you find yourself running into these limitations, an alternative approach
-        is to have a pool of threads calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a>.
+        is to have a pool of threads calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a>.
         However, as this allows handlers to execute concurrently, we need a method
         of synchronisation when handlers might be accessing a shared, thread-unsafe
         resource.
@@ -64,7 +64,6 @@
 #include &lt;boost/asio.hpp&gt;
 #include &lt;boost/thread/thread.hpp&gt;
 #include &lt;boost/bind.hpp&gt;
-#include &lt;boost/date_time/posix_time/posix_time.hpp&gt;
 </pre>
 <p>
         We start by defining a class called <code class="computeroutput">printer</code>, similar to the
@@ -76,33 +75,36 @@
 public:
 </pre>
 <p>
-        In addition to initialising a pair of boost::asio::deadline_timer members,
+        In addition to initialising a pair of boost::asio::steady_timer members,
         the constructor initialises the <code class="computeroutput">strand_</code> member, an object of
-        type boost::asio::io_service::strand.
+        type <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>.
       </p>
 <p>
-        An boost::asio::io_service::strand is an executor that guarantees that, for
-        those handlers that are dispatched through it, an executing handler will
-        be allowed to complete before the next one is started. This is guaranteed
-        irrespective of the number of threads that are calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a>.
+        An <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>
+        is an executor that guarantees that, for those handlers that are dispatched
+        through it, an executing handler will be allowed to complete before the next
+        one is started. This is guaranteed irrespective of the number of threads
+        that are calling <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a>.
         Of course, the handlers may still execute concurrently with other handlers
-        that were not dispatched through an boost::asio::io_service::strand, or were
-        dispatched through a different boost::asio::io_service::strand object.
+        that were not dispatched through an <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>,
+        or were dispatched through a different <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>
+        object.
       </p>
 <pre class="programlisting">  printer(boost::asio::io_context&amp; io)
     : strand_(io),
-      timer1_(io, boost::posix_time::seconds(1)),
-      timer2_(io, boost::posix_time::seconds(1)),
+      timer1_(io, boost::asio::chrono::seconds(1)),
+      timer2_(io, boost::asio::chrono::seconds(1)),
       count_(0)
   {
 </pre>
 <p>
         When initiating the asynchronous operations, each callback handler is "bound"
-        to an boost::asio::io_service::strand object. The boost::asio::io_service::strand::bind_executor()
-        function returns a new handler that automatically dispatches its contained
-        handler through the boost::asio::io_service::strand object. By binding the
-        handlers to the same boost::asio::io_service::strand, we are ensuring that
-        they cannot execute concurrently.
+        to an <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>
+        object. The boost::asio::io_context::strand::bind_executor() function returns
+        a new handler that automatically dispatches its contained handler through
+        the <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>
+        object. By binding the handlers to the same <a class="link" href="../reference/io_context__strand.html" title="io_context::strand">io_context::strand</a>,
+        we are ensuring that they cannot execute concurrently.
       </p>
 <pre class="programlisting">    timer1_.async_wait(boost::asio::bind_executor(strand_,
           boost::bind(&amp;printer::print1, this)));
@@ -129,7 +131,7 @@ public:
       std::cout &lt;&lt; "Timer 1: " &lt;&lt; count_ &lt;&lt; std::endl;
       ++count_;
 
-      timer1_.expires_at(timer1_.expires_at() + boost::posix_time::seconds(1));
+      timer1_.expires_at(timer1_.expiry() + boost::asio::chrono::seconds(1));
 
       timer1_.async_wait(boost::asio::bind_executor(strand_,
             boost::bind(&amp;printer::print1, this)));
@@ -143,7 +145,7 @@ public:
       std::cout &lt;&lt; "Timer 2: " &lt;&lt; count_ &lt;&lt; std::endl;
       ++count_;
 
-      timer2_.expires_at(timer2_.expires_at() + boost::posix_time::seconds(1));
+      timer2_.expires_at(timer2_.expiry() + boost::asio::chrono::seconds(1));
 
       timer2_.async_wait(boost::asio::bind_executor(strand_,
             boost::bind(&amp;printer::print2, this)));
@@ -152,18 +154,18 @@ public:
 
 private:
   boost::asio::io_context::strand strand_;
-  boost::asio::deadline_timer timer1_;
-  boost::asio::deadline_timer timer2_;
+  boost::asio::steady_timer timer1_;
+  boost::asio::steady_timer timer2_;
   int count_;
 };
 </pre>
 <p>
-        The <code class="computeroutput">main</code> function now causes <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a>
+        The <code class="computeroutput">main</code> function now causes <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a>
         to be called from two threads: the main thread and one additional thread.
         This is accomplished using an boost::thread object.
       </p>
 <p>
-        Just as it would with a call from a single thread, concurrent calls to <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_service::run()</a> will
+        Just as it would with a call from a single thread, concurrent calls to <a class="link" href="../reference/io_context/run.html" title="io_context::run">io_context::run()</a> will
         continue to execute while there is "work" left to do. The background
         thread will not exit until all asynchronous operations have completed.
       </p>
@@ -191,7 +193,7 @@ private:
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2017 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

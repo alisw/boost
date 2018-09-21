@@ -14,7 +14,9 @@
 #include <boost/asio/associated_allocator.hpp>
 #include <boost/asio/associated_executor.hpp>
 #include <boost/asio/handler_continuation_hook.hpp>
+#include <boost/asio/handler_invoke_hook.hpp>
 #include <boost/core/ignore_unused.hpp>
+#include <boost/is_placeholder.hpp>
 #include <functional>
 #include <utility>
 
@@ -45,12 +47,14 @@ class bound_handler
     static
     typename std::enable_if<
         std::is_placeholder<typename
+            std::decay<Arg>::type>::value == 0 &&
+        boost::is_placeholder<typename
             std::decay<Arg>::type>::value == 0,
-    Arg&&>::type
-    extract(Arg&& arg, Vals& vals)
+        Arg&&>::type
+    extract(Arg&& arg, Vals&& vals)
     {
         boost::ignore_unused(vals);
-        return arg;
+        return std::forward<Arg>(arg);
     }
 
     template<class Arg, class Vals>
@@ -58,13 +62,29 @@ class bound_handler
     typename std::enable_if<
         std::is_placeholder<typename
             std::decay<Arg>::type>::value != 0,
-    typename std::tuple_element<
-        std::is_placeholder<
-            typename std::decay<Arg>::type>::value - 1,
-    Vals>::type&&>::type
+        typename std::tuple_element<
+            std::is_placeholder<
+                typename std::decay<Arg>::type>::value - 1,
+        Vals>>::type::type&&
     extract(Arg&&, Vals&& vals)
     {
         return std::get<std::is_placeholder<
+            typename std::decay<Arg>::type>::value - 1>(
+                std::forward<Vals>(vals));
+    }
+
+    template<class Arg, class Vals>
+    static
+    typename std::enable_if<
+        boost::is_placeholder<typename
+            std::decay<Arg>::type>::value != 0,
+        typename std::tuple_element<
+            boost::is_placeholder<
+                typename std::decay<Arg>::type>::value - 1,
+        Vals>>::type::type&&
+    extract(Arg&&, Vals&& vals)
+    {
+        return std::get<boost::is_placeholder<
             typename std::decay<Arg>::type>::value - 1>(
                 std::forward<Vals>(vals));
     }
@@ -81,7 +101,7 @@ class bound_handler
         index_sequence<S...>)
     {
         boost::ignore_unused(args);
-        h(std::get<S>(args)...);
+        h(std::get<S>(std::move(args))...);
     }
 
     template<
@@ -98,7 +118,7 @@ class bound_handler
     {
         boost::ignore_unused(args);
         boost::ignore_unused(vals);
-        h(extract(std::get<S>(args),
+        h(extract(std::get<S>(std::move(args)),
             std::forward<ValsTuple>(vals))...);
     }
 
@@ -109,7 +129,7 @@ public:
         boost::asio::associated_allocator_t<Handler>;
 
     bound_handler(bound_handler&&) = default;
-    bound_handler(bound_handler const&) = default;
+    bound_handler(bound_handler const&) = delete;
 
     template<class DeducedHandler>
     explicit
@@ -123,7 +143,7 @@ public:
     allocator_type
     get_allocator() const noexcept
     {
-        return boost::asio::get_associated_allocator(h_);
+        return (boost::asio::get_associated_allocator)(h_);
     }
 
     friend
@@ -132,6 +152,14 @@ public:
     {
         using boost::asio::asio_handler_is_continuation;
         return asio_handler_is_continuation(std::addressof(h->h_));
+    }
+
+    template<class Function>
+    friend
+    void asio_handler_invoke(Function&& f, bound_handler* h)
+    {
+        using boost::asio::asio_handler_invoke;
+        asio_handler_invoke(f, std::addressof(h->h_));
     }
 
     template<class... Values>

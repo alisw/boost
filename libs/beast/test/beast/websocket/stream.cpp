@@ -22,6 +22,11 @@ public:
     void
     testOptions()
     {
+        {
+            std::seed_seq ss{42};
+            seed_prng(ss);
+        }
+
         stream<test::stream> ws{ioc_};
         ws.auto_fragment(true);
         ws.write_buffer_size(2048);
@@ -36,6 +41,9 @@ public:
         {
             pass();
         }
+
+        ws.secure_prng(true);
+        ws.secure_prng(false);
 
         auto const bad =
         [&](permessage_deflate const& pmd)
@@ -122,6 +130,8 @@ public:
         BOOST_STATIC_ASSERT(! std::is_move_assignable<
             stream<test::stream&>>::value);
 
+        log << "sizeof(websocket::stream_base<true>) == " <<
+            sizeof(websocket::detail::stream_base<true>) << std::endl;
         log << "sizeof(websocket::stream) == " <<
             sizeof(websocket::stream<test::stream&>) << std::endl;
 
