@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="multi_array.html" title="Chapter&#160;26.&#160;Boost.MultiArray Reference Manual">
+<link rel="up" href="multi_array.html" title="Chapter&#160;27.&#160;Boost.MultiArray Reference Manual">
 <link rel="prev" href="MultiArray.html" title="MultiArray Concept">
 <link rel="next" href="auxiliary.html" title="Auxiliary Components">
 </head>
@@ -239,7 +239,7 @@ public:
 
   // constructors and destructors
 
-  multi_array();
+  multi_array(const Allocator&amp; alloc = Allocator());
 
   template &lt;typename ExtentList&gt;
   explicit multi_array(const ExtentList&amp; sizes,
@@ -249,13 +249,19 @@ public:
                        const storage_order_type&amp; store = c_storage_order(),
 	               const Allocator&amp; alloc = Allocator());
   multi_array(const multi_array&amp; x);
-  multi_array(const const_multi_array_ref&lt;ValueType,NumDims&gt;&amp; x);
-  multi_array(const const_subarray&lt;NumDims&gt;::type&amp; x);
-  multi_array(const const_array_view&lt;NumDims&gt;::type&amp; x);
+  multi_array(const const_multi_array_ref&lt;ValueType,NumDims&gt;&amp; x,
+              const Allocator&amp; alloc = Allocator());
+  multi_array(const const_subarray&lt;NumDims&gt;::type&amp; x,
+              const Allocator&amp; alloc = Allocator());
+  multi_array(const const_array_view&lt;NumDims&gt;::type&amp; x,
+              const Allocator&amp; alloc = Allocator());
 
-  multi_array(const multi_array_ref&lt;ValueType,NumDims&gt;&amp; x);
-  multi_array(const subarray&lt;NumDims&gt;::type&amp; x);
-  multi_array(const array_view&lt;NumDims&gt;::type&amp; x);
+  multi_array(const multi_array_ref&lt;ValueType,NumDims&gt;&amp; x,
+              const Allocator&amp; alloc = Allocator());
+  multi_array(const subarray&lt;NumDims&gt;::type&amp; x,
+              const Allocator&amp; alloc = Allocator());
+  multi_array(const array_view&lt;NumDims&gt;::type&amp; x,
+              const Allocator&amp; alloc = Allocator());
 
   ~multi_array();
 
@@ -359,12 +365,18 @@ elements.
 </p></dd>
 <dt><span class="term"><pre class="programlisting">
 multi_array(const multi_array&amp; x);
-multi_array(const const_multi_array_ref&lt;ValueType,NumDims&gt;&amp; x);
-multi_array(const const_subarray&lt;NumDims&gt;::type&amp; x);
-multi_array(const const_array_view&lt;NumDims&gt;::type&amp; x);
-multi_array(const multi_array_ref&lt;ValueType,NumDims&gt;&amp; x);
-multi_array(const subarray&lt;NumDims&gt;::type&amp; x);
-multi_array(const array_view&lt;NumDims&gt;::type&amp; x);
+multi_array(const const_multi_array_ref&lt;ValueType,NumDims&gt;&amp; x,
+    const Allocator&amp; alloc = Allocator());
+multi_array(const const_subarray&lt;NumDims&gt;::type&amp; x,
+    const Allocator&amp; alloc = Allocator());
+multi_array(const const_array_view&lt;NumDims&gt;::type&amp; x,
+    const Allocator&amp; alloc = Allocator());
+multi_array(const multi_array_ref&lt;ValueType,NumDims&gt;&amp; x,
+    const Allocator&amp; alloc = Allocator());
+multi_array(const subarray&lt;NumDims&gt;::type&amp; x,
+    const Allocator&amp; alloc = Allocator());
+multi_array(const array_view&lt;NumDims&gt;::type&amp; x,
+    const Allocator&amp; alloc = Allocator());
 </pre></span></dt>
 <dd>
 <p>These constructors all constructs a <code class="literal">multi_array</code> and 

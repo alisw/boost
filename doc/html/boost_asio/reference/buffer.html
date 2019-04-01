@@ -32,6 +32,9 @@ The <code class="computeroutput">boost::asio::buffer</code> function
         is used to create a buffer object to represent raw memory, an array of POD
         elements, a vector of POD elements, or a std::string.
       </p>
+<p>
+        Create a new modifiable buffer from an existing buffer.
+      </p>
 <pre class="programlisting">mutable_buffer <a class="link" href="buffer/overload1.html" title="buffer (1 of 32 overloads)">buffer</a>(
     const mutable_buffer &amp; b);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload1.html" title="buffer (1 of 32 overloads)">more...</a></em></span>
@@ -40,8 +43,11 @@ mutable_buffer <a class="link" href="buffer/overload2.html" title="buffer (2 of 
     const mutable_buffer &amp; b,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload2.html" title="buffer (2 of 32 overloads)">more...</a></em></span>
-
-const_buffer <a class="link" href="buffer/overload3.html" title="buffer (3 of 32 overloads)">buffer</a>(
+</pre>
+<p>
+        Create a new non-modifiable buffer from an existing buffer.
+      </p>
+<pre class="programlisting">const_buffer <a class="link" href="buffer/overload3.html" title="buffer (3 of 32 overloads)">buffer</a>(
     const const_buffer &amp; b);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload3.html" title="buffer (3 of 32 overloads)">more...</a></em></span>
 
@@ -49,18 +55,27 @@ const_buffer <a class="link" href="buffer/overload4.html" title="buffer (4 of 32
     const const_buffer &amp; b,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload4.html" title="buffer (4 of 32 overloads)">more...</a></em></span>
-
-mutable_buffer <a class="link" href="buffer/overload5.html" title="buffer (5 of 32 overloads)">buffer</a>(
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given memory range.
+      </p>
+<pre class="programlisting">mutable_buffer <a class="link" href="buffer/overload5.html" title="buffer (5 of 32 overloads)">buffer</a>(
     void * data,
     std::size_t size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload5.html" title="buffer (5 of 32 overloads)">more...</a></em></span>
-
-const_buffer <a class="link" href="buffer/overload6.html" title="buffer (6 of 32 overloads)">buffer</a>(
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given memory range.
+      </p>
+<pre class="programlisting">const_buffer <a class="link" href="buffer/overload6.html" title="buffer (6 of 32 overloads)">buffer</a>(
     const void * data,
     std::size_t size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload6.html" title="buffer (6 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given POD array.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     std::size_t N&gt;
 mutable_buffer <a class="link" href="buffer/overload7.html" title="buffer (7 of 32 overloads)">buffer</a>(
@@ -74,8 +89,11 @@ mutable_buffer <a class="link" href="buffer/overload8.html" title="buffer (8 of 
     PodType (&amp;data)[N],
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload8.html" title="buffer (8 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given POD array.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     std::size_t N&gt;
 const_buffer <a class="link" href="buffer/overload9.html" title="buffer (9 of 32 overloads)">buffer</a>(
@@ -89,8 +107,11 @@ const_buffer <a class="link" href="buffer/overload10.html" title="buffer (10 of 
     const PodType (&amp;data)[N],
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload10.html" title="buffer (10 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given POD array.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     std::size_t N&gt;
 mutable_buffer <a class="link" href="buffer/overload11.html" title="buffer (11 of 32 overloads)">buffer</a>(
@@ -104,8 +125,11 @@ mutable_buffer <a class="link" href="buffer/overload12.html" title="buffer (12 o
     boost::array&lt; PodType, N &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload12.html" title="buffer (12 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given POD array.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     std::size_t N&gt;
 const_buffer <a class="link" href="buffer/overload13.html" title="buffer (13 of 32 overloads)">buffer</a>(
@@ -134,8 +158,11 @@ const_buffer <a class="link" href="buffer/overload16.html" title="buffer (16 of 
     const boost::array&lt; PodType, N &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload16.html" title="buffer (16 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given POD array.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     std::size_t N&gt;
 mutable_buffer <a class="link" href="buffer/overload17.html" title="buffer (17 of 32 overloads)">buffer</a>(
@@ -149,8 +176,11 @@ mutable_buffer <a class="link" href="buffer/overload18.html" title="buffer (18 o
     std::array&lt; PodType, N &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload18.html" title="buffer (18 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given POD array.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     std::size_t N&gt;
 const_buffer <a class="link" href="buffer/overload19.html" title="buffer (19 of 32 overloads)">buffer</a>(
@@ -179,8 +209,11 @@ const_buffer <a class="link" href="buffer/overload22.html" title="buffer (22 of 
     const std::array&lt; PodType, N &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload22.html" title="buffer (22 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given POD vector.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     typename Allocator&gt;
 mutable_buffer <a class="link" href="buffer/overload23.html" title="buffer (23 of 32 overloads)">buffer</a>(
@@ -194,8 +227,11 @@ mutable_buffer <a class="link" href="buffer/overload24.html" title="buffer (24 o
     std::vector&lt; PodType, Allocator &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload24.html" title="buffer (24 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given POD vector.
+      </p>
+<pre class="programlisting">template&lt;
     typename PodType,
     typename Allocator&gt;
 const_buffer <a class="link" href="buffer/overload25.html" title="buffer (25 of 32 overloads)">buffer</a>(
@@ -209,8 +245,11 @@ const_buffer <a class="link" href="buffer/overload26.html" title="buffer (26 of 
     const std::vector&lt; PodType, Allocator &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload26.html" title="buffer (26 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given string.
+      </p>
+<pre class="programlisting">template&lt;
     typename Elem,
     typename Traits,
     typename Allocator&gt;
@@ -226,8 +265,11 @@ mutable_buffer <a class="link" href="buffer/overload28.html" title="buffer (28 o
     std::basic_string&lt; Elem, Traits, Allocator &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload28.html" title="buffer (28 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given string.
+      </p>
+<pre class="programlisting">template&lt;
     typename Elem,
     typename Traits,
     typename Allocator&gt;
@@ -243,15 +285,21 @@ const_buffer <a class="link" href="buffer/overload30.html" title="buffer (30 of 
     const std::basic_string&lt; Elem, Traits, Allocator &gt; &amp; data,
     std::size_t max_size_in_bytes);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload30.html" title="buffer (30 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new modifiable buffer that represents the given string_view.
+      </p>
+<pre class="programlisting">template&lt;
     typename Elem,
     typename Traits&gt;
 const_buffer <a class="link" href="buffer/overload31.html" title="buffer (31 of 32 overloads)">buffer</a>(
     basic_string_view&lt; Elem, Traits &gt; data);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer/overload31.html" title="buffer (31 of 32 overloads)">more...</a></em></span>
-
-template&lt;
+</pre>
+<p>
+        Create a new non-modifiable buffer that represents the given string.
+      </p>
+<pre class="programlisting">template&lt;
     typename Elem,
     typename Traits&gt;
 const_buffer <a class="link" href="buffer/overload32.html" title="buffer (32 of 32 overloads)">buffer</a>(

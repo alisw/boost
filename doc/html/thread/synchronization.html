@@ -8333,7 +8333,7 @@
 <pre class="programlisting"><span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_THREAD_PROVIDES_ONCE_CXX11</span>
 <span class="keyword">struct</span> <span class="identifier">once_flag</span>
 <span class="special">{</span>
-  <span class="identifier">constexprr</span> <span class="identifier">once_flag</span><span class="special">()</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <span class="keyword">constexpr</span> <span class="identifier">once_flag</span><span class="special">()</span> <span class="keyword">noexcept</span><span class="special">;</span>
   <span class="identifier">once_flag</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">once_flag</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
   <span class="identifier">once_flag</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="keyword">const</span> <span class="identifier">once_flag</span><span class="special">&amp;)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
 <span class="special">};</span>
@@ -11042,7 +11042,7 @@
 <dl class="variablelist">
 <dt><span class="term">Effects:</span></dt>
 <dd><p>
-                    Destroys the thread pool.
+                    Interrupts and joins all the threads and then destroys the threads.
                   </p></dd>
 <dt><span class="term">Synchronization:</span></dt>
 <dd><p>

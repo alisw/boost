@@ -78,25 +78,25 @@
       error notification in the form of a returned value of 0 is inconvenient to
       test, or worse yet, easy to forget to test. The throwing form of <code class="computeroutput">dynamic_cast</code>,
       which works on references, can be used on pointers through the ugly expression
-      <code class="computeroutput">&amp;dynamic_cast&lt;T&amp;&gt;(*p), which causes undefined behavior
-      if </code>p<code class="computeroutput"> is </code>0<code class="computeroutput">. The </code>polymorphic_cast<code class="computeroutput"> template
-      performs a </code>dynamic_cast<code class="computeroutput"> on a pointer, and throws an exception
-      if the </code>dynamic_cast` returns 0.
+      <code class="computeroutput">&amp;dynamic_cast&lt;T&amp;&gt;(*p)</code>, which causes undefined behavior
+      if <code class="computeroutput">p</code> is <code class="computeroutput">0</code>. The <code class="computeroutput">polymorphic_cast</code> template
+      performs a <code class="computeroutput">dynamic_cast</code> on a pointer, and throws an exception
+      if the <code class="computeroutput">dynamic_cast</code> returns 0.
     </p>
 <p>
       For crosscasts, or when the success of a cast can only be known at runtime,
       or when efficiency is not important, <code class="computeroutput">polymorphic_cast</code> is preferred.
     </p>
 <p>
-      The C++ built-in dynamic_cast must be used to cast references rather than pointers.
-      It is also the only cast that can be used to check whether a given interface
-      is supported; in that case a return of 0 isn't an error condition.
+      The C++ built-in <code class="computeroutput">dynamic_cast</code> must be used to cast references
+      rather than pointers. It is also the only cast that can be used to check whether
+      a given interface is supported; in that case a return of 0 isn't an error condition.
     </p>
 <p>
-      <a name="polymorphic_pointer_cast"></a>While polymorphic_downcast and polymorphic_cast
-      work with built-in pointer types only, polymorphic_pointer_downcast and polymorphic_pointer_cast
-      are more generic versions with support for any pointer type for which the following
-      expressions would be valid:
+      <a name="polymorphic_pointer_cast"></a>While <code class="computeroutput">polymorphic_downcast</code>
+      and <code class="computeroutput">polymorphic_cast</code> work with built-in pointer types only, <code class="computeroutput">polymorphic_pointer_downcast</code>
+      and <code class="computeroutput">polymorphic_pointer_cast</code> are more generic versions with support
+      for any pointer type for which the following expressions would be valid:
     </p>
 <p>
       For <code class="computeroutput">polymorphic_pointer_downcast</code>:

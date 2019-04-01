@@ -147,13 +147,13 @@
 </ul></div>
 <p>
       It is considered to be a bug to read or remove an element (e.g. by calling
-      <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp46228368-bb">front()</a></code> or
-      <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp46702800-bb">pop_back()</a></code>)
+      <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp48478832-bb">front()</a></code> or
+      <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp48953264-bb">pop_back()</a></code>)
       from an empty std container and from an empty <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html" title="Class template circular_buffer">circular_buffer</a></code>
       as well. The data consumer has to test if the container is not empty before
-      reading/removing from it by testing <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp46400576-bb">empty()</a></code>.
+      reading/removing from it by testing <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp48651040-bb">empty()</a></code>.
       However, when reading from the <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html" title="Class template circular_buffer">circular_buffer</a></code>,
-      there is an option to rely on the <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp46207056-bb">at()</a></code>
+      there is an option to rely on the <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html#idp48457520-bb">at()</a></code>
       method which throws an exception when the index is out of range.
     </p>
 <h4>
@@ -395,7 +395,7 @@
       The <code class="computeroutput"><a class="link" href="../boost/circular_buffer.html" title="Class template circular_buffer">circular_buffer</a></code> is
       compatible with the <a href="../../../libs/interprocess/index.html" target="_top">Boost.Interprocess</a>
       library used for interprocess communication. Considering that the circular_buffer's
-      debug support relies on 'raw' pointers (which is not permited by the Interprocess
+      debug support relies on 'raw' pointers (which is not permitted by the Interprocess
       library) the code has to compiled with debug support disabled (i.e. with <code class="computeroutput"><span class="identifier">BOOST_CB_ENABLE_DEBUG</span></code> macro not defined or
       defined to 0). Not doing that will cause the compilation to fail.
     </p>

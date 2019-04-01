@@ -249,7 +249,7 @@
               <p>
                 Requires linking with <span class="bold"><strong>libdl</strong></span> on POSIX
                 and <span class="bold"><strong>libbacktrace</strong></span> libraries. <span class="bold"><strong>libbacktrace</strong></span> is probably already installed
-                in your system, or built into your compiler.
+                in your system<a href="#ftn.stacktrace.configuration_and_build.f3" class="footnote" name="stacktrace.configuration_and_build.f3"><sup class="footnote">[d]</sup></a>, or built into your compiler.
               </p>
               <p>
                 Otherwise (if you are a <span class="bold"><strong>MinGW</strong></span>/<span class="bold"><strong>MinGW-w64</strong></span> user for example) it can be downloaded
@@ -361,6 +361,17 @@
                   <code class="computeroutput"><span class="special">::</span><span class="identifier">CoUninitialize</span><span class="special">();</span></code> until the current thread is
                   destroyed.
                 </p></div>
+<div id="ftn.stacktrace.configuration_and_build.f3" class="footnote"><p><a href="#stacktrace.configuration_and_build.f3" class="para"><sup class="para">[d] </sup></a>
+                  If you are using Clang with libstdc++ you could get into troubles
+                  of including <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">backtrace</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span></code>,
+                  because on some platforms Clang does not search for headers in
+                  the GCC's include paths and any attempt to add GCC's include path
+                  leads to linker errors. To explicitly specify a path to the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">backtrace</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span></code> header you could define the
+                  <span class="bold"><strong>BOOST_STACKTRACE_BACKTRACE_INCLUDE_FILE</strong></span>
+                  to a full path to the header. For example on Ubuntu Xenial use
+                  the command line option <span class="bold"><strong>-DBOOST_STACKTRACE_BACKTRACE_INCLUDE_FILE=&lt;/usr/lib/gcc/x86_64-linux-gnu/5/include/backtrace.h&gt;</strong></span>
+                  while building with Clang.
+                </p></div>
 </td></tr></tbody>
 </table></div>
 </div>
@@ -376,13 +387,13 @@
           -ldl</strong></span>"
         </li>
 <li class="listitem">
-          if you wish to disable backtracing and you use the library in header only
-          mode, you just need to define <span class="bold"><strong>BOOST_STACKTRACE_USE_NOOP</strong></span>
-          for the whole project
-        </li>
-<li class="listitem">
           if you wish to disable backtracing and <span class="bold"><strong>BOOST_STACKTRACE_LINK</strong></span>
           is defined, you just need link with <span class="bold"><strong>-lboost_stacktrace_noop</strong></span>
+        </li>
+<li class="listitem">
+          if you wish to disable backtracing and you use the library in header only
+          mode, you just need to define <span class="bold"><strong>BOOST_STACKTRACE_USE_NOOP</strong></span>
+          for the whole project and recompile it
         </li>
 </ul></div>
 <div class="section">
@@ -438,7 +449,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Antony Polukhin<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2018 Antony Polukhin<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

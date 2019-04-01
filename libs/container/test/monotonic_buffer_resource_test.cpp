@@ -230,6 +230,9 @@ struct derived_from_monotonic_buffer_resource
 
 void test_upstream_resource()
 {
+   //Allocate buffer first to avoid stack-use-after-scope in monotonic_buffer_resource's destructor
+   const std::size_t BufSz = monotonic_buffer_resource::initial_next_buffer_size;
+   boost::move_detail::aligned_storage<BufSz+block_slist::header_size>::type buf;
    //Test stores the resource and uses it to allocate memory
    derived_from_memory_resource dmr;
    dmr.reset();
@@ -240,10 +243,8 @@ void test_upstream_resource()
    BOOST_TEST(dmbr.current_buffer() == 0);
    //Test it does not allocate any memory
    BOOST_TEST(dmr.do_allocate_called == false);
-   const std::size_t BufSz = monotonic_buffer_resource::initial_next_buffer_size;
-   //Now allocate storage, and stub it as the return buffer
+   //Now stub buffer storage it as the return buffer
    //for "derived_from_memory_resource":
-   boost::move_detail::aligned_storage<BufSz+block_slist::header_size>::type buf;
    dmr.do_allocate_return = &buf;
    //Test that allocation uses the upstream_resource()
    void *addr = dmbr.do_allocate(1u, 1u);
@@ -351,7 +352,7 @@ void test_do_allocate()
       BOOST_TEST(dmbr.remaining_storage(1u) == sizeof(buf));
       //Allocate all remaining storage
       dmbr.do_allocate(dmbr.remaining_storage(1u), 1u);
-      //No new allocation should have ocurred
+      //No new allocation should have occurred
       BOOST_TEST(mrl.m_info.size() == 0u);
       BOOST_TEST(dmbr.remaining_storage(1u) == 0u);
    }
@@ -432,7 +433,7 @@ void test_release()
       //Allocate all remaining storage
       mr.allocate(monr.remaining_storage(1u), 1u);
       BOOST_TEST(monr.current_buffer() == ((char*)&buf + sizeof(buf)));
-      //No new allocation should have ocurred
+      //No new allocation should have occurred
       BOOST_TEST(monr.remaining_storage(1u) == 0u);
       //Release and check memory was released and the original buffer is back
       monr.release();

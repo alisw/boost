@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../mpi.html" title="Chapter&#160;25.&#160;Boost.MPI">
-<link rel="prev" href="../mpi.html" title="Chapter&#160;25.&#160;Boost.MPI">
+<link rel="up" href="../mpi.html" title="Chapter&#160;26.&#160;Boost.MPI">
+<link rel="prev" href="../mpi.html" title="Chapter&#160;26.&#160;Boost.MPI">
 <link rel="next" href="tutorial.html" title="Tutorial">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -239,16 +239,17 @@ lamhalt
           provide that information, it usually starts with <code class="computeroutput"><span class="special">--</span><span class="identifier">show</span></code>:
         </p>
 <pre class="programlisting">$ mpiicc -show
-icc -I/softs/intel//impi/5.0.3.048/intel64/include -L/softs/intel//impi/5.0.3.048/intel64/lib/release_mt -L/softs/intel//impi/5.0.3.048/intel64/lib -Xlinker --enable-new-dtags -Xlinker -rpath -Xlinker /softs/intel//impi/5.0.3.048/intel64/lib/release_mt -Xlinker -rpath -Xlinker /softs/intel//impi/5.0.3.048/intel64/lib -Xlinker -rpath -Xlinker /opt/intel/mpi-rt/5.0/intel64/lib/release_mt -Xlinker -rpath -Xlinker /opt/intel/mpi-rt/5.0/intel64/lib -lmpifort -lmpi -lmpigi -ldl -lrt -lpthread
+icc -I/softs/.../include ... -L/softs/.../lib ... -Xlinker -rpath -Xlinker /softs/.../lib .... -lmpi -ldl -lrt -lpthread
 $
 </pre>
-<p>
-          [ $ mpicc --showme icc -I/opt/mpi/bullxmpi/1.2.8.3/include -pthread -L/opt/mpi/bullxmpi/1.2.8.3/lib
-          -lmpi -ldl -lm -lnuma -Wl,--export-dynamic -lrt -lnsl -lutil -lm -ldl $
-          mpicc --showme:compile -I/opt/mpi/bullxmpi/1.2.8.3/include -pthread $ mpicc
-          --showme:link -pthread -L/opt/mpi/bullxmpi/1.2.8.3/lib -lmpi -ldl -lm -lnuma
-          -Wl,--export-dynamic -lrt -lnsl -lutil -lm -ldl $ ]
-        </p>
+<pre class="programlisting">$ mpicc --showme
+icc -I/opt/.../include -pthread -L/opt/.../lib -lmpi -ldl -lm -lnuma -Wl,--export-dynamic -lrt -lnsl -lutil -lm -ldl
+$ mpicc --showme:compile
+-I/opt/mpi/bullxmpi/1.2.8.3/include -pthread
+$ mpicc --showme:link
+-pthread -L/opt/.../lib -lmpi -ldl -lm -lnuma -Wl,--export-dynamic -lrt -lnsl -lutil -lm -ldl
+$
+</pre>
 <p>
           To see the results of MPI auto-detection, pass <code class="computeroutput"><span class="special">--</span><span class="identifier">debug</span><span class="special">-</span><span class="identifier">configuration</span></code> on the bjam command line.
         </p>

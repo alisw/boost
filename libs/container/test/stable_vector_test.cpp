@@ -26,22 +26,6 @@
 
 using namespace boost::container;
 
-namespace boost {
-namespace container {
-
-//Explicit instantiation to detect compilation errors
-template class stable_vector<test::movable_and_copyable_int,
-   test::simple_allocator<test::movable_and_copyable_int> >;
-
-template class stable_vector
-   < test::movable_and_copyable_int
-   , node_allocator<test::movable_and_copyable_int> >;
-
-template class stable_vector_iterator<int*, false>;
-template class stable_vector_iterator<int*, true >;
-
-}}
-
 class recursive_vector
 {
    public:
@@ -193,7 +177,7 @@ int main()
       }
    }
 
-#if __cplusplus >= 201703L
+#ifndef BOOST_CONTAINER_NO_CXX17_CTAD
    ////////////////////////////////////
    //    Constructor Template Auto Deduction testing
    ////////////////////////////////////

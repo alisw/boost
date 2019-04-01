@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../mpi.html" title="Chapter&#160;25.&#160;Boost.MPI">
+<link rel="up" href="../mpi.html" title="Chapter&#160;26.&#160;Boost.MPI">
 <link rel="prev" href="getting_started.html" title="Getting started">
 <link rel="next" href="../boost/mpi/allocator.html" title="Class template allocator">
 </head>
@@ -160,8 +160,8 @@ I am process 3 of 7.
         it receives, along with a comma, then passes the message "world"
         back to processor 0 with a different tag. The first processor then writes
         this message with the "!" and exits. All sends are accomplished
-        with the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_4-bb">communicator::send</a></code>
-        method and all receives use a corresponding <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_11-bb">communicator::recv</a></code>
+        with the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_4-bb">communicator::send</a></code>
+        method and all receives use a corresponding <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_9-bb">communicator::recv</a></code>
         call.
       </p>
 <div class="section">
@@ -232,32 +232,38 @@ I am process 3 of 7.
 <span class="special">}</span>
 </pre>
 <p>
-          We have replaced calls to the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_4-bb">communicator::send</a></code>
-          and <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_11-bb">communicator::recv</a></code>
-          members with similar calls to their non-blocking counterparts, <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_20-bb">communicator::isend</a></code>
-          and <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_24-bb">communicator::irecv</a></code>.
+          We have replaced calls to the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_4-bb">communicator::send</a></code>
+          and <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_9-bb">communicator::recv</a></code>
+          members with similar calls to their non-blocking counterparts, <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_16-bb">communicator::isend</a></code>
+          and <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_21-bb">communicator::irecv</a></code>.
           The prefix <span class="bold"><strong>i</strong></span> indicates that the operations
           return immediately with a <code class="computeroutput"><a class="link" href="../boost/mpi/request.html" title="Class request">mpi::request</a></code>
           object, which allows one to query the status of a communication request
-          (see the <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_26_5_14_21_2_1_1_3_2-bb">test</a></code>
-          method) or wait until it has completed (see the <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_26_5_14_21_2_1_1_3_1-bb">wait</a></code>
+          (see the <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_27_5_14_21_2_1_1_3_2-bb">test</a></code>
+          method) or wait until it has completed (see the <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_27_5_14_21_2_1_1_3_1-bb">wait</a></code>
           method). Multiple requests can be completed at the same time with the
           <code class="computeroutput"><a class="link" href="../boost/mpi/wait_all.html" title="Function wait_all">wait_all</a></code> operation.
         </p>
-<p>
-          Important note: The MPI standard requires users to keep the request handle
-          for a non-blocking communication, and to call the "wait" operation
-          (or successfully test for completion) to complete the send or receive.
-          Unlike most C MPI implementations, which allow the user to discard the
-          request for a non-blocking send, Boost.MPI requires the user to call "wait"
-          or "test", since the request object might contain temporary buffers
-          that have to be kept until the send is completed. Moreover, the MPI standard
-          does not guarantee that the receive makes any progress before a call to
-          "wait" or "test", although most implementations of
-          the C MPI do allow receives to progress before the call to "wait"
-          or "test". Boost.MPI, on the other hand, generally requires "test"
-          or "wait" calls to make progress.
-        </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../doc/src/images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The MPI standard requires users to keep the request handle for a non-blocking
+            communication, and to call the "wait" operation (or successfully
+            test for completion) to complete the send or receive. Unlike most C MPI
+            implementations, which allow the user to discard the request for a non-blocking
+            send, Boost.MPI requires the user to call "wait" or "test",
+            since the request object might contain temporary buffers that have to
+            be kept until the send is completed. Moreover, the MPI standard does
+            not guarantee that the receive makes any progress before a call to "wait"
+            or "test", although most implementations of the C MPI do allow
+            receives to progress before the call to "wait" or "test".
+            Boost.MPI, on the other hand, generally requires "test" or
+            "wait" calls to make progress.
+          </p></td></tr>
+</table></div>
 <p>
           If you run this program multiple times, you may see some strange results:
           namely, some runs will produce:
@@ -613,9 +619,9 @@ Rank 6 got 2117359639
           indicates that the minimum value should be computed. <code class="computeroutput"><span class="identifier">mpi</span><span class="special">::</span><span class="identifier">minimum</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span></code> is a binary function object that compares
           its two parameters via <code class="computeroutput"><span class="special">&lt;</span></code>
           and returns the smaller value. Any associative binary function or function
-          object will work. For instance, to concatenate strings with <code class="computeroutput"><span class="identifier">reduce</span></code> one could use the function object
-          <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span></code>
-          (<code class="computeroutput"><span class="identifier">string_cat</span><span class="special">.</span><span class="identifier">cpp</span></code>):
+          object will work provided it's stateless. For instance, to concatenate
+          strings with <code class="computeroutput"><span class="identifier">reduce</span></code> one
+          could use the function object <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span></code> (<code class="computeroutput"><span class="identifier">string_cat</span><span class="special">.</span><span class="identifier">cpp</span></code>):
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpi</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -653,6 +659,10 @@ Rank 6 got 2117359639
         </p>
 <pre class="programlisting">The result is zero one two three four five six
 </pre>
+<h5>
+<a name="reduce.binary_operations_for_reduce"></a>
+          Binary operations for reduce
+        </h5>
 <p>
           Any kind of binary function objects can be used with <code class="computeroutput"><span class="identifier">reduce</span></code>.
           For instance, and there are many such function objects in the C++ standard
@@ -701,6 +711,20 @@ Rank 6 got 2117359639
           own function objects that can take advantage of this mapping, see the class
           template <code class="computeroutput"><a class="link" href="../boost/mpi/is_mpi_op.html" title="Struct template is_mpi_op">is_mpi_op</a></code>.
         </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            Due to the unerlying MPI limitations, it is important to note that the
+            opertation must be stateless.
+          </p></td></tr>
+</table></div>
+<h5>
+<a name="reduce.all_process_variant"></a>
+          All process variant
+        </h5>
 <p>
           Like <a class="link" href="tutorial.html#mpi.gather" title="Gather"><code class="computeroutput"><span class="identifier">gather</span></code></a>,
           <code class="computeroutput"><span class="identifier">reduce</span></code> has an "all"
@@ -728,7 +752,7 @@ Rank 6 got 2117359639
   <span class="keyword">int</span> <span class="identifier">my_number</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">rand</span><span class="special">();</span>
   <span class="keyword">int</span> <span class="identifier">minimum</span><span class="special">;</span>
 
-  <span class="identifier">all_reduce</span><span class="special">(</span><span class="identifier">world</span><span class="special">,</span> <span class="identifier">my_number</span><span class="special">,</span> <span class="identifier">minimum</span><span class="special">,</span> <span class="identifier">mpi</span><span class="special">::</span><span class="identifier">minimum</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
+  <span class="identifier">mpi</span><span class="special">::</span><span class="identifier">all_reduce</span><span class="special">(</span><span class="identifier">world</span><span class="special">,</span> <span class="identifier">my_number</span><span class="special">,</span> <span class="identifier">minimum</span><span class="special">,</span> <span class="identifier">mpi</span><span class="special">::</span><span class="identifier">minimum</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
 
   <span class="keyword">if</span> <span class="special">(</span><span class="identifier">world</span><span class="special">.</span><span class="identifier">rank</span><span class="special">()</span> <span class="special">==</span> <span class="number">0</span><span class="special">)</span> <span class="special">{</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"The minimum value is "</span> <span class="special">&lt;&lt;</span> <span class="identifier">minimum</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
@@ -759,7 +783,7 @@ Rank 6 got 2117359639
   <span class="identifier">std</span><span class="special">::</span><span class="identifier">srand</span><span class="special">(</span><span class="identifier">world</span><span class="special">.</span><span class="identifier">rank</span><span class="special">());</span>
   <span class="keyword">int</span> <span class="identifier">my_number</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">rand</span><span class="special">();</span>
 
-  <span class="identifier">all_reduce</span><span class="special">(</span><span class="identifier">world</span><span class="special">,</span> <span class="identifier">my_number</span><span class="special">,</span> <span class="identifier">mpi</span><span class="special">::</span><span class="identifier">minimum</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
+  <span class="identifier">mpi</span><span class="special">::</span><span class="identifier">all_reduce</span><span class="special">(</span><span class="identifier">world</span><span class="special">,</span> <span class="identifier">my_number</span><span class="special">,</span> <span class="identifier">mpi</span><span class="special">::</span><span class="identifier">minimum</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;());</span>
 
   <span class="keyword">if</span> <span class="special">(</span><span class="identifier">world</span><span class="special">.</span><span class="identifier">rank</span><span class="special">()</span> <span class="special">==</span> <span class="number">0</span><span class="special">)</span> <span class="special">{</span>
       <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"The minimum value is "</span> <span class="special">&lt;&lt;</span> <span class="identifier">my_number</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
@@ -988,7 +1012,7 @@ Rank 6 got 2117359639
 </pre>
 <p>
           The skeletons and content of any Serializable data type can be transmitted
-          either via the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_4-bb">send</a></code> and <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_11-bb">recv</a></code> members of the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a></code>
+          either via the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_4-bb">send</a></code> and <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_9-bb">recv</a></code> members of the <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a></code>
           class (for point-to-point communicators) or broadcast via the <code class="computeroutput"><a class="link" href="../boost/mpi/broadcast.html" title="Function broadcast">broadcast()</a></code> collective. When separating
           a data structure into a skeleton and content, be careful not to modify
           the data structure (either on the sender side or the receiver side) without
@@ -1069,7 +1093,7 @@ Rank 6 got 2117359639
           MPI, or for porting existing parallel programs to Boost.MPI.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t0"></a><p class="title"><b>Table&#160;25.1.&#160;Point-to-point communication</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t0"></a><p class="title"><b>Table&#160;26.1.&#160;Point-to-point communication</b></p>
 <div class="table-contents"><table class="table" summary="Point-to-point communication">
 <colgroup>
 <col>
@@ -1168,7 +1192,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_26_5_14_21_2_1_1_3_3-bb">request::cancel</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_27_5_14_21_2_1_1_3_3-bb">request::cancel</a></code>
                   </p>
                 </td>
 </tr>
@@ -1180,7 +1204,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/status.html#id-1_3_26_5_14_24_2_1_1_4_5-bb">status::count</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/status.html#id-1_3_27_5_14_24_2_1_1_4_5-bb">status::count</a></code>
                   </p>
                 </td>
 </tr>
@@ -1204,7 +1228,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_28-bb">communicator::iprobe</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_26-bb">communicator::iprobe</a></code>
                   </p>
                 </td>
 </tr>
@@ -1228,7 +1252,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_20-bb">communicator::isend</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_16-bb">communicator::isend</a></code>
                   </p>
                 </td>
 </tr>
@@ -1252,7 +1276,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_20-bb">communicator::irecv</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_16-bb">communicator::irecv</a></code>
                   </p>
                 </td>
 </tr>
@@ -1264,7 +1288,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_27-bb">communicator::probe</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_25-bb">communicator::probe</a></code>
                   </p>
                 </td>
 </tr>
@@ -1288,7 +1312,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_11-bb">communicator::recv</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_9-bb">communicator::recv</a></code>
                   </p>
                 </td>
 </tr>
@@ -1348,7 +1372,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_4-bb">communicator::send</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_4-bb">communicator::send</a></code>
                   </p>
                 </td>
 </tr>
@@ -1444,7 +1468,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_26_5_14_21_2_1_1_3_1-bb">request::test</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_27_5_14_21_2_1_1_3_1-bb">request::test</a></code>
                   </p>
                 </td>
 </tr>
@@ -1492,7 +1516,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/status.html#id-1_3_26_5_14_24_2_1_1_4_4-bb">status::cancelled</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/status.html#id-1_3_27_5_14_24_2_1_1_4_4-bb">status::cancelled</a></code>
                   </p>
                 </td>
 </tr>
@@ -1504,7 +1528,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_26_5_14_21_2_1_1_3_1-bb">request::wait</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/request.html#id-1_3_27_5_14_21_2_1_1_3_1-bb">request::wait</a></code>
                   </p>
                 </td>
 </tr>
@@ -1553,7 +1577,7 @@ Rank 6 got 2117359639
           datatype constants.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t1"></a><p class="title"><b>Table&#160;25.2.&#160;Datatypes</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t1"></a><p class="title"><b>Table&#160;26.2.&#160;Datatypes</b></p>
 <div class="table-contents"><table class="table" summary="Datatypes">
 <colgroup>
 <col>
@@ -1857,7 +1881,7 @@ Rank 6 got 2117359639
           Boost.MPI.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t2"></a><p class="title"><b>Table&#160;25.3.&#160;Derived datatypes</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t2"></a><p class="title"><b>Table&#160;26.3.&#160;Derived datatypes</b></p>
 <div class="table-contents"><table class="table" summary="Derived datatypes">
 <colgroup>
 <col>
@@ -2068,7 +2092,7 @@ Rank 6 got 2117359639
           can be used to pack or unpack a contiguous buffer using MPI's facilities.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t3"></a><p class="title"><b>Table&#160;25.4.&#160;Packing and unpacking</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t3"></a><p class="title"><b>Table&#160;26.4.&#160;Packing and unpacking</b></p>
 <div class="table-contents"><table class="table" summary="Packing and unpacking">
 <colgroup>
 <col>
@@ -2132,7 +2156,7 @@ Rank 6 got 2117359639
           will be invoked when it is possible (and efficient) to do so.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t4"></a><p class="title"><b>Table&#160;25.5.&#160;Collectives</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t4"></a><p class="title"><b>Table&#160;26.5.&#160;Collectives</b></p>
 <div class="table-contents"><table class="table" summary="Collectives">
 <colgroup>
 <col>
@@ -2219,7 +2243,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_29-bb">communicator::barrier</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_27-bb">communicator::barrier</a></code>
                   </p>
                 </td>
 </tr>
@@ -2346,7 +2370,7 @@ Rank 6 got 2117359639
           reduction operations can be mapped between the C MPI and Boost.MPI.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t5"></a><p class="title"><b>Table&#160;25.6.&#160;Reduction operations</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t5"></a><p class="title"><b>Table&#160;26.6.&#160;Reduction operations</b></p>
 <div class="table-contents"><table class="table" summary="Reduction operations">
 <colgroup>
 <col>
@@ -2546,7 +2570,7 @@ Rank 6 got 2117359639
           class in Boost.MPI.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t6"></a><p class="title"><b>Table&#160;25.7.&#160;Predefined communicators</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t6"></a><p class="title"><b>Table&#160;26.7.&#160;Predefined communicators</b></p>
 <div class="table-contents"><table class="table" summary="Predefined communicators">
 <colgroup>
 <col>
@@ -2610,7 +2634,7 @@ Rank 6 got 2117359639
           Boost.MPI supports groups of processes through its <code class="computeroutput"><a class="link" href="../boost/mpi/group.html" title="Class group">group</a></code> class.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t7"></a><p class="title"><b>Table&#160;25.8.&#160;Group operations and constants</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t7"></a><p class="title"><b>Table&#160;26.8.&#160;Group operations and constants</b></p>
 <div class="table-contents"><table class="table" summary="Group operations and constants">
 <colgroup>
 <col>
@@ -2649,7 +2673,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/group.html#id-1_3_26_5_14_13_2_1_1_3_2-bb">group::size</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/group.html#id-1_3_27_5_14_13_2_1_1_3_2-bb">group::size</a></code>
                   </p>
                 </td>
 </tr>
@@ -2737,7 +2761,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_3-bb">communicator::group</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_3-bb">communicator::group</a></code>
                   </p>
                 </td>
 </tr>
@@ -2786,7 +2810,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/group.html#id-1_3_26_5_14_13_2_1_1_3_6-bb">group::include</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/group.html#id-1_3_27_5_14_13_2_1_1_3_6-bb">group::include</a></code>
                   </p>
                 </td>
 </tr>
@@ -2798,7 +2822,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/group.html#id-1_3_26_5_14_13_2_1_1_3_6-bb">group::exclude</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/group.html#id-1_3_27_5_14_13_2_1_1_3_6-bb">group::exclude</a></code>
                   </p>
                 </td>
 </tr>
@@ -2846,7 +2870,7 @@ Rank 6 got 2117359639
           class.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t8"></a><p class="title"><b>Table&#160;25.9.&#160;Communicator operations</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t8"></a><p class="title"><b>Table&#160;26.9.&#160;Communicator operations</b></p>
 <div class="table-contents"><table class="table" summary="Communicator operations">
 <colgroup>
 <col>
@@ -2873,7 +2897,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_2-bb">communicator::size</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_2-bb">communicator::size</a></code>
                   </p>
                 </td>
 </tr>
@@ -2885,7 +2909,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_1-bb">communicator::rank</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_1-bb">communicator::rank</a></code>
                   </p>
                 </td>
 </tr>
@@ -2936,7 +2960,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_32-bb">communicator::split</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_30-bb">communicator::split</a></code>
                   </p>
                 </td>
 </tr>
@@ -2960,7 +2984,7 @@ Rank 6 got 2117359639
           class.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t9"></a><p class="title"><b>Table&#160;25.10.&#160;Inter-communicator operations</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t9"></a><p class="title"><b>Table&#160;26.10.&#160;Inter-communicator operations</b></p>
 <div class="table-contents"><table class="table" summary="Inter-communicator operations">
 <colgroup>
 <col>
@@ -2987,7 +3011,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    use <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_34-bb">communicator::as_intercommunicator</a></code>
+                    use <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_32-bb">communicator::as_intercommunicator</a></code>
                   </p>
                 </td>
 </tr>
@@ -2999,7 +3023,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/intercommunicator.html#id-1_3_26_5_14_15_2_1_1_4_4-bb">boost::mpi::intercommunicator::remote_size</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/intercommunicator.html#id-1_3_27_5_14_15_2_1_1_4_4-bb">boost::mpi::intercommunicator::remote_size</a></code>
                     <code class="computeroutput"><span class="identifier">intercommunicator</span><span class="special">::</span><span class="identifier">remote_size</span></code>
                   </p>
                 </td>
@@ -3012,7 +3036,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/intercommunicator.html#id-1_3_26_5_14_15_2_1_1_4_5-bb">intercommunicator::remote_group</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/intercommunicator.html#id-1_3_27_5_14_15_2_1_1_4_5-bb">intercommunicator::remote_group</a></code>
                   </p>
                 </td>
 </tr>
@@ -3037,7 +3061,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/intercommunicator.html#id-1_3_26_5_14_15_2_1_1_4_6-bb">intercommunicator::merge</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/intercommunicator.html#id-1_3_27_5_14_15_2_1_1_4_6-bb">intercommunicator::merge</a></code>
                   </p>
                 </td>
 </tr>
@@ -3048,7 +3072,7 @@ Rank 6 got 2117359639
           Boost.MPI currently provides no support for attribute caching.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t10"></a><p class="title"><b>Table&#160;25.11.&#160;Attributes and caching</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t10"></a><p class="title"><b>Table&#160;26.11.&#160;Attributes and caching</b></p>
 <div class="table-contents"><table class="table" summary="Attributes and caching">
 <colgroup>
 <col>
@@ -3199,7 +3223,7 @@ Rank 6 got 2117359639
           can be viewed as a BGL graph for use in existing, generic graph algorithms.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t11"></a><p class="title"><b>Table&#160;25.12.&#160;Process topologies</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t11"></a><p class="title"><b>Table&#160;26.12.&#160;Process topologies</b></p>
 <div class="table-contents"><table class="table" summary="Process topologies">
 <colgroup>
 <col>
@@ -3226,7 +3250,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_35-bb">communicator::as_graph_communicator</a></code>
+                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_33-bb">communicator::as_graph_communicator</a></code>
                   </p>
                 </td>
 </tr>
@@ -3238,7 +3262,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_38-bb">communicator::has_cartesian_topology</a></code>
+                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_36-bb">communicator::has_cartesian_topology</a></code>
                   </p>
                 </td>
 </tr>
@@ -3287,8 +3311,8 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_35-bb">communicator::as_graph_communicator</a></code>,
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_26_5_14_6_2_1_1_3_38-bb">communicator::has_cartesian_topology</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_33-bb">communicator::as_graph_communicator</a></code>,
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/communicator.html#id-1_3_27_5_14_6_2_1_1_3_36-bb">communicator::has_cartesian_topology</a></code>
                   </p>
                 </td>
 </tr>
@@ -3326,7 +3350,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_26_5_14_3_2_1_4_4_1-bb">cartesian_communicator::ndims </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_1-bb">cartesian_communicator::ndims </a></code>
                   </p>
                 </td>
 </tr>
@@ -3338,7 +3362,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_26_5_14_3_2_1_4_4_5-bb">cartesian_communicator::topology </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_5-bb">cartesian_communicator::topology </a></code>
                   </p>
                 </td>
 </tr>
@@ -3350,7 +3374,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_26_5_14_3_2_1_4_4_2-bb">cartesian_communicator::rank </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_2-bb">cartesian_communicator::rank </a></code>
                   </p>
                 </td>
 </tr>
@@ -3362,7 +3386,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_26_5_14_3_2_1_4_4_4-bb">cartesian_communicator::coordinates </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_4-bb">cartesian_communicator::coordinates </a></code>
                   </p>
                 </td>
 </tr>
@@ -3447,7 +3471,7 @@ Rank 6 got 2117359639
           Boost.MPI supports environmental inquires through the <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html" title="Class environment">environment</a></code> class.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t12"></a><p class="title"><b>Table&#160;25.13.&#160;Environmental inquiries</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t12"></a><p class="title"><b>Table&#160;26.13.&#160;Environmental inquiries</b></p>
 <div class="table-contents"><table class="table" summary="Environmental inquiries">
 <colgroup>
 <col>
@@ -3474,7 +3498,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_26_5_14_10_2_1_1_10_4-bb">environment::max_tag</a></code>
+                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_27_5_14_10_2_1_1_10_4-bb">environment::max_tag</a></code>
                   </p>
                 </td>
 </tr>
@@ -3486,7 +3510,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_26_5_14_10_2_1_1_10_6-bb">environment::host_rank</a></code>
+                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_27_5_14_10_2_1_1_10_6-bb">environment::host_rank</a></code>
                   </p>
                 </td>
 </tr>
@@ -3498,7 +3522,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_26_5_14_10_2_1_1_10_7-bb">environment::io_rank</a></code>
+                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_27_5_14_10_2_1_1_10_7-bb">environment::io_rank</a></code>
                   </p>
                 </td>
 </tr>
@@ -3510,7 +3534,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_26_5_14_10_2_1_1_10_8-bb">environment::processor_name</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_27_5_14_10_2_1_1_10_8-bb">environment::processor_name</a></code>
                   </p>
                 </td>
 </tr>
@@ -3522,7 +3546,7 @@ Rank 6 got 2117359639
           class.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t13"></a><p class="title"><b>Table&#160;25.14.&#160;Error handling</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t13"></a><p class="title"><b>Table&#160;26.14.&#160;Error handling</b></p>
 <div class="table-contents"><table class="table" summary="Error handling">
 <colgroup>
 <col>
@@ -3633,7 +3657,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/exception.html#id-1_3_26_5_14_11_2_1_1_4_4-bb">exception::error_class</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/exception.html#id-1_3_27_5_14_11_2_1_1_4_4-bb">exception::error_class</a></code>
                   </p>
                 </td>
 </tr>
@@ -3646,7 +3670,7 @@ Rank 6 got 2117359639
           Timer library</a>.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t14"></a><p class="title"><b>Table&#160;25.15.&#160;Timing facilities</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t14"></a><p class="title"><b>Table&#160;26.15.&#160;Timing facilities</b></p>
 <div class="table-contents"><table class="table" summary="Timing facilities">
 <colgroup>
 <col>
@@ -3673,7 +3697,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/timer.html#id-1_3_26_5_14_25_2_1_1_5_1-bb">timer::time_is_global</a></code>
+                    unnecessary; use <code class="computeroutput"><a class="link" href="../boost/mpi/timer.html#id-1_3_27_5_14_25_2_1_1_5_1-bb">timer::time_is_global</a></code>
                   </p>
                 </td>
 </tr>
@@ -3685,7 +3709,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    use <code class="computeroutput"><a class="link" href="../boost/mpi/timer.html#id-1_3_26_5_14_25_2_1_1_3_2-bb">timer::elapsed</a></code> to determine
+                    use <code class="computeroutput"><a class="link" href="../boost/mpi/timer.html#id-1_3_27_5_14_25_2_1_1_3_2-bb">timer::elapsed</a></code> to determine
                     the time elapsed from some specific starting point
                   </p>
                 </td>
@@ -3698,7 +3722,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/timer.html#id-1_3_26_5_14_25_2_1_1_3_4-bb">timer::elapsed_min</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/timer.html#id-1_3_27_5_14_25_2_1_1_3_4-bb">timer::elapsed_min</a></code>
                   </p>
                 </td>
 </tr>
@@ -3710,7 +3734,7 @@ Rank 6 got 2117359639
           of the Boost.MPI <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html" title="Class environment">environment</a></code> class.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t15"></a><p class="title"><b>Table&#160;25.16.&#160;Startup/shutdown facilities</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t15"></a><p class="title"><b>Table&#160;26.16.&#160;Startup/shutdown facilities</b></p>
 <div class="table-contents"><table class="table" summary="Startup/shutdown facilities">
 <colgroup>
 <col>
@@ -3763,7 +3787,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_26_5_14_10_2_1_1_10_2-bb">environment::initialized</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_27_5_14_10_2_1_1_10_2-bb">environment::initialized</a></code>
                   </p>
                 </td>
 </tr>
@@ -3775,7 +3799,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_26_5_14_10_2_1_1_10_1-bb">environment::abort</a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/environment.html#id-1_3_27_5_14_10_2_1_1_10_1-bb">environment::abort</a></code>
                   </p>
                 </td>
 </tr>
@@ -3787,7 +3811,7 @@ Rank 6 got 2117359639
           MPI 1.1.
         </p>
 <div class="table">
-<a name="mpi.tutorial.cartesian_communicator.c_mapping.t16"></a><p class="title"><b>Table&#160;25.17.&#160;Profiling interface</b></p>
+<a name="mpi.tutorial.cartesian_communicator.c_mapping.t16"></a><p class="title"><b>Table&#160;26.17.&#160;Profiling interface</b></p>
 <div class="table-contents"><table class="table" summary="Profiling interface">
 <colgroup>
 <col>
@@ -3880,11 +3904,11 @@ Rank 6 got 2117359639
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">;</span>
 
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/mpi/alloca_1_3_26_5_14_2_2_1_2.html" title="Class allocator&lt;void&gt;">allocator</a><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../boost/mpi/alloca_1_3_27_5_14_2_2_1_2.html" title="Class allocator&lt;void&gt;">allocator</a><span class="special">&lt;</span><span class="keyword">void</span><span class="special">&gt;</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">&gt;</span> 
-      <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_26_5_14_2_2_1_3.html" title="Function template operator=="><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T1</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T2</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_27_5_14_2_2_1_3.html" title="Function template operator=="><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T1</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T2</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">&gt;</span> 
-      <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_26_5_14_2_2_1_4.html" title="Function template operator!="><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T1</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T2</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_27_5_14_2_2_1_4.html" title="Function template operator!="><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T1</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/allocator.html" title="Class template allocator">allocator</a><span class="special">&lt;</span> <span class="identifier">T2</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -3896,30 +3920,30 @@ Rank 6 got 2117359639
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">struct</span> <a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a><span class="special">;</span>
 
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_26_5_14_3_2_1_2.html" title="Struct is_mpi_datatype&lt;cartesian_dimension&gt;">is_mpi_datatype</a><span class="special">&lt;</span><span class="identifier">cartesian_dimension</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_27_5_14_3_2_1_2.html" title="Struct is_mpi_datatype&lt;cartesian_dimension&gt;">is_mpi_datatype</a><span class="special">&lt;</span><span class="identifier">cartesian_dimension</span><span class="special">&gt;</span><span class="special">;</span>
 
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a><span class="special">;</span>
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/cartesian_communicator.html" title="Class cartesian_communicator">cartesian_communicator</a><span class="special">;</span>
 
     <span class="comment">// Test if the dimensions values are identical. </span>
-    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_26_5_14_3_2_1_5"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d1<span class="special">,</span> 
+    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_27_5_14_3_2_1_5"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d1<span class="special">,</span> 
                     <a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d2<span class="special">)</span><span class="special">;</span>
 
     <span class="comment">// Test if the dimension values are different. </span>
-    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_26_5_14_3_2_1_6"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d1<span class="special">,</span> 
+    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_27_5_14_3_2_1_6"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d1<span class="special">,</span> 
                     <a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d2<span class="special">)</span><span class="special">;</span>
 
     <span class="comment">// Pretty printing of a cartesian dimension (size, periodic) </span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> 
-    <a name="boost.mpi.operat_1_3_26_5_14_3_2_1_7"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d<span class="special">)</span><span class="special">;</span>
-    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_26_5_14_3_2_1_8"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t1<span class="special">,</span> 
+    <a name="boost.mpi.operat_1_3_27_5_14_3_2_1_7"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d<span class="special">)</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_27_5_14_3_2_1_8"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t1<span class="special">,</span> 
                     <a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t2<span class="special">)</span><span class="special">;</span>
-    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_26_5_14_3_2_1_9"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t1<span class="special">,</span> 
+    <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_27_5_14_3_2_1_9"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t1<span class="special">,</span> 
                     <a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t2<span class="special">)</span><span class="special">;</span>
 
     <span class="comment">// Pretty printing of a cartesian topology. </span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> 
-    <a name="boost.mpi.opera_1_3_26_5_14_3_2_1_10"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span>
+    <a name="boost.mpi.opera_1_3_27_5_14_3_2_1_10"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> out<span class="special">,</span> <a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a> <span class="keyword">const</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="keyword">int</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <a class="link" href="../boost/mpi/cartesian_dimensions.html" title="Function cartesian_dimensions"><span class="identifier">cartesian_dimensions</span></a><span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="keyword">int</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -4053,8 +4077,8 @@ Rank 6 got 2117359639
 
     <span class="keyword">const</span> <span class="keyword">int</span> <a class="link" href="../boost/mpi/any_source.html" title="Global any_source">any_source</a><span class="special">;</span>    <span class="comment">// A constant representing "any process.". </span>
     <span class="keyword">const</span> <span class="keyword">int</span> <a class="link" href="../boost/mpi/any_tag.html" title="Global any_tag">any_tag</a><span class="special">;</span>    <span class="comment">// A constant representing "any tag.". </span>
-    <span class="identifier">BOOST_MPI_DECL</span> <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_26_5_14_6_2_1_5.html" title="Function operator=="><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-    <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_26_5_14_6_2_1_6.html" title="Function operator!="><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="identifier">BOOST_MPI_DECL</span> <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_27_5_14_6_2_1_5.html" title="Function operator=="><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a class="link" href="../boost/mpi/operat_1_3_27_5_14_6_2_1_6.html" title="Function operator!="><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/communicator.html" title="Class communicator">communicator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -4066,10 +4090,10 @@ Rank 6 got 2117359639
 
 <a class="link" href="../MPICH_IGNORE_CXX_SEEK.html" title="Macro MPICH_IGNORE_CXX_SEEK">MPICH_IGNORE_CXX_SEEK</a>
 <a class="link" href="../BOOST_MPI_HOMOGENEOUS.html" title="Macro BOOST_MPI_HOMOGENEOUS">BOOST_MPI_HOMOGENEOUS</a>
-<a class="link" href="../BOOST_MPI__1_3_26_5_14_7_4.html" title="Macro BOOST_MPI_HAS_MEMORY_ALLOCATION">BOOST_MPI_HAS_MEMORY_ALLOCATION</a>
-<a class="link" href="../BOOST_MPI__1_3_26_5_14_7_5.html" title="Macro BOOST_MPI_HAS_NOARG_INITIALIZATION">BOOST_MPI_HAS_NOARG_INITIALIZATION</a>
-<a class="link" href="../BOOST_MPI__1_3_26_5_14_7_6.html" title="Macro BOOST_MPI_CALLING_CONVENTION">BOOST_MPI_CALLING_CONVENTION</a>
-<a class="link" href="../BOOST_MPI__1_3_26_5_14_7_7.html" title="Macro BOOST_MPI_BCAST_BOTTOM_WORKS_FINE">BOOST_MPI_BCAST_BOTTOM_WORKS_FINE</a>
+<a class="link" href="../BOOST_MPI__1_3_27_5_14_7_4.html" title="Macro BOOST_MPI_HAS_MEMORY_ALLOCATION">BOOST_MPI_HAS_MEMORY_ALLOCATION</a>
+<a class="link" href="../BOOST_MPI__1_3_27_5_14_7_5.html" title="Macro BOOST_MPI_HAS_NOARG_INITIALIZATION">BOOST_MPI_HAS_NOARG_INITIALIZATION</a>
+<a class="link" href="../BOOST_MPI__1_3_27_5_14_7_6.html" title="Macro BOOST_MPI_CALLING_CONVENTION">BOOST_MPI_CALLING_CONVENTION</a>
+<a class="link" href="../BOOST_MPI__1_3_27_5_14_7_7.html" title="Macro BOOST_MPI_BCAST_BOTTOM_WORKS_FINE">BOOST_MPI_BCAST_BOTTOM_WORKS_FINE</a>
 <a class="link" href="../BOOST_MPI_DECL.html" title="Macro BOOST_MPI_DECL">BOOST_MPI_DECL</a></pre>
 </div>
 <div class="section">
@@ -4082,13 +4106,13 @@ Rank 6 got 2117359639
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_integer_datatype.html" title="Struct template is_mpi_integer_datatype">is_mpi_integer_datatype</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_26_5_14_8_2_1_2.html" title="Struct template is_mpi_floating_point_datatype">is_mpi_floating_point_datatype</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_27_5_14_8_2_1_2.html" title="Struct template is_mpi_floating_point_datatype">is_mpi_floating_point_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_logical_datatype.html" title="Struct template is_mpi_logical_datatype">is_mpi_logical_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_complex_datatype.html" title="Struct template is_mpi_complex_datatype">is_mpi_complex_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_byte_datatype.html" title="Struct template is_mpi_byte_datatype">is_mpi_byte_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_builtin_datatype.html" title="Struct template is_mpi_builtin_datatype">is_mpi_builtin_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_datatype.html" title="Struct template is_mpi_datatype">is_mpi_datatype</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">MPI_Datatype</span> <a class="link" href="../boost/mpi/get_mp_1_3_26_5_14_8_2_1_8.html" title="Function template get_mpi_datatype"><span class="identifier">get_mpi_datatype</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">MPI_Datatype</span> <a class="link" href="../boost/mpi/get_mp_1_3_27_5_14_8_2_1_8.html" title="Function template get_mpi_datatype"><span class="identifier">get_mpi_datatype</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -4099,7 +4123,7 @@ Rank 6 got 2117359639
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">struct</span> <a class="link" href="../boost/mpi/packed.html" title="Struct packed">packed</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">MPI_Datatype</span> <a name="boost.mpi.get_mp_1_3_26_5_14_9_2_1_2"></a><span class="identifier">get_mpi_datatype</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">MPI_Datatype</span> <a name="boost.mpi.get_mp_1_3_27_5_14_9_2_1_2"></a><span class="identifier">get_mpi_datatype</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -4112,8 +4136,8 @@ Rank 6 got 2117359639
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/environment.html" title="Class environment">environment</a><span class="special">;</span>
     <span class="keyword">namespace</span> <span class="identifier">threading</span> <span class="special">{</span>
       <span class="keyword">enum</span> <a class="link" href="../boost/mpi/threading/level.html" title="Type level">level</a><span class="special">;</span>
-      <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="../boost/mpi/threading/ope_1_3_26_5_14_10_2_1_2_2.html" title="Function operator&lt;&lt;"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">level</span><span class="special">)</span><span class="special">;</span>
-      <span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span> <span class="special">&amp;</span> <a class="link" href="../boost/mpi/threading/ope_1_3_26_5_14_10_2_1_2_3.html" title="Function operator&gt;&gt;"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">level</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+      <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span> <a class="link" href="../boost/mpi/threading/ope_1_3_27_5_14_10_2_1_2_2.html" title="Function operator&lt;&lt;"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">level</span><span class="special">)</span><span class="special">;</span>
+      <span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span> <span class="special">&amp;</span> <a class="link" href="../boost/mpi/threading/ope_1_3_27_5_14_10_2_1_2_3.html" title="Function operator&gt;&gt;"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">level</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -4136,7 +4160,7 @@ Rank 6 got 2117359639
 <a name="header.boost.mpi.graph_communicator_hpp"></a>Header &lt;<a href="../../../boost/mpi/graph_communicator.hpp" target="_top">boost/mpi/graph_communicator.hpp</a>&gt;</h4></div></div></div>
 <p>This header defines facilities to support MPI communicators with graph topologies, using the graph interface defined by the Boost Graph Library. One can construct a communicator whose topology is described by any graph meeting the requirements of the Boost Graph Library's graph concepts. Likewise, any communicator that has a graph topology can be viewed as a graph by the Boost Graph Library, permitting one to use the BGL's graph algorithms on the process topology. </p>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/graph_t_1_3_26_5_14_12_2_1.html" title="Struct graph_traits&lt;mpi::graph_communicator&gt;">graph_traits</a><span class="special">&lt;</span><span class="identifier">mpi</span><span class="special">::</span><span class="identifier">graph_communicator</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/graph_t_1_3_27_5_14_12_2_1.html" title="Struct graph_traits&lt;mpi::graph_communicator&gt;">graph_traits</a><span class="special">&lt;</span><span class="identifier">mpi</span><span class="special">::</span><span class="identifier">graph_communicator</span><span class="special">&gt;</span><span class="special">;</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/graph_communicator.html" title="Class graph_communicator">graph_communicator</a><span class="special">;</span>
 
@@ -4167,8 +4191,8 @@ Rank 6 got 2117359639
 
     <span class="comment">// Returns the number of edges in the communicator's graph topology. </span>
     <span class="keyword">int</span> <a name="boost.mpi.num_edges"></a><span class="identifier">num_edges</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/graph_communicator.html" title="Class graph_communicator">graph_communicator</a> <span class="special">&amp;</span> comm<span class="special">)</span><span class="special">;</span>
-    <span class="identifier">identity_property_map</span> <a class="link" href="../boost/mpi/get_1_3_26_5_14_12_2_2_11.html" title="Function get"><span class="identifier">get</span></a><span class="special">(</span><span class="identifier">vertex_index_t</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/graph_communicator.html" title="Class graph_communicator">graph_communicator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-    <span class="keyword">int</span> <a class="link" href="../boost/mpi/get_1_3_26_5_14_12_2_2_12.html" title="Function get"><span class="identifier">get</span></a><span class="special">(</span><span class="identifier">vertex_index_t</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/graph_communicator.html" title="Class graph_communicator">graph_communicator</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
+    <span class="identifier">identity_property_map</span> <a class="link" href="../boost/mpi/get_1_3_27_5_14_12_2_2_11.html" title="Function get"><span class="identifier">get</span></a><span class="special">(</span><span class="identifier">vertex_index_t</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/graph_communicator.html" title="Class graph_communicator">graph_communicator</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">int</span> <a class="link" href="../boost/mpi/get_1_3_27_5_14_12_2_2_12.html" title="Function get"><span class="identifier">get</span></a><span class="special">(</span><span class="identifier">vertex_index_t</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/graph_communicator.html" title="Class graph_communicator">graph_communicator</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -4179,9 +4203,9 @@ Rank 6 got 2117359639
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a><span class="special">;</span>
-    <span class="identifier">BOOST_MPI_DECL</span> <span class="keyword">bool</span> <a class="link" href="../boost/mpi/opera_1_3_26_5_14_13_2_1_2.html" title="Function operator=="><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-    <span class="keyword">bool</span> <a class="link" href="../boost/mpi/opera_1_3_26_5_14_13_2_1_3.html" title="Function operator!="><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-    <span class="identifier">BOOST_MPI_DECL</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <a class="link" href="../boost/mpi/opera_1_3_26_5_14_13_2_1_4.html" title="Function operator|"><span class="keyword">operator</span><span class="special">|</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="identifier">BOOST_MPI_DECL</span> <span class="keyword">bool</span> <a class="link" href="../boost/mpi/opera_1_3_27_5_14_13_2_1_2.html" title="Function operator=="><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a class="link" href="../boost/mpi/opera_1_3_27_5_14_13_2_1_3.html" title="Function operator!="><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="identifier">BOOST_MPI_DECL</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <a class="link" href="../boost/mpi/opera_1_3_27_5_14_13_2_1_4.html" title="Function operator|"><span class="keyword">operator</span><span class="special">|</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="identifier">BOOST_MPI_DECL</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <a class="link" href="../boost/mpi/operator_.html" title="Function operator&amp;"><span class="keyword">operator</span><span class="special">&amp;</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="identifier">BOOST_MPI_DECL</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <a class="link" href="../boost/mpi/operator-.html" title="Function operator-"><span class="keyword">operator</span><span class="special">-</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/group.html" title="Class group">group</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
@@ -4195,7 +4219,7 @@ Rank 6 got 2117359639
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/inplace_t.html" title="Struct template inplace_t">inplace_t</a><span class="special">;</span>
 
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/inpla_1_3_26_5_14_14_2_1_2.html" title="Struct template inplace_t&lt;T *&gt;">inplace_t</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">*</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/inpla_1_3_27_5_14_14_2_1_2.html" title="Struct template inplace_t&lt;T *&gt;">inplace_t</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">*</span><span class="special">&gt;</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="../boost/mpi/inplace_t.html" title="Struct template inplace_t">inplace_t</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <a class="link" href="../boost/mpi/inplace.html" title="Function inplace"><span class="identifier">inplace</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <a class="link" href="../boost/mpi/inplace_t.html" title="Struct template inplace_t">inplace_t</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">*</span> <span class="special">&gt;</span> <a class="link" href="../boost/mpi/inplace.html" title="Function inplace"><span class="identifier">inplace</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
@@ -4299,7 +4323,7 @@ Rank 6 got 2117359639
       <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
         <span class="keyword">void</span> <a class="link" href="../boost/mpi/python/register_serialized.html" title="Function template register_serialized"><span class="identifier">register_serialized</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">PyTypeObject</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
       <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
-        <span class="keyword">void</span> <a class="link" href="../boost/mpi/python/reg_1_3_26_5_14_20_2_1_1_2.html" title="Function template register_skeleton_and_content"><span class="identifier">register_skeleton_and_content</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+        <span class="keyword">void</span> <a class="link" href="../boost/mpi/python/reg_1_3_27_5_14_20_2_1_1_2.html" title="Function template register_skeleton_and_content"><span class="identifier">register_skeleton_and_content</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
                                            <span class="identifier">PyTypeObject</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -4527,7 +4551,7 @@ I am process 0 of 5.
         </p>
 <p>
           To use the skeleton/content mechanism from Python, you must first register
-          the type of your data structure with the skeleton/content mechanism <span class="bold"><strong>from C++</strong></span>. The registration function is <code class="computeroutput"><a class="link" href="../boost/mpi/python/reg_1_3_26_5_14_20_2_1_1_2.html" title="Function template register_skeleton_and_content">register_skeleton_and_content</a></code>
+          the type of your data structure with the skeleton/content mechanism <span class="bold"><strong>from C++</strong></span>. The registration function is <code class="computeroutput"><a class="link" href="../boost/mpi/python/reg_1_3_27_5_14_20_2_1_1_2.html" title="Function template register_skeleton_and_content">register_skeleton_and_content</a></code>
           and resides in the <code class="computeroutput"><a class="link" href="tutorial.html#header.boost.mpi.python_hpp" title="Header &lt;boost/mpi/python.hpp&gt;">&lt;boost/mpi/python.hpp&gt;</a></code>
           header.
         </p>

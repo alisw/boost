@@ -92,16 +92,16 @@
       depends on the use of <code class="computeroutput">boost::shared_ptr</code> to
       manage the lifetimes of tracked objects.  This is differs from
       the original Boost.Signals library, which instead relied on derivation
-      from the <code class="computeroutput"><a class="link" href="../boost/signals/trackable.html" title="Class trackable">boost::signals::trackable</a></code> class.
+      from the <code class="computeroutput">boost::signals::trackable</code> class.
       The library would be
       notified of an object's destruction by the
-      <code class="computeroutput"><a class="link" href="../boost/signals/trackable.html" title="Class trackable">boost::signals::trackable</a></code> destructor.
+      <code class="computeroutput">boost::signals::trackable</code> destructor.
     </p>
-<p>Unfortunately, the <code class="computeroutput"><a class="link" href="../boost/signals/trackable.html" title="Class trackable">boost::signals::trackable</a></code>
+<p>Unfortunately, the <code class="computeroutput">boost::signals::trackable</code>
       scheme cannot be made thread safe due
       to destructor ordering.  The destructor of an class derived from
-      <code class="computeroutput"><a class="link" href="../boost/signals/trackable.html" title="Class trackable">boost::signals::trackable</a></code> will always be
-      called before the destructor of the base <code class="computeroutput"><a class="link" href="../boost/signals/trackable.html" title="Class trackable">boost::signals::trackable</a></code>
+      <code class="computeroutput">boost::signals::trackable</code> will always be
+      called before the destructor of the base <code class="computeroutput">boost::signals::trackable</code>
       class.  However, for thread-safety the connection between the signal and object
       needs to be disconnected before the object runs its destructors.
       Otherwise, if an object being destroyed
@@ -121,7 +121,7 @@
 <p>The new connection management scheme has the advantage of being
       non-intrusive.  Objects of any type may be tracked using the
       <code class="computeroutput">shared_ptr</code>/<code class="computeroutput">weak_ptr</code> scheme.  The old
-      <code class="computeroutput"><a class="link" href="../boost/signals/trackable.html" title="Class trackable">boost::signals::trackable</a></code>
+      <code class="computeroutput">boost::signals::trackable</code>
       scheme requires the tracked objects to be derived from the <code class="computeroutput">trackable</code>
       base class, which is not always practical when interacting
       with classes from 3rd party libraries.

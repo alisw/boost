@@ -25,34 +25,6 @@ using namespace boost::container;
 
 typedef std::pair<const test::movable_and_copyable_int, test::movable_and_copyable_int> pair_t;
 
-namespace boost {
-namespace container {
-
-//Explicit instantiation to detect compilation errors
-
-//map
-template class map
-   < test::movable_and_copyable_int
-   , test::movable_and_copyable_int
-   , std::less<test::movable_and_copyable_int>
-   , test::simple_allocator< pair_t >
-   >;
-
-template class map
-   < test::movable_and_copyable_int
-   , test::movable_and_copyable_int
-   , std::less<test::movable_and_copyable_int>
-   , adaptive_pool< pair_t >
-   >;
-
-template class multimap
-   < test::movable_and_copyable_int
-   , test::movable_and_copyable_int
-   , std::less<test::movable_and_copyable_int>
-   , std::allocator< pair_t >
-   >;
-}} //boost::container
-
 class recursive_map
 {
    public:
@@ -240,50 +212,6 @@ struct GetAllocatorMap
    };
 };
 
-template<class VoidAllocator, boost::container::tree_type_enum tree_type_value>
-int test_map_variants()
-{
-   typedef typename GetAllocatorMap<VoidAllocator, tree_type_value>::template apply<int>::map_type MyMap;
-   typedef typename GetAllocatorMap<VoidAllocator, tree_type_value>::template apply<test::movable_int>::map_type MyMoveMap;
-   typedef typename GetAllocatorMap<VoidAllocator, tree_type_value>::template apply<test::copyable_int>::map_type MyCopyMap;
-
-   typedef typename GetAllocatorMap<VoidAllocator, tree_type_value>::template apply<int>::multimap_type MyMultiMap;
-   typedef typename GetAllocatorMap<VoidAllocator, tree_type_value>::template apply<test::movable_int>::multimap_type MyMoveMultiMap;
-   typedef typename GetAllocatorMap<VoidAllocator, tree_type_value>::template apply<test::copyable_int>::multimap_type MyCopyMultiMap;
-
-   typedef std::map<int, int>                                     MyStdMap;
-   typedef std::multimap<int, int>                                MyStdMultiMap;
-
-   if (0 != test::map_test<
-                  MyMap
-                  ,MyStdMap
-                  ,MyMultiMap
-                  ,MyStdMultiMap>()){
-      std::cout << "Error in map_test<MyBoostMap>" << std::endl;
-      return 1;
-   }
-
-   if (0 != test::map_test<
-                  MyMoveMap
-                  ,MyStdMap
-                  ,MyMoveMultiMap
-                  ,MyStdMultiMap>()){
-      std::cout << "Error in map_test<MyBoostMap>" << std::endl;
-      return 1;
-   }
-
-   if (0 != test::map_test<
-                  MyCopyMap
-                  ,MyStdMap
-                  ,MyCopyMultiMap
-                  ,MyStdMultiMap>()){
-      std::cout << "Error in map_test<MyBoostMap>" << std::endl;
-      return 1;
-   }
-
-   return 0;
-}
-
 struct boost_container_map;
 struct boost_container_multimap;
 
@@ -366,6 +294,16 @@ bool test_heterogeneous_lookups()
    if(cmmap1.count(find_me) != 2)
       return false;
 
+   //contains
+   if(!map1.contains(find_me))
+      return false;
+   if(!cmap1.contains(find_me))
+      return false;
+   if(!mmap1.contains(find_me))
+      return false;
+   if(!cmmap1.contains(find_me))
+      return false;
+
    //lower_bound
    if(map1.lower_bound(find_me)->second != 'd')
       return false;
@@ -395,6 +333,106 @@ bool test_heterogeneous_lookups()
       return false;
    if(cmmap1.equal_range(find_me).second->second != 'e')
       return false;
+
+   return true;
+}
+
+bool constructor_template_auto_deduction_test()
+{
+
+#ifndef BOOST_CONTAINER_NO_CXX17_CTAD
+   using namespace boost::container;
+   const std::size_t NumElements = 100;
+   {
+      std::map<int, int> int_map;
+      for(std::size_t i = 0; i != NumElements; ++i){
+         int_map.insert(std::map<int, int>::value_type(static_cast<int>(i), static_cast<int>(i)));
+      }
+      std::multimap<int, int> int_mmap;
+      for (std::size_t i = 0; i != NumElements; ++i) {
+         int_mmap.insert(std::multimap<int, int>::value_type(static_cast<int>(i), static_cast<int>(i)));
+      }
+
+      typedef std::less<int> comp_int_t;
+      typedef std::allocator<std::pair<const int, int> > alloc_pair_int_t;
+
+      //range
+      {
+         auto fmap = map(int_map.begin(), int_map.end());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(int_mmap.begin(), int_mmap.end());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+      //range+comp
+      {
+         auto fmap = map(int_map.begin(), int_map.end(), comp_int_t());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(int_mmap.begin(), int_mmap.end(), comp_int_t());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+      //range+comp+alloc
+      {
+         auto fmap = map(int_map.begin(), int_map.end(), comp_int_t(), alloc_pair_int_t());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(int_mmap.begin(), int_mmap.end(), comp_int_t(), alloc_pair_int_t());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+      //range+alloc
+      {
+         auto fmap = map(int_map.begin(), int_map.end(), alloc_pair_int_t());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(int_mmap.begin(), int_mmap.end(), alloc_pair_int_t());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+
+      //ordered_unique_range / ordered_range
+
+      //range
+      {
+         auto fmap = map(ordered_unique_range, int_map.begin(), int_map.end());
+         if(!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(ordered_range, int_mmap.begin(), int_mmap.end());
+         if(!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+      //range+comp
+      {
+         auto fmap = map(ordered_unique_range, int_map.begin(), int_map.end(), comp_int_t());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(ordered_range, int_mmap.begin(), int_mmap.end(), comp_int_t());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+      //range+comp+alloc
+      {
+         auto fmap = map(ordered_unique_range, int_map.begin(), int_map.end(), comp_int_t(), alloc_pair_int_t());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(ordered_range, int_mmap.begin(), int_mmap.end(), comp_int_t(), alloc_pair_int_t());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+      //range+alloc
+      {
+         auto fmap = map(ordered_unique_range, int_map.begin(), int_map.end(),alloc_pair_int_t());
+         if (!CheckEqualContainers(int_map, fmap))
+            return false;
+         auto fmmap = multimap(ordered_range, int_mmap.begin(), int_mmap.end(),alloc_pair_int_t());
+         if (!CheckEqualContainers(int_mmap, fmmap))
+            return false;
+      }
+   }
+#endif
 
    return true;
 }
@@ -431,34 +469,65 @@ int main ()
    ////////////////////////////////////
    //    Testing allocator implementations
    ////////////////////////////////////
-   //       std:allocator
-   if(test_map_variants< std::allocator<void>, red_black_tree >()){
-      std::cerr << "test_map_variants< std::allocator<void> > failed" << std::endl;
-      return 1;
-   }
-   //       boost::container::adaptive_pool
-   if(test_map_variants< adaptive_pool<void>, red_black_tree >()){
-      std::cerr << "test_map_variants< adaptive_pool<void> > failed" << std::endl;
-      return 1;
-   }
+   {
+      typedef std::map<int, int>                                     MyStdMap;
+      typedef std::multimap<int, int>                                MyStdMultiMap;
 
-   ////////////////////////////////////
-   //    Tree implementations
-   ////////////////////////////////////
-   //       AVL
-   if(test_map_variants< std::allocator<void>, avl_tree >()){
-      std::cerr << "test_map_variants< std::allocator<void>, avl_tree > failed" << std::endl;
-      return 1;
-   }
-   //    SCAPEGOAT TREE
-   if(test_map_variants< std::allocator<void>, scapegoat_tree >()){
-      std::cerr << "test_map_variants< std::allocator<void>, scapegoat_tree > failed" << std::endl;
-      return 1;
-   }
-   //    SPLAY TREE
-   if(test_map_variants< std::allocator<void>, splay_tree >()){
-      std::cerr << "test_map_variants< std::allocator<void>, splay_tree > failed" << std::endl;
-      return 1;
+      if (0 != test::map_test
+         < GetAllocatorMap<std::allocator<void>, red_black_tree>::apply<int>::map_type
+         , MyStdMap
+         , GetAllocatorMap<std::allocator<void>, red_black_tree>::apply<int>::multimap_type
+         , MyStdMultiMap>()) {
+         std::cout << "Error in map_test<std::allocator<void>, red_black_tree>" << std::endl;
+         return 1;
+      }
+
+      if (0 != test::map_test
+         < GetAllocatorMap<new_allocator<void>, avl_tree>::apply<int>::map_type
+         , MyStdMap
+         , GetAllocatorMap<new_allocator<void>, avl_tree>::apply<int>::multimap_type
+         , MyStdMultiMap>()) {
+         std::cout << "Error in map_test<new_allocator<void>, avl_tree>" << std::endl;
+         return 1;
+      }
+
+      if (0 != test::map_test
+         < GetAllocatorMap<adaptive_pool<void>, scapegoat_tree>::apply<int>::map_type
+         , MyStdMap
+         , GetAllocatorMap<adaptive_pool<void>, scapegoat_tree>::apply<int>::multimap_type
+         , MyStdMultiMap>()) {
+         std::cout << "Error in map_test<adaptive_pool<void>, scapegoat_tree>" << std::endl;
+         return 1;
+      }
+
+      ///////////
+
+     if (0 != test::map_test
+         < GetAllocatorMap<new_allocator<void>, splay_tree>::apply<test::movable_int>::map_type
+         , MyStdMap
+         , GetAllocatorMap<new_allocator<void>, splay_tree>::apply<test::movable_int>::multimap_type
+         , MyStdMultiMap>()) {
+         std::cout << "Error in map_test<new_allocator<void>, splay_tree>" << std::endl;
+         return 1;
+      }
+
+      if (0 != test::map_test
+         < GetAllocatorMap<new_allocator<void>, red_black_tree>::apply<test::copyable_int>::map_type
+         , MyStdMap
+         , GetAllocatorMap<new_allocator<void>, red_black_tree>::apply<test::copyable_int>::multimap_type
+         , MyStdMultiMap>()) {
+         std::cout << "Error in map_test<new_allocator<void>, red_black_tree>" << std::endl;
+         return 1;
+      }
+
+      if (0 != test::map_test
+         < GetAllocatorMap<new_allocator<void>, red_black_tree>::apply<test::movable_and_copyable_int>::map_type
+         , MyStdMap
+         , GetAllocatorMap<new_allocator<void>, red_black_tree>::apply<test::movable_and_copyable_int>::multimap_type
+         , MyStdMultiMap>()) {
+         std::cout << "Error in map_test<new_allocator<void>, red_black_tree>" << std::endl;
+         return 1;
+      }
    }
 
    ////////////////////////////////////
@@ -505,29 +574,18 @@ int main ()
       }
    }
 
-#if __cplusplus >= 201703L
-   ////////////////////////////////////
-   //    Constructor Template Auto Deduction
-   ////////////////////////////////////
-   {
-      auto gold = std::map<int, int>({ {1,1}, {2,2}, {3,3} } );
-      auto test = boost::container::map(gold.begin(), gold.end());
-      if (test.size() != 3)
-         return 1;
-   }
-   {
-      auto gold = std::multimap<int, int>({ {1,1}, {2,2}, {3,3} } );
-      auto test = boost::container::multimap(gold.begin(), gold.end());
-      if (test.size() != 3)
-         return 1;
-   }
-#endif
-
    ////////////////////////////////////
    //    Node extraction/insertion testing functions
    ////////////////////////////////////
    if(!node_type_test())
       return 1;
+
+   ////////////////////////////////////
+   //    Constructor Template Auto Deduction test
+   ////////////////////////////////////
+   if (!test::constructor_template_auto_deduction_test()) {
+      return 1;
+   }
 
    if (!boost::container::test::instantiate_constructors<map<int, int>, multimap<int, int> >())
       return 1;
