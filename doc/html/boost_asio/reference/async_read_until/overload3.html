@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>async_read_until (3 of 8 overloads)</title>
+<title>async_read_until (3 of 12 overloads)</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../async_read_until.html" title="async_read_until">
-<link rel="prev" href="overload2.html" title="async_read_until (2 of 8 overloads)">
-<link rel="next" href="overload4.html" title="async_read_until (4 of 8 overloads)">
+<link rel="prev" href="overload2.html" title="async_read_until (2 of 12 overloads)">
+<link rel="next" href="overload4.html" title="async_read_until (4 of 12 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -24,8 +24,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="boost_asio.reference.async_read_until.overload3"></a><a class="link" href="overload3.html" title="async_read_until (3 of 8 overloads)">async_read_until
-        (3 of 8 overloads)</a>
+<a name="boost_asio.reference.async_read_until.overload3"></a><a class="link" href="overload3.html" title="async_read_until (3 of 12 overloads)">async_read_until
+        (3 of 12 overloads)</a>
 </h4></div></div></div>
 <p>
           Start an asynchronous operation to read data into a dynamic buffer sequence
@@ -33,13 +33,14 @@
         </p>
 <pre class="programlisting">template&lt;
     typename <a class="link" href="../AsyncReadStream.html" title="Buffer-oriented asynchronous read stream requirements">AsyncReadStream</a>,
-    typename <a class="link" href="../DynamicBuffer.html" title="Dynamic buffer requirements">DynamicBuffer</a>,
+    typename <a class="link" href="../DynamicBuffer_v1.html" title="Dynamic buffer requirements (version 1)">DynamicBuffer_v1</a>,
     typename <a class="link" href="../ReadHandler.html" title="Read handler requirements">ReadHandler</a>&gt;
 <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type"><span class="emphasis"><em>DEDUCED</em></span></a> async_read_until(
     AsyncReadStream &amp; s,
-    DynamicBuffer &amp;&amp; buffers,
+    DynamicBuffer_v1 &amp;&amp; buffers,
     const boost::regex &amp; expr,
-    ReadHandler &amp;&amp; handler);
+    ReadHandler &amp;&amp; handler,
+    typename enable_if&lt; is_dynamic_buffer_v1&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &amp;&amp;!is_dynamic_buffer_v2&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &gt;::type *  = 0);
 </pre>
 <p>
           This function is used to asynchronously read data into the specified dynamic
@@ -111,8 +112,8 @@
 <p>
                 Regardless of whether the asynchronous operation completes immediately
                 or not, the handler will not be invoked from within this function.
-                Invocation of the handler will be performed in a manner equivalent
-                to using <code class="computeroutput">boost::asio::io_context::post()</code>.
+                On immediate completion, invocation of the handler will be performed
+                in a manner equivalent to using <a class="link" href="../post.html" title="post"><code class="computeroutput">post</code></a>.
               </p>
 </dd>
 </dl>
@@ -176,7 +177,7 @@ boost::asio::async_read_until(s, data,
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

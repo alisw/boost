@@ -8,7 +8,7 @@
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../heap/reference.html#header.boost.heap.pairing_heap_hpp" title="Header &lt;boost/heap/pairing_heap.hpp&gt;">
 <link rel="prev" href="heap_merge.html" title="Function template heap_merge">
-<link rel="next" href="compare.html" title="Struct template compare">
+<link rel="next" href="allocator.html" title="Struct template allocator">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -21,7 +21,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="heap_merge.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.pairing_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="compare.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="heap_merge.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.pairing_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="allocator.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="boost.heap.pairing_heap"></a><div class="titlepage"></div>
@@ -32,7 +32,7 @@
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../heap/reference.html#header.boost.heap.pairing_heap_hpp" title="Header &lt;boost/heap/pairing_heap.hpp&gt;">boost/heap/pairing_heap.hpp</a>&gt;
 
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Options<span class="special">&gt;</span> 
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span> Options<span class="special">&gt;</span> 
 <span class="keyword">class</span> <a class="link" href="pairing_heap.html" title="Class template pairing_heap">pairing_heap</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="pairing_heap.html#boost.heap.pairing_heaptypes">types</a></span>
@@ -82,7 +82,7 @@
   <span class="identifier">ordered_iterator</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_20-bb"><span class="identifier">ordered_begin</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="identifier">ordered_iterator</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_21-bb"><span class="identifier">ordered_end</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_22-bb"><span class="identifier">merge</span></a><span class="special">(</span><a class="link" href="pairing_heap.html" title="Class template pairing_heap">pairing_heap</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">value_compare</span> <span class="keyword">const</span> <span class="special">&amp;</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_23-bb"><span class="identifier">value_comp</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_compare</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_23-bb"><span class="identifier">value_comp</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> HeapType<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_24-bb"><span class="keyword">operator</span><span class="special">&lt;</span></a><span class="special">(</span><span class="identifier">HeapType</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> HeapType<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_25-bb"><span class="keyword">operator</span><span class="special">&gt;</span></a><span class="special">(</span><span class="identifier">HeapType</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> HeapType<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="pairing_heap.html#id-1_3_18_6_6_1_1_1_23_26-bb"><span class="keyword">operator</span><span class="special">&gt;=</span></a><span class="special">(</span><span class="identifier">HeapType</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
@@ -203,13 +203,11 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="identifier">handle_type</span> <a name="id-1_3_18_6_6_1_1_1_23_8-bb"></a><span class="identifier">push</span><span class="special">(</span><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> v<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Adds a new element to the priority queue. Returns handle to element</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
+<p><span class="bold"><strong>Effects:</strong></span> Adds a new element to the priority queue. Returns handle to element<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">handle_type</span> <a name="id-1_3_18_6_6_1_1_1_23_9-bb"></a><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Adds a new element to the priority queue. The element is directly constructed in-place. Returns handle to element.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
+<p><span class="bold"><strong>Effects:</strong></span> Adds a new element to the priority queue. The element is directly constructed in-place. Returns handle to element.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_10-bb"></a><span class="identifier">pop</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span><span class="special">;</span></pre>
@@ -218,43 +216,36 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_11-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">,</span> <span class="identifier">const_reference</span> v<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Assigns <code class="computeroutput">v</code> to the element handled by <code class="computeroutput">handle</code> &amp; updates the priority queue.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
+<p><span class="bold"><strong>Effects:</strong></span> Assigns <code class="computeroutput">v</code> to the element handled by <code class="computeroutput">handle</code> &amp; updates the priority queue.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_12-bb"></a><span class="identifier">update</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Updates the heap after the element handled by <code class="computeroutput">handle</code> has been changed.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
+<p><span class="bold"><strong>Effects:</strong></span> Updates the heap after the element handled by <code class="computeroutput">handle</code> has been changed.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
 <p><span class="bold"><strong>Note:</strong></span> If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_13-bb"></a><span class="identifier">increase</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">,</span> <span class="identifier">const_reference</span> v<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Assigns <code class="computeroutput">v</code> to the element handled by <code class="computeroutput">handle</code> &amp; updates the priority queue.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
+<p><span class="bold"><strong>Effects:</strong></span> Assigns <code class="computeroutput">v</code> to the element handled by <code class="computeroutput">handle</code> &amp; updates the priority queue.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
 <p><span class="bold"><strong>Note:</strong></span> The new value is expected to be greater than the current one </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_14-bb"></a><span class="identifier">increase</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Updates the heap after the element handled by <code class="computeroutput">handle</code> has been changed.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
+<p><span class="bold"><strong>Effects:</strong></span> Updates the heap after the element handled by <code class="computeroutput">handle</code> has been changed.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
 <p><span class="bold"><strong>Note:</strong></span> If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_15-bb"></a><span class="identifier">decrease</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">,</span> <span class="identifier">const_reference</span> v<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Assigns <code class="computeroutput">v</code> to the element handled by <code class="computeroutput">handle</code> &amp; updates the priority queue.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
+<p><span class="bold"><strong>Effects:</strong></span> Assigns <code class="computeroutput">v</code> to the element handled by <code class="computeroutput">handle</code> &amp; updates the priority queue.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
 <p><span class="bold"><strong>Note:</strong></span> The new value is expected to be less than the current one </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_16-bb"></a><span class="identifier">decrease</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Updates the heap after the element handled by <code class="computeroutput">handle</code> has been changed.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
+<p><span class="bold"><strong>Effects:</strong></span> Updates the heap after the element handled by <code class="computeroutput">handle</code> has been changed.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized).</p>
 <p><span class="bold"><strong>Note:</strong></span> The new value is expected to be less than the current one. If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_17-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">handle_type</span> handle<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Removes the element handled by <code class="computeroutput">handle</code> from the <code class="computeroutput"><a class="link" href="priority_queue.html" title="Class template priority_queue">priority_queue</a></code>.</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
+<p><span class="bold"><strong>Effects:</strong></span> Removes the element handled by <code class="computeroutput">handle</code> from the <code class="computeroutput"><a class="link" href="priority_queue.html" title="Class template priority_queue">priority_queue</a></code>.<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="identifier">iterator</span> <a name="id-1_3_18_6_6_1_1_1_23_18-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
@@ -278,11 +269,10 @@
 </li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_18_6_6_1_1_1_23_22-bb"></a><span class="identifier">merge</span><span class="special">(</span><a class="link" href="pairing_heap.html" title="Class template pairing_heap">pairing_heap</a> <span class="special">&amp;</span> rhs<span class="special">)</span><span class="special">;</span></pre>
-<p><span class="bold"><strong>Effects:</strong></span> Merge all elements from rhs into this</p>
-<p><span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
+<p><span class="bold"><strong>Effects:</strong></span> Merge all elements from rhs into this<span class="bold"><strong>Complexity:</strong></span> 2**2*log(log(N)) (amortized). </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_compare</span> <span class="keyword">const</span> <span class="special">&amp;</span> <a name="id-1_3_18_6_6_1_1_1_23_23-bb"></a><span class="identifier">value_comp</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">value_compare</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a name="id-1_3_18_6_6_1_1_1_23_23-bb"></a><span class="identifier">value_comp</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effect:</strong></span> Returns the value_compare object used by the priority queue </p>
 </li>
 <li class="listitem">
@@ -330,7 +320,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="heap_merge.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.pairing_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="compare.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="heap_merge.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.pairing_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="allocator.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

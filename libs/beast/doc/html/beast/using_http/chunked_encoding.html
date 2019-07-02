@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
-<link rel="up" href="../using_http.html" title="Using HTTP">
+<link rel="up" href="../using_http.html" title="HTTP">
 <link rel="prev" href="buffer_oriented_parsing.html" title="Buffer-Oriented Parsing">
 <link rel="next" href="custom_body_types.html" title="Custom Body Types">
 </head>
@@ -60,7 +60,7 @@
         and desired trailers, and use them with these helpers:
       </p>
 <div class="table">
-<a name="beast.using_http.chunked_encoding.chunking_helpers"></a><p class="title"><b>Table&#160;1.20.&#160;Chunking Helpers</b></p>
+<a name="beast.using_http.chunked_encoding.chunking_helpers"></a><p class="title"><b>Table&#160;1.24.&#160;Chunking Helpers</b></p>
 <div class="table-contents"><table class="table" summary="Chunking Helpers">
 <colgroup>
 <col>
@@ -176,7 +176,7 @@
         returns the next buffer sequence to use as a chunk body:
       </p>
 <pre class="programlisting"><span class="comment">// This function returns the buffer containing the next chunk body</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffer</span> <span class="identifier">get_next_chunk_body</span><span class="special">();</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">const_buffer</span> <span class="identifier">get_next_chunk_body</span><span class="special">();</span>
 </pre>
 <p>
         This example demonstrates sending a complete chunked message payload manually.
@@ -197,12 +197,12 @@
 <span class="identifier">write_header</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">sr</span><span class="special">);</span>
 
 <span class="comment">// Now manually emit three chunks:</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
 
 <span class="comment">// We are responsible for sending the last chunk:</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">());</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">());</span>
 </pre>
 <p>
         The following code sends additional chunks, and sets chunk extensions using
@@ -218,18 +218,18 @@
 <span class="comment">// Write the next chunk with the chunk extensions</span>
 <span class="comment">// The implementation will make a copy of the extensions object,</span>
 <span class="comment">// so the caller does not need to manage lifetime issues.</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span> <span class="identifier">ext</span><span class="special">));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span> <span class="identifier">ext</span><span class="special">));</span>
 
 <span class="comment">// Write the next chunk with the chunk extensions</span>
 <span class="comment">// The implementation will make a copy of the extensions object, storing the copy</span>
 <span class="comment">// using the custom allocator, so the caller does not need to manage lifetime issues.</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span> <span class="identifier">ext</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;{}));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span> <span class="identifier">ext</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;{}));</span>
 
 <span class="comment">// Write the next chunk with the chunk extensions</span>
 <span class="comment">// The implementation allocates memory using the default allocator and takes ownership</span>
 <span class="comment">// of the extensions object, so the caller does not need to manage lifetime issues.</span>
 <span class="comment">// Note: ext is moved</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">ext</span><span class="special">)));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">ext</span><span class="special">)));</span>
 </pre>
 <p>
         Callers can take over the generation and management of the extensions buffer
@@ -239,7 +239,7 @@
       </p>
 <pre class="programlisting"><span class="comment">// Manually specify the chunk extensions.</span>
 <span class="comment">// Some of the strings contain spaces and a period and must be quoted</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">(),</span>
     <span class="string">";mp3"</span>
     <span class="string">";title=\"Danny Boy\""</span>
     <span class="string">";artist=\"Fred E. Weatherly\""</span>
@@ -263,8 +263,8 @@
 <span class="comment">// Serialize the header and two chunks</span>
 <span class="identifier">response_serializer</span><span class="special">&lt;</span><span class="identifier">empty_body</span><span class="special">&gt;</span> <span class="identifier">sr</span><span class="special">{</span><span class="identifier">res</span><span class="special">};</span>
 <span class="identifier">write_header</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">sr</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk</span><span class="special">(</span><span class="identifier">get_next_chunk_body</span><span class="special">()));</span>
 
 <span class="comment">// Prepare the trailer</span>
 <span class="identifier">fields</span> <span class="identifier">trailer</span><span class="special">;</span>
@@ -274,7 +274,7 @@
 <span class="comment">// Emit the trailer in the last chunk.</span>
 <span class="comment">// The implementation will use the default allocator to create the storage for holding</span>
 <span class="comment">// the serialized fields.</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">(</span><span class="identifier">trailer</span><span class="special">));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">(</span><span class="identifier">trailer</span><span class="special">));</span>
 </pre>
 <p>
         Using a custom allocator to serialize the last chunk:
@@ -282,7 +282,7 @@
 <pre class="programlisting"><span class="comment">// Use a custom allocator for serializing the last chunk</span>
 <span class="identifier">fields</span> <span class="identifier">trailer</span><span class="special">;</span>
 <span class="identifier">trailer</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">field</span><span class="special">::</span><span class="identifier">approved</span><span class="special">,</span> <span class="string">"yes"</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">(</span><span class="identifier">trailer</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;{}));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">(</span><span class="identifier">trailer</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">char</span><span class="special">&gt;{}));</span>
 </pre>
 <p>
         Alternatively, callers can take over the generation and lifetime management
@@ -294,7 +294,7 @@
     <span class="string">"Content-MD5: f4a5c16584f03d90\r\n"</span>
     <span class="string">"Expires: never\r\n"</span>
     <span class="string">"\r\n"</span><span class="special">;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffer</span><span class="special">{</span><span class="identifier">ext</span><span class="special">.</span><span class="identifier">data</span><span class="special">(),</span> <span class="identifier">ext</span><span class="special">.</span><span class="identifier">size</span><span class="special">()}));</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">make_chunk_last</span><span class="special">(</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">const_buffer</span><span class="special">{</span><span class="identifier">ext</span><span class="special">.</span><span class="identifier">data</span><span class="special">(),</span> <span class="identifier">ext</span><span class="special">.</span><span class="identifier">size</span><span class="special">()}));</span>
 </pre>
 <p>
         For the ultimate level of control, a caller can manually compose the chunk
@@ -316,18 +316,18 @@
 <span class="keyword">auto</span> <span class="keyword">const</span> <span class="identifier">cb3</span> <span class="special">=</span> <span class="identifier">get_next_chunk_body</span><span class="special">();</span>
 
 <span class="comment">// Manually emit a chunk by first writing the chunk-size header with the correct size</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">chunk_header</span><span class="special">{</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">cb1</span><span class="special">)</span> <span class="special">+</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">cb2</span><span class="special">)</span> <span class="special">+</span>
-    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">cb3</span><span class="special">)});</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">chunk_header</span><span class="special">{</span>
+    <span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">cb1</span><span class="special">)</span> <span class="special">+</span>
+    <span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">cb2</span><span class="special">)</span> <span class="special">+</span>
+    <span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">cb3</span><span class="special">)});</span>
 
 <span class="comment">// And then output the chunk body in three pieces ("chunk the chunk")</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">cb1</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">cb2</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">cb3</span><span class="special">);</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">cb1</span><span class="special">);</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">cb2</span><span class="special">);</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">cb3</span><span class="special">);</span>
 
 <span class="comment">// When we go this deep, we are also responsible for the terminating CRLF</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">chunk_crlf</span><span class="special">{});</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">chunk_crlf</span><span class="special">{});</span>
 </pre>
 <h5>
 <a name="beast.using_http.chunked_encoding.h1"></a>
@@ -343,7 +343,7 @@
         may use a callback interface provided by <a class="link" href="../ref/boost__beast__http__parser.html" title="http::parser"><code class="computeroutput"><span class="identifier">parser</span></code></a>:
       </p>
 <div class="table">
-<a name="beast.using_http.chunked_encoding.chunking_parse_callbacks"></a><p class="title"><b>Table&#160;1.21.&#160;Chunking Parse Callbacks</b></p>
+<a name="beast.using_http.chunked_encoding.chunking_parse_callbacks"></a><p class="title"><b>Table&#160;1.25.&#160;Chunking Parse Callbacks</b></p>
 <div class="table-contents"><table class="table" summary="Chunking Parse Callbacks">
 <colgroup>
 <col>
@@ -528,7 +528,7 @@
         <span class="keyword">else</span> <span class="keyword">if</span><span class="special">(</span><span class="identifier">ec</span> <span class="special">!=</span> <span class="identifier">error</span><span class="special">::</span><span class="identifier">end_of_chunk</span><span class="special">)</span>
             <span class="keyword">return</span><span class="special">;</span>
         <span class="keyword">else</span>
-            <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+            <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
 
         <span class="comment">// We got a whole chunk, print the extensions:</span>
         <span class="keyword">for</span><span class="special">(</span><span class="keyword">auto</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">extension</span> <span class="special">:</span> <span class="identifier">ce</span><span class="special">)</span>
@@ -567,7 +567,7 @@
         shown above is shown on the right:
       </p>
 <div class="table">
-<a name="beast.using_http.chunked_encoding.chunk_parsing_example_output"></a><p class="title"><b>Table&#160;1.22.&#160;Chunk Parsing Example Output</b></p>
+<a name="beast.using_http.chunked_encoding.chunk_parsing_example_output"></a><p class="title"><b>Table&#160;1.26.&#160;Chunk Parsing Example Output</b></p>
 <div class="table-contents"><table class="table" summary="Chunk Parsing Example Output">
 <colgroup>
 <col>
@@ -626,7 +626,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

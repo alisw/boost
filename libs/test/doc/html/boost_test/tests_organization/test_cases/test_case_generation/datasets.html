@@ -42,11 +42,11 @@
                 is forward iterable,
               </li>
 <li class="listitem">
-                can be queried for its <code class="computeroutput"><span class="identifier">size</span></code>,
+                can be queried for its <code class="computeroutput"><span class="identifier">size</span></code>
                 which in turn can be infinite,
               </li>
 <li class="listitem">
-                has an arity, which is the arity of the samples it contains.
+                has an arity which is the arity of the samples it contains.
               </li>
 </ul></div>
 <p>
@@ -58,7 +58,7 @@
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                the <a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface">interface</a>
+                the <a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface" title="Dataset interface">interface</a>
                 for creating a custom datasets, which is quite simple,
               </li>
 <li class="listitem">
@@ -81,7 +81,9 @@
 </tr>
 <tr><td align="left" valign="top"><p>
               Only "monomorphic" datasets are supported, which means that
-              all samples in a dataset have the same type and same arity <a href="#ftn.boost_test.tests_organization.test_cases.test_case_generation.datasets.f0" class="footnote" name="boost_test.tests_organization.test_cases.test_case_generation.datasets.f0"><sup class="footnote">[2]</sup></a> .
+              all samples within a single dataset have the same type and same arity
+              <a href="#ftn.boost_test.tests_organization.test_cases.test_case_generation.datasets.f0" class="footnote" name="boost_test.tests_organization.test_cases.test_case_generation.datasets.f0"><sup class="footnote">[2]</sup></a> . However, dataset of different sample types may be combined
+              together with zip and cartesian product.
             </p></td></tr>
 </table></div>
 <p>
@@ -90,60 +92,60 @@
             or <span class="emphasis"><em>grid</em></span>). These operations result in new datasets,
             in which the samples are of an augmented type.
           </p>
-<h5>
-<a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.h0"></a>
-            <span class="phrase"><a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface"></a></span><a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface">Dataset
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface"></a><a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface" title="Dataset interface">Dataset
             interface</a>
-          </h5>
+</h6></div></div></div>
 <p>
-            The interface of the <span class="emphasis"><em>dataset</em></span> should implement the
-            two following functions/fields:
-          </p>
+              The interface of the <span class="emphasis"><em>dataset</em></span> should implement
+              the two following functions/fields:
+            </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="computeroutput"><span class="identifier">iterator</span> <span class="identifier">begin</span><span class="special">()</span></code> where <span class="emphasis"><em>iterator</em></span>
-                is a forward iterator,
-              </li>
+                  <code class="computeroutput"><span class="identifier">iterator</span> <span class="identifier">begin</span><span class="special">()</span></code> where <span class="emphasis"><em>iterator</em></span>
+                  is a forward iterator,
+                </li>
 <li class="listitem">
-                <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">data</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">()</span> <span class="keyword">const</span></code>
-                indicates the size of the dataset. The returned type is a dedicated
-                class <code class="computeroutput"><a class="link" href="../../../../boost/unit_test/data/size_t.html" title="Class size_t">size_t</a></code>
-                that can indicate an <span class="emphasis"><em>infinite</em></span> dataset size.
-              </li>
+                  <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">data</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">()</span> <span class="keyword">const</span></code>
+                  indicates the size of the dataset. The returned type is a dedicated
+                  class <code class="computeroutput"><a class="link" href="../../../../boost/unit_test/data/size_t.html" title="Class size_t">size_t</a></code>
+                  that can indicate an <span class="emphasis"><em>infinite</em></span> dataset size.
+                </li>
 <li class="listitem">
-                an enum called <code class="computeroutput"><span class="identifier">arity</span></code>
-                indicating the arity of the samples returned by the dataset
-              </li>
+                  an enum called <code class="computeroutput"><span class="identifier">arity</span></code>
+                  indicating the arity of the samples returned by the dataset
+                </li>
 </ul></div>
 <p>
-            Once a dataset class <code class="computeroutput"><span class="identifier">D</span></code>
-            is declared, it should be registered to the framework by specializing
-            the class
-          </p>
+              Once a dataset class <code class="computeroutput"><span class="identifier">D</span></code>
+              is declared, it should be registered to the framework by specializing
+              the template class
+            </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">data</span><span class="special">::</span><span class="identifier">monomorphic</span><span class="special">::</span><span class="identifier">is_dataset</span></pre>
 <p>
-            with the condition that
-          </p>
+              with the condition that
+            </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">data</span><span class="special">::</span><span class="identifier">monomorphic</span><span class="special">::</span><span class="identifier">is_dataset</span><span class="special">&lt;</span><span class="identifier">D</span><span class="special">&gt;::</span><span class="identifier">value</span></pre>
 <p>
-            evaluates to <code class="computeroutput"><span class="keyword">true</span></code>.
-          </p>
+              evaluates to <code class="computeroutput"><span class="keyword">true</span></code>.
+            </p>
 <p>
-            The following example implements a custom dataset generating a Fibonacci
-            sequence.
-          </p>
+              The following example implements a custom dataset generating a Fibonacci
+              sequence.
+            </p>
 <h6>
-<a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.h1"></a>
-            <span class="phrase"><a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.example_descr"></a></span><a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.example_descr">Example:
-            Example of custom dataset</a>
-          </h6>
+<a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface.h0"></a>
+              <span class="phrase"><a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface.example_descr"></a></span><a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_interface.example_descr">Example:
+              Example of custom dataset</a>
+            </h6>
 <div class="informaltable"><table class="table">
 <colgroup><col></colgroup>
 <thead><tr><th>
-                    <p>
-                      Code
-                    </p>
-                  </th></tr></thead>
+                      <p>
+                        Code
+                      </p>
+                    </th></tr></thead>
 <tbody><tr><td>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MODULE</span> <span class="identifier">dataset_example68</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -156,8 +158,7 @@
 <span class="comment">// Dataset generating a Fibonacci sequence</span>
 <span class="keyword">class</span> <span class="identifier">fibonacci_dataset</span> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
-    <span class="comment">// Samples type is int</span>
-    <span class="keyword">using</span> <span class="identifier">sample</span><span class="special">=</span><span class="keyword">int</span><span class="special">;</span>
+    <span class="comment">// the type of the samples is deduced</span>
     <span class="keyword">enum</span> <span class="special">{</span> <span class="identifier">arity</span> <span class="special">=</span> <span class="number">1</span> <span class="special">};</span>
 
     <span class="keyword">struct</span> <span class="identifier">iterator</span> <span class="special">{</span>
@@ -190,7 +191,7 @@
   <span class="keyword">struct</span> <span class="identifier">is_dataset</span><span class="special">&lt;</span><span class="identifier">fibonacci_dataset</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
 <span class="special">}}}}</span>
 
-<span class="comment">// Creating a test-driven dataset </span>
+<span class="comment">// Creating a test-driven dataset, the zip is for checking</span>
 <span class="identifier">BOOST_DATA_TEST_CASE</span><span class="special">(</span>
     <span class="identifier">test1</span><span class="special">,</span>
     <span class="identifier">fibonacci_dataset</span><span class="special">()</span> <span class="special">^</span> <span class="identifier">bdata</span><span class="special">::</span><span class="identifier">make</span><span class="special">(</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">5</span><span class="special">,</span> <span class="number">8</span><span class="special">,</span> <span class="number">13</span><span class="special">,</span> <span class="number">21</span><span class="special">,</span> <span class="number">35</span><span class="special">,</span> <span class="number">56</span> <span class="special">}</span> <span class="special">),</span>
@@ -199,15 +200,15 @@
       <span class="identifier">BOOST_TEST</span><span class="special">(</span><span class="identifier">fib_sample</span> <span class="special">==</span> <span class="identifier">exp</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
-                  </td></tr></tbody>
+                    </td></tr></tbody>
 </table></div>
 <div class="informaltable"><table class="table">
 <colgroup><col></colgroup>
 <thead><tr><th>
-                    <p>
-                      Output
-                    </p>
-                  </th></tr></thead>
+                      <p>
+                        Output
+                      </p>
+                    </th></tr></thead>
 <tbody><tr><td>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="special">&gt;</span> <span class="identifier">example68</span>
 <span class="identifier">Running</span> <span class="number">9</span> <span class="identifier">test</span> <span class="identifier">cases</span><span class="special">...</span>
@@ -220,8 +221,67 @@
 
 <span class="special">***</span> <span class="number">2</span> <span class="identifier">failures</span> <span class="identifier">are</span> <span class="identifier">detected</span> <span class="identifier">in</span> <span class="identifier">the</span> <span class="identifier">test</span> <span class="identifier">module</span> <span class="string">"dataset_example68"</span>
 </pre>
-                  </td></tr></tbody>
+                    </td></tr></tbody>
 </table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_creation_and_delayed_cre"></a><a class="link" href="datasets.html#boost_test.tests_organization.test_cases.test_case_generation.datasets.dataset_creation_and_delayed_cre" title="Dataset creation and delayed creation">Dataset
+            creation and delayed creation</a>
+</h6></div></div></div>
+<p>
+              Datasets as defined above are constructed before even the test module
+              starts its execution as global objects. This makes impossible to access,
+              from within the dataset generator and during their iteration, elements
+              like <code class="computeroutput"><span class="identifier">argc</span></code> / <code class="computeroutput"><span class="identifier">argv</span></code>, the <a class="link" href="../../test_tree/master_test_suite.html" title="Master test suite">master
+              test suite</a> (and the preprocessed <code class="computeroutput"><span class="identifier">argc</span></code>
+              / <code class="computeroutput"><span class="identifier">argv</span></code>), or any other
+              object that has been instanciated after the <code class="computeroutput"><span class="identifier">main</span></code>
+              of the test module entry.
+            </p>
+<p>
+              To overcome this, a <span class="bold"><strong>delayed</strong></span> dataset
+              instanciation interface has been introduced. This effectively wraps
+              the dataset inside another one, which <span class="bold"><strong>lazyly</strong></span>
+              instanciates the dataset.
+            </p>
+<p>
+              To instanciate a delayed dataset, the <code class="computeroutput">boost::unit_test::data::monomorphic::make_delayed</code>
+              function should be used in the <a class="link" href="../../../utf_reference/test_org_reference/test_org_boost_test_dataset.html" title="BOOST_DATA_TEST_CASE"><code class="computeroutput"><span class="identifier">BOOST_DATA_TEST_CASE</span></code></a> call.
+              The following snippet:
+            </p>
+<pre class="programlisting"><span class="identifier">BOOST_DATA_TEST_CASE</span><span class="special">(</span><span class="identifier">dataset_test_case</span><span class="special">,</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">data</span><span class="special">::</span><span class="identifier">make_delayed</span><span class="special">&lt;</span><span class="identifier">custom_dataset</span><span class="special">&gt;(</span><span class="identifier">arg1</span><span class="special">,</span> <span class="special">...</span> <span class="special">),</span> <span class="special">...)</span>
+<span class="special">{</span>
+<span class="special">}</span>
+</pre>
+<p>
+              creates a delayed dataset test case with a generator of type <code class="computeroutput"><span class="identifier">custom_dataset</span></code>. The generator is
+              <span class="emphasis"><em>lazily</em></span> constructed with <code class="computeroutput"><span class="identifier">arg1</span></code>,
+              <code class="computeroutput"><span class="special">...</span></code>.
+            </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+                A detailed example of delayed creation is given in the section about
+                <a class="link" href="../../../runtime_config/custom_command_line_arguments.html" title="Custom command line arguments">custom
+                command line</a> arguments.
+              </p></td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+                See the class <code class="computeroutput"><a class="link" href="../../../../boost/unit_test/data/monomorphic/delayed_dataset.html" title="Class template delayed_dataset">monomorphic::delayed_dataset</a></code> for
+                more details on the wrapping object.
+              </p></td></tr>
+</table></div>
+</div>
 <div class="footnotes">
 <br><hr style="width:100; text-align:left;margin-left: 0">
 <div id="ftn.boost_test.tests_organization.test_cases.test_case_generation.datasets.f0" class="footnote"><p><a href="#boost_test.tests_organization.test_cases.test_case_generation.datasets.f0" class="para"><sup class="para">[2] </sup></a>

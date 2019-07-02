@@ -6,8 +6,8 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="wait_traits/to_wait_duration/overload2.html" title="wait_traits::to_wait_duration (2 of 2 overloads)">
-<link rel="next" href="windows__object_handle/assign.html" title="windows::object_handle::assign">
+<link rel="prev" href="windows__basic_stream_handle/write_some/overload2.html" title="windows::basic_stream_handle::write_some (2 of 2 overloads)">
+<link rel="next" href="windows__overlapped_handle.html" title="windows::overlapped_handle">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,16 +20,18 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="wait_traits/to_wait_duration/overload2.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="windows__object_handle/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="windows__basic_stream_handle/write_some/overload2.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="windows__overlapped_handle.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_asio.reference.windows__object_handle"></a><a class="link" href="windows__object_handle.html" title="windows::object_handle">windows::object_handle</a>
 </h3></div></div></div>
 <p>
-        Provides object-oriented handle functionality.
+        <a class="indexterm" name="boost_asio.indexterm.windows__object_handle"></a> 
+Typedef
+        for the typical usage of an object handle.
       </p>
-<pre class="programlisting">class object_handle
+<pre class="programlisting">typedef basic_object_handle object_handle;
 </pre>
 <h5>
 <a name="boost_asio.reference.windows__object_handle.h0"></a>
@@ -56,7 +58,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/executor_type.html" title="windows::object_handle::executor_type"><span class="bold"><strong>executor_type</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/executor_type.html" title="windows::basic_object_handle::executor_type"><span class="bold"><strong>executor_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -68,19 +70,19 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/lowest_layer_type.html" title="windows::object_handle::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/lowest_layer_type.html" title="windows::basic_object_handle::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  An object_handle is always the lowest layer.
+                  An object handle is always the lowest layer.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/native_handle_type.html" title="windows::object_handle::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/native_handle_type.html" title="windows::basic_object_handle::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -117,7 +119,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/assign.html" title="windows::object_handle::assign"><span class="bold"><strong>assign</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/assign.html" title="windows::basic_object_handle::assign"><span class="bold"><strong>assign</strong></span></a>
                 </p>
               </td>
 <td>
@@ -129,7 +131,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/async_wait.html" title="windows::object_handle::async_wait"><span class="bold"><strong>async_wait</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/async_wait.html" title="windows::basic_object_handle::async_wait"><span class="bold"><strong>async_wait</strong></span></a>
                 </p>
               </td>
 <td>
@@ -141,7 +143,21 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/cancel.html" title="windows::object_handle::cancel"><span class="bold"><strong>cancel</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/basic_object_handle.html" title="windows::basic_object_handle::basic_object_handle"><span class="bold"><strong>basic_object_handle</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Construct an object handle without opening it. <br> <span class="silver"> &#8212;</span><br> Construct
+                  an object handle on an existing native handle. <br> <span class="silver"> &#8212;</span><br> Move-construct
+                  an object handle from another.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="windows__basic_object_handle/cancel.html" title="windows::basic_object_handle::cancel"><span class="bold"><strong>cancel</strong></span></a>
                 </p>
               </td>
 <td>
@@ -153,7 +169,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/close.html" title="windows::object_handle::close"><span class="bold"><strong>close</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/close.html" title="windows::basic_object_handle::close"><span class="bold"><strong>close</strong></span></a>
                 </p>
               </td>
 <td>
@@ -165,7 +181,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/get_executor.html" title="windows::object_handle::get_executor"><span class="bold"><strong>get_executor</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/get_executor.html" title="windows::basic_object_handle::get_executor"><span class="bold"><strong>get_executor</strong></span></a>
                 </p>
               </td>
 <td>
@@ -177,33 +193,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/get_io_context.html" title="windows::object_handle::get_io_context"><span class="bold"><strong>get_io_context</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="windows__object_handle/get_io_service.html" title="windows::object_handle::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="windows__object_handle/is_open.html" title="windows::object_handle::is_open"><span class="bold"><strong>is_open</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/is_open.html" title="windows::basic_object_handle::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
 <td>
@@ -215,7 +205,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/lowest_layer.html" title="windows::object_handle::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/lowest_layer.html" title="windows::basic_object_handle::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
                 </p>
               </td>
 <td>
@@ -228,7 +218,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/native_handle.html" title="windows::object_handle::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/native_handle.html" title="windows::basic_object_handle::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
                 </p>
               </td>
 <td>
@@ -240,33 +230,19 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/object_handle.html" title="windows::object_handle::object_handle"><span class="bold"><strong>object_handle</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/operator_eq_.html" title="windows::basic_object_handle::operator="><span class="bold"><strong>operator=</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  Construct an object_handle without opening it. <br> <span class="silver"> &#8212;</span><br> Construct
-                  an object_handle on an existing native handle. <br> <span class="silver"> &#8212;</span><br> Move-construct
-                  an object_handle from another.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="windows__object_handle/operator_eq_.html" title="windows::object_handle::operator="><span class="bold"><strong>operator=</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Move-assign an object_handle from another.
+                  Move-assign an object handle from another.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <a class="link" href="windows__object_handle/wait.html" title="windows::object_handle::wait"><span class="bold"><strong>wait</strong></span></a>
+                  <a class="link" href="windows__basic_object_handle/wait.html" title="windows::basic_object_handle::wait"><span class="bold"><strong>wait</strong></span></a>
                 </p>
               </td>
 <td>
@@ -278,7 +254,7 @@
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="windows__object_handle.html" title="windows::object_handle"><code class="computeroutput">windows::object_handle</code></a>
+        The <a class="link" href="windows__basic_object_handle.html" title="windows::basic_object_handle"><code class="computeroutput">windows::basic_object_handle</code></a>
         class provides asynchronous and blocking object-oriented handle functionality.
       </p>
 <h5>
@@ -305,7 +281,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -313,7 +289,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="wait_traits/to_wait_duration/overload2.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="windows__object_handle/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="windows__basic_stream_handle/write_some/overload2.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="windows__overlapped_handle.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

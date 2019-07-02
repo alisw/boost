@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
-<link rel="up" href="../using_http.html" title="Using HTTP">
-<link rel="prev" href="parser_stream_operations/incremental_read.html" title="Incremental Read">
+<link rel="up" href="../using_http.html" title="HTTP">
+<link rel="prev" href="parser_stream_operations/incremental_read.html" title="Incremental Read &#128161;">
 <link rel="next" href="buffer_oriented_parsing.html" title="Buffer-Oriented Parsing">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -30,9 +30,11 @@
 <p>
         An instance of <a class="link" href="../ref/boost__beast__http__serializer.html" title="http::serializer"><code class="computeroutput"><span class="identifier">serializer</span></code></a> can be invoked directly,
         without using the provided stream operations. This could be useful for implementing
-        algorithms on objects whose interface does not conform to <a class="link" href="../concepts/streams.html" title="Streams"><span class="bold"><strong>Stream</strong></span></a>. For example, a <a href="https://github.com/libuv/libuv" target="_top"><span class="bold"><strong>libuv</strong></span> socket</a>. The serializer interface is
-        interactive; the caller invokes it repeatedly to produce buffers until all
-        of the serialized octets have been generated. Then the serializer is destroyed.
+        algorithms on objects whose interface does not conform to <a class="link" href="../concepts/streams.html" title="Streams"><span class="emphasis"><em>Stream</em></span></a>.
+        For example, a <a href="https://github.com/libuv/libuv" target="_top"><span class="bold"><strong>libuv</strong></span>
+        socket</a>. The serializer interface is interactive; the caller invokes
+        it repeatedly to produce buffers until all of the serialized octets have
+        been generated. Then the serializer is destroyed.
       </p>
 <p>
         To obtain the serialized next buffer sequence, call <a class="link" href="../ref/boost__beast__http__serializer/next.html" title="http::serializer::next"><code class="computeroutput"><span class="identifier">serializer</span><span class="special">::</span><span class="identifier">next</span></code></a>. Then, call <a class="link" href="../ref/boost__beast__http__serializer/consume.html" title="http::serializer::consume"><code class="computeroutput"><span class="identifier">serializer</span><span class="special">::</span><span class="identifier">consume</span></code></a> to indicate the number of
@@ -54,9 +56,9 @@
         <span class="identifier">sr</span><span class="special">.</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">ec</span><span class="special">,</span>
             <span class="special">[&amp;</span><span class="identifier">sr</span><span class="special">](</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">,</span> <span class="keyword">auto</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">)</span>
             <span class="special">{</span>
-                <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+                <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
                 <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">buffers</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
-                <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
+                <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
             <span class="special">});</span>
     <span class="special">}</span>
     <span class="keyword">while</span><span class="special">(!</span> <span class="identifier">ec</span> <span class="special">&amp;&amp;</span> <span class="special">!</span> <span class="identifier">sr</span><span class="special">.</span><span class="identifier">is_done</span><span class="special">());</span>
@@ -80,9 +82,9 @@
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ConstBufferSequence</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">,</span> <span class="identifier">ConstBufferSequence</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">)</span> <span class="keyword">const</span>
     <span class="special">{</span>
-        <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+        <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">buffers</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
-        <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
+        <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
     <span class="special">}</span>
 <span class="special">};</span>
 
@@ -132,9 +134,9 @@
         <span class="identifier">sr</span><span class="special">.</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">ec</span><span class="special">,</span>
             <span class="special">[&amp;</span><span class="identifier">sr</span><span class="special">](</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">,</span> <span class="keyword">auto</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">)</span>
             <span class="special">{</span>
-                <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+                <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
                 <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">buffers</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
-                <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
+                <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
             <span class="special">});</span>
     <span class="special">}</span>
     <span class="keyword">while</span><span class="special">(!</span> <span class="identifier">sr</span><span class="special">.</span><span class="identifier">is_header_done</span><span class="special">());</span>
@@ -146,9 +148,9 @@
             <span class="identifier">sr</span><span class="special">.</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">ec</span><span class="special">,</span>
                 <span class="special">[&amp;</span><span class="identifier">sr</span><span class="special">](</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">,</span> <span class="keyword">auto</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">)</span>
                 <span class="special">{</span>
-                    <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+                    <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
                     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">buffers</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">);</span>
-                    <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_size</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
+                    <span class="identifier">sr</span><span class="special">.</span><span class="identifier">consume</span><span class="special">(</span><span class="identifier">buffer_bytes</span><span class="special">(</span><span class="identifier">buffer</span><span class="special">));</span>
                 <span class="special">});</span>
         <span class="special">}</span>
         <span class="keyword">while</span><span class="special">(!</span> <span class="identifier">ec</span> <span class="special">&amp;&amp;</span> <span class="special">!</span> <span class="identifier">sr</span><span class="special">.</span><span class="identifier">is_done</span><span class="special">());</span>
@@ -159,8 +161,8 @@
 </pre>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="beast.using_http.buffer_oriented_serializing.write_to_std_ostream"></a><a class="link" href="buffer_oriented_serializing.html#beast.using_http.buffer_oriented_serializing.write_to_std_ostream" title="Write To std::ostream">Write
-        To std::ostream</a>
+<a name="beast.using_http.buffer_oriented_serializing.write_to_std_ostream"></a><a class="link" href="buffer_oriented_serializing.html#beast.using_http.buffer_oriented_serializing.write_to_std_ostream" title="Write To std::ostream &#128161;">Write
+        To std::ostream &#128161;</a>
 </h4></div></div></div>
 <p>
           The standard library provides the type <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span></code>
@@ -273,16 +275,17 @@
 </tr>
 <tr><td align="left" valign="top"><p>
             Serializing to a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span></code>
-            could be implemented using an alternate strategy: adapt the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span></code> interface to a <a href="../../../../../../doc/html/boost_asio/reference/SyncWriteStream.html" target="_top"><span class="bold"><strong>SyncWriteStream</strong></span></a>, enabling use with the
-            library's existing stream algorithms. This is left as an exercise for
-            the reader.
+            could be implemented using an alternate strategy: adapt the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream</span></code> interface to a <a href="../../../../../../doc/html/boost_asio/reference/SyncWriteStream.html" target="_top"><span class="emphasis"><em>SyncWriteStream</em></span></a>,
+            enabling use with the library's existing stream algorithms. This is left
+            as an exercise for the reader.
           </p></td></tr>
 </table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

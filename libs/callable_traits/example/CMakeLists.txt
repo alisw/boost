@@ -4,7 +4,7 @@
 # (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
 
 add_custom_target(examples COMMENT "Build all the examples.")
-add_dependencies(check examples)
+add_dependencies(callable_traits_check examples)
 
 include_directories(${callable_traits_SOURCE_DIR}/include)
 

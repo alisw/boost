@@ -4,7 +4,7 @@
 <title>Real Number Parsers (float_, double_, etc.)</title>
 <link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../../index.html" title="Spirit 2.5.7">
+<link rel="home" href="../../../../index.html" title="Spirit 2.5.8">
 <link rel="up" href="../numeric.html" title="Numeric Parsers">
 <link rel="prev" href="int.html" title="Signed Integer Parsers (int_, etc.)">
 <link rel="next" href="boolean.html" title="Boolean Parser (bool_)">
@@ -626,22 +626,6 @@
                     </p>
                   </td>
 </tr>
-<tr>
-<td>
-                    <p>
-                      <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">spirit</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">is_equal_to_one</span><span class="special">(</span><span class="identifier">n</span><span class="special">)</span></code>
-                    </p>
-                  </td>
-<td>
-                    <p>
-                      Return <code class="computeroutput"><span class="keyword">true</span></code> if
-                      <code class="computeroutput"><span class="identifier">n</span></code> is equal
-                      to <code class="computeroutput"><span class="number">1.0</span></code>. Default
-                      implementation is provided for <code class="computeroutput"><span class="keyword">float</span></code>,
-                      <code class="computeroutput"><span class="keyword">double</span></code> and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
-                    </p>
-                  </td>
-</tr>
 </tbody>
 </table></div>
 <div class="note"><table border="0" summary="Note">
@@ -688,7 +672,7 @@
     <span class="special">;</span>
 
 <span class="identifier">nan</span>
-    <span class="special">=</span>   <span class="special">-</span><span class="identifier">lit</span><span class="special">(</span><span class="string">"1.0#"</span><span class="special">)</span> <span class="special">&gt;&gt;</span> <span class="identifier">no_case</span><span class="special">[</span><span class="string">"nan"</span><span class="special">]</span>
+    <span class="special">=</span>   <span class="identifier">no_case</span><span class="special">[</span><span class="string">"nan"</span><span class="special">]</span>
         <span class="special">&gt;&gt;</span> <span class="special">-(</span><span class="char">'('</span> <span class="special">&gt;&gt;</span> <span class="special">*(</span><span class="identifier">char_</span> <span class="special">-</span> <span class="char">')'</span><span class="special">)</span> <span class="special">&gt;&gt;</span> <span class="char">')'</span><span class="special">)</span>
     <span class="special">;</span>
 
@@ -992,25 +976,9 @@
 </tbody>
 </table></div>
 <p>
-            The <code class="computeroutput"><span class="identifier">parse_nan</span></code> and <code class="computeroutput"><span class="identifier">parse_inf</span></code> functions get called whenever:
-          </p>
-<div class="blockquote"><blockquote class="blockquote"><p>
-              a number to parse does not start with a digit (after having successfully
-              parsed an optional sign)
-            </p></blockquote></div>
-<p>
-            or
-          </p>
-<div class="blockquote"><blockquote class="blockquote"><p>
-              after a real number of the value 1 (having no exponential part and
-              a fractional part value of 0) has been parsed.
-            </p></blockquote></div>
-<p>
-            The first call recognizes representations of NaN or Inf starting with
-            a non-digit character (such as NaN, Inf, QNaN etc.). The second call
-            recognizes representation formats starting with a <code class="computeroutput"><span class="number">1.0</span></code>
-            (such as <code class="computeroutput"><span class="string">"1.0#NAN"</span></code>
-            or <code class="computeroutput"><span class="string">"1.0#INF"</span></code> etc.).
+            The <code class="computeroutput"><span class="identifier">parse_nan</span></code> and <code class="computeroutput"><span class="identifier">parse_inf</span></code> functions get called whenever
+            a number to parse does not start with a digit (after having successfully
+            parsed an optional sign).
           </p>
 <p>
             The functions should return true if a Nan or Inf has been found. In this

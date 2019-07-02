@@ -350,7 +350,7 @@ for (;;)
 {
   do
   {
-    socket_.reset(new tcp::socket(io_context_));
+    socket_.reset(new tcp::socket(my_context_));
     yield acceptor-&gt;async_accept(*socket_, *this);
     fork server(*this)();
   } while (is_parent());
@@ -385,7 +385,7 @@ for (;;)
         Note that <code class="computeroutput">fork</code> doesn't do the actual forking by itself. It is
         the application's responsibility to create a clone of the coroutine and call
         it. The clone can be called immediately, as above, or scheduled for delayed
-        execution using something like <code class="computeroutput">io_context::post()</code>.
+        execution using something like <a class="link" href="post.html" title="post"><code class="computeroutput">post</code></a>.
       </p>
 <h5>
 <a name="boost_asio.reference.coroutine.h2"></a>
@@ -420,7 +420,7 @@ for (;;)
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -10,6 +10,7 @@ please follow the workflow explained in this document.
 ## Table of Content
 
 * [Prerequisites](#prerequisites)
+* [Pull Requests](#pull-requests)
 * [Getting started with Git workflow](#getting-started-with-git-workflow)
   * [1. Clone Boost super-project](#1-clone-boost-super-project)
   * [2. Checkout Boost.GIL development branch](#2-checkout-boostgil-development-branch)
@@ -20,6 +21,7 @@ please follow the workflow explained in this document.
   * [Using Boost.Build](#using-boostbuild)
   * [Using CMake](#using-cmake)
   * [Using Faber](#using-faber)
+  * [Running clang-tidy](#running-clang-tidy)
 * [Guidelines](#guidelines)
 
 ## Prerequisites
@@ -32,6 +34,51 @@ please follow the workflow explained in this document.
   [Boost Getting Started](https://www.boost.org/more/getting_started/index.html)
   chapters, especially if you are going to use
   [Boost.Build](https://boostorg.github.io/build/) for the first time.
+
+## Pull Requests
+
+* **DO** submit all major changes to code via pull requests (PRs) rather than through
+  a direct commit. PRs will be CI-checked first, then reviewed and potentially merged
+  by the repo maintainers after a peer review that includes at least one maintainer.
+  Contributors with commit access may submit trivial patches or changes to the project
+  infrastructure configuration via direct commits (CAUTION!)
+* **DO NOT** mix independent, unrelated changes in one PR.
+  Separate unrelated fixes into separate PRs, especially if they are in different components
+  (e.g. core headers versus extensions).
+  Separate real product/test code changes from larger code formatting/dead code removal changes,
+  unless the former are extensive enough to justify such refactoring, then also mention it.
+* **DO** start PR subject with "WIP:" tag if you submit it as "work in progress".
+  A PR should preferably be submitted when it is considered ready for review and subsequent
+  merging by the contributor. Otherwise, clearly indicate it is not yet ready.
+  The "WIP:" tag will also help maintainers to label your PR with [status/work-in-progress].
+* **DO** give PRs short-but-descriptive names (e.g. "Add test for algorithm XXX", not "Fix #1234").
+* **DO** [refer] to any relevant issues, and include the [keywords] that automatically
+  close issues when the PR is merged.
+* **DO** [mention] any users that should know about and/or review the change.
+* **DO** ensure each commit successfully builds. The entire PR must pass all tests in
+  the Continuous Integration (CI) system before it'll be merged.
+* **DO** address PR feedback in an additional commit(s) rather than amending the existing
+  commits, and only rebase/squash them when necessary. This makes it easier for reviewers
+  to track changes.
+* **DO** assume that the [Squash and Merge] will be used to merge your commit unless you
+  request otherwise in the PR.
+* **DO** NOT fix merge conflicts using a merge commit. Prefer git rebase.
+* **DO** NOT submit changes to the original legacy tests, see
+  [test/legacy/README.md](test/legacy/README.md).
+
+### Merging Pull Requests (for maintainers with write access)
+
+* **DO** use [Squash and Merge] by default for individual contributions unless requested
+  by the PR author. Do so, even if the PR contains only one commit. It creates a simpler
+  history than [Create a Merge Commit].<br />
+  Reasons that PR authors may request the true merge recording a merge commit
+  may include (but are not limited to):
+
+    * The change is easier to understand as a series of focused commits.<br />
+      Each commit in the series must be buildable so as not to break git bisect.
+    * Contributor is using an e-mail address other than the primary GitHub address
+      and wants that preserved in the history.<br />
+      Contributor must be willing to squash the commits manually before acceptance.
 
 ## Getting started with Git workflow
 
@@ -52,7 +99,7 @@ The preparation involves the following steps:
 1. Clone the Boost super-project
 
     ```shell
-    git clone --recursive --jobs 8 https://github.com/boostorg/boost.git
+    git clone --recurse-submodules --jobs 8 https://github.com/boostorg/boost.git
     ```
 
 2. Switch the Boost super-project to desired branch, `master` or `develop`
@@ -90,7 +137,7 @@ If you skip this step, executing `b2` to run tests will automatically
 create the directory with all headers required by Boost.GIL and tests.
 
     ```shell
-    ./b2 headers
+    ./b2 -j8 headers
     ```
 
 **TIP:** If something goes wrong, you end up with incomplete or accidentally
@@ -110,7 +157,7 @@ git submodule update --init --recursive --jobs 8
 
 Regardless if you decide to develop again `master` (recommended) or `develop`
 branch of the Boost super-project, you should *always* base your contributions
-(ie. topic branches) on Boost.GIL `develop` branch.
+(i.e. topic branches) on Boost.GIL `develop` branch.
 
 1. Go to the Boost.GIL library submodule.
 
@@ -223,8 +270,8 @@ git push username feature/foo
 ## Development
 
 Boost.GIL is a [header-only library](https://en.wikipedia.org/wiki/Header-only)
-which does not require sources compilation. Only test runners and example
-programs have to be compiled.
+which does not require sources compilation. Only test runners and
+[example](example/README.md) programs have to be compiled.
 
 By default, Boost.GIL uses Boost.Build to build all the executables.
 
@@ -261,15 +308,15 @@ Run core tests only specifying location of directory with tests:
 
 ```shell
 cd libs/gil
-../../b2 test
+../../b2 -j8 test
 ```
 
 Run all tests for selected extension (from Boost root directory, as alternative):
 
 ```shell
-./b2 libs/gil/io/test
-./b2 libs/gil/numeric/test
-./b2 libs/gil/toolbox/test
+./b2 -j8 libs/gil/io/test
+./b2 -j8 libs/gil/numeric/test
+./b2 -j8 libs/gil/toolbox/test
 ```
 
 Run I/O extension tests bundled in target called `simple`:
@@ -283,6 +330,10 @@ Run I/O extension tests bundled in target called `simple`:
 ### Using CMake
 
 Maintainer: [@mloskot](https://github.com/mloskot)
+
+**WARNING:** The CMake configuration is only provided for convenience
+of contributors. It does not export or install any targets, deploy
+config files or support subproject workflow.
 
 **NOTE:** CMake configuration does not build any dependencies required by
 Boost.GIL like Boost.Test and Boost.Filesystem libraries or any
@@ -299,18 +350,21 @@ The provided CMake configuration allows a couple of ways to develop Boost.GIL:
    `libs/gil`. This mode requires prior deployment of `boost` virtual directory
    with headers and stage build of required libraries, for example:
     ```shell
-    ./b2 headers
-    ./b2 variant=debug --with-test --with-filesystem stage
-    ./b2 variant=release --with-test --with-filesystem stage
+    ./b2 -j8 headers
+    ./b2 -j8 variant=debug --with-test --with-filesystem stage
+    ./b2 -j8 variant=release --with-test --with-filesystem stage
     ```
     or, depending on specific requirements, more complete build:
     ```shell
-    ./b2 variant=debug,release address-model=32,64 --layout=versioned --with-test --with-filesystem stage
+    ./b2 -j8 variant=debug,release address-model=32,64 --layout=versioned --with-test --with-filesystem stage
     ```
 
 Using the installed Boost enables a lightweight mode for the library development,
 inside a stand-alone clone Boost.GIL repository and without any need to clone the
 whole Boost super-project.
+
+For available custom CMake options, open the top-level `CMakeLists.txt`
+and search for `option`.
 
 Here is an example of such lightweight workflow in Linux environment (Debian-based):
 
@@ -341,43 +395,29 @@ Here is an example of such lightweight workflow in Linux environment (Debian-bas
     mkdir _build
     cd _build/
     cmake ..
-    -- The CXX compiler identification is GNU 7.3.0
-    -- Check for working CXX compiler: /usr/bin/c++
-    -- Check for working CXX compiler: /usr/bin/c++ -- works
-    -- Detecting CXX compiler ABI info
-    -- Detecting CXX compiler ABI info - done
-    -- Detecting CXX compile features
-    -- Detecting CXX compile features - done
-    -- Boost version: 1.65.1
-    -- Found the following Boost libraries:
-    --   unit_test_framework
-    --   filesystem
-    --   system
-    -- Boost_INCLUDE_DIRS=/usr/include
-    -- Boost_LIBRARY_DIRS=/usr/lib/x86_64-linux-gnu
-    -- Found JPEG: /usr/lib/x86_64-linux-gnu/libjpeg.so
-    -- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11")
-    -- Found PNG: /usr/lib/x86_64-linux-gnu/libpng.so (found version "1.6.34")
-    -- Found TIFF: /usr/lib/x86_64-linux-gnu/libtiff.so (found version "4.0.9")
-    -- Configuring Boost.GIL core tests
-    -- Configuring Boost.GIL IO tests
-    -- Configuring Boost.GIL Numeric tests
-    -- Configuring Boost.GIL Toolbox tests
-    -- Configuring done
-    -- Generating done
-    -- Build files have been written to: /home/mloskot/gil/_build
     ```
 
-    **TIP:** If CMake is failing to find Boost libraries, you can try a few hacks:
+    **TIP:** By default, tests and [examples](example/README.md) are compiled using
+            the minimum required C++11.
+            Specify `-DCMAKE_CXX_STANDARD=14|17|20` to use newer version.
+            For more CMake options available for GIL, check `option`-s defined
+            in the top-level `CMakeLists.txt`.
 
-     - `-DGIL_ENABLE_FINDBOOST_DOWNLOAD=ON` to use very latest version of
+    **TIP:** If CMake is failing to find Boost libraries, especially built with
+        `--layout=versioned`, you can try a few hacks:
+
+     - `-DGIL_DOWNLOAD_FINDBOOST=ON` to use very latest version of
        `FindBoost.cmake` without upgrading your CMake installation.
-     - `-DBoost_COMPILER=-gcc5` or `-DBoost_COMPILER=-vc141` to help CMake match
-        your compiler with Boost libraries naming in versioned layout
-        (ie. `libboost_unit_test_framework-gcc5-mt-x64-1_69` and not `-gcc55-`).
-     - `-DCMAKE_CXX_COMPILER_ARCHITECTURE_ID=x64` to help CMake match the target
-        architecture, in case it fails to determine it for your compiler, which is
-        also crucial for matching `-x64-` in the versioned layout names.
+
+     - `-DBoost_ARCHITECTURE=-x64` to help CMake find Boost 1.66 and above
+        add an architecture tag to the library file names in versioned build
+        The option added in CMake 3.13.0.
+
+     - `-DBoost_COMPILER=-gcc5` or `-DBoost_COMPILER=-vc141` to help CMake earlier
+        than 3.13 match your compiler with toolset used in the Boost library file names
+        (i.e. `libboost_unit_test_framework-gcc5-mt-x64-1_69` and not `-gcc55-`).
+        Fixed in CMake 3.13.0.
+
      - if CMake is still failing to find Boost, you may try `-DBoost_DEBUG=ON` to
        get detailed diagnostics output from `FindBoost.cmake` module.
 
@@ -409,6 +449,57 @@ Here is an example of such lightweight workflow in Linux environment (Debian-bas
 Maintainer: [@stefanseefeld](https://github.com/stefanseefeld)
 
 *TODO:* _Describe_
+
+### Running clang-tidy
+
+[clang-tidy](http://clang.llvm.org/extra/clang-tidy/) can be run on demand to
+diagnose or diagnose and fix or refactor source code issues.
+
+Since the CMake configuration is provided for building tests and [examples](example/README.md),
+it is easy to run `clang-tidy` using either the integration built-in CMake 3.6+
+as target property `CXX_CLANG_TIDY` or the compile command database which
+can be easily generated.
+
+#### Linting
+
+This mode uses the CMake built-in integration and runs `clang-tidy` checks configured
+in [.clang-tidy](https://github.com/boostorg/gil/blob/develop/.clang-tidy).
+All custom compilation warning levels (e.g. `-Wall`) are disabled and
+compiler defaults are used.
+
+```shell
+cd libs/gil
+cmake -S . -B _build -DGIL_USE_CLANG_TIDY=ON
+
+# all targets
+cmake --build _build
+
+# selected target
+cmake --build _build --target test_headers_all_in_one
+```
+
+#### Refactoring
+
+**WARNING:** This is advanced processing and depending on checks, it may fail to deliver
+expected results, especially if run against all configured translation units at ones.
+
+1. Generate `compile_commands.json` database
+
+    ```shell
+    cd libs/gil
+    cmake -S . -B _build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    ```
+
+2. Edit `compile_commands.json` and remove entries of commands for all but the `.cpp`
+    files you wish to refactor. For example, keep `test_headers_all_in_one.cpp` only
+    to refactor all headers.
+
+3. Run the parallel `clang-tidy` runner script to apply the desired checks (and fixes)
+    across the library source code:
+
+    ```shell
+    run-clang-tidy.py -p=_build -header-filter='boost\/gil\/.*' -checks='-*,modernize-use-using' -fix > cl.log 2>&1
+    ```
 
 ## Guidelines
 
@@ -446,4 +537,15 @@ Maintain structure your source code files according to the following guidelines:
 * All public definitions should reside in scope of `namespace boost { namespace gil {...}}`.
 * All non-public definitions should reside in scope of `namespace boost { namespace gil { namespace detail {...}}}`.
 * Write your code to fit within **90** columns of text (see discussion on [preferred line length](https://lists.boost.org/boost-gil/2018/04/0028.php) in GIL).
-* Indent with **4 spaces**, not tabs. See the [.editorconfig](https://github.com/boostorg/gil/blob/develop/.editorconfig) file for details. Please, do not increases the indentation level within namespace.
+* Use [EditorConfig](https://editorconfig.org) for your editor and enable [.editorconfig](https://github.com/boostorg/gil/blob/develop/.editorconfig) to:
+    * Indent with **4 spaces** and no tabs.
+    * Trim any trailing whitespaces.
+* Do not increases the indentation level within namespace.
+
+
+[status/work-in-progress]: https://github.com/boostorg/gil/labels/status%2Fwork-in-progress
+[refer]: https://help.github.com/articles/autolinked-references-and-urls/
+[keywords]: https://help.github.com/articles/closing-issues-using-keywords/
+[mention]: https://help.github.com/articles/basic-writing-and-formatting-syntax/#mentioning-people-and-teams
+[squash and merge]: https://help.github.com/articles/merging-a-pull-request/
+[create a merge commit]: https://help.github.com/articles/merging-a-pull-request/

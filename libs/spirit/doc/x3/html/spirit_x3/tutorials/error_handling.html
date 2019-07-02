@@ -4,7 +4,7 @@
 <title>Error Handling</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Spirit X3 3.0.3">
+<link rel="home" href="../../index.html" title="Spirit X3 3.0.4">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="rexpr.html" title="RExpressions - Recursive ASTs!">
 <link rel="next" href="../quick_reference.html" title="Quick Reference">
@@ -108,27 +108,24 @@
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-            The expectation operator (<code class="computeroutput"><span class="identifier">a</span>
-            <span class="special">&gt;</span> <span class="identifier">b</span></code>)
+            The expectation operator (Expectation operator)
           </li>
 <li class="listitem">
             The expect directive (<code class="computeroutput"><span class="identifier">expect</span></code><code class="computeroutput"><span class="special">[</span><span class="identifier">p</span><span class="special">]</span></code>)
           </li>
 </ol></div>
 <p>
-        The expectation operator (<code class="computeroutput"><span class="identifier">a</span> <span class="special">&gt;</span> <span class="identifier">b</span></code>)
-        requires that the following parser (<code class="computeroutput"><span class="identifier">b</span></code>)
-        match the input or an <code class="computeroutput"><span class="identifier">expectation_failure</span></code>
+        The expectation operator (Expectation operator) requires that the following
+        parser (<code class="computeroutput"><span class="identifier">b</span></code>) match the input
+        or an <code class="computeroutput"><span class="identifier">expectation_failure</span></code>
         is emitted. Using a client supplied <code class="computeroutput"><span class="identifier">on_error</span></code>
         handler, the exception can be serviced by calling the handler with the source
         iterators and context at which the parsing failed can be reported.
       </p>
 <p>
-        By contrast, the sequence operator (<code class="computeroutput"><span class="identifier">a</span>
-        <span class="special">&gt;&gt;</span> <span class="identifier">b</span></code>)
-        does not require that the following parser match the input, which allows
-        for backtracking or simply returning false from the parse function with no
-        exceptions.
+        By contrast, the sequence operator (Sequence) does not require that the following
+        parser match the input, which allows for backtracking or simply returning
+        false from the parse function with no exceptions.
       </p>
 <p>
         The expect directive (<code class="computeroutput"><span class="identifier">expect</span></code><code class="computeroutput"><span class="special">[</span><span class="identifier">p</span><span class="special">]</span></code>)
@@ -331,10 +328,8 @@ ____^_
         employee parser</a>. What has changed? It is almost identical, except:
       </p>
 <p>
-        Where appropriate, we're using the expectation operator (<code class="computeroutput"><span class="identifier">a</span>
-        <span class="special">&gt;</span> <span class="identifier">b</span></code>)
-        in place of the sequence operator (<code class="computeroutput"><span class="identifier">a</span>
-        <span class="special">&gt;&gt;</span> <span class="identifier">b</span></code>):
+        Where appropriate, we're using the expectation operator (Expectation operator)
+        in place of the sequence operator (Sequence):
       </p>
 <pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">const</span> <span class="identifier">person_def</span> <span class="special">=</span> <span class="identifier">quoted_string</span> <span class="special">&gt;</span> <span class="char">','</span> <span class="special">&gt;</span> <span class="identifier">quoted_string</span><span class="special">;</span>
 

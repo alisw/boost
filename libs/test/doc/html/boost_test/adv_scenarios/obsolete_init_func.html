@@ -38,7 +38,7 @@
 <p>
         The original design of the <span class="emphasis"><em>Unit Test Framework</em></span> required
         of the programmer to implement it. It was intended to initialize and return
-        the <a class="link" href="../tests_organization/test_suite/master_test_suite.html" title="Master Test Suite">master
+        the <a class="link" href="../tests_organization/test_tree/master_test_suite.html" title="Master test suite">master
         test suite</a>. No <a class="link" href="../tests_organization/test_cases/test_organization_nullary.html#ref_BOOST_AUTO_TEST_CASE">automatic
         test case registration</a> was available at that time. The null-pointer
         value was considered an initialization error.
@@ -112,7 +112,7 @@
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
             You always return a null-pointer value and install the master test suite
-            via <code class="computeroutput"><a class="link" href="../../boost/unit_test/test_suite.html#idp69885360-bb">test_suite::add</a></code> as illustrated <a class="link" href="../tests_organization/test_cases/test_organization_nullary.html#ref_BOOST_TEST_CASE">here</a>. The current framework does
+            via <code class="computeroutput"><a class="link" href="../../boost/unit_test/test_suite.html#idm45779056988208-bb">test_suite::add</a></code> as illustrated <a class="link" href="../tests_organization/test_cases/test_organization_nullary.html#ref_BOOST_TEST_CASE">here</a>. The current framework does
             no longer treat the null-pointer value as failure.
           </li>
 <li class="listitem">
@@ -120,7 +120,7 @@
             exception.
           </li>
 <li class="listitem">
-            You access the command-line arguments through the interface of the <a class="link" href="../tests_organization/test_suite/master_test_suite.html" title="Master Test Suite">master
+            You access the command-line arguments through the interface of the <a class="link" href="../tests_organization/test_tree/master_test_suite.html" title="Master test suite">master
             test suite</a>, and ignore the function's arguments <code class="computeroutput"><span class="identifier">argc</span></code> and <code class="computeroutput"><span class="identifier">argv</span></code>.
           </li>
 </ol></div>
@@ -130,8 +130,8 @@
 <th align="left">Caution</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          The obsolete initialization function is deprecated. It is recommended,
-          to move from the old initialization function API, and rely on the automated
+          The obsolete initialization function is deprecated as its name indicates.
+          It is recommended to migrate to the new API, and rely on the automated
           test unit registration and <a class="link" href="../tests_organization/fixtures.html" title="Fixtures">fixtures</a>
           (including <a class="link" href="../tests_organization/fixtures/global.html" title="Global fixture">global
           fixtures</a>) for other set-up.

@@ -65,7 +65,8 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  The type used to represent the input sequence as a list of buffers.
+                  The type used to represent a sequence of constant buffers that
+                  refers to the underlying memory.
                 </p>
               </td>
 </tr>
@@ -77,7 +78,8 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  The type used to represent the output sequence as a list of buffers.
+                  The type used to represent a sequence of mutable buffers that refers
+                  to the underlying memory.
                 </p>
               </td>
 </tr>
@@ -114,7 +116,8 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Get the current capacity of the dynamic buffer.
+                  Get the maximum size that the buffer may grow to without triggering
+                  reallocation.
                 </p>
               </td>
 </tr>
@@ -126,7 +129,8 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Move bytes from the output sequence to the input sequence.
+                  DynamicBuffer_v1: Move bytes from the output sequence to the input
+                  sequence.
                 </p>
               </td>
 </tr>
@@ -138,7 +142,9 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Remove characters from the input sequence.
+                  DynamicBuffer_v1: Remove characters from the input sequence. DynamicBuffer_v2:
+                  Consume the specified number of bytes from the beginning of the
+                  underlying memory.
                 </p>
               </td>
 </tr>
@@ -150,7 +156,9 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Get a list of buffers that represents the input sequence.
+                  DynamicBuffer_v1: Get a list of buffers that represents the input
+                  sequence. <br> <span class="silver"> &#8212;</span><br> DynamicBuffer_v2: Get a sequence of buffers
+                  that represents the underlying memory.
                 </p>
               </td>
 </tr>
@@ -162,8 +170,22 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Construct a dynamic buffer from a string. <br> <span class="silver"> &#8212;</span><br> Move construct
-                  a dynamic buffer.
+                  Construct a dynamic buffer from a string. <br> <span class="silver"> &#8212;</span><br> DynamicBuffer_v2:
+                  Copy construct a dynamic buffer. <br> <span class="silver"> &#8212;</span><br> Move construct a
+                  dynamic buffer.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="dynamic_string_buffer/grow.html" title="dynamic_string_buffer::grow"><span class="bold"><strong>grow</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  DynamicBuffer_v2: Grow the underlying memory by the specified number
+                  of bytes.
                 </p>
               </td>
 </tr>
@@ -187,8 +209,21 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Get a list of buffers that represents the output sequence, with
-                  the given size.
+                  DynamicBuffer_v1: Get a list of buffers that represents the output
+                  sequence, with the given size.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="dynamic_string_buffer/shrink.html" title="dynamic_string_buffer::shrink"><span class="bold"><strong>shrink</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  DynamicBuffer_v2: Shrink the underlying memory by the specified
+                  number of bytes.
                 </p>
               </td>
 </tr>
@@ -200,7 +235,8 @@ class dynamic_string_buffer
               </td>
 <td>
                 <p>
-                  Get the size of the input sequence.
+                  DynamicBuffer_v1: Get the size of the input sequence. DynamicBuffer_v2:
+                  Get the current size of the underlying memory.
                 </p>
               </td>
 </tr>
@@ -222,7 +258,7 @@ class dynamic_string_buffer
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -1,7 +1,9 @@
 <?xml version="1.0" standalone="yes"?>
 <library-reference id="sinks"><title>Sinks</title><header name="boost/log/sinks/async_frontend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>14.07.2009</para>
+
 The header contains implementation of asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -28,26 +30,33 @@ The header contains implementation of asynchronous sink frontend. </para><namesp
 <method name="consume" specifiers="virtual"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><description><para>Enqueues the log record to the backend </para></description></method>
 <method name="try_consume" specifiers="virtual"><type>bool</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><description><para>The method attempts to pass logging record to the backend </para></description></method>
 <method name="run"><type>void</type><description><para>The method starts record feeding loop and effectively blocks until either of this happens:</para><para><itemizedlist>
-<listitem><para>the thread is interrupted due to either standard thread interruption or a call to <computeroutput>stop</computeroutput> </para></listitem>
-<listitem><para>an exception is thrown while processing a log record in the backend, and the exception is not terminated by the exception handler, if one is installed</para></listitem>
+<listitem><para>the thread is interrupted due to either standard thread interruption or a call to <computeroutput>stop</computeroutput> </para>
+</listitem>
+<listitem><para>an exception is thrown while processing a log record in the backend, and the exception is not terminated by the exception handler, if one is installed</para>
+</listitem>
 </itemizedlist>
 
-</para></description><requires><para>The sink frontend must be constructed without spawning a dedicated thread </para></requires></method>
-<method name="stop"><type>void</type><description><para>The method softly interrupts record feeding loop. This method must be called when the <computeroutput>run</computeroutput> method execution has to be interrupted. Unlike regular thread interruption, calling <computeroutput>stop</computeroutput> will not interrupt the record processing in the middle. Instead, the sink frontend will attempt to finish its business with the record in progress and return afterwards. This method can be called either if the sink was created with a dedicated thread, or if the feeding loop was initiated by user.</para><para><note><para>Returning from this method does not guarantee that there are no records left buffered in the sink frontend. It is possible that log records keep coming during and after this method is called. At some point of execution of this method log records stop being processed, and all records that come after this point are put into the queue. These records will be processed upon further calls to <computeroutput>run</computeroutput> or <computeroutput>feed_records</computeroutput>. </para></note>
+</para></description><requires><para>The sink frontend must be constructed without spawning a dedicated thread </para>
+</requires></method>
+<method name="stop"><type>void</type><description><para>The method softly interrupts record feeding loop. This method must be called when the <computeroutput>run</computeroutput> method execution has to be interrupted. Unlike regular thread interruption, calling <computeroutput>stop</computeroutput> will not interrupt the record processing in the middle. Instead, the sink frontend will attempt to finish its business with the record in progress and return afterwards. This method can be called either if the sink was created with a dedicated thread, or if the feeding loop was initiated by user.</para><para><note><para>Returning from this method does not guarantee that there are no records left buffered in the sink frontend. It is possible that log records keep coming during and after this method is called. At some point of execution of this method log records stop being processed, and all records that come after this point are put into the queue. These records will be processed upon further calls to <computeroutput>run</computeroutput> or <computeroutput>feed_records</computeroutput>. </para>
+</note>
 </para></description></method>
 <method name="feed_records"><type>void</type><description><para>The method feeds log records that may have been buffered to the backend and returns</para><para>
-</para></description><requires><para>The sink frontend must be constructed without spawning a dedicated thread </para></requires></method>
+</para></description><requires><para>The sink frontend must be constructed without spawning a dedicated thread </para>
+</requires></method>
 <method name="flush" specifiers="virtual"><type>void</type><description><para>The method feeds all log records that may have been buffered to the backend and returns. Unlike <computeroutput>feed_records</computeroutput>, in case of ordering queueing the method also feeds records that were enqueued during the ordering window, attempting to empty the queue completely. </para></description></method>
 </method-group>
 <constructor><parameter name="start_thread"><paramtype>bool</paramtype><default>true</default><description><para>If <computeroutput>true</computeroutput>, the frontend creates a thread to feed log records to the backend. Otherwise no thread is started and it is assumed that the user will call either <computeroutput>run</computeroutput> or <computeroutput>feed_records</computeroutput> himself. </para></description></parameter><description><para>Default constructor. Constructs the sink backend instance. Requires the backend to be default-constructible.</para><para>
 </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="backend"><paramtype>shared_ptr&lt; sink_backend_type &gt; const &amp;</paramtype><description><para>Pointer to the backend instance. </para></description></parameter><parameter name="start_thread"><paramtype>bool</paramtype><default>true</default><description><para>If <computeroutput>true</computeroutput>, the frontend creates a thread to feed log records to the backend. Otherwise no thread is started and it is assumed that the user will call either <computeroutput>run</computeroutput> or <computeroutput>feed_records</computeroutput> himself.</para></description></parameter><description><para>Constructor attaches user-constructed backend instance</para><para>
 
-</para></description><requires><para><emphasis>backend</emphasis> is not <computeroutput>NULL</computeroutput>. </para></requires></constructor>
+</para></description><requires><para><emphasis>backend</emphasis> is not <computeroutput>NULL</computeroutput>. </para>
+</requires></constructor>
 <constructor specifiers="explicit"><template>
           <template-nontype-parameter name="Args"><type>typename...</type></template-nontype-parameter>
         </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>Constructor that passes arbitrary named parameters to the interprocess sink backend constructor. Refer to the backend documentation for the list of supported parameters.</para><para>The frontend uses the following named parameters:</para><para><itemizedlist>
-<listitem><para>start_thread - If <computeroutput>true</computeroutput>, the frontend creates a thread to feed log records to the backend. Otherwise no thread is started and it is assumed that the user will call either <computeroutput>run</computeroutput> or <computeroutput>feed_records</computeroutput> himself. </para></listitem>
+<listitem><para>start_thread - If <computeroutput>true</computeroutput>, the frontend creates a thread to feed log records to the backend. Otherwise no thread is started and it is assumed that the user will call either <computeroutput>run</computeroutput> or <computeroutput>feed_records</computeroutput> himself. </para>
+</listitem>
 </itemizedlist>
 </para></description></constructor>
 <destructor><description><para>Destructor. Implicitly stops the dedicated feeding thread, if one is running. </para></description></destructor>
@@ -57,15 +66,32 @@ The header contains implementation of asynchronous sink frontend. </para><namesp
 </header>
 <header name="boost/log/sinks/attribute_mapping.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>07.11.2008</para>
+
 The header contains facilities that are used in different sinks to map attribute values used throughout the application to values used with the specific native logging API. These tools are mostly needed to map application severity levels on native levels, required by OS-specific sink backends. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
-<struct name="basic_mapping"><template>
+<class name="basic_custom_mapping"><template>
       <template-type-parameter name="MappedT"/>
-    </template><purpose>Base class for attribute mapping function objects. </purpose><typedef name="mapped_type"><purpose>Mapped value type. </purpose><type>MappedT</type></typedef>
-<typedef name="result_type"><purpose>Result type. </purpose><type>mapped_type</type></typedef>
-</struct><class name="basic_direct_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">boost::log::sinks::basic_mapping&lt; MappedT &gt;</inherit><purpose>Customizable mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and native values. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment.</para><para><note><para>Unlike many other components of the library, exact type of the attribute value must be specified in the template parameter <computeroutput>AttributeValueT</computeroutput>. Type sequences are not supported. </para>
+</note>
+</para></description><typedef name="attribute_value_type"><purpose>Attribute contained value type. </purpose><type>AttributeValueT</type></typedef>
+<typedef name="mapped_type"><purpose>Mapped value type. </purpose><type>base_type::mapped_type</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>mapped_type</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype><description><para>A log record to extract value from </para></description></parameter><description><para>Extraction operator. Extracts the attribute value and attempts to map it onto the native value.</para><para>
+
+</para></description><returns><para>A mapped value, if mapping was successful, or the default value if mapping did not succeed. </para>
+</returns></method>
+<method name="operator[]"><type>implementation_defined</type><parameter name="key"><paramtype>attribute_value_type const &amp;</paramtype><description><para>Attribute value to be mapped </para></description></parameter><description><para>Insertion operator</para><para>
+
+</para></description><returns><para>An object of unspecified type that allows to insert a new mapping through assignment. The <emphasis>key</emphasis> argument becomes the key attribute value, and the assigned value becomes the mapped native value. </para>
+</returns></method>
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><parameter name="default_value"><paramtype>mapped_type const &amp;</paramtype><description><para>The default native value that is returned if the conversion cannot be performed </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
+</class><class name="basic_direct_mapping"><template>
       <template-type-parameter name="MappedT"/>
       <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
     </template><inherit access="public">boost::log::sinks::basic_mapping&lt; MappedT &gt;</inherit><purpose>Straightforward mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the native values. The mapping simply returns the extracted attribute value converted to the native value. </para></description><typedef name="attribute_value_type"><purpose>Attribute contained value type. </purpose><type>AttributeValueT</type></typedef>
@@ -73,103 +99,53 @@ The header contains facilities that are used in different sinks to map attribute
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>mapped_type</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype><description><para>A log record to extract value from </para></description></parameter><description><para>Extraction operator</para><para>
 
-</para></description><returns><para>An extracted attribute value </para></returns></method>
+</para></description><returns><para>An extracted attribute value </para>
+</returns></method>
 </method-group>
 <constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><parameter name="default_value"><paramtype>mapped_type const &amp;</paramtype><description><para>The default native value that is returned if the attribute value is not found </para></description></parameter><description><para>Constructor</para><para>
 </para></description></constructor>
-</class><class name="basic_custom_mapping"><template>
+</class><struct name="basic_mapping"><template>
       <template-type-parameter name="MappedT"/>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">boost::log::sinks::basic_mapping&lt; MappedT &gt;</inherit><purpose>Customizable mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and native values. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment.</para><para><note><para>Unlike many other components of the library, exact type of the attribute value must be specified in the template parameter <computeroutput>AttributeValueT</computeroutput>. Type sequences are not supported. </para></note>
-</para></description><typedef name="attribute_value_type"><purpose>Attribute contained value type. </purpose><type>AttributeValueT</type></typedef>
-<typedef name="mapped_type"><purpose>Mapped value type. </purpose><type>base_type::mapped_type</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>mapped_type</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype><description><para>A log record to extract value from </para></description></parameter><description><para>Extraction operator. Extracts the attribute value and attempts to map it onto the native value.</para><para>
-
-</para></description><returns><para>A mapped value, if mapping was successful, or the default value if mapping did not succeed. </para></returns></method>
-<method name="operator[]"><type>implementation_defined</type><parameter name="key"><paramtype>attribute_value_type const &amp;</paramtype><description><para>Attribute value to be mapped </para></description></parameter><description><para>Insertion operator</para><para>
-
-</para></description><returns><para>An object of unspecified type that allows to insert a new mapping through assignment. The <emphasis>key</emphasis> argument becomes the key attribute value, and the assigned value becomes the mapped native value. </para></returns></method>
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><parameter name="default_value"><paramtype>mapped_type const &amp;</paramtype><description><para>The default native value that is returned if the conversion cannot be performed </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class></namespace>
+    </template><purpose>Base class for attribute mapping function objects. </purpose><typedef name="mapped_type"><purpose>Mapped value type. </purpose><type>MappedT</type></typedef>
+<typedef name="result_type"><purpose>Result type. </purpose><type>mapped_type</type></typedef>
+</struct></namespace>
 </namespace>
 </namespace>
 </header>
 <header name="boost/log/sinks/basic_sink_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>04.11.2007</para>
+
 The header contains implementation of base classes for sink backends. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
-<struct name="basic_sink_backend"><template>
-      <template-type-parameter name="FrontendRequirementsT"/>
-    </template><purpose>Base class for a logging sink backend. </purpose><description><para>The <computeroutput><classname alt="boost::log::sinks::basic_sink_backend">basic_sink_backend</classname></computeroutput> class template defines a number of types that all sink backends are required to define. All sink backends have to derive from the class. </para></description><typedef name="frontend_requirements"><purpose>Frontend requirements tag. </purpose><type>FrontendRequirementsT</type></typedef>
-<method-group name="public member functions">
-</method-group>
-<constructor cv="= default"/>
-<constructor cv="= delete"><parameter name=""><paramtype><classname>basic_sink_backend</classname> const &amp;</paramtype></parameter></constructor>
-<copy-assignment cv="= delete"><type><classname>basic_sink_backend</classname> &amp;</type><parameter name=""><paramtype><classname>basic_sink_backend</classname> const &amp;</paramtype></parameter></copy-assignment>
-</struct><struct name="basic_formatted_sink_backend"><template>
+<struct name="basic_formatted_sink_backend"><template>
       <template-type-parameter name="CharT"/>
       <template-type-parameter name="FrontendRequirementsT"><default><classname alt="boost::log::sinks::synchronized_feeding">synchronized_feeding</classname></default></template-type-parameter>
     </template><inherit access="public">basic_sink_backend&lt; combine_requirements&lt; FrontendRequirementsT, formatted_records &gt;::type &gt;</inherit><purpose>A base class for a logging sink backend with message formatting support. </purpose><description><para>The <computeroutput><classname alt="boost::log::sinks::basic_formatted_sink_backend">basic_formatted_sink_backend</classname></computeroutput> class template indicates to the frontend that the backend requires logging record formatting.</para><para>The class allows to request encoding conversion in case if the sink backend requires the formatted string in some particular encoding (e.g. if underlying API supports only narrow or wide characters). In order to perform conversion one should specify the desired final character type in the <computeroutput>TargetCharT</computeroutput> template parameter. </para></description><typedef name="char_type"><purpose>Character type. </purpose><type>CharT</type></typedef>
 <typedef name="string_type"><purpose>Formatted string type. </purpose><type>std::basic_string&lt; char_type &gt;</type></typedef>
 <typedef name="frontend_requirements"><purpose>Frontend requirements. </purpose><type>base_type::frontend_requirements</type></typedef>
+</struct><struct name="basic_sink_backend"><template>
+      <template-type-parameter name="FrontendRequirementsT"/>
+    </template><purpose>Base class for a logging sink backend. </purpose><description><para>The <computeroutput><classname alt="boost::log::sinks::basic_sink_backend">basic_sink_backend</classname></computeroutput> class template defines a number of types that all sink backends are required to define. All sink backends have to derive from the class. </para></description><typedef name="frontend_requirements"><purpose>Frontend requirements tag. </purpose><type>FrontendRequirementsT</type></typedef>
+<method-group name="public member functions">
+</method-group>
+<constructor cv="= delete"><parameter name=""><paramtype><classname>basic_sink_backend</classname> const &amp;</paramtype></parameter></constructor>
+<copy-assignment cv="= delete"><type><classname>basic_sink_backend</classname> &amp;</type><parameter name=""><paramtype><classname>basic_sink_backend</classname> const &amp;</paramtype></parameter></copy-assignment>
 </struct></namespace>
 </namespace>
 </namespace>
 </header>
 <header name="boost/log/sinks/basic_sink_frontend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>14.07.2009</para>
+
 The header contains implementation of a base class for sink frontends. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
-<class name="basic_sink_frontend"><inherit access="public">sink</inherit><purpose>A base class for a logging sink frontend. </purpose><typedef name="exception_handler_type"><purpose>An exception handler type. </purpose><type>base_type::exception_handler_type</type></typedef>
-<method-group name="public member functions">
-<method name="set_filter"><type>void</type><template>
-          <template-type-parameter name="FunT"/>
-        </template><parameter name="filter"><paramtype>FunT const &amp;</paramtype></parameter><description><para>The method sets sink-specific filter functional object </para></description></method>
-<method name="reset_filter"><type>void</type><description><para>The method resets the filter </para></description></method>
-<method name="set_exception_handler"><type>void</type><template>
-          <template-type-parameter name="FunT"/>
-        </template><parameter name="handler"><paramtype>FunT const &amp;</paramtype></parameter><description><para>The method sets an exception handler function </para></description></method>
-<method name="reset_exception_handler"><type>void</type><description><para>The method resets the exception handler function </para></description></method>
-<method name="will_consume" specifiers="virtual"><type>bool</type><parameter name="attrs"><paramtype>attribute_value_set const &amp;</paramtype><description><para>A set of attribute values of a logging record </para></description></parameter><description><para>The method returns <computeroutput>true</computeroutput> if no filter is set or the attribute values pass the filter</para><para>
-</para></description></method>
-</method-group>
-<constructor specifiers="explicit"><parameter name="cross_thread"><paramtype>bool</paramtype><description><para>The flag indicates whether the sink passes log records between different threads </para></description></parameter><purpose>Initializing constructor. </purpose><description><para>
-</para></description></constructor>
-<method-group name="protected member functions">
-<method name="frontend_mutex" cv="const"><type>mutex_type &amp;</type><purpose>Returns reference to the frontend mutex. </purpose></method>
-<method name="exception_handler"><type>exception_handler_type &amp;</type><purpose>Returns reference to the exception handler. </purpose></method>
-<method name="exception_handler" cv="const"><type>exception_handler_type const &amp;</type><purpose>Returns reference to the exception handler. </purpose></method>
-<method name="feed_record"><type>void</type><template>
-          <template-type-parameter name="BackendMutexT"/>
-          <template-type-parameter name="BackendT"/>
-        </template><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Feeds log record to the backend. </purpose></method>
-<method name="try_feed_record"><type>bool</type><template>
-          <template-type-parameter name="BackendMutexT"/>
-          <template-type-parameter name="BackendT"/>
-        </template><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Attempts to feeds log record to the backend, does not block if <emphasis>backend_mutex</emphasis> is locked. </purpose></method>
-<method name="flush_backend"><type>void</type><template>
-          <template-type-parameter name="BackendMutexT"/>
-          <template-type-parameter name="BackendT"/>
-        </template><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Flushes record buffers in the backend, if one supports it. </purpose></method>
-</method-group>
-<method-group name="private member functions">
-<method name="flush_backend_impl"><type>void</type><template>
-          <template-type-parameter name="BackendMutexT"/>
-          <template-type-parameter name="BackendT"/>
-        </template><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><parameter name=""><paramtype>mpl::true_</paramtype></parameter><purpose>Flushes record buffers in the backend (the actual implementation) </purpose></method>
-<method name="flush_backend_impl"><type>void</type><template>
-          <template-type-parameter name="BackendMutexT"/>
-          <template-type-parameter name="BackendT"/>
-        </template><parameter name=""><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name=""><paramtype>BackendT &amp;</paramtype></parameter><parameter name=""><paramtype>mpl::false_</paramtype></parameter><purpose>Flushes record buffers in the backend (stub for backends that don't support flushing) </purpose></method>
-</method-group>
-</class><class name="basic_formatting_sink_frontend"><template>
+<class name="basic_formatting_sink_frontend"><template>
       <template-type-parameter name="CharT"/>
     </template><inherit access="public">basic_sink_frontend</inherit><purpose>A base class for a logging sink frontend with formatting support. </purpose><struct name="formatting_context"><class name="cleanup_guard"><method-group name="public member functions">
 </method-group>
@@ -210,13 +186,57 @@ The header contains implementation of a base class for sink frontends. </para><n
           <template-type-parameter name="BackendT"/>
         </template><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Attempts to feeds log record to the backend, does not block if <emphasis>backend_mutex</emphasis> is locked. </purpose></method>
 </method-group>
+</class><class name="basic_sink_frontend"><inherit access="public">sink</inherit><purpose>A base class for a logging sink frontend. </purpose><typedef name="exception_handler_type"><purpose>An exception handler type. </purpose><type>base_type::exception_handler_type</type></typedef>
+<method-group name="public member functions">
+<method name="set_filter"><type>void</type><template>
+          <template-type-parameter name="FunT"/>
+        </template><parameter name="filter"><paramtype>FunT const &amp;</paramtype></parameter><description><para>The method sets sink-specific filter functional object </para></description></method>
+<method name="reset_filter"><type>void</type><description><para>The method resets the filter </para></description></method>
+<method name="set_exception_handler"><type>void</type><template>
+          <template-type-parameter name="FunT"/>
+        </template><parameter name="handler"><paramtype>FunT const &amp;</paramtype></parameter><description><para>The method sets an exception handler function </para></description></method>
+<method name="reset_exception_handler"><type>void</type><description><para>The method resets the exception handler function </para></description></method>
+<method name="will_consume" specifiers="virtual"><type>bool</type><parameter name="attrs"><paramtype>attribute_value_set const &amp;</paramtype><description><para>A set of attribute values of a logging record </para></description></parameter><description><para>The method returns <computeroutput>true</computeroutput> if no filter is set or the attribute values pass the filter</para><para>
+</para></description></method>
+</method-group>
+<constructor specifiers="explicit"><parameter name="cross_thread"><paramtype>bool</paramtype><description><para>The flag indicates whether the sink passes log records between different threads </para></description></parameter><purpose>Initializing constructor. </purpose><description><para>
+</para></description></constructor>
+<method-group name="protected member functions">
+<method name="frontend_mutex" cv="const"><type>mutex_type &amp;</type><purpose>Returns reference to the frontend mutex. </purpose></method>
+<method name="exception_handler"><type>exception_handler_type &amp;</type><purpose>Returns reference to the exception handler. </purpose></method>
+<method name="exception_handler" cv="const"><type>exception_handler_type const  &amp;</type><purpose>Returns reference to the exception handler. </purpose></method>
+<method name="feed_record"><type>void</type><template>
+          <template-type-parameter name="BackendMutexT"/>
+          <template-type-parameter name="BackendT"/>
+        </template><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Feeds log record to the backend. </purpose></method>
+<method name="try_feed_record"><type>bool</type><template>
+          <template-type-parameter name="BackendMutexT"/>
+          <template-type-parameter name="BackendT"/>
+        </template><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Attempts to feeds log record to the backend, does not block if <emphasis>backend_mutex</emphasis> is locked. </purpose></method>
+<method name="flush_backend"><type>void</type><template>
+          <template-type-parameter name="BackendMutexT"/>
+          <template-type-parameter name="BackendT"/>
+        </template><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><purpose>Flushes record buffers in the backend, if one supports it. </purpose></method>
+</method-group>
+<method-group name="private member functions">
+<method name="flush_backend_impl"><type>void</type><template>
+          <template-type-parameter name="BackendMutexT"/>
+          <template-type-parameter name="BackendT"/>
+        </template><parameter name="backend_mutex"><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name="backend"><paramtype>BackendT &amp;</paramtype></parameter><parameter name=""><paramtype>mpl::true_</paramtype></parameter><purpose>Flushes record buffers in the backend (the actual implementation) </purpose></method>
+<method name="flush_backend_impl"><type>void</type><template>
+          <template-type-parameter name="BackendMutexT"/>
+          <template-type-parameter name="BackendT"/>
+        </template><parameter name=""><paramtype>BackendMutexT &amp;</paramtype></parameter><parameter name=""><paramtype>BackendT &amp;</paramtype></parameter><parameter name=""><paramtype>mpl::false_</paramtype></parameter><purpose>Flushes record buffers in the backend (stub for backends that don't support flushing) </purpose></method>
+</method-group>
 </class></namespace>
 </namespace>
 </namespace>
 </header>
 <header name="boost/log/sinks/block_on_overflow.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>04.01.2012</para>
+
 The header contains implementation of <computeroutput>block_on_overflow</computeroutput> strategy for handling queue overflows in bounded queues for the asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -226,7 +246,9 @@ The header contains implementation of <computeroutput>block_on_overflow</compute
 </header>
 <header name="boost/log/sinks/bounded_fifo_queue.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>04.01.2012</para>
+
 The header contains implementation of bounded FIFO queueing strategy for the asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -251,7 +273,9 @@ The header contains implementation of bounded FIFO queueing strategy for the asy
 </header>
 <header name="boost/log/sinks/bounded_ordering_queue.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>06.01.2012</para>
+
 The header contains implementation of bounded ordering queueing strategy for the asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -260,10 +284,14 @@ The header contains implementation of bounded ordering queueing strategy for the
       <template-nontype-parameter name="MaxQueueSizeV"><type>std::size_t</type></template-nontype-parameter>
       <template-type-parameter name="OverflowStrategyT"/>
     </template><inherit access="private">OverflowStrategyT</inherit><purpose>Bounded ordering log record queueing strategy. </purpose><description><para>The <computeroutput><classname alt="boost::log::sinks::bounded_ordering_queue">bounded_ordering_queue</classname></computeroutput> class is intended to be used with the <computeroutput><classname alt="boost::log::sinks::asynchronous_sink">asynchronous_sink</classname></computeroutput> frontend as a log record queueing strategy.</para><para>This strategy provides the following properties to the record queueing mechanism:</para><para><itemizedlist>
-<listitem><para>The queue has limited capacity specified by the <computeroutput>MaxQueueSizeV</computeroutput> template parameter. </para></listitem>
-<listitem><para>Upon reaching the size limit, the queue invokes the overflow handling strategy specified in the <computeroutput>OverflowStrategyT</computeroutput> template parameter to handle the situation. The library provides overflow handling strategies for most common cases: <computeroutput><classname alt="boost::log::sinks::drop_on_overflow">drop_on_overflow</classname></computeroutput> will silently discard the log record, and <computeroutput><classname alt="boost::log::sinks::block_on_overflow">block_on_overflow</classname></computeroutput> will put the enqueueing thread to wait until there is space in the queue. </para></listitem>
-<listitem><para>The queue has a fixed latency window. This means that each log record put into the queue will normally not be dequeued for a certain period of time. </para></listitem>
-<listitem><para>The queue performs stable record ordering within the latency window. The ordering predicate can be specified in the <computeroutput>OrderT</computeroutput> template parameter. </para></listitem>
+<listitem><para>The queue has limited capacity specified by the <computeroutput>MaxQueueSizeV</computeroutput> template parameter. </para>
+</listitem>
+<listitem><para>Upon reaching the size limit, the queue invokes the overflow handling strategy specified in the <computeroutput>OverflowStrategyT</computeroutput> template parameter to handle the situation. The library provides overflow handling strategies for most common cases: <computeroutput><classname alt="boost::log::sinks::drop_on_overflow">drop_on_overflow</classname></computeroutput> will silently discard the log record, and <computeroutput><classname alt="boost::log::sinks::block_on_overflow">block_on_overflow</classname></computeroutput> will put the enqueueing thread to wait until there is space in the queue. </para>
+</listitem>
+<listitem><para>The queue has a fixed latency window. This means that each log record put into the queue will normally not be dequeued for a certain period of time. </para>
+</listitem>
+<listitem><para>The queue performs stable record ordering within the latency window. The ordering predicate can be specified in the <computeroutput>OrderT</computeroutput> template parameter. </para>
+</listitem>
 </itemizedlist>
 </para></description><method-group name="public member functions">
 <method name="get_ordering_window" cv="const"><type>posix_time::time_duration</type><description><para>Returns ordering window size specified during initialization </para></description></method>
@@ -288,7 +316,9 @@ The header contains implementation of bounded ordering queueing strategy for the
 </header>
 <header name="boost/log/sinks/debug_output_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>07.11.2008</para>
+
 The header contains a logging sink backend that outputs log records to the debugger. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -309,7 +339,9 @@ The header contains a logging sink backend that outputs log records to the debug
 </header>
 <header name="boost/log/sinks/drop_on_overflow.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>04.01.2012</para>
+
 The header contains implementation of <computeroutput>drop_on_overflow</computeroutput> strategy for handling queue overflows in bounded queues for the asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -319,44 +351,21 @@ The header contains implementation of <computeroutput>drop_on_overflow</computer
 </header>
 <header name="boost/log/sinks/event_log_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>07.11.2008</para>
+
 The header contains a logging sink backend that uses Windows NT event log API for signaling application events. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
-<class name="basic_simple_event_log_backend"><template>
-      <template-type-parameter name="CharT"/>
-    </template><inherit access="public">basic_formatted_sink_backend&lt; CharT, concurrent_feeding &gt;</inherit><purpose>An implementation of a simple logging sink backend that emits events into Windows NT event log. </purpose><description><para>The sink uses Windows NT 5 (Windows 2000) and later event log API to emit events to an event log. The sink acts as an event source in terms of the API, it implements all needed resources and source registration in the Windows registry that is needed for the event delivery.</para><para>The backend performs message text formatting. The composed text is then passed as the first and only string parameter of the event. The resource embedded into the backend describes the event so that the parameter is inserted into the event description text, thus making it visible in the event log.</para><para>The backend allows to customize mapping of application severity levels to the native Windows event types. This allows to write portable code even if OS-specific sinks, such as this one, are used.</para><para><note><para>Since the backend registers itself into Windows registry as the resource file that contains event description, it is important to keep the library binary in a stable place of the filesystem. Otherwise Windows might not be able to load event resources from the library and display events correctly.</para><para>It is known that Windows is not able to find event resources in the application executable, which is linked against the static build of the library. Users are advised to use dynamic builds of the library to solve this problem. </para></note>
-</para></description><typedef name="char_type"><purpose>Character type. </purpose><type>base_type::char_type</type></typedef>
-<typedef name="string_type"><purpose>String type to be used as a message text holder. </purpose><type>base_type::string_type</type></typedef>
-<typedef name="event_type_mapper_type"><purpose>Mapper type for the event type. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
-<method-group name="public member functions">
-<method name="set_event_type_mapper"><type>void</type><parameter name="mapper"><paramtype>event_type_mapper_type const &amp;</paramtype></parameter><description><para>The method installs the function object that maps application severity levels to WinAPI event types </para></description></method>
-<method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method puts the formatted message to the event log </para></description></method>
-</method-group>
-<constructor><description><para>Default constructor. Registers event source with name based on the application executable file name in the Application log. If such a registration is already present, it is not overridden. </para></description></constructor>
-<constructor specifiers="explicit"><template>
-          <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="args"><paramtype>ArgsT...const &amp;</paramtype><description><para>A set of named parameters. </para></description></parameter><description><para>Constructor. Registers event log source with the specified parameters. The following named parameters are supported:</para><para><itemizedlist>
-<listitem><para><computeroutput>target</computeroutput> - Specifies an UNC path to the remote server which log records should be sent to. The local machine will be used to process log records, if not specified. </para></listitem>
-<listitem><para><computeroutput>log_name</computeroutput> - Specifies the log in which the source should be registered. The result of <computeroutput>get_default_log_name</computeroutput> is used, if the parameter is not specified. </para></listitem>
-<listitem><para><computeroutput>log_source</computeroutput> - Specifies the source name. The result of <computeroutput>get_default_source_name</computeroutput> is used, if the parameter is not specified. </para></listitem>
-<listitem><para><computeroutput>registration</computeroutput> - Specifies the event source registration mode in the Windows registry. Can have values of the <computeroutput>registration_mode</computeroutput> enum. Default value: <computeroutput>on_demand</computeroutput>.</para></listitem>
-</itemizedlist>
-
-</para></description></constructor>
-<destructor><description><para>Destructor. Unregisters event source. The log source description is not removed from the Windows registry. </para></description></destructor>
-<method-group name="public static functions">
-<method name="get_default_log_name" specifiers="static"><type>string_type</type><description><para>
-</para></description><returns><para>Default log name: Application </para></returns></method>
-<method name="get_default_source_name" specifiers="static"><type>string_type</type><description><para>
-</para></description><returns><para>Default log source name that is based on the application executable file name and the sink name </para></returns></method>
-</method-group>
-</class><class name="basic_event_log_backend"><template>
+<class name="basic_event_log_backend"><template>
       <template-type-parameter name="CharT"/>
     </template><inherit access="public">basic_sink_backend&lt; synchronized_feeding &gt;</inherit><purpose>An implementation of a logging sink backend that emits events into Windows NT event log. </purpose><description><para>The sink uses Windows NT 5 (Windows 2000) and later event log API to emit events to an event log. The sink acts as an event source. Unlike <computeroutput><classname alt="boost::log::sinks::basic_simple_event_log_backend">basic_simple_event_log_backend</classname></computeroutput>, this sink backend allows users to specify the custom event message file and supports mapping attribute values onto several insertion strings. Although it requires considerably more scaffolding than the simple backend, this allows to support localizable event descriptions.</para><para>Besides the file name of the module with event resources, the backend provides the following customizations: <itemizedlist>
-<listitem><para>Remote server UNC address, log name and source name. These parameters have similar meaning to <computeroutput><classname alt="boost::log::sinks::basic_simple_event_log_backend">basic_simple_event_log_backend</classname></computeroutput>. </para></listitem>
-<listitem><para>Event type and category mappings. These are function object that allow to map attribute values to the according event parameters. One can use mappings in the <computeroutput>event_log</computeroutput> namespace. </para></listitem>
-<listitem><para>Event composer. This function object extracts event identifier and formats string insertions, that will be used by the API to compose the final event message text. </para></listitem>
+<listitem><para>Remote server UNC address, log name and source name. These parameters have similar meaning to <computeroutput><classname alt="boost::log::sinks::basic_simple_event_log_backend">basic_simple_event_log_backend</classname></computeroutput>. </para>
+</listitem>
+<listitem><para>Event type and category mappings. These are function object that allow to map attribute values to the according event parameters. One can use mappings in the <computeroutput>event_log</computeroutput> namespace. </para>
+</listitem>
+<listitem><para>Event composer. This function object extracts event identifier and formats string insertions, that will be used by the API to compose the final event message text. </para>
+</listitem>
 </itemizedlist>
 </para></description><typedef name="char_type"><purpose>Character type. </purpose><type>CharT</type></typedef>
 <typedef name="string_type"><purpose>String type. </purpose><type>std::basic_string&lt; char_type &gt;</type></typedef>
@@ -377,64 +386,74 @@ The header contains a logging sink backend that uses Windows NT event log API fo
 <constructor specifiers="explicit"><parameter name="message_file_name"><paramtype>filesystem::path const &amp;</paramtype></parameter><description><para>Constructor. Registers event source with name based on the application executable file name in the Application log. If such a registration is already present, it is not overridden. </para></description></constructor>
 <constructor specifiers="explicit"><template>
           <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="args"><paramtype>ArgsT...const &amp;</paramtype><description><para>A set of named parameters. </para></description></parameter><description><para>Constructor. Registers event log source with the specified parameters. The following named parameters are supported:</para><para><itemizedlist>
-<listitem><para><computeroutput>message_file</computeroutput> - Specifies the file name that contains resources that describe events and categories. This parameter is mandatory unless <computeroutput>registration</computeroutput> is <computeroutput>never</computeroutput>. </para></listitem>
-<listitem><para><computeroutput>target</computeroutput> - Specifies an UNC path to the remote server to which log records should be sent to. The local machine will be used to process log records, if not specified. </para></listitem>
-<listitem><para><computeroutput>log_name</computeroutput> - Specifies the log in which the source should be registered. The result of <computeroutput>get_default_log_name</computeroutput> is used, if the parameter is not specified. </para></listitem>
-<listitem><para><computeroutput>log_source</computeroutput> - Specifies the source name. The result of <computeroutput>get_default_source_name</computeroutput> is used, if the parameter is not specified. </para></listitem>
-<listitem><para><computeroutput>registration</computeroutput> - Specifies the event source registration mode in the Windows registry. Can have values of the <computeroutput>registration_mode</computeroutput> enum. Default value: <computeroutput>on_demand</computeroutput>.</para></listitem>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype><description><para>A set of named parameters. </para></description></parameter><description><para>Constructor. Registers event log source with the specified parameters. The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>message_file</computeroutput> - Specifies the file name that contains resources that describe events and categories. This parameter is mandatory unless <computeroutput>registration</computeroutput> is <computeroutput>never</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>target</computeroutput> - Specifies an UNC path to the remote server to which log records should be sent to. The local machine will be used to process log records, if not specified. </para>
+</listitem>
+<listitem><para><computeroutput>log_name</computeroutput> - Specifies the log in which the source should be registered. The result of <computeroutput>get_default_log_name</computeroutput> is used, if the parameter is not specified. </para>
+</listitem>
+<listitem><para><computeroutput>log_source</computeroutput> - Specifies the source name. The result of <computeroutput>get_default_source_name</computeroutput> is used, if the parameter is not specified. </para>
+</listitem>
+<listitem><para><computeroutput>registration</computeroutput> - Specifies the event source registration mode in the Windows registry. Can have values of the <computeroutput>registration_mode</computeroutput> enum. Default value: <computeroutput>on_demand</computeroutput>.</para>
+</listitem>
 </itemizedlist>
 
 </para></description></constructor>
 <destructor><description><para>Destructor. Unregisters event source. The log source description is not removed from the Windows registry. </para></description></destructor>
 <method-group name="public static functions">
 <method name="get_default_log_name" specifiers="static"><type>string_type</type><description><para>
-</para></description><returns><para>Default log name: Application </para></returns></method>
+</para></description><returns><para>Default log name: Application </para>
+</returns></method>
 <method name="get_default_source_name" specifiers="static"><type>string_type</type><description><para>
-</para></description><returns><para>Default log source name that is based on the application executable file name and the sink name </para></returns></method>
+</para></description><returns><para>Default log source name that is based on the application executable file name and the sink name </para>
+</returns></method>
+</method-group>
+</class><class name="basic_simple_event_log_backend"><template>
+      <template-type-parameter name="CharT"/>
+    </template><inherit access="public">basic_formatted_sink_backend&lt; CharT, concurrent_feeding &gt;</inherit><purpose>An implementation of a simple logging sink backend that emits events into Windows NT event log. </purpose><description><para>The sink uses Windows NT 5 (Windows 2000) and later event log API to emit events to an event log. The sink acts as an event source in terms of the API, it implements all needed resources and source registration in the Windows registry that is needed for the event delivery.</para><para>The backend performs message text formatting. The composed text is then passed as the first and only string parameter of the event. The resource embedded into the backend describes the event so that the parameter is inserted into the event description text, thus making it visible in the event log.</para><para>The backend allows to customize mapping of application severity levels to the native Windows event types. This allows to write portable code even if OS-specific sinks, such as this one, are used.</para><para><note><para>Since the backend registers itself into Windows registry as the resource file that contains event description, it is important to keep the library binary in a stable place of the filesystem. Otherwise Windows might not be able to load event resources from the library and display events correctly.</para>
+</note>
+<note><para>It is known that Windows is not able to find event resources in the application executable, which is linked against the static build of the library. Users are advised to use dynamic builds of the library to solve this problem. </para>
+</note>
+</para></description><typedef name="char_type"><purpose>Character type. </purpose><type>base_type::char_type</type></typedef>
+<typedef name="string_type"><purpose>String type to be used as a message text holder. </purpose><type>base_type::string_type</type></typedef>
+<typedef name="event_type_mapper_type"><purpose>Mapper type for the event type. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
+<method-group name="public member functions">
+<method name="set_event_type_mapper"><type>void</type><parameter name="mapper"><paramtype>event_type_mapper_type const &amp;</paramtype></parameter><description><para>The method installs the function object that maps application severity levels to WinAPI event types </para></description></method>
+<method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method puts the formatted message to the event log </para></description></method>
+</method-group>
+<constructor><description><para>Default constructor. Registers event source with name based on the application executable file name in the Application log. If such a registration is already present, it is not overridden. </para></description></constructor>
+<constructor specifiers="explicit"><template>
+          <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype><description><para>A set of named parameters. </para></description></parameter><description><para>Constructor. Registers event log source with the specified parameters. The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>target</computeroutput> - Specifies an UNC path to the remote server which log records should be sent to. The local machine will be used to process log records, if not specified. </para>
+</listitem>
+<listitem><para><computeroutput>log_name</computeroutput> - Specifies the log in which the source should be registered. The result of <computeroutput>get_default_log_name</computeroutput> is used, if the parameter is not specified. </para>
+</listitem>
+<listitem><para><computeroutput>log_source</computeroutput> - Specifies the source name. The result of <computeroutput>get_default_source_name</computeroutput> is used, if the parameter is not specified. </para>
+</listitem>
+<listitem><para><computeroutput>registration</computeroutput> - Specifies the event source registration mode in the Windows registry. Can have values of the <computeroutput>registration_mode</computeroutput> enum. Default value: <computeroutput>on_demand</computeroutput>.</para>
+</listitem>
+</itemizedlist>
+
+</para></description></constructor>
+<destructor><description><para>Destructor. Unregisters event source. The log source description is not removed from the Windows registry. </para></description></destructor>
+<method-group name="public static functions">
+<method name="get_default_log_name" specifiers="static"><type>string_type</type><description><para>
+</para></description><returns><para>Default log name: Application </para>
+</returns></method>
+<method name="get_default_source_name" specifiers="static"><type>string_type</type><description><para>
+</para></description><returns><para>Default log source name that is based on the application executable file name and the sink name </para>
+</returns></method>
 </method-group>
 </class><namespace name="event_log">
-<class name="direct_event_type_mapping"><template>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_direct_mapping&lt; event_type, AttributeValueT &gt;</inherit><purpose>Straightforward event type mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the native event types. The mapping simply returns the extracted attribute value converted to the native event type. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class><class name="custom_event_type_mapping"><template>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_custom_mapping&lt; event_type, AttributeValueT &gt;</inherit><purpose>Customizable event type mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and native event types. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class><class name="direct_event_id_mapping"><template>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_direct_mapping&lt; event_id, AttributeValueT &gt;</inherit><purpose>Straightforward event ID mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the event identifiers. The mapping simply returns the extracted attribute value converted to the event ID. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class><class name="custom_event_id_mapping"><template>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_custom_mapping&lt; event_id, AttributeValueT &gt;</inherit><purpose>Customizable event ID mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and event identifiers. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class><class name="direct_event_category_mapping"><template>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_direct_mapping&lt; event_category, AttributeValueT &gt;</inherit><purpose>Straightforward event category mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the event categories. The mapping simply returns the extracted attribute value converted to the event category. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class><class name="custom_event_category_mapping"><template>
-      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_custom_mapping&lt; event_category, AttributeValueT &gt;</inherit><purpose>Customizable event category mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and event categories. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
-</para></description></constructor>
-</class><class name="basic_event_composer"><template>
+<class name="basic_event_composer"><template>
       <template-type-parameter name="CharT"/>
     </template><purpose>An event composer. </purpose><description><para>This class is a function object that extracts event identifier from the attribute values set and formats insertion strings for the particular event. Each insertion string is formatted with a distinct formatter, which can be created just like regular sinks formatters.</para><para>Before using, the composer must be initialized with the following information: <itemizedlist>
-<listitem><para>Event identifier extraction logic. One can use <computeroutput>basic_direct_event_id_mapping</computeroutput> or <computeroutput>basic_custom_event_id_mapping</computeroutput> classes in order to create such extractor and pass it to the composer constructor. </para></listitem>
-<listitem><para>Event identifiers and insertion string formatters. The composer provides the following syntax to provide this information:</para></listitem>
+<listitem><para>Event identifier extraction logic. One can use <computeroutput>basic_direct_event_id_mapping</computeroutput> or <computeroutput>basic_custom_event_id_mapping</computeroutput> classes in order to create such extractor and pass it to the composer constructor. </para>
+</listitem>
+<listitem><para>Event identifiers and insertion string formatters. The composer provides the following syntax to provide this information:</para>
+</listitem>
 </itemizedlist>
 <programlisting language="c++">event_composer comp;
 comp[MY_EVENT_ID1] % formatter1 % ... % formatterN;
@@ -453,13 +472,50 @@ comp[MY_EVENT_ID2] % formatter1 % ... % formatterN;
 </para></description></method>
 <method name="operator()" cv="const"><type>event_id</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype><description><para>Log record view </para></description></parameter><parameter name="insertions"><paramtype>insertion_list &amp;</paramtype><description><para>A sequence of formatted insertion strings </para></description></parameter><description><para>Event composition operator. Extracts an event identifier from the attribute values by calling event ID mapper. Then runs all formatters that were registered for the event with the extracted ID. The results of formatting are returned in the <emphasis>insertions</emphasis> parameter.</para><para>
 
-</para></description><returns><para>An event identifier that was extracted from <computeroutput>attributes</computeroutput> </para></returns></method>
+</para></description><returns><para>An event identifier that was extracted from <computeroutput>attributes</computeroutput> </para>
+</returns></method>
 </method-group>
 <constructor specifiers="explicit"><parameter name="id_mapper"><paramtype>event_id_mapper_type const &amp;</paramtype><description><para>An event identifier mapping function that will be used to extract event ID from attribute values </para></description></parameter><description><para>Default constructor. Creates an empty map of events.</para><para>
 </para></description></constructor>
 <constructor><parameter name="that"><paramtype><classname>basic_event_composer</classname> const &amp;</paramtype></parameter><description><para>Copy constructor. Performs a deep copy of the object. </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
 <copy-assignment><type><classname>basic_event_composer</classname> &amp;</type><parameter name="that"><paramtype><classname>basic_event_composer</classname></paramtype></parameter><description><para>Assignment. Provides strong exception guarantee. </para></description></copy-assignment>
+</class><class name="custom_event_category_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">basic_custom_mapping&lt; event_category, AttributeValueT &gt;</inherit><purpose>Customizable event category mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and event categories. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
+</class><class name="custom_event_id_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">basic_custom_mapping&lt; event_id, AttributeValueT &gt;</inherit><purpose>Customizable event ID mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and event identifiers. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
+</class><class name="custom_event_type_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">basic_custom_mapping&lt; event_type, AttributeValueT &gt;</inherit><purpose>Customizable event type mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and native event types. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
+</class><class name="direct_event_category_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">basic_direct_mapping&lt; event_category, AttributeValueT &gt;</inherit><purpose>Straightforward event category mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the event categories. The mapping simply returns the extracted attribute value converted to the event category. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
+</class><class name="direct_event_id_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">basic_direct_mapping&lt; event_id, AttributeValueT &gt;</inherit><purpose>Straightforward event ID mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the event identifiers. The mapping simply returns the extracted attribute value converted to the event ID. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
+</class><class name="direct_event_type_mapping"><template>
+      <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
+    </template><inherit access="public">basic_direct_mapping&lt; event_type, AttributeValueT &gt;</inherit><purpose>Straightforward event type mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the native event types. The mapping simply returns the extracted attribute value converted to the native event type. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
+</para></description></constructor>
 </class><enum name="registration_mode"><enumvalue name="never"><purpose>Never register event source, even if it's not registered. </purpose></enumvalue><enumvalue name="on_demand"><purpose>Register if the source is not registered yet. </purpose></enumvalue><enumvalue name="forced"><purpose>Register always, event if the source is already registered. </purpose></enumvalue><purpose>Event log source registration modes. </purpose></enum>
 <typedef name="event_composer"><purpose>Convenience typedef for narrow-character logging. </purpose><type><classname>basic_event_composer</classname>&lt; char &gt;</type></typedef>
 <typedef name="wevent_composer"><purpose>Convenience typedef for wide-character logging. </purpose><type><classname>basic_event_composer</classname>&lt; wchar_t &gt;</type></typedef>
@@ -477,7 +533,9 @@ comp[MY_EVENT_ID2] % formatter1 % ... % formatterN;
 </header>
 <header name="boost/log/sinks/event_log_constants.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>07.11.2008</para>
+
 The header contains definition of constants related to Windows NT Event Log API. The constants can be used in other places without the event log backend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -495,23 +553,27 @@ The header contains definition of constants related to Windows NT Event Log API.
 </header>
 <header name="boost/log/sinks/frontend_requirements.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>22.04.2007</para>
+
 The header contains definition of requirement tags that sink backend may declare with regard to frontends. These requirements ensure that a backend will not be used with an incompatible frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
-<struct name="synchronized_feeding"><description><para>The sink backend expects pre-synchronized calls, all needed synchronization is implemented in the frontend (IOW, only one thread is feeding records to the backend concurrently, but it is possible for several threads to write sequentially). Note that if a frontend supports synchronized record feeding, it will also report capable of concurrent record feeding. </para></description></struct><struct name="concurrent_feeding"><inherit access="public">synchronized_feeding</inherit><description><para>The sink backend ensures all needed synchronization, it is capable to handle multithreaded calls </para></description></struct><struct name="formatted_records"><description><para>The sink backend requires the frontend to perform log record formatting before feeding </para></description></struct><struct name="flushing"><description><para>The sink backend supports flushing </para></description></struct><struct name="combine_requirements"><template>
+<struct name="combine_requirements"><template>
       <template-nontype-parameter name="RequirementsT"><type>typename...</type></template-nontype-parameter>
-    </template><description><para>The metafunction combines multiple requirement tags into one type. The resulting type will satisfy all specified requirements (i.e. <computeroutput><classname alt="boost::log::sinks::has_requirement">has_requirement</classname></computeroutput> metafunction will return positive result). </para></description></struct><struct name="has_requirement"><template>
+    </template><description><para>The metafunction combines multiple requirement tags into one type. The resulting type will satisfy all specified requirements (i.e. <computeroutput><classname alt="boost::log::sinks::has_requirement">has_requirement</classname></computeroutput> metafunction will return positive result). </para></description></struct><struct name="concurrent_feeding"><inherit access="public">synchronized_feeding</inherit><description><para>The sink backend ensures all needed synchronization, it is capable to handle multithreaded calls </para></description></struct><struct name="flushing"><description><para>The sink backend supports flushing </para></description></struct><struct name="formatted_records"><description><para>The sink backend requires the frontend to perform log record formatting before feeding </para></description></struct><struct name="has_requirement"><template>
       <template-type-parameter name="TestedT"/>
       <template-type-parameter name="RequiredT"/>
-    </template><inherit access="public">is_base_of&lt; RequiredT, TestedT &gt;</inherit><description><para>A helper metafunction to check if a requirement is satisfied. The <computeroutput>TestedT</computeroutput> template argument should be the type combining one or several requirements and <computeroutput>RequiredT</computeroutput> is the requirement to test against. The metafunction will yield a positive result if <computeroutput>TestedT</computeroutput> supports <computeroutput>RequiredT</computeroutput>. </para></description></struct></namespace>
+    </template><inherit access="public">is_base_of&lt; RequiredT, TestedT &gt;</inherit><description><para>A helper metafunction to check if a requirement is satisfied. The <computeroutput>TestedT</computeroutput> template argument should be the type combining one or several requirements and <computeroutput>RequiredT</computeroutput> is the requirement to test against. The metafunction will yield a positive result if <computeroutput>TestedT</computeroutput> supports <computeroutput>RequiredT</computeroutput>. </para></description></struct><struct name="synchronized_feeding"><description><para>The sink backend expects pre-synchronized calls, all needed synchronization is implemented in the frontend (IOW, only one thread is feeding records to the backend concurrently, but it is possible for several threads to write sequentially). Note that if a frontend supports synchronized record feeding, it will also report capable of concurrent record feeding. </para></description></struct></namespace>
 </namespace>
 </namespace>
 <macro name="BOOST_LOG_COMBINE_REQUIREMENTS_LIMIT"><purpose>The macro specifies the maximum number of requirements that can be combined with the <computeroutput>combine_requirements</computeroutput> metafunction. </purpose></macro>
 </header>
 <header name="boost/log/sinks/sink.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>22.04.2007</para>
+
 The header contains an interface declaration for all sinks. This interface is used by the logging core to feed log records to sinks. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -523,7 +585,8 @@ The header contains an interface declaration for all sinks. This interface is us
 </para></description></method>
 <method name="try_consume" specifiers="virtual"><type>bool</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype><description><para>Logging record to consume </para></description></parameter><description><para>The method attempts to put logging record to the sink. The method may be used by the core in order to determine the most efficient order of sinks to feed records to in case of heavy contention. Sink implementations may implement try/backoff logic in order to improve overall logging throughput.</para><para>
 
-</para></description><returns><para><computeroutput>true</computeroutput>, if the record was consumed, <computeroutput>false</computeroutput>, if not. </para></returns></method>
+</para></description><returns><para><computeroutput>true</computeroutput>, if the record was consumed, <computeroutput>false</computeroutput>, if not. </para>
+</returns></method>
 <method name="flush" cv="= 0" specifiers="virtual"><type>void</type><description><para>The method performs flushing of any internal buffers that may hold log records. The method may take considerable time to complete and may block both the calling thread and threads attempting to put new records into the sink while this call is in progress. </para></description></method>
 <method name="is_cross_thread" cv="const noexcept"><type>bool</type><description><para>The method indicates that the sink passes log records between different threads. This information is needed by the logging core to detach log records from all thread-specific resources before passing it to the sink. </para></description></method>
 </method-group>
@@ -537,7 +600,9 @@ The header contains an interface declaration for all sinks. This interface is us
 </header>
 <header name="boost/log/sinks/sync_frontend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>14.07.2009</para>
+
 The header contains implementation of synchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -554,7 +619,8 @@ The header contains implementation of synchronous sink frontend. </para><namespa
 <constructor><description><para>Default constructor. Constructs the sink backend instance. Requires the backend to be default-constructible. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="backend"><paramtype>shared_ptr&lt; sink_backend_type &gt; const &amp;</paramtype><description><para>Pointer to the backend instance</para></description></parameter><description><para>Constructor attaches user-constructed backend instance</para><para>
 
-</para></description><requires><para><emphasis>backend</emphasis> is not <computeroutput>NULL</computeroutput>. </para></requires></constructor>
+</para></description><requires><para><emphasis>backend</emphasis> is not <computeroutput>NULL</computeroutput>. </para>
+</requires></constructor>
 <constructor specifiers="explicit"><template>
           <template-nontype-parameter name="Args"><type>typename...</type></template-nontype-parameter>
         </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>Constructor that passes arbitrary named parameters to the interprocess sink backend constructor. Refer to the backend documentation for the list of supported parameters. </para></description></constructor>
@@ -564,7 +630,9 @@ The header contains implementation of synchronous sink frontend. </para><namespa
 </header>
 <header name="boost/log/sinks/syslog_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>08.01.2008</para>
+
 The header contains implementation of a Syslog sink backend along with its setup facilities. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -573,16 +641,20 @@ The header contains implementation of a Syslog sink backend along with its setup
 <typedef name="severity_mapper_type"><purpose>Syslog severity level mapper type. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
 <method-group name="public member functions">
 <method name="set_severity_mapper"><type>void</type><parameter name="mapper"><paramtype>severity_mapper_type const &amp;</paramtype></parameter><description><para>The method installs the function object that maps application severity levels to syslog levels </para></description></method>
-<method name="set_local_address"><type>void</type><parameter name="addr"><paramtype>std::string const &amp;</paramtype><description><para>The local address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The local port number </para></description></parameter><description><para>The method sets the local host name which log records will be sent from. The host name is resolved to obtain the final IP address.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para></note>
+<method name="set_local_address"><type>void</type><parameter name="addr"><paramtype>std::string const &amp;</paramtype><description><para>The local address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The local port number </para></description></parameter><description><para>The method sets the local host name which log records will be sent from. The host name is resolved to obtain the final IP address.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para>
+</note>
 
 </para></description></method>
-<method name="set_local_address"><type>void</type><parameter name="addr"><paramtype>boost::asio::ip::address const &amp;</paramtype><description><para>The local address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The local port number </para></description></parameter><description><para>The method sets the local address which log records will be sent from.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para></note>
+<method name="set_local_address"><type>void</type><parameter name="addr"><paramtype>boost::asio::ip::address const &amp;</paramtype><description><para>The local address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The local port number </para></description></parameter><description><para>The method sets the local address which log records will be sent from.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para>
+</note>
 
 </para></description></method>
-<method name="set_target_address"><type>void</type><parameter name="addr"><paramtype>std::string const &amp;</paramtype><description><para>The remote host address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The port number on the remote host </para></description></parameter><description><para>The method sets the remote host name where log records will be sent to. The host name is resolved to obtain the final IP address.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para></note>
+<method name="set_target_address"><type>void</type><parameter name="addr"><paramtype>std::string const &amp;</paramtype><description><para>The remote host address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The port number on the remote host </para></description></parameter><description><para>The method sets the remote host name where log records will be sent to. The host name is resolved to obtain the final IP address.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para>
+</note>
 
 </para></description></method>
-<method name="set_target_address"><type>void</type><parameter name="addr"><paramtype>boost::asio::ip::address const &amp;</paramtype><description><para>The remote host address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The port number on the remote host </para></description></parameter><description><para>The method sets the address of the remote host where log records will be sent to.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para></note>
+<method name="set_target_address"><type>void</type><parameter name="addr"><paramtype>boost::asio::ip::address const &amp;</paramtype><description><para>The remote host address </para></description></parameter><parameter name="port"><paramtype>unsigned short</paramtype><default>514</default><description><para>The port number on the remote host </para></description></parameter><description><para>The method sets the address of the remote host where log records will be sent to.</para><para><note><para>Does not have effect if the backend was constructed to use native syslog API</para>
+</note>
 
 </para></description></method>
 <method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method passes the formatted message to the syslog API or sends to a syslog server </para></description></method>
@@ -590,26 +662,32 @@ The header contains implementation of a Syslog sink backend along with its setup
 <constructor><description><para>Constructor. Creates a UDP socket-based backend with <computeroutput>syslog::user</computeroutput> facility code. IPv4 protocol will be used. </para></description></constructor>
 <constructor specifiers="explicit"><template>
           <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="args"><paramtype>ArgsT...const &amp;</paramtype></parameter><description><para>Constructor. Creates a sink backend with the specified named parameters. The following named parameters are supported:</para><para><itemizedlist>
-<listitem><para><computeroutput>facility</computeroutput> - Specifies the facility code. If not specified, <computeroutput>syslog::user</computeroutput> will be used. </para></listitem>
-<listitem><para><computeroutput>use_impl</computeroutput> - Specifies the backend implementation. Can be one of: </para></listitem>
-<listitem><para><computeroutput>native</computeroutput> - Use the native syslog API, if available. If no native API is available, it is equivalent to <computeroutput>udp_socket_based</computeroutput>. </para></listitem>
-<listitem><para><computeroutput>udp_socket_based</computeroutput> - Use the UDP socket-based implementation, conforming to RFC3164 protocol specification. This is the default. </para></listitem>
-<listitem><para><computeroutput>ip_version</computeroutput> - Specifies IP protocol version to use, in case if socket-based implementation is used. Can be either <computeroutput>v4</computeroutput> (the default one) or <computeroutput>v6</computeroutput>. </para></listitem>
-<listitem><para><computeroutput>ident</computeroutput> - Process identification string. This parameter is only supported by native syslog implementation. </para></listitem>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype></parameter><description><para>Constructor. Creates a sink backend with the specified named parameters. The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>facility</computeroutput> - Specifies the facility code. If not specified, <computeroutput>syslog::user</computeroutput> will be used. </para>
+</listitem>
+<listitem><para><computeroutput>use_impl</computeroutput> - Specifies the backend implementation. Can be one of: </para>
+</listitem>
+<listitem><para><computeroutput>native</computeroutput> - Use the native syslog API, if available. If no native API is available, it is equivalent to <computeroutput>udp_socket_based</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>udp_socket_based</computeroutput> - Use the UDP socket-based implementation, conforming to RFC3164 protocol specification. This is the default. </para>
+</listitem>
+<listitem><para><computeroutput>ip_version</computeroutput> - Specifies IP protocol version to use, in case if socket-based implementation is used. Can be either <computeroutput>v4</computeroutput> (the default one) or <computeroutput>v6</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>ident</computeroutput> - Process identification string. This parameter is only supported by native syslog implementation. </para>
+</listitem>
 </itemizedlist>
 </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
 </class><namespace name="syslog">
-<class name="direct_severity_mapping"><template>
+<class name="custom_severity_mapping"><template>
       <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_direct_mapping&lt; level, AttributeValueT &gt;</inherit><purpose>Straightforward severity level mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the Syslog levels. The mapping simply returns the extracted attribute value converted to the Syslog severity level. </para></description><method-group name="public member functions">
+    </template><inherit access="public">basic_custom_mapping&lt; level, AttributeValueT &gt;</inherit><purpose>Customizable severity level mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and Syslog severity levels. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
 </method-group>
 <constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
 </para></description></constructor>
-</class><class name="custom_severity_mapping"><template>
+</class><class name="direct_severity_mapping"><template>
       <template-type-parameter name="AttributeValueT"><default>int</default></template-type-parameter>
-    </template><inherit access="public">basic_custom_mapping&lt; level, AttributeValueT &gt;</inherit><purpose>Customizable severity level mapping. </purpose><description><para>The class allows to setup a custom mapping between an attribute and Syslog severity levels. The mapping should be initialized similarly to the standard <computeroutput>map</computeroutput> container, by using indexing operator and assignment. </para></description><method-group name="public member functions">
+    </template><inherit access="public">basic_direct_mapping&lt; level, AttributeValueT &gt;</inherit><purpose>Straightforward severity level mapping. </purpose><description><para>This type of mapping assumes that attribute with a particular name always provides values that map directly onto the Syslog levels. The mapping simply returns the extracted attribute value converted to the Syslog severity level. </para></description><method-group name="public member functions">
 </method-group>
 <constructor specifiers="explicit"><parameter name="name"><paramtype>attribute_name const &amp;</paramtype><description><para>Attribute name </para></description></parameter><description><para>Constructor</para><para>
 </para></description></constructor>
@@ -624,7 +702,9 @@ The header contains implementation of a Syslog sink backend along with its setup
 </header>
 <header name="boost/log/sinks/syslog_constants.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>08.01.2008</para>
+
 The header contains definition of constants related to Syslog API. The constants can be used in other places without the Syslog backend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -640,7 +720,9 @@ The header contains definition of constants related to Syslog API. The constants
 </header>
 <header name="boost/log/sinks/text_file_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>09.06.2009</para>
+
 The header contains implementation of a text file sink backend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -653,7 +735,11 @@ The header contains implementation of a text file sink backend. </para><namespac
 <method-group name="public member functions">
 <method name="set_file_name_pattern"><type>void</type><template>
           <template-type-parameter name="PathT"/>
-        </template><parameter name="pattern"><paramtype>PathT const &amp;</paramtype><description><para>The name pattern for the file being written. </para></description></parameter><description><para>The method sets file name wildcard for the files being written. The wildcard supports date and time injection into the file name.</para><para>
+        </template><parameter name="pattern"><paramtype>PathT const &amp;</paramtype><description><para>The name pattern for the file being written. </para></description></parameter><description><para>The method sets the active file name wildcard for the files being written. The wildcard supports date and time injection into the file name.</para><para>
+</para></description></method>
+<method name="set_target_file_name_pattern"><type>void</type><template>
+          <template-type-parameter name="PathT"/>
+        </template><parameter name="pattern"><paramtype>PathT const &amp;</paramtype><description><para>The name pattern for the file being rotated. </para></description></parameter><description><para>The method sets the target file name wildcard for the files being rotated. The wildcard supports date and time injection into the file name.</para><para>This pattern will be used when the log file is being rotated, to rename the just written log file (which has the name according to the pattern in the <computeroutput>file_name</computeroutput> constructor parameter or set by a call to <computeroutput>set_file_name_pattern</computeroutput>), just before passing the file to the file collector.</para><para>
 </para></description></method>
 <method name="set_open_mode"><type>void</type><parameter name="mode"><paramtype>std::ios_base::openmode</paramtype><description><para>File open mode </para></description></parameter><description><para>The method sets the file open mode</para><para>
 </para></description></method>
@@ -663,10 +749,12 @@ The header contains implementation of a text file sink backend. </para><namespac
 </para></description></method>
 <method name="set_close_handler"><type>void</type><parameter name="handler"><paramtype>close_handler_type const &amp;</paramtype><description><para>The file close handler function object </para></description></parameter><description><para>The method sets file closing handler. The handler will be called every time the backend closes a temporary file. The handler may write a footer to the opened file in order to maintain file validity.</para><para>
 </para></description></method>
-<method name="set_rotation_size"><type>void</type><parameter name="size"><paramtype>uintmax_t</paramtype><description><para>The maximum file size, in characters. </para></description></parameter><description><para>The method sets maximum file size. When the size is reached, file rotation is performed.</para><para><note><para>The size does not count any possible character translations that may happen in the underlying API. This may result in greater actual sizes of the written files.</para></note>
+<method name="set_rotation_size"><type>void</type><parameter name="size"><paramtype>uintmax_t</paramtype><description><para>The maximum file size, in characters. </para></description></parameter><description><para>The method sets maximum file size. When the size is reached, file rotation is performed.</para><para><note><para>The size does not count any possible character translations that may happen in the underlying API. This may result in greater actual sizes of the written files.</para>
+</note>
 
 </para></description></method>
-<method name="set_time_based_rotation"><type>void</type><parameter name="predicate"><paramtype>time_based_rotation_predicate const &amp;</paramtype><description><para>The predicate that defines the time-based condition for file rotation. If empty, no time-based rotation will take place. </para></description></parameter><description><para>The method sets the predicate that defines the time-based condition for file rotation.</para><para><note><para>The rotation always occurs on writing a log record, so the rotation is not strictly bound to the specified condition.</para></note>
+<method name="set_time_based_rotation"><type>void</type><parameter name="predicate"><paramtype>time_based_rotation_predicate const &amp;</paramtype><description><para>The predicate that defines the time-based condition for file rotation. If empty, no time-based rotation will take place. </para></description></parameter><description><para>The method sets the predicate that defines the time-based condition for file rotation.</para><para><note><para>The rotation always occurs on writing a log record, so the rotation is not strictly bound to the specified condition.</para>
+</note>
 
 </para></description></method>
 <method name="enable_final_rotation"><type>void</type><parameter name="enable"><paramtype>bool</paramtype><description><para>The flag indicates whether the final rotation should be performed. </para></description></parameter><description><para>The method allows to enable or disable log file rotation on sink destruction.</para><para>By default the sink backend will rotate the log file, if it's been written to, on destruction.</para><para>
@@ -674,12 +762,16 @@ The header contains implementation of a text file sink backend. </para><namespac
 <method name="auto_flush"><type>void</type><parameter name="enable"><paramtype>bool</paramtype><default>true</default><description><para>The flag indicates whether the automatic buffer flush should be performed. </para></description></parameter><description><para>Sets the flag to automatically flush write buffers of the file being written after each log record.</para><para>
 </para></description></method>
 <method name="get_current_file_name" cv="const"><type>filesystem::path</type><description><para>
-</para></description><returns><para>The name of the currently open log file. If no file is open, returns an empty path. </para></returns></method>
-<method name="scan_for_files"><type>uintmax_t</type><parameter name="method"><paramtype>file::scan_method</paramtype><default>file::scan_matching</default><description><para>File scanning method </para></description></parameter><parameter name="update_counter"><paramtype>bool</paramtype><default>true</default><description><para>If <computeroutput>true</computeroutput> and <emphasis>method</emphasis> is <computeroutput>scan_matching</computeroutput>, the method attempts to update the internal file counter according to the found files. The counter is unaffected otherwise. </para></description></parameter><description><para>Performs scanning of the target directory for log files that may have been left from previous runs of the application. The found files are considered by the file collector as if they were rotated.</para><para>The file scan can be performed in two ways: either all files in the target directory will be considered as log files, or only those files that satisfy the file name pattern. See documentation on <computeroutput>sinks::file::collector::scan_for_files</computeroutput> for more information.</para><para>
+</para></description><returns><para>The name of the currently open log file. If no file is open, returns an empty path. </para>
+</returns></method>
+<method name="scan_for_files"><type>uintmax_t</type><parameter name="method"><paramtype>file::scan_method</paramtype><default>file::scan_matching</default><description><para>File scanning method </para></description></parameter><parameter name="update_counter"><paramtype>bool</paramtype><default>true</default><description><para>If <computeroutput>true</computeroutput> and <emphasis>method</emphasis> is <computeroutput>scan_matching</computeroutput>, the method attempts to update the internal file counter according to the found files. The counter is unaffected otherwise. </para></description></parameter><description><para>Performs scanning of the target directory for log files that may have been left from previous runs of the application. The found files are considered by the file collector as if they were rotated.</para><para>The file scan can be performed in two ways: either all files in the target directory will be considered as log files, or only those files that satisfy the target file name pattern. See documentation on <computeroutput>sinks::file::collector::scan_for_files</computeroutput> for more information.</para><para>
 
 
-<note><para>The method essentially delegates to the same-named function of the file collector. </para></note>
-</para></description><requires><para>File collector and the proper file name pattern have already been set.</para></requires><returns><para>The number of files found.</para></returns></method>
+<note><para>The method essentially delegates to the same-named function of the file collector. </para>
+</note>
+</para></description><requires><para>File collector and the proper file name pattern have already been set.</para>
+</requires><returns><para>The number of files found.</para>
+</returns></method>
 <method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method writes the message to the sink </para></description></method>
 <method name="flush"><type>void</type><description><para>The method flushes the currently open log file </para></description></method>
 <method name="rotate_file"><type>void</type><description><para>The method rotates the file </para></description></method>
@@ -687,15 +779,24 @@ The header contains implementation of a text file sink backend. </para><namespac
 <constructor><description><para>Default constructor. The constructed sink backend uses default values of all the parameters. </para></description></constructor>
 <constructor specifiers="explicit"><template>
           <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="args"><paramtype>ArgsT...const &amp;</paramtype></parameter><description><para>Constructor. Creates a sink backend with the specified named parameters. The following named parameters are supported:</para><para><itemizedlist>
-<listitem><para><computeroutput>file_name</computeroutput> - Specifies the file name pattern where logs are actually written to. The pattern may contain directory and file name portions, but only the file name may contain placeholders. The backend supports Boost.DateTime placeholders for injecting current time and date into the file name. Also, an additional N placeholder is supported, it will be replaced with an integral increasing file counter. The placeholder may also contain width specification in the printf-compatible form (e.g. %5N). The printed file counter will always be zero-filled. If <computeroutput>file_name</computeroutput> is not specified, pattern "%5N.log" will be used. </para></listitem>
-<listitem><para><computeroutput>open_mode</computeroutput> - File open mode. The mode should be presented in form of mask compatible to <computeroutput>std::ios_base::openmode</computeroutput>. If not specified, <computeroutput>trunc | out</computeroutput> will be used. </para></listitem>
-<listitem><para><computeroutput>rotation_size</computeroutput> - Specifies the approximate size, in characters written, of the temporary file upon which the file is passed to the file collector. Note the size does not count any possible character conversions that may take place during writing to the file. If not specified, the file won't be rotated upon reaching any size. </para></listitem>
-<listitem><para><computeroutput>time_based_rotation</computeroutput> - Specifies the predicate for time-based file rotation. No time-based file rotations will be performed, if not specified. </para></listitem>
-<listitem><para><computeroutput>enable_final_rotation</computeroutput> - Specifies a flag, whether or not perform log file rotation on sink backend destruction. By default, is <computeroutput>true</computeroutput>. </para></listitem>
-<listitem><para><computeroutput>auto_flush</computeroutput> - Specifies a flag, whether or not to automatically flush the file after each written log record. By default, is <computeroutput>false</computeroutput>.</para></listitem>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype></parameter><description><para>Constructor. Creates a sink backend with the specified named parameters. The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>file_name</computeroutput> - Specifies the active file name pattern where logs are actually written to. The pattern may contain directory and file name portions, but only the file name may contain placeholders. The backend supports Boost.DateTime placeholders for injecting current time and date into the file name. Also, an additional N placeholder is supported, it will be replaced with an integral increasing file counter. The placeholder may also contain width specification in the printf-compatible form (e.g. %5N). The printed file counter will always be zero-filled. If <computeroutput>file_name</computeroutput> is not specified, pattern "%5N.log" will be used. </para>
+</listitem>
+<listitem><para><computeroutput>target_file_name</computeroutput> - Specifies the target file name pattern to use to rename the log file on rotation, before passing it to the file collector. The pattern may contain the same placeholders as the <computeroutput>file_name</computeroutput> parameter. By default, no renaming is done, i.e. the written log file keeps its name according to <computeroutput>file_name</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>open_mode</computeroutput> - File open mode. The mode should be presented in form of mask compatible to <computeroutput>std::ios_base::openmode</computeroutput>. If not specified, <computeroutput>trunc | out</computeroutput> will be used. </para>
+</listitem>
+<listitem><para><computeroutput>rotation_size</computeroutput> - Specifies the approximate size, in characters written, of the temporary file upon which the file is passed to the file collector. Note the size does not count any possible character conversions that may take place during writing to the file. If not specified, the file won't be rotated upon reaching any size. </para>
+</listitem>
+<listitem><para><computeroutput>time_based_rotation</computeroutput> - Specifies the predicate for time-based file rotation. No time-based file rotations will be performed, if not specified. </para>
+</listitem>
+<listitem><para><computeroutput>enable_final_rotation</computeroutput> - Specifies a flag, whether or not perform log file rotation on sink backend destruction. By default, is <computeroutput>true</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>auto_flush</computeroutput> - Specifies a flag, whether or not to automatically flush the file after each written log record. By default, is <computeroutput>false</computeroutput>.</para>
+</listitem>
 </itemizedlist>
-<note><para>Read the caution note regarding file name pattern in the <computeroutput>sinks::file::collector::scan_for_files</computeroutput> documentation. </para></note>
+<note><para>Read the caution note regarding file name pattern in the <computeroutput>sinks::file::collector::scan_for_files</computeroutput> documentation. </para>
+</note>
 </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
 </class><namespace name="file">
@@ -703,24 +804,38 @@ The header contains implementation of a text file sink backend. </para><namespac
 <method name="store_file" cv="= 0" specifiers="virtual"><type>void</type><parameter name="src_path"><paramtype>filesystem::path const &amp;</paramtype><description><para>The name of the file to be stored </para></description></parameter><description><para>The function stores the specified file in the storage. May lead to an older file deletion and a long file moving.</para><para>
 </para></description></method>
 <method name="scan_for_files" cv="= 0" specifiers="virtual"><type>uintmax_t</type><parameter name="method"><paramtype>scan_method</paramtype><description><para>The method of scanning. If <computeroutput>no_scan</computeroutput> is specified, the call has no effect. </para></description></parameter><parameter name="pattern"><paramtype>filesystem::path const &amp;</paramtype><default>filesystem::path()</default><description><para>The file name pattern if <emphasis>method</emphasis> is <computeroutput>scan_matching</computeroutput>. Otherwise the parameter is not used. </para></description></parameter><parameter name="counter"><paramtype>unsigned int *</paramtype><default>0</default><description><para>If not <computeroutput>NULL</computeroutput> and <emphasis>method</emphasis> is <computeroutput>scan_matching</computeroutput>, the method suggests initial value of a file counter that may be used in the file name pattern. The parameter is not used otherwise. </para></description></parameter><description><para>Scans the target directory for the files that have already been stored. The found files are added to the collector in order to be tracked and erased, if needed.</para><para>The function may scan the directory in two ways: it will either consider every file in the directory a log file, or will only consider files with names that match the specified pattern. The pattern may contain the following placeholders:</para><para><itemizedlist>
-<listitem><para>y, Y, m, d - date components, in Boost.DateTime meaning. </para></listitem>
-<listitem><para>H, M, S, f - time components, in Boost.DateTime meaning. </para></listitem>
-<listitem><para>N - numeric file counter. May also contain width specification in printf-compatible form (e.g. %5N). The resulting number will always be zero-filled. </para></listitem>
-<listitem><para>%% - a percent sign</para></listitem>
+<listitem><para>y, Y, m, d - date components, in Boost.DateTime meaning. </para>
+</listitem>
+<listitem><para>H, M, S, f - time components, in Boost.DateTime meaning. </para>
+</listitem>
+<listitem><para>N - numeric file counter. May also contain width specification in printf-compatible form (e.g. %5N). The resulting number will always be zero-filled. </para>
+</listitem>
+<listitem><para>%% - a percent sign</para>
+</listitem>
 </itemizedlist>
 All other placeholders are not supported.</para><para>
 
-<note><para>In case if <emphasis>method</emphasis> is <computeroutput>scan_matching</computeroutput> the effect of this function is highly dependent on the <emphasis>pattern</emphasis> definition. It is recommended to choose patterns with easily distinguished placeholders (i.e. having delimiters between them). Otherwise either some files can be mistakenly found or not found, which in turn may lead to an incorrect file deletion. </para></note>
-</para></description><returns><para>The number of found files.</para></returns></method>
+<note><para>In case if <emphasis>method</emphasis> is <computeroutput>scan_matching</computeroutput> the effect of this function is highly dependent on the <emphasis>pattern</emphasis> definition. It is recommended to choose patterns with easily distinguished placeholders (i.e. having delimiters between them). Otherwise either some files can be mistakenly found or not found, which in turn may lead to an incorrect file deletion. </para>
+</note>
+</para></description><returns><para>The number of found files.</para>
+</returns></method>
 </method-group>
-<constructor cv="= default"><description><para>Default constructor </para></description></constructor>
-<destructor><description><para>Virtual destructor </para></description></destructor>
+<destructor><description><para>Default constructor</para><para>Virtual destructor </para></description></destructor>
 <constructor cv="= delete"><parameter name=""><paramtype><classname>collector</classname> const &amp;</paramtype></parameter></constructor>
 <copy-assignment cv="= delete"><type><classname>collector</classname> &amp;</type><parameter name=""><paramtype><classname>collector</classname> const &amp;</paramtype></parameter></copy-assignment>
-</struct><class name="rotation_at_time_point"><description><para>The class represents the time point of log file rotation. One can specify one of three types of time point based rotation:</para><para><itemizedlist>
-<listitem><para>rotation takes place every day, at the specified time </para></listitem>
-<listitem><para>rotation takes place on the specified day of every week, at the specified time </para></listitem>
-<listitem><para>rotation takes place on the specified day of every month, at the specified time</para></listitem>
+</struct><class name="rotation_at_time_interval"><description><para>The class represents the time interval of log file rotation. The log file will be rotated after the specified time interval has passed. </para></description><typedef name="result_type"><type>bool</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>bool</type><description><para>Checks if it's time to rotate the file </para></description></method>
+</method-group>
+<constructor specifiers="explicit"><parameter name="interval"><paramtype>posix_time::time_duration const &amp;</paramtype><description><para>The interval of the rotation, should be no less than 1 second </para></description></parameter><description><para>Creates a rotation time interval of the specified duration</para><para>
+</para></description></constructor>
+</class><class name="rotation_at_time_point"><description><para>The class represents the time point of log file rotation. One can specify one of three types of time point based rotation:</para><para><itemizedlist>
+<listitem><para>rotation takes place every day, at the specified time </para>
+</listitem>
+<listitem><para>rotation takes place on the specified day of every week, at the specified time </para>
+</listitem>
+<listitem><para>rotation takes place on the specified day of every month, at the specified time</para>
+</listitem>
 </itemizedlist>
 The time points are considered to be local time. </para></description><typedef name="result_type"><type>bool</type></typedef>
 <method-group name="public member functions">
@@ -732,32 +847,35 @@ The time points are considered to be local time. </para></description><typedef n
 </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="mday"><paramtype>gregorian::greg_day</paramtype><description><para>The monthday of the rotation, should be within 1 and 31 </para></description></parameter><parameter name="hour"><paramtype>unsigned char</paramtype><default>0</default><description><para>The rotation hour, should be within 0 and 23 </para></description></parameter><parameter name="minute"><paramtype>unsigned char</paramtype><default>0</default><description><para>The rotation minute, should be within 0 and 59 </para></description></parameter><parameter name="second"><paramtype>unsigned char</paramtype><default>0</default><description><para>The rotation second, should be within 0 and 59 </para></description></parameter><description><para>Creates a rotation time point of each specified day of month at the specified time</para><para>
 </para></description></constructor>
-</class><class name="rotation_at_time_interval"><description><para>The class represents the time interval of log file rotation. The log file will be rotated after the specified time interval has passed. </para></description><typedef name="result_type"><type>bool</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>bool</type><description><para>Checks if it's time to rotate the file </para></description></method>
-</method-group>
-<constructor specifiers="explicit"><parameter name="interval"><paramtype>posix_time::time_duration const &amp;</paramtype><description><para>The interval of the rotation, should be no less than 1 second </para></description></parameter><description><para>Creates a rotation time interval of the specified duration</para><para>
-</para></description></constructor>
 </class><enum name="scan_method"><enumvalue name="no_scan"><purpose>Don't scan for stored files. </purpose></enumvalue><enumvalue name="scan_matching"><purpose>Scan for files with names matching the specified mask. </purpose></enumvalue><enumvalue name="scan_all"><purpose>Scan for all files in the directory. </purpose></enumvalue><purpose>The enumeration of the stored files scan methods. </purpose></enum>
 
 <function name="make_collector"><type>shared_ptr&lt; <classname>collector</classname> &gt;</type><template>
           <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="args"><paramtype>ArgsT...const &amp;</paramtype></parameter><description><para>The function creates a file collector for the specified target directory. Each target directory is managed by a single file collector, so if this function is called several times for the same directory, it will return a reference to the same file collector. It is safe to use the same collector in different sinks, even in a multithreaded application.</para><para>One can specify certain restrictions for the stored files, such as maximum total size or minimum free space left in the target directory. If any of the specified restrictions is not met, the oldest stored file is deleted. If the same collector is requested more than once with different restrictions, the collector will act according to the most strict combination of all specified restrictions.</para><para>The following named parameters are supported:</para><para><itemizedlist>
-<listitem><para><computeroutput>target</computeroutput> - Specifies the target directory for the files being stored in. This parameter is mandatory. </para></listitem>
-<listitem><para><computeroutput>max_size</computeroutput> - Specifies the maximum total size, in bytes, of stored files that the collector will try not to exceed. If the size exceeds this threshold the oldest file(s) is deleted to free space. Note that the threshold may be exceeded if the size of individual files exceed the <computeroutput>max_size</computeroutput> value. The threshold is not maintained, if not specified. </para></listitem>
-<listitem><para><computeroutput>min_free_space</computeroutput> - Specifies the minimum free space, in bytes, in the target directory that the collector tries to maintain. If the threshold is exceeded, the oldest file(s) is deleted to free space. The threshold is not maintained, if not specified. </para></listitem>
-<listitem><para><computeroutput>max_files</computeroutput> - Specifies the maximum number of log files stored. If the number of files exceeds this threshold, the oldest file(s) is deleted to free space. The threshhold is not maintained if not specified.</para></listitem>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype></parameter><description><para>The function creates a file collector for the specified target directory. Each target directory is managed by a single file collector, so if this function is called several times for the same directory, it will return a reference to the same file collector. It is safe to use the same collector in different sinks, even in a multithreaded application.</para><para>One can specify certain restrictions for the stored files, such as maximum total size or minimum free space left in the target directory. If any of the specified restrictions is not met, the oldest stored file is deleted. If the same collector is requested more than once with different restrictions, the collector will act according to the most strict combination of all specified restrictions.</para><para>The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>target</computeroutput> - Specifies the target directory for the files being stored in. This parameter is mandatory. </para>
+</listitem>
+<listitem><para><computeroutput>max_size</computeroutput> - Specifies the maximum total size, in bytes, of stored files that the collector will try not to exceed. If the size exceeds this threshold the oldest file(s) is deleted to free space. Note that the threshold may be exceeded if the size of individual files exceed the <computeroutput>max_size</computeroutput> value. The threshold is not maintained, if not specified. </para>
+</listitem>
+<listitem><para><computeroutput>min_free_space</computeroutput> - Specifies the minimum free space, in bytes, in the target directory that the collector tries to maintain. If the threshold is exceeded, the oldest file(s) is deleted to free space. The threshold is not maintained, if not specified. </para>
+</listitem>
+<listitem><para><computeroutput>max_files</computeroutput> - Specifies the maximum number of log files stored. If the number of files exceeds this threshold, the oldest file(s) is deleted to free space. The threshhold is not maintained if not specified.</para>
+</listitem>
 </itemizedlist>
 
-</para></description><returns><para>The file collector. </para></returns></function>
+</para></description><returns><para>The file collector. </para>
+</returns></function>
 </namespace>
 </namespace>
 </namespace>
 </namespace>
 </header>
 <header name="boost/log/sinks/text_ipc_message_queue_backend.hpp">
-<para><para>Lingxi Li </para><para>Andrey Semashev </para>
+<para><para>Lingxi Li </para>
+
+<para>Andrey Semashev </para>
+
 <para>14.10.2015</para>
+
 The header contains implementation of a text interprocess message queue sink backend along with implementation of a supporting interprocess message queue. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -768,11 +886,14 @@ The header contains implementation of a text interprocess message queue sink bac
 <typedef name="queue_type"><purpose>Interprocess message queue type. </purpose><type>QueueT</type></typedef>
 <method-group name="public member functions">
 <method name="message_queue" cv="noexcept"><type>queue_type &amp;</type><description><para>The method returns a reference to the managed <computeroutput>queue_type</computeroutput> object.</para><para>
-</para></description><returns><para>A reference to the managed <computeroutput>queue_type</computeroutput> object. </para></returns></method>
-<method name="message_queue" cv="const noexcept"><type>queue_type const &amp;</type><description><para>The method returns a constant reference to the managed <computeroutput>queue_type</computeroutput> object.</para><para>
-</para></description><returns><para>A constant reference to the managed <computeroutput>queue_type</computeroutput> object. </para></returns></method>
+</para></description><returns><para>A reference to the managed <computeroutput>queue_type</computeroutput> object. </para>
+</returns></method>
+<method name="message_queue" cv="const noexcept"><type>queue_type const  &amp;</type><description><para>The method returns a constant reference to the managed <computeroutput>queue_type</computeroutput> object.</para><para>
+</para></description><returns><para>A constant reference to the managed <computeroutput>queue_type</computeroutput> object. </para>
+</returns></method>
 <method name="is_open" cv="const noexcept"><type>bool</type><description><para>Tests whether the object is associated with any message queue. Only when the backend has an associated message queue, will any message be sent.</para><para>
-</para></description><returns><para><computeroutput>true</computeroutput> if the object is associated with a message queue, and <computeroutput>false</computeroutput> otherwise. </para></returns></method>
+</para></description><returns><para><computeroutput>true</computeroutput> if the object is associated with a message queue, and <computeroutput>false</computeroutput> otherwise. </para>
+</returns></method>
 <method name="consume"><type>void</type><parameter name=""><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method writes the message to the backend. Concurrent calls to this method are allowed. Therefore, the backend may be used with unlocked frontend. <computeroutput>stop_local()</computeroutput> can be used to have a blocked <computeroutput>consume()</computeroutput> call return and prevent future calls to <computeroutput>consume()</computeroutput> from blocking. </para></description></method>
 </method-group>
 <constructor cv="noexcept"><description><para>Default constructor. The method constructs the backend using the default-constructed interprocess message queue. The queue may need additional setup in order to be able to send messages. </para></description></constructor>
@@ -786,7 +907,9 @@ The header contains implementation of a text interprocess message queue sink bac
 </header>
 <header name="boost/log/sinks/text_multifile_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>09.06.2009</para>
+
 The header contains implementation of a text multi-file sink backend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -827,7 +950,9 @@ The header contains implementation of a text multi-file sink backend. </para><na
 </header>
 <header name="boost/log/sinks/text_ostream_backend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>22.04.2007</para>
+
 The header contains implementation of a text output stream sink backend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -855,7 +980,9 @@ The header contains implementation of a text output stream sink backend. </para>
 </header>
 <header name="boost/log/sinks/unbounded_fifo_queue.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>24.07.2011</para>
+
 The header contains implementation of unbounded FIFO queueing strategy for the asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -877,16 +1004,21 @@ The header contains implementation of unbounded FIFO queueing strategy for the a
 </header>
 <header name="boost/log/sinks/unbounded_ordering_queue.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>24.07.2011</para>
+
 The header contains implementation of unbounded ordering record queueing strategy for the asynchronous sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
 <class name="unbounded_ordering_queue"><template>
       <template-type-parameter name="OrderT"/>
     </template><purpose>Unbounded ordering log record queueing strategy. </purpose><description><para>The <computeroutput><classname alt="boost::log::sinks::unbounded_ordering_queue">unbounded_ordering_queue</classname></computeroutput> class is intended to be used with the <computeroutput><classname alt="boost::log::sinks::asynchronous_sink">asynchronous_sink</classname></computeroutput> frontend as a log record queueing strategy.</para><para>This strategy provides the following properties to the record queueing mechanism:</para><para><itemizedlist>
-<listitem><para>The queue has no size limits. </para></listitem>
-<listitem><para>The queue has a fixed latency window. This means that each log record put into the queue will normally not be dequeued for a certain period of time. </para></listitem>
-<listitem><para>The queue performs stable record ordering within the latency window. The ordering predicate can be specified in the <computeroutput>OrderT</computeroutput> template parameter.</para></listitem>
+<listitem><para>The queue has no size limits. </para>
+</listitem>
+<listitem><para>The queue has a fixed latency window. This means that each log record put into the queue will normally not be dequeued for a certain period of time. </para>
+</listitem>
+<listitem><para>The queue performs stable record ordering within the latency window. The ordering predicate can be specified in the <computeroutput>OrderT</computeroutput> template parameter.</para>
+</listitem>
 </itemizedlist>
 Since this queue has no size limits, it may grow uncontrollably if sink backends dequeue log records not fast enough. When this is an issue, it is recommended to use one of the bounded strategies. </para></description><method-group name="public member functions">
 <method name="get_ordering_window" cv="const"><type>posix_time::time_duration</type><description><para>Returns ordering window size specified during initialization </para></description></method>
@@ -914,7 +1046,9 @@ Since this queue has no size limits, it may grow uncontrollably if sink backends
 </header>
 <header name="boost/log/sinks/unlocked_frontend.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>14.07.2009</para>
+
 The header contains declaration of an unlocked sink frontend. </para><namespace name="boost">
 <namespace name="log">
 <namespace name="sinks">
@@ -923,7 +1057,8 @@ The header contains declaration of an unlocked sink frontend. </para><namespace 
     </template><inherit access="public">basic_sink_frontend</inherit><purpose>Non-blocking logging sink frontend. </purpose><description><para>The sink frontend does not perform thread synchronization and simply passes logging records to the sink backend. </para></description><typedef name="sink_backend_type"><purpose>Sink implementation type. </purpose><type>SinkBackendT</type></typedef>
 <typedef name="locked_backend_ptr"><purpose>Type of pointer to the backend. </purpose><type>shared_ptr&lt; sink_backend_type &gt;</type></typedef>
 <method-group name="public member functions">
-<method name="locked_backend"><type>locked_backend_ptr</type><description><para>Locking accessor to the attached backend.</para><para><note><para>Does not do any actual locking, provided only for interface consistency with other frontends. </para></note>
+<method name="locked_backend"><type>locked_backend_ptr</type><description><para>Locking accessor to the attached backend.</para><para><note><para>Does not do any actual locking, provided only for interface consistency with other frontends. </para>
+</note>
 </para></description></method>
 <method name="consume" specifiers="virtual"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><description><para>Passes the log record to the backend </para></description></method>
 <method name="flush" specifiers="virtual"><type>void</type><description><para>The method performs flushing of any internal buffers that may hold log records. The method may take considerable time to complete and may block both the calling thread and threads attempting to put new records into the sink while this call is in progress. </para></description></method>
@@ -931,7 +1066,8 @@ The header contains declaration of an unlocked sink frontend. </para><namespace 
 <constructor><description><para>Default constructor. Constructs the sink backend instance. Requires the backend to be default-constructible. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="backend"><paramtype>shared_ptr&lt; sink_backend_type &gt; const &amp;</paramtype><description><para>Pointer to the backend instance</para></description></parameter><description><para>Constructor attaches user-constructed backend instance</para><para>
 
-</para></description><requires><para><emphasis>backend</emphasis> is not <computeroutput>NULL</computeroutput>. </para></requires></constructor>
+</para></description><requires><para><emphasis>backend</emphasis> is not <computeroutput>NULL</computeroutput>. </para>
+</requires></constructor>
 <constructor specifiers="explicit"><template>
           <template-nontype-parameter name="Args"><type>typename...</type></template-nontype-parameter>
         </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para>Constructor that passes arbitrary named parameters to the interprocess sink backend constructor. Refer to the backend documentation for the list of supported parameters. </para></description></constructor>

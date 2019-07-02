@@ -12,6 +12,7 @@ project
     : requirements
     <include>$(BOOST_ROOT)
     <library>/boost/test//boost_unit_test_framework
+    <link>shared:<define>BOOST_TEST_DYN_LINK=1
     ;
 
 run
@@ -31,5 +32,8 @@ run
     lab_test.cpp
     pixel_bit_size.cpp
     rgb_to_luminance.cpp
+    # TODO: Add subchroma_image.cpp after fixing run-time failure,
+    #       for details see https://github.com/boostorg/gil/pull/164
+    #subchroma_image.cpp
     xyz_test.cpp
     ;

@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>read_until (2 of 16 overloads)</title>
+<title>read_until (2 of 24 overloads)</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../read_until.html" title="read_until">
-<link rel="prev" href="overload1.html" title="read_until (1 of 16 overloads)">
-<link rel="next" href="overload3.html" title="read_until (3 of 16 overloads)">
+<link rel="prev" href="overload1.html" title="read_until (1 of 24 overloads)">
+<link rel="next" href="overload3.html" title="read_until (3 of 24 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -24,8 +24,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="boost_asio.reference.read_until.overload2"></a><a class="link" href="overload2.html" title="read_until (2 of 16 overloads)">read_until
-        (2 of 16 overloads)</a>
+<a name="boost_asio.reference.read_until.overload2"></a><a class="link" href="overload2.html" title="read_until (2 of 24 overloads)">read_until
+        (2 of 24 overloads)</a>
 </h4></div></div></div>
 <p>
           Read data into a dynamic buffer sequence until it contains a specified
@@ -33,12 +33,13 @@
         </p>
 <pre class="programlisting">template&lt;
     typename <a class="link" href="../SyncReadStream.html" title="Buffer-oriented synchronous read stream requirements">SyncReadStream</a>,
-    typename <a class="link" href="../DynamicBuffer.html" title="Dynamic buffer requirements">DynamicBuffer</a>&gt;
+    typename <a class="link" href="../DynamicBuffer_v1.html" title="Dynamic buffer requirements (version 1)">DynamicBuffer_v1</a>&gt;
 std::size_t read_until(
     SyncReadStream &amp; s,
-    DynamicBuffer &amp;&amp; buffers,
+    DynamicBuffer_v1 &amp;&amp; buffers,
     char delim,
-    boost::system::error_code &amp; ec);
+    boost::system::error_code &amp; ec,
+    typename enable_if&lt; is_dynamic_buffer_v1&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &amp;&amp;!is_dynamic_buffer_v2&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &gt;::type *  = 0);
 </pre>
 <p>
           This function is used to read data into the specified dynamic buffer sequence
@@ -107,7 +108,7 @@ std::size_t read_until(
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

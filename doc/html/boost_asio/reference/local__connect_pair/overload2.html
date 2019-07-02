@@ -31,16 +31,18 @@
           Create a pair of connected sockets.
         </p>
 <pre class="programlisting">template&lt;
-    typename <a class="link" href="../Protocol.html" title="Protocol requirements">Protocol</a>&gt;
+    typename <a class="link" href="../Protocol.html" title="Protocol requirements">Protocol</a>,
+    typename <a class="link" href="../Executor1.html" title="Executor requirements">Executor1</a>,
+    typename <a class="link" href="../Executor1.html" title="Executor requirements">Executor2</a>&gt;
 void connect_pair(
-    basic_socket&lt; Protocol &gt; &amp; socket1,
-    basic_socket&lt; Protocol &gt; &amp; socket2,
+    basic_socket&lt; Protocol, Executor1 &gt; &amp; socket1,
+    basic_socket&lt; Protocol, Executor2 &gt; &amp; socket2,
     boost::system::error_code &amp; ec);
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

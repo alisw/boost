@@ -90,6 +90,18 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="log.detailed.sink_backends.text_file"></a><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file" title="Text file backend">Text file backend</a>
 </h4></div></div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation">File
+          rotation</a></span></dt>
+<dt><span class="section"><a href="sink_backends.html#log.detailed.sink_backends.text_file.open_close_handlers">File
+          open and close handlers</a></span></dt>
+<dt><span class="section"><a href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection">Managing
+          rotated files</a></span></dt>
+<dt><span class="section"><a href="sink_backends.html#log.detailed.sink_backends.text_file.file_scanning">Scanning
+          for rotated files</a></span></dt>
+<dt><span class="section"><a href="sink_backends.html#log.detailed.sink_backends.text_file.appending">Appending
+          to the previously written files</a></span></dt>
+</dl></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><code class="computeroutput"><a class="link" href="../../sinks.html#header.boost.log.sinks.text_file_backend_hpp" title="Header &lt;boost/log/sinks/text_file_backend.hpp&gt;">boost/log/sinks/text_file_backend.hpp</a></code><span class="special">&gt;</span>
 </pre>
 <p>
@@ -111,6 +123,11 @@
 <li class="listitem">
               Deleting the oldest files in order to free more space on the file system
             </li>
+<li class="listitem">
+              Similar to <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_ostream" title="Text stream backend">text
+              stream backend</a>, the file sink backend also supports the auto-flush
+              feature
+            </li>
 </ul></div>
 <p>
           The backend is called <code class="computeroutput"><a class="link" href="../../boost/log/sinks/text_file_backend.html" title="Class text_file_backend">text_file_backend</a></code>.
@@ -125,15 +142,71 @@
             internally, which may cause problems on process termination. See <a class="link" href="../rationale/why_crash_on_term.html" title="Why my application crashes on process termination when file sinks are used?">here</a> for more details.
           </p></td></tr>
 </table></div>
-<h6>
-<a name="log.detailed.sink_backends.text_file.h0"></a>
-          <span class="phrase"><a name="log.detailed.sink_backends.text_file.file_rotation"></a></span><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation">File rotation</a>
-        </h6>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="log.detailed.sink_backends.text_file.file_rotation"></a><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation" title="File rotation">File
+          rotation</a>
+</h5></div></div></div>
 <p>
-          File rotation is implemented by the sink backend itself. The file name
-          pattern and rotation thresholds can be specified when the <code class="computeroutput"><a class="link" href="../../boost/log/sinks/text_file_backend.html" title="Class text_file_backend">text_file_backend</a></code>
-          backend is constructed.
-        </p>
+            File rotation happens when the sink detects that one or more rotation
+            conditions are met and a new file needs to be created. It is implemented
+            by the sink backend and includes the following steps:
+          </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                If the log file is currently open, invoke the <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.open_close_handlers" title="File open and close handlers">file
+                close handler</a> and close the file.
+              </li>
+<li class="listitem">
+                If a target file name pattern is set, generate a new target file
+                name and rename the log file to that generated name.
+              </li>
+<li class="listitem">
+                If a <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection" title="Managing rotated files">file
+                collector</a> is configured, pass the log file to it for collection.
+                At this point the file collector may remove older log files to free
+                up some space and move the new file into the target storage.
+              </li>
+<li class="listitem">
+                When a new log record needs to be written, generate a new file name
+                for the new file and create a file with that name. If <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.appending" title="Appending to the previously written files">file
+                appending</a> is enabled and a file with that name exists, the
+                file is opened in append mode instead of overwriting.
+              </li>
+</ol></div>
+<p>
+            It is important to note that there are three kinds of file names or paths
+            involved in this process:
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+                The file name that is used to create or open the log file to actively
+                write to. This is called an <span class="emphasis"><em>active</em></span> file name
+                and is specified by the <code class="computeroutput"><span class="identifier">file_name</span></code>
+                named parameter of the sink backend constructor or by calling the
+                <code class="computeroutput"><span class="identifier">set_file_name_pattern</span></code>
+                method.
+              </li>
+<li class="listitem">
+                The file name that is generated when the log file is closed and about
+                to be collected. This is called a <span class="emphasis"><em>target</em></span> file
+                name, because it defines how the log files will be named in the target
+                storage. Target file name is optional, it can be specified by the
+                <code class="computeroutput"><span class="identifier">target_file_name</span></code>
+                named parameter or by calling the <code class="computeroutput"><span class="identifier">set_target_file_name_pattern</span></code>
+                method.
+              </li>
+<li class="listitem">
+                The target storage location, which is a directory with previously
+                rotated log files, managed by a <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection" title="Managing rotated files">file
+                collector</a>. Multiple sinks can share the same target storage.
+              </li>
+</ul></div>
+<p>
+            The file name patterns and rotation conditions can be specified when
+            the <code class="computeroutput"><a class="link" href="../../boost/log/sinks/text_file_backend.html" title="Class text_file_backend">text_file_backend</a></code>
+            backend is constructed.
+          </p>
 <p>
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init_logging</span><span class="special">()</span>
@@ -142,9 +215,10 @@
 
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;</span> <span class="identifier">backend</span> <span class="special">=</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_shared</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;(</span>
-            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>                                          <a class="co" name="log.detailed.sink_backends.text_file.c0" href="sink_backends.html#log.detailed.sink_backends.text_file.c1"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
-            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">rotation_size</span> <span class="special">=</span> <span class="number">5</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">,</span>                                     <a class="co" name="log.detailed.sink_backends.text_file.c2" href="sink_backends.html#log.detailed.sink_backends.text_file.c3"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
-            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">time_based_rotation</span> <span class="special">=</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="number">12</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span>  <a class="co" name="log.detailed.sink_backends.text_file.c4" href="sink_backends.html#log.detailed.sink_backends.text_file.c5"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file.log"</span><span class="special">,</span>                                              <a class="co" name="log.detailed.sink_backends.text_file.file_rotation.c0" href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation.c1"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">target_file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>                                   <a class="co" name="log.detailed.sink_backends.text_file.file_rotation.c2" href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation.c3"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">rotation_size</span> <span class="special">=</span> <span class="number">5</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">,</span>                                     <a class="co" name="log.detailed.sink_backends.text_file.file_rotation.c4" href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation.c5"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">time_based_rotation</span> <span class="special">=</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="number">12</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span>  <a class="co" name="log.detailed.sink_backends.text_file.file_rotation.c6" href="sink_backends.html#log.detailed.sink_backends.text_file.file_rotation.c7"><img src="../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a>
         <span class="special">);</span>
 
     <span class="comment">// Wrap it into the frontend and register in the core.</span>
@@ -156,25 +230,31 @@
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
+          </p>
 <div class="calloutlist"><table border="0" summary="Callout list">
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c1"></a><a href="#log.detailed.sink_backends.text_file.c0"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_rotation.c1"></a><a href="#log.detailed.sink_backends.text_file.file_rotation.c0"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              file name pattern
-            </p></td>
+                active file name pattern
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c3"></a><a href="#log.detailed.sink_backends.text_file.c2"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_rotation.c3"></a><a href="#log.detailed.sink_backends.text_file.file_rotation.c2"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              rotate the file upon reaching 5 MiB size...
-            </p></td>
+                target file name pattern
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c5"></a><a href="#log.detailed.sink_backends.text_file.c4"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_rotation.c5"></a><a href="#log.detailed.sink_backends.text_file.file_rotation.c4"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              ...or every day, at noon, whichever comes first
-            </p></td>
+                rotate the file upon reaching 5 MiB size...
+              </p></td>
+</tr>
+<tr>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_rotation.c7"></a><a href="#log.detailed.sink_backends.text_file.file_rotation.c6"><img src="../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a> </p></td>
+<td valign="top" align="left"><p>
+                ...or every day, at noon, whichever comes first
+              </p></td>
 </tr>
 </table></div>
 <div class="note"><table border="0" summary="Note">
@@ -183,70 +263,70 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            The file size at rotation can be imprecise. The implementation counts
-            the number of characters written to the file, but the underlying API
-            can introduce additional auxiliary data, which would increase the log
-            file's actual size on disk. For instance, it is well known that Windows
-            and DOS operating systems have a special treatment with regard to new-line
-            characters. Each new-line character is written as a two byte sequence
-            0x0D 0x0A instead of a single 0x0A. Other platform-specific character
-            translations are also known. The actual size on disk can also be less
-            than the number of written characters on compressed filesystems.
-          </p></td></tr>
+              The file size at rotation can be imprecise. The implementation counts
+              the number of bytes written to the file, but the underlying API can
+              introduce additional auxiliary data, which would increase the log file's
+              actual size on disk. For instance, it is well known that Windows and
+              DOS operating systems have a special treatment with regard to new-line
+              characters. Each new-line character is written as a two byte sequence
+              0x0D 0x0A instead of a single 0x0A. Other platform-specific character
+              translations are also known. The actual size on disk can also be less
+              than the number of written characters on compressed filesystems.
+            </p></td></tr>
 </table></div>
 <p>
-          The time-based rotation is not limited by only time points. There are following
-          options available out of the box:
-        </p>
+            The time-based rotation is not limited by only time points. There are
+            following options available out of the box:
+          </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-              Time point rotations: <code class="computeroutput"><a class="link" href="../../boost/log/sinks/file/rotation_at_time_point.html" title="Class rotation_at_time_point">rotation_at_time_point</a></code>
-              class. This kind of rotation takes place whenever the specified time
-              point is reached. The following variants are available:
-              <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+                Time point rotations: <code class="computeroutput"><a class="link" href="../../boost/log/sinks/file/rotation_at_time_point.html" title="Class rotation_at_time_point">rotation_at_time_point</a></code>
+                class. This kind of rotation takes place whenever the specified time
+                point is reached. The following variants are available:
+                <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                    Every day rotation, at the specified time. This is what was presented
-                    in the code snippet above:
+                      Every day rotation, at the specified time. This is what was
+                      presented in the code snippet above:
 <pre class="programlisting"><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="number">12</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span>
 </pre>
-                  </li>
+                    </li>
 <li class="listitem">
-                    Rotation on the specified day of every week, at the specified
-                    time. For instance, this will make file rotation to happen every
-                    Tuesday, at midnight:
+                      Rotation on the specified day of every week, at the specified
+                      time. For instance, this will make file rotation to happen
+                      every Tuesday, at midnight:
 <pre class="programlisting"><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="identifier">date_time</span><span class="special">::</span><span class="identifier">Tuesday</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span>
 </pre>
-                    in case of midnight, the time can be omitted:
+                      in case of midnight, the time can be omitted:
 <pre class="programlisting"><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="identifier">date_time</span><span class="special">::</span><span class="identifier">Tuesday</span><span class="special">)</span>
 </pre>
-                  </li>
+                    </li>
 <li class="listitem">
-                    Rotation on the specified day of each month, at the specified
-                    time. For example, this is how to rotate files on the 1-st of
-                    every month:
+                      Rotation on the specified day of each month, at the specified
+                      time. For example, this is how to rotate files on the 1-st
+                      of every month:
 <pre class="programlisting"><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="identifier">gregorian</span><span class="special">::</span><span class="identifier">greg_day</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span>
 </pre>
-                    like with weekdays, midnight is implied:
+                      like with weekdays, midnight is implied:
 <pre class="programlisting"><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_point</span><span class="special">(</span><span class="identifier">gregorian</span><span class="special">::</span><span class="identifier">greg_day</span><span class="special">(</span><span class="number">1</span><span class="special">))</span>
 </pre>
-                  </li>
+                    </li>
 </ul></div>
-            </li>
+              </li>
 <li class="listitem">
-              Time interval rotations: <code class="computeroutput"><a class="link" href="../../boost/log/sinks/file/rotation_at_time_interval.html" title="Class rotation_at_time_interval">rotation_at_time_interval</a></code>
-              class. With this predicate the rotation is not bound to any time points
-              and happens as soon as the specified time interval since the previous
-              rotation elapses. This is how to make rotations every hour:
+                Time interval rotations: <code class="computeroutput"><a class="link" href="../../boost/log/sinks/file/rotation_at_time_interval.html" title="Class rotation_at_time_interval">rotation_at_time_interval</a></code>
+                class. With this predicate the rotation is not bound to any time
+                points and happens as soon as the specified time interval since the
+                previous rotation elapses. This is how to make rotations every hour:
 <pre class="programlisting"><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">rotation_at_time_interval</span><span class="special">(</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">hours</span><span class="special">(</span><span class="number">1</span><span class="special">))</span>
 </pre>
-            </li>
+              </li>
 </ol></div>
 <p>
-          If none of the above applies, one can specify his own predicate for time-based
-          rotation. The predicate should take no arguments and return <code class="computeroutput"><span class="keyword">bool</span></code> (the <code class="computeroutput"><span class="keyword">true</span></code>
-          value indicates that the rotation should take place). The predicate will
-          be called for every log record being written to the file.
-        </p>
+            If none of the above applies, one can specify his own predicate for time-based
+            rotation. The predicate should take no arguments and return <code class="computeroutput"><span class="keyword">bool</span></code> (the <code class="computeroutput"><span class="keyword">true</span></code>
+            value indicates that the rotation should take place). The predicate will
+            be called for every log record being written to the file.
+          </p>
 <pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">is_it_time_to_rotate</span><span class="special">();</span>
 
 <span class="keyword">void</span> <span class="identifier">init_logging</span><span class="special">()</span>
@@ -255,7 +335,8 @@
 
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;</span> <span class="identifier">backend</span> <span class="special">=</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_shared</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;(</span>
-            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file.log"</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">target_file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>
             <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">time_based_rotation</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">is_it_time_to_rotate</span>
         <span class="special">);</span>
 
@@ -268,27 +349,28 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            The log file rotation takes place on an attempt to write a new log record
-            to the file. Thus the time-based rotation is not a strict threshold,
-            either. The rotation will take place as soon as the library detects that
-            the rotation should have happened.
-          </p></td></tr>
+              The log file rotation takes place on an attempt to write a new log
+              record to the file. Thus the time-based rotation is not a strict threshold,
+              either. The rotation will take place as soon as the library detects
+              that the rotation should have happened.
+            </p></td></tr>
 </table></div>
 <p>
-          In addition to time and size-based file rotation the backend also performs
-          rotation on its destruction by default. This is done in order to maintain
-          all log files collected in the target directory after program termination
-          and ensure that temporary log files don't pile up in the directory the
-          sink backend writes to. This behavior can be disabled with the <code class="computeroutput"><span class="identifier">enable_final_rotation</span></code> parameter of the
-          backend constructor or the similarly named method of the backend:
-        </p>
+            In addition to time and size-based file rotation the backend also performs
+            rotation on its destruction by default. This is done in order to maintain
+            all log files collected in the target directory after program termination
+            and ensure that temporary log files don't pile up in the directory the
+            sink backend writes to. This behavior can be disabled with the <code class="computeroutput"><span class="identifier">enable_final_rotation</span></code> parameter of
+            the backend constructor or the similarly named method of the backend:
+          </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init_logging</span><span class="special">()</span>
 <span class="special">{</span>
     <span class="comment">// ...</span>
 
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;</span> <span class="identifier">backend</span> <span class="special">=</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_shared</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;(</span>
-            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file.log"</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">target_file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>
             <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">enable_final_rotation</span> <span class="special">=</span> <span class="keyword">false</span>
         <span class="special">);</span>
 
@@ -296,28 +378,29 @@
 <span class="special">}</span>
 </pre>
 <p>
-          The file name pattern may contain a number of wildcards, like the one you
-          can see in the example above. Supported placeholders are:
-        </p>
+            Both active and target file name patterns may contain a number of wildcards,
+            like the one you can see in the example above. Supported placeholders
+            are:
+          </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-              Current date and time components. The placeholders conform to the ones
-              specified by <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html" target="_top">Boost.DateTime</a>
-              library.
-            </li>
+                Current date and time components. The placeholders conform to the
+                ones specified by <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html" target="_top">Boost.DateTime</a>
+                library.
+              </li>
 <li class="listitem">
-              File counter (<code class="computeroutput"><span class="special">%</span><span class="identifier">N</span></code>)
-              with an optional width specification in the <code class="computeroutput"><span class="identifier">printf</span></code>-like
-              format. The file counter will always be decimal, zero filled to the
-              specified width.
-            </li>
+                File counter (<code class="computeroutput"><span class="special">%</span><span class="identifier">N</span></code>)
+                with an optional width specification in the <code class="computeroutput"><span class="identifier">printf</span></code>-like
+                format. The file counter will always be decimal, zero filled to the
+                specified width.
+              </li>
 <li class="listitem">
-              A percent sign (<code class="computeroutput"><span class="special">%%</span></code>).
-            </li>
+                A percent sign (<code class="computeroutput"><span class="special">%%</span></code>).
+              </li>
 </ul></div>
 <p>
-          A few quick examples:
-        </p>
+            A few quick examples:
+          </p>
 <div class="informaltable"><table class="table">
 <colgroup>
 <col>
@@ -325,64 +408,64 @@
 </colgroup>
 <thead><tr>
 <th>
-                  <p>
-                    Template
-                  </p>
-                </th>
+                    <p>
+                      Template
+                    </p>
+                  </th>
 <th>
-                  <p>
-                    Expands to
-                  </p>
-                </th>
+                    <p>
+                      Expands to
+                    </p>
+                  </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-                  <p>
-                    file_%N.log
-                  </p>
-                </td>
+                    <p>
+                      file_%N.log
+                    </p>
+                  </td>
 <td>
-                  <p>
-                    file_1.log, file_2.log...
-                  </p>
-                </td>
+                    <p>
+                      file_1.log, file_2.log...
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    file_%3N.log
-                  </p>
-                </td>
+                    <p>
+                      file_%3N.log
+                    </p>
+                  </td>
 <td>
-                  <p>
-                    file_001.log, file_002.log...
-                  </p>
-                </td>
+                    <p>
+                      file_001.log, file_002.log...
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    file_%Y%m%d.log
-                  </p>
-                </td>
+                    <p>
+                      file_%Y%m%d.log
+                    </p>
+                  </td>
 <td>
-                  <p>
-                    file_20080705.log, file_20080706.log...
-                  </p>
-                </td>
+                    <p>
+                      file_20080705.log, file_20080706.log...
+                    </p>
+                  </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    file_%Y-%m-%d_%H-%M-%S.%N.log
-                  </p>
-                </td>
+                    <p>
+                      file_%Y-%m-%d_%H-%M-%S.%N.log
+                    </p>
+                  </td>
 <td>
-                  <p>
-                    file_2008-07-05_13-44-23.1.log, file_2008-07-06_16-00-10.2.log...
-                  </p>
-                </td>
+                    <p>
+                      file_2008-07-05_13-44-23.1.log, file_2008-07-06_16-00-10.2.log...
+                    </p>
+                  </td>
 </tr>
 </tbody>
 </table></div>
@@ -392,19 +475,45 @@
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            Although all <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html" target="_top">Boost.DateTime</a>
-            format specifiers will work, there are restrictions on some of them,
-            if you intend to scan for old log files. This functionality is discussed
-            in the next section.
-          </p></td></tr>
+              Although all <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html" target="_top">Boost.DateTime</a>
+              format specifiers will work, there are restrictions on some of them,
+              if you intend to scan for old log files. This functionality is discussed
+              <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_scanning" title="Scanning for rotated files">here</a>.
+            </p></td></tr>
 </table></div>
 <p>
-          The sink backend allows hooking into the file rotation process in order
-          to perform pre- and post-rotation actions. This can be useful to maintain
-          log file validity by writing headers and footers. For example, this is
-          how we could modify the <code class="computeroutput"><span class="identifier">init_logging</span></code>
-          function in order to write logs into XML files:
-        </p>
+            Note that, as described above, active and target file names are generated
+            at different points in time. Specifically, the active file name is generated
+            when the log file is originally created, and the target file name - when
+            the file is closed. Timestamps used to construct these file names will
+            reflect that difference.
+          </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              When <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.appending" title="Appending to the previously written files">file
+              appending</a> is needed, it is recommended to avoid any placeholders
+              in the active file name pattern. Otherwise appending won't happen because
+              of the different active log file names. You can use the target file
+              name pattern to add a timestamp or counter to the log file after rotation.
+            </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="log.detailed.sink_backends.text_file.open_close_handlers"></a><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.open_close_handlers" title="File open and close handlers">File
+          open and close handlers</a>
+</h5></div></div></div>
+<p>
+            The sink backend allows hooking into the file rotation process in order
+            to perform pre- and post-rotation actions. This can be useful to maintain
+            log file validity by writing headers and footers. For example, this is
+            how we could modify the <code class="computeroutput"><span class="identifier">init_logging</span></code>
+            function from our previous examples in order to write logs into XML files:
+          </p>
 <p>
 </p>
 <pre class="programlisting"><span class="comment">// Complete file sink type</span>
@@ -424,8 +533,8 @@
 <span class="special">{</span>
     <span class="comment">// Create a text file sink</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">file_sink</span> <span class="special">&gt;</span> <span class="identifier">sink</span><span class="special">(</span><span class="keyword">new</span> <span class="identifier">file_sink</span><span class="special">(</span>
-        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"%Y%m%d_%H%M%S_%5N.xml"</span><span class="special">,</span>  <a class="co" name="log.detailed.sink_backends.text_file.c6" href="sink_backends.html#log.detailed.sink_backends.text_file.c7"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
-        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">rotation_size</span> <span class="special">=</span> <span class="number">16384</span>                 <a class="co" name="log.detailed.sink_backends.text_file.c8" href="sink_backends.html#log.detailed.sink_backends.text_file.c9"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
+        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"%Y%m%d_%H%M%S_%5N.xml"</span><span class="special">,</span>  <a class="co" name="log.detailed.sink_backends.text_file.open_close_handlers.c0" href="sink_backends.html#log.detailed.sink_backends.text_file.open_close_handlers.c1"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
+        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">rotation_size</span> <span class="special">=</span> <span class="number">16384</span>                 <a class="co" name="log.detailed.sink_backends.text_file.open_close_handlers.c2" href="sink_backends.html#log.detailed.sink_backends.text_file.open_close_handlers.c3"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
     <span class="special">));</span>
 
     <span class="identifier">sink</span><span class="special">-&gt;</span><span class="identifier">set_formatter</span>
@@ -433,7 +542,7 @@
         <span class="identifier">expr</span><span class="special">::</span><span class="identifier">format</span><span class="special">(</span><span class="string">"\t&lt;record id=\"%1%\" timestamp=\"%2%\"&gt;%3%&lt;/record&gt;"</span><span class="special">)</span>
             <span class="special">%</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">attr</span><span class="special">&lt;</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="special">&gt;(</span><span class="string">"RecordID"</span><span class="special">)</span>
             <span class="special">%</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">attr</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">ptime</span> <span class="special">&gt;(</span><span class="string">"TimeStamp"</span><span class="special">)</span>
-            <span class="special">%</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">xml_decor</span><span class="special">[</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">smessage</span> <span class="special">]</span>            <a class="co" name="log.detailed.sink_backends.text_file.c10" href="sink_backends.html#log.detailed.sink_backends.text_file.c11"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>
+            <span class="special">%</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">xml_decor</span><span class="special">[</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">stream</span> <span class="special">&lt;&lt;</span> <span class="identifier">expr</span><span class="special">::</span><span class="identifier">smessage</span> <span class="special">]</span>            <a class="co" name="log.detailed.sink_backends.text_file.open_close_handlers.c4" href="sink_backends.html#log.detailed.sink_backends.text_file.open_close_handlers.c5"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>
     <span class="special">);</span>
 
     <span class="comment">// Set header and footer writing functors</span>
@@ -445,124 +554,128 @@
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
+          </p>
 <div class="calloutlist"><table border="0" summary="Callout list">
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c7"></a><a href="#log.detailed.sink_backends.text_file.c6"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.open_close_handlers.c1"></a><a href="#log.detailed.sink_backends.text_file.open_close_handlers.c0"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              the resulting file name pattern
-            </p></td>
+                the resulting file name pattern
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c9"></a><a href="#log.detailed.sink_backends.text_file.c8"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.open_close_handlers.c3"></a><a href="#log.detailed.sink_backends.text_file.open_close_handlers.c2"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              rotation size, in characters
-            </p></td>
+                rotation size, in characters
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c11"></a><a href="#log.detailed.sink_backends.text_file.c10"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.open_close_handlers.c5"></a><a href="#log.detailed.sink_backends.text_file.open_close_handlers.c4"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              the log message has to be decorated, if it contains special characters
-            </p></td>
+                the log message has to be decorated, if it contains special characters
+              </p></td>
 </tr>
 </table></div>
 <p>
-          <a href="../../../../../../libs/log/example/doc/sinks_xml_file.cpp" target="_top">See the complete
-          code</a>.
-        </p>
-<p>
-          Finally, the sink backend also supports the auto-flush feature, like the
-          <a class="link" href="sink_backends.html#log.detailed.sink_backends.text_ostream" title="Text stream backend">text stream backend</a>
-          does.
-        </p>
-<h6>
-<a name="log.detailed.sink_backends.text_file.h1"></a>
-          <span class="phrase"><a name="log.detailed.sink_backends.text_file.managing_rotated_files"></a></span><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.managing_rotated_files">Managing
+            <a href="../../../../../../libs/log/example/doc/sinks_xml_file.cpp" target="_top">See the complete
+            code</a>.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="log.detailed.sink_backends.text_file.file_collection"></a><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection" title="Managing rotated files">Managing
           rotated files</a>
-        </h6>
+</h5></div></div></div>
 <p>
-          After being closed, the rotated files can be collected. In order to do
-          so one has to set up a file collector by specifying the target directory
-          where to collect the rotated files and, optionally, size thresholds. For
-          example, we can modify the <code class="computeroutput"><span class="identifier">init_logging</span></code>
-          function to place rotated files into a distinct directory and limit total
-          size of the files. Let's assume the following function is called by <code class="computeroutput"><span class="identifier">init_logging</span></code> with the constructed sink:
-        </p>
+            After being closed, the rotated files can be collected. In order to do
+            so one has to set up a file collector by specifying the target directory
+            where to collect the rotated files and, optionally, size thresholds.
+            For example, we can modify the <code class="computeroutput"><span class="identifier">init_logging</span></code>
+            function to place rotated files into a distinct directory and limit total
+            size of the files. Let's assume the following function is called by
+            <code class="computeroutput"><span class="identifier">init_logging</span></code> with the
+            constructed sink:
+          </p>
 <p>
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init_file_collecting</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">file_sink</span> <span class="special">&gt;</span> <span class="identifier">sink</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">sink</span><span class="special">-&gt;</span><span class="identifier">locked_backend</span><span class="special">()-&gt;</span><span class="identifier">set_file_collector</span><span class="special">(</span><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">make_collector</span><span class="special">(</span>
-        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">target</span> <span class="special">=</span> <span class="string">"logs"</span><span class="special">,</span>                      <a class="co" name="log.detailed.sink_backends.text_file.c12" href="sink_backends.html#log.detailed.sink_backends.text_file.c13"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
-        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">max_size</span> <span class="special">=</span> <span class="number">16</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">,</span>          <a class="co" name="log.detailed.sink_backends.text_file.c14" href="sink_backends.html#log.detailed.sink_backends.text_file.c15"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
-        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">min_free_space</span> <span class="special">=</span> <span class="number">100</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">,</span>   <a class="co" name="log.detailed.sink_backends.text_file.c16" href="sink_backends.html#log.detailed.sink_backends.text_file.c17"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>
-        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">max_files</span> <span class="special">=</span> <span class="number">512</span>                       <a class="co" name="log.detailed.sink_backends.text_file.c18" href="sink_backends.html#log.detailed.sink_backends.text_file.c19"><img src="../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a>
+        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">target</span> <span class="special">=</span> <span class="string">"logs"</span><span class="special">,</span>                      <a class="co" name="log.detailed.sink_backends.text_file.file_collection.c0" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection.c1"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
+        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">max_size</span> <span class="special">=</span> <span class="number">16</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">,</span>          <a class="co" name="log.detailed.sink_backends.text_file.file_collection.c2" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection.c3"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
+        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">min_free_space</span> <span class="special">=</span> <span class="number">100</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">,</span>   <a class="co" name="log.detailed.sink_backends.text_file.file_collection.c4" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection.c5"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a>
+        <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">max_files</span> <span class="special">=</span> <span class="number">512</span>                       <a class="co" name="log.detailed.sink_backends.text_file.file_collection.c6" href="sink_backends.html#log.detailed.sink_backends.text_file.file_collection.c7"><img src="../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a>
     <span class="special">));</span>
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
+          </p>
 <div class="calloutlist"><table border="0" summary="Callout list">
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c13"></a><a href="#log.detailed.sink_backends.text_file.c12"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_collection.c1"></a><a href="#log.detailed.sink_backends.text_file.file_collection.c0"><img src="../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              the target directory
-            </p></td>
+                the target directory
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c15"></a><a href="#log.detailed.sink_backends.text_file.c14"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_collection.c3"></a><a href="#log.detailed.sink_backends.text_file.file_collection.c2"><img src="../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              maximum total size of the stored files, in bytes
-            </p></td>
+                maximum total size of the stored files, in bytes
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c17"></a><a href="#log.detailed.sink_backends.text_file.c16"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_collection.c5"></a><a href="#log.detailed.sink_backends.text_file.file_collection.c4"><img src="../../../../../../doc/src/images/callouts/3.png" alt="3" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              minimum free space on the drive, in bytes
-            </p></td>
+                minimum free space on the drive, in bytes
+              </p></td>
 </tr>
 <tr>
-<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.c19"></a><a href="#log.detailed.sink_backends.text_file.c18"><img src="../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a> </p></td>
+<td width="5%" valign="top" align="left"><p><a name="log.detailed.sink_backends.text_file.file_collection.c7"></a><a href="#log.detailed.sink_backends.text_file.file_collection.c6"><img src="../../../../../../doc/src/images/callouts/4.png" alt="4" border="0"></a> </p></td>
 <td valign="top" align="left"><p>
-              maximum number of stored files
-            </p></td>
+                maximum number of stored files
+              </p></td>
 </tr>
 </table></div>
 <p>
-          The <code class="computeroutput"><span class="identifier">max_size</span></code>, <code class="computeroutput"><span class="identifier">min_free_space</span></code> and <code class="computeroutput"><span class="identifier">max_files</span></code>
-          parameters are optional, the corresponding threshold will not be taken
-          into account if the parameter is not specified.
-        </p>
+            The <code class="computeroutput"><span class="identifier">max_size</span></code>, <code class="computeroutput"><span class="identifier">min_free_space</span></code> and <code class="computeroutput"><span class="identifier">max_files</span></code>
+            parameters are optional, the corresponding threshold will not be taken
+            into account if the parameter is not specified.
+          </p>
 <p>
-          One can create multiple file sink backends that collect files into the
-          same target directory. In this case the most strict thresholds are combined
-          for this target directory. The files from this directory will be erased
-          without regard for which sink backend wrote it, i.e. in the strict chronological
-          order.
-        </p>
+            One can create multiple file sink backends that collect files into the
+            same target directory. In this case the most strict thresholds are combined
+            for this target directory. The files from this directory will be erased
+            without regard for which sink backend wrote it, i.e. in the strict chronological
+            order.
+          </p>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            The collector does not resolve log file name clashes between different
-            sink backends, so if the clash occurs the behavior is undefined, in general.
-            Depending on the circumstances, the files may overwrite each other or
-            the operation may fail entirely.
-          </p></td></tr>
+              The collector does not resolve log file name clashes between different
+              sink backends, so if the clash occurs the behavior is undefined, in
+              general. Depending on the circumstances, the files may overwrite each
+              other or the operation may fail entirely.
+            </p></td></tr>
 </table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="log.detailed.sink_backends.text_file.file_scanning"></a><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.file_scanning" title="Scanning for rotated files">Scanning
+          for rotated files</a>
+</h5></div></div></div>
 <p>
-          The file collector provides another useful feature. Suppose you ran your
-          application 5 times and you have 5 log files in the "logs" directory.
-          The file sink backend and file collector provide a <code class="computeroutput"><span class="identifier">scan_for_files</span></code>
-          method that searches the target directory for these files and takes them
-          into account. So, if it comes to deleting files, these files are not forgotten.
-          What's more, if the file name pattern in the backend involves a file counter,
-          scanning for older files allows updating the counter to the most recent
-          value. Here is the final version of our <code class="computeroutput"><span class="identifier">init_logging</span></code>
-          function:
-        </p>
+            The file collector provides another useful feature. Suppose you ran your
+            application 5 times and you have 5 log files in the "logs"
+            directory. The file sink backend and file collector provide a <code class="computeroutput"><span class="identifier">scan_for_files</span></code> method that searches
+            the target directory for these files and takes them into account. So,
+            if it comes to deleting files, these files are not forgotten. What's
+            more, if a file name pattern in the backend involves a file counter,
+            scanning for older files allows updating the counter to the most recent
+            value. Here is the final version of our <code class="computeroutput"><span class="identifier">init_logging</span></code>
+            function:
+          </p>
 <p>
 </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init_logging</span><span class="special">()</span>
@@ -604,32 +717,103 @@
 <span class="special">}</span>
 </pre>
 <p>
-        </p>
+          </p>
 <p>
-          There are two methods of file scanning: the scan that involves file name
-          matching with the file name pattern (the default) and the scan that assumes
-          that all files in the target directory are log files. The former applies
-          certain restrictions on the placeholders that can be used within the file
-          name pattern, in particular only file counter placeholder and these placeholders
-          of <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html" target="_top">Boost.DateTime</a>
-          are supported: <code class="computeroutput"><span class="special">%</span><span class="identifier">y</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">Y</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">m</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">d</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">H</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">M</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">S</span></code>,
-          <code class="computeroutput"><span class="special">%</span><span class="identifier">f</span></code>.
-          The latter scanning method, in its turn, has its own drawback: it does
-          not allow updating the file counter in the backend. It is also considered
-          to be more dangerous as it may result in unintended file deletion, so be
-          cautious. The all-files scanning method can be enabled by passing it as
-          an additional parameter to the <code class="computeroutput"><span class="identifier">scan_for_files</span></code>
-          call:
-        </p>
+            There are two methods of file scanning: the scan that involves file name
+            matching with the target file name pattern (the default) and the scan
+            that assumes that all files in the target directory are log files. The
+            former applies certain restrictions on the placeholders that can be used
+            within the file name pattern, in particular only file counter placeholder
+            and these placeholders of <a href="http://www.boost.org/doc/libs/release/doc/html/date_time.html" target="_top">Boost.DateTime</a>
+            are supported: <code class="computeroutput"><span class="special">%</span><span class="identifier">y</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">Y</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">m</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">d</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">H</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">M</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">S</span></code>,
+            <code class="computeroutput"><span class="special">%</span><span class="identifier">f</span></code>.
+            The latter scanning method, in its turn, has its own drawback: it does
+            not allow updating the file counter in the backend. It is also considered
+            to be more dangerous as it may result in unintended file deletion, so
+            be cautious. The all-files scanning method can be enabled by passing
+            it as an additional parameter to the <code class="computeroutput"><span class="identifier">scan_for_files</span></code>
+            call:
+          </p>
 <pre class="programlisting"><span class="comment">// Look for all files in the target directory</span>
 <span class="identifier">backend</span><span class="special">-&gt;</span><span class="identifier">scan_for_files</span><span class="special">(</span><span class="identifier">sinks</span><span class="special">::</span><span class="identifier">file</span><span class="special">::</span><span class="identifier">scan_all</span><span class="special">);</span>
 </pre>
+<p>
+            When scanning for matching file names, if the target file name is not
+            set then the active file name pattern is used instead.
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="log.detailed.sink_backends.text_file.appending"></a><a class="link" href="sink_backends.html#log.detailed.sink_backends.text_file.appending" title="Appending to the previously written files">Appending
+          to the previously written files</a>
+</h5></div></div></div>
+<p>
+            The sink backend supports appending to the previously written files (e.g.
+            left from a previous run of your application). In order to enable this
+            mode, one has to add <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">app</span></code>
+            to the file open mode used by the backend. This can be done with the
+            <code class="computeroutput"><span class="identifier">open_mode</span></code> named parameter
+            of the backend constructor or the <code class="computeroutput"><span class="identifier">set_open_mode</span></code>
+            method.
+          </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init_logging</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// ...</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;</span> <span class="identifier">backend</span> <span class="special">=</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_shared</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;(</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">file_name</span> <span class="special">=</span> <span class="string">"file.log"</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">target_file_name</span> <span class="special">=</span> <span class="string">"file_%5N.log"</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">open_mode</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">out</span> <span class="special">|</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ios_base</span><span class="special">::</span><span class="identifier">app</span><span class="special">,</span>
+            <span class="identifier">keywords</span><span class="special">::</span><span class="identifier">enable_final_rotation</span> <span class="special">=</span> <span class="keyword">false</span>
+        <span class="special">);</span>
+
+    <span class="comment">// ...</span>
+<span class="special">}</span>
+</pre>
+<p>
+            When initializing from <a class="link" href="utilities.html#log.detailed.utilities.setup.settings" title="Library initialization from a settings container">settings</a>,
+            the "Append" parameter of the "TextFile" sink enables
+            appending.
+          </p>
+<p>
+            In order for file appending to actually happen, it is important that
+            the name of the newly opened log file matches the previously written
+            file. Othewise, the sink will simply create a new file under the new
+            name. There are several recommendations to follow when file appending
+            is desirable:
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+                Don't use placeholders in the active file name pattern. This will
+                ensure that every time the sink opens a file for writing, that file
+                has the same name.
+              </li>
+<li class="listitem">
+                Use a distinct target file name pattern, preferably with date, time
+                or counter placeholders. This will ensure that when the file is rotated
+                and collected, it doesn't clash with the previously written files,
+                and that the newly opened file will have a different name from the
+                previous one.
+              </li>
+<li class="listitem">
+                Disable file rotation on sink destruction. This will leave the last
+                actively written log file in its original location and with the original
+                name so that it can be picked up by a future run of your application.
+              </li>
+<li class="listitem">
+                Prefer a stable location and file name for the actively written log
+                files. The library will not find the previously written file if its
+                name or directory changes between application runs.
+              </li>
+</ul></div>
+</div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -729,7 +913,7 @@
           displaying.
         </p>
 <p>
-          The backend is implemented by the <code class="computeroutput"><a class="link" href="../../boost/log/sinks/text_ipc_messa_idp52096416.html" title="Class template text_ipc_message_queue_backend">text_ipc_message_queue_backend</a></code>
+          The backend is implemented by the <code class="computeroutput"><a class="link" href="../../boost/log/sinks/text_ipc_idm46309330712240.html" title="Class template text_ipc_message_queue_backend">text_ipc_message_queue_backend</a></code>
           class template which should be instantiated with an interprocess message
           queue such as <code class="computeroutput"><a class="link" href="../../boost/log/ipc/reliable_message_queue.html" title="Class reliable_message_queue">reliable_message_queue</a></code>.
           The following example program illustrates a logger process.
@@ -1073,7 +1257,7 @@
           event log backend</a>
         </h6>
 <p>
-          The <code class="computeroutput"><a class="link" href="../../boost/log/sinks/basic_simple_e_idp51586224.html" title="Class template basic_simple_event_log_backend">basic_simple_event_log_backend</a></code>
+          The <code class="computeroutput"><a class="link" href="../../boost/log/sinks/basic_si_idm46309331190864.html" title="Class template basic_simple_event_log_backend">basic_simple_event_log_backend</a></code>
           backend is intended to encapsulate as much of the event log API as possible,
           leaving interface and usage model very similar to other sink backends.
           It contains all resources that are needed for the Event Viewer to function

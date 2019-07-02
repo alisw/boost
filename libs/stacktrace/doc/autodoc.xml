@@ -21,10 +21,12 @@
 <typedef name="const_reverse_iterator"><type>std::vector&lt; <classname>boost::stacktrace::frame</classname>, Allocator &gt;::const_reverse_iterator</type></typedef>
 <method-group name="public member functions">
 <method name="size" cv="const noexcept"><type>size_type</type><description><para>
-<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para>Number of function names stored inside the class.</para></returns></method>
+<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para>Number of function names stored inside the class.</para>
+</returns></method>
 <method name="operator[]" cv="const noexcept"><type>const_reference</type><parameter name="frame_no"><paramtype>std::size_t</paramtype><description><para>Zero based index of frame to return. 0 is the function index where stacktrace was constructed and index close to this-&gt;size() contains function <computeroutput>main()</computeroutput>. </para></description></parameter><description><para>
 
-<emphasis role="bold">Complexity:</emphasis> O(1).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para>frame that references the actual frame info, stored inside *this.</para></returns></method>
+<emphasis role="bold">Complexity:</emphasis> O(1).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para>frame that references the actual frame info, stored inside *this.</para>
+</returns></method>
 <method name="begin" cv="const noexcept"><type>const_iterator</type><description><para><emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description></method>
 <method name="cbegin" cv="const noexcept"><type>const_iterator</type><description><para><emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description></method>
 <method name="end" cv="const noexcept"><type>const_iterator</type><description><para><emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description></method>
@@ -34,9 +36,11 @@
 <method name="rend" cv="const noexcept"><type>const_reverse_iterator</type><description><para><emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description></method>
 <method name="crend" cv="const noexcept"><type>const_reverse_iterator</type><description><para><emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description></method>
 <method name="conversion-operator" cv="const noexcept" specifiers="explicit"><type>bool</type><purpose>Allows to check that stack trace capturing was successful. </purpose><description><para>
-<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;size() != 0</computeroutput></para></returns></method>
+<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;size() != 0</computeroutput></para>
+</returns></method>
 <method name="empty" cv="const noexcept"><type>bool</type><purpose>Allows to check that stack trace failed. </purpose><description><para>
-<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;size() == 0</computeroutput></para></returns></method>
+<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;size() == 0</computeroutput></para>
+</returns></method>
 <method name="as_vector" cv="const noexcept"><type>const std::vector&lt; <classname>boost::stacktrace::frame</classname>, Allocator &gt; &amp;</type></method>
 </method-group>
 <constructor cv="noexcept"><purpose>Stores the current function call sequence inside *this without any decoding or any other heavy platform specific operations. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe if Allocator construction, copying, Allocator::allocate and Allocator::deallocate are async signal safe. </para></description></constructor>
@@ -119,19 +123,25 @@
 <method-group name="public member functions">
 <method name="name" cv="const"><type>std::string</type><description><para>
 <emphasis role="bold">Complexity:</emphasis> unknown (lots of platform specific work).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Unsafe. 
-</para></description><returns><para>Name of the frame (function name in a human readable form).</para></returns><throws><simpara><classname>std::bad_alloc</classname> if not enough memory to construct resulting string. </simpara></throws></method>
+</para></description><returns><para>Name of the frame (function name in a human readable form).</para>
+</returns><throws><simpara><classname>std::bad_alloc</classname> if not enough memory to construct resulting string. </simpara></throws></method>
 <method name="address" cv="const noexcept"><type>constexpr native_frame_ptr_t</type><description><para>
 <emphasis role="bold">Complexity:</emphasis> O(1).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. 
-</para></description><returns><para>Address of the frame function.</para></returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
+</para></description><returns><para>Address of the frame function.</para>
+</returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
 <method name="source_file" cv="const"><type>std::string</type><description><para>
 
-<emphasis role="bold">Complexity:</emphasis> unknown (lots of platform specific work).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Unsafe. </para></description><returns><para>Path to the source file, were the function of the frame is defined. Returns empty string if this-&gt;source_line() == 0. </para></returns><throws><simpara><classname>std::bad_alloc</classname> if not enough memory to construct resulting string.</simpara></throws></method>
+<emphasis role="bold">Complexity:</emphasis> unknown (lots of platform specific work).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Unsafe. </para></description><returns><para>Path to the source file, were the function of the frame is defined. Returns empty string if this-&gt;source_line() == 0. </para>
+</returns><throws><simpara><classname>std::bad_alloc</classname> if not enough memory to construct resulting string.</simpara></throws></method>
 <method name="source_line" cv="const"><type>std::size_t</type><description><para>
 
-<emphasis role="bold">Complexity:</emphasis> unknown (lots of platform specific work).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Unsafe. </para></description><returns><para>Code line in the source file, were the function of the frame is defined. </para></returns><throws><simpara><classname>std::bad_alloc</classname> if not enough memory to construct string for internal needs.</simpara></throws></method>
+<emphasis role="bold">Complexity:</emphasis> unknown (lots of platform specific work).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Unsafe. </para></description><returns><para>Code line in the source file, were the function of the frame is defined. </para>
+</returns><throws><simpara><classname>std::bad_alloc</classname> if not enough memory to construct string for internal needs.</simpara></throws></method>
 <method name="empty" cv="const noexcept"><type>constexpr bool</type><purpose>Checks that frame is not references NULL address. </purpose><description><para>
 <emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. Checks that frame references NULL address. 
-<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;address() != 0</computeroutput></para></returns><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;address() == 0</computeroutput></para></returns></method>
+<emphasis role="bold">Complexity:</emphasis> O(1)</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. </para></description><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;address() != 0</computeroutput></para>
+</returns><returns><para><computeroutput>true</computeroutput> if <computeroutput>this-&gt;address() == 0</computeroutput></para>
+</returns></method>
 </method-group>
 <constructor cv="noexcept"><purpose>Constructs frame that references NULL address. Calls to source_file() and source_line() will return empty string. Calls to source_line() will return 0. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(1).</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe. 
 </para></description><throws><simpara><classname>Nothing.</classname> </simpara></throws></constructor>
@@ -219,22 +229,28 @@
 
 <function name="safe_dump_to"><type>std::size_t</type><parameter name="memory"><paramtype>void *</paramtype><description><para>Preallocated buffer to store current function call sequence into.</para></description></parameter><parameter name="size"><paramtype>std::size_t</paramtype><description><para>Size of the preallocated buffer. </para></description></parameter><purpose>Stores current function call sequence into the memory. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe.</para><para>
 
-</para></description><returns><para>Stored call sequence depth including terminating zero frame. To get the actually consumed bytes multiply this value by the sizeof(boost::stacktrace::frame::native_frame_ptr_t)</para></returns></function>
+</para></description><returns><para>Stored call sequence depth including terminating zero frame. To get the actually consumed bytes multiply this value by the sizeof(boost::stacktrace::frame::native_frame_ptr_t)</para>
+</returns></function>
 <function name="safe_dump_to"><type>std::size_t</type><parameter name="skip"><paramtype>std::size_t</paramtype><description><para>How many top calls to skip and do not store.</para></description></parameter><parameter name="memory"><paramtype>void *</paramtype><description><para>Preallocated buffer to store current function call sequence into.</para></description></parameter><parameter name="size"><paramtype>std::size_t</paramtype><description><para>Size of the preallocated buffer. </para></description></parameter><purpose>Stores current function call sequence into the memory. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe.</para><para>
 
-</para></description><returns><para>Stored call sequence depth including terminating zero frame. To get the actually consumed bytes multiply this value by the sizeof(boost::stacktrace::frame::native_frame_ptr_t)</para></returns></function>
+</para></description><returns><para>Stored call sequence depth including terminating zero frame. To get the actually consumed bytes multiply this value by the sizeof(boost::stacktrace::frame::native_frame_ptr_t)</para>
+</returns></function>
 <function name="safe_dump_to"><type>std::size_t</type><parameter name="file"><paramtype>const char *</paramtype><description><para>File to store current function call sequence. </para></description></parameter><purpose>Opens a file and rewrites its content with current function call sequence if such operations are async signal safe. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe.</para><para>
 
-</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para></returns></function>
+</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para>
+</returns></function>
 <function name="safe_dump_to"><type>std::size_t</type><parameter name="skip"><paramtype>std::size_t</paramtype><description><para>How many top calls to skip and do not store.</para></description></parameter><parameter name="max_depth"><paramtype>std::size_t</paramtype><description><para>Max call sequence depth to collect.</para></description></parameter><parameter name="file"><paramtype>const char *</paramtype><description><para>File to store current function call sequence. </para></description></parameter><purpose>Opens a file and rewrites its content with current function call sequence if such operations are async signal safe. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe.</para><para>
 
-</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para></returns></function>
+</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para>
+</returns></function>
 <function name="safe_dump_to"><type>std::size_t</type><parameter name="fd"><paramtype>platform_specific_descriptor</paramtype></parameter><purpose>Writes into the provided file descriptor the current function call sequence if such operation is async signal safe. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe.</para><para>
 
-</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para></returns></function>
+</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para>
+</returns></function>
 <function name="safe_dump_to"><type>std::size_t</type><parameter name="skip"><paramtype>std::size_t</paramtype><description><para>How many top calls to skip and do not store.</para></description></parameter><parameter name="max_depth"><paramtype>std::size_t</paramtype><description><para>Max call sequence depth to collect.</para></description></parameter><parameter name="fd"><paramtype>platform_specific_descriptor</paramtype></parameter><purpose>Writes into the provided file descriptor the current function call sequence if such operation is async signal safe. </purpose><description><para><emphasis role="bold">Complexity:</emphasis> O(N) where N is call sequence length, O(1) if BOOST_STACKTRACE_USE_NOOP is defined.</para><para><emphasis role="bold">Async-Handler-Safety</emphasis>: Safe.</para><para>
 
-</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para></returns></function>
+</para></description><returns><para>Stored call sequence depth including terminating zero frame.</para>
+</returns></function>
 
 
 

@@ -28,9 +28,33 @@
 </h3></div></div></div>
 <p>
         The <span class="emphasis"><em>Unit Test Framework</em></span> provides the decorator <a class="link" href="../utf_reference/testing_tool_ref/decorator_timeout.html" title="timeout (decorator)"><code class="computeroutput"><span class="identifier">timeout</span></code></a> that specifies a time-out
-        for a specific <span class="bold"><strong>test case</strong></span>, The argument time
-        (in seconds) sets the maximum allowed duration of a test case. If this time
-        is exceeded the test case is forced to stop and is reported as failure.
+        for a specific <span class="bold"><strong>test unit</strong></span>. The argument time
+        is always expressed in <span class="bold"><strong>seconds ans wall-clock</strong></span>
+        time.
+      </p>
+<p>
+        For test-cases, the time-out value sets the maximum allowed duration for
+        the test. If this time is exceeded, the test case is reported as failed.
+        On some systems, the <span class="emphasis"><em>Unit Test Framework</em></span> is able to
+        force the test-case to stop through a <code class="computeroutput"><span class="identifier">SIGALRM</span></code>
+        signal (see below).
+      </p>
+<p>
+        For test-suites, the time-out value sets the maximum allowed duration for
+        the entire suite to complete. This duration is the accumulated time of all
+        the test-cases contained in the sub-tree rooted on the test-suite, plus some
+        extra execution time needed by the <span class="emphasis"><em>Unit Test Framework</em></span>.
+        For each test-units under a test-suite with time-out, the maximum allowed
+        duration is set as being the test-suite time out minus the accumulated execution
+        time before the execution of the test-unit. If this test-unit is a test-case,
+        it is equivalent to setting the decorator <a class="link" href="../utf_reference/testing_tool_ref/decorator_timeout.html" title="timeout (decorator)"><code class="computeroutput"><span class="identifier">timeout</span></code></a> to the test-case with a
+        time-out value expressed as before.
+      </p>
+<p>
+        In case the test-suite times out, the suite is flagged as <code class="computeroutput"><span class="identifier">timed</span><span class="special">-</span><span class="identifier">out</span></code> and
+        <code class="computeroutput"><span class="identifier">failed</span></code>, and all the test
+        units (suites and cases) that have not been executed up to the time-out point
+        are all skipped.
       </p>
 <h6>
 <a name="boost_test.testing_tools.timeout.h0"></a>
@@ -84,17 +108,21 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          Applied at test suite level, this decorator has no effect.
+          The macro <code class="computeroutput"><span class="identifier">BOOST_SIGACTION_BASED_SIGNAL_HANDLING</span></code>
+          is defined if Boost.Test is able to force the test-case to stop. This feature
+          is for instance not supported on Windows. The <span class="emphasis"><em>Unit Test Framework</em></span>
+          will still be able to report the test-case as failed (once the test-case
+          finishes).
         </p></td></tr>
 </table></div>
-<div class="caution"><table border="0" summary="Caution">
+<div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../../../../doc/src/images/caution.png"></td>
-<th align="left">Caution</th>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          Decorator <code class="computeroutput"><span class="identifier">timeout</span></code> has no
-          effect on Windows build. This feature is not implemented on Windows yet.
+          The support of test suite level time-out has been added in <a class="link" href="../change_log.html#ref_CHANGE_LOG_3_10">Boost
+          1.70 / <span class="emphasis"><em>Unit Test Framework</em></span> v3.10</a>
         </p></td></tr>
 </table></div>
 </div>

@@ -34,24 +34,32 @@ The <code class="computeroutput">boost::asio::buffer_sequence_begin</code>
 <p>
         Get an iterator to the first element in a buffer sequence.
       </p>
-<pre class="programlisting">const mutable_buffer * <a class="link" href="buffer_sequence_begin/overload1.html" title="buffer_sequence_begin (1 of 4 overloads)">buffer_sequence_begin</a>(
-    const mutable_buffer &amp; b);
+<pre class="programlisting">template&lt;
+    typename MutableBuffer&gt;
+const mutable_buffer * <a class="link" href="buffer_sequence_begin/overload1.html" title="buffer_sequence_begin (1 of 4 overloads)">buffer_sequence_begin</a>(
+    const MutableBuffer &amp; b,
+    typename enable_if&lt; is_convertible&lt; const MutableBuffer *, const mutable_buffer * &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer_sequence_begin/overload1.html" title="buffer_sequence_begin (1 of 4 overloads)">more...</a></em></span>
 
+template&lt;
+    typename ConstBuffer&gt;
 const const_buffer * <a class="link" href="buffer_sequence_begin/overload2.html" title="buffer_sequence_begin (2 of 4 overloads)">buffer_sequence_begin</a>(
-    const const_buffer &amp; b);
+    const ConstBuffer &amp; b,
+    typename enable_if&lt; is_convertible&lt; const ConstBuffer *, const const_buffer * &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer_sequence_begin/overload2.html" title="buffer_sequence_begin (2 of 4 overloads)">more...</a></em></span>
 
 template&lt;
     typename C&gt;
 auto <a class="link" href="buffer_sequence_begin/overload3.html" title="buffer_sequence_begin (3 of 4 overloads)">buffer_sequence_begin</a>(
-    C &amp; c);
+    C &amp; c,
+    typename enable_if&lt; !is_convertible&lt; const C *, const mutable_buffer * &gt;::value &amp;&amp;!is_convertible&lt; const C *, const const_buffer * &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer_sequence_begin/overload3.html" title="buffer_sequence_begin (3 of 4 overloads)">more...</a></em></span>
 
 template&lt;
     typename C&gt;
 auto <a class="link" href="buffer_sequence_begin/overload4.html" title="buffer_sequence_begin (4 of 4 overloads)">buffer_sequence_begin</a>(
-    const C &amp; c);
+    const C &amp; c,
+    typename enable_if&lt; !is_convertible&lt; const C *, const mutable_buffer * &gt;::value &amp;&amp;!is_convertible&lt; const C *, const const_buffer * &gt;::value &gt;::type *  = 0);
   <span class="emphasis"><em>&#187; <a class="link" href="buffer_sequence_begin/overload4.html" title="buffer_sequence_begin (4 of 4 overloads)">more...</a></em></span>
 </pre>
 <h5>
@@ -67,7 +75,7 @@ auto <a class="link" href="buffer_sequence_begin/overload4.html" title="buffer_s
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

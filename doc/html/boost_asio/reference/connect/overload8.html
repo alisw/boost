@@ -32,10 +32,11 @@
         </p>
 <pre class="programlisting">template&lt;
     typename <a class="link" href="../Protocol.html" title="Protocol requirements">Protocol</a>,
+    typename <a class="link" href="../Executor1.html" title="Executor requirements">Executor</a>,
     typename <a class="link" href="../EndpointSequence.html" title="Endpoint sequence requirements">EndpointSequence</a>,
     typename <a class="link" href="../ConnectCondition.html" title="Connect condition requirements">ConnectCondition</a>&gt;
 Protocol::endpoint connect(
-    basic_socket&lt; Protocol &gt; &amp; s,
+    basic_socket&lt; Protocol, Executor &gt; &amp; s,
     const EndpointSequence &amp; endpoints,
     ConnectCondition connect_condition,
     boost::system::error_code &amp; ec,
@@ -122,9 +123,9 @@ Protocol::endpoint connect(
           It would be used with the <code class="computeroutput">boost::asio::connect</code> function as
           follows:
         </p>
-<pre class="programlisting">tcp::resolver r(io_context);
+<pre class="programlisting">tcp::resolver r(my_context);
 tcp::resolver::query q("host", "service");
-tcp::socket s(io_context);
+tcp::socket s(my_context);
 boost::system::error_code ec;
 tcp::endpoint e = boost::asio::connect(s,
     r.resolve(q), my_connect_condition(), ec);
@@ -140,7 +141,7 @@ else
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

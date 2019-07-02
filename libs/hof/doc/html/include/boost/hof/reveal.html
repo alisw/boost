@@ -50,7 +50,7 @@
 <h1>reveal<a class="headerlink" href="#reveal" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="header">
 <h2>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/hof/reveal.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;boost/hof/reveal.hpp&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
 </div>
@@ -66,7 +66,7 @@ messages while still keeping the function SFINAE-friendly.</p>
 <div class="section" id="sample">
 <h2>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h2>
 <p>If we take the <code class="docutils literal"><span class="pre">print</span></code> example from the quick start guide like this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">adl</span> <span class="p">{</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">namespace</span> <span class="n">adl</span> <span class="p">{</span>
 
 <span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">;</span>
 
@@ -96,7 +96,7 @@ messages while still keeping the function SFINAE-friendly.</p>
 </pre></div>
 </div>
 <p>Which prints numbers and vectors:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">print</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
 
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span> <span class="p">};</span>
 <span class="n">print</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
@@ -104,7 +104,7 @@ messages while still keeping the function SFINAE-friendly.</p>
 </div>
 <p>However, if we pass a type that can&#8217;t be printed, we get an error like
 this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span>print.cpp:49:5: error: no matching function for call to object of type &#39;boost::hof::fix_adaptor&lt;boost::hof::first_of_adaptor&lt;(lambda at print.cpp:29:9), (lambda at print.cpp:33:9), (lambda at print.cpp:37:9)&gt; &gt;&#39;
+<div class="highlight-cpp"><div class="highlight"><pre>print.cpp:49:5: error: no matching function for call to object of type &#39;boost::hof::fix_adaptor&lt;boost::hof::first_of_adaptor&lt;(lambda at print.cpp:29:9), (lambda at print.cpp:33:9), (lambda at print.cpp:37:9)&gt; &gt;&#39;
     print(foo{});
     ^~~~~
 fix.hpp:158:5: note: candidate template ignored: substitution failure [with Ts = &lt;foo&gt;]: no matching function for call to object of type &#39;const boost::hof::first_of_adaptor&lt;(lambda at
@@ -115,7 +115,7 @@ fix.hpp:158:5: note: candidate template ignored: substitution failure [with Ts =
 <p>Which is short and gives very little information why it can&#8217;t be called.
 It doesn&#8217;t even show the overloads that were try. However, using the
 <code class="docutils literal"><span class="pre">reveal</span></code> adaptor we can get more info about the error like this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span>print.cpp:49:5: error: no matching function for call to object of type &#39;boost::hof::reveal_adaptor&lt;boost::hof::fix_adaptor&lt;boost::hof::first_of_adaptor&lt;(lambda at print.cpp:29:9), (lambda at print.cpp:33:9),
+<div class="highlight-cpp"><div class="highlight"><pre>print.cpp:49:5: error: no matching function for call to object of type &#39;boost::hof::reveal_adaptor&lt;boost::hof::fix_adaptor&lt;boost::hof::first_of_adaptor&lt;(lambda at print.cpp:29:9), (lambda at print.cpp:33:9),
       (lambda at print.cpp:37:9)&gt; &gt;, boost::hof::fix_adaptor&lt;boost::hof::first_of_adaptor&lt;(lambda at print.cpp:29:9), (lambda at print.cpp:33:9), (lambda at print.cpp:37:9)&gt; &gt; &gt;&#39;
     boost::hof::reveal(print)(foo{});
     ^~~~~~~~~~~~~~~~~~
@@ -139,7 +139,7 @@ failures.</p>
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">F</span><span class="o">&gt;</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">F</span><span class="o">&gt;</span>
 <span class="n">reveal_adaptor</span><span class="o">&lt;</span><span class="n">F</span><span class="o">&gt;</span> <span class="n">reveal</span><span class="p">(</span><span class="n">F</span> <span class="n">f</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -163,7 +163,7 @@ template alias by using <code class="docutils literal"><span class="pre">as_fail
 </div>
 <div class="section" id="id1">
 <h2>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// Report failure by instantiating the Template</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="c1">// Report failure by instantiating the Template</span>
 <span class="k">template</span><span class="o">&lt;</span><span class="k">template</span><span class="o">&lt;</span><span class="n">class</span><span class="p">...</span><span class="o">&gt;</span> <span class="k">class</span> <span class="nc">Template</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">as_failure</span><span class="p">;</span>
 
@@ -183,7 +183,7 @@ template alias by using <code class="docutils literal"><span class="pre">as_fail
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/hof.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;boost/hof.hpp&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp"></span>
 
 <span class="k">struct</span> <span class="n">sum_f</span>

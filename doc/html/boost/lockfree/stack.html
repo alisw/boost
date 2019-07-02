@@ -36,13 +36,13 @@
 <span class="keyword">class</span> <a class="link" href="stack.html" title="Class template stack">stack</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// member classes/structs/unions</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> Options<span class="special">&gt;</span> 
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> <span class="special">...</span> Options<span class="special">&gt;</span> 
   <span class="keyword">struct</span> <a class="link" href="stack/implementation_defined.html" title="Struct template implementation_defined">implementation_defined</a> <span class="special">{</span>
     <span class="comment">// types</span>
     <span class="keyword">typedef</span> <span class="identifier">node_allocator</span> <a class="link" href="stack/implementation_defined.html#boost.lockfree.stack.implementation_defined.allocator"><span class="identifier">allocator</span></a><span class="special">;</span>
     <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span>    <a class="link" href="stack/implementation_defined.html#boost.lockfree.stack.implementation_defined.size_type"><span class="identifier">size_type</span></a><span class="special">;</span>
   <span class="special">}</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> Options<span class="special">&gt;</span> 
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> <span class="special">...</span> Options<span class="special">&gt;</span> 
   <span class="keyword">struct</span> <a class="link" href="stack/node.html" title="Struct template node">node</a> <span class="special">{</span>
     <span class="comment">// types</span>
     <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="stack/node.html#boost.lockfree.stack.node.handle_t"><span class="identifier">handle_t</span></a><span class="special">;</span>
@@ -64,7 +64,7 @@
 
   <span class="comment">// <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10-bb">private member functions</a></span>
    <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10_1-bb"><span class="identifier">BOOST_STATIC_ASSERT</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_copy_constructible</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">;</span>
-   <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10_2-bb"><span class="identifier">BOOST_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_c</span><span class="special">&lt;</span> <span class="identifier">has_capacity</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">bool_</span><span class="special">&lt;</span> <a class="link" href="capacity.html" title="Struct template capacity">capacity</a><span class="special">-</span><span class="number">1</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">integer_traits</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint16_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">const_max</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+   <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10_2-bb"><span class="identifier">BOOST_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_c</span><span class="special">&lt;</span> <span class="identifier">has_capacity</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">bool_</span><span class="special">&lt;</span> <a class="link" href="capacity.html" title="Struct template capacity">capacity</a> <span class="special">-</span> <span class="number">1</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">integer_traits</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint16_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">const_max</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
    <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10_3-bb"><span class="identifier">BOOST_DELETED_FUNCTION</span></a><span class="special">(</span><a class="link" href="stack.html" title="Class template stack">stack</a><span class="special">(</span><a class="link" href="stack.html" title="Class template stack">stack</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">bool</span> <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10_4-bb"><span class="identifier">is_lock_free</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="stack.html#id-1_3_23_6_5_1_1_1_10_5-bb"><span class="identifier">reserve</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
@@ -157,7 +157,7 @@
 <a name="id-1_3_23_6_5_1_1_1_10-bb"></a><code class="computeroutput">stack</code> private member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem"><pre class="literallayout"> <a name="id-1_3_23_6_5_1_1_1_10_1-bb"></a><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_copy_constructible</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"> <a name="id-1_3_23_6_5_1_1_1_10_2-bb"></a><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_c</span><span class="special">&lt;</span> <span class="identifier">has_capacity</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">bool_</span><span class="special">&lt;</span> <a class="link" href="capacity.html" title="Struct template capacity">capacity</a><span class="special">-</span><span class="number">1</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">integer_traits</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint16_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">const_max</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"> <a name="id-1_3_23_6_5_1_1_1_10_2-bb"></a><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_c</span><span class="special">&lt;</span> <span class="identifier">has_capacity</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">bool_</span><span class="special">&lt;</span> <a class="link" href="capacity.html" title="Struct template capacity">capacity</a> <span class="special">-</span> <span class="number">1</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">integer_traits</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint16_t</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">const_max</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem"><pre class="literallayout"> <a name="id-1_3_23_6_5_1_1_1_10_3-bb"></a><span class="identifier">BOOST_DELETED_FUNCTION</span><span class="special">(</span><a class="link" href="stack.html" title="Class template stack">stack</a><span class="special">(</span><a class="link" href="stack.html" title="Class template stack">stack</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">bool</span> <a name="id-1_3_23_6_5_1_1_1_10_4-bb"></a><span class="identifier">is_lock_free</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
@@ -329,10 +329,16 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top">
-<p>Operation is applied atomically </p>
-<p>Thread-safe. If internal memory pool is exhausted and the memory pool is not fixed-sized, a new node will be allocated from the OS. This may not be lock-free. </p>
-</td></tr>
+<tr><td align="left" valign="top"><p>Operation is applied atomically </p></td></tr>
+</table></div>
+<p>
+</p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Thread-safe. If internal memory pool is exhausted and the memory pool is not fixed-sized, a new node will be allocated from the OS. This may not be lock-free. </p></td></tr>
 </table></div>
 <p>
 
@@ -365,10 +371,16 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top">
-<p>Operation is applied atomically </p>
-<p>Thread-safe and non-blocking. If internal memory pool is exhausted, the push operation will fail </p>
-</td></tr>
+<tr><td align="left" valign="top"><p>Operation is applied atomically </p></td></tr>
+</table></div>
+<p>
+</p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Thread-safe and non-blocking. If internal memory pool is exhausted, the push operation will fail </p></td></tr>
 </table></div>
 <p>
 

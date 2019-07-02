@@ -34,7 +34,7 @@
 </dl></div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp98972960"></a>Authors</h3></div></div></div>
+<a name="idm45478762240816"></a>Authors</h3></div></div></div>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
           Peter Dimov
@@ -306,6 +306,7 @@
 </h4></div></div></div>
 <pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_TRAIT_TRUE</span><span class="special">((</span><span class="identifier">Trait</span><span class="special">))</span> <span class="comment">/*unspecified*/</span>
 <span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_TRAIT_FALSE</span><span class="special">((</span><span class="identifier">Trait</span><span class="special">))</span> <span class="comment">/*unspecified*/</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_TRAIT_SAME</span><span class="special">(</span><span class="identifier">Type1</span><span class="special">,</span> <span class="identifier">Type2</span><span class="special">)</span> <span class="comment">/*unspecified*/</span>
 </pre>
 </div>
 <div class="section">
@@ -335,6 +336,21 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
+<a name="core.lightweight_test.header_boost_core_lightweight_t0.boost_test_trait_same"></a><a class="link" href="lightweight_test.html#core.lightweight_test.header_boost_core_lightweight_t0.boost_test_trait_same" title="BOOST_TEST_TRAIT_SAME">BOOST_TEST_TRAIT_SAME</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="identifier">BOOST_TEST_TRAIT_SAME</span><span class="special">(</span><span class="identifier">Type1</span><span class="special">,</span> <span class="identifier">Type2</span><span class="special">)</span>
+</pre>
+<p>
+          If the two types are not the same, increases the error count and outputs
+          a message containing them. This macro requires that the compiler supports
+          variadic macros and <code class="computeroutput"><span class="identifier">__VA_ARGS__</span></code>.
+          (Note that unlike <code class="computeroutput"><span class="identifier">BOOST_TEST_TRAIT_TRUE</span></code>
+          and <code class="computeroutput"><span class="identifier">BOOST_TEST_TRAIT_FALSE</span></code>,
+          this macro only requires a single set of parentheses.)
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
 <a name="core.lightweight_test.header_boost_core_lightweight_t0.example"></a><a class="link" href="lightweight_test.html#core.lightweight_test.header_boost_core_lightweight_t0.example" title="Example">Example</a>
 </h4></div></div></div>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">core</span><span class="special">/</span><span class="identifier">lightweight_test_trait</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -350,6 +366,8 @@
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
     <span class="identifier">BOOST_TEST_TRAIT_TRUE</span><span class="special">((</span> <span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">X</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">long</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;</span> <span class="special">));</span>
+
+    <span class="identifier">BOOST_TEST_TRAIT_SAME</span><span class="special">(</span> <span class="identifier">X</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">long</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">,</span> <span class="keyword">int</span> <span class="special">);</span>
 
     <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
 <span class="special">}</span>

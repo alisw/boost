@@ -4,7 +4,8 @@
 <namespace name="yap">
 <struct name="expression_function"><template>
       <template-type-parameter name="Expr"/>
-    </template><description><para>A callable type that evaluates its contained expression when called.</para><para><para><emphasis role="bold">See Also:</emphasis><para><computeroutput>make_expression_function()</computeroutput> </para></para>
+    </template><description><para>A callable type that evaluates its contained expression when called.</para><para><para><emphasis role="bold">See Also:</emphasis><para><computeroutput>make_expression_function()</computeroutput> </para>
+</para>
 </para></description><data-member name="expr"><type>Expr</type></data-member>
 <method-group name="public member functions">
 <method name="operator()"><type>decltype(auto)</type><template>
@@ -51,12 +52,17 @@
 <function name="value"><type>decltype(auto)</type><template>
           <template-type-parameter name="T"/>
         </template><parameter name="x"><paramtype>T &amp;&amp;</paramtype></parameter><description><para>Forwards the sole element of <emphasis>x</emphasis> to the caller, possibly calling <computeroutput>deref()</computeroutput> first if <emphasis>x</emphasis> is a reference expression, or forwards <emphasis>x</emphasis> to the caller unchanged.</para><para>More formally:</para><para><itemizedlist>
-<listitem><para>If <emphasis>x</emphasis> is not an expression, <emphasis>x</emphasis> is forwarded to the caller.</para></listitem><listitem><para>Otherwise, if <emphasis>x</emphasis> is a reference expression, the result is <computeroutput>value(deref(x))</computeroutput>.</para></listitem><listitem><para>Otherwise, if <emphasis>x</emphasis> is an expression with only one value (a unary expression or a terminal expression), the result is the forwarded first element of <emphasis>x</emphasis>.</para></listitem><listitem><para>Otherwise, <emphasis>x</emphasis> is forwarded to the caller. </para></listitem></itemizedlist>
+<listitem><para>If <emphasis>x</emphasis> is not an expression, <emphasis>x</emphasis> is forwarded to the caller.</para>
+</listitem><listitem><para>Otherwise, if <emphasis>x</emphasis> is a reference expression, the result is <computeroutput>value(deref(x))</computeroutput>.</para>
+</listitem><listitem><para>Otherwise, if <emphasis>x</emphasis> is an expression with only one value (a unary expression or a terminal expression), the result is the forwarded first element of <emphasis>x</emphasis>.</para>
+</listitem><listitem><para>Otherwise, <emphasis>x</emphasis> is forwarded to the caller. </para>
+</listitem></itemizedlist>
 </para></description></function>
 <function name="get"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
           <template-type-parameter name="I"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="i"><paramtype>I const &amp;</paramtype></parameter><description><para>Forwards the <emphasis>i</emphasis>-th element of <emphasis>expr</emphasis> to the caller. If <emphasis>expr</emphasis> is a reference expression, the result is <computeroutput>get(deref(expr), i)</computeroutput>.</para><para><note><para><computeroutput>get()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="i"><paramtype>I const &amp;</paramtype></parameter><description><para>Forwards the <emphasis>i</emphasis>-th element of <emphasis>expr</emphasis> to the caller. If <emphasis>expr</emphasis> is a reference expression, the result is <computeroutput>get(deref(expr), i)</computeroutput>.</para><para><note><para><computeroutput>get()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an expression. </para>
+</note>
 </para></description></function>
 <function name="get_c"><type>decltype(auto)</type><template>
           <template-nontype-parameter name="I"><type>long long</type></template-nontype-parameter>
@@ -64,55 +70,69 @@
         </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns <computeroutput>get(expr, boost::hana::llong_c&lt;I&gt;)</computeroutput>. </para></description></function>
 <function name="left"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the left operand in a binary operator expression.</para><para>Equivalent to <computeroutput>get(expr, 0_c)</computeroutput>.</para><para><note><para><computeroutput>left()</computeroutput> is only valid if <emphasis>Expr</emphasis> is a binary operator expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the left operand in a binary operator expression.</para><para>Equivalent to <computeroutput>get(expr, 0_c)</computeroutput>.</para><para><note><para><computeroutput>left()</computeroutput> is only valid if <emphasis>Expr</emphasis> is a binary operator expression. </para>
+</note>
 </para></description></function>
 <function name="right"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the right operand in a binary operator expression.</para><para>Equivalent to <computeroutput>get(expr, 1_c)</computeroutput>.</para><para><note><para><computeroutput>right()</computeroutput> is only valid if <emphasis>Expr</emphasis> is a binary operator expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the right operand in a binary operator expression.</para><para>Equivalent to <computeroutput>get(expr, 1_c)</computeroutput>.</para><para><note><para><computeroutput>right()</computeroutput> is only valid if <emphasis>Expr</emphasis> is a binary operator expression. </para>
+</note>
 </para></description></function>
 <function name="cond"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the condition expression in an if_else expression.</para><para>Equivalent to <computeroutput>get(expr, 0_c)</computeroutput>.</para><para><note><para><computeroutput>cond()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::if_else</computeroutput> expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the condition expression in an if_else expression.</para><para>Equivalent to <computeroutput>get(expr, 0_c)</computeroutput>.</para><para><note><para><computeroutput>cond()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::if_else</computeroutput> expression. </para>
+</note>
 </para></description></function>
 <function name="then"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the then-expression in an if_else expression.</para><para>Equivalent to <computeroutput>get(expr, 1_c)</computeroutput>.</para><para><note><para><computeroutput>then()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::if_else</computeroutput> expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the then-expression in an if_else expression.</para><para>Equivalent to <computeroutput>get(expr, 1_c)</computeroutput>.</para><para><note><para><computeroutput>then()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::if_else</computeroutput> expression. </para>
+</note>
 </para></description></function>
 <function name="else_"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the else-expression in an if_else expression.</para><para>Equivalent to <computeroutput>get(expr, 2_c)</computeroutput>.</para><para><note><para><computeroutput>else_()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::if_else</computeroutput> expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the else-expression in an if_else expression.</para><para>Equivalent to <computeroutput>get(expr, 2_c)</computeroutput>.</para><para><note><para><computeroutput>else_()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::if_else</computeroutput> expression. </para>
+</note>
 </para></description></function>
 <function name="callable"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the callable in a call expression.</para><para>Equivalent to <computeroutput>get(expr, 0)</computeroutput>.</para><para><note><para><computeroutput>callable()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::call</computeroutput> expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns the callable in a call expression.</para><para>Equivalent to <computeroutput>get(expr, 0)</computeroutput>.</para><para><note><para><computeroutput>callable()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::call</computeroutput> expression. </para>
+</note>
 </para></description></function>
 <function name="argument"><type>decltype(auto)</type><template>
           <template-nontype-parameter name="I"><type>long long</type></template-nontype-parameter>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="i"><paramtype>hana::llong&lt; I &gt;</paramtype></parameter><description><para>Returns the <emphasis>i-th</emphasis> argument expression in a call expression.</para><para>Equivalent to <computeroutput>get(expr, i + 1)</computeroutput>.</para><para><note><para><computeroutput>argument()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::call</computeroutput> expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="i"><paramtype>hana::llong&lt; I &gt;</paramtype></parameter><description><para>Returns the <emphasis>i-th</emphasis> argument expression in a call expression.</para><para>Equivalent to <computeroutput>get(expr, i + 1)</computeroutput>.</para><para><note><para><computeroutput>argument()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an <computeroutput>expr_kind::call</computeroutput> expression. </para>
+</note>
 </para></description></function>
 <function name="make_expression"><type>auto</type><template>
           <template-nontype-parameter name="ExprTemplate"><type>template&lt; expr_kind, class &gt; class</type></template-nontype-parameter>
           <template-nontype-parameter name="Kind"><type>expr_kind</type></template-nontype-parameter>
           <template-nontype-parameter name="T"><type>typename...</type></template-nontype-parameter>
         </template><parameter name="t"><paramtype>T &amp;&amp;...</paramtype></parameter><description><para>Makes a new expression instantiated from the expression template <emphasis>ExprTemplate</emphasis>, of kind <emphasis>Kind</emphasis>, with the given values as its elements.</para><para>For each parameter P:</para><para><itemizedlist>
-<listitem><para>If P is an expression, P is moved into the result if P is an rvalue and captured by reference into the result otherwise.</para></listitem><listitem><para>Otherwise, P is wrapped in a terminal expression.</para></listitem></itemizedlist>
-</para><para><note><para><computeroutput>make_expression()</computeroutput> is only valid if the number of parameters passed is appropriate for <emphasis>Kind</emphasis>. </para></note>
+<listitem><para>If P is an expression, P is moved into the result if P is an rvalue and captured by reference into the result otherwise.</para>
+</listitem><listitem><para>Otherwise, P is wrapped in a terminal expression.</para>
+</listitem></itemizedlist>
+</para><para><note><para><computeroutput>make_expression()</computeroutput> is only valid if the number of parameters passed is appropriate for <emphasis>Kind</emphasis>. </para>
+</note>
 </para></description></function>
 <function name="make_terminal"><type>auto</type><template>
           <template-nontype-parameter name="ExprTemplate"><type>template&lt; expr_kind, class &gt; class</type></template-nontype-parameter>
           <template-type-parameter name="T"/>
-        </template><parameter name="t"><paramtype>T &amp;&amp;</paramtype></parameter><description><para>Makes a new terminal expression instantiated from the expression template <emphasis>ExprTemplate</emphasis>, with the given value as its sole element.</para><para><note><para><computeroutput>make_terminal()</computeroutput> is only valid if <emphasis>T</emphasis> is <emphasis role="bold">not</emphasis> an expression. </para></note>
+        </template><parameter name="t"><paramtype>T &amp;&amp;</paramtype></parameter><description><para>Makes a new terminal expression instantiated from the expression template <emphasis>ExprTemplate</emphasis>, with the given value as its sole element.</para><para><note><para><computeroutput>make_terminal()</computeroutput> is only valid if <emphasis>T</emphasis> is <emphasis role="bold">not</emphasis> an expression. </para>
+</note>
 </para></description></function>
 <function name="as_expr"><type>decltype(auto)</type><template>
           <template-nontype-parameter name="ExprTemplate"><type>template&lt; expr_kind, class &gt; class</type></template-nontype-parameter>
           <template-type-parameter name="T"/>
         </template><parameter name="t"><paramtype>T &amp;&amp;</paramtype></parameter><description><para>Returns an expression formed from <emphasis>t</emphasis> as follows:</para><para><itemizedlist>
-<listitem><para>If <emphasis>t</emphasis> is an expression, <emphasis>t</emphasis> is forwarded to the caller.</para></listitem><listitem><para>Otherwise, <emphasis>t</emphasis> is wrapped in a terminal expression. </para></listitem></itemizedlist>
+<listitem><para>If <emphasis>t</emphasis> is an expression, <emphasis>t</emphasis> is forwarded to the caller.</para>
+</listitem><listitem><para>Otherwise, <emphasis>t</emphasis> is wrapped in a terminal expression. </para>
+</listitem></itemizedlist>
 </para></description></function>
 <function name="make_expression_function"><type>auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns a callable object that <emphasis>expr</emphasis> has been forwarded into. This is useful for using expressions as function objects.</para><para>Lvalue expressions are stored in the result by reference; rvalue expressions are moved into the result.</para><para><note><para><computeroutput>make_expression_function()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para>Returns a callable object that <emphasis>expr</emphasis> has been forwarded into. This is useful for using expressions as function objects.</para><para>Lvalue expressions are stored in the result by reference; rvalue expressions are moved into the result.</para><para><note><para><computeroutput>make_expression_function()</computeroutput> is only valid if <emphasis>Expr</emphasis> is an expression. </para>
+</note>
 </para></description></function>
 <function name="replacements"><type>auto</type><template>
           <template-nontype-parameter name="T"><type>typename...</type></template-nontype-parameter>
@@ -120,7 +140,8 @@
 <function name="replace_placeholders"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
           <template-nontype-parameter name="T"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="t"><paramtype>T &amp;&amp;...</paramtype></parameter><description><para>Returns <emphasis>expr</emphasis> with the placeholders replaced by YAP terminals containing the given values.</para><para><note><para><computeroutput>replace_placeholders(expr, t...)</computeroutput> is only valid if <emphasis>expr</emphasis> is an expression, and <computeroutput>max_p &lt;= sizeof...(t)</computeroutput>, where <computeroutput>max_p</computeroutput> is the maximum placeholder index in <emphasis>expr</emphasis>. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="t"><paramtype>T &amp;&amp;...</paramtype></parameter><description><para>Returns <emphasis>expr</emphasis> with the placeholders replaced by YAP terminals containing the given values.</para><para><note><para><computeroutput>replace_placeholders(expr, t...)</computeroutput> is only valid if <emphasis>expr</emphasis> is an expression, and <computeroutput>max_p &lt;= sizeof...(t)</computeroutput>, where <computeroutput>max_p</computeroutput> is the maximum placeholder index in <emphasis>expr</emphasis>. </para>
+</note>
 </para></description></function>
 <function name="evaluation"><type>auto</type><template>
           <template-nontype-parameter name="T"><type>typename...</type></template-nontype-parameter>
@@ -128,19 +149,22 @@
 <function name="evaluate"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
           <template-nontype-parameter name="T"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="t"><paramtype>T &amp;&amp;...</paramtype></parameter><description><para>Evaluates <emphasis>expr</emphasis> using the built-in semantics, replacing any placeholders with the given values.</para><para><note><para><computeroutput>evaluate(expr)</computeroutput> is only valid if <emphasis>expr</emphasis> is an expression. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="t"><paramtype>T &amp;&amp;...</paramtype></parameter><description><para>Evaluates <emphasis>expr</emphasis> using the built-in semantics, replacing any placeholders with the given values.</para><para><note><para><computeroutput>evaluate(expr)</computeroutput> is only valid if <emphasis>expr</emphasis> is an expression. </para>
+</note>
 </para></description></function>
 <function name="transform"><type>decltype(auto) constexpr</type><template>
           <template-type-parameter name="Expr"/>
           <template-type-parameter name="Transform"/>
           <template-nontype-parameter name="Transforms"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="transform"><paramtype>Transform &amp;&amp;</paramtype></parameter><parameter name="transforms"><paramtype>Transforms &amp;&amp;...</paramtype></parameter><description><para>Returns the result of transforming (all or part of) <emphasis>expr</emphasis> using whatever overloads of <computeroutput>Transform::operator()</computeroutput> match <emphasis>expr</emphasis>.</para><para><note><para>Transformations can do anything: they may have side effects; they may mutate values; they may mutate types; and they may do any combination of these. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="transform"><paramtype>Transform &amp;&amp;</paramtype></parameter><parameter name="transforms"><paramtype>Transforms &amp;&amp;...</paramtype></parameter><description><para>Returns the result of transforming (all or part of) <emphasis>expr</emphasis> using whatever overloads of <computeroutput>Transform::operator()</computeroutput> match <emphasis>expr</emphasis>.</para><para><note><para>Transformations can do anything: they may have side effects; they may mutate values; they may mutate types; and they may do any combination of these. </para>
+</note>
 </para></description></function>
 <function name="transform_strict"><type>decltype(auto)</type><template>
           <template-type-parameter name="Expr"/>
           <template-type-parameter name="Transform"/>
           <template-nontype-parameter name="Transforms"><type>typename...</type></template-nontype-parameter>
-        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="transform"><paramtype>Transform &amp;&amp;</paramtype></parameter><parameter name="transforms"><paramtype>Transforms &amp;&amp;...</paramtype></parameter><description><para>Returns the result of transforming <emphasis>expr</emphasis> using whichever overload of <computeroutput>Transform::operator()</computeroutput> best matches <emphasis>expr</emphasis>. If no overload of <computeroutput>Transform::operator()</computeroutput> matches, a compile-time error results.</para><para><note><para>Transformations can do anything: they may have side effects; they may mutate values; they may mutate types; and they may do any combination of these. </para></note>
+        </template><parameter name="expr"><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name="transform"><paramtype>Transform &amp;&amp;</paramtype></parameter><parameter name="transforms"><paramtype>Transforms &amp;&amp;...</paramtype></parameter><description><para>Returns the result of transforming <emphasis>expr</emphasis> using whichever overload of <computeroutput>Transform::operator()</computeroutput> best matches <emphasis>expr</emphasis>. If no overload of <computeroutput>Transform::operator()</computeroutput> matches, a compile-time error results.</para><para><note><para>Transformations can do anything: they may have side effects; they may mutate values; they may mutate types; and they may do any combination of these. </para>
+</note>
 </para></description></function>
 </namespace>
 </namespace>
@@ -148,27 +172,27 @@
 <header name="boost/yap/algorithm_fwd.hpp">
 <namespace name="boost">
 <namespace name="yap">
-<struct name="placeholder"><template>
-      <template-nontype-parameter name="I"><type>long long</type></template-nontype-parameter>
-    </template><inherit access="public">hana::llong&lt; I &gt;</inherit><description><para>The type used to represent the index of a placeholder terminal. </para></description></struct><struct name="is_expr"><template>
-      <template-type-parameter name="Expr"/>
-    </template><description><para>A metafunction that evaluates to std::true_type if <emphasis>Expr</emphasis> is an Expression, and std::false_type otherwise. </para></description></struct><struct name="expr_tag"><template>
+<struct name="expr_tag"><template>
       <template-nontype-parameter name="Kind"><type>expr_kind</type></template-nontype-parameter>
     </template><description><para>Used as the tag-type passed to a transform function written in the tag-transform form. </para></description><data-member name="kind" specifiers="static"><type>const expr_kind</type></data-member>
-</struct><struct name="minimal_expr"><template>
+</struct><struct name="is_expr"><template>
+      <template-type-parameter name="Expr"/>
+    </template><description><para>A metafunction that evaluates to std::true_type if <emphasis>Expr</emphasis> is an Expression, and std::false_type otherwise. </para></description></struct><struct name="minimal_expr"><template>
       <template-nontype-parameter name="Kind"><type>expr_kind</type></template-nontype-parameter>
       <template-type-parameter name="Tuple"/>
     </template><description><para>Used as the expression template returned by some operations inside YAP when YAP does not have an expression template it was told to use. For instance, if transform() creates a new expression by transforming an existing expression's elements, it will attempt to create the new expression using the existing one's expression template. If no such template exists because the existing expression was not made from an expression template, <classname alt="boost::yap::minimal_expr">minimal_expr</classname> is used. </para></description><data-member name="kind" specifiers="static"><type>expr_kind const</type></data-member>
 <data-member name="elements"><type>Tuple</type></data-member>
-</struct><namespace name="literals">
+</struct><struct name="placeholder"><template>
+      <template-nontype-parameter name="I"><type>long long</type></template-nontype-parameter>
+    </template><inherit access="public">hana::llong&lt; I &gt;</inherit><description><para>The type used to represent the index of a placeholder terminal. </para></description></struct><namespace name="literals">
 <function name="operator&quot;&quot;_p"><type>constexpr auto</type><template>
           <template-nontype-parameter name="c"><type>char...</type></template-nontype-parameter>
         </template><description><para>Creates literal placeholders. Placeholder indices are 1-based. </para></description></function>
 </namespace>
 <enum name="expr_kind"><enumvalue name="expr_ref"><default>=
             0</default><purpose>A (possibly <computeroutput>const</computeroutput>) reference to another expression. </purpose></enumvalue><enumvalue name="terminal"><default>= 1</default><purpose>A terminal expression. </purpose></enumvalue><enumvalue name="unary_plus"><default>= 2</default><purpose><computeroutput>+</computeroutput> </purpose></enumvalue><enumvalue name="negate"><default>= 3</default><purpose><computeroutput>-</computeroutput> </purpose></enumvalue><enumvalue name="dereference"><default>= 4</default><purpose><computeroutput>*</computeroutput> </purpose></enumvalue><enumvalue name="complement"><default>= 5</default><purpose><computeroutput>~</computeroutput> </purpose></enumvalue><enumvalue name="address_of"><default>= 6</default><purpose><computeroutput>&amp;</computeroutput> </purpose></enumvalue><enumvalue name="logical_not"><default>= 7</default><purpose><computeroutput>!</computeroutput> </purpose></enumvalue><enumvalue name="pre_inc"><default>= 8</default><purpose><computeroutput>++</computeroutput> </purpose></enumvalue><enumvalue name="pre_dec"><default>= 9</default><purpose><computeroutput>--</computeroutput> </purpose></enumvalue><enumvalue name="post_inc"><default>= 10</default><purpose><computeroutput>++</computeroutput>(int) </purpose></enumvalue><enumvalue name="post_dec"><default>= 11</default><purpose><computeroutput>--</computeroutput>(int) </purpose></enumvalue><enumvalue name="shift_left"><default>= 12</default><purpose><computeroutput>&lt;&lt;</computeroutput> </purpose></enumvalue><enumvalue name="shift_right"><default>= 13</default><purpose><computeroutput>&gt;&gt;</computeroutput> </purpose></enumvalue><enumvalue name="multiplies"><default>= 14</default><purpose><computeroutput>*</computeroutput> </purpose></enumvalue><enumvalue name="divides"><default>= 15</default><purpose><computeroutput>/</computeroutput> </purpose></enumvalue><enumvalue name="modulus"><default>= 16</default><purpose><computeroutput>%</computeroutput> </purpose></enumvalue><enumvalue name="plus"><default>= 17</default><purpose><computeroutput>+</computeroutput> </purpose></enumvalue><enumvalue name="minus"><default>= 18</default><purpose><computeroutput>-</computeroutput> </purpose></enumvalue><enumvalue name="less"><default>= 19</default><purpose><computeroutput>&lt;</computeroutput> </purpose></enumvalue><enumvalue name="greater"><default>= 20</default><purpose><computeroutput>&gt;</computeroutput> </purpose></enumvalue><enumvalue name="less_equal"><default>= 21</default><purpose><computeroutput>&lt;=</computeroutput> </purpose></enumvalue><enumvalue name="greater_equal"><default>= 22</default><purpose><computeroutput>&gt;=</computeroutput> </purpose></enumvalue><enumvalue name="equal_to"><default>= 23</default><purpose><computeroutput>==</computeroutput> </purpose></enumvalue><enumvalue name="not_equal_to"><default>= 24</default><purpose><computeroutput>!=</computeroutput> </purpose></enumvalue><enumvalue name="logical_or"><default>= 25</default><purpose><computeroutput>||</computeroutput> </purpose></enumvalue><enumvalue name="logical_and"><default>= 26</default><purpose><computeroutput>&amp;&amp;</computeroutput> </purpose></enumvalue><enumvalue name="bitwise_and"><default>= 27</default><purpose><computeroutput>&amp;</computeroutput> </purpose></enumvalue><enumvalue name="bitwise_or"><default>= 28</default><purpose><computeroutput/>| </purpose></enumvalue><enumvalue name="bitwise_xor"><default>= 29</default><purpose><computeroutput>^</computeroutput> </purpose></enumvalue><enumvalue name="comma"><default>= 30</default><purpose><computeroutput/>, </purpose></enumvalue><enumvalue name="mem_ptr"><default>= 31</default><purpose><computeroutput>-&gt;*</computeroutput> </purpose></enumvalue><enumvalue name="assign"><default>= 32</default><purpose><computeroutput>=</computeroutput> </purpose></enumvalue><enumvalue name="shift_left_assign"><default>= 33</default><purpose><computeroutput>&lt;&lt;=</computeroutput> </purpose></enumvalue><enumvalue name="shift_right_assign"><default>= 34</default><purpose><computeroutput>&gt;&gt;=</computeroutput> </purpose></enumvalue><enumvalue name="multiplies_assign"><default>= 35</default><purpose><computeroutput>*=</computeroutput> </purpose></enumvalue><enumvalue name="divides_assign"><default>= 36</default><purpose><computeroutput>/=</computeroutput> </purpose></enumvalue><enumvalue name="modulus_assign"><default>= 37</default><purpose><computeroutput>%=</computeroutput> </purpose></enumvalue><enumvalue name="plus_assign"><default>= 38</default><purpose><computeroutput>+=</computeroutput> </purpose></enumvalue><enumvalue name="minus_assign"><default>= 39</default><purpose><computeroutput>-=</computeroutput> </purpose></enumvalue><enumvalue name="bitwise_and_assign"><default>= 40</default><purpose><computeroutput>&amp;=</computeroutput> </purpose></enumvalue><enumvalue name="bitwise_or_assign"><default>= 41</default><purpose><computeroutput/>|= </purpose></enumvalue><enumvalue name="bitwise_xor_assign"><default>= 42</default><purpose><computeroutput>^=</computeroutput> </purpose></enumvalue><enumvalue name="subscript"><default>= 43</default><purpose><computeroutput/>[] </purpose></enumvalue><enumvalue name="if_else"><default>= 44</default><purpose>Analogous to <computeroutput/>?: . </purpose></enumvalue><enumvalue name="call"><default>= 45</default><purpose><computeroutput/>() </purpose></enumvalue><description><para>The enumeration representing all the kinds of expressions supported in YAP. </para></description></enum>
-<typedef name="terminal"><description><para>A convenience alias for a terminal expression holding a <emphasis>T</emphasis>, instantiated from expression template <emphasis>expr_template</emphasis>. </para></description><type>expr_template&lt; expr_kind::terminal, hana::tuple&lt; T &gt;&gt;</type></typedef>
-<typedef name="expression_ref"><description><para>A convenience alias for a reference expression holding an expression <emphasis>T</emphasis>, instantiated from expression template <emphasis>expr_template</emphasis>. </para></description><type>expr_template&lt; expr_kind::expr_ref, hana::tuple&lt; std::remove_reference_t&lt; T &gt; * &gt;&gt;</type></typedef>
+<typedef name="terminal"><description><para>A convenience alias for a terminal expression holding a <emphasis>T</emphasis>, instantiated from expression template <emphasis>expr_template</emphasis>. </para></description><type>expr_template&lt; expr_kind::terminal, hana::tuple&lt; T &gt; &gt;</type></typedef>
+<typedef name="expression_ref"><description><para>A convenience alias for a reference expression holding an expression <emphasis>T</emphasis>, instantiated from expression template <emphasis>expr_template</emphasis>. </para></description><type>expr_template&lt; expr_kind::expr_ref, hana::tuple&lt; std::remove_reference_t&lt; T &gt; * &gt; &gt;</type></typedef>
 
 
 
@@ -240,7 +264,8 @@
 </programlisting> However, there are actually three functions: <programlisting language="c++">return_type f () const &amp;;
 return_type f () &amp;;
 return_type f () &amp;&amp;;
-</programlisting> </para></note>
+</programlisting> </para>
+</note>
 </para></description><typedef name="tuple_type"><type>Tuple</type></typedef>
 <data-member name="kind" specifiers="static"><type>const expr_kind</type></data-member>
 <data-member name="elements"><type>tuple_type</type></data-member>
@@ -257,7 +282,8 @@ return_type f () &amp;&amp;;
 </programlisting> However, there are actually three functions: <programlisting language="c++">return_type f () const &amp;;
 return_type f () &amp;;
 return_type f () &amp;&amp;;
-</programlisting> </para></note>
+</programlisting> </para>
+</note>
 </para></description><typedef name="tuple_type"><type>hana::tuple&lt; T &gt;</type></typedef>
 <data-member name="kind" specifiers="static"><type>const expr_kind</type></data-member>
 <data-member name="elements"><type>tuple_type</type></data-member>
@@ -272,139 +298,168 @@ return_type f () &amp;&amp;;
 
 <function name="operator+"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator-"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator*"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator~"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&amp;"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator!"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator++"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator--"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator++"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name=""><paramtype>int</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name=""><paramtype>int</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator--"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr"/>
-        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name=""><paramtype>int</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name=""><paramtype>Expr &amp;&amp;</paramtype></parameter><parameter name=""><paramtype>int</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_UNARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&lt;&lt;"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&gt;&gt;"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator*"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator/"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator%"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator+"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator-"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&lt;"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&gt;"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&lt;="><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&gt;="><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator=="><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator!="><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator||"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&amp;&amp;"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator&amp;"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator|"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="operator^"><type>constexpr auto</type><template>
           <template-type-parameter name="LExpr"/>
           <template-type-parameter name="RExpr"/>
-        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para></para>
+        </template><parameter name="lhs"><paramtype>LExpr &amp;&amp;</paramtype></parameter><parameter name="rhs"><paramtype>RExpr &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_BINARY_OPERATOR for full semantics. </para>
+</para>
 </para></description></function>
 <function name="if_else"><type>constexpr auto</type><template>
           <template-type-parameter name="Expr1"/>
           <template-type-parameter name="Expr2"/>
           <template-type-parameter name="Expr3"/>
-        </template><parameter name="expr1"><paramtype>Expr1 &amp;&amp;</paramtype></parameter><parameter name="expr2"><paramtype>Expr2 &amp;&amp;</paramtype></parameter><parameter name="expr3"><paramtype>Expr3 &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_EXPR_IF_ELSE for full semantics. </para></para>
+        </template><parameter name="expr1"><paramtype>Expr1 &amp;&amp;</paramtype></parameter><parameter name="expr2"><paramtype>Expr2 &amp;&amp;</paramtype></parameter><parameter name="expr3"><paramtype>Expr3 &amp;&amp;</paramtype></parameter><description><para><para><emphasis role="bold">See Also:</emphasis><para>BOOST_YAP_USER_EXPR_IF_ELSE for full semantics. </para>
+</para>
 </para></description></function>
 <function name="make_expression"><type>constexpr auto</type><template>
           <template-nontype-parameter name="Kind"><type>expr_kind</type></template-nontype-parameter>
@@ -443,7 +498,7 @@ return_type f () &amp;&amp;;
 <header name="boost/yap/print.hpp">
 <namespace name="boost">
 <namespace name="yap">
-<function name="op_string"><type>char const *</type><parameter name="kind"><paramtype>expr_kind</paramtype></parameter><description><para>Returns the <computeroutput>char const *</computeroutput> string for the spelling of the C++ operator associated with <emphasis>kind</emphasis>. It returns the special values "ref" and "term" for the non-operator kinds <computeroutput>expr_kind::expr_ref</computeroutput> amd <computeroutput>expr_kind::terminal</computeroutput>, respectively. </para></description></function>
+<function name="op_string"><type>char const  *</type><parameter name="kind"><paramtype>expr_kind</paramtype></parameter><description><para>Returns the <computeroutput>char const *</computeroutput> string for the spelling of the C++ operator associated with <emphasis>kind</emphasis>. It returns the special values "ref" and "term" for the non-operator kinds <computeroutput>expr_kind::expr_ref</computeroutput> amd <computeroutput>expr_kind::terminal</computeroutput>, respectively. </para></description></function>
 <function name="print"><type>std::ostream &amp;</type><template>
           <template-type-parameter name="Expr"/>
         </template><parameter name="os"><paramtype>std::ostream &amp;</paramtype></parameter><parameter name="expr"><paramtype>Expr const &amp;</paramtype></parameter><description><para>Prints expression <emphasis>expr</emphasis> to stream <emphasis>os</emphasis>. Returns <emphasis>os</emphasis>. </para></description></function>

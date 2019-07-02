@@ -14,6 +14,7 @@
 #include <string>
 #include <iostream>
 #include "test.hpp"
+#include "utils.hpp"
 
 int
 main()
@@ -481,6 +482,21 @@ main()
         BOOST_TEST(test("x 123 \"a string\"", (char_ >> int_ >> "\"a string\"")[f], space));
         BOOST_TEST(c == 'x');
         BOOST_TEST(n == 123);
+    }
+
+    {
+#ifdef SPIRIT_NO_COMPILE_CHECK
+        char const* const s = "";
+        int i;
+        parse(s, s, int_ >> int_, i);
+#endif
+    }
+
+    { // test move only types
+        using boost::spirit::x3::eps;
+        std::vector<move_only> v;
+        BOOST_TEST(test_attr("ssszs", *synth_move_only >> 'z' >> synth_move_only, v));
+        BOOST_TEST_EQ(v.size(), 4);
     }
 
     return boost::report_errors();

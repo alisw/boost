@@ -30,7 +30,7 @@
           (Inherited from <code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">basic_parser</span></code>)
         </p>
 <p>
-          <a class="indexterm" name="idp124076480"></a>
+          <a class="indexterm" name="idm46025427552656"></a>
 Set a limit on the total size of the header.
         </p>
 <h6>
@@ -49,17 +49,14 @@ Set a limit on the total size of the header.
           This function sets the maximum allowed size of the header including all
           field name, value, and delimiter characters and also including the CRLF
           sequences in the serialized input. If the end of the header is not found
-          within the limit of the header size, the error error::header_limit is returned
-          by <a class="link" href="../boost__beast__http__basic_parser/put.html" title="http::basic_parser::put"><code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">basic_parser</span><span class="special">::</span><span class="identifier">put</span></code></a>.
-        </p>
-<p>
-          Setting the limit after any header octets have been parsed results in undefined
-          behavior.
+          within the limit of the header size, the error <a class="link" href="../boost__beast__http__error.html" title="http::error"><code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">header_limit</span></code></a> is returned by <a class="link" href="../boost__beast__http__basic_parser/put.html" title="http::basic_parser::put"><code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">basic_parser</span><span class="special">::</span><span class="identifier">put</span></code></a>. Setting the limit after any
+          header octets have been parsed results in undefined behavior.
         </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

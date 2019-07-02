@@ -36,10 +36,11 @@ It translates Value object to Indexable object. By default, it can handle Values
 [heading Member(s)]
 [table
 [[Modifier][Function][Description]]
-[[ `const`][[link structboost_1_1geometry_1_1index_1_1indexable_1afa5f2cdc3390a6f1f394890e479df794 `operator()(Value const &)`]][Return indexable extracted from the value. ]]
+[[ `const`][[link structboost_1_1geometry_1_1index_1_1indexable_1a0bbe640be9ae0475e1b56f5b2e08877e `operator()(Value const &)`]][Return indexable extracted from the value. ]]
+[[ `const`][[link structboost_1_1geometry_1_1index_1_1indexable_1a4aa66ffe2975f655bada9e6b5a65317b `operator()(V const &)`]][Return indexable extracted from the value. Overload for types compatible with Value but different yet holding referencable Indexable, e.g. tuple containing a reference. ]]
 ]
 
-[#structboost_1_1geometry_1_1index_1_1indexable_1afa5f2cdc3390a6f1f394890e479df794]
+[#structboost_1_1geometry_1_1index_1_1indexable_1a0bbe640be9ae0475e1b56f5b2e08877e]
 [section operator()(Value const &)]
 '''<indexterm><primary>operator()</primary></indexterm>'''
 Return indexable extracted from the value. 
@@ -55,6 +56,27 @@ Return indexable extracted from the value.
 [table 
 [[Type][Name][Description]]
 [[`Value const &`][ `v` ][The value. ]]
+]
+[heading Returns]
+The indexable. 
+[endsect]
+
+[#structboost_1_1geometry_1_1index_1_1indexable_1a4aa66ffe2975f655bada9e6b5a65317b]
+[section operator()(V const &)]
+'''<indexterm><primary>operator()</primary></indexterm>'''
+Return indexable extracted from the value. Overload for types compatible with Value but different yet holding referencable Indexable, e.g. tuple containing a reference. 
+
+[heading Synopsis]
+[pre
+`template<``typename V``>`
+[^[link structboost_1_1geometry_1_1index_1_1indexable_1af6f21324f6484330b9deb0ee0629f4b4 result_type]] `operator()``(``V const &` `v``)`
+]
+
+[heading Modifier(s)]
+``const ``[heading Parameter(s)]
+[table 
+[[Type][Name][Description]]
+[[`V const &`][ `v` ][The value. ]]
 ]
 [heading Returns]
 The indexable. 

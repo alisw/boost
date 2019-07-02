@@ -4,57 +4,10 @@
 <header name="boost/accumulators/accumulators_fwd.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-<struct name="droppable_accumulator_base"><template>
-      <template-type-parameter name="Accumulator"/>
-    </template><inherit access="public">Accumulator</inherit><method-group name="public member functions">
-<method name="operator()"><type>void</type><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
-<method name="add_ref"><type>void</type><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name=""><paramtype>Args const &amp;</paramtype></parameter></method>
-<method name="drop"><type>void</type><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
-<method name="is_dropped" cv="const"><type>bool</type></method>
-</method-group>
-<constructor><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></constructor>
-<constructor><parameter name="that"><paramtype><classname>droppable_accumulator_base</classname> const &amp;</paramtype></parameter></constructor>
-</struct><struct name="droppable_accumulator"><template>
-      <template-type-parameter name="Accumulator"/>
-    </template><inherit access="public">boost::accumulators::droppable_accumulator_base&lt; Accumulator &gt;</inherit><method-group name="public member functions">
-</method-group>
-<constructor><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></constructor>
-<constructor><parameter name="that"><paramtype><classname>droppable_accumulator</classname> const &amp;</paramtype></parameter></constructor>
-</struct><struct name="with_cached_result"><template>
-      <template-type-parameter name="Accumulator"/>
-    </template><inherit access="public">Accumulator</inherit><method-group name="public member functions">
-<method name="on_drop"><type>void</type><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
-<method name="result" cv="const"><type>result_type</type><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
-</method-group>
-<constructor><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></constructor>
-<constructor><parameter name="that"><paramtype><classname>with_cached_result</classname> const &amp;</paramtype></parameter></constructor>
-<destructor/>
-<method-group name="private member functions">
-<method name="set"><type>void</type><parameter name="r"><paramtype>result_type const &amp;</paramtype></parameter></method>
-<method name="get" cv="const"><type>result_type const &amp;</type></method>
-<method name="has_result" cv="const"><type>bool</type></method>
-</method-group>
-<copy-assignment><type><classname>with_cached_result</classname> &amp;</type><parameter name=""><paramtype><classname>with_cached_result</classname> const &amp;</paramtype></parameter></copy-assignment>
-</struct><struct name="accumulator_set"><template>
+<struct name="accumulator_set"><template>
       <template-type-parameter name="Sample"/>
       <template-type-parameter name="Features"/>
-      <template-type-parameter name="Weight"><default>void</default></template-type-parameter>
+      <template-type-parameter name="Weight"/>
     </template><purpose>A set of accumulators. </purpose><description><para><classname alt="boost::accumulators::accumulator_set">accumulator_set</classname> resolves the dependencies between features and ensures that the accumulators in the set are updated in the proper order.</para><para>acccumulator_set provides a general mechanism to visit the accumulators in the set in order, with or without a filter. You can also fetch a reference to an accumulator that corresponds to a feature. </para></description><method-group name="public member functions">
 <method name="visit"><type>void</type><template>
           <template-type-parameter name="UnaryFunction"/>
@@ -73,7 +26,7 @@
 <method name="extract"><type><classname>apply</classname>&lt; Feature &gt;::type &amp;</type><template>
           <template-type-parameter name="Feature"/>
         </template><purpose>Extraction. </purpose></method>
-<method name="extract" cv="const"><type><classname>apply</classname>&lt; Feature &gt;::type const &amp;</type><template>
+<method name="extract" cv="const"><type><classname>apply</classname>&lt; Feature &gt;::type const  &amp;</type><template>
           <template-type-parameter name="Feature"/>
         </template><description><para>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </para></description></method>
 <method name="drop"><type>void</type><template>
@@ -84,6 +37,40 @@
           <template-type-parameter name="A1"/>
         </template><parameter name="a1"><paramtype>A1 const &amp;</paramtype><description><para>Optional named parameter to be passed to all the accumulators </para></description></parameter><description><para>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</para><para>
 </para></description></constructor>
+</struct><struct name="as_feature"><template>
+      <template-type-parameter name="Feature"/>
+    </template></struct><struct name="as_weighted_feature"><template>
+      <template-type-parameter name="Feature"/>
+    </template></struct><struct name="depends_on"><template>
+      <template-type-parameter name="Feature1"/>
+      <template-type-parameter name="Feature2"/>
+      <template-nontype-parameter name=""><type>...</type></template-nontype-parameter>
+    </template><purpose><classname alt="boost::accumulators::depends_on">depends_on</classname> </purpose></struct><struct name="droppable_accumulator"><template>
+      <template-type-parameter name="Accumulator"/>
+    </template><inherit access="public">boost::accumulators::droppable_accumulator_base&lt; Accumulator &gt;</inherit><method-group name="public member functions">
+</method-group>
+<constructor><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></constructor>
+<constructor><parameter name="that"><paramtype><classname>droppable_accumulator</classname> const &amp;</paramtype></parameter></constructor>
+</struct><struct name="droppable_accumulator_base"><template>
+      <template-type-parameter name="Accumulator"/>
+    </template><inherit access="public">Accumulator</inherit><method-group name="public member functions">
+<method name="operator()"><type>void</type><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="add_ref"><type>void</type><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name=""><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="drop"><type>void</type><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="is_dropped" cv="const"><type>bool</type></method>
+</method-group>
+<constructor><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></constructor>
+<constructor><parameter name="that"><paramtype><classname>droppable_accumulator_base</classname> const &amp;</paramtype></parameter></constructor>
 </struct><struct name="extractor"><template>
       <template-type-parameter name="Feature"/>
     </template><purpose>Extracts the result associated with Feature from the specified <classname alt="boost::accumulators::accumulator_set">accumulator_set</classname>. </purpose><method-group name="public member functions">
@@ -105,34 +92,51 @@
 </method-group>
 </struct><struct name="feature_of"><template>
       <template-type-parameter name="Feature"/>
-    </template></struct><struct name="as_feature"><template>
-      <template-type-parameter name="Feature"/>
-    </template></struct><struct name="as_weighted_feature"><template>
-      <template-type-parameter name="Feature"/>
-    </template></struct><struct name="depends_on"><template>
-      <template-nontype-parameter name=""><type>BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(BOOST_ACCUMULATORS_MAX_FEATURES, typename Feature, mpl::na)</type></template-nontype-parameter>
-    </template><purpose><classname alt="boost::accumulators::depends_on">depends_on</classname> </purpose></struct><struct name="features"><template>
-      <template-nontype-parameter name=""><type>BOOST_PP_ENUM_PARAMS_WITH_A_DEFAULT(BOOST_ACCUMULATORS_MAX_FEATURES, typename Feature, mpl::na)</type></template-nontype-parameter>
-    </template><inherit access="public">mpl::vector&lt; Feature1, Feature2,...&gt;</inherit></struct><namespace name="impl">
+    </template></struct><struct name="features"><template>
+      <template-type-parameter name="Feature1"/>
+      <template-type-parameter name="Feature2"/>
+      <template-nontype-parameter name=""><type>...</type></template-nontype-parameter>
+    </template><inherit access="public">mpl::vector&lt; Feature1, Feature2,... &gt;</inherit></struct><struct name="with_cached_result"><template>
+      <template-type-parameter name="Accumulator"/>
+    </template><inherit access="public">Accumulator</inherit><method-group name="public member functions">
+<method name="on_drop"><type>void</type><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="result" cv="const"><type>result_type</type><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+</method-group>
+<constructor><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></constructor>
+<constructor><parameter name="that"><paramtype><classname>with_cached_result</classname> const &amp;</paramtype></parameter></constructor>
+<destructor/>
+<method-group name="private member functions">
+<method name="set"><type>void</type><parameter name="r"><paramtype>result_type const &amp;</paramtype></parameter></method>
+<method name="get" cv="const"><type>result_type const  &amp;</type></method>
+<method name="has_result" cv="const"><type>bool</type></method>
+</method-group>
+<copy-assignment><type><classname>with_cached_result</classname> &amp;</type><parameter name=""><paramtype><classname>with_cached_result</classname> const &amp;</paramtype></parameter></copy-assignment>
+</struct><namespace name="impl">
 </namespace>
 <namespace name="tag">
-<struct name="value"><template>
-      <template-type-parameter name="ValueType"/>
+<struct name="droppable"><template>
+      <template-type-parameter name="Feature"/>
+    </template><inherit access="public">as_feature::type&lt; Feature &gt;</inherit></struct><struct name="external"><template>
+      <template-type-parameter name="Feature"/>
       <template-type-parameter name="Tag"/>
-    </template><inherit access="public">boost::accumulators::depends_on&lt;&gt;</inherit></struct><struct name="value_tag"><template>
-      <template-type-parameter name="Tag"/>
-    </template></struct><struct name="reference"><template>
+      <template-type-parameter name="AccumulatorSet"/>
+    </template><inherit access="public">boost::accumulators::depends_on&lt; reference&lt; AccumulatorSet, Tag &gt; &gt;</inherit></struct><struct name="reference"><template>
       <template-type-parameter name="Referent"/>
       <template-type-parameter name="Tag"/>
     </template><inherit access="public">boost::accumulators::depends_on&lt;&gt;</inherit></struct><struct name="reference_tag"><template>
       <template-type-parameter name="Tag"/>
-    </template></struct><struct name="external"><template>
-      <template-type-parameter name="Type"/>
-      <template-type-parameter name="Tag"><default>void</default></template-type-parameter>
-      <template-type-parameter name="AccumulatorSet"><default>void</default></template-type-parameter>
-    </template><inherit access="public">boost::accumulators::depends_on&lt; reference&lt; AccumulatorSet, Tag &gt; &gt;</inherit></struct><struct name="droppable"><template>
-      <template-type-parameter name="Feature"/>
-    </template><inherit access="public">as_feature::type&lt; Feature &gt;</inherit></struct></namespace>
+    </template></struct><struct name="value"><template>
+      <template-type-parameter name="ValueType"/>
+      <template-type-parameter name="Tag"/>
+    </template><inherit access="public">boost::accumulators::depends_on&lt;&gt;</inherit></struct><struct name="value_tag"><template>
+      <template-type-parameter name="Tag"/>
+    </template></struct></namespace>
 
 <function name="extract_result"><type>mpl::apply&lt; AccumulatorSet, Feature &gt;::type::result_type</type><template>
           <template-type-parameter name="Feature"/>
@@ -156,18 +160,18 @@
 <header name="boost/accumulators/framework/accumulator_base.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-<struct name="dont_care"><method-group name="public member functions">
-</method-group>
-<constructor><template>
-          <template-type-parameter name="Args"/>
-        </template><parameter name=""><paramtype>Args const &amp;</paramtype></parameter></constructor>
-</struct><struct name="accumulator_base"><typedef name="is_droppable"><type>mpl::false_</type></typedef>
+<struct name="accumulator_base"><typedef name="is_droppable"><type>mpl::false_</type></typedef>
 <method-group name="public member functions">
 <method name="operator()"><type><emphasis>unspecified</emphasis></type><parameter name=""><paramtype><classname>dont_care</classname></paramtype></parameter></method>
 <method name="add_ref"><type><emphasis>unspecified</emphasis></type><parameter name=""><paramtype><classname>dont_care</classname></paramtype></parameter></method>
 <method name="drop"><type><emphasis>unspecified</emphasis></type><parameter name=""><paramtype><classname>dont_care</classname></paramtype></parameter></method>
 <method name="on_drop"><type><emphasis>unspecified</emphasis></type><parameter name=""><paramtype><classname>dont_care</classname></paramtype></parameter></method>
 </method-group>
+</struct><struct name="dont_care"><method-group name="public member functions">
+</method-group>
+<constructor><template>
+          <template-type-parameter name="Args"/>
+        </template><parameter name=""><paramtype>Args const &amp;</paramtype></parameter></constructor>
 </struct>
 
 
@@ -348,7 +352,7 @@
 <namespace name="accumulators">
 <namespace name="tag">
 <struct name="accumulator"/></namespace>
-<data-member name="accumulator"><type>boost::parameter::keyword&lt; <classname>tag::accumulator</classname> &gt; const</type></data-member>
+<data-member name="accumulator"><type>boost::parameter::keyword&lt; tag ::accumulator &gt; const</type></data-member>
 
 
 
@@ -361,7 +365,7 @@
 <namespace name="accumulators">
 <namespace name="tag">
 <struct name="sample"/></namespace>
-<data-member name="sample"><type>boost::parameter::keyword&lt; <classname>tag::sample</classname> &gt; const</type></data-member>
+<data-member name="sample"><type>boost::parameter::keyword&lt; tag ::sample &gt; const</type></data-member>
 
 
 
@@ -374,7 +378,7 @@
 <namespace name="accumulators">
 <namespace name="tag">
 <struct name="weight"/></namespace>
-<data-member name="weight"><type>boost::parameter::keyword&lt; <classname>tag::weight</classname> &gt; const</type></data-member>
+<data-member name="weight"><type>boost::parameter::keyword&lt; tag ::weight &gt; const</type></data-member>
 
 
 
@@ -387,7 +391,7 @@
 <namespace name="accumulators">
 <namespace name="tag">
 <struct name="weights"/></namespace>
-<data-member name="weights"><type>boost::parameter::keyword&lt; <classname>tag::weights</classname> &gt; const</type></data-member>
+<data-member name="weights"><type>boost::parameter::keyword&lt; tag ::weights &gt; const</type></data-member>
 
 
 

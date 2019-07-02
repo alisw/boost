@@ -6,19 +6,18 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 #
-message(STATUS "Boost.GIL: configuring Numeric extension tests")
+message(STATUS "Boost.GIL: Configuring Numeric extension tests")
 
-file(GLOB _headers
-  ${PROJECT_SOURCE_DIR}/include/boost/gil/extension/numeric/*.hpp)
-list(APPEND _headers ${_boost_gil_headers})
+foreach(_name
+  numeric)
 
-add_executable(gil_test_ext_numeric "")
-target_sources(gil_test_ext_numeric
-  PRIVATE
-  ${_headers}
-  numeric.cpp)
-target_link_libraries(gil_test_ext_numeric
-  PRIVATE
-  Boost::disable_autolinking
-  Boost::unit_test_framework)
-add_test(gil.tests.ext.numeric gil_test_ext_numeric)
+  set(_target test_ext_${_name})
+  add_executable(${_target} "")
+  target_sources(${_target} PRIVATE ${_name}.cpp)
+  target_link_libraries(${_target}
+    PRIVATE
+      gil_compile_options
+      gil_include_directories
+      gil_dependencies)
+  add_test(test.ext.${_name} ${_target})
+endforeach()

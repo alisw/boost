@@ -64,7 +64,7 @@
             <a class="link" href="../ref/boost__beast__http__is_body_writer.html" title="http::is_body_writer"><code class="computeroutput"><span class="identifier">is_body_writer</span></code></a>
           </li>
 <li class="listitem">
-            <a class="link" href="Body.html" title="Body"><span class="bold"><strong>Body</strong></span></a>
+            <a class="link" href="Body.html" title="Body"><span class="emphasis"><em>Body</em></span></a>
           </li>
 </ul></div>
 <h5>
@@ -90,8 +90,9 @@
             the requirements of <span class="bold"><strong>BodyWriter</strong></span>.
           </li>
 <li class="listitem">
-            <code class="computeroutput"><span class="identifier">B</span></code> denotes a <a class="link" href="Body.html" title="Body"><span class="bold"><strong>Body</strong></span></a> where <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">W</span><span class="special">,</span> <span class="identifier">B</span><span class="special">::</span><span class="identifier">writer</span><span class="special">&gt;::</span><span class="identifier">value</span>
-            <span class="special">==</span> <span class="keyword">true</span></code>.
+            <code class="computeroutput"><span class="identifier">B</span></code> denotes a <a class="link" href="Body.html" title="Body"><span class="emphasis"><em>Body</em></span></a>
+            where <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">W</span><span class="special">,</span> <span class="identifier">B</span><span class="special">::</span><span class="identifier">writer</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">==</span>
+            <span class="keyword">true</span></code>.
           </li>
 <li class="listitem">
             <code class="computeroutput"><span class="identifier">a</span></code> denotes a value of
@@ -117,7 +118,7 @@
           </li>
 </ul></div>
 <div class="table">
-<a name="beast.concepts.BodyWriter.valid_expressions"></a><p class="title"><b>Table&#160;1.30.&#160;Valid expressions</b></p>
+<a name="beast.concepts.BodyWriter.valid_expressions"></a><p class="title"><b>Table&#160;1.38.&#160;Valid expressions</b></p>
 <div class="table-contents"><table class="table" summary="Valid expressions">
 <colgroup>
 <col>
@@ -152,8 +153,8 @@
               </td>
 <td>
                 <p>
-                  A type which meets the requirements of <a href="../../../../../../doc/html/boost_asio/reference/ConstBufferSequence.html" target="_top"><span class="bold"><strong>ConstBufferSequence</strong></span></a>. This is the
-                  type of buffer returned by <code class="computeroutput"><span class="identifier">W</span><span class="special">::</span><span class="identifier">get</span></code>.
+                  A type which meets the requirements of <a href="../../../../../../doc/html/boost_asio/reference/ConstBufferSequence.html" target="_top"><span class="emphasis"><em>ConstBufferSequence</em></span></a>.
+                  This is the type of buffer returned by <code class="computeroutput"><span class="identifier">W</span><span class="special">::</span><span class="identifier">get</span></code>.
                 </p>
               </td>
 </tr>
@@ -253,7 +254,7 @@
 <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
     <span class="comment">/// The type of buffer returned by `get`.</span>
-    <span class="keyword">using</span> <span class="identifier">const_buffers_type</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffer</span><span class="special">;</span>
+    <span class="keyword">using</span> <span class="identifier">const_buffers_type</span> <span class="special">=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">const_buffer</span><span class="special">;</span>
 
     <span class="comment">/** Construct the writer.
 
@@ -276,7 +277,7 @@
     <span class="identifier">init</span><span class="special">(</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="comment">// The specification requires this to indicate "no error"</span>
-        <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+        <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
     <span class="special">}</span>
 
     <span class="comment">/** Returns the next buffer in the body.
@@ -286,7 +287,7 @@
             body, no more buffers are present.
 
         @li If the optional contains a value, the first element of the
-            pair represents a @b ConstBufferSequence containing one or
+            pair represents a &lt;em&gt;ConstBufferSequence&lt;/em&gt; containing one or
             more octets of the body data. The second element indicates
             whether or not there are additional octets of body data.
             A value of `true` means there is more data, and that the
@@ -301,7 +302,7 @@
     <span class="identifier">get</span><span class="special">(</span><span class="identifier">error_code</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="comment">// The specification requires this to indicate "no error"</span>
-        <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+        <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
 
         <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">none</span><span class="special">;</span> <span class="comment">// for exposition only</span>
     <span class="special">}</span>
@@ -337,7 +338,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

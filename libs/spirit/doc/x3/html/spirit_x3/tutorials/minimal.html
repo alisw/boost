@@ -4,7 +4,7 @@
 <title>X3 Program Structure</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Spirit X3 3.0.3">
+<link rel="home" href="../../index.html" title="Spirit X3 3.0.4">
 <link rel="up" href="../tutorials.html" title="Tutorials">
 <link rel="prev" href="employee.html" title="Employee - Parsing into structs">
 <link rel="next" href="annotation.html" title="Annotations - Decorating the ASTs">
@@ -221,11 +221,11 @@
         actually happening is that we are declaring a <code class="computeroutput"><span class="identifier">parse_rule</span></code>
         function in the client namespace. For example, given a rule named <code class="computeroutput"><span class="identifier">my_rule</span></code>, <code class="computeroutput"><span class="identifier">BOOST_SPIRIT_DECLARE</span><span class="special">(</span><span class="identifier">my_rule</span><span class="special">)</span></code> expands to this code:
       </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Context</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attribute</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Context</span><span class="special">&gt;</span>
 <span class="keyword">bool</span> <span class="identifier">parse_rule</span><span class="special">(</span>
     <span class="keyword">decltype</span><span class="special">(</span><span class="identifier">my_rule</span><span class="special">)</span>
   <span class="special">,</span> <span class="identifier">Iterator</span><span class="special">&amp;</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">last</span>
-  <span class="special">,</span> <span class="identifier">Context</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">context</span><span class="special">,</span> <span class="identifier">Attribute</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">);</span>
+  <span class="special">,</span> <span class="identifier">Context</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">context</span><span class="special">,</span> <span class="keyword">decltype</span><span class="special">(</span><span class="identifier">my_rule</span><span class="special">)::</span><span class="identifier">attribute_type</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">);</span>
 </pre>
 <p>
         If you went back and reviewed <a class="link" href="roman.html#__tutorial_spirit_define__">BOOST_SPIRIT_DEFINE</a>,
@@ -387,7 +387,7 @@
         For our particular example, <code class="computeroutput"><span class="identifier">BOOST_SPIRIT_INSTANTIATE</span></code>
         expands to this code:
       </p>
-<pre class="programlisting"><span class="keyword">template</span> <span class="keyword">bool</span> <span class="identifier">parse_rule</span><span class="special">&lt;</span><span class="identifier">iterator_type</span><span class="special">,</span> <span class="identifier">context_type</span><span class="special">,</span> <span class="identifier">employee_type</span><span class="special">::</span><span class="identifier">attribute_type</span><span class="special">&gt;(</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="keyword">bool</span> <span class="identifier">parse_rule</span><span class="special">&lt;</span><span class="identifier">iterator_type</span><span class="special">,</span> <span class="identifier">context_type</span><span class="special">&gt;(</span>
     <span class="identifier">employee_type</span> <span class="identifier">rule_</span>
   <span class="special">,</span> <span class="identifier">iterator_type</span><span class="special">&amp;</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">iterator_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">last</span>
   <span class="special">,</span> <span class="identifier">context_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">context</span><span class="special">,</span> <span class="identifier">employee_type</span><span class="special">::</span><span class="identifier">attribute_type</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">);</span>

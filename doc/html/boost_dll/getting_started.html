@@ -35,6 +35,33 @@
       and <code class="computeroutput"><span class="identifier">boost_system</span></code> libraries.
     </p>
 <p>
+      If you want to load a library, just construct <code class="computeroutput"><a class="link" href="../boost/dll/shared_library.html" title="Class shared_library">boost::dll::shared_library</a></code>
+      class with a path to the library as a parameter:
+</p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dll</span><span class="special">::</span><span class="identifier">shared_library</span> <span class="identifier">lib</span><span class="special">(</span><span class="string">"/test/boost/application/libtest_library.so"</span><span class="special">);</span>
+</pre>
+<p>
+      Now you can easily import symbols from that library using the <code class="computeroutput"><span class="identifier">get</span></code> and <code class="computeroutput"><span class="identifier">get_alias</span></code>
+      member functions:
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">plugin_constant</span> <span class="special">=</span> <span class="identifier">lib</span><span class="special">.</span><span class="identifier">get</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"integer_variable"</span><span class="special">);</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">()&gt;</span> <span class="identifier">f</span> <span class="special">=</span> <span class="identifier">lib</span><span class="special">.</span><span class="identifier">get</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">()&gt;(</span><span class="string">"function_returning_int"</span><span class="special">);</span>
+<span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">lib</span><span class="special">.</span><span class="identifier">get_alias</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"alias_to_int_variable"</span><span class="special">);</span>
+</pre>
+<p>
+      In case of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dll</span><span class="special">::</span><span class="identifier">shared_library</span></code>
+      it is safe to use imported symbols only until <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dll</span><span class="special">::</span><span class="identifier">shared_library</span></code> instance is not destroyed.
+    </p>
+<p>
+      Query libraries using <code class="computeroutput"><a class="link" href="../boost/dll/library_info.html" title="Class library_info">boost::dll::library_info</a></code>
+      and get symbol infos using <code class="computeroutput"><a class="link" href="../boost/dll/symbol_location.html" title="Function symbol_location">boost::dll::symbol_location</a></code>,
+      <code class="computeroutput"><a class="link" href="../boost/dll/this_line_location.html" title="Function this_line_location">boost::dll::this_line_location</a></code>
+      and <code class="computeroutput"><a class="link" href="../boost/dll/program_location.html" title="Function program_location">boost::dll::program_location</a></code>.
+    </p>
+<p>
+      For importing a single function or variable you may use a following one liners:
+    </p>
+<p>
 </p>
 <pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">;</span>
 
@@ -183,35 +210,10 @@
         flag is also recommended.
       </p></td></tr>
 </table></div>
-<p>
-      If you need a low level API <code class="computeroutput"><a class="link" href="../boost/dll/shared_library.html" title="Class shared_library">boost::dll::shared_library</a></code>
-      will suit you. If you want to load a library, just construct that class with
-      a path to the library as a parameter:
-</p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dll</span><span class="special">::</span><span class="identifier">shared_library</span> <span class="identifier">lib</span><span class="special">(</span><span class="string">"/test/boost/application/libtest_library.so"</span><span class="special">);</span>
-</pre>
-<p>
-      Now you can easily import symbols from that library using the <code class="computeroutput"><span class="identifier">get</span></code> and <code class="computeroutput"><span class="identifier">get_alias</span></code>
-      member functions:
-</p>
-<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">plugin_constant</span> <span class="special">=</span> <span class="identifier">lib</span><span class="special">.</span><span class="identifier">get</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"integer_variable"</span><span class="special">);</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">()&gt;</span> <span class="identifier">f</span> <span class="special">=</span> <span class="identifier">lib</span><span class="special">.</span><span class="identifier">get</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">()&gt;(</span><span class="string">"function_returning_int"</span><span class="special">);</span>
-<span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">lib</span><span class="special">.</span><span class="identifier">get_alias</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="string">"alias_to_int_variable"</span><span class="special">);</span>
-</pre>
-<p>
-      In case of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dll</span><span class="special">::</span><span class="identifier">shared_library</span></code>
-      it is safe to use imported symbols only until <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dll</span><span class="special">::</span><span class="identifier">shared_library</span></code> instance is not destroyed.
-    </p>
-<p>
-      Query libraries using <code class="computeroutput"><a class="link" href="../boost/dll/library_info.html" title="Class library_info">boost::dll::library_info</a></code>
-      and get symbol infos using <code class="computeroutput"><a class="link" href="../boost/dll/symbol_location.html" title="Function symbol_location">boost::dll::symbol_location</a></code>,
-      <code class="computeroutput"><a class="link" href="../boost/dll/this_line_location.html" title="Function this_line_location">boost::dll::this_line_location</a></code>
-      and <code class="computeroutput"><a class="link" href="../boost/dll/program_location.html" title="Function program_location">boost::dll::program_location</a></code>.
-    </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2014 Renato Tegon Forti, Antony Polukhin<br>Copyright &#169; 2015 Antony Polukhin<br>Copyright &#169; 2016 Antony Polukhin, Klemens Morgenstern<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2014 Renato Tegon Forti, Antony Polukhin<br>Copyright &#169; 2015 Antony Polukhin<br>Copyright &#169; 2016 Antony Polukhin, Klemens Morgenstern<br>Copyright &#169; 2017-2019 Antony Polukhin<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
       </p>

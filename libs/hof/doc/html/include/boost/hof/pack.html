@@ -50,7 +50,7 @@
 <h1>pack<a class="headerlink" href="#pack" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="header">
 <h2>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/hof/pack.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;boost/hof/pack.hpp&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
 </div>
@@ -63,7 +63,7 @@ a sequence that can be unpacked with <code class="docutils literal"><span class=
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// Decay everything before capturing</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="c1">// Decay everything before capturing</span>
 <span class="k">template</span><span class="o">&lt;</span><span class="n">class</span><span class="p">...</span> <span class="n">Ts</span><span class="o">&gt;</span>
 <span class="k">constexpr</span> <span class="k">auto</span> <span class="n">pack</span><span class="p">(</span><span class="n">Ts</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">xs</span><span class="p">);</span>
 
@@ -83,7 +83,7 @@ a sequence that can be unpacked with <code class="docutils literal"><span class=
 </div>
 <div class="section" id="semantics">
 <h2>Semantics<a class="headerlink" href="#semantics" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">assert</span><span class="p">(</span><span class="n">pack</span><span class="p">(</span><span class="n">xs</span><span class="p">...)(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">assert</span><span class="p">(</span><span class="n">pack</span><span class="p">(</span><span class="n">xs</span><span class="p">...)(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
 <span class="n">assert</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">f</span><span class="p">)(</span><span class="n">pack</span><span class="p">(</span><span class="n">xs</span><span class="p">...))</span> <span class="o">==</span> <span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
 
 <span class="n">assert</span><span class="p">(</span><span class="n">pack_join</span><span class="p">(</span><span class="n">pack</span><span class="p">(</span><span class="n">xs</span><span class="p">...),</span> <span class="n">pack</span><span class="p">(</span><span class="n">ys</span><span class="p">...))</span> <span class="o">==</span> <span class="n">pack</span><span class="p">(</span><span class="n">xs</span><span class="p">...,</span> <span class="n">ys</span><span class="p">...));</span>
@@ -92,7 +92,7 @@ a sequence that can be unpacked with <code class="docutils literal"><span class=
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/hof.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;boost/hof.hpp&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp"></span>
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">hof</span><span class="p">;</span>
 

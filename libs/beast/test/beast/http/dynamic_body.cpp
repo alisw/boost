@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016-2017 Vinnie Falco (vinnie dot falco at gmail dot com)
+// Copyright (c) 2016-2019 Vinnie Falco (vinnie dot falco at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,8 +16,8 @@
 #include <boost/beast/http/parser.hpp>
 #include <boost/beast/http/read.hpp>
 #include <boost/beast/http/write.hpp>
-#include <boost/beast/experimental/test/stream.hpp>
-#include <boost/beast/unit_test/suite.hpp>
+#include <boost/beast/_experimental/test/stream.hpp>
+#include <boost/beast/_experimental/unit_test/suite.hpp>
 
 namespace boost {
 namespace beast {
@@ -25,7 +25,7 @@ namespace http {
 
 class dynamic_body_test : public beast::unit_test::suite
 {
-    boost::asio::io_context ioc_;
+    net::io_context ioc_;
 
 public:
     template<bool isRequest, class Body, class Fields>

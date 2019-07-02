@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
-<link rel="up" href="../using_http.html" title="Using HTTP">
+<link rel="up" href="../using_http.html" title="HTTP">
 <link rel="prev" href="chunked_encoding.html" title="Chunked Encoding">
 <link rel="next" href="custom_parsers.html" title="Custom Parsers">
 </head>
@@ -28,7 +28,7 @@
 </h3></div></div></div>
 <p>
         User-defined types are possible for the message body, where the type meets
-        the <a class="link" href="../concepts/Body.html" title="Body"><span class="bold"><strong>Body</strong></span></a>
+        the <a class="link" href="../concepts/Body.html" title="Body"><span class="emphasis"><em>Body</em></span></a>
         requirements. This simplified class declaration shows the customization points
         available to user-defined body types:
       </p>
@@ -54,7 +54,7 @@
         The meaning of the nested types is as follows
       </p>
 <div class="table">
-<a name="beast.using_http.custom_body_types.body_type_members"></a><p class="title"><b>Table&#160;1.23.&#160;Body Type Members</b></p>
+<a name="beast.using_http.custom_body_types.body_type_members"></a><p class="title"><b>Table&#160;1.27.&#160;Body Type Members</b></p>
 <div class="table-contents"><table class="table" summary="Body Type Members">
 <colgroup>
 <col>
@@ -93,9 +93,10 @@
               </td>
 <td>
                 <p>
-                  An optional nested type meeting the requirements of <a class="link" href="../concepts/BodyReader.html" title="BodyReader"><span class="bold"><strong>BodyReader</strong></span></a>, which provides the algorithm
-                  for storing a forward range of buffer sequences in the body representation.
-                  If present, this body type may be used with a <a class="link" href="../ref/boost__beast__http__parser.html" title="http::parser"><code class="computeroutput"><span class="identifier">parser</span></code></a>.
+                  An optional nested type meeting the requirements of <a class="link" href="../concepts/BodyReader.html" title="BodyReader"><span class="emphasis"><em>BodyReader</em></span></a>,
+                  which provides the algorithm for storing a forward range of buffer
+                  sequences in the body representation. If present, this body type
+                  may be used with a <a class="link" href="../ref/boost__beast__http__parser.html" title="http::parser"><code class="computeroutput"><span class="identifier">parser</span></code></a>.
                 </p>
               </td>
 </tr>
@@ -107,9 +108,10 @@
               </td>
 <td>
                 <p>
-                  An optional nested type meeting the requirements of <a class="link" href="../concepts/BodyWriter.html" title="BodyWriter"><span class="bold"><strong>BodyWriter</strong></span></a>, which provides the algorithm
-                  for converting the body representation to a forward range of buffer
-                  sequences. If present this body type may be used with a <a class="link" href="../ref/boost__beast__http__serializer.html" title="http::serializer"><code class="computeroutput"><span class="identifier">serializer</span></code></a>.
+                  An optional nested type meeting the requirements of <a class="link" href="../concepts/BodyWriter.html" title="BodyWriter"><span class="emphasis"><em>BodyWriter</em></span></a>,
+                  which provides the algorithm for converting the body representation
+                  to a forward range of buffer sequences. If present this body type
+                  may be used with a <a class="link" href="../ref/boost__beast__http__serializer.html" title="http::serializer"><code class="computeroutput"><span class="identifier">serializer</span></code></a>.
                 </p>
               </td>
 </tr>
@@ -149,11 +151,11 @@
       </p>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="beast.using_http.custom_body_types.file_body"></a><a class="link" href="custom_body_types.html#beast.using_http.custom_body_types.file_body" title="File Body">File
-        Body</a>
+<a name="beast.using_http.custom_body_types.file_body"></a><a class="link" href="custom_body_types.html#beast.using_http.custom_body_types.file_body" title="File Body &#128161;">File
+        Body &#128161;</a>
 </h4></div></div></div>
 <p>
-          Use of the flexible <a class="link" href="../concepts/Body.html" title="Body"><span class="bold"><strong>Body</strong></span></a>
+          Use of the flexible <a class="link" href="../concepts/Body.html" title="Body"><span class="emphasis"><em>Body</em></span></a>
           concept customization point enables authors to preserve the self-contained
           nature of the <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> object while allowing
           domain specific behaviors. Common operations for HTTP servers include sending
@@ -161,7 +163,7 @@
           this example we build the <a class="link" href="../ref/boost__beast__http__basic_file_body.html" title="http::basic_file_body"><code class="computeroutput"><span class="identifier">basic_file_body</span></code></a> type which supports
           both reading and writing to a file on the file system. The interface is
           a class templated on the type of file used to access the file system, which
-          must meet the requirements of <a class="link" href="../concepts/File.html" title="File"><span class="bold"><strong>File</strong></span></a>.
+          must meet the requirements of <a class="link" href="../concepts/File.html" title="File"><span class="emphasis"><em>File</em></span></a>.
         </p>
 <p>
           First we declare the type with its nested types:
@@ -177,14 +179,14 @@
     content from a directory as part of a web service.
 
     @tparam File The implementation to use for accessing files.
-    This type must meet the requirements of @b File.
+    This type must meet the requirements of &lt;em&gt;File&lt;/em&gt;.
 */</span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">File</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">basic_file_body</span>
 <span class="special">{</span>
     <span class="comment">// Make sure the type meets the requirements</span>
     <span class="keyword">static_assert</span><span class="special">(</span><span class="identifier">is_file</span><span class="special">&lt;</span><span class="identifier">File</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>
-        <span class="string">"File requirements not met"</span><span class="special">);</span>
+        <span class="string">"File type requirements not met"</span><span class="special">);</span>
 
     <span class="comment">/// The type of File this body uses</span>
     <span class="keyword">using</span> <span class="identifier">file_type</span> <span class="special">=</span> <span class="identifier">File</span><span class="special">;</span>
@@ -359,9 +361,10 @@
 <span class="special">}</span>
 </pre>
 <p>
-          Our implementation of <a class="link" href="../concepts/BodyWriter.html" title="BodyWriter"><span class="bold"><strong>BodyWriter</strong></span></a> will contain a small buffer from
-          which the file contents are read. The buffer is provided to the implementation
-          on each call until everything has been read in.
+          Our implementation of <a class="link" href="../concepts/BodyWriter.html" title="BodyWriter"><span class="emphasis"><em>BodyWriter</em></span></a>
+          will contain a small buffer from which the file contents are read. The
+          buffer is provided to the implementation on each call until everything
+          has been read in.
         </p>
 <pre class="programlisting"><span class="comment">/** Algorithm for retrieving buffers when serializing.
 
@@ -379,7 +382,7 @@
     <span class="comment">// The type of buffer sequence returned by `get`.</span>
     <span class="comment">//</span>
     <span class="keyword">using</span> <span class="identifier">const_buffers_type</span> <span class="special">=</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffer</span><span class="special">;</span>
+        <span class="identifier">net</span><span class="special">::</span><span class="identifier">const_buffer</span><span class="special">;</span>
 
     <span class="comment">// Constructor.</span>
     <span class="comment">//</span>
@@ -462,7 +465,7 @@
     <span class="comment">// to indicate no error.</span>
     <span class="comment">//</span>
     <span class="comment">// We don't do anything fancy so set "no error"</span>
-    <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+    <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
 <span class="special">}</span>
 
 <span class="comment">// This function is called repeatedly by the serializer to</span>
@@ -492,7 +495,7 @@
         <span class="comment">//      into the library to get the generic category because</span>
         <span class="comment">//      that saves us a possibly expensive atomic operation.</span>
         <span class="comment">//</span>
-        <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+        <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
         <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">none</span><span class="special">;</span>
     <span class="special">}</span>
 
@@ -516,7 +519,7 @@
     <span class="comment">// we set this bool to `false` so we will not be called</span>
     <span class="comment">// again.</span>
     <span class="comment">//</span>
-    <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+    <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
     <span class="keyword">return</span> <span class="special">{{</span>
         <span class="identifier">const_buffers_type</span><span class="special">{</span><span class="identifier">buf_</span><span class="special">,</span> <span class="identifier">nread</span><span class="special">},</span>    <span class="comment">// buffer to return.</span>
         <span class="identifier">remain_</span> <span class="special">&gt;</span> <span class="number">0</span>                         <span class="comment">// `true` if there are more buffers.</span>
@@ -525,7 +528,7 @@
 </pre>
 <p>
           Files can be read now, and the next step is to allow writing to files by
-          implementing the <a class="link" href="../concepts/BodyReader.html" title="BodyReader"><span class="bold"><strong>BodyReader</strong></span></a>.
+          implementing the <a class="link" href="../concepts/BodyReader.html" title="BodyReader"><span class="emphasis"><em>BodyReader</em></span></a>.
           The style is similar to the writer, except that buffers are incoming instead
           of outgoing. Here's the declaration:
         </p>
@@ -618,7 +621,7 @@
     <span class="comment">// to indicate no error.</span>
     <span class="comment">//</span>
     <span class="comment">// We don't do anything fancy so set "no error"</span>
-    <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+    <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
 <span class="special">}</span>
 
 <span class="comment">// This will get called one or more times with body buffers</span>
@@ -636,11 +639,11 @@
 
     <span class="comment">// Loop over all the buffers in the sequence,</span>
     <span class="comment">// and write each one to the file.</span>
-    <span class="keyword">for</span><span class="special">(</span><span class="keyword">auto</span> <span class="identifier">it</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_sequence_begin</span><span class="special">(</span><span class="identifier">buffers</span><span class="special">);</span>
-        <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">buffer_sequence_end</span><span class="special">(</span><span class="identifier">buffers</span><span class="special">);</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
+    <span class="keyword">for</span><span class="special">(</span><span class="keyword">auto</span> <span class="identifier">it</span> <span class="special">=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">buffer_sequence_begin</span><span class="special">(</span><span class="identifier">buffers</span><span class="special">);</span>
+        <span class="identifier">it</span> <span class="special">!=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">buffer_sequence_end</span><span class="special">(</span><span class="identifier">buffers</span><span class="special">);</span> <span class="special">++</span><span class="identifier">it</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="comment">// Write this buffer to the file</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">const_buffer</span> <span class="identifier">buffer</span> <span class="special">=</span> <span class="special">*</span><span class="identifier">it</span><span class="special">;</span>
+        <span class="identifier">net</span><span class="special">::</span><span class="identifier">const_buffer</span> <span class="identifier">buffer</span> <span class="special">=</span> <span class="special">*</span><span class="identifier">it</span><span class="special">;</span>
         <span class="identifier">nwritten</span> <span class="special">+=</span> <span class="identifier">body_</span><span class="special">.</span><span class="identifier">file_</span><span class="special">.</span><span class="identifier">write</span><span class="special">(</span>
             <span class="identifier">buffer</span><span class="special">.</span><span class="identifier">data</span><span class="special">(),</span> <span class="identifier">buffer</span><span class="special">.</span><span class="identifier">size</span><span class="special">(),</span> <span class="identifier">ec</span><span class="special">);</span>
         <span class="keyword">if</span><span class="special">(</span><span class="identifier">ec</span><span class="special">)</span>
@@ -649,7 +652,7 @@
 
     <span class="comment">// Indicate success</span>
     <span class="comment">// This is required by the error_code specification</span>
-    <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+    <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
 
     <span class="keyword">return</span> <span class="identifier">nwritten</span><span class="special">;</span>
 <span class="special">}</span>
@@ -663,22 +666,24 @@
 <span class="special">{</span>
     <span class="comment">// This has to be cleared before returning, to</span>
     <span class="comment">// indicate no error. The specification requires it.</span>
-    <span class="identifier">ec</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">.</span><span class="identifier">category</span><span class="special">());</span>
+    <span class="identifier">ec</span> <span class="special">=</span> <span class="special">{};</span>
 <span class="special">}</span>
 </pre>
 <p>
           We have created a full featured body type capable of reading and writing
           files on the filesystem, integrating seamlessly with the HTTP algorithms
           and message container. The body type works with any file implementation
-          meeting the requirements of <a class="link" href="../concepts/File.html" title="File"><span class="bold"><strong>File</strong></span></a> so it may be transparently used with
-          solutions optimized for particular platforms. Example HTTP servers which
-          use file bodies are available in the example directory.
+          meeting the requirements of <a class="link" href="../concepts/File.html" title="File"><span class="emphasis"><em>File</em></span></a>
+          so it may be transparently used with solutions optimized for particular
+          platforms. Example HTTP servers which use file bodies are available in
+          the example directory.
         </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

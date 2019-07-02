@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(BoostMp11 VERSION 1.69.0 LANGUAGES CXX)
+project(BoostMp11 VERSION 1.70.0 LANGUAGES CXX)
 
 add_library(boost_mp11 INTERFACE)
 set_property(TARGET boost_mp11 PROPERTY EXPORT_NAME mp11)
@@ -24,7 +24,7 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
         message(STATUS "Fetching ${name}")
 
         file(DOWNLOAD
-            "https://raw.githubusercontent.com/pdimov/mincmake/master/${name}"
+            "https://raw.githubusercontent.com/boostorg/mincmake/master/${name}"
             "${CMAKE_BINARY_DIR}/fetch_and_include/${name}"
         )
 

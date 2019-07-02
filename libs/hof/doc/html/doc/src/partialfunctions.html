@@ -52,38 +52,38 @@
 --><div class="section" id="partial-function-evaluation">
 <h1>Partial function evaluation<a class="headerlink" href="#partial-function-evaluation" title="Permalink to this headline">¶</a></h1>
 <p>Many of the adaptors(such as <a class="reference internal" href="../../include/boost/hof/partial.html#partial"><span class="std std-ref">partial</span></a> or <a class="reference internal" href="../../include/boost/hof/pipable.html#pipable"><span class="std std-ref">pipable</span></a>) in the library supports optional partial evaluation of functions. For example, if we have the <code class="docutils literal"><span class="pre">sum</span></code> function adapted with the <code class="docutils literal"><span class="pre">partial</span></code> adaptor:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">partial</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">partial</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p>So if we write <code class="docutils literal"><span class="pre">sum(1,</span> <span class="pre">2)</span></code> it will return 3, however, if we write <code class="docutils literal"><span class="pre">sum(1)</span></code> it will return a new function, which when called again, it will evaluate the function and return 3:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Returns 3</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// Returns 3</span>
 <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// returns 3</span>
 </pre></div>
 </div>
 <p>Of course due to limitations in C++, deciding whether evaluate the function or to partially evaluated it, is based on the callability of the function and not arity. So if we call <code class="docutils literal"><span class="pre">sum(1,</span> <span class="pre">2,</span> <span class="pre">3)</span></code>, it will return a function:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>However, this can get out of hande as the function <code class="docutils literal"><span class="pre">f</span></code> will never be evaluated. Plus, it would be nice to produce an error at the point of calling the function rather than a confusing error of trying to use a partial function. The <a class="reference internal" href="../../include/boost/hof/limit.html#limit"><span class="std std-ref">limit</span></a> decorator lets us annotate the function with the max arity:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">limit_c</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">limit_c</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">;</span>
 <span class="p">}));</span>
 </pre></div>
 </div>
 <p>So now if we call <code class="docutils literal"><span class="pre">sum(1,</span> <span class="pre">2,</span> <span class="pre">3)</span></code>, we will get a compiler error. So this improves the situation, but it is not without its limitations. For example if we were to define a triple sum using the <a class="reference internal" href="../../include/boost/hof/pipable.html#pipable"><span class="std std-ref">pipable</span></a> adaptor:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">pipable</span><span class="p">(</span><span class="n">limit_c</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">z</span><span class="p">)</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">pipable</span><span class="p">(</span><span class="n">limit_c</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">z</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">;</span>
 <span class="p">}));</span>
 </pre></div>
 </div>
 <p>So if we call <code class="docutils literal"><span class="pre">sum(1)</span></code>, there is no compiler error, not until we try to pipe in a value:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// No error here</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// No error here</span>
 <span class="k">auto</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">|</span> <span class="n">f</span><span class="p">;</span> <span class="c1">// Compile error</span>
 </pre></div>
 </div>

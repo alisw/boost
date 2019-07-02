@@ -35,9 +35,10 @@
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">,</span> <span class="keyword">typename</span> OutputIterator<span class="special">&gt;</span> 
   <span class="identifier">OutputIterator</span> 
   <span class="identifier">copy</span><span class="special">(</span><span class="identifier">InputIterator</span> first<span class="special">,</span> <span class="identifier">InputIterator</span> last<span class="special">,</span> <span class="identifier">OutputIterator</span> result<span class="special">,</span> 
-       <span class="identifier">command_queue</span> <span class="special">&amp;</span> queue <span class="special">=</span> <span class="identifier">system</span><span class="special">::</span><span class="identifier">default_queue</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></div>
+       <span class="identifier">command_queue</span> <span class="special">&amp;</span> queue <span class="special">=</span> <span class="identifier">system</span><span class="special">::</span><span class="identifier">default_queue</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> 
+       <span class="keyword">const</span> <a class="link" href="wait_list.html" title="Class wait_list">wait_list</a> <span class="special">&amp;</span> events <span class="special">=</span> <a class="link" href="wait_list.html" title="Class wait_list">wait_list</a><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp79035792"></a><h2>Description</h2>
+<a name="idm45875718007408"></a><h2>Description</h2>
 <p>Copies the values in the range [<code class="computeroutput">first</code>, <code class="computeroutput">last</code>) to the range beginning at <code class="computeroutput">result</code>.</p>
 <p>The generic copy() function can be used for a variety of data transfer tasks and provides a standard interface to the following OpenCL functions:</p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -54,7 +55,7 @@ For example, to copy an array of <code class="computeroutput">int</code> values 
 <span class="keyword">int</span> <span class="identifier">data</span><span class="special">[</span><span class="special">]</span> <span class="special">=</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">4</span> <span class="special">}</span><span class="special">;</span>
 
 <span class="comment">// vector on the device</span>
-<a class="link" href="vector.html" title="Class template vector">boost::compute::vector&lt;int&gt;</a> <span class="identifier">vec</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="identifier">context</span><span class="special">)</span><span class="special">;</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">vec</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="identifier">context</span><span class="special">)</span><span class="special">;</span>
 
 <span class="comment">// copy values to the device vector</span>
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">copy</span><span class="special">(</span><span class="identifier">data</span><span class="special">,</span> <span class="identifier">data</span> <span class="special">+</span> <span class="number">4</span><span class="special">,</span> <span class="identifier">vec</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">queue</span><span class="special">)</span><span class="special">;</span>
@@ -73,9 +74,11 @@ For example, to copy an array of <code class="computeroutput">int</code> values 
     <span class="identifier">device_vector</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">device_vector</span><span class="special">.</span><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">host_vector</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">queue</span>
 <span class="special">)</span><span class="special">;</span>
 </pre>
-<p>Space complexity: (1)</p>
+<p>Space complexity: \Omega(1)</p>
 <p><span class="bold"><strong>See Also:</strong></span></p>
 <p>copy_n(), copy_if(), copy_async() </p>
+<p>
+</p>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">

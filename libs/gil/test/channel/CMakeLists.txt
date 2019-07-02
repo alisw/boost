@@ -5,28 +5,30 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 #
-list(APPEND _boost_gil_test_headers ${CMAKE_CURRENT_SOURCE_DIR}/channel_test_fixture.hpp)
-
-foreach(name
-  channel_concepts
-  channel_test_fixture
-  channel_traits
-  scoped_channel_value
+foreach(_name
   algorithm_channel_arithmetic
   algorithm_channel_convert
   algorithm_channel_invert
   algorithm_channel_multiply
-  algorithm_channel_relation)
+  algorithm_channel_relation
+  channel_traits
+  concepts
+  is_integral
+  packed_channel_value
+  scoped_channel_value
+  test_fixture)
+  set(_target test_core_channel_${_name})
 
-  add_executable(gil_test_${name} "")
-  target_sources(gil_test_${name}
+  add_executable(${_target} "")
+  target_sources(${_target} PRIVATE ${_name}.cpp)
+  target_link_libraries(${_target}
     PRIVATE
-    ${_boost_gil_headers}
-    ${_boost_gil_test_headers}
-    ${name}.cpp)
-  target_link_libraries(gil_test_${name}
-    PRIVATE
-    Boost::disable_autolinking
-    Boost::unit_test_framework)
-  add_test(gil.tests.core.${name} gil_test_${name})
+      gil_compile_options
+      gil_include_directories
+      gil_dependencies)
+  target_compile_definitions(${_target} PRIVATE BOOST_GIL_USE_CONCEPT_CHECK)
+  add_test(test.core.channel.${_name} ${_target})
+
+  unset(_name)
+  unset(_target)
 endforeach()

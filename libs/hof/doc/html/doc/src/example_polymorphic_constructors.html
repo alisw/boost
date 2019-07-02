@@ -53,7 +53,7 @@
 <h1>Polymorphic constructors<a class="headerlink" href="#polymorphic-constructors" title="Permalink to this headline">¶</a></h1>
 <p>Writing polymorphic constructors(such as <code class="docutils literal"><span class="pre">make_tuple</span></code>) is a boilerplate that
 has to be written over and over again for template classes:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 <span class="k">struct</span> <span class="n">unwrap_refwrapper</span>
 <span class="p">{</span>
     <span class="k">typedef</span> <span class="n">T</span> <span class="n">type</span><span class="p">;</span>
@@ -78,7 +78,7 @@ has to be written over and over again for template classes:</p>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">construct</span></code> function takes care of all this boilerplate, and the above can be simply written like this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">BOOST_HOF_STATIC_FUNCTION</span><span class="p">(</span><span class="n">make_tuple</span><span class="p">)</span> <span class="o">=</span> <span class="n">construct</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&gt;</span><span class="p">();</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">BOOST_HOF_STATIC_FUNCTION</span><span class="p">(</span><span class="n">make_tuple</span><span class="p">)</span> <span class="o">=</span> <span class="n">construct</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">tuple</span><span class="o">&gt;</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>

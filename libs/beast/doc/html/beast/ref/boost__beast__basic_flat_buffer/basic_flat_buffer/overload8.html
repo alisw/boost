@@ -28,7 +28,7 @@
           (8 of 10 overloads)</a>
 </h6></div></div></div>
 <p>
-            Constructor.
+            Copy Constructor.
           </p>
 <h7><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.synopsis"></a></span><a class="link" href="overload8.html#beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.synopsis">Synopsis</a>
@@ -38,7 +38,12 @@
 </pre>
 <h7><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.description"></a></span><a class="link" href="overload8.html#beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.description">Description</a>
-          </h7><h7><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.h2"></a>
+          </h7><p>
+            This container is constructed with the contents of <code class="computeroutput"><span class="identifier">other</span></code>
+            using copy semantics and the specified allocator. The maximum size will
+            be the same as the copied object.
+          </p>
+<h7><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.h2"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.parameters"></a></span><a class="link" href="overload8.html#beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.parameters">Parameters</a>
           </h7><div class="informaltable"><table class="table">
 <colgroup>
@@ -78,16 +83,50 @@
                   </td>
 <td>
                     <p>
-                      The allocator to use.
+                      The allocator to use for the object.
                     </p>
                   </td>
 </tr>
 </tbody>
 </table></div>
+<h7><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.h3"></a>
+            <span class="phrase"><a name="beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.exceptions"></a></span><a class="link" href="overload8.html#beast.ref.boost__beast__basic_flat_buffer.basic_flat_buffer.overload8.exceptions">Exceptions</a>
+          </h7><div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Thrown On
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">length_error</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      if <code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span></code>
+                      exceeds the maximum allocation size of <code class="computeroutput"><span class="identifier">alloc</span></code>.
+                    </p>
+                  </td>
+</tr></tbody>
+</table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -27,7 +27,7 @@
 <a name="beast.ref.boost__beast__websocket__is_upgrade"></a><a class="link" href="boost__beast__websocket__is_upgrade.html" title="websocket::is_upgrade">websocket::is_upgrade</a>
 </h4></div></div></div>
 <p>
-        <a class="indexterm" name="idp140720112"></a>
+        <a class="indexterm" name="idm46025409027344"></a>
 Returns <code class="computeroutput"><span class="keyword">true</span></code>
         if the specified HTTP request is a WebSocket Upgrade.
       </p>
@@ -39,7 +39,7 @@ Returns <code class="computeroutput"><span class="keyword">true</span></code>
         Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/websocket/rfc6455.hpp" target="_top">boost/beast/websocket/rfc6455.hpp</a>&gt;</code>
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <a href="https://en.cppreference.com/w/cpp/named_req/Allocator" target="_top"><span class="emphasis"><em>Allocator</em></span></a><span class="special">&gt;</span>
 <span class="keyword">bool</span>
 <span class="identifier">is_upgrade</span><span class="special">(</span>
     <span class="identifier">beast</span><span class="special">::</span><span class="identifier">http</span><span class="special">::</span><span class="identifier">header</span><span class="special">&lt;</span> <span class="keyword">true</span><span class="special">,</span> <span class="identifier">http</span><span class="special">::</span><span class="identifier">basic_fields</span><span class="special">&lt;</span> <span class="identifier">Allocator</span> <span class="special">&gt;&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">req</span><span class="special">);</span>
@@ -52,18 +52,16 @@ Returns <code class="computeroutput"><span class="keyword">true</span></code>
         This function returns <code class="computeroutput"><span class="keyword">true</span></code> when
         the passed HTTP Request indicates a WebSocket Upgrade. It does not validate
         the contents of the fields: it just trivially accepts requests which could
-        only possibly be a valid or invalid WebSocket Upgrade message.
-      </p>
-<p>
-        Callers who wish to manually read HTTP requests in their server implementation
-        can use this function to determine if the request should be routed to an
-        instance of <a class="link" href="boost__beast__websocket__stream.html" title="websocket::stream"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span></code></a>.
+        only possibly be a valid or invalid WebSocket Upgrade message. Callers who
+        wish to manually read HTTP requests in their server implementation can use
+        this function to determine if the request should be routed to an instance
+        of <a class="link" href="boost__beast__websocket__stream.html" title="websocket::stream"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span></code></a>.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__websocket__is_upgrade.h2"></a>
         <span class="phrase"><a name="beast.ref.boost__beast__websocket__is_upgrade.example"></a></span><a class="link" href="boost__beast__websocket__is_upgrade.html#beast.ref.boost__beast__websocket__is_upgrade.example">Example</a>
       </h5>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handle_connection</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&amp;</span> <span class="identifier">sock</span><span class="special">)</span>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">handle_connection</span><span class="special">(</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&amp;</span> <span class="identifier">sock</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">flat_buffer</span> <span class="identifier">buffer</span><span class="special">;</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">http</span><span class="special">::</span><span class="identifier">request</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">http</span><span class="special">::</span><span class="identifier">string_body</span><span class="special">&gt;</span> <span class="identifier">req</span><span class="special">;</span>
@@ -124,7 +122,8 @@ Returns <code class="computeroutput"><span class="keyword">true</span></code>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
