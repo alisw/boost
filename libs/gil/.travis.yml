@@ -1,0 +1,299 @@
+# Copyright 2016 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
+language: cpp
+
+sudo: false
+
+os:
+  - linux
+  - osx
+
+env:
+  global:
+    - secure: "UHit2f6Hq2pkHvx8rfrQvFacYiQKVO3vrCbNuDi/VSAIzQjRnqCqE06y4vpXLMsXf62TvBeCBStIuI8g+HP8B+f39oGb/9Om+yIgN/yes47R4sLFKFbRiOS6sfCIefJp7Kx7GSFf81xWxStpIU4QaSsk8Dlt5xyurTWXFSde+lQ="
+    - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
+
+  matrix:
+    - BOGUS_JOB=true
+
+matrix:
+  exclude:
+    - env: BOGUS_JOB=true
+  include:
+    - os: linux
+      env: COMPILER=g++-5 VARIANT=debug TOOLSET=gcc CXXSTD=11 TEST_HEADERS=1
+      addons:
+        apt:
+          packages:
+            - g++-5
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      env: COMPILER=g++-5 VARIANT=release TOOLSET=gcc CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - g++-5
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      env: COMPILER=g++-6 VARIANT=debug TOOLSET=gcc CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - g++-6
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      env: COMPILER=g++-6 VARIANT=release TOOLSET=gcc CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - g++-6
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      env: COMPILER=g++-7 VARIANT=debug TOOLSET=gcc CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - g++-7
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      env: COMPILER=g++-7 VARIANT=release TOOLSET=gcc CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - g++-7
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+
+    - os: linux
+      env: COMPILER=clang++-3.9 VARIANT=debug TOOLSET=clang CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - clang-3.9
+            - libstdc++-6-dev
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.9
+
+    - os: linux
+      env: COMPILER=clang++-3.9 VARIANT=release TOOLSET=clang CXXSTD=11
+      addons:
+        apt:
+          packages:
+            - clang-3.9
+            - libstdc++-6-dev
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.9
+
+    - os: linux
+      env: COMPILER=clang++-5.0 VARIANT=gil_ubsan_integer TOOLSET=clang CXXSTD=11 B2_OPTIONS="visibility=global" UBSAN_OPTIONS='print_stacktrace=1'
+      addons:
+        apt:
+          packages:
+            - clang-5.0
+            - libstdc++-7-dev
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+
+    - os: linux
+      env: COMPILER=clang++-5.0 VARIANT=gil_ubsan_nullability TOOLSET=clang CXXSTD=11 B2_OPTIONS="visibility=global" UBSAN_OPTIONS='print_stacktrace=1'
+      addons:
+        apt:
+          packages:
+            - clang-5.0
+            - libstdc++-7-dev
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+
+    - os: linux
+      env: COMPILER=clang++-5.0 VARIANT=gil_ubsan_undefined TOOLSET=clang CXXSTD=11 B2_OPTIONS="visibility=global" UBSAN_OPTIONS='print_stacktrace=1'
+      addons:
+        apt:
+          packages:
+            - clang-5.0
+            - libstdc++-7-dev
+            - libpng-dev
+            - libjpeg-dev
+            - libtiff5-dev
+            - libraw-dev
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+
+    - os: osx
+      env: COMPILER=clang++ VARIANT=debug TOOLSET=clang CXXSTD=11
+
+    - os: osx
+      env: COMPILER=clang++ VARIANT=release TOOLSET=clang CXXSTD=11
+
+    - env: DOC=1
+      addons:
+        apt:
+          packages:
+            - doxygen
+
+  allow_failures:
+    - env: COMPILER=clang++-5.0 VARIANT=gil_ubsan_integer TOOLSET=clang CXXSTD=11 B2_OPTIONS="visibility=global" UBSAN_OPTIONS='print_stacktrace=1'
+
+install:
+  - |-
+    if [ "$DOC" ]; then
+      pip install --user sphinx==1.7.9
+    fi
+  - cd ..
+  # NOTE: Here switch between master or develop depending on against which branch of Boost
+  #       super-project we want to test GIL
+  - git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
+  - cd boost-root
+  - git branch
+  # List all (recursive) dependencies explicitly to control any new additions
+  - git submodule --quiet update --init tools/build
+  - git submodule --quiet update --init tools/boost_install
+  - git submodule --quiet update --init tools/boostdep
+  - git submodule --quiet update --init libs/headers
+  ## Direct (of GIL headers only)
+  - git submodule --quiet update --init libs/algorithm
+  - git submodule --quiet update --init libs/assert
+  - git submodule --quiet update --init libs/array
+  - git submodule --quiet update --init libs/concept_check
+  - git submodule --quiet update --init libs/config
+  - git submodule --quiet update --init libs/core
+  - git submodule --quiet update --init libs/crc
+  - git submodule --quiet update --init libs/filesystem
+  - git submodule --quiet update --init libs/integer
+  - git submodule --quiet update --init libs/iterator
+  - git submodule --quiet update --init libs/mp11
+  - git submodule --quiet update --init libs/mpl
+  - git submodule --quiet update --init libs/numeric/conversion
+  - git submodule --quiet update --init libs/preprocessor
+  - git submodule --quiet update --init libs/test
+  - git submodule --quiet update --init libs/type_traits
+  - git submodule --quiet update --init libs/variant
+  ## Transitive (of GIL tests too)
+  - git submodule --quiet update --init libs/atomic
+  - git submodule --quiet update --init libs/bind
+  - git submodule --quiet update --init libs/chrono
+  - git submodule --quiet update --init libs/container
+  - git submodule --quiet update --init libs/container_hash
+  - git submodule --quiet update --init libs/conversion
+  - git submodule --quiet update --init libs/detail
+  - git submodule --quiet update --init libs/exception
+  - git submodule --quiet update --init libs/function
+  - git submodule --quiet update --init libs/function_types
+  - git submodule --quiet update --init libs/fusion
+  - git submodule --quiet update --init libs/intrusive
+  - git submodule --quiet update --init libs/io
+  - git submodule --quiet update --init libs/lambda
+  - git submodule --quiet update --init libs/math
+  - git submodule --quiet update --init libs/move
+  - git submodule --quiet update --init libs/optional
+  - git submodule --quiet update --init libs/predef
+  - git submodule --quiet update --init libs/range
+  - git submodule --quiet update --init libs/ratio
+  - git submodule --quiet update --init libs/rational
+  - git submodule --quiet update --init libs/regex
+  - git submodule --quiet update --init libs/static_assert
+  - git submodule --quiet update --init libs/smart_ptr
+  - git submodule --quiet update --init libs/system
+  - git submodule --quiet update --init libs/throw_exception
+  - git submodule --quiet update --init libs/timer
+  - git submodule --quiet update --init libs/tuple
+  - git submodule --quiet update --init libs/type_index
+  - git submodule --quiet update --init libs/typeof
+  - git submodule --quiet update --init libs/unordered
+  - git submodule --quiet update --init libs/utility
+  - git submodule --quiet update --init libs/winapi
+  - rm -rf libs/gil
+  - mkdir libs/gil
+  - cp -r $TRAVIS_BUILD_DIR/* libs/gil
+  - cp -r $TRAVIS_BUILD_DIR/.ci libs/gil
+  - ./bootstrap.sh
+  - ./b2 headers
+
+script:
+  - |-
+    if [ "$DOC" ]; then
+      echo "using doxygen ;" > ~/user-config.jam
+      ./b2 libs/gil/doc
+    fi
+  - |-
+    echo "using $TOOLSET : : $COMPILER : ;" > ~/user-config.jam
+  - travis_retry libs/gil/.ci/build-and-test.sh
+
+after_success:
+# Upload docs only when building upstream.
+  - |-
+    if [ "$DOC" -a \
+          "$TRAVIS_REPO_SLUG" = "boostorg/gil" -a \
+          "$TRAVIS_PULL_REQUEST" = "false" ]; then
+      export GH_TOKEN
+      cd libs/gil
+      .ci/upload_docs.sh
+    fi
+
+notifications:
+  email:
+    on_success: always
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/f59b626f2ed08f3d30ab
+    # options: [always|never|change]
+    on_success: change # default: always
+    on_failure: always # default: always
+    on_start:   change # default: never
+    on_cancel:  always # default: always
+    on_error:   always # default: always

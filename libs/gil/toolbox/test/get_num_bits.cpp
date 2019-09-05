@@ -19,23 +19,23 @@ BOOST_AUTO_TEST_SUITE( toolbox_tests )
 
 BOOST_AUTO_TEST_CASE( get_num_bits_test )
 {
-    typedef bit_aligned_image4_type<4, 4, 4, 4, rgb_layout_t>::type image_t;
+    using image_t = bit_aligned_image4_type<4, 4, 4, 4, rgb_layout_t>::type;
 
-    typedef channel_type< image_t::view_t::reference >::type channel_t;
-    BOOST_STATIC_ASSERT( get_num_bits< channel_t >::value == 4 );
+    using channel_t = channel_type<image_t::view_t::reference>::type;
+    static_assert(get_num_bits<channel_t>::value == 4, "");
 
-    typedef channel_type< image_t::const_view_t::reference >::type const_channel_t;
-    BOOST_STATIC_ASSERT( get_num_bits< const_channel_t >::value == 4 );
+    using const_channel_t = channel_type<image_t::const_view_t::reference>::type;
+    static_assert(get_num_bits<const_channel_t>::value == 4, "");
 
-    typedef packed_channel_value< 23 > bits_t;
-    BOOST_STATIC_ASSERT( get_num_bits< bits_t >::value == 23 );
-    BOOST_STATIC_ASSERT( get_num_bits< const bits_t >::value == 23 );
+    using bits_t = packed_channel_value<23>;
+    static_assert(get_num_bits<bits_t>::value == 23, "");
+    static_assert(get_num_bits<bits_t const>::value == 23, "");
 
-    BOOST_STATIC_ASSERT( get_num_bits< unsigned char >::value == 8 );
-    BOOST_STATIC_ASSERT( get_num_bits< const unsigned char >::value == 8 );
+    static_assert(get_num_bits<unsigned char >::value == 8, "");
+    static_assert(get_num_bits<unsigned char const>::value == 8, "");
 
-    BOOST_STATIC_ASSERT( get_num_bits< channel_type< gray8_image_t::view_t::value_type >::type >::value == 8 );
-    BOOST_STATIC_ASSERT( get_num_bits< channel_type< rgba32_image_t::view_t::value_type >::type >::value == 32 );
+    static_assert(get_num_bits<channel_type<gray8_image_t::view_t::value_type>::type>::value == 8, "");
+    static_assert(get_num_bits<channel_type<rgba32_image_t::view_t::value_type>::type>::value == 32, "");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

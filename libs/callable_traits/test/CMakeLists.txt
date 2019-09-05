@@ -38,4 +38,4 @@ foreach(_file IN LISTS UNIT_TESTS)
     callable_traits_add_unit_test(${lazy_target} ${CMAKE_CURRENT_BINARY_DIR}/${_target})
 endforeach()
 
-add_dependencies(check tests)
+add_dependencies(callable_traits_check tests)

@@ -1,0 +1,120 @@
+# Copyright 2016-2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
+
+language: cpp
+
+sudo: false
+
+dist: xenial
+
+branches:
+  only:
+    - master
+    - develop
+    - /feature\/.*/
+
+env:
+  matrix:
+    - BOGUS_JOB=true
+
+matrix:
+  exclude:
+    - env: BOGUS_JOB=true
+
+  include:
+
+    # find_package(boost_filesystem)
+    - env: LIB=filesystem
+    - env: LIB=filesystem
+      os: osx
+
+    # find_package(Boost COMPONENTS filesystem)
+    - env: LIB=filesystem UBP=1
+    - env: LIB=filesystem UBP=1
+      os: osx
+
+    # --layout=versioned
+    - env: LIB=filesystem LAYOUT=versioned
+    - env: LIB=filesystem LAYOUT=versioned TOOLSET=clang
+      os: osx
+
+    # --layout=tagged
+    - env: LIB=filesystem LAYOUT=tagged
+    - env: LIB=filesystem LAYOUT=tagged
+      os: osx
+
+    # build with g++, use with clang++
+    - env: LIB=filesystem
+      compiler: clang++
+
+    # same, with tagged layout
+    - env: LIB=filesystem LAYOUT=tagged
+      compiler: clang++
+
+    # build with clang++, use with g++
+    - env: LIB=filesystem TOOLSET=clang
+
+    # same, with tagged layout
+    - env: LIB=filesystem TOOLSET=clang LAYOUT=tagged
+
+    # build with both gcc and clang, use with gcc
+    - env: LIB=filesystem LAYOUT=versioned TOOLSET=gcc,clang
+
+    # build with both gcc and clang, use with clang
+    - env: LIB=filesystem LAYOUT=versioned TOOLSET=gcc,clang
+      compiler: clang++
+
+    # other libraries
+    - env: LIB=atomic
+    - env: LIB=atomic UBP=1
+    - env: LIB=chrono
+    - env: LIB=chrono UBP=1
+    - env: LIB=container
+    - env: LIB=container UBP=1
+    - env: LIB=iostreams
+    - env: LIB=iostreams UBP=1
+    - env: LIB=log
+    - env: LIB=log UBP=1
+    - env: LIB=python
+    - env: LIB=python UBP=1
+    - env: LIB=random
+    - env: LIB=random UBP=1
+    - env: LIB=regex
+    - env: LIB=regex UBP=1
+    - env: LIB=serialization
+    - env: LIB=serialization UBP=1
+    - env: LIB=system
+    - env: LIB=system UBP=1
+    - env: LIB=test
+    - env: LIB=test UBP=1
+    - env: LIB=thread
+    - env: LIB=thread UBP=1
+    - env: LIB=wave
+    - env: LIB=wave UBP=1
+
+install:
+  - BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
+  - cd ..
+  - git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
+  - cd boost-root
+  - git submodule update --init --jobs 3 tools/boostdep libs/assert libs/config libs/core libs/$LIB
+  - python tools/boostdep/depinst/depinst.py -X test -g "--jobs 3" $LIB
+  - rm -rf tools/boost_install/*
+  - cp -r $TRAVIS_BUILD_DIR/* tools/boost_install
+  - ./bootstrap.sh
+  - ./b2 headers
+  - ./b2 -j3 --prefix=$HOME/.local --with-headers ${LAYOUT:+--layout=$LAYOUT} ${TOOLSET:+toolset=$TOOLSET} install
+
+script:
+  - ./b2 -j3 --prefix=$HOME/.local --with-$LIB ${LAYOUT:+--layout=$LAYOUT} ${TOOLSET:+toolset=$TOOLSET} install
+  - cd tools/boost_install/test/$LIB
+  - mkdir __build__ && cd __build__
+  - cmake -DCMAKE_INSTALL_PREFIX=~/.local -DUSE_BOOST_PACKAGE=${UBP-0} ..
+  - cmake --build .
+  - export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+  - cmake --build . --target check
+
+notifications:
+  email:
+    on_success: always

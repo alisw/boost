@@ -105,11 +105,8 @@ void difference_output(std::string const& caseid, G1 const& g1, G2 const& g2, Ou
             << string_from_type<coordinate_type>::name()
             << (ccw ? "_ccw" : "")
             << (open ? "_open" : "")
-#if defined(BOOST_GEOMETRY_NO_SELF_TURNS)
-           << "_no_self"
-#endif
-#if defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
-            << "_no_rob"
+#if defined(BOOST_GEOMETRY_USE_RESCALING)
+            << "_rescaled"
 #endif
             << ".svg";
 
@@ -194,7 +191,9 @@ std::string test_difference(std::string const& caseid, G1 const& g1, G2 const& g
                           ? bg::num_points(result) : 0;
 
 #if ! defined(BOOST_GEOMETRY_NO_BOOST_TEST)
+#if ! defined(BOOST_GEOMETRY_TEST_ENABLE_FAILING)
     if (settings.test_validity)
+#endif
     {
         // std::cout << bg::dsv(result) << std::endl;
         std::string message;
@@ -273,7 +272,15 @@ std::string test_difference(std::string const& caseid, G1 const& g1, G2 const& g
                 );
     }
 
-    BOOST_CHECK_CLOSE(area, expected_area, settings.percentage);
+    if (expected_area > 0)
+    {
+        BOOST_CHECK_CLOSE(area, expected_area, settings.percentage);
+    }
+    else
+    {
+        // Compare 0 with 0 or a very small detected area
+        BOOST_CHECK_LE(area, settings.percentage);
+    }
 #endif
 
 
@@ -335,7 +342,9 @@ std::string test_one(std::string const& caseid,
         expected_count2, expected_rings_count2, expected_point_count2,
         expected_area2, false, settings);
 
+#if ! defined(BOOST_GEOMETRY_TEST_ENABLE_FAILING)
     if (settings.sym_difference)
+#endif
     {
         test_difference<OutputType>(caseid + "_s", g1, g2,
             expected_count_s,

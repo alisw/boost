@@ -14,7 +14,6 @@
 #include <boost/gil/extension/io/jpeg.hpp>
 
 #include <boost/test/unit_test.hpp>
-#include <boost/filesystem/path.hpp>
 
 #include <fstream>
 
@@ -24,9 +23,8 @@
 
 using namespace boost;
 using namespace gil;
-using namespace filesystem;
 
-typedef jpeg_tag tag_t;
+using tag_t = jpeg_tag;
 
 BOOST_AUTO_TEST_SUITE( gil_io_jpeg_tests )
 
@@ -36,9 +34,11 @@ BOOST_AUTO_TEST_CASE( read_image_info_test )
 {
 
     {
-        typedef get_reader_backend< const std::string
-                                  , tag_t
-                                  >::type backend_t;
+        using backend_t = get_reader_backend
+            <
+                std::string const,
+                tag_t
+            >::type;
 
         backend_t backend = read_image_info( jpeg_filename
                                            , tag_t()
@@ -51,9 +51,7 @@ BOOST_AUTO_TEST_CASE( read_image_info_test )
     {
         std::ifstream in( jpeg_filename.c_str(), ios::binary );
 
-        typedef get_reader_backend< std::ifstream
-                                  , tag_t
-                                  >::type backend_t;
+        using backend_t = get_reader_backend<std::ifstream, tag_t>::type;
 
         backend_t backend = read_image_info( in
                                            , tag_t()
@@ -66,9 +64,7 @@ BOOST_AUTO_TEST_CASE( read_image_info_test )
     {
         FILE* file = fopen( jpeg_filename.c_str(), "rb" );
 
-        typedef get_reader_backend< FILE*
-                                  , tag_t
-                                  >::type backend_t;
+        using backend_t = get_reader_backend<FILE*, tag_t>::type;
 
         backend_t backend = boost::gil::read_image_info( file
                                                        , tag_t()
@@ -79,13 +75,12 @@ BOOST_AUTO_TEST_CASE( read_image_info_test )
     }
 
     {
-        typedef get_reader_backend< path
-                                  , tag_t
-                                  >::type backend_t;
+        using backend_t = get_reader_backend<boost::filesystem::path, tag_t>::type;
 
-        backend_t backend = boost::gil::read_image_info( path( jpeg_filename )
-                                                       , tag_t()
-                                                       );
+        backend_t backend =
+            boost::gil::read_image_info(
+                 boost::filesystem::path(jpeg_filename),
+                 tag_t());
 
         BOOST_CHECK_EQUAL( backend._info._width , 1000u );
         BOOST_CHECK_EQUAL( backend._info._height,  600u );
@@ -313,11 +308,13 @@ BOOST_AUTO_TEST_CASE( subimage_test )
 
 BOOST_AUTO_TEST_CASE( dynamic_image_test )
 {
-    typedef mpl::vector< gray8_image_t
-                       , gray16_image_t
-                       , rgb8_image_t
-                       , rgba8_image_t
-                       > my_img_types;
+    using my_img_types = mpl::vector
+        <
+            gray8_image_t,
+            gray16_image_t,
+            rgb8_image_t,
+            rgba8_image_t
+        >;
 
 
     any_image< my_img_types > runtime_image;

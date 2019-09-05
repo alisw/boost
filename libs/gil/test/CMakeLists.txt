@@ -1,46 +1,41 @@
 #
-# Copyright (c) 2017 Mateusz Loskot <mateusz at loskot dot net>
+# Copyright (c) 2017-2019 Mateusz Loskot <mateusz at loskot dot net>
 #
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 #
-message(STATUS "Boost.GIL: configuring core tests")
+message(STATUS "Boost.GIL: Configuring core tests")
 
-foreach(name channel pixel pixel_iterator promote_integral)
-  add_executable(gil_test_${name} "")
-  target_sources(gil_test_${name}
+foreach(_name
+  promote_integral)
+  set(_target utility_${_name})
+
+  add_executable(${_target} "")
+  target_sources(${_target} PRIVATE ${_name}.cpp)
+  target_link_libraries(${_target}
     PRIVATE
-      ${_boost_gil_headers}
-      ${_boost_gil_test_headers}
-      ${name}.cpp
-      error_if.cpp)
-  target_link_libraries(gil_test_${name}
-    PRIVATE
-      Boost::disable_autolinking
-      Boost::filesystem
-      Boost::unit_test_framework)
-  add_test(gil.tests.core.${name} gil_test_${name})
+      gil_compile_options
+      gil_include_directories
+      gil_dependencies)
+  target_compile_definitions(${_target} PRIVATE BOOST_GIL_USE_CONCEPT_CHECK)
+  add_test(test.utility.${_name} ${_target})
+
+  unset(_target)
+  unset(_name)
 endforeach()
 
-add_executable(gil_test_image "")
-target_sources(gil_test_image
-  PRIVATE
-    ${_boost_gil_headers}
-    ${_boost_gil_test_headers}
-    error_if.cpp
-    image.cpp
-    sample_image.cpp)
-target_link_libraries(gil_test_image
-  PRIVATE
-    Boost::disable_autolinking
-    Boost::filesystem
-    Boost::unit_test_framework)
-add_test(gil.tests.core.image
-  gil_test_image
-  ${CMAKE_CURRENT_SOURCE_DIR}/gil_reference_checksums.txt)
+if(GIL_BUILD_HEADERS_TESTS)
+  add_subdirectory(headers)
+endif()
 
-add_subdirectory(algorithm)
-add_subdirectory(channel)
-add_subdirectory(image_view)
 add_subdirectory(point)
+add_subdirectory(channel)
+add_subdirectory(color)
+add_subdirectory(pixel)
+add_subdirectory(iterator)
+add_subdirectory(locator)
+add_subdirectory(image)
+add_subdirectory(image_view)
+add_subdirectory(algorithm)
+add_subdirectory(legacy)

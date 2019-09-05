@@ -1,0 +1,75 @@
+# Copyright 2016-2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://boost.org/LICENSE_1_0.txt)
+
+version: 1.0.{build}-{branch}
+
+shallow_clone: true
+
+branches:
+  only:
+    - master
+    - develop
+    - /feature\/.*/
+
+image: Visual Studio 2017
+
+environment:
+  matrix:
+  - LIB: filesystem
+    TOOLSET: msvc-14.1
+  - LIB: filesystem
+    UBP: 1
+    TOOLSET: msvc-14.1
+  - LIB: filesystem
+    LAYOUT: tagged
+    TOOLSET: msvc-14.0
+  - LIB: iostreams
+    TOOLSET: msvc-14.1
+    UBP: 1
+  - LIB: log
+    TOOLSET: msvc-14.1
+  - LIB: python
+    TOOLSET: msvc-14.1
+  - LIB: serialization
+    UBP: 1
+    TOOLSET: msvc-14.1
+  - LIB: system
+    TOOLSET: msvc-14.1
+  - LIB: test
+    UBP: 1
+    TOOLSET: msvc-14.1
+  - LIB: thread
+    TOOLSET: msvc-14.1
+
+install:
+  - set BOOST_BRANCH=develop
+  - if "%APPVEYOR_REPO_BRANCH%" == "master" set BOOST_BRANCH=master
+  - cd ..
+  - git clone -b %BOOST_BRANCH% --depth 1 https://github.com/boostorg/boost.git boost-root
+  - cd boost-root
+  - git submodule update --init --jobs 3 tools/boostdep libs/assert libs/config libs/core libs/%LIB%
+  - python tools/boostdep/depinst/depinst.py -X test -g "--jobs 3" %LIB%
+  - rd /s/q tools\boost_install
+  - xcopy /s /e /q %APPVEYOR_BUILD_FOLDER% tools\boost_install\
+  - cmd /c bootstrap
+  - b2 -d0 headers
+
+build: off
+
+test_script:
+  - if not "%LAYOUT%" == "" SET LAYOUT=--layout=%LAYOUT%
+  - if not "%TOOLSET%" == "" SET TOOLSET=toolset=%TOOLSET%
+  - set ZLIB_SOURCE=%CD%\tools\boost_install\test\iostreams\zlib-1.2.11
+  - set BZIP2_SOURCE=%CD%\tools\boost_install\test\iostreams\bzip2-1.0.6
+  - b2 -j3 -d0 --prefix=C:\projects\.local --with-headers %TOOLSET% %LAYOUT% install
+  - b2 -j3 --prefix=C:\projects\.local --with-%LIB% %TOOLSET% %LAYOUT% install
+  - cd tools\boost_install\test\%LIB%
+  - mkdir __build__ && cd __build__
+  - if "%UBP%" == "" SET UBP=0
+  - cmake -DCMAKE_INSTALL_PREFIX=C:\projects\.local -DUSE_BOOST_PACKAGE=%UBP% ..
+  - cmake --build . --config Debug
+  - cmake --build . --config Release
+  - PATH %PATH%;C:\projects\.local\lib
+  - cmake --build . --config Debug --target check
+  - cmake --build . --config Release --target check
