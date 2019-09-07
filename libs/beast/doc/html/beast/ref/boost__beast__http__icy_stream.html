@@ -34,7 +34,7 @@
         <span class="phrase"><a name="beast.ref.boost__beast__http__icy_stream.synopsis"></a></span><a class="link" href="boost__beast__http__icy_stream.html#beast.ref.boost__beast__http__icy_stream.synopsis">Synopsis</a>
       </h5>
 <p>
-        Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/experimental/http/icy_stream.hpp" target="_top">boost/beast/experimental/http/icy_stream.hpp</a>&gt;</code>
+        Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/_experimental/http/icy_stream.hpp" target="_top">boost/beast/_experimental/http/icy_stream.hpp</a>&gt;</code>
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">NextLayer</span><span class="special">&gt;</span>
@@ -71,18 +71,6 @@
 <td>
                 <p>
                   The type of the executor associated with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="boost__beast__http__icy_stream/lowest_layer_type.html" title="http::icy_stream::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  The type of the lowest layer.
                 </p>
               </td>
 </tr>
@@ -174,18 +162,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="boost__beast__http__icy_stream/lowest_layer.html" title="http::icy_stream::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Get a reference to the lowest layer.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="boost__beast__http__icy_stream/next_layer.html" title="http::icy_stream::next_layer"><span class="bold"><strong>next_layer</strong></span></a>
                 </p>
               </td>
@@ -250,11 +226,9 @@
         This wrapper replaces the word "ICY" in the first HTTP response
         received on the connection, with "HTTP/1.1". This allows the Beast
         parser to be used with Shoutcast servers, which send a non-standard HTTP
-        message as the response.
-      </p>
-<p>
-        For asynchronous operations, the application must ensure that they are are
-        all performed within the same implicit or explicit strand.
+        message as the response. For asynchronous operations, the application must
+        ensure that they are are all performed within the same implicit or explicit
+        strand.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__http__icy_stream.h4"></a>
@@ -273,15 +247,10 @@
         <span class="phrase"><a name="beast.ref.boost__beast__http__icy_stream.example"></a></span><a class="link" href="boost__beast__http__icy_stream.html#beast.ref.boost__beast__http__icy_stream.example">Example</a>
       </h5>
 <p>
-        To use the stream template with an <code class="computeroutput"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span></code>, you would write:
+        To use the <a class="link" href="boost__beast__http__icy_stream.html" title="http::icy_stream"><code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">icy_stream</span></code></a> template with an <a class="link" href="boost__beast__tcp_stream.html" title="tcp_stream"><code class="computeroutput"><span class="identifier">tcp_stream</span></code></a>
+        you would write:
       </p>
-<pre class="programlisting"><span class="identifier">http</span><span class="special">::</span><span class="identifier">icy_stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;</span> <span class="identifier">is</span><span class="special">{</span><span class="identifier">io_context</span><span class="special">};</span>
-</pre>
-<p>
-        Alternatively, you can write:
-      </p>
-<pre class="programlisting"><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span> <span class="identifier">sock</span><span class="special">{</span><span class="identifier">io_context</span><span class="special">};</span>
-<span class="identifier">http</span><span class="special">::</span><span class="identifier">icy_stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&amp;&gt;</span> <span class="identifier">is</span><span class="special">{</span><span class="identifier">sock</span><span class="special">};</span>
+<pre class="programlisting"><span class="identifier">http</span><span class="special">::</span><span class="identifier">icy_stream</span><span class="special">&lt;</span><span class="identifier">tcp_stream</span><span class="special">&gt;</span> <span class="identifier">is</span><span class="special">(</span><span class="identifier">ioc</span><span class="special">);</span>
 </pre>
 <h5>
 <a name="beast.ref.boost__beast__http__icy_stream.h6"></a>
@@ -315,8 +284,9 @@
                 <p>
                   The type representing the next layer, to which data will be read
                   and written during operations. For synchronous operations, the
-                  type must support the SyncStream concept. For asynchronous operations,
-                  the type must support the AsyncStream concept.
+                  type must support the <span class="emphasis"><em>SyncStream</em></span> concept.
+                  For asynchronous operations, the type must support the <span class="emphasis"><em>AsyncStream</em></span>
+                  concept.
                 </p>
               </td>
 </tr></tbody>
@@ -334,12 +304,13 @@
         <span class="phrase"><a name="beast.ref.boost__beast__http__icy_stream.concepts"></a></span><a class="link" href="boost__beast__http__icy_stream.html#beast.ref.boost__beast__http__icy_stream.concepts">Concepts</a>
       </h5>
 <p>
-        <span class="bold"><strong>AsyncStream</strong></span>, <span class="bold"><strong>SyncStream</strong></span>
+        <span class="emphasis"><em>AsyncStream</em></span>, <span class="emphasis"><em>SyncStream</em></span>
       </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

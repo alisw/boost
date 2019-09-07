@@ -27,7 +27,8 @@
 <a name="beast.ref.boost__beast__http__is_body_writer"></a><a class="link" href="boost__beast__http__is_body_writer.html" title="http::is_body_writer">http::is_body_writer</a>
 </h4></div></div></div>
 <p>
-        Determine if a <span class="bold"><strong>Body</strong></span> type has a reader.
+        <a class="indexterm" name="idm46025430744496"></a>
+Determine if a type has a nested <span class="emphasis"><em>BodyWriter</em></span>.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__http__is_body_writer.h0"></a>
@@ -38,24 +39,24 @@
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">is_body_writer</span> <span class="special">:</span>
-    <span class="keyword">public</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">integral_constant</span><span class="special">&lt;</span> <span class="keyword">bool</span><span class="special">,...&gt;</span>
+<span class="keyword">using</span> <span class="identifier">is_body_writer</span> <span class="special">=</span> <span class="emphasis"><em>see-below</em></span><span class="special">;</span>
 </pre>
 <h5>
 <a name="beast.ref.boost__beast__http__is_body_writer.h1"></a>
         <span class="phrase"><a name="beast.ref.boost__beast__http__is_body_writer.description"></a></span><a class="link" href="boost__beast__http__is_body_writer.html#beast.ref.boost__beast__http__is_body_writer.description">Description</a>
       </h5>
 <p>
-        This metafunction is equivalent to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">true_type</span></code>
-        if:
+        This alias template is <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">true_type</span></code>
+        when:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
             <code class="computeroutput"><span class="identifier">T</span></code> has a nested type named
-            <code class="computeroutput"><span class="identifier">reader</span></code>
+            <code class="computeroutput"><span class="identifier">writer</span></code>
           </li>
 <li class="listitem">
-            The nested type meets the requirements of <span class="bold"><strong>BodyWriter</strong></span>.
+            <code class="computeroutput"><span class="identifier">writer</span></code> meets the requirements
+            of <span class="emphasis"><em>BodyWriter</em></span>.
           </li>
 </ul></div>
 <h5>
@@ -110,7 +111,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

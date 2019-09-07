@@ -33,12 +33,12 @@
 
 </span>
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Class<span class="special">&gt;</span> 
-  <a class="link" href="specify_old_po_idp44810928.html" title="Class template specify_old_postcondition_except">specify_old_postcondition_except</a> <span class="identifier">destructor</span><span class="special">(</span><span class="identifier">Class</span> <span class="special">*</span> obj<span class="special">)</span><span class="special">;</span></pre></div>
+  <a class="link" href="specify__idm45678090563552.html" title="Class template specify_old_postcondition_except">specify_old_postcondition_except</a> <span class="identifier">destructor</span><span class="special">(</span><span class="identifier">Class</span> <span class="special">*</span> obj<span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp100531072"></a><h2>Description</h2>
+<a name="idm45538519445888"></a><h2>Description</h2>
 <p>This is used to specify postconditions, exception guarantees, old value copies at body, and check class invariants for destructors (destructors cannot not have preconditions, see  <a class="link" href="../../boost_contract/contract_programming_overview.html#boost_contract.contract_programming_overview.destructor_calls" title="Destructor Calls"> Destructor Calls</a>):</p>
 <pre class="programlisting"><span class="keyword">class</span> <span class="identifier">u</span> <span class="special">{</span>
-    <span class="keyword">friend</span> <span class="keyword">class</span> <a class="link" href="access.html" title="Class access">boost::contract::access</a><span class="special">;</span>
+    <span class="keyword">friend</span> <span class="keyword">class</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">contract</span><span class="special">::</span><span class="identifier">access</span><span class="special">;</span>
 
     <span class="keyword">void</span> <span class="identifier">invariant</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span> <span class="special">{</span> <span class="comment">// Optional (as for static and volatile).</span>
         <span class="identifier">BOOST_CONTRACT_ASSERT</span><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
@@ -47,8 +47,8 @@
 
 <span class="keyword">public</span><span class="special">:</span>
     <span class="special">~</span><span class="identifier">u</span><span class="special">(</span><span class="special">)</span> <span class="special">{</span>
-        <a class="link" href="old_ptr.html" title="Class template old_ptr">boost::contract::old_ptr&lt;old_type&gt;</a> <span class="identifier">old_var</span><span class="special">;</span>
-        <a class="link" href="check.html" title="Class check">boost::contract::check</a> <span class="identifier">c</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">contract</span><span class="special">::</span><span class="identifier">destructor</span><span class="special">(</span><span class="keyword">this</span><span class="special">)</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">contract</span><span class="special">::</span><span class="identifier">old_ptr</span><span class="special">&lt;</span><span class="identifier">old_type</span><span class="special">&gt;</span> <span class="identifier">old_var</span><span class="special">;</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">contract</span><span class="special">::</span><span class="identifier">check</span> <span class="identifier">c</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">contract</span><span class="special">::</span><span class="identifier">destructor</span><span class="special">(</span><span class="keyword">this</span><span class="special">)</span>
             <span class="comment">// No `.precondition` (destructors have no preconditions).</span>
             <span class="special">.</span><span class="identifier">old</span><span class="special">(</span><span class="special">[</span><span class="special">&amp;</span><span class="special">]</span> <span class="special">{</span> <span class="comment">// Optional.</span>
                 <span class="identifier">old_var</span> <span class="special">=</span> <span class="identifier">BOOST_CONTRACT_OLDOF</span><span class="special">(</span><span class="identifier">old_expr</span><span class="special">)</span><span class="special">;</span>
@@ -73,6 +73,8 @@
 <p>For optimization, this can be omitted for destructors that do not have postconditions and exception guarantees, within classes that have no invariants.</p>
 <p><span class="bold"><strong>See Also:</strong></span></p>
 <p> <a class="link" href="../../boost_contract/tutorial.html#boost_contract.tutorial.destructors" title="Destructors"> Destructors</a></p>
+<p>
+</p>
 <p>
 
 
@@ -114,7 +116,7 @@
 </tr>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>
-<td><p>The result of this function must be explicitly assigned to a variable of type <code class="computeroutput"><a class="link" href="check.html" title="Class check">boost::contract::check</a></code> declared locally just before the code of the destructor body (otherwise this library will generate a run-time error, see <code class="computeroutput"><a class="link" href="../../BOOST_CONTRACT_idp44357136.html" title="Macro BOOST_CONTRACT_ON_MISSING_CHECK_DECL">BOOST_CONTRACT_ON_MISSING_CHECK_DECL</a></code>). </p></td>
+<td><p>The result of this function must be explicitly assigned to a variable of type <code class="computeroutput"><a class="link" href="check.html" title="Class check">boost::contract::check</a></code> declared locally just before the code of the destructor body (otherwise this library will generate a run-time error, see <code class="computeroutput"><a class="link" href="../../BOOST_CO_idm45678091009376.html" title="Macro BOOST_CONTRACT_ON_MISSING_CHECK_DECL">BOOST_CONTRACT_ON_MISSING_CHECK_DECL</a></code>). </p></td>
 </tr>
 </tbody>
 </table></div>

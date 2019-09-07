@@ -41,7 +41,7 @@
   <span class="identifier">max_element</span><span class="special">(</span><span class="identifier">InputIterator</span> first<span class="special">,</span> <span class="identifier">InputIterator</span> last<span class="special">,</span> 
               <span class="identifier">command_queue</span> <span class="special">&amp;</span> queue <span class="special">=</span> <span class="identifier">system</span><span class="special">::</span><span class="identifier">default_queue</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp80985792"></a><h2>Description</h2>
+<a name="idm45875716028000"></a><h2>Description</h2>
 <p>Returns an iterator pointing to the element in the range [<code class="computeroutput">first</code>, <code class="computeroutput">last</code>) with the maximum value.</p>
 <p>
 For example, to find <code class="computeroutput">int2</code> value with maximum first component in given vector: </p>
@@ -52,15 +52,17 @@ For example, to find <code class="computeroutput">int2</code> value with maximum
 <span class="special">}</span><span class="special">)</span><span class="special">;</span>
 
 <span class="comment">// create vector</span>
-<a class="link" href="vector.html" title="Class template vector">boost::compute::vector&lt;uint2_&gt;</a> <span class="identifier">data</span> <span class="special">=</span> <span class="special">...</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">uint2_</span><span class="special">&gt;</span> <span class="identifier">data</span> <span class="special">=</span> <span class="special">...</span>
 
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">uint2_</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">iterator</span> <span class="identifier">max</span> <span class="special">=</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">max_element</span><span class="special">(</span><span class="identifier">data</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">data</span><span class="special">.</span><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">,</span> <span class="identifier">compare_first</span><span class="special">,</span> <span class="identifier">queue</span><span class="special">)</span><span class="special">;</span>
 </pre>
-<p>Space complexity on CPUs: (1)<br>
- Space complexity on GPUs: (N)</p>
+<p>Space complexity on CPUs: \Omega(1)<br>
+ Space complexity on GPUs: \Omega(N)</p>
 <p><span class="bold"><strong>See Also:</strong></span></p>
 <p>min_element() </p>
+<p>
+</p>
 <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">

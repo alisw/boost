@@ -33,11 +33,12 @@
         </p>
 <pre class="programlisting">template&lt;
     typename <a class="link" href="../Protocol.html" title="Protocol requirements">Protocol</a>,
+    typename <a class="link" href="../Executor1.html" title="Executor requirements">Executor</a>,
     typename Iterator,
     typename <a class="link" href="../ConnectCondition.html" title="Connect condition requirements">ConnectCondition</a>,
     typename <a class="link" href="../IteratorConnectHandler.html" title="Iterator connect handler requirements">IteratorConnectHandler</a>&gt;
 <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type"><span class="emphasis"><em>DEDUCED</em></span></a> async_connect(
-    basic_socket&lt; Protocol &gt; &amp; s,
+    basic_socket&lt; Protocol, Executor &gt; &amp; s,
     Iterator begin,
     ConnectCondition connect_condition,
     IteratorConnectHandler &amp;&amp; handler,
@@ -105,8 +106,8 @@
 <p>
                 Regardless of whether the asynchronous operation completes immediately
                 or not, the handler will not be invoked from within this function.
-                Invocation of the handler will be performed in a manner equivalent
-                to using <code class="computeroutput">boost::asio::io_context::post()</code>.
+                On immediate completion, invocation of the handler will be performed
+                in a manner equivalent to using <a class="link" href="../post.html" title="post"><code class="computeroutput">post</code></a>.
               </p>
 </dd>
 </dl>
@@ -123,7 +124,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

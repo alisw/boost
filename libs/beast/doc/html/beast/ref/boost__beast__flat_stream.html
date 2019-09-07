@@ -27,14 +27,14 @@
 <a name="beast.ref.boost__beast__flat_stream"></a><a class="link" href="boost__beast__flat_stream.html" title="flat_stream">flat_stream</a>
 </h4></div></div></div>
 <p>
-        Stream wrapper to improve ssl::stream write performance.
+        Stream wrapper to improve write performance.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__flat_stream.h0"></a>
         <span class="phrase"><a name="beast.ref.boost__beast__flat_stream.synopsis"></a></span><a class="link" href="boost__beast__flat_stream.html#beast.ref.boost__beast__flat_stream.synopsis">Synopsis</a>
       </h5>
 <p>
-        Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/experimental/core/flat_stream.hpp" target="_top">boost/beast/experimental/core/flat_stream.hpp</a>&gt;</code>
+        Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/core/flat_stream.hpp" target="_top">boost/beast/core/flat_stream.hpp</a>&gt;</code>
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">NextLayer</span><span class="special">&gt;</span>
@@ -71,18 +71,6 @@
 <td>
                 <p>
                   The type of the executor associated with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="boost__beast__flat_stream/lowest_layer_type.html" title="flat_stream::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  The type of the lowest layer.
                 </p>
               </td>
 </tr>
@@ -173,18 +161,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="boost__beast__flat_stream/lowest_layer.html" title="flat_stream::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Get a reference to the lowest layer.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="boost__beast__flat_stream/next_layer.html" title="flat_stream::next_layer"><span class="bold"><strong>next_layer</strong></span></a>
                 </p>
               </td>
@@ -249,9 +225,11 @@
         This wrapper flattens writes for buffer sequences having length greater than
         1 and total size below a predefined amount, using a dynamic memory allocation.
         It is primarily designed to overcome a performance limitation of the current
-        version of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>,
+        version of <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>,
         which does not use OpenSSL's scatter/gather interface for its low-level read
-        some and write some operations.
+        some and write some operations. It is normally not necessary to use this
+        class directly if you are already using <a class="link" href="boost__beast__ssl_stream.html" title="ssl_stream"><code class="computeroutput"><span class="identifier">ssl_stream</span></code></a>. The following examples
+        shows how to use this class with the ssl stream that comes with networking:
       </p>
 <h5>
 <a name="beast.ref.boost__beast__flat_stream.h4"></a>
@@ -262,13 +240,13 @@
         declare a variable of the correct type. Parameters passed to the constructor
         will be forwarded to the next layer's constructor:
       </p>
-<pre class="programlisting"><span class="identifier">flat_stream</span><span class="special">&lt;</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;&gt;</span> <span class="identifier">fs</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
+<pre class="programlisting"><span class="identifier">flat_stream</span><span class="special">&lt;</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;&gt;</span> <span class="identifier">fs</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
 </pre>
 <p>
         Alternatively you can write
       </p>
 <pre class="programlisting"><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;</span> <span class="identifier">ss</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
-<span class="identifier">flat_stream</span><span class="special">&lt;</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;&amp;&gt;</span> <span class="identifier">fs</span><span class="special">{</span><span class="identifier">ss</span><span class="special">};</span>
+<span class="identifier">flat_stream</span><span class="special">&lt;</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;&amp;&gt;</span> <span class="identifier">fs</span><span class="special">{</span><span class="identifier">ss</span><span class="special">};</span>
 </pre>
 <p>
         The resulting stream may be passed to any stream algorithms which operate
@@ -276,20 +254,20 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-            <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read</span></code>, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">async_read</span></code>
+            <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">read</span></code>, <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">async_read</span></code>
           </li>
 <li class="listitem">
-            <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">write</span></code>, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">async_write</span></code>
+            <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">write</span></code>, <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">async_write</span></code>
           </li>
 <li class="listitem">
-            <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">read_until</span></code>, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">async_read_until</span></code>
+            <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">read_until</span></code>, <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">async_read_until</span></code>
           </li>
 </ul></div>
 <p>
         The stream may also be used as a template parameter in other stream wrappers,
         such as for websocket:
       </p>
-<pre class="programlisting"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">flat_stream</span><span class="special">&lt;</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;&gt;&gt;</span> <span class="identifier">ws</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
+<pre class="programlisting"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">flat_stream</span><span class="special">&lt;</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span><span class="special">&lt;</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;&gt;&gt;</span> <span class="identifier">ws</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
 </pre>
 <h5>
 <a name="beast.ref.boost__beast__flat_stream.h5"></a>
@@ -323,9 +301,10 @@
                 <p>
                   The type representing the next layer, to which data will be read
                   and written during operations. For synchronous operations, the
-                  type must support the SyncStream concept. For asynchronous operations,
-                  the type must support the AsyncStream concept. This type will usually
-                  be some variation of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>.
+                  type must support the <span class="bold"><strong>SyncStream</strong></span>
+                  concept. For asynchronous operations, the type must support the
+                  <span class="bold"><strong>AsyncStream</strong></span> concept. This type
+                  will usually be some variation of <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>.
                 </p>
               </td>
 </tr></tbody>
@@ -334,9 +313,14 @@
 <a name="beast.ref.boost__beast__flat_stream.h6"></a>
         <span class="phrase"><a name="beast.ref.boost__beast__flat_stream.concepts"></a></span><a class="link" href="boost__beast__flat_stream.html#beast.ref.boost__beast__flat_stream.concepts">Concepts</a>
       </h5>
-<p>
-        <span class="bold"><strong>AsyncStream</strong></span> <span class="bold"><strong>SyncStream</strong></span>
-      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            SyncStream
+          </li>
+<li class="listitem">
+            AsyncStream
+          </li>
+</ul></div>
 <h5>
 <a name="beast.ref.boost__beast__flat_stream.h7"></a>
         <span class="phrase"><a name="beast.ref.boost__beast__flat_stream.see_also"></a></span><a class="link" href="boost__beast__flat_stream.html#beast.ref.boost__beast__flat_stream.see_also">See
@@ -344,10 +328,10 @@
       </h5>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-            <a href="https://github.com/boostorg/beast/issues/1108" target="_top">https://github.com/boostorg/beast/issues/1108</a>
+            <a href="https://github.com/boostorg/asio/issues/100" target="_top">https://github.com/boostorg/asio/issues/100</a>
           </li>
 <li class="listitem">
-            <a href="https://github.com/boostorg/asio/issues/100" target="_top">https://github.com/boostorg/asio/issues/100</a>
+            <a href="https://github.com/boostorg/beast/issues/1108" target="_top">https://github.com/boostorg/beast/issues/1108</a>
           </li>
 <li class="listitem">
             <a href="https://stackoverflow.com/questions/38198638/openssl-ssl-write-from-multiple-buffers-ssl-writev" target="_top">https://stackoverflow.com/questions/38198638/openssl-ssl-write-from-multiple-buffers-ssl-writev</a>
@@ -356,10 +340,14 @@
             <a href="https://stackoverflow.com/questions/50026167/performance-drop-on-port-from-beast-1-0-0-b66-to-boost-1-67-0-beast" target="_top">https://stackoverflow.com/questions/50026167/performance-drop-on-port-from-beast-1-0-0-b66-to-boost-1-67-0-beast</a>
           </li>
 </ul></div>
+<p>
+        Convenience header <code class="literal">&lt;<a href="../../../../../../boost/beast/core.hpp" target="_top">boost/beast/core.hpp</a>&gt;</code>
+      </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

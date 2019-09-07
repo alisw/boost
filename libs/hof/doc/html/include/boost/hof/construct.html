@@ -50,7 +50,7 @@
 <h1>construct<a class="headerlink" href="#construct" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="header">
 <h2>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/hof/construct.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;boost/hof/construct.hpp&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
 </div>
@@ -63,7 +63,7 @@ construct the object from a metafunction.</p>
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// Construct by decaying each value</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="c1">// Construct by decaying each value</span>
 <span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 <span class="k">constexpr</span> <span class="k">auto</span> <span class="n">construct</span><span class="p">();</span>
 
@@ -95,7 +95,7 @@ construct the object from a metafunction.</p>
 </div>
 <div class="section" id="semantics">
 <h2>Semantics<a class="headerlink" href="#semantics" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">assert</span><span class="p">(</span><span class="n">construct</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()(</span><span class="n">xs</span><span class="p">...)</span> <span class="o">==</span> <span class="n">T</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">assert</span><span class="p">(</span><span class="n">construct</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()(</span><span class="n">xs</span><span class="p">...)</span> <span class="o">==</span> <span class="n">T</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
 <span class="n">assert</span><span class="p">(</span><span class="n">construct</span><span class="o">&lt;</span><span class="n">Template</span><span class="o">&gt;</span><span class="p">()(</span><span class="n">xs</span><span class="p">...)</span> <span class="o">==</span> <span class="n">Template</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">xs</span><span class="p">)...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
 <span class="n">assert</span><span class="p">(</span><span class="n">construct_meta</span><span class="o">&lt;</span><span class="n">MetafunctionClass</span><span class="o">&gt;</span><span class="p">()(</span><span class="n">xs</span><span class="p">...)</span> <span class="o">==</span> <span class="n">MetafunctionClass</span><span class="o">::</span><span class="n">apply</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">xs</span><span class="p">)...</span><span class="o">&gt;</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
 <span class="n">assert</span><span class="p">(</span><span class="n">construct_meta</span><span class="o">&lt;</span><span class="n">MetafunctionTemplate</span><span class="o">&gt;</span><span class="p">()(</span><span class="n">xs</span><span class="p">...)</span> <span class="o">==</span> <span class="n">MetafunctionTemplate</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">xs</span><span class="p">)...</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">(</span><span class="n">xs</span><span class="p">...));</span>
@@ -120,7 +120,7 @@ MetafunctionTemplate&lt;Ts...&gt;::type must be:</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;boost/hof.hpp&gt;</span><span class="cp"></span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include</span> <span class="cpf">&lt;boost/hof.hpp&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;cassert&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
 

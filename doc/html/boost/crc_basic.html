@@ -96,6 +96,12 @@
                    <span class="keyword">bool</span> reflect_remainder <span class="special">=</span> <span class="keyword">false</span><span class="special">)</span><span class="special">;</span></pre>Create a computer, separately listing each needed parameter. <p>Constructs a <code class="computeroutput"><code class="computeroutput"><a class="link" href="crc_basic.html" title="Class template crc_basic">crc_basic</a></code></code> object with at least the required parameters to a particular CRC formula to be processed upon receiving input.</p>
 <p>
 
+
+
+
+
+
+
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
 <colgroup>
@@ -136,15 +142,31 @@
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>
-<p><code class="computeroutput"><span class="emphasis"><em>truncated_polynomial</em></span> == this-&gt;get_truncated_polynominal()</code> </p>
-<p><code class="computeroutput"><span class="emphasis"><em>initial_remainder</em></span> == this-&gt;get_initial_remainder()</code> </p>
-<p><code class="computeroutput"><span class="emphasis"><em>final_xor_value</em></span> == this-&gt;get_final_xor_value()</code> </p>
-<p><code class="computeroutput"><span class="emphasis"><em>reflect_input</em></span> == this-&gt;get_reflect_input()</code> </p>
-<p><code class="computeroutput"><span class="emphasis"><em>reflect_remainder</em></span> == this-&gt;get_reflect_remainder()</code> </p>
-<p><code class="computeroutput"><span class="emphasis"><em>initial_remainder</em></span> == this-&gt;get_interim_remainder()</code> </p>
-<p><code class="computeroutput">(<span class="emphasis"><em>reflect_remainder</em></span> ? REFLECT(<span class="emphasis"><em>initial_remainder</em></span>) : <span class="emphasis"><em>initial_remainder</em></span>) ^ <span class="emphasis"><em>final_xor_value</em></span> == this-&gt;checksum()</code> </p>
-</td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>truncated_polynomial</em></span> == this-&gt;get_truncated_polynominal()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>initial_remainder</em></span> == this-&gt;get_initial_remainder()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>final_xor_value</em></span> == this-&gt;get_final_xor_value()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>reflect_input</em></span> == this-&gt;get_reflect_input()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>reflect_remainder</em></span> == this-&gt;get_reflect_remainder()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>initial_remainder</em></span> == this-&gt;get_interim_remainder()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput">(<span class="emphasis"><em>reflect_remainder</em></span> ? REFLECT(<span class="emphasis"><em>initial_remainder</em></span>) : <span class="emphasis"><em>initial_remainder</em></span>) ^ <span class="emphasis"><em>final_xor_value</em></span> == this-&gt;checksum()</code> </p></td>
 </tr>
 </tbody>
 </table></div>
@@ -230,6 +252,7 @@
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_8-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="identifier">value_type</span> new_rem<span class="special">)</span><span class="special">;</span></pre>Change the interim remainder to a new value. <p>Changes the interim polynomial remainder to <span class="emphasis"><em>new_rem</em></span>, purging any influence previously submitted input has had. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
 <p>
 
+
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
 <colgroup>
@@ -252,10 +275,11 @@
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>
-<p><code class="computeroutput"><span class="emphasis"><em>new_rem</em></span> == this-&gt;get_interim_remainder()</code> </p>
-<p><code class="computeroutput">((this-&gt;get_reflect_remainder() ? REFLECT(<span class="emphasis"><em>new_rem</em></span>) : <span class="emphasis"><em>new_rem</em></span>) ^ this-&gt;get_final_xor_value()) == this-&gt;checksum()</code> </p>
-</td>
+<td><p><code class="computeroutput"><span class="emphasis"><em>new_rem</em></span> == this-&gt;get_interim_remainder()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput">((this-&gt;get_reflect_remainder() ? REFLECT(<span class="emphasis"><em>new_rem</em></span>) : <span class="emphasis"><em>new_rem</em></span>) ^ this-&gt;get_final_xor_value()) == this-&gt;checksum()</code> </p></td>
 </tr>
 </tbody>
 </table></div>
@@ -263,19 +287,23 @@
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_9-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Change the interim remainder back to the initial value. <p>Changes the interim polynomial remainder to the initial remainder given during construction, purging any influence previously submitted input has had. The value of the 2<sup>i</sup> bit is the value of the coefficient of the polynomial's x<sup>i</sup> term.</p>
 <p>
+
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
 <colgroup>
 <col align="left" valign="top">
 <col>
 </colgroup>
-<tbody><tr>
+<tbody>
+<tr>
 <td><p><span class="term">Postconditions:</span></p></td>
-<td>
-<p><code class="computeroutput">this-&gt;get_initial_remainder() == this-&gt;get_interim_remainder()</code> </p>
-<p><code class="computeroutput">((this-&gt;get_reflect_remainder() ? REFLECT(this-&gt;get_initial_remainder()) : this-&gt;get_initial_remainder()) ^ this-&gt;get_final_xor_value()) == this-&gt;checksum()</code> </p>
-</td>
-</tr></tbody>
+<td><p><code class="computeroutput">this-&gt;get_initial_remainder() == this-&gt;get_interim_remainder()</code> </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Postconditions:</span></p></td>
+<td><p><code class="computeroutput">((this-&gt;get_reflect_remainder() ? REFLECT(this-&gt;get_initial_remainder()) : this-&gt;get_initial_remainder()) ^ this-&gt;get_final_xor_value()) == this-&gt;checksum()</code> </p></td>
+</tr>
+</tbody>
 </table></div>
 </li>
 <li class="listitem">
@@ -387,6 +415,8 @@
 <p>
 
 
+
+
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
 <colgroup>
@@ -415,11 +445,15 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><span class="emphasis"><em>bytes_end</em></span> has to equal <span class="emphasis"><em>bytes_begin</em></span> if the latter is <code class="computeroutput">NULL</code> or otherwise doesn't point to a valid buffer. </p>
-<p><span class="emphasis"><em>bytes_end</em></span>, if not equal to <span class="emphasis"><em>bytes_begin</em></span>, has to point within or one-byte-past the same buffer <span class="emphasis"><em>bytes_begin</em></span> points into. </p>
-<p><span class="emphasis"><em>bytes_end</em></span> has to be reachable from <span class="emphasis"><em>bytes_begin</em></span> through a finite number of forward byte-pointer increments.</p>
-</td>
+<td><p><span class="emphasis"><em>bytes_end</em></span> has to equal <span class="emphasis"><em>bytes_begin</em></span> if the latter is <code class="computeroutput">NULL</code> or otherwise doesn't point to a valid buffer. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><span class="emphasis"><em>bytes_end</em></span>, if not equal to <span class="emphasis"><em>bytes_begin</em></span>, has to point within or one-byte-past the same buffer <span class="emphasis"><em>bytes_begin</em></span> points into. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><span class="emphasis"><em>bytes_end</em></span> has to be reachable from <span class="emphasis"><em>bytes_begin</em></span> through a finite number of forward byte-pointer increments.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
@@ -431,6 +465,7 @@
 <li class="listitem">
 <pre class="literallayout"><span class="keyword">void</span> <a name="id-1_3_13_11_1_4_1_5_14-bb"></a><span class="identifier">process_bytes</span><span class="special">(</span><span class="keyword">void</span> <span class="keyword">const</span> <span class="special">*</span> buffer<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> byte_count<span class="special">)</span><span class="special">;</span></pre>Submit a memory block for input processing, pointer-and-size style. <p>Updates the interim remainder with several bytes' worth of altered-CRC-division steps. The bits within each byte are processed from the highest place down if <code class="computeroutput">this-&gt;get_reflect_input()</code> is <code class="computeroutput">false</code>, and lowest place up otherwise. The bytes themselves are processed starting from the one pointed by <span class="emphasis"><em>buffer</em></span>, forward-iterated (as if the pointed-to objects were of <code class="computeroutput">unsigned char</code>) until <span class="emphasis"><em>byte_count</em></span> bytes are read.</p>
 <p>
+
 
 
 </p>
@@ -461,10 +496,11 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><span class="emphasis"><em>byte_count</em></span> has to equal 0 if <span class="emphasis"><em>buffer</em></span> is <code class="computeroutput">NULL</code> or otherwise doesn't point to valid memory. </p>
-<p>If <span class="emphasis"><em>buffer</em></span> points within valid memory, then that block has to have at least <span class="emphasis"><em>byte_count</em></span> more valid bytes allocated from that point.</p>
-</td>
+<td><p><span class="emphasis"><em>byte_count</em></span> has to equal 0 if <span class="emphasis"><em>buffer</em></span> is <code class="computeroutput">NULL</code> or otherwise doesn't point to valid memory. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>If <span class="emphasis"><em>buffer</em></span> points within valid memory, then that block has to have at least <span class="emphasis"><em>byte_count</em></span> more valid bytes allocated from that point.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>

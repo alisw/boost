@@ -21,7 +21,14 @@
 <constructor><description><para>Default constructor; yields an empty interval <computeroutput>[0,0)</computeroutput>. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for a closed singleton interval <computeroutput>[val,val]</computeroutput> </para></description></constructor>
 <constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
-</class><struct-specialization name="interval_traits"><template>
+</class><struct-specialization name="interval_bound_type"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+    </template><specialization><template-arg>closed_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_closed</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="interval_traits"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::closed_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="domain_type"><type>DomainT</type></typedef>
@@ -33,13 +40,6 @@
 <method name="construct" specifiers="static"><type><classname>interval_type</classname></type><parameter name="lo"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
 <method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 <method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="interval_bound_type"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-    </template><specialization><template-arg>closed_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_closed</default></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
@@ -89,21 +89,7 @@
 <method name="left_open" specifiers="static"><type><classname>continuous_interval</classname></type><parameter name="lo"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter></method>
 <method name="closed" specifiers="static"><type><classname>continuous_interval</classname></type><parameter name="lo"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="interval_traits"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::continuous_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type><classname>interval_traits</classname></type></typedef>
-<typedef name="domain_type"><type>DomainT</type></typedef>
-<typedef name="interval_type"><type><classname>icl::continuous_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
-</method-group>
-<method-group name="public static functions">
-<method name="construct" specifiers="static"><type><classname>interval_type</classname></type><parameter name="lo"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
-<method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
-<method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="dynamic_interval_traits"><template>
+</class><struct-specialization name="dynamic_interval_traits"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>boost::icl::continuous_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type><classname>dynamic_interval_traits</classname></type></typedef>
@@ -122,6 +108,20 @@
     </template><specialization><template-arg>continuous_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::dynamic</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="interval_traits"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::continuous_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type><classname>interval_traits</classname></type></typedef>
+<typedef name="domain_type"><type>DomainT</type></typedef>
+<typedef name="interval_type"><type><classname>icl::continuous_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
+</method-group>
+<method-group name="public static functions">
+<method name="construct" specifiers="static"><type><classname>interval_type</classname></type><parameter name="lo"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
+<method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
+<method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="is_continuous_interval"><template>
       <template-type-parameter name="DomainT"/>
@@ -178,21 +178,7 @@
 <method name="left_open" specifiers="static"><type><classname>discrete_interval</classname></type><parameter name="lo"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter></method>
 <method name="closed" specifiers="static"><type><classname>discrete_interval</classname></type><parameter name="lo"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="interval_traits"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::discrete_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type><classname>interval_traits</classname></type></typedef>
-<typedef name="domain_type"><type>DomainT</type></typedef>
-<typedef name="interval_type"><type><classname>icl::discrete_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
-</method-group>
-<method-group name="public static functions">
-<method name="construct" specifiers="static"><type><classname>interval_type</classname></type><parameter name="lo"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
-<method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
-<method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="dynamic_interval_traits"><template>
+</class><struct-specialization name="dynamic_interval_traits"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>boost::icl::discrete_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type><classname>dynamic_interval_traits</classname></type></typedef>
@@ -211,6 +197,20 @@
     </template><specialization><template-arg>discrete_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::dynamic</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="interval_traits"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::discrete_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type><classname>interval_traits</classname></type></typedef>
+<typedef name="domain_type"><type>DomainT</type></typedef>
+<typedef name="interval_type"><type><classname>icl::discrete_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
+</method-group>
+<method-group name="public static functions">
+<method name="construct" specifiers="static"><type><classname>interval_type</classname></type><parameter name="lo"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
+<method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
+<method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="is_discrete_interval"><template>
       <template-type-parameter name="DomainT"/>
@@ -270,49 +270,21 @@
 <header name="boost/icl/functors.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct name="identity_based_inplace_combine"><template>
+<struct name="conversion"><template>
+      <template-type-parameter name="Combiner"/>
+    </template><typedef name="type"><type><classname>conversion</classname>&lt; Combiner &gt;</type></typedef>
+<typedef name="argument_type"><type>remove_const&lt; typename remove_reference&lt; typename Combiner::first_argument_type &gt;::<classname>type</classname> &gt;::<classname>type</classname></type></typedef>
+<method-group name="public static functions">
+<method name="proversion" specifiers="static"><type>argument_type</type><parameter name="value"><paramtype>const argument_type &amp;</paramtype></parameter></method>
+<method name="inversion" specifiers="static"><type>argument_type</type><parameter name="value"><paramtype>const argument_type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="identity_based_inplace_combine"><template>
       <template-type-parameter name="Type"/>
     </template><typedef name="first_argument_type"><type>Type &amp;</type></typedef>
 <typedef name="second_argument_type"><type>const Type &amp;</type></typedef>
 <typedef name="result_type"><type>void</type></typedef>
 <method-group name="public static functions">
 <method name="identity_element" specifiers="static"><type>Type</type></method>
-</method-group>
-</struct><struct name="unit_element_based_inplace_combine"><template>
-      <template-type-parameter name="Type"/>
-    </template><typedef name="first_argument_type"><type>Type &amp;</type></typedef>
-<typedef name="second_argument_type"><type>const Type &amp;</type></typedef>
-<typedef name="result_type"><type>void</type></typedef>
-<method-group name="public static functions">
-<method name="identity_element" specifiers="static"><type>Type</type></method>
-</method-group>
-</struct><struct name="inplace_identity"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_identity</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name=""><paramtype>Type &amp;</paramtype></parameter><parameter name=""><paramtype>const Type &amp;</paramtype></parameter></method>
-</method-group>
-</struct><struct name="inplace_erasure"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_erasure</classname>&lt; Type &gt;</type></typedef>
-<typedef name="base_type"><type><classname>identity_based_inplace_combine</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
-</method-group>
-</struct><struct name="inplace_plus"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_plus</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
-</method-group>
-<method-group name="public static functions">
-<method name="version" specifiers="static"><type>void</type><parameter name=""><paramtype>Type &amp;</paramtype></parameter></method>
-</method-group>
-</struct><struct name="inplace_minus"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_minus</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
 </struct><struct name="inplace_bit_add"><template>
       <template-type-parameter name="Type"/>
@@ -323,15 +295,15 @@
 <method-group name="public static functions">
 <method name="version" specifiers="static"><type>void</type><parameter name=""><paramtype>Type &amp;</paramtype></parameter></method>
 </method-group>
-</struct><struct name="inplace_bit_subtract"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_bit_subtract</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
-</method-group>
 </struct><struct name="inplace_bit_and"><template>
       <template-type-parameter name="Type"/>
     </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_bit_and</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="inplace_bit_subtract"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_bit_subtract</classname>&lt; Type &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
@@ -341,21 +313,9 @@
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
-</struct><struct name="inplace_et"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_et</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
-</method-group>
 </struct><struct name="inplace_caret"><template>
       <template-type-parameter name="Type"/>
     </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_caret</classname>&lt; Type &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
-</method-group>
-</struct><struct name="inplace_insert"><template>
-      <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_insert</classname>&lt; Type &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
@@ -365,15 +325,28 @@
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
-</struct><struct name="inplace_star"><template>
+</struct><struct name="inplace_erasure"><template>
       <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_star</classname>&lt; Type &gt;</type></typedef>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_erasure</classname>&lt; Type &gt;</type></typedef>
+<typedef name="base_type"><type><classname>identity_based_inplace_combine</classname>&lt; Type &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
-</struct><struct name="inplace_slash"><template>
+</struct><struct name="inplace_et"><template>
       <template-type-parameter name="Type"/>
-    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_slash</classname>&lt; Type &gt;</type></typedef>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_et</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="inplace_identity"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_identity</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name=""><paramtype>Type &amp;</paramtype></parameter><parameter name=""><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="inplace_insert"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_insert</classname>&lt; Type &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
@@ -389,6 +362,33 @@
 <method-group name="public member functions">
 <method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
+</struct><struct name="inplace_minus"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_minus</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="inplace_plus"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_plus</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
+<method-group name="public static functions">
+<method name="version" specifiers="static"><type>void</type><parameter name=""><paramtype>Type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="inplace_slash"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_slash</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
+</struct><struct name="inplace_star"><template>
+      <template-type-parameter name="Type"/>
+    </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type><classname>inplace_star</classname>&lt; Type &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="operator()" cv="const"><type>void</type><parameter name="object"><paramtype>Type &amp;</paramtype></parameter><parameter name="operand"><paramtype>const Type &amp;</paramtype></parameter></method>
+</method-group>
 </struct><struct name="inter_section"><template>
       <template-type-parameter name="Type"/>
     </template><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type>boost::mpl::if_&lt; has_set_semantics&lt; Type &gt;, <classname>icl::inplace_et</classname>&lt; Type &gt;, <classname>icl::inplace_plus</classname>&lt; Type &gt; &gt;::type</type></typedef>
@@ -401,34 +401,25 @@
 <typedef name="type"><type><classname>icl::inplace_erasure</classname>&lt; argument_type &gt;</type></typedef>
 </struct><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_plus&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_minus</classname>&lt; Type &gt;</type></typedef>
-</struct-specialization><struct-specialization name="inverse"><template>
-      <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_minus&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_plus</classname>&lt; Type &gt;</type></typedef>
-</struct-specialization><struct-specialization name="inverse"><template>
-      <template-type-parameter name="Type"/>
     </template><specialization><template-arg>icl::inplace_bit_add&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_bit_subtract</classname>&lt; Type &gt;</type></typedef>
-</struct-specialization><struct-specialization name="inverse"><template>
-      <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_bit_subtract&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_bit_add</classname>&lt; Type &gt;</type></typedef>
-</struct-specialization><struct-specialization name="inverse"><template>
-      <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_et&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_caret</classname>&lt; Type &gt;</type></typedef>
-</struct-specialization><struct-specialization name="inverse"><template>
-      <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_caret&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_et</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
     </template><specialization><template-arg>icl::inplace_bit_and&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_bit_xor</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>icl::inplace_bit_subtract&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_bit_add</classname>&lt; Type &gt;</type></typedef>
+</struct-specialization><struct-specialization name="inverse"><template>
+      <template-type-parameter name="Type"/>
     </template><specialization><template-arg>icl::inplace_bit_xor&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_bit_and</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_star&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_slash</classname>&lt; Type &gt;</type></typedef>
+    </template><specialization><template-arg>icl::inplace_caret&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_et</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_slash&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_star</classname>&lt; Type &gt;</type></typedef>
+    </template><specialization><template-arg>icl::inplace_et&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_caret</classname>&lt; Type &gt;</type></typedef>
+</struct-specialization><struct-specialization name="inverse"><template>
+      <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>icl::inplace_identity&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_erasure</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
     </template><specialization><template-arg>icl::inplace_max&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_min</classname>&lt; Type &gt;</type></typedef>
@@ -437,7 +428,16 @@
     </template><specialization><template-arg>icl::inplace_min&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_max</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_identity&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_erasure</classname>&lt; Type &gt;</type></typedef>
+    </template><specialization><template-arg>icl::inplace_minus&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_plus</classname>&lt; Type &gt;</type></typedef>
+</struct-specialization><struct-specialization name="inverse"><template>
+      <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>icl::inplace_plus&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_minus</classname>&lt; Type &gt;</type></typedef>
+</struct-specialization><struct-specialization name="inverse"><template>
+      <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>icl::inplace_slash&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_star</classname>&lt; Type &gt;</type></typedef>
+</struct-specialization><struct-specialization name="inverse"><template>
+      <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>icl::inplace_star&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>icl::inplace_slash</classname>&lt; Type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="inverse"><template>
       <template-type-parameter name="Type"/>
     </template><specialization><template-arg>icl::inter_section&lt; Type &gt;</template-arg></specialization><inherit access="public">boost::icl::identity_based_inplace_combine&lt; Type &gt;</inherit><typedef name="type"><type>boost::mpl::if_&lt; has_set_semantics&lt; Type &gt;, <classname>icl::inplace_caret</classname>&lt; Type &gt;, <classname>icl::inplace_minus</classname>&lt; Type &gt; &gt;::type</type></typedef>
@@ -452,23 +452,23 @@
 </method-group>
 </struct><struct-specialization name="is_negative"><template>
       <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_minus&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>is_negative</classname></type></typedef>
+    </template><specialization><template-arg>icl::inplace_bit_subtract&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>is_negative</classname></type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="is_negative"><template>
       <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>icl::inplace_bit_subtract&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>is_negative</classname></type></typedef>
+    </template><specialization><template-arg>icl::inplace_minus&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>is_negative</classname></type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
-</struct-specialization><struct name="conversion"><template>
-      <template-type-parameter name="Combiner"/>
-    </template><typedef name="type"><type><classname>conversion</classname>&lt; Combiner &gt;</type></typedef>
-<typedef name="argument_type"><type>remove_const&lt; typename remove_reference&lt; typename Combiner::first_argument_type &gt;::<classname>type</classname> &gt;::<classname>type</classname></type></typedef>
+</struct-specialization><struct name="unit_element_based_inplace_combine"><template>
+      <template-type-parameter name="Type"/>
+    </template><typedef name="first_argument_type"><type>Type &amp;</type></typedef>
+<typedef name="second_argument_type"><type>const Type &amp;</type></typedef>
+<typedef name="result_type"><type>void</type></typedef>
 <method-group name="public static functions">
-<method name="proversion" specifiers="static"><type>argument_type</type><parameter name="value"><paramtype>const argument_type &amp;</paramtype></parameter></method>
-<method name="inversion" specifiers="static"><type>argument_type</type><parameter name="value"><paramtype>const argument_type &amp;</paramtype></parameter></method>
+<method name="identity_element" specifiers="static"><type>Type</type></method>
 </method-group>
 </struct><struct name="version"><template>
       <template-type-parameter name="Combiner"/>
@@ -479,8 +479,12 @@
 <method name="operator()"><type>argument_type</type><parameter name="value"><paramtype>const argument_type &amp;</paramtype></parameter></method>
 </method-group>
 </struct><struct-specialization name="version"><template>
-    </template><specialization><template-arg>icl::inplace_minus&lt; short &gt;</template-arg></specialization><method-group name="public member functions">
-<method name="operator()"><type>short</type><parameter name="val"><paramtype>short</paramtype></parameter></method>
+    </template><specialization><template-arg>icl::inplace_minus&lt; double &gt;</template-arg></specialization><method-group name="public member functions">
+<method name="operator()"><type>double</type><parameter name="val"><paramtype>double</paramtype></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="version"><template>
+    </template><specialization><template-arg>icl::inplace_minus&lt; float &gt;</template-arg></specialization><method-group name="public member functions">
+<method name="operator()"><type>float</type><parameter name="val"><paramtype>float</paramtype></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="version"><template>
     </template><specialization><template-arg>icl::inplace_minus&lt; int &gt;</template-arg></specialization><method-group name="public member functions">
@@ -491,20 +495,16 @@
 <method name="operator()"><type>long</type><parameter name="val"><paramtype>long</paramtype></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="version"><template>
+    </template><specialization><template-arg>icl::inplace_minus&lt; long double &gt;</template-arg></specialization><method-group name="public member functions">
+<method name="operator()"><type>long double</type><parameter name="val"><paramtype>long double</paramtype></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="version"><template>
     </template><specialization><template-arg>icl::inplace_minus&lt; long long &gt;</template-arg></specialization><method-group name="public member functions">
 <method name="operator()"><type>long long</type><parameter name="val"><paramtype>long long</paramtype></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="version"><template>
-    </template><specialization><template-arg>icl::inplace_minus&lt; float &gt;</template-arg></specialization><method-group name="public member functions">
-<method name="operator()"><type>float</type><parameter name="val"><paramtype>float</paramtype></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="version"><template>
-    </template><specialization><template-arg>icl::inplace_minus&lt; double &gt;</template-arg></specialization><method-group name="public member functions">
-<method name="operator()"><type>double</type><parameter name="val"><paramtype>double</paramtype></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="version"><template>
-    </template><specialization><template-arg>icl::inplace_minus&lt; long double &gt;</template-arg></specialization><method-group name="public member functions">
-<method name="operator()"><type>long double</type><parameter name="val"><paramtype>long double</paramtype></parameter></method>
+    </template><specialization><template-arg>icl::inplace_minus&lt; short &gt;</template-arg></specialization><method-group name="public member functions">
+<method name="operator()"><type>short</type><parameter name="val"><paramtype>short</paramtype></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="version"><template>
       <template-type-parameter name="Type"/>
@@ -530,26 +530,10 @@
 <header name="boost/icl/gregorian.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct-specialization name="is_discrete"><template>
-    </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="identity_element"><template>
-    </template><specialization><template-arg>boost::gregorian::date_duration</template-arg></specialization><method-group name="public static functions">
-<method name="value" specifiers="static"><type>boost::gregorian::date_duration</type></method>
-</method-group>
+<struct-specialization name="difference_type_of"><template>
+    </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>boost::gregorian::date_duration</type></typedef>
 </struct-specialization><struct-specialization name="has_difference"><template>
     </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>has_difference</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="difference_type_of"><template>
-    </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>boost::gregorian::date_duration</type></typedef>
-</struct-specialization><struct-specialization name="size_type_of"><template>
-    </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>boost::gregorian::date_duration</type></typedef>
-</struct-specialization><struct-specialization name="is_discrete"><template>
-    </template><specialization><template-arg>boost::gregorian::date_duration</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
@@ -558,6 +542,22 @@
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
+</struct-specialization><struct-specialization name="identity_element"><template>
+    </template><specialization><template-arg>boost::gregorian::date_duration</template-arg></specialization><method-group name="public static functions">
+<method name="value" specifiers="static"><type>boost::gregorian::date_duration</type></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_discrete"><template>
+    </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_discrete"><template>
+    </template><specialization><template-arg>boost::gregorian::date_duration</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="size_type_of"><template>
+    </template><specialization><template-arg>boost::gregorian::date</template-arg></specialization><typedef name="type"><type>boost::gregorian::date_duration</type></typedef>
 </struct-specialization><struct-specialization name="size_type_of"><template>
     </template><specialization><template-arg>boost::gregorian::date_duration</template-arg></specialization><typedef name="type"><type>boost::gregorian::date_duration</type></typedef>
 </struct-specialization>
@@ -579,12 +579,7 @@
 <header name="boost/icl/interval.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct name="static_interval"><template>
-      <template-type-parameter name="IntervalT"/>
-      <template-nontype-parameter name="IsDiscrete"><type>bool</type></template-nontype-parameter>
-      <template-nontype-parameter name="PretendedBounds"><type>bound_type</type></template-nontype-parameter>
-      <template-nontype-parameter name="RepresentedBounds"><type>bound_type</type></template-nontype-parameter>
-    </template></struct><struct name="interval"><template>
+<struct name="interval"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
     </template><typedef name="interval_type"><type>interval_type_default&lt; DomainT, Compare &gt;::type</type></typedef>
@@ -596,11 +591,16 @@
 <method name="closed" specifiers="static"><type>interval_type</type><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter></method>
 <method name="construct" specifiers="static"><type>interval_type</type><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter></method>
 </method-group>
-</struct><struct-specialization name="static_interval"><template>
+</struct><struct name="static_interval"><template>
+      <template-type-parameter name="IntervalT"/>
+      <template-nontype-parameter name="IsDiscrete"><type>bool</type></template-nontype-parameter>
+      <template-nontype-parameter name="PretendedBounds"><type>bound_type</type></template-nontype-parameter>
+      <template-nontype-parameter name="RepresentedBounds"><type>bound_type</type></template-nontype-parameter>
+    </template></struct><struct-specialization name="static_interval"><template>
       <template-type-parameter name="IntervalT"/>
       <template-nontype-parameter name="PretendedBounds"><type>bound_type</type></template-nontype-parameter>
       <template-nontype-parameter name="RepresentedBounds"><type>bound_type</type></template-nontype-parameter>
-    </template><specialization><template-arg>IntervalT</template-arg><template-arg>true</template-arg><template-arg>PretendedBounds</template-arg><template-arg>RepresentedBounds</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; IntervalT &gt;::domain_type</type></typedef>
+    </template><specialization><template-arg>IntervalT</template-arg><template-arg>false</template-arg><template-arg>PretendedBounds</template-arg><template-arg>RepresentedBounds</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; IntervalT &gt;::domain_type</type></typedef>
 <method-group name="public static functions">
 <method name="construct" specifiers="static"><type>IntervalT</type><parameter name="low"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
 </method-group>
@@ -608,7 +608,7 @@
       <template-type-parameter name="IntervalT"/>
       <template-nontype-parameter name="PretendedBounds"><type>bound_type</type></template-nontype-parameter>
       <template-nontype-parameter name="RepresentedBounds"><type>bound_type</type></template-nontype-parameter>
-    </template><specialization><template-arg>IntervalT</template-arg><template-arg>false</template-arg><template-arg>PretendedBounds</template-arg><template-arg>RepresentedBounds</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; IntervalT &gt;::domain_type</type></typedef>
+    </template><specialization><template-arg>IntervalT</template-arg><template-arg>true</template-arg><template-arg>PretendedBounds</template-arg><template-arg>RepresentedBounds</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; IntervalT &gt;::domain_type</type></typedef>
 <method-group name="public static functions">
 <method name="construct" specifiers="static"><type>IntervalT</type><parameter name="low"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="up"><paramtype>const domain_type &amp;</paramtype></parameter></method>
 </method-group>
@@ -628,17 +628,35 @@
 <header name="boost/icl/interval_base_map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct name="mapping_pair"><template>
+<struct-specialization name="absorbs_identities"><template>
+      <template-type-parameter name="SubType"/>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
-    </template><data-member name="key"><type>DomainT</type></data-member>
-<data-member name="data"><type>CodomainT</type></data-member>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::interval_base_map&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities&lt; <classname>icl::interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
 <method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::absorbs_identities)</default></parameter></method>
 </method-group>
-<constructor/>
-<constructor><parameter name="key_value"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="data_value"><paramtype>const CodomainT &amp;</paramtype></parameter></constructor>
-<constructor><parameter name="std_pair"><paramtype>const std::pair&lt; DomainT, CodomainT &gt; &amp;</paramtype></parameter></constructor>
-</struct><class name="interval_base_map"><template>
+</struct-specialization><struct-specialization name="has_inverse"><template>
+      <template-type-parameter name="SubType"/>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::interval_base_map&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
+</method-group>
+</struct-specialization><class name="interval_base_map"><template>
       <template-type-parameter name="SubType"/>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
@@ -814,12 +832,6 @@
 <method name="rend"><type>reverse_iterator</type></method>
 <method name="rbegin" cv="const"><type>const_reverse_iterator</type></method>
 <method name="rend" cv="const"><type>const_reverse_iterator</type></method>
-<method name="_add"><type><classname>interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;::iterator</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="addend"><paramtype>const segment_type &amp;</paramtype></parameter></method>
-<method name="_add"><type><classname>interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt;::iterator</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="addend"><paramtype>const segment_type &amp;</paramtype></parameter></method>
 </method-group>
 <constructor><description><para>Default constructor for the empty object </para></description></constructor>
 <constructor><parameter name="src"><paramtype>const <classname>interval_base_map</classname> &amp;</paramtype></parameter><description><para>Copy constructor </para></description></constructor>
@@ -873,35 +885,7 @@
 <method name="that"><type>sub_type *</type></method>
 <method name="that" cv="const"><type>const sub_type *</type></method>
 </method-group>
-</class><struct-specialization name="is_map"><template>
-      <template-type-parameter name="SubType"/>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_base_map&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="has_inverse"><template>
-      <template-type-parameter name="SubType"/>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_base_map&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
+</class><struct-specialization name="is_interval_container"><template>
       <template-type-parameter name="SubType"/>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
@@ -915,7 +899,7 @@
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
-</struct-specialization><struct-specialization name="absorbs_identities"><template>
+</struct-specialization><struct-specialization name="is_map"><template>
       <template-type-parameter name="SubType"/>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
@@ -925,9 +909,9 @@
       <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_base_map&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities&lt; <classname>icl::interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+    </template><specialization><template-arg>icl::interval_base_map&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::interval_base_map</classname>&lt; SubType, DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::absorbs_identities)</default></parameter></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="is_total"><template>
       <template-type-parameter name="SubType"/>
@@ -943,7 +927,17 @@
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::is_total)</default></parameter></method>
 </method-group>
-</struct-specialization>
+</struct-specialization><struct name="mapping_pair"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+    </template><data-member name="key"><type>DomainT</type></data-member>
+<data-member name="data"><type>CodomainT</type></data-member>
+<method-group name="public member functions">
+</method-group>
+<constructor/>
+<constructor><parameter name="key_value"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="data_value"><paramtype>const CodomainT &amp;</paramtype></parameter></constructor>
+<constructor><parameter name="std_pair"><paramtype>const std::pair&lt; DomainT, CodomainT &gt; &amp;</paramtype></parameter></constructor>
+</struct>
 
 
 
@@ -1052,23 +1046,23 @@
 <method name="that"><type>sub_type *</type></method>
 <method name="that" cv="const"><type>const sub_type *</type></method>
 </method-group>
-</class><struct-specialization name="is_set"><template>
-      <template-type-parameter name="SubType"/>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_base_set&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::interval_base_set</classname>&lt; SubType, DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
+</class><struct-specialization name="is_interval_container"><template>
       <template-type-parameter name="SubType"/>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::interval_base_set&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::interval_base_set</classname>&lt; SubType, DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_set"><template>
+      <template-type-parameter name="SubType"/>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::interval_base_set&lt; SubType</template-arg><template-arg>DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::interval_base_set</classname>&lt; SubType, DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
@@ -1088,7 +1082,16 @@
 <header name="boost/icl/interval_bounds.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="interval_bounds"><data-member name="_bits"><type>bound_type</type></data-member>
+<class name="bounded_value"><template>
+      <template-type-parameter name="DomainT"/>
+    </template><typedef name="domain_type"><type>DomainT</type></typedef>
+<typedef name="type"><type><classname>bounded_value</classname>&lt; DomainT &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="value" cv="const"><type>domain_type</type></method>
+<method name="bound" cv="const"><type><classname>interval_bounds</classname></type></method>
+</method-group>
+<constructor><parameter name="value"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="bound"><paramtype><classname>interval_bounds</classname></paramtype></parameter></constructor>
+</class><class name="interval_bounds"><data-member name="_bits"><type>bound_type</type></data-member>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>static_open</paramtype><default>0</default></parameter></method>
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>static_left_open</paramtype><default>1</default></parameter></method>
@@ -1118,15 +1121,6 @@
 <method name="right_open" specifiers="static"><type><classname>interval_bounds</classname></type></method>
 <method name="closed" specifiers="static"><type><classname>interval_bounds</classname></type></method>
 </method-group>
-</class><class name="bounded_value"><template>
-      <template-type-parameter name="DomainT"/>
-    </template><typedef name="domain_type"><type>DomainT</type></typedef>
-<typedef name="type"><type><classname>bounded_value</classname>&lt; DomainT &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="value" cv="const"><type>domain_type</type></method>
-<method name="bound" cv="const"><type><classname>interval_bounds</classname></type></method>
-</method-group>
-<constructor><parameter name="value"><paramtype>const domain_type &amp;</paramtype></parameter><parameter name="bound"><paramtype><classname>interval_bounds</classname></paramtype></parameter></constructor>
 </class><typedef name="bound_type"><type>unsigned char</type></typedef>
 
 
@@ -1167,7 +1161,33 @@
 <header name="boost/icl/interval_map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="interval_map"><template>
+<struct-specialization name="absorbs_identities"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities&lt; <classname>icl::interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::absorbs_identities)</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="has_inverse"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
+</method-group>
+</struct-specialization><class name="interval_map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"><default><classname alt="boost::icl::partial_absorber">icl::partial_absorber</classname></default></template-type-parameter>
@@ -1235,33 +1255,7 @@
           <template-type-parameter name="Combiner"/>
         </template><parameter name="it_"><paramtype>iterator &amp;</paramtype></parameter><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="end_gap"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="co_val"><paramtype>const codomain_type &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="is_map"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="has_inverse"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
+</class><struct-specialization name="is_interval_container"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"/>
@@ -1274,7 +1268,7 @@
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
-</struct-specialization><struct-specialization name="absorbs_identities"><template>
+</struct-specialization><struct-specialization name="is_map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"/>
@@ -1283,9 +1277,9 @@
       <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities&lt; <classname>icl::interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+    </template><specialization><template-arg>icl::interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::absorbs_identities)</default></parameter></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="is_total"><template>
       <template-type-parameter name="DomainT"/>
@@ -1378,16 +1372,7 @@
 <method name="add_over"><type>iterator</type><parameter name="addend"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="last_"><paramtype>iterator</paramtype></parameter></method>
 <method name="add_over"><type>iterator</type><parameter name="addend"><paramtype>const interval_type &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="is_set"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
+</class><struct-specialization name="is_interval_container"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
@@ -1402,6 +1387,15 @@
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
       <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_joiner&lt; <classname>icl::interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_set"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
@@ -1429,7 +1423,14 @@
 <header name="boost/icl/interval_traits.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct name="interval_traits"><template>
+<struct-specialization name="difference_type_of"><template>
+      <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>interval_traits&lt; Type &gt;</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; Type &gt;::domain_type</type></typedef>
+<typedef name="type"><type>difference_type_of&lt; domain_type &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="domain_type_of"><template>
+      <template-type-parameter name="Type"/>
+    </template><specialization><template-arg>interval_traits&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>interval_traits</classname>&lt; Type &gt;::domain_type</type></typedef>
+</struct-specialization><struct name="interval_traits"><template>
       <template-type-parameter name="Type"/>
     </template><typedef name="type"><type><classname>interval_traits</classname></type></typedef>
 <typedef name="domain_type"><type>domain_type_of&lt; Type &gt;::<classname>type</classname></type></typedef>
@@ -1438,14 +1439,7 @@
 <method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const Type &amp;</paramtype></parameter></method>
 <method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const Type &amp;</paramtype></parameter></method>
 </method-group>
-</struct><struct-specialization name="domain_type_of"><template>
-      <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>interval_traits&lt; Type &gt;</template-arg></specialization><typedef name="type"><type><classname>interval_traits</classname>&lt; Type &gt;::domain_type</type></typedef>
-</struct-specialization><struct-specialization name="difference_type_of"><template>
-      <template-type-parameter name="Type"/>
-    </template><specialization><template-arg>interval_traits&lt; Type &gt;</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; Type &gt;::domain_type</type></typedef>
-<typedef name="type"><type>difference_type_of&lt; domain_type &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="size_type_of"><template>
+</struct><struct-specialization name="size_type_of"><template>
       <template-type-parameter name="Type"/>
     </template><specialization><template-arg>interval_traits&lt; Type &gt;</template-arg></specialization><typedef name="domain_type"><type><classname>interval_traits</classname>&lt; Type &gt;::domain_type</type></typedef>
 <typedef name="type"><type>size_type_of&lt; domain_type &gt;::type</type></typedef>
@@ -1474,7 +1468,7 @@
 <typedef name="pointer"><type>void</type></typedef>
 <typedef name="reference"><type>void</type></typedef>
 <method-group name="public member functions">
-<method name="operator*"><type><classname>add_iterator</classname> &amp;</type></method>
+<method name="operator *"><type><classname>add_iterator</classname> &amp;</type></method>
 <method name="operator++"><type><classname>add_iterator</classname> &amp;</type></method>
 <method name="operator++"><type><classname>add_iterator</classname> &amp;</type><parameter name=""><paramtype>int</paramtype></parameter></method>
 </method-group>
@@ -1489,7 +1483,7 @@
 <typedef name="pointer"><type>void</type></typedef>
 <typedef name="reference"><type>void</type></typedef>
 <method-group name="public member functions">
-<method name="operator*"><type><classname>insert_iterator</classname> &amp;</type></method>
+<method name="operator *"><type><classname>insert_iterator</classname> &amp;</type></method>
 <method name="operator++"><type><classname>insert_iterator</classname> &amp;</type></method>
 <method name="operator++"><type><classname>insert_iterator</classname> &amp;</type><parameter name=""><paramtype>int</paramtype></parameter></method>
 </method-group>
@@ -1517,20 +1511,14 @@
 <header name="boost/icl/left_open_interval.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="left_open_interval"><template>
+<struct-specialization name="interval_bound_type"><template>
       <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
-    </template><typedef name="type"><type><classname>left_open_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
-<typedef name="domain_type"><type>DomainT</type></typedef>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+    </template><specialization><template-arg>left_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
 <method-group name="public member functions">
-<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
-<method name="lower" cv="const"><type>DomainT</type></method>
-<method name="upper" cv="const"><type>DomainT</type></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_left_open</default></parameter></method>
 </method-group>
-<constructor><description><para>Default constructor; yields an empty interval <computeroutput>(0,0]</computeroutput>. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for a left-open singleton interval <computeroutput>(val-1,val]</computeroutput> </para></description></constructor>
-<constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
-</class><struct-specialization name="interval_traits"><template>
+</struct-specialization><struct-specialization name="interval_traits"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::left_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="domain_type"><type>DomainT</type></typedef>
@@ -1543,14 +1531,20 @@
 <method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 <method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 </method-group>
-</struct-specialization><struct-specialization name="interval_bound_type"><template>
+</struct-specialization><class name="left_open_interval"><template>
       <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-    </template><specialization><template-arg>left_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
+    </template><typedef name="type"><type><classname>left_open_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
+<typedef name="domain_type"><type>DomainT</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_left_open</default></parameter></method>
+<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
+<method name="lower" cv="const"><type>DomainT</type></method>
+<method name="upper" cv="const"><type>DomainT</type></method>
 </method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+<constructor><description><para>Default constructor; yields an empty interval <computeroutput>(0,0]</computeroutput>. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for a left-open singleton interval <computeroutput>(val-1,val]</computeroutput> </para></description></constructor>
+<constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
+</class><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::left_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><method-group name="public static functions">
@@ -1578,15 +1572,55 @@
 <header name="boost/icl/map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct name="partial_absorber"><enum name="@3"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
-<enum name="@4"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
-</struct><struct name="partial_enricher"><enum name="@5"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
-<enum name="@6"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
-</struct><struct name="total_absorber"><enum name="@7"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
-<enum name="@8"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
-</struct><struct name="total_enricher"><enum name="@9"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
-<enum name="@10"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
-</struct><class name="map"><template>
+<struct-specialization name="absorbs_identities"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>int</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>Traits::absorbs_identities</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="has_inverse"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_map"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_total"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_total</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>int</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>Traits::is_total</default></parameter></method>
+</method-group>
+</struct-specialization><class name="map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"><default><classname alt="boost::icl::partial_absorber">icl::partial_absorber</classname></default></template-type-parameter>
@@ -1747,9 +1781,6 @@
 <method name="_add"><type><classname>map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt; &amp;</type><template>
           <template-type-parameter name="Combiner"/>
         </template><parameter name="addend"><paramtype>const element_type &amp;</paramtype></parameter></method>
-<method name="_add"><type><classname>map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt;::iterator</type><template>
-          <template-type-parameter name="Combiner"/>
-        </template><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="addend"><paramtype>const value_type &amp;</paramtype></parameter></method>
 <method name="_subtract"><type><classname>map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt; &amp;</type><template>
           <template-type-parameter name="Combiner"/>
         </template><parameter name="minuend"><paramtype>const value_type &amp;</paramtype></parameter></method>
@@ -1781,55 +1812,15 @@
         </template><parameter name="section"><paramtype><classname>type</classname> &amp;</paramtype></parameter><parameter name="fragment"><paramtype>const FragmentT &amp;</paramtype></parameter></method>
 <method name="partial_add_intersection" cv="const"><type>void</type><parameter name="section"><paramtype><classname>type</classname> &amp;</paramtype></parameter><parameter name="operand"><paramtype>const element_type &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="is_map"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="has_inverse"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="absorbs_identities"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>int</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>Traits::absorbs_identities</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_total"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_total</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>int</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>Traits::is_total</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+</class><struct name="partial_absorber"><enum name="@3"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
+<enum name="@4"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
+</struct><struct name="partial_enricher"><enum name="@5"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
+<enum name="@6"><enumvalue name="is_total"><default>= false</default></enumvalue></enum>
+</struct><struct name="total_absorber"><enum name="@7"><enumvalue name="absorbs_identities"><default>= true</default></enumvalue></enum>
+<enum name="@8"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
+</struct><struct name="total_enricher"><enum name="@9"><enumvalue name="absorbs_identities"><default>= false</default></enumvalue></enum>
+<enum name="@10"><enumvalue name="is_total"><default>= true</default></enumvalue></enum>
+</struct><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"/>
@@ -1856,20 +1847,14 @@
 <header name="boost/icl/open_interval.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="open_interval"><template>
+<struct-specialization name="interval_bound_type"><template>
       <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
-    </template><typedef name="type"><type><classname>open_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
-<typedef name="domain_type"><type>DomainT</type></typedef>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+    </template><specialization><template-arg>open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
 <method-group name="public member functions">
-<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
-<method name="lower" cv="const"><type>DomainT</type></method>
-<method name="upper" cv="const"><type>DomainT</type></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_open</default></parameter></method>
 </method-group>
-<constructor><description><para>Default constructor; yields an empty interval <computeroutput>(0,0)</computeroutput>. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for an open singleton interval <computeroutput>(val-1,val+1)</computeroutput> </para></description></constructor>
-<constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
-</class><struct-specialization name="interval_traits"><template>
+</struct-specialization><struct-specialization name="interval_traits"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="domain_type"><type>DomainT</type></typedef>
@@ -1882,14 +1867,20 @@
 <method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 <method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 </method-group>
-</struct-specialization><struct-specialization name="interval_bound_type"><template>
+</struct-specialization><class name="open_interval"><template>
       <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-    </template><specialization><template-arg>open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
+    </template><typedef name="type"><type><classname>open_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
+<typedef name="domain_type"><type>DomainT</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_open</default></parameter></method>
+<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
+<method name="lower" cv="const"><type>DomainT</type></method>
+<method name="upper" cv="const"><type>DomainT</type></method>
 </method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+<constructor><description><para>Default constructor; yields an empty interval <computeroutput>(0,0)</computeroutput>. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for an open singleton interval <computeroutput>(val-1,val+1)</computeroutput> </para></description></constructor>
+<constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
+</class><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><method-group name="public static functions">
@@ -1917,22 +1908,10 @@
 <header name="boost/icl/ptime.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct-specialization name="is_discrete"><template>
-    </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
+<struct-specialization name="difference_type_of"><template>
+    </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>boost::posix_time::time_duration</type></typedef>
 </struct-specialization><struct-specialization name="has_difference"><template>
     </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>has_difference</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="difference_type_of"><template>
-    </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>boost::posix_time::time_duration</type></typedef>
-</struct-specialization><struct-specialization name="size_type_of"><template>
-    </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>boost::posix_time::time_duration</type></typedef>
-</struct-specialization><struct-specialization name="is_discrete"><template>
-    </template><specialization><template-arg>boost::posix_time::time_duration</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
@@ -1941,6 +1920,18 @@
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
+</struct-specialization><struct-specialization name="is_discrete"><template>
+    </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_discrete"><template>
+    </template><specialization><template-arg>boost::posix_time::time_duration</template-arg></specialization><typedef name="type"><type>is_discrete</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="size_type_of"><template>
+    </template><specialization><template-arg>boost::posix_time::ptime</template-arg></specialization><typedef name="type"><type>boost::posix_time::time_duration</type></typedef>
 </struct-specialization><struct-specialization name="size_type_of"><template>
     </template><specialization><template-arg>boost::posix_time::time_duration</template-arg></specialization><typedef name="type"><type>boost::posix_time::time_duration</type></typedef>
 </struct-specialization><function name="operator++"><type>boost::posix_time::ptime</type><parameter name="x"><paramtype>boost::posix_time::ptime &amp;</paramtype></parameter></function>
@@ -1959,11 +1950,11 @@
 <header name="boost/icl/rational.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<struct-specialization name="is_numeric"><template>
+<struct-specialization name="has_inverse"><template>
       <template-type-parameter name="Integral"/>
-    </template><specialization><template-arg>boost::rational&lt; Integral &gt;</template-arg></specialization><typedef name="type"><type>is_numeric</type></typedef>
+    </template><specialization><template-arg>boost::rational&lt; Integral &gt;</template-arg></specialization><typedef name="type"><type>has_inverse</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(boost::is_signed&lt; Integral &gt;::value)</default></parameter></method>
 </method-group>
 </struct-specialization><struct-specialization name="is_continuous"><template>
       <template-type-parameter name="Integral"/>
@@ -1977,11 +1968,11 @@
 <method-group name="public member functions">
 <method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>false</default></parameter></method>
 </method-group>
-</struct-specialization><struct-specialization name="has_inverse"><template>
+</struct-specialization><struct-specialization name="is_numeric"><template>
       <template-type-parameter name="Integral"/>
-    </template><specialization><template-arg>boost::rational&lt; Integral &gt;</template-arg></specialization><typedef name="type"><type>has_inverse</type></typedef>
+    </template><specialization><template-arg>boost::rational&lt; Integral &gt;</template-arg></specialization><typedef name="type"><type>is_numeric</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(boost::is_signed&lt; Integral &gt;::value)</default></parameter></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
 </method-group>
 </struct-specialization>
 
@@ -1999,20 +1990,14 @@
 <header name="boost/icl/right_open_interval.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="right_open_interval"><template>
+<struct-specialization name="interval_bound_type"><template>
       <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
-    </template><typedef name="type"><type><classname>right_open_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
-<typedef name="domain_type"><type>DomainT</type></typedef>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+    </template><specialization><template-arg>right_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
 <method-group name="public member functions">
-<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
-<method name="lower" cv="const"><type>domain_type</type></method>
-<method name="upper" cv="const"><type>domain_type</type></method>
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_right_open</default></parameter></method>
 </method-group>
-<constructor><description><para>Default constructor; yields an empty interval <computeroutput>[0,0)</computeroutput>. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for a singleton interval <computeroutput>[val,val+1)</computeroutput> </para></description></constructor>
-<constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
-</class><struct-specialization name="interval_traits"><template>
+</struct-specialization><struct-specialization name="interval_traits"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::right_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="domain_type"><type>DomainT</type></typedef>
@@ -2025,14 +2010,20 @@
 <method name="lower" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 <method name="upper" specifiers="static"><type>domain_type</type><parameter name="inter_val"><paramtype>const <classname>interval_type</classname> &amp;</paramtype></parameter></method>
 </method-group>
-</struct-specialization><struct-specialization name="interval_bound_type"><template>
+</struct-specialization><class name="right_open_interval"><template>
       <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-    </template><specialization><template-arg>right_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><typedef name="type"><type>interval_bound_type</type></typedef>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
+    </template><typedef name="type"><type><classname>right_open_interval</classname>&lt; DomainT, Compare &gt;</type></typedef>
+<typedef name="domain_type"><type>DomainT</type></typedef>
 <method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bound_type</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>interval_bounds::static_right_open</default></parameter></method>
+<method name="ICL_COMPARE_DOMAIN"><type>typedef</type><parameter name=""><paramtype>Compare</paramtype></parameter><parameter name=""><paramtype>DomainT</paramtype></parameter></method>
+<method name="lower" cv="const"><type>domain_type</type></method>
+<method name="upper" cv="const"><type>domain_type</type></method>
 </method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+<constructor><description><para>Default constructor; yields an empty interval <computeroutput>[0,0)</computeroutput>. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="val"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Constructor for a singleton interval <computeroutput>[val,val+1)</computeroutput> </para></description></constructor>
+<constructor><parameter name="low"><paramtype>const DomainT &amp;</paramtype></parameter><parameter name="up"><paramtype>const DomainT &amp;</paramtype></parameter><description><para>Interval from <computeroutput>low</computeroutput> to <computeroutput>up</computeroutput> with bounds <computeroutput>bounds</computeroutput> </para></description></constructor>
+</class><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
     </template><specialization><template-arg>icl::right_open_interval&lt; DomainT</template-arg><template-arg>Compare &gt;</template-arg></specialization><method-group name="public static functions">
@@ -2060,7 +2051,34 @@
 <header name="boost/icl/separate_interval_set.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="separate_interval_set"><template>
+<struct-specialization name="is_interval_container"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::separate_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_interval_separator"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::separate_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_separator&lt; <classname>icl::separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_set"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::separate_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><class name="separate_interval_set"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
@@ -2110,34 +2128,7 @@
 <method name="add_over"><type>iterator</type><parameter name="addend"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="last_"><paramtype>iterator</paramtype></parameter></method>
 <method name="add_over"><type>iterator</type><parameter name="addend"><paramtype>const interval_type &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="is_set"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::separate_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::separate_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_separator"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::separate_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_separator&lt; <classname>icl::separate_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+</class><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
@@ -2163,7 +2154,85 @@
 <header name="boost/icl/split_interval_map.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="split_interval_map"><template>
+<struct-specialization name="absorbs_identities"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::absorbs_identities)</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="has_inverse"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_interval_container"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_interval_splitter"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_splitter&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_map"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_total"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-type-parameter name="CodomainT"/>
+      <template-type-parameter name="Traits"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_total&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::is_total)</default></parameter></method>
+</method-group>
+</struct-specialization><class name="split_interval_map"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"><default><classname alt="boost::icl::partial_absorber">icl::partial_absorber</classname></default></template-type-parameter>
@@ -2226,85 +2295,7 @@
           <template-type-parameter name="Combiner"/>
         </template><parameter name="it_"><paramtype>iterator &amp;</paramtype></parameter><parameter name="prior_"><paramtype>iterator</paramtype></parameter><parameter name="end_gap"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="co_val"><paramtype>const codomain_type &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="is_map"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_map&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="has_inverse"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>has_inverse&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(has_inverse&lt; CodomainT &gt;::value)</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_splitter"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_splitter&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="absorbs_identities"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>absorbs_identities&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::absorbs_identities)</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_total"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-type-parameter name="CodomainT"/>
-      <template-type-parameter name="Traits"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Combine"><type>ICL_COMBINE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Section"><type>ICL_SECTION</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_map&lt; DomainT</template-arg><template-arg>CodomainT</template-arg><template-arg>Traits</template-arg><template-arg>Compare</template-arg><template-arg>Combine</template-arg><template-arg>Section</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_total&lt; <classname>icl::split_interval_map</classname>&lt; DomainT, CodomainT, Traits, Compare, Combine, Section, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>(Traits::is_total)</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+</class><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-type-parameter name="CodomainT"/>
       <template-type-parameter name="Traits"/>
@@ -2332,7 +2323,34 @@
 <header name="boost/icl/split_interval_set.hpp">
 <namespace name="boost">
 <namespace name="icl">
-<class name="split_interval_set"><template>
+<struct-specialization name="is_interval_container"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_interval_splitter"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_splitter&lt; <classname>icl::split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="is_set"><template>
+      <template-type-parameter name="DomainT"/>
+      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
+      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
+      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
+    </template><specialization><template-arg>icl::split_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
+</method-group>
+</struct-specialization><class name="split_interval_set"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type><default>ICL_COMPARE_INSTANCE(ICL_COMPARE_DEFAULT, DomainT)</default></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type><default>ICL_INTERVAL_INSTANCE(ICL_INTERVAL_DEFAULT, DomainT, Compare)</default></template-nontype-parameter>
@@ -2382,34 +2400,7 @@
 <method name="add_over"><type>iterator</type><parameter name="addend"><paramtype>const interval_type &amp;</paramtype></parameter><parameter name="last_"><paramtype>iterator</paramtype></parameter></method>
 <method name="add_over"><type>iterator</type><parameter name="addend"><paramtype>const interval_type &amp;</paramtype></parameter></method>
 </method-group>
-</class><struct-specialization name="is_set"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_set&lt; <classname>icl::split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_container"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_container&lt; <classname>icl::split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="is_interval_splitter"><template>
-      <template-type-parameter name="DomainT"/>
-      <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
-      <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>
-      <template-nontype-parameter name="Alloc"><type>ICL_ALLOC</type></template-nontype-parameter>
-    </template><specialization><template-arg>icl::split_interval_set&lt; DomainT</template-arg><template-arg>Compare</template-arg><template-arg>Interval</template-arg><template-arg>Alloc &gt;</template-arg></specialization><typedef name="type"><type>is_interval_splitter&lt; <classname>icl::split_interval_set</classname>&lt; DomainT, Compare, Interval, Alloc &gt; &gt;</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_STATIC_CONSTANT"><type/><parameter name=""><paramtype>bool</paramtype></parameter><parameter name=""><paramtype>value</paramtype><default>true</default></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="type_to_string"><template>
+</class><struct-specialization name="type_to_string"><template>
       <template-type-parameter name="DomainT"/>
       <template-nontype-parameter name="Compare"><type>ICL_COMPARE</type></template-nontype-parameter>
       <template-nontype-parameter name="Interval"><type>ICL_INTERVAL(ICL_COMPARE)</type></template-nontype-parameter>

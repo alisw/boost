@@ -4,9 +4,14 @@
 <namespace name="heap">
 <class name="binomial_heap"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
+      <template-nontype-parameter name="Options"><type>class ...</type></template-nontype-parameter>
     </template><purpose>binomial heap </purpose><description><para>The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
-<listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem></itemizedlist>
+<listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para>
+</listitem></itemizedlist>
 </para></description><typedef name="value_type"><type>T</type></typedef>
 <typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
 <typedef name="difference_type"><type>implementation_defined::difference_type</type></typedef>
@@ -51,7 +56,7 @@
 <method name="ordered_begin" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="ordered_end" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the end of the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="erase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Removes the element handled by <computeroutput>handle</computeroutput> from the <classname alt="boost::heap::priority_queue">priority_queue</classname>.</para><para><emphasis role="bold">Complexity:</emphasis> Logarithmic. </para></description></method>
-<method name="value_comp" cv="const"><type>value_compare const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
+<method name="value_comp" cv="const"><type>value_compare const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
 <method name="operator&lt;" cv="const"><type>bool</type><template>
           <template-type-parameter name="HeapType"/>
         </template><parameter name="rhs"><paramtype>HeapType const &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns:</emphasis> Element-wise comparison of heap data structures</para><para><emphasis role="bold">Requirement:</emphasis> the <computeroutput>value_compare</computeroutput> object of both heaps must match. </para></description></method>
@@ -89,9 +94,15 @@
 <namespace name="heap">
 <class name="d_ary_heap"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
+      <template-nontype-parameter name="Options"><type>class ...</type></template-nontype-parameter>
     </template><purpose>d-ary heap class </purpose><description><para>This class implements an immutable priority queue. Internally, the d-ary heap is represented as dynamically sized array (std::vector), that directly stores the values.</para><para>The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
-<listitem><para><computeroutput>boost::heap::arity&lt;&gt;</computeroutput>, required</para></listitem><listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::mutable_&lt;&gt;</computeroutput>, defaults to <computeroutput>mutable_&lt;false&gt;</computeroutput> </para></listitem></itemizedlist>
+<listitem><para><computeroutput>boost::heap::arity&lt;&gt;</computeroutput>, required</para>
+</listitem><listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::mutable_&lt;&gt;</computeroutput>, defaults to <computeroutput>mutable_&lt;false&gt;</computeroutput> </para>
+</listitem></itemizedlist>
 </para></description><typedef name="value_type"><type>T</type></typedef>
 <typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
 <typedef name="difference_type"><type>implementation_defined::difference_type</type></typedef>
@@ -116,7 +127,7 @@
 <method name="max_size" cv="const"><type>size_type</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns the maximum number of elements the priority queue can contain.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="clear"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Removes all elements from the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Linear. </para></description></method>
 <method name="get_allocator" cv="const"><type>allocator_type</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns allocator.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
-<method name="top" cv="const"><type>value_type const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns a const_reference to the maximum element.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
+<method name="top" cv="const"><type>value_type const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns a const_reference to the maximum element.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="push"><type>boost::conditional&lt; is_mutable, handle_type, void &gt;::type</type><parameter name="v"><paramtype>value_type const &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Adds a new element to the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Logarithmic (amortized). Linear (worst case). </para></description></method>
 <method name="emplace"><type>boost::conditional&lt; is_mutable, handle_type, void &gt;::type</type><template>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
@@ -155,7 +166,7 @@
 <method name="ordered_begin" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="ordered_end" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the end of the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="reserve"><type>void</type><parameter name="element_count"><paramtype>size_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Reserves memory for element_count elements</para><para><emphasis role="bold">Complexity:</emphasis> Linear.</para><para><emphasis role="bold">Node:</emphasis> Invalidates iterators </para></description></method>
-<method name="value_comp" cv="const"><type>value_compare const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
+<method name="value_comp" cv="const"><type>value_compare const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
 </method-group>
 <constructor specifiers="explicit"><parameter name="cmp"><paramtype>value_compare const &amp;</paramtype><default>value_compare()</default></parameter><description><para><emphasis role="bold">Effects:</emphasis> constructs an empty priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></constructor>
 <constructor><parameter name="rhs"><paramtype><classname>d_ary_heap</classname> const &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> copy-constructs priority queue from rhs.</para><para><emphasis role="bold">Complexity:</emphasis> Linear. </para></description></constructor>
@@ -174,9 +185,14 @@
 <namespace name="heap">
 <class name="fibonacci_heap"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
+      <template-nontype-parameter name="Options"><type>class ...</type></template-nontype-parameter>
     </template><purpose>fibonacci heap </purpose><description><para>The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
-<listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem></itemizedlist>
+<listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para>
+</listitem></itemizedlist>
 </para></description><typedef name="value_type"><type>T</type></typedef>
 <typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
 <typedef name="difference_type"><type>implementation_defined::difference_type</type></typedef>
@@ -203,7 +219,7 @@
 <method name="clear"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Removes all elements from the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Linear. </para></description></method>
 <method name="get_allocator" cv="const"><type>allocator_type</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns allocator.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="swap"><type>void</type><parameter name="rhs"><paramtype><classname>fibonacci_heap</classname> &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Swaps two priority queues.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
-<method name="top" cv="const"><type>value_type const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns a const_reference to the maximum element.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
+<method name="top" cv="const"><type>value_type const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns a const_reference to the maximum element.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="push"><type>handle_type</type><parameter name="v"><paramtype>value_type const &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Adds a new element to the priority queue. Returns handle to element</para><para><emphasis role="bold">Complexity:</emphasis> Constant.</para><para><emphasis role="bold">Note:</emphasis> Does not invalidate iterators. </para></description></method>
 <method name="emplace"><type>handle_type</type><template>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
@@ -223,7 +239,7 @@
 <method name="ordered_begin" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="ordered_end" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the end of the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="merge"><type>void</type><parameter name="rhs"><paramtype><classname>fibonacci_heap</classname> &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Merge with priority queue rhs.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
-<method name="value_comp" cv="const"><type>value_compare const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
+<method name="value_comp" cv="const"><type>value_compare const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
 <method name="operator&lt;" cv="const"><type>bool</type><template>
           <template-type-parameter name="HeapType"/>
         </template><parameter name="rhs"><paramtype>HeapType const &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns:</emphasis> Element-wise comparison of heap data structures</para><para><emphasis role="bold">Requirement:</emphasis> the <computeroutput>value_compare</computeroutput> object of both heaps must match. </para></description></method>
@@ -259,18 +275,7 @@
 <header name="boost/heap/heap_concepts.hpp">
 <namespace name="boost">
 <namespace name="heap">
-<struct name="PriorityQueue"><template>
-      <template-type-parameter name="C"/>
-    </template><inherit access="public">boost::ForwardContainer&lt; C &gt;</inherit><typedef name="iterator"><type>C::iterator</type></typedef>
-<typedef name="const_iterator"><type>C::const_iterator</type></typedef>
-<typedef name="allocator_type"><type>C::allocator_type</type></typedef>
-<typedef name="value_compare"><type>C::value_compare</type></typedef>
-<typedef name="value_type"><type>C::value_type</type></typedef>
-<typedef name="const_reference"><type>C::const_reference</type></typedef>
-<method-group name="public member functions">
-<method name="BOOST_CONCEPT_USAGE"><type/><parameter name=""><paramtype>PriorityQueue</paramtype></parameter></method>
-</method-group>
-</struct><struct name="MergablePriorityQueue"><template>
+<struct name="MergablePriorityQueue"><template>
       <template-type-parameter name="C"/>
     </template><inherit access="public">boost::heap::PriorityQueue&lt; C &gt;</inherit><method-group name="public member functions">
 <method name="BOOST_CONCEPT_USAGE"><type/><parameter name=""><paramtype>MergablePriorityQueue</paramtype></parameter></method>
@@ -298,6 +303,17 @@
 <method name="BOOST_CONCEPT_USAGE"><type/><parameter name=""><paramtype>MutablePriorityQueue</paramtype></parameter></method>
 <method name="BOOST_CONCEPT_USAGE"><type/><parameter name=""><paramtype>PriorityQueue</paramtype></parameter></method>
 </method-group>
+</struct><struct name="PriorityQueue"><template>
+      <template-type-parameter name="C"/>
+    </template><inherit access="public">boost::ForwardContainer&lt; C &gt;</inherit><typedef name="iterator"><type>C::iterator</type></typedef>
+<typedef name="const_iterator"><type>C::const_iterator</type></typedef>
+<typedef name="allocator_type"><type>C::allocator_type</type></typedef>
+<typedef name="value_compare"><type>C::value_compare</type></typedef>
+<typedef name="value_type"><type>C::value_type</type></typedef>
+<typedef name="const_reference"><type>C::const_reference</type></typedef>
+<method-group name="public member functions">
+<method name="BOOST_CONCEPT_USAGE"><type/><parameter name=""><paramtype>PriorityQueue</paramtype></parameter></method>
+</method-group>
 </struct>
 </namespace>
 </namespace>
@@ -317,9 +333,14 @@
 <namespace name="heap">
 <class name="pairing_heap"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
+      <template-nontype-parameter name="Options"><type>class ...</type></template-nontype-parameter>
     </template><purpose>pairing heap </purpose><description><para>Pairing heaps are self-adjusting binary heaps. Although design and implementation are rather simple, the complexity analysis is yet unsolved. For details, consult:</para><para>Pettie, Seth (2005), "Towards a final analysis of pairing heaps", Proc. 46th Annual IEEE Symposium on Foundations of Computer Science, pp. 174-183</para><para>The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
-<listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para></listitem></itemizedlist>
+<listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para>
+</listitem></itemizedlist>
 </para></description><typedef name="value_type"><type>T</type></typedef>
 <typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
 <typedef name="difference_type"><type>implementation_defined::difference_type</type></typedef>
@@ -347,24 +368,24 @@
 <method name="get_allocator" cv="const"><type>allocator_type</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns allocator.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="swap"><type>void</type><parameter name="rhs"><paramtype><classname>pairing_heap</classname> &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Swaps two priority queues.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="top" cv="const"><type>const_reference</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns a const_reference to the maximum element.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
-<method name="push"><type>handle_type</type><parameter name="v"><paramtype>value_type const &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Adds a new element to the priority queue. Returns handle to element</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
+<method name="push"><type>handle_type</type><parameter name="v"><paramtype>value_type const &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Adds a new element to the priority queue. Returns handle to element<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
 <method name="emplace"><type>handle_type</type><template>
           <template-nontype-parameter name="Args"><type>class...</type></template-nontype-parameter>
-        </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Adds a new element to the priority queue. The element is directly constructed in-place. Returns handle to element.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
+        </template><parameter name="args"><paramtype>Args &amp;&amp;...</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Adds a new element to the priority queue. The element is directly constructed in-place. Returns handle to element.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
 <method name="pop"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Removes the top element from the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Logarithmic (amortized). </para></description></method>
-<method name="update"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Assigns <computeroutput>v</computeroutput> to the element handled by <computeroutput>handle</computeroutput> &amp; updates the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
-<method name="update"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Updates the heap after the element handled by <computeroutput>handle</computeroutput> has been changed.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </para></description></method>
-<method name="increase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Assigns <computeroutput>v</computeroutput> to the element handled by <computeroutput>handle</computeroutput> &amp; updates the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> The new value is expected to be greater than the current one </para></description></method>
-<method name="increase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Updates the heap after the element handled by <computeroutput>handle</computeroutput> has been changed.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </para></description></method>
-<method name="decrease"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Assigns <computeroutput>v</computeroutput> to the element handled by <computeroutput>handle</computeroutput> &amp; updates the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> The new value is expected to be less than the current one </para></description></method>
-<method name="decrease"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Updates the heap after the element handled by <computeroutput>handle</computeroutput> has been changed.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> The new value is expected to be less than the current one. If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </para></description></method>
-<method name="erase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Removes the element handled by <computeroutput>handle</computeroutput> from the <classname alt="boost::heap::priority_queue">priority_queue</classname>.</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
+<method name="update"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Assigns <computeroutput>v</computeroutput> to the element handled by <computeroutput>handle</computeroutput> &amp; updates the priority queue.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
+<method name="update"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Updates the heap after the element handled by <computeroutput>handle</computeroutput> has been changed.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </para></description></method>
+<method name="increase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Assigns <computeroutput>v</computeroutput> to the element handled by <computeroutput>handle</computeroutput> &amp; updates the priority queue.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> The new value is expected to be greater than the current one </para></description></method>
+<method name="increase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Updates the heap after the element handled by <computeroutput>handle</computeroutput> has been changed.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </para></description></method>
+<method name="decrease"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><parameter name="v"><paramtype>const_reference</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Assigns <computeroutput>v</computeroutput> to the element handled by <computeroutput>handle</computeroutput> &amp; updates the priority queue.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> The new value is expected to be less than the current one </para></description></method>
+<method name="decrease"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Updates the heap after the element handled by <computeroutput>handle</computeroutput> has been changed.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized).</para><para><emphasis role="bold">Note:</emphasis> The new value is expected to be less than the current one. If this is not called, after a handle has been updated, the behavior of the data structure is undefined! </para></description></method>
+<method name="erase"><type>void</type><parameter name="handle"><paramtype>handle_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Removes the element handled by <computeroutput>handle</computeroutput> from the <classname alt="boost::heap::priority_queue">priority_queue</classname>.<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
 <method name="begin" cv="const"><type>iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="end" cv="const"><type>iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an iterator to the end of the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="ordered_begin" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="ordered_end" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
-<method name="merge"><type>void</type><parameter name="rhs"><paramtype><classname>pairing_heap</classname> &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Merge all elements from rhs into this</para><para><emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
-<method name="value_comp" cv="const"><type>value_compare const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
+<method name="merge"><type>void</type><parameter name="rhs"><paramtype><classname>pairing_heap</classname> &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Merge all elements from rhs into this<emphasis role="bold">Complexity:</emphasis> 2**2*log(log(N)) (amortized). </para></description></method>
+<method name="value_comp" cv="const"><type>value_compare const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
 <method name="operator&lt;" cv="const"><type>bool</type><template>
           <template-type-parameter name="HeapType"/>
         </template><parameter name="rhs"><paramtype>HeapType const &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns:</emphasis> Element-wise comparison of heap data structures</para><para><emphasis role="bold">Requirement:</emphasis> the <computeroutput>value_compare</computeroutput> object of both heaps must match. </para></description></method>
@@ -400,23 +421,23 @@
 <header name="boost/heap/policies.hpp">
 <namespace name="boost">
 <namespace name="heap">
-<struct name="compare"><template>
+<struct name="allocator"><template>
       <template-type-parameter name="T"/>
-    </template><purpose>Specifies the predicate for the heap order. </purpose></struct><struct name="mutable_"><template>
-      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
-    </template><purpose>Configure heap as mutable. </purpose><description><para>Certain heaps need to be configured specifically do be mutable. </para></description></struct><struct name="allocator"><template>
-      <template-type-parameter name="T"/>
-    </template><purpose>Specifies allocator for the internal memory management. </purpose></struct><struct name="stable"><template>
-      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
-    </template><purpose>Configure a heap as <emphasis role="bold">stable</emphasis>. </purpose><description><para>A priority queue is stable, if elements with the same priority are popped from the heap, in the same order as they are inserted. </para></description></struct><struct name="stability_counter_type"><template>
-      <template-type-parameter name="IntType"/>
-    </template><purpose>Specifies the type for stability counter. </purpose></struct><struct name="constant_time_size"><template>
-      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
-    </template><purpose>Configures complexity of <computeroutput> size() </computeroutput> </purpose><description><para>Specifies, whether size() should have linear or constant complexity. </para></description></struct><struct name="store_parent_pointer"><template>
-      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
-    </template><purpose>Store parent pointer in heap node. </purpose><description><para>Maintaining a parent pointer adds some maintenance and size overhead, but iterating a heap is more efficient. </para></description></struct><struct name="arity"><template>
+    </template><purpose>Specifies allocator for the internal memory management. </purpose></struct><struct name="arity"><template>
       <template-nontype-parameter name="T"><type>unsigned int</type></template-nontype-parameter>
-    </template><purpose>Specify arity. </purpose><description><para>Specifies the arity of a D-ary heap </para></description></struct>
+    </template><purpose>Specify arity. </purpose><description><para>Specifies the arity of a D-ary heap </para></description></struct><struct name="compare"><template>
+      <template-type-parameter name="T"/>
+    </template><purpose>Specifies the predicate for the heap order. </purpose></struct><struct name="constant_time_size"><template>
+      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
+    </template><purpose>Configures complexity of <computeroutput> size() </computeroutput> </purpose><description><para>Specifies, whether size() should have linear or constant complexity. </para></description></struct><struct name="mutable_"><template>
+      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
+    </template><purpose>Configure heap as mutable. </purpose><description><para>Certain heaps need to be configured specifically do be mutable. </para></description></struct><struct name="stability_counter_type"><template>
+      <template-type-parameter name="IntType"/>
+    </template><purpose>Specifies the type for stability counter. </purpose></struct><struct name="stable"><template>
+      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
+    </template><purpose>Configure a heap as <emphasis role="bold">stable</emphasis>. </purpose><description><para>A priority queue is stable, if elements with the same priority are popped from the heap, in the same order as they are inserted. </para></description></struct><struct name="store_parent_pointer"><template>
+      <template-nontype-parameter name="T"><type>bool</type></template-nontype-parameter>
+    </template><purpose>Store parent pointer in heap node. </purpose><description><para>Maintaining a parent pointer adds some maintenance and size overhead, but iterating a heap is more efficient. </para></description></struct>
 </namespace>
 </namespace>
 </header>
@@ -425,10 +446,14 @@
 <namespace name="heap">
 <class name="priority_queue"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
+      <template-nontype-parameter name="Options"><type>class ...</type></template-nontype-parameter>
     </template><purpose>priority queue, based on stl heap functions </purpose><description><para>The <classname alt="boost::heap::priority_queue">priority_queue</classname> class is a wrapper for the stl heap functions.<sbr/>
  The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
-<listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt; </para></listitem></itemizedlist>
+<listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt; </para>
+</listitem></itemizedlist>
 </para></description><typedef name="value_type"><type>T</type></typedef>
 <typedef name="size_type"><type>implementation_defined::size_type</type></typedef>
 <typedef name="difference_type"><type>implementation_defined::difference_type</type></typedef>
@@ -462,7 +487,7 @@
 <method name="begin" cv="const noexcept"><type>iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="end" cv="const noexcept"><type>iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an iterator to the end of the priority queue.</para><para><emphasis role="bold">Complexity:</emphasis> Constant. </para></description></method>
 <method name="reserve"><type>void</type><parameter name="element_count"><paramtype>size_type</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Reserves memory for element_count elements</para><para><emphasis role="bold">Complexity:</emphasis> Linear.</para><para><emphasis role="bold">Node:</emphasis> Invalidates iterators </para></description></method>
-<method name="value_comp" cv="const"><type>value_compare const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
+<method name="value_comp" cv="const"><type>value_compare const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
 <method name="operator&lt;" cv="const"><type>bool</type><template>
           <template-type-parameter name="HeapType"/>
         </template><parameter name="rhs"><paramtype>HeapType const &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns:</emphasis> Element-wise comparison of heap data structures</para><para><emphasis role="bold">Requirement:</emphasis> the <computeroutput>value_compare</computeroutput> object of both heaps must match. </para></description></method>
@@ -496,9 +521,16 @@
 <namespace name="heap">
 <class name="skew_heap"><template>
       <template-type-parameter name="T"/>
-      <template-nontype-parameter name="Options"><type>class...</type></template-nontype-parameter>
+      <template-nontype-parameter name="Options"><type>class ...</type></template-nontype-parameter>
     </template><purpose>skew heap </purpose><description><para>The template parameter T is the type to be managed by the container. The user can specify additional options and if no options are provided default options are used.</para><para>The container supports the following options:<itemizedlist>
-<listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para></listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para></listitem><listitem><para><computeroutput>boost::heap::store_parent_pointer&lt;&gt;</computeroutput>, defaults to <computeroutput>store_parent_pointer&lt;true&gt;</computeroutput>. Maintaining a parent pointer adds some maintenance and size overhead, but iterating a heap is more efficient.</para></listitem><listitem><para><computeroutput>boost::heap::mutable&lt;&gt;</computeroutput>, defaults to <computeroutput>mutable&lt;false&gt;</computeroutput>. </para></listitem></itemizedlist>
+<listitem><para><computeroutput>boost::heap::compare&lt;&gt;</computeroutput>, defaults to <computeroutput>compare&lt;std::less&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::stable&lt;&gt;</computeroutput>, defaults to <computeroutput>stable&lt;false&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::stability_counter_type&lt;&gt;</computeroutput>, defaults to <computeroutput>stability_counter_type&lt;boost::uintmax_t&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::allocator&lt;&gt;</computeroutput>, defaults to <computeroutput>allocator&lt;std::allocator&lt;T&gt;</computeroutput> &gt;</para>
+</listitem><listitem><para><computeroutput>boost::heap::constant_time_size&lt;&gt;</computeroutput>, defaults to <computeroutput>constant_time_size&lt;true&gt;</computeroutput> </para>
+</listitem><listitem><para><computeroutput>boost::heap::store_parent_pointer&lt;&gt;</computeroutput>, defaults to <computeroutput>store_parent_pointer&lt;true&gt;</computeroutput>. Maintaining a parent pointer adds some maintenance and size overhead, but iterating a heap is more efficient.</para>
+</listitem><listitem><para><computeroutput>boost::heap::mutable&lt;&gt;</computeroutput>, defaults to <computeroutput>mutable&lt;false&gt;</computeroutput>. </para>
+</listitem></itemizedlist>
 </para></description><struct name="implementation_defined"><template>
       <template-type-parameter name="T"/>
       <template-type-parameter name="A0"><default>boost::parameter::void_</default></template-type-parameter>
@@ -593,7 +625,7 @@
 <method name="ordered_begin" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="ordered_end" cv="const"><type>ordered_iterator</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Returns an ordered iterator to the first element contained in the priority queue.</para><para><emphasis role="bold">Note:</emphasis> Ordered iterators traverse the priority queue in heap order. </para></description></method>
 <method name="merge"><type>void</type><parameter name="rhs"><paramtype><classname>skew_heap</classname> &amp;</paramtype></parameter><description><para><emphasis role="bold">Effects:</emphasis> Merge all elements from rhs into this</para><para><emphasis role="bold">Complexity:</emphasis> Logarithmic (amortized). </para></description></method>
-<method name="value_comp" cv="const"><type>value_compare const &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
+<method name="value_comp" cv="const"><type>value_compare const  &amp;</type><parameter name=""><paramtype>void</paramtype></parameter><description><para><emphasis role="bold">Effect:</emphasis> Returns the value_compare object used by the priority queue </para></description></method>
 <method name="operator&lt;" cv="const"><type>bool</type><template>
           <template-type-parameter name="HeapType"/>
         </template><parameter name="rhs"><paramtype>HeapType const &amp;</paramtype></parameter><description><para><emphasis role="bold">Returns:</emphasis> Element-wise comparison of heap data structures</para><para><emphasis role="bold">Requirement:</emphasis> the <computeroutput>value_compare</computeroutput> object of both heaps must match. </para></description></method>

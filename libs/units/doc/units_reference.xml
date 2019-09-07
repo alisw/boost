@@ -172,7 +172,7 @@
 <class name="base_dimension"><template>
       <template-type-parameter name="Derived"/>
       <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
-    </template><inherit access="public">ordinal&lt; N &gt;</inherit><description><para>Defines a base dimension. To define a dimension you need to provide the derived class (CRTP) and a unique integer. <programlisting language="c++">struct my_dimension : <classname alt="boost::units::base_dimension">boost::units::base_dimension</classname>&lt;my_dimension, 1&gt; {};
+    </template><inherit access="public">ordinal&lt; N &gt;</inherit><description><para>Defines a base dimension. To define a dimension you need to provide the derived class (CRTP) and a unique integer. <programlisting language="c++">struct my_dimension : boost::units::base_dimension&lt;my_dimension, 1&gt; {};
 </programlisting> It is designed so that you will get an error message if you try to use the same value in multiple definitions. </para></description><typedef name="dimension_type"><purpose>A convenience typedef. Equivalent to boost::units::derived_dimension&lt;Derived,1&gt;::type. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
 <typedef name="type"><purpose>Provided for mpl compatability. </purpose><type>Derived</type></typedef>
 <method-group name="friend functions">
@@ -313,7 +313,7 @@
       <template-type-parameter name="Derived"/>
       <template-type-parameter name="Dim"/>
       <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
-    </template><inherit access="public">ordinal&lt; N &gt;</inherit><description><para>Defines a base unit. To define a unit you need to provide the derived class (CRTP), a dimension list and a unique integer. <programlisting language="c++">struct my_unit : <classname alt="boost::units::base_unit">boost::units::base_unit</classname>&lt;my_unit, length_dimension, 1&gt; {};
+    </template><inherit access="public">ordinal&lt; N &gt;</inherit><description><para>Defines a base unit. To define a unit you need to provide the derived class (CRTP), a dimension list and a unique integer. <programlisting language="c++">struct my_unit : boost::units::base_unit&lt;my_unit, length_dimension, 1&gt; {};
 </programlisting> It is designed so that you will get an error message if you try to use the same value in multiple definitions. </para></description><typedef name="dimension_type"><purpose>The dimensions of this base unit. </purpose><type>Dim</type></typedef>
 <typedef name="type"><purpose>Provided for mpl compatability. </purpose><type>Derived</type></typedef>
 <typedef name="unit_type"><purpose>The unit corresponding to this base unit. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
@@ -1183,8 +1183,15 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 <namespace name="units">
 <struct name="make_dimension_list"><template>
       <template-type-parameter name="Seq"/>
-    </template><description><para>Reduce dimension list to cardinal form. This algorithm collapses duplicate base dimension tags and sorts the resulting list by the tag ordinal value. Dimension lists that resolve to the same dimension are guaranteed to be represented by an identical type.</para><para>The argument should be an MPL forward sequence containing instances of the <computeroutput>dim</computeroutput> template.</para><para>The result is also an MPL forward sequence. It also supports the following metafunctions to allow use as a dimension.</para><para><itemizedlist>
-<listitem><para><computeroutput>mpl::plus</computeroutput> is defined only on two equal dimensions and returns the argument unchanged.</para></listitem><listitem><para><computeroutput>mpl::minus</computeroutput> is defined only for two equal dimensions and returns the argument unchanged.</para></listitem><listitem><para><computeroutput>mpl::negate</computeroutput> will return its argument unchanged.</para></listitem><listitem><para><computeroutput>mpl::times</computeroutput> is defined for any dimensions and adds corresponding exponents.</para></listitem><listitem><para><computeroutput>mpl::divides</computeroutput> is defined for any dimensions and subtracts the exponents of the right had argument from the corresponding exponents of the left had argument. Missing base dimension tags are assumed to have an exponent of zero.</para></listitem><listitem><para><computeroutput><classname alt="boost::units::static_power">static_power</classname></computeroutput> takes a dimension and a <classname alt="boost::units::static_rational">static_rational</classname> and multiplies all the exponents of the dimension by the <classname alt="boost::units::static_rational">static_rational</classname>.</para></listitem><listitem><para><computeroutput><classname alt="boost::units::static_root">static_root</classname></computeroutput> takes a dimension and a <classname alt="boost::units::static_rational">static_rational</classname> and divides all the exponents of the dimension by the <classname alt="boost::units::static_rational">static_rational</classname>. </para></listitem></itemizedlist>
+    </template><description><para>Reduce dimension list to cardinal form. This algorithm collapses duplicate base dimension tags and sorts the resulting list by the tag ordinal value. Dimension lists that resolve to the same dimension are guaranteed to be</para><para>represented by an identical type.</para><para>The argument should be an MPL forward sequence containing instances of the <computeroutput>dim</computeroutput> template.</para><para>The result is also an MPL forward sequence. It also supports the following metafunctions to allow use as a dimension.</para><para><itemizedlist>
+<listitem><para><computeroutput>mpl::plus</computeroutput> is defined only on two equal dimensions and returns the argument unchanged.</para>
+</listitem><listitem><para><computeroutput>mpl::minus</computeroutput> is defined only for two equal dimensions and returns the argument unchanged.</para>
+</listitem><listitem><para><computeroutput>mpl::negate</computeroutput> will return its argument unchanged.</para>
+</listitem><listitem><para><computeroutput>mpl::times</computeroutput> is defined for any dimensions and adds corresponding exponents.</para>
+</listitem><listitem><para><computeroutput>mpl::divides</computeroutput> is defined for any dimensions and subtracts the exponents of the right had argument from the corresponding exponents of the left had argument. Missing base dimension tags are assumed to have an exponent of zero.</para>
+</listitem><listitem><para><computeroutput><classname alt="boost::units::static_power">static_power</classname></computeroutput> takes a dimension and a <classname alt="boost::units::static_rational">static_rational</classname> and multiplies all the exponents of the dimension by the <classname alt="boost::units::static_rational">static_rational</classname>.</para>
+</listitem><listitem><para><computeroutput><classname alt="boost::units::static_root">static_root</classname></computeroutput> takes a dimension and a <classname alt="boost::units::static_rational">static_rational</classname> and divides all the exponents of the dimension by the <classname alt="boost::units::static_rational">static_rational</classname>. </para>
+</listitem></itemizedlist>
 </para></description><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
 </struct>
 
@@ -1727,16 +1734,16 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 <struct name="get_dimension"><template>
       <template-type-parameter name="T"/>
     </template></struct><struct-specialization name="get_dimension"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><purpose>Get the dimension of a unit. </purpose><typedef name="type"><type>Dim</type></typedef>
-</struct-specialization><struct-specialization name="get_dimension"><template>
       <template-type-parameter name="Unit"/>
     </template><specialization><template-arg>absolute&lt; Unit &gt;</template-arg></specialization><purpose>Get the dimension of an absolute unit. </purpose><typedef name="type"><type><classname>get_dimension</classname>&lt; Unit &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="get_dimension"><template>
       <template-type-parameter name="Unit"/>
       <template-type-parameter name="Y"/>
     </template><specialization><template-arg>quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><purpose>Get the dimension of a quantity. </purpose><typedef name="type"><type><classname>get_dimension</classname>&lt; Unit &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="get_dimension"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><purpose>Get the dimension of a unit. </purpose><typedef name="type"><type>Dim</type></typedef>
 </struct-specialization>
 
 
@@ -1872,16 +1879,16 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 <struct name="get_system"><template>
       <template-type-parameter name="T"/>
     </template></struct><struct-specialization name="get_system"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><purpose>Get the system of a unit. </purpose><typedef name="type"><type>System</type></typedef>
-</struct-specialization><struct-specialization name="get_system"><template>
       <template-type-parameter name="Unit"/>
     </template><specialization><template-arg>absolute&lt; Unit &gt;</template-arg></specialization><purpose>Get the system of an absolute unit. </purpose><typedef name="type"><type><classname>get_system</classname>&lt; Unit &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="get_system"><template>
       <template-type-parameter name="Unit"/>
       <template-type-parameter name="Y"/>
     </template><specialization><template-arg>quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><purpose>Get the system of a quantity. </purpose><typedef name="type"><type><classname>get_system</classname>&lt; Unit &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="get_system"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><purpose>Get the system of a unit. </purpose><typedef name="type"><type>System</type></typedef>
 </struct-specialization>
 
 
@@ -2151,11 +2158,11 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
 <struct name="homogeneous_system"><template>
       <template-type-parameter name="L"/>
     </template><description><para>A system that can uniquely represent any unit which can be composed from a linearly independent set of base units. It is safe to rebind a unit with such a system to different dimensions.</para><para>Do not construct this template directly. Use <classname alt="boost::units::make_system">make_system</classname> instead. </para></description></struct><struct name="static_power"><template>
-      <template-type-parameter name="T"/>
-      <template-type-parameter name="E"/>
+      <template-type-parameter name="DL"/>
+      <template-type-parameter name="Ex"/>
     </template><purpose>Raise a dimension list to a scalar power. </purpose></struct><struct name="static_root"><template>
-      <template-type-parameter name="T"/>
-      <template-type-parameter name="R"/>
+      <template-type-parameter name="DL"/>
+      <template-type-parameter name="Rt"/>
     </template><purpose>Take a scalar root of a dimension list. </purpose></struct>
 
 
@@ -2292,12 +2299,12 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
           <template-type-parameter name="Archive"/>
           <template-type-parameter name="System"/>
           <template-type-parameter name="Dim"/>
-        </template><parameter name=""><paramtype>Archive &amp;</paramtype></parameter><parameter name=""><paramtype><classname>boost::units::unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter><parameter name="int"><paramtype>const unsigned</paramtype></parameter><purpose>Boost Serialization library support for units. </purpose></function>
+        </template><parameter name=""><paramtype>Archive &amp;</paramtype></parameter><parameter name=""><paramtype><classname>boost::units::unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const unsigned int</paramtype></parameter><purpose>Boost Serialization library support for units. </purpose></function>
 <function name="serialize"><type>void</type><template>
           <template-type-parameter name="Archive"/>
           <template-type-parameter name="Unit"/>
           <template-type-parameter name="Y"/>
-        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="q"><paramtype><classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &amp;</paramtype></parameter><parameter name="int"><paramtype>const unsigned</paramtype></parameter><purpose>Boost Serialization library support for quantities. </purpose></function>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="q"><paramtype><classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const unsigned int</paramtype></parameter><purpose>Boost Serialization library support for quantities. </purpose></function>
 </namespace>
 <namespace name="units">
 <enum name="format_mode"><enumvalue name="symbol_fmt"><default>= 0</default></enumvalue><enumvalue name="name_fmt"><default>= 1</default><purpose>default - reduces unit names to known symbols for both base and derived units. </purpose></enumvalue><enumvalue name="raw_fmt"><default>= 2</default><purpose>output full unit names for base and derived units, for example "meter". </purpose></enumvalue><enumvalue name="typename_fmt"><default>= 3</default><purpose>output only symbols for base units (but not derived units), for example "m". </purpose></enumvalue><enumvalue name="fmt_mask"><default>= 3</default><purpose>output demangled typenames (useful only for diagnosis). </purpose></enumvalue><purpose>format of output of units, for example "m" or "meter". </purpose></enum>
@@ -2401,7 +2408,7 @@ struct conversion_helper&lt;quantity&lt;dozen, T0&gt;, quantity&lt;pair, T1&gt; 
         </template><parameter name="os"><paramtype>std::basic_ostream&lt; Char, Traits &gt; &amp;</paramtype></parameter><parameter name="u"><paramtype>const <classname>unit</classname>&lt; Dimension, System &gt; &amp;</paramtype></parameter><description><para>Print a <computeroutput>unit</computeroutput> as a list of base units and their exponents. for @c symbol_format outputs e.g. "m s^-1" or "J".
 for @c name_format  outputs e.g. "meter second^-1" or "joule".
 for @c raw_format  outputs e.g. "m s^-1" or "meter kilogram^2 second^-2".
-for @c typename_format  outputs the typename itself (currently demangled only on GCC).   </para></description></function>
+for @c typename_format  outputs the typename itself (currently demangled only on GCC).  </para></description></function>
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; Char, Traits &gt; &amp;</type><template>
           <template-type-parameter name="Char"/>
           <template-type-parameter name="Traits"/>
@@ -2610,10 +2617,10 @@ for @c typename_format  outputs the typename itself (currently demangled only on
 <struct name="is_dimension_list"><template>
       <template-type-parameter name="Seq"/>
     </template><inherit access="public">false_</inherit><purpose>Check that a type is a valid dimension list. </purpose></struct><struct-specialization name="is_dimension_list"><template>
+    </template><specialization><template-arg>dimensionless_type</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><struct-specialization name="is_dimension_list"><template>
       <template-type-parameter name="Item"/>
       <template-type-parameter name="Next"/>
-    </template><specialization><template-arg>list&lt; Item</template-arg><template-arg>Next &gt;</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><struct-specialization name="is_dimension_list"><template>
-    </template><specialization><template-arg>dimensionless_type</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization>
+    </template><specialization><template-arg>list&lt; Item</template-arg><template-arg>Next &gt;</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization>
 
 
 
@@ -2748,11 +2755,11 @@ for @c typename_format  outputs the typename itself (currently demangled only on
 <struct name="is_dimensionless"><template>
       <template-type-parameter name="T"/>
     </template><inherit access="public">false_</inherit></struct><struct-specialization name="is_dimensionless"><template>
-      <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unit&lt; dimensionless_type</template-arg><template-arg>System &gt;</template-arg></specialization><inherit access="public">true_</inherit><purpose>Check if a unit is dimensionless. </purpose></struct-specialization><struct-specialization name="is_dimensionless"><template>
       <template-type-parameter name="Unit"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><inherit access="public">boost::units::is_dimensionless&lt; Unit &gt;</inherit><purpose>Check if a quantity is dimensionless. </purpose></struct-specialization>
+    </template><specialization><template-arg>quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><inherit access="public">boost::units::is_dimensionless&lt; Unit &gt;</inherit><purpose>Check if a quantity is dimensionless. </purpose></struct-specialization><struct-specialization name="is_dimensionless"><template>
+      <template-type-parameter name="System"/>
+    </template><specialization><template-arg>unit&lt; dimensionless_type</template-arg><template-arg>System &gt;</template-arg></specialization><inherit access="public">true_</inherit><purpose>Check if a unit is dimensionless. </purpose></struct-specialization>
 
 
 
@@ -3710,10 +3717,10 @@ for @c typename_format  outputs the typename itself (currently demangled only on
     </template><inherit access="public">false_</inherit><purpose>Check that a type is a unit of the specified dimension. </purpose></struct><struct-specialization name="is_unit_of_dimension"><template>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Dim</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><struct-specialization name="is_unit_of_dimension"><template>
+    </template><specialization><template-arg>absolute&lt; unit&lt; Dim</template-arg><template-arg>System &gt; &gt;</template-arg><template-arg>Dim</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><struct-specialization name="is_unit_of_dimension"><template>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="System"/>
-    </template><specialization><template-arg>absolute&lt; unit&lt; Dim</template-arg><template-arg>System &gt; &gt;</template-arg><template-arg>Dim</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Dim</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization>
 
 
 
@@ -3851,10 +3858,10 @@ for @c typename_format  outputs the typename itself (currently demangled only on
     </template><inherit access="public">false_</inherit><purpose>Check that a type is a unit in a specified system. </purpose></struct><struct-specialization name="is_unit_of_system"><template>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>System</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><struct-specialization name="is_unit_of_system"><template>
+    </template><specialization><template-arg>absolute&lt; unit&lt; Dim</template-arg><template-arg>System &gt; &gt;</template-arg><template-arg>System</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization><struct-specialization name="is_unit_of_system"><template>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="System"/>
-    </template><specialization><template-arg>absolute&lt; unit&lt; Dim</template-arg><template-arg>System &gt; &gt;</template-arg><template-arg>System</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>System</template-arg></specialization><inherit access="public">true_</inherit></struct-specialization>
 
 
 
@@ -3985,51 +3992,48 @@ for @c typename_format  outputs the typename itself (currently demangled only on
 </header>
 <header name="boost/units/lambda.hpp">
 <para>Definitions to ease the usage of Boost.Units' quantity, unit, and absolute types in functors created with the Boost.Lambda library. </para><para><para>Torsten Maehne </para>
+
 <para>2008-06-16</para>
-Boost.Lambda's return type deduction system is extented to make use of Boost.Units' typeof_helper trait classes for Boost.Units' quantity, absolute, and unit template classes. </para><namespace name="boost">
+
+Boost.Lambda's return type deduction system is extented to make use of Boost.Units' typeof_helper trait classes for Boost.Units' quantity, absolute, and unit template classes.  </para><namespace name="boost">
 <namespace name="lambda">
-<struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim, System&gt; * Y. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt;, Y &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim, System&gt; / Y. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt;, Y &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>Y</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action Y * unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; Y, <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>Y</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action Y / unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; Y, <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+<struct-specialization name="plain_return_type_1"><template>
       <template-type-parameter name="Unit"/>
-      <template-type-parameter name="X"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg><template-arg>X</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit, X&gt; * X. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, X &gt;, X &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>unary_arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action -quantity&lt;Unit, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_minus_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_1"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+    </template><specialization><template-arg>unary_arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action -unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_minus_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_1"><template>
       <template-type-parameter name="Unit"/>
-      <template-type-parameter name="X"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X * quantity&lt;Unit, X&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; Unit, X &gt; &gt;::type</type></typedef>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>unary_arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action +quantity&lt;Unit, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_plus_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_1"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+    </template><specialization><template-arg>unary_arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action +unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_plus_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="Unit"/>
       <template-type-parameter name="X"/>
     </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg><template-arg>X</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit, X&gt; / X. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, X &gt;, X &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Unit"/>
+      <template-type-parameter name="Unit1"/>
       <template-type-parameter name="X"/>
-    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X / quantity&lt;Unit, X&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; Unit, X &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System1"/>
-      <template-type-parameter name="Dim1"/>
       <template-type-parameter name="Unit2"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; * quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
+    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>X &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, X&gt; / quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, X &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Unit1"/>
+      <template-type-parameter name="Y"/>
+      <template-type-parameter name="System2"/>
+      <template-type-parameter name="Dim2"/>
+    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>Y &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, Y&gt; / unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, Y &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim, System&gt; / Y. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt;, Y &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="System1"/>
       <template-type-parameter name="Dim1"/>
@@ -4037,41 +4041,31 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
       <template-type-parameter name="Y"/>
     </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; / quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Unit1"/>
-      <template-type-parameter name="Y"/>
-      <template-type-parameter name="System2"/>
+      <template-type-parameter name="Dim1"/>
       <template-type-parameter name="Dim2"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>Y &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, Y&gt; * unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, Y &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Unit1"/>
-      <template-type-parameter name="Y"/>
+      <template-type-parameter name="System1"/>
       <template-type-parameter name="System2"/>
-      <template-type-parameter name="Dim2"/>
-    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>Y &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, Y&gt; / unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, Y &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_1"><template>
-      <template-type-parameter name="Unit"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>unary_arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action +quantity&lt;Unit, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_plus_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_1"><template>
-      <template-type-parameter name="Unit"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>unary_arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action -quantity&lt;Unit, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_minus_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, Y &gt; &gt;::type</type></typedef>
+    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; / unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Unit1"/>
+      <template-type-parameter name="Unit"/>
       <template-type-parameter name="X"/>
-      <template-type-parameter name="Unit2"/>
+    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X / quantity&lt;Unit, X&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; Unit, X &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="Dim"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>X &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, X&gt; + quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, X &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
+    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>Y</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action Y / unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; Y, <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;Y&gt; - absolute&lt;Y&gt;. </para></description><typedef name="type"><type>Y</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;Y&gt; - Y. </para></description><typedef name="type"><type><classname>boost::units::absolute</classname>&lt; Y &gt;</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="System"/>
       <template-type-parameter name="X"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>X &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;dimensionless, X&gt; + Y. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), X &gt;, Y &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X + quantity&lt;dimensionless, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), Y &gt; &gt;::type</type></typedef>
+    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>X &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;dimensionless, X&gt; - Y. </para></description><typedef name="type"><type><classname>boost::units::subtract_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), X &gt;, Y &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="Unit1"/>
       <template-type-parameter name="X"/>
@@ -4079,15 +4073,25 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
       <template-type-parameter name="Y"/>
     </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>X &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, X&gt; - quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::subtract_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, X &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>X &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;dimensionless, X&gt; - Y. </para></description><typedef name="type"><type><classname>boost::units::subtract_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), X &gt;, Y &gt;::type</type></typedef>
+      <template-type-parameter name="Dim1"/>
+      <template-type-parameter name="Dim2"/>
+      <template-type-parameter name="System1"/>
+      <template-type-parameter name="System2"/>
+    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; - unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::subtract_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="System"/>
       <template-type-parameter name="X"/>
       <template-type-parameter name="Y"/>
     </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X - quantity&lt;dimensionless, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::subtract_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), Y &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="D"/>
+      <template-type-parameter name="S"/>
+      <template-type-parameter name="T"/>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::absolute&lt; boost::units::unit&lt; D</template-arg><template-arg>S &gt; &gt;</template-arg><template-arg>T</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;unit&lt;D, S&gt; &gt; * T. </para></description><typedef name="type"><type><classname>boost::units::quantity</classname>&lt; <classname>boost::units::absolute</classname>&lt; <classname>boost::units::unit</classname>&lt; D, S &gt; &gt;, T &gt;</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Unit"/>
+      <template-type-parameter name="X"/>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg><template-arg>X</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit, X&gt; * X. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit, X &gt;, X &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="Unit1"/>
       <template-type-parameter name="X"/>
@@ -4096,30 +4100,21 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
     </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>X &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, X&gt; * quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, X &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="Unit1"/>
-      <template-type-parameter name="X"/>
+      <template-type-parameter name="Y"/>
+      <template-type-parameter name="System2"/>
+      <template-type-parameter name="Dim2"/>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>Y &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, Y&gt; * unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, Y &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim, System&gt; * Y. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt;, Y &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System1"/>
+      <template-type-parameter name="Dim1"/>
       <template-type-parameter name="Unit2"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>X &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, X&gt; / quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, X &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_1"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unary_arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action +unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_plus_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_1"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unary_arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action -unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::unary_minus_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Dim1"/>
-      <template-type-parameter name="Dim2"/>
-      <template-type-parameter name="System1"/>
-      <template-type-parameter name="System2"/>
-    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; + unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Dim1"/>
-      <template-type-parameter name="Dim2"/>
-      <template-type-parameter name="System1"/>
-      <template-type-parameter name="System2"/>
-    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; - unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::subtract_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; * quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="Dim1"/>
       <template-type-parameter name="Dim2"/>
@@ -4127,40 +4122,54 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
       <template-type-parameter name="System2"/>
     </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; * unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Dim1"/>
-      <template-type-parameter name="Dim2"/>
-      <template-type-parameter name="System1"/>
-      <template-type-parameter name="System2"/>
-    </template><specialization><template-arg>arithmetic_action&lt; divide_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; / unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::divide_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;Y&gt; + Y. </para></description><typedef name="type"><type><classname>boost::units::absolute</classname>&lt; Y &gt;</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>Y</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action Y + absolute&lt;Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::absolute</classname>&lt; Y &gt;</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;Y&gt; - Y. </para></description><typedef name="type"><type><classname>boost::units::absolute</classname>&lt; Y &gt;</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>arithmetic_action&lt; minus_action &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;Y&gt; - absolute&lt;Y&gt;. </para></description><typedef name="type"><type>Y</type></typedef>
-</struct-specialization><struct-specialization name="plain_return_type_2"><template>
       <template-type-parameter name="D"/>
       <template-type-parameter name="S"/>
       <template-type-parameter name="T"/>
     </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>T</template-arg><template-arg>boost::units::absolute&lt; boost::units::unit&lt; D</template-arg><template-arg>S &gt; &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action T * absolute&lt;unit&lt;D, S&gt; &gt;. </para></description><typedef name="type"><type><classname>boost::units::quantity</classname>&lt; <classname>boost::units::absolute</classname>&lt; <classname>boost::units::unit</classname>&lt; D, S &gt; &gt;, T &gt;</type></typedef>
 </struct-specialization><struct-specialization name="plain_return_type_2"><template>
-      <template-type-parameter name="D"/>
-      <template-type-parameter name="S"/>
-      <template-type-parameter name="T"/>
-    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>boost::units::absolute&lt; boost::units::unit&lt; D</template-arg><template-arg>S &gt; &gt;</template-arg><template-arg>T</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;unit&lt;D, S&gt; &gt; * T. </para></description><typedef name="type"><type><classname>boost::units::quantity</classname>&lt; <classname>boost::units::absolute</classname>&lt; <classname>boost::units::unit</classname>&lt; D, S &gt; &gt;, T &gt;</type></typedef>
+      <template-type-parameter name="Unit"/>
+      <template-type-parameter name="X"/>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; Unit</template-arg><template-arg>X &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X * quantity&lt;Unit, X&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; Unit, X &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; multiply_action &gt;</template-arg><template-arg>Y</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action Y * unit&lt;Dim, System&gt;. </para></description><typedef name="type"><type><classname>boost::units::multiply_typeof_helper</classname>&lt; Y, <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action absolute&lt;Y&gt; + Y. </para></description><typedef name="type"><type><classname>boost::units::absolute</classname>&lt; Y &gt;</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="X"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>X &gt;</template-arg><template-arg>Y</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;dimensionless, X&gt; + Y. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), X &gt;, Y &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Unit1"/>
+      <template-type-parameter name="X"/>
+      <template-type-parameter name="Unit2"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit1</template-arg><template-arg>X &gt;</template-arg><template-arg>boost::units::quantity&lt; Unit2</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action quantity&lt;Unit1, X&gt; + quantity&lt;Unit2, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; <classname>boost::units::quantity</classname>&lt; Unit1, X &gt;, <classname>boost::units::quantity</classname>&lt; Unit2, Y &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Dim1"/>
+      <template-type-parameter name="Dim2"/>
+      <template-type-parameter name="System1"/>
+      <template-type-parameter name="System2"/>
+    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>boost::units::unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>boost::units::unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action unit&lt;Dim1, System1&gt; + unit&lt;Dim2, System2&gt;. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim1, System1 &gt;, <classname>boost::units::unit</classname>&lt; Dim2, System2 &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="X"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>X</template-arg><template-arg>boost::units::quantity&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System)</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action X + quantity&lt;dimensionless, Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::add_typeof_helper</classname>&lt; X, <classname>boost::units::quantity</classname>&lt; BOOST_UNITS_DIMENSIONLESS_UNIT(System), Y &gt; &gt;::type</type></typedef>
+</struct-specialization><struct-specialization name="plain_return_type_2"><template>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>arithmetic_action&lt; plus_action &gt;</template-arg><template-arg>Y</template-arg><template-arg>boost::units::absolute&lt; Y &gt;</template-arg></specialization><description><para>Partial specialization of return type trait for action Y + absolute&lt;Y&gt;. </para></description><typedef name="type"><type><classname>boost::units::absolute</classname>&lt; Y &gt;</type></typedef>
 </struct-specialization></namespace>
 <namespace name="units">
-<struct-specialization name="multiply_typeof_helper"><template>
+<struct-specialization name="divide_typeof_helper"><template>
       <template-type-parameter name="System"/>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="Arg"/>
-    </template><specialization><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::multiply_action &gt;, tuple&lt; typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type, boost::lambda::lambda_functor&lt; Arg &gt; &gt; &gt; &gt;</type></typedef>
+    </template><specialization><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::divide_action &gt;, tuple&lt; boost::lambda::lambda_functor&lt; Arg &gt;, typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type &gt; &gt; &gt;</type></typedef>
 </struct-specialization><struct-specialization name="divide_typeof_helper"><template>
       <template-type-parameter name="System"/>
       <template-type-parameter name="Dim"/>
@@ -4170,22 +4179,22 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
       <template-type-parameter name="System"/>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="Arg"/>
-    </template><specialization><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::multiply_action &gt;, tuple&lt; boost::lambda::lambda_functor&lt; Arg &gt;, typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type &gt; &gt; &gt;</type></typedef>
-</struct-specialization><struct-specialization name="divide_typeof_helper"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="Arg"/>
-    </template><specialization><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::divide_action &gt;, tuple&lt; boost::lambda::lambda_functor&lt; Arg &gt;, typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type &gt; &gt; &gt;</type></typedef>
-</struct-specialization><struct-specialization name="multiply_typeof_helper"><template>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="Arg"/>
     </template><specialization><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg><template-arg>boost::units::absolute&lt; boost::units::unit&lt; Dim</template-arg><template-arg>System &gt; &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::multiply_action &gt;, tuple&lt; boost::lambda::lambda_functor&lt; Arg &gt;, typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::absolute</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt; &gt;::type &gt; &gt; &gt;</type></typedef>
 </struct-specialization><struct-specialization name="multiply_typeof_helper"><template>
       <template-type-parameter name="System"/>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="Arg"/>
+    </template><specialization><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::multiply_action &gt;, tuple&lt; boost::lambda::lambda_functor&lt; Arg &gt;, typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type &gt; &gt; &gt;</type></typedef>
+</struct-specialization><struct-specialization name="multiply_typeof_helper"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="Arg"/>
     </template><specialization><template-arg>boost::units::absolute&lt; boost::units::unit&lt; Dim</template-arg><template-arg>System &gt; &gt;</template-arg><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::multiply_action &gt;, tuple&lt; typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::absolute</classname>&lt; <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt; &gt;::type, boost::lambda::lambda_functor&lt; Arg &gt; &gt; &gt; &gt;</type></typedef>
+</struct-specialization><struct-specialization name="multiply_typeof_helper"><template>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="Arg"/>
+    </template><specialization><template-arg>boost::units::unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>boost::lambda::lambda_functor&lt; Arg &gt;</template-arg></specialization><typedef name="type"><type>boost::lambda::lambda_functor&lt; boost::lambda::lambda_functor_base&lt; boost::lambda::arithmetic_action&lt; boost::lambda::multiply_action &gt;, tuple&lt; typename boost::lambda::const_copy_argument&lt; const <classname>boost::units::unit</classname>&lt; Dim, System &gt; &gt;::type, boost::lambda::lambda_functor&lt; Arg &gt; &gt; &gt; &gt;</type></typedef>
 </struct-specialization>
 
 
@@ -4671,33 +4680,11 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <header name="boost/units/operators.hpp">
 <para>Compile time operators and typeof helper classes. </para><para>These operators declare the compile-time operators needed to support dimensional analysis algebra. They require the use of Boost.Typeof, emulation or native. Typeof helper classes define result type for heterogeneous operators on value types. These must be defined through specialization for powers and roots. </para><namespace name="boost">
 <namespace name="units">
-<struct name="unary_plus_typeof_helper"><template>
-      <template-type-parameter name="X"/>
-    </template><method-group name="public member functions">
-<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(+typeof_::make&lt; X &gt;())</paramtype></parameter></method>
-</method-group>
-</struct><struct name="unary_minus_typeof_helper"><template>
-      <template-type-parameter name="X"/>
-    </template><method-group name="public member functions">
-<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(-typeof_::make&lt; X &gt;())</paramtype></parameter></method>
-</method-group>
-</struct><struct name="add_typeof_helper"><template>
+<struct name="add_typeof_helper"><template>
       <template-type-parameter name="X"/>
       <template-type-parameter name="Y"/>
     </template><method-group name="public member functions">
 <method name="typeof"><type>typedef</type><parameter name=""><paramtype>(typeof_::make&lt; X &gt;()+typeof_::make&lt; Y &gt;())</paramtype></parameter></method>
-</method-group>
-</struct><struct name="subtract_typeof_helper"><template>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
-    </template><method-group name="public member functions">
-<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(typeof_::make&lt; X &gt;()-typeof_::make&lt; Y &gt;())</paramtype></parameter></method>
-</method-group>
-</struct><struct name="multiply_typeof_helper"><template>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
-    </template><method-group name="public member functions">
-<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(typeof_::make&lt; X &gt;()*typeof_::make&lt; Y &gt;())</paramtype></parameter></method>
 </method-group>
 </struct><struct name="divide_typeof_helper"><template>
       <template-type-parameter name="X"/>
@@ -4705,19 +4692,41 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
     </template><method-group name="public member functions">
 <method name="typeof"><type>typedef</type><parameter name=""><paramtype>(typeof_::make&lt; X &gt;()/typeof_::make&lt; Y &gt;())</paramtype></parameter></method>
 </method-group>
-</struct><struct name="power_typeof_helper"><template>
+</struct><struct name="multiply_typeof_helper"><template>
       <template-type-parameter name="X"/>
       <template-type-parameter name="Y"/>
+    </template><method-group name="public member functions">
+<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(typeof_::make&lt; X &gt;() *typeof_::make&lt; Y &gt;())</paramtype></parameter></method>
+</method-group>
+</struct><struct name="power_typeof_helper"><template>
+      <template-type-parameter name="BaseType"/>
+      <template-type-parameter name="Exponent"/>
     </template><description><para>A helper used by <computeroutput>pow</computeroutput> to raise a runtime object to a compile time known exponent. This template is intended to be specialized. All specializations must conform to the interface shown here. <computeroutput>Exponent</computeroutput> will be either the exponent passed to <computeroutput>pow</computeroutput> or <computeroutput>static_rational&lt;N&gt;</computeroutput> for and integer argument, N. </para></description><typedef name="type"><purpose>specifies the result type </purpose><type><emphasis>unspecified</emphasis></type></typedef>
 <method-group name="public static functions">
 <method name="value" specifiers="static"><type>BOOST_CONSTEXPR type</type><parameter name="base"><paramtype>const BaseType &amp;</paramtype></parameter><purpose>Carries out the runtime calculation. </purpose></method>
 </method-group>
 </struct><struct name="root_typeof_helper"><template>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
+      <template-type-parameter name="Radicand"/>
+      <template-type-parameter name="Index"/>
     </template><description><para>A helper used by <computeroutput>root</computeroutput> to take a root of a runtime object using a compile time known index. This template is intended to be specialized. All specializations must conform to the interface shown here. <computeroutput>Index</computeroutput> will be either the type passed to <computeroutput>pow</computeroutput> or <computeroutput>static_rational&lt;N&gt;</computeroutput> for and integer argument, N. </para></description><typedef name="type"><purpose>specifies the result type </purpose><type><emphasis>unspecified</emphasis></type></typedef>
 <method-group name="public static functions">
 <method name="value" specifiers="static"><type>BOOST_CONSTEXPR type</type><parameter name="base"><paramtype>const Radicand &amp;</paramtype></parameter><purpose>Carries out the runtime calculation. </purpose></method>
+</method-group>
+</struct><struct name="subtract_typeof_helper"><template>
+      <template-type-parameter name="X"/>
+      <template-type-parameter name="Y"/>
+    </template><method-group name="public member functions">
+<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(typeof_::make&lt; X &gt;() -typeof_::make&lt; Y &gt;())</paramtype></parameter></method>
+</method-group>
+</struct><struct name="unary_minus_typeof_helper"><template>
+      <template-type-parameter name="X"/>
+    </template><method-group name="public member functions">
+<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(-typeof_::make&lt; X &gt;())</paramtype></parameter></method>
+</method-group>
+</struct><struct name="unary_plus_typeof_helper"><template>
+      <template-type-parameter name="X"/>
+    </template><method-group name="public member functions">
+<method name="typeof"><type>typedef</type><parameter name=""><paramtype>(+typeof_::make&lt; X &gt;())</paramtype></parameter></method>
 </method-group>
 </struct>
 
@@ -4995,7 +5004,22 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <header name="boost/units/quantity.hpp">
 <namespace name="boost">
 <namespace name="units">
-<class name="quantity"><template>
+<struct-specialization name="add_typeof_helper"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+      <template-type-parameter name="X"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization><typedef name="value_type"><type><classname>add_typeof_helper</classname>&lt; X, Y &gt;::type</type></typedef>
+<typedef name="unit_type"><type><classname>unit</classname>&lt; Dim, System &gt;</type></typedef>
+<typedef name="type"><type><classname>quantity</classname>&lt; unit_type, value_type &gt;</type></typedef>
+</struct-specialization><struct-specialization name="add_typeof_helper"><template>
+      <template-type-parameter name="Dim1"/>
+      <template-type-parameter name="System1"/>
+      <template-type-parameter name="Dim2"/>
+      <template-type-parameter name="System2"/>
+      <template-type-parameter name="X"/>
+      <template-type-parameter name="Y"/>
+    </template><specialization><template-arg>quantity&lt; unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>for sun CC we need to invoke SFINAE at the top level, otherwise it will silently return int. </para></description></struct-specialization><class name="quantity"><template>
       <template-type-parameter name="Unit"/>
       <template-type-parameter name="Y"/>
     </template><purpose>class declaration </purpose><typedef name="this_type"><type><classname>quantity</classname>&lt; Unit, Y &gt;</type></typedef>
@@ -5014,7 +5038,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
           <template-type-parameter name="Unit2"/>
           <template-type-parameter name="YY"/>
         </template><parameter name="source"><paramtype>const <classname>quantity</classname>&lt; Unit2, YY &gt; &amp;</paramtype></parameter></method>
-<method name="operator*="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><template>
+<method name="operator *="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><template>
           <template-type-parameter name="Unit2"/>
           <template-type-parameter name="YY"/>
         </template><parameter name="source"><paramtype>const <classname>quantity</classname>&lt; Unit2, YY &gt; &amp;</paramtype></parameter></method>
@@ -5022,7 +5046,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
           <template-type-parameter name="Unit2"/>
           <template-type-parameter name="YY"/>
         </template><parameter name="source"><paramtype>const <classname>quantity</classname>&lt; Unit2, YY &gt; &amp;</paramtype></parameter><purpose>can multiply a quantity by a scalar value_type if multiply_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
-<method name="operator*="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="source"><paramtype>const value_type &amp;</paramtype></parameter><purpose>can divide a quantity by a scalar value_type if divide_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
+<method name="operator *="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="source"><paramtype>const value_type &amp;</paramtype></parameter><purpose>can divide a quantity by a scalar value_type if divide_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
 <method name="operator/="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="source"><paramtype>const value_type &amp;</paramtype></parameter></method>
 </method-group>
 <constructor/>
@@ -5069,7 +5093,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <method name="value" cv="const"><type>BOOST_CONSTEXPR const value_type &amp;</type><purpose>constant accessor to value </purpose><description><para>can add a quantity of the same type if add_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </para></description></method>
 <method name="operator+="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="source"><paramtype>const this_type &amp;</paramtype></parameter><purpose>can subtract a quantity of the same type if subtract_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
 <method name="operator-="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="source"><paramtype>const this_type &amp;</paramtype></parameter><purpose>can multiply a quantity by a scalar value_type if multiply_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
-<method name="operator*="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="val"><paramtype>const value_type &amp;</paramtype></parameter><purpose>can divide a quantity by a scalar value_type if divide_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
+<method name="operator *="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="val"><paramtype>const value_type &amp;</paramtype></parameter><purpose>can divide a quantity by a scalar value_type if divide_typeof_helper&lt;value_type,value_type&gt;::type is convertible to value_type </purpose></method>
 <method name="operator/="><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name="val"><paramtype>const value_type &amp;</paramtype></parameter></method>
 </method-group>
 <constructor/>
@@ -5103,19 +5127,12 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <method-group name="public static functions">
 <method name="from_value" specifiers="static"><type>BOOST_CONSTEXPR this_type</type><parameter name="val"><paramtype>const value_type &amp;</paramtype></parameter><purpose>Construct quantity directly from <computeroutput>value_type</computeroutput>. </purpose></method>
 </method-group>
-</class-specialization><struct-specialization name="add_typeof_helper"><template>
-      <template-type-parameter name="Dim1"/>
-      <template-type-parameter name="System1"/>
-      <template-type-parameter name="Dim2"/>
-      <template-type-parameter name="System2"/>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>quantity&lt; unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization><description><para>for sun CC we need to invoke SFINAE at the top level, otherwise it will silently return int. </para></description></struct-specialization><struct-specialization name="add_typeof_helper"><template>
+</class-specialization><struct-specialization name="subtract_typeof_helper"><template>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="System"/>
       <template-type-parameter name="X"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization><typedef name="value_type"><type><classname>add_typeof_helper</classname>&lt; X, Y &gt;::type</type></typedef>
+    </template><specialization><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization><typedef name="value_type"><type><classname>subtract_typeof_helper</classname>&lt; X, Y &gt;::type</type></typedef>
 <typedef name="unit_type"><type><classname>unit</classname>&lt; Dim, System &gt;</type></typedef>
 <typedef name="type"><type><classname>quantity</classname>&lt; unit_type, value_type &gt;</type></typedef>
 </struct-specialization><struct-specialization name="subtract_typeof_helper"><template>
@@ -5125,15 +5142,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
       <template-type-parameter name="System2"/>
       <template-type-parameter name="X"/>
       <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>quantity&lt; unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization></struct-specialization><struct-specialization name="subtract_typeof_helper"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-      <template-type-parameter name="X"/>
-      <template-type-parameter name="Y"/>
-    </template><specialization><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization><typedef name="value_type"><type><classname>subtract_typeof_helper</classname>&lt; X, Y &gt;::type</type></typedef>
-<typedef name="unit_type"><type><classname>unit</classname>&lt; Dim, System &gt;</type></typedef>
-<typedef name="type"><type><classname>quantity</classname>&lt; unit_type, value_type &gt;</type></typedef>
-</struct-specialization>
+    </template><specialization><template-arg>quantity&lt; unit&lt; Dim1</template-arg><template-arg>System1 &gt;</template-arg><template-arg>X &gt;</template-arg><template-arg>quantity&lt; unit&lt; Dim2</template-arg><template-arg>System2 &gt;</template-arg><template-arg>Y &gt;</template-arg></specialization></struct-specialization>
 
 
 
@@ -5650,16 +5659,17 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <header name="boost/units/scaled_base_unit.hpp">
 <namespace name="boost">
 <namespace name="units">
-<struct name="heterogeneous_system"><template>
-      <template-type-parameter name="T"/>
-    </template><inherit access="public">T</inherit><description><para>A system that can represent any possible combination of units at the expense of not preserving information about how it was created. Do not create specializations of this template directly. Instead use <computeroutput><classname alt="boost::units::reduce_unit">reduce_unit</classname></computeroutput> and <computeroutput>base_unit&lt;...&gt;::unit_type</computeroutput>. </para></description></struct><struct name="base_unit_info"><template>
-      <template-type-parameter name="T"/>
+<struct name="base_unit_info"><template>
+      <template-type-parameter name="BaseUnit"/>
     </template><purpose>traits template for unit names. </purpose><method-group name="public static functions">
 <method name="name" specifiers="static"><type>std::string</type><purpose>The full name of the unit (returns BaseUnit::name() by default) </purpose></method>
 <method name="symbol" specifiers="static"><type>std::string</type><purpose>The symbol for the base unit (Returns BaseUnit::symbol() by default) </purpose><description><para>
-</para></description><returns><para>BaseUnit::symbol(), for example "m" </para></returns></method>
+</para></description><returns><para>BaseUnit::symbol(), for example "m" </para>
+</returns></method>
 </method-group>
-</struct><struct name="scaled_base_unit"><template>
+</struct><struct name="heterogeneous_system"><template>
+      <template-type-parameter name="T"/>
+    </template><inherit access="public">T</inherit><description><para>A system that can represent any possible combination of units at the expense of not preserving information about how it was created. Do not create specializations of this template directly. Instead use <computeroutput><classname alt="boost::units::reduce_unit">reduce_unit</classname></computeroutput> and <computeroutput>base_unit&lt;...&gt;::unit_type</computeroutput>. </para></description></struct><struct name="scaled_base_unit"><template>
       <template-type-parameter name="S"/>
       <template-type-parameter name="Scale"/>
     </template><typedef name="type"><type><classname>scaled_base_unit</classname></type></typedef>
@@ -5816,7 +5826,12 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
       <template-nontype-parameter name="N"><type>integer_type</type></template-nontype-parameter>
       <template-nontype-parameter name="D"><type>integer_type</type><default>1</default></template-nontype-parameter>
     </template><description><para>This is an implementation of a compile time rational number, where <computeroutput>static_rational&lt;N,D&gt;</computeroutput> represents a rational number with numerator <computeroutput>N</computeroutput> and denominator <computeroutput>D</computeroutput>. Because of the potential for ambiguity arising from multiple equivalent values of <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput> (e.g. <computeroutput>static_rational&lt;6,2&gt;==static_rational&lt;3&gt;</computeroutput>), static rationals should always be accessed through <computeroutput>static_rational&lt;N,D&gt;::type</computeroutput>. Template specialization prevents instantiation of zero denominators (i.e. <computeroutput>static_rational&lt;N,0&gt;</computeroutput>). The following compile-time arithmetic operators are provided for <classname alt="boost::units::static_rational">static_rational</classname> variables only (no operators are defined between long and <classname alt="boost::units::static_rational">static_rational</classname>):<itemizedlist>
-<listitem><para><computeroutput>mpl::negate</computeroutput> </para></listitem><listitem><para><computeroutput>mpl::plus</computeroutput> </para></listitem><listitem><para><computeroutput>mpl::minus</computeroutput> </para></listitem><listitem><para><computeroutput>mpl::times</computeroutput> </para></listitem><listitem><para><computeroutput>mpl::divides</computeroutput> </para></listitem></itemizedlist>
+<listitem><para><computeroutput>mpl::negate</computeroutput> </para>
+</listitem><listitem><para><computeroutput>mpl::plus</computeroutput> </para>
+</listitem><listitem><para><computeroutput>mpl::minus</computeroutput> </para>
+</listitem><listitem><para><computeroutput>mpl::times</computeroutput> </para>
+</listitem><listitem><para><computeroutput>mpl::divides</computeroutput> </para>
+</listitem></itemizedlist>
 </para><para>Neither <computeroutput><classname alt="boost::units::static_power">static_power</classname></computeroutput> nor <computeroutput><classname alt="boost::units::static_root">static_root</classname></computeroutput> are defined for <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput>. This is because template types may not be floating point values, while powers and roots of rational numbers can produce floating point values. </para></description><typedef name="tag"><type><emphasis>unspecified</emphasis></type></typedef>
 <typedef name="type"><purpose>static_rational&lt;N,D&gt; reduced by GCD </purpose><type><classname>static_rational</classname>&lt; Numerator, Denominator &gt;</type></typedef>
 <data-member name="Numerator"><type>BOOST_STATIC_CONSTEXPR integer_type</type></data-member>
@@ -5965,7 +5980,29 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <header name="boost/units/unit.hpp">
 <namespace name="boost">
 <namespace name="units">
-<class name="unit"><template>
+<struct-specialization name="power_typeof_helper"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+      <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
+      <template-nontype-parameter name="D"><type>long</type></template-nontype-parameter>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>static_rational&lt; N</template-arg><template-arg>D &gt;</template-arg></specialization><purpose>raise unit to a <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput> power </purpose><typedef name="type"><type><classname>unit</classname>&lt; typename <classname>static_power</classname>&lt; Dim, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type, typename <classname>static_power</classname>&lt; System, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type &gt;</type></typedef>
+<method-group name="public static functions">
+<method name="value" specifiers="static"><type>BOOST_CONSTEXPR type</type><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter></method>
+</method-group>
+</struct-specialization><struct-specialization name="reduce_unit"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><purpose>Returns a unique type for every unit. </purpose><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
+</struct-specialization><struct-specialization name="root_typeof_helper"><template>
+      <template-type-parameter name="Dim"/>
+      <template-type-parameter name="System"/>
+      <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
+      <template-nontype-parameter name="D"><type>long</type></template-nontype-parameter>
+    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>static_rational&lt; N</template-arg><template-arg>D &gt;</template-arg></specialization><purpose>take the <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput> root of a unit </purpose><typedef name="type"><type><classname>unit</classname>&lt; typename <classname>static_root</classname>&lt; Dim, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type, typename <classname>static_root</classname>&lt; System, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type &gt;</type></typedef>
+<method-group name="public static functions">
+<method name="value" specifiers="static"><type>BOOST_CONSTEXPR type</type><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter></method>
+</method-group>
+</struct-specialization><class name="unit"><template>
       <template-type-parameter name="Dim"/>
       <template-type-parameter name="System"/>
       <template-type-parameter name="Enable"/>
@@ -5978,29 +6015,7 @@ Boost.Lambda's return type deduction system is extented to make use of Boost.Uni
 <constructor/>
 <constructor><parameter name=""><paramtype>const this_type &amp;</paramtype></parameter></constructor>
 <copy-assignment><type>BOOST_CXX14_CONSTEXPR this_type &amp;</type><parameter name=""><paramtype>const this_type &amp;</paramtype></parameter></copy-assignment>
-</class><struct-specialization name="reduce_unit"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg></specialization><purpose>Returns a unique type for every unit. </purpose><typedef name="type"><type><emphasis>unspecified</emphasis></type></typedef>
-</struct-specialization><struct-specialization name="power_typeof_helper"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-      <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
-      <template-nontype-parameter name="D"><type>long</type></template-nontype-parameter>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>static_rational&lt; N</template-arg><template-arg>D &gt;</template-arg></specialization><purpose>raise unit to a <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput> power </purpose><typedef name="type"><type><classname>unit</classname>&lt; typename <classname>static_power</classname>&lt; Dim, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type, typename <classname>static_power</classname>&lt; System, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type &gt;</type></typedef>
-<method-group name="public static functions">
-<method name="value" specifiers="static"><type>BOOST_CONSTEXPR type</type><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter></method>
-</method-group>
-</struct-specialization><struct-specialization name="root_typeof_helper"><template>
-      <template-type-parameter name="Dim"/>
-      <template-type-parameter name="System"/>
-      <template-nontype-parameter name="N"><type>long</type></template-nontype-parameter>
-      <template-nontype-parameter name="D"><type>long</type></template-nontype-parameter>
-    </template><specialization><template-arg>unit&lt; Dim</template-arg><template-arg>System &gt;</template-arg><template-arg>static_rational&lt; N</template-arg><template-arg>D &gt;</template-arg></specialization><purpose>take the <computeroutput><classname alt="boost::units::static_rational">static_rational</classname></computeroutput> root of a unit </purpose><typedef name="type"><type><classname>unit</classname>&lt; typename <classname>static_root</classname>&lt; Dim, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type, typename <classname>static_root</classname>&lt; System, <classname>static_rational</classname>&lt; N, D &gt; &gt;::type &gt;</type></typedef>
-<method-group name="public static functions">
-<method name="value" specifiers="static"><type>BOOST_CONSTEXPR type</type><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter></method>
-</method-group>
-</struct-specialization><function name="operator+"><type>BOOST_CONSTEXPR <classname>unary_plus_typeof_helper</classname>&lt; <classname>unit</classname>&lt; Dim, System &gt; &gt;::type</type><template>
+</class><function name="operator+"><type>BOOST_CONSTEXPR <classname>unary_plus_typeof_helper</classname>&lt; <classname>unit</classname>&lt; Dim, System &gt; &gt;::type</type><template>
           <template-type-parameter name="Dim"/>
           <template-type-parameter name="System"/>
         </template><parameter name=""><paramtype>const <classname>unit</classname>&lt; Dim, System &gt; &amp;</paramtype></parameter><purpose>unit runtime unary plus </purpose></function>

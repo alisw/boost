@@ -20,7 +20,7 @@ local rule .info ( messages * )
 {
     if $(.info-enabled)
     {
-        ECHO info: $(messages) ;
+        ECHO "info:" $(messages) ;
     }
 }
 
@@ -58,7 +58,7 @@ rule alias-sources-impl ( project name : property-set : sources * )
         }
     }
 
-    .info $(name): ;
+    .info "$(name):" ;
 
     for local t in $(result)
     {
@@ -83,7 +83,7 @@ for local lib in $(all-libraries)
     }
     else
     {
-        .info library-$(lib): ;
+        .info "library-$(lib):" ;
         .info "   (no stage target, using '$(path)')" ;
 
         alias library-$(lib) : $(path) ;

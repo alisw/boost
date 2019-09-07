@@ -76,6 +76,8 @@ run lightweight_test_lt_le_test.cpp ;
 run lightweight_test_gt_ge_test.cpp ;
 run lightweight_test_eq_nullptr.cpp ;
 run lightweight_test_test3.cpp ;
+run lightweight_test_test4.cpp ;
+run lightweight_test_test5.cpp ;
 
 run-fail lightweight_test_fail.cpp ;
 run-fail lightweight_test_fail2.cpp ;
@@ -126,9 +128,12 @@ run exchange_move_test.cpp ;
 
 run empty_value_test.cpp ;
 run empty_value_size_test.cpp ;
+run empty_value_final_test.cpp ;
 
 run quick_exit_test.cpp ;
 run-fail quick_exit_fail.cpp ;
+
+compile use_default_test.cpp ;
 
 lib lib_typeid : lib_typeid.cpp : <link>shared:<define>LIB_TYPEID_DYN_LINK=1 ;
 
@@ -137,6 +142,9 @@ run test_lib_typeid.cpp lib_typeid : : : <link>static : test_lib_typeid_static ;
 
 run test_lib_typeid.cpp lib_typeid : : : <link>shared <rtti>off : test_lib_typeid_shared_no_rtti ;
 run test_lib_typeid.cpp lib_typeid : : : <link>static <rtti>off  : test_lib_typeid_static_no_rtti ;
+
+run uncaught_exceptions.cpp : : : <exception-handling>on ;
+run uncaught_exceptions_np.cpp : : : <exception-handling>on ;
 
 use-project /boost/core/swap : ./swap ;
 build-project ./swap ;

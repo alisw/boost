@@ -28,14 +28,13 @@
           (2 of 2 overloads)</a>
 </h6></div></div></div>
 <p>
-            Read part of a message asynchronously.
+            Read some message data asynchronously.
           </p>
 <h7><a name="beast.ref.boost__beast__websocket__stream.async_read_some.overload2.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.async_read_some.overload2.synopsis"></a></span><a class="link" href="overload2.html#beast.ref.boost__beast__websocket__stream.async_read_some.overload2.synopsis">Synopsis</a>
           </h7><pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">class</span> <a href="../../../../../../../../doc/html/boost_asio/reference/MutableBufferSequence.html" target="_top"><span class="bold"><strong>MutableBufferSequence</strong></span></a><span class="special">,</span>
-    <span class="keyword">class</span> <a href="../../../../../../../../doc/html/boost_asio/reference/ReadHandler.html" target="_top"><span class="bold"><strong>ReadHandler</strong></span></a><span class="special">&gt;</span>
-<a href="../../../../../../../../doc/html/boost_asio/reference/asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type" target="_top"><span class="emphasis"><em>DEDUCED</em></span></a>
+    <span class="keyword">class</span> <a href="../../../../../../../../doc/html/boost_asio/reference/MutableBufferSequence.html" target="_top"><span class="emphasis"><em>MutableBufferSequence</em></span></a><span class="special">,</span>
+    <span class="keyword">class</span> <a href="../../../../../../../../doc/html/boost_asio/reference/ReadHandler.html" target="_top"><span class="emphasis"><em>ReadHandler</em></span></a><span class="special">&gt;</span>
 <span class="identifier">async_read_some</span><span class="special">(</span>
     <span class="identifier">MutableBufferSequence</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">buffers</span><span class="special">,</span>
     <span class="identifier">ReadHandler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span><span class="special">);</span>
@@ -43,40 +42,32 @@
 <h7><a name="beast.ref.boost__beast__websocket__stream.async_read_some.overload2.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.async_read_some.overload2.description"></a></span><a class="link" href="overload2.html#beast.ref.boost__beast__websocket__stream.async_read_some.overload2.description">Description</a>
           </h7><p>
-            This function is used to asynchronously read part of a message from the
-            stream. The function call always returns immediately. The asynchronous
-            operation will continue until one of the following is true:
+            This function is used to asynchronously read some message data. This
+            call always returns immediately. The asynchronous operation will continue
+            until one of the following conditions is true:
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                Some or all of the message is received.
+                Some message data is received.
               </li>
 <li class="listitem">
                 A close frame is received. In this case the error indicated by the
                 function will be <a class="link" href="../../boost__beast__websocket__error.html" title="websocket::error"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">closed</span></code></a>.
               </li>
 <li class="listitem">
-                An error occurs on the stream.
+                An error occurs.
               </li>
 </ul></div>
 <p>
-            This operation is implemented in terms of one or more calls to the next
-            layer's <code class="computeroutput"><span class="identifier">async_read_some</span></code>
+            The algorithm, known as a <span class="emphasis"><em>composed asynchronous operation</em></span>,
+            is implemented in terms of calls to the next layer's <code class="computeroutput"><span class="identifier">async_read_some</span></code>
             and <code class="computeroutput"><span class="identifier">async_write_some</span></code>
-            functions, and is known as a <span class="emphasis"><em>composed operation</em></span>.
-            The program must ensure that the stream performs no other reads until
-            this operation completes.
-          </p>
-<p>
-            Received message data, if any, is written to the buffer sequence. The
-            functions <a class="link" href="../got_binary.html" title="websocket::stream::got_binary"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_binary</span></code></a> and <a class="link" href="../got_text.html" title="websocket::stream::got_text"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_text</span></code></a> may be used to query
-            the stream and determine the type of the last received message. The function
-            <a class="link" href="../is_message_done.html" title="websocket::stream::is_message_done"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">is_message_done</span></code></a> may be called
-            to determine if the message received by the last read operation is complete.
-          </p>
-<p>
-            While this operation is active, the implementation will read incoming
-            control frames and handle them automatically as follows:
+            functions. The program must ensure that no other calls to <a class="link" href="../read.html" title="websocket::stream::read"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">read</span></code></a>, <a class="link" href="../read_some.html" title="websocket::stream::read_some"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">read_some</span></code></a>, <a class="link" href="../async_read.html" title="websocket::stream::async_read"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">async_read</span></code></a>, or <a class="link" href="../async_read_some.html" title="websocket::stream::async_read_some"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">async_read_some</span></code></a> are performed
+            until this operation completes. Received message data is appended to
+            the buffer. The functions <a class="link" href="../got_binary.html" title="websocket::stream::got_binary"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_binary</span></code></a> and <a class="link" href="../got_text.html" title="websocket::stream::got_text"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_text</span></code></a> may be used to query
+            the stream and determine the type of the last received message. Until
+            the operation completes, the implementation will read incoming control
+            frames and handle them automatically as follows:
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -93,10 +84,9 @@
               </li>
 </ul></div>
 <p>
-            Because of the need to handle control frames, asynchronous read operations
-            can cause writes to take place. These writes are managed transparently;
-            callers can still have one active asynchronous read and asynchronous
-            write operation pending simultaneously (a user initiated call to <a class="link" href="../async_close.html" title="websocket::stream::async_close"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">async_close</span></code></a> counts as a write).
+            Pong frames and close frames sent by the implementation while the read
+            operation is outstanding do not prevent the application from also writing
+            message data, sending pings, sending pongs, or sending close frames.
           </p>
 <h7><a name="beast.ref.boost__beast__websocket__stream.async_read_some.overload2.h2"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.async_read_some.overload2.parameters"></a></span><a class="link" href="overload2.html#beast.ref.boost__beast__websocket__stream.async_read_some.overload2.parameters">Parameters</a>
@@ -126,12 +116,13 @@
                   </td>
 <td>
                     <p>
-                      The buffer sequence into which message data will be placed
-                      after any masking or decompresison has been applied. The implementation
-                      will make copies of this object as needed, but ownership of
-                      the underlying memory is not transferred. The caller is responsible
-                      for ensuring that the memory locations pointed to by the buffer
-                      sequence remains valid until the completion handler is called.
+                      A buffer sequence to write message data into. The previous
+                      contents of the buffers will be overwritten, starting from
+                      the beginning. The implementation will make copies of this
+                      object as needed, but but ownership of the underlying memory
+                      is not transferred. The caller is responsible for ensuring
+                      that the memory locations pointed to by the buffer sequence
+                      remain valid until the completion handler is called.
                     </p>
                   </td>
 </tr>
@@ -143,20 +134,21 @@
                   </td>
 <td>
                     <p>
-                      Invoked when the operation completes. The handler may be moved
-                      or copied as needed. The equivalent function signature of the
-                      handler must be:
+                      The completion handler to invoke when the operation completes.
+                      The implementation takes ownership of the handler by performing
+                      a decay-copy. The equivalent function signature of the handler
+                      must be:
                     </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">void</span> <span class="identifier">handler</span><span class="special">(</span>
     <span class="identifier">error_code</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">,</span>       <span class="comment">// Result of operation</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">bytes_written</span>   <span class="comment">// Number of bytes written to the buffer sequence</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">bytes_written</span>   <span class="comment">// Number of bytes written to the buffers</span>
 <span class="special">);</span>
 </pre>
                     <p>
                       Regardless of whether the asynchronous operation completes
                       immediately or not, the handler will not be invoked from within
                       this function. Invocation of the handler will be performed
-                      in a manner equivalent to using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_context</span><span class="special">::</span><span class="identifier">post</span></code>.
+                      in a manner equivalent to using <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">post</span></code>.
                     </p>
                   </td>
 </tr>
@@ -165,7 +157,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -57,7 +57,7 @@
 using the adaptor <a class="reference internal" href="../../include/boost/hof/mutable.html"><span class="doc">mutable</span></a>. The main reason for this, is that it can lead to
 many suprising behaviours. Many times function objects are copied by value
 everywhere. For example,</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">counter</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">struct</span> <span class="n">counter</span>
 <span class="p">{</span>
     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
     <span class="n">counter</span><span class="p">()</span> <span class="o">:</span> <span class="n">i</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -79,7 +79,7 @@ everywhere. For example,</p>
 </div>
 <p>The example won&#8217;t ever yield the expected value, because the function mutates
 a copy of the objects. Instead, <code class="docutils literal"><span class="pre">std::ref</span></code> should be used:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">counter</span> <span class="n">c</span><span class="p">{};</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">counter</span> <span class="n">c</span><span class="p">{};</span>
 <span class="n">proj</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">c</span><span class="p">))(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 <span class="c1">// Prints 2</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
@@ -104,7 +104,7 @@ unlikely considering that C++ will probably get constexpr lambdas and inline
 variables in the future.</p>
 <p>Alternatively, the factory pattern can be used instead of
 <a class="reference internal" href="../../include/boost/hof/lambda.html#boost-hof-static-lambda-function"><span class="std std-ref">BOOST_HOF_STATIC_LAMBDA_FUNCTION</span></a>, which doesn&#8217;t require an reinterpret cast:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sum_factory</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">struct</span> <span class="n">sum_factory</span>
 <span class="p">{</span>
     <span class="k">auto</span> <span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span>
     <span class="p">{</span>

@@ -33,7 +33,7 @@
 
 </span>BOOST_TTI_HAS_TYPE(name)</pre></div>
 <div class="refsect1">
-<a name="idp74738064"></a><h2>Description</h2>
+<a name="idm45596841331680"></a><h2>Description</h2>
 <p>BOOST_TTI_HAS_TYPE is a macro which expands to a metafunction. The metafunction tests whether an inner type with a particular name exists and, optionally, whether a lambda expression invoked with the inner type is true or not.</p>
 <p>name = the name of the inner type.</p>
 <p>generates a metafunction called "has_type_'name'" where 'name' is the macro parameter.       template&lt;class BOOST_TTI_TP_T,class BOOST_TTI_TP_U&gt;
@@ -69,7 +69,8 @@
 <p>BOOST_TTI_HAS_TYPE(MyType) generates the metafunction has_type_MyType in the current scope to look for an inner type called MyType.</p>
 <p>has_type_MyType&lt;EnclosingType&gt;::value is true if MyType is an inner type of EnclosingType, otherwise false.</p>
 <p>has_type_MyType&lt;EnclosingType,ALambdaExpression&gt;::value is true if MyType is an inner type of EnclosingType and invoking ALambdaExpression with the inner type returns a value of true, otherwise false.</p>
-<p>A popular use of the optional MPL lambda expression is to check whether the type found is the same as another type, when the type found is a typedef. In that case our example would be:</p>
+<p>A popular use of the optional MPL lambda expression is to check whether the type found is the same</p>
+<p>as another type, when the type found is a typedef. In that case our example would be:</p>
 <p>has_type_MyType&lt;EnclosingType,boost::is_same&lt;_,SomeOtherType&gt; &gt;::value is true if MyType is an inner type of EnclosingType and is the same type as SomeOtherType. </p>
 </div>
 </div>

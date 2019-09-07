@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016-2017 Vinnie Falco (vinnie dot falco at gmail dot com)
+// Copyright (c) 2016-2019 Vinnie Falco (vinnie dot falco at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,8 +12,9 @@
 
 #include "test_parser.hpp"
 
-#include <boost/beast/unit_test/suite.hpp>
+#include <boost/beast/_experimental/unit_test/suite.hpp>
 #include <boost/beast/test/yield_to.hpp>
+#include <boost/beast/core/buffer_traits.hpp>
 #include <boost/beast/core/buffers_suffix.hpp>
 #include <boost/beast/core/flat_buffer.hpp>
 #include <boost/beast/core/multi_buffer.hpp>
@@ -37,21 +38,20 @@ public:
         parser<isRequest, string_body>;
 
     static
-    boost::asio::const_buffer
+    net::const_buffer
     buf(string_view s)
     {
         return {s.data(), s.size()};
     }
 
     template<class ConstBufferSequence,
-        bool isRequest, class Derived>
+        bool isRequest>
     static
     void
     put(ConstBufferSequence const& buffers,
-        basic_parser<isRequest, Derived>& p,
+        basic_parser<isRequest>& p,
             error_code& ec)
     {
-        using boost::asio::buffer_size;
         buffers_suffix<ConstBufferSequence> cb{buffers};
         for(;;)
         {
@@ -60,7 +60,7 @@ public:
             if(ec)
                 return;
             if(p.need_eof() &&
-                buffer_size(cb) == 0)
+                buffer_bytes(cb) == 0)
             {
                 p.put_eof(ec);
                 if(ec)
@@ -75,13 +75,12 @@ public:
     void
     doMatrix(string_view s0, F const& f)
     {
-        using boost::asio::buffer;
         // parse a single buffer
         {
             auto s = s0;
             error_code ec;
             parser_type<isRequest> p;
-            put(buffer(s.data(), s.size()), p, ec);
+            put(net::buffer(s.data(), s.size()), p, ec);
             if(! BEAST_EXPECTS(! ec, ec.message()))
                 return;
             f(p);
@@ -94,15 +93,15 @@ public:
             parser_type<isRequest> p;
             p.eager(true);
             auto used =
-                p.put(buffer(s.data(), n), ec);
+                p.put(net::buffer(s.data(), n), ec);
             s.remove_prefix(used);
             if(ec == error::need_more)
-                ec.assign(0, ec.category());
+                ec = {};
             if(! BEAST_EXPECTS(! ec, ec.message()))
                 continue;
             BEAST_EXPECT(! p.is_done());
             used = p.put(
-                buffer(s.data(), s.size()), ec);
+                net::buffer(s.data(), s.size()), ec);
             s.remove_prefix(used);
             if(! BEAST_EXPECTS(! ec, ec.message()))
                 continue;
@@ -258,7 +257,7 @@ public:
             used = p.put(b.data(), ec);
             b.consume(used);
             BEAST_EXPECT(ec == error::need_more);
-            ec.assign(0, ec.category());
+            ec = {};
             BEAST_EXPECT(! p.is_done());
             ostream(b) <<
                 "\r\n"; // final crlf to end message
@@ -302,7 +301,7 @@ public:
             used = p.put(b.data(), ec);
             BEAST_EXPECTS(ec == error::need_more, ec.message());
             b.consume(used);
-            ec.assign(0, ec.category());
+            ec = {};
             ostream(b) <<
                 "User-Agent: test\r\n"
                 "\r\n";
@@ -323,7 +322,7 @@ public:
         BEAST_EXPECT(ec == error::need_more);
         BEAST_EXPECT(! p.got_some());
         BEAST_EXPECT(used == 0);
-        ec.assign(0, ec.category());
+        ec = {};
         used = p.put(buf("G"), ec);
         BEAST_EXPECT(ec == error::need_more);
         BEAST_EXPECT(p.got_some());

@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>dynamic_vector_buffer::dynamic_vector_buffer (1 of 2 overloads)</title>
+<title>dynamic_vector_buffer::dynamic_vector_buffer (1 of 3 overloads)</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../dynamic_vector_buffer.html" title="dynamic_vector_buffer::dynamic_vector_buffer">
 <link rel="prev" href="../dynamic_vector_buffer.html" title="dynamic_vector_buffer::dynamic_vector_buffer">
-<link rel="next" href="overload2.html" title="dynamic_vector_buffer::dynamic_vector_buffer (2 of 2 overloads)">
+<link rel="next" href="overload2.html" title="dynamic_vector_buffer::dynamic_vector_buffer (2 of 3 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -24,11 +24,11 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
-<a name="boost_asio.reference.dynamic_vector_buffer.dynamic_vector_buffer.overload1"></a><a class="link" href="overload1.html" title="dynamic_vector_buffer::dynamic_vector_buffer (1 of 2 overloads)">dynamic_vector_buffer::dynamic_vector_buffer
-          (1 of 2 overloads)</a>
+<a name="boost_asio.reference.dynamic_vector_buffer.dynamic_vector_buffer.overload1"></a><a class="link" href="overload1.html" title="dynamic_vector_buffer::dynamic_vector_buffer (1 of 3 overloads)">dynamic_vector_buffer::dynamic_vector_buffer
+          (1 of 3 overloads)</a>
 </h5></div></div></div>
 <p>
-            Construct a dynamic buffer from a string.
+            Construct a dynamic buffer from a vector.
           </p>
 <pre class="programlisting">dynamic_vector_buffer(
     std::vector&lt; Elem, Allocator &gt; &amp; v,
@@ -44,11 +44,9 @@
 <dt><span class="term">v</span></dt>
 <dd><p>
                   The vector to be used as backing storage for the dynamic buffer.
-                  Any existing data in the vector is treated as the dynamic buffer's
-                  input sequence. The object stores a reference to the vector and
-                  the user is responsible for ensuring that the vector object remains
-                  valid until the <a class="link" href="../../dynamic_vector_buffer.html" title="dynamic_vector_buffer"><code class="computeroutput">dynamic_vector_buffer</code></a>
-                  object is destroyed.
+                  The object stores a reference to the vector and the user is responsible
+                  for ensuring that the vector object remains valid while the <a class="link" href="../../dynamic_vector_buffer.html" title="dynamic_vector_buffer"><code class="computeroutput">dynamic_vector_buffer</code></a>
+                  object, and copies of the object, are in use.
                 </p></dd>
 <dt><span class="term">maximum_size</span></dt>
 <dd><p>
@@ -59,7 +57,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

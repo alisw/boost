@@ -7,7 +7,7 @@
 <link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
 <link rel="up" href="../boost__beast__static_buffer.html" title="static_buffer">
 <link rel="prev" href="operator_eq_.html" title="static_buffer::operator=">
-<link rel="next" href="reset.html" title="static_buffer::reset">
+<link rel="next" href="size.html" title="static_buffer::size">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,16 +20,16 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="operator_eq_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__static_buffer.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reset.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="operator_eq_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__static_buffer.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="size.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h5 class="title">
 <a name="beast.ref.boost__beast__static_buffer.prepare"></a><a class="link" href="prepare.html" title="static_buffer::prepare">static_buffer::prepare</a>
 </h5></div></div></div>
 <p>
-          <a class="indexterm" name="idp134488816"></a>
-Get a list of buffers that represent the output sequence,
-          with the given size.
+          <a class="indexterm" name="idm46025416100112"></a>
+Returns a mutable buffer sequence representing writable
+          bytes.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__static_buffer.prepare.h0"></a>
@@ -37,12 +37,18 @@ Get a list of buffers that represent the output sequence,
         </h6>
 <pre class="programlisting"><span class="identifier">mutable_buffers_type</span>
 <span class="identifier">prepare</span><span class="special">(</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">);</span>
 </pre>
 <h6>
 <a name="beast.ref.boost__beast__static_buffer.prepare.h1"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__static_buffer.prepare.description"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__static_buffer.prepare.description">Description</a>
         </h6>
+<p>
+          Returns a mutable buffer sequence representing the writable bytes containing
+          exactly <code class="computeroutput"><span class="identifier">n</span></code> bytes of storage.
+          Memory may be reallocated as needed. All buffers sequences previously obtained
+          using <a class="link" href="data.html" title="static_buffer::data"><code class="computeroutput"><span class="identifier">static_buffer</span><span class="special">::</span><span class="identifier">data</span></code></a> or <a class="link" href="prepare.html" title="static_buffer::prepare"><code class="computeroutput"><span class="identifier">static_buffer</span><span class="special">::</span><span class="identifier">prepare</span></code></a> are invalidated.
+        </p>
 <h6>
 <a name="beast.ref.boost__beast__static_buffer.prepare.h2"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__static_buffer.prepare.parameters"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__static_buffer.prepare.parameters">Parameters</a>
@@ -67,12 +73,12 @@ Get a list of buffers that represent the output sequence,
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">size</span></code>
+                    <code class="computeroutput"><span class="identifier">n</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    The number of bytes to request.
+                    The desired number of bytes in the returned buffer sequence.
                   </p>
                 </td>
 </tr></tbody>
@@ -106,15 +112,26 @@ Get a list of buffers that represent the output sequence,
                 </td>
 <td>
                   <p>
-                    if the size would exceed the capacity.
+                    if <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span>
+                    <span class="special">+</span> <span class="identifier">n</span></code>
+                    exceeds <code class="computeroutput"><span class="identifier">max_size</span><span class="special">()</span></code>.
                   </p>
                 </td>
 </tr></tbody>
 </table></div>
+<h6>
+<a name="beast.ref.boost__beast__static_buffer.prepare.h4"></a>
+          <span class="phrase"><a name="beast.ref.boost__beast__static_buffer.prepare.exception_safety"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__static_buffer.prepare.exception_safety">Exception
+          Safety</a>
+        </h6>
+<p>
+          Strong guarantee.
+        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -122,7 +139,7 @@ Get a list of buffers that represent the output sequence,
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="operator_eq_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__static_buffer.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reset.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="operator_eq_.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost__beast__static_buffer.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="size.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

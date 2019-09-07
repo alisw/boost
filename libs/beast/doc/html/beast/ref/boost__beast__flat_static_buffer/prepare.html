@@ -27,9 +27,9 @@
 <a name="beast.ref.boost__beast__flat_static_buffer.prepare"></a><a class="link" href="prepare.html" title="flat_static_buffer::prepare">flat_static_buffer::prepare</a>
 </h5></div></div></div>
 <p>
-          <a class="indexterm" name="idp108733856"></a>
-Get a list of buffers that represent the output
-          sequence, with the given size.
+          <a class="indexterm" name="idm46025442497792"></a>
+Returns a mutable buffer sequence representing
+          writable bytes.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__flat_static_buffer.prepare.h0"></a>
@@ -43,8 +43,47 @@ Get a list of buffers that represent the output
 <a name="beast.ref.boost__beast__flat_static_buffer.prepare.h1"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__flat_static_buffer.prepare.description"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__flat_static_buffer.prepare.description">Description</a>
         </h6>
+<p>
+          Returns a mutable buffer sequence representing the writable bytes containing
+          exactly <code class="computeroutput"><span class="identifier">n</span></code> bytes of storage.
+          All buffers sequences previously obtained using <a class="link" href="data.html" title="flat_static_buffer::data"><code class="computeroutput"><span class="identifier">flat_static_buffer</span><span class="special">::</span><span class="identifier">data</span></code></a> or <a class="link" href="prepare.html" title="flat_static_buffer::prepare"><code class="computeroutput"><span class="identifier">flat_static_buffer</span><span class="special">::</span><span class="identifier">prepare</span></code></a> are invalidated.
+        </p>
 <h6>
 <a name="beast.ref.boost__beast__flat_static_buffer.prepare.h2"></a>
+          <span class="phrase"><a name="beast.ref.boost__beast__flat_static_buffer.prepare.parameters"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__flat_static_buffer.prepare.parameters">Parameters</a>
+        </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">n</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The desired number of bytes in the returned buffer sequence.
+                  </p>
+                </td>
+</tr></tbody>
+</table></div>
+<h6>
+<a name="beast.ref.boost__beast__flat_static_buffer.prepare.h3"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__flat_static_buffer.prepare.exceptions"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__flat_static_buffer.prepare.exceptions">Exceptions</a>
         </h6>
 <div class="informaltable"><table class="table">
@@ -72,24 +111,26 @@ Get a list of buffers that represent the output
                 </td>
 <td>
                   <p>
-                    if the size would exceed the limit imposed by the underlying
-                    mutable buffer sequence.
+                    if <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span>
+                    <span class="special">+</span> <span class="identifier">n</span></code>
+                    exceeds <code class="computeroutput"><span class="identifier">max_size</span><span class="special">()</span></code>.
                   </p>
                 </td>
 </tr></tbody>
 </table></div>
 <h6>
-<a name="beast.ref.boost__beast__flat_static_buffer.prepare.h3"></a>
-          <span class="phrase"><a name="beast.ref.boost__beast__flat_static_buffer.prepare.remarks"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__flat_static_buffer.prepare.remarks">Remarks</a>
+<a name="beast.ref.boost__beast__flat_static_buffer.prepare.h4"></a>
+          <span class="phrase"><a name="beast.ref.boost__beast__flat_static_buffer.prepare.exception_safety"></a></span><a class="link" href="prepare.html#beast.ref.boost__beast__flat_static_buffer.prepare.exception_safety">Exception
+          Safety</a>
         </h6>
 <p>
-          Buffers representing the input sequence acquired prior to this call remain
-          valid.
+          Strong guarantee.
         </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

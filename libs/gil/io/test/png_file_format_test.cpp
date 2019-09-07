@@ -12,7 +12,6 @@
 
 #include <boost/gil/extension/io/png.hpp>
 
-#include <boost/filesystem/convenience.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include "paths.hpp"
@@ -21,7 +20,7 @@ using namespace std;
 using namespace boost::gil;
 namespace fs = boost::filesystem;
 
-typedef png_tag tag_t;
+using tag_t = png_tag;
 
 BOOST_AUTO_TEST_SUITE( gil_io_png_tests )
 

@@ -104,7 +104,7 @@
 <pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">process</span><span class="special">;</span>
 <span class="keyword">namespace</span> <span class="identifier">ex</span> <span class="special">=</span> <span class="identifier">bp</span><span class="special">::</span><span class="identifier">extend</span><span class="special">;</span>
 
-<code class="computeroutput"><a class="link" href="../boost/process/child.html" title="Class child">child</a></code> <span class="identifier">c</span><span class="special">(</span><span class="string">"foo"</span><span class="special">,</span> <span class="identifier">ex</span><span class="special">::</span><code class="computeroutput"><a class="link" href="../boost/process/extend/on_success.html" title="Global on_success">ex::on_success</a></code><span class="special">=[](</span><span class="keyword">auto</span> <span class="special">&amp;</span> <span class="identifier">exec</span><span class="special">)</span> <span class="special">{</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"hello world"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;});</span>
+<code class="computeroutput"><a class="link" href="../boost/process/child.html" title="Class child">child</a></code> <span class="identifier">c</span><span class="special">(</span><span class="string">"foo"</span><span class="special">,</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/on_success.html" title="Global on_success">ex::on_success</a></code><span class="special">=[](</span><span class="keyword">auto</span> <span class="special">&amp;</span> <span class="identifier">exec</span><span class="special">)</span> <span class="special">{</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"hello world"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;});</span>
 </pre>
 <p>
       </p>
@@ -184,17 +184,17 @@
 <p>
         Since <code class="computeroutput"><span class="identifier">boost</span><span class="special">.</span><span class="identifier">process</span></code> provides an interface for <a href="http://www.boost.org/doc/libs/release/libs/asio/" target="_top">boost.asio</a>,
         this functionality is also available for extensions. If the class needs the
-        <a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/io_service.html" target="_top">boost::asio::io_service</a>
+        <a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/io_context.html" target="_top">boost::asio::io_context</a>
         for some reason, the following code will do that.
       </p>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">async_foo</span> <span class="special">:</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/handler.html" title="Struct handler">handler</a></code><span class="special">,</span> <code class="computeroutput">ex::require_boost::asio::io_service</code>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">async_foo</span> <span class="special">:</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/handler.html" title="Struct handler">handler</a></code><span class="special">,</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/require_io_context.html" title="Struct require_io_context">ex::require_io_context</a></code>
 <span class="special">{</span>
     <span class="identifier">tempalte</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">on_setup</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span> <span class="identifier">exec</span><span class="special">)</span>
     <span class="special">{</span>
-        <a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/io_service.html" target="_top">boost::asio::io_service</a> <span class="special">&amp;</span> <span class="identifier">ios</span> <span class="special">=</span> <code class="computeroutput">ex::get_boost::asio::io_service</code><span class="special">(</span><span class="identifier">exec</span><span class="special">.</span><span class="identifier">seq</span><span class="special">);</span> <span class="comment">//gives us a reference and a compiler error if not present.</span>
+        <a href="http://www.boost.org/doc/libs/release/doc/html/boost_asio/reference/io_context.html" target="_top">boost::asio::io_context</a> <span class="special">&amp;</span> <span class="identifier">ios</span> <span class="special">=</span> <code class="computeroutput"><a class="link" href="../boost/process/extend/get_io_context.html" title="Function template get_io_context">ex::get_io_context</a></code><span class="special">(</span><span class="identifier">exec</span><span class="special">.</span><span class="identifier">seq</span><span class="special">);</span> <span class="comment">//gives us a reference and a compiler error if not present.</span>
         <span class="comment">//do something with ios</span>
     <span class="special">}</span>
 <span class="special">};</span>
@@ -207,7 +207,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          Inheriting <code class="computeroutput">require_boost::asio::io_service</code>
+          Inheriting <code class="computeroutput">require_io_context</code>
           is necessary, so <code class="computeroutput"><a class="link" href="../boost/process/system.html" title="Function template system">system</a></code>
           provides one.
         </p></td></tr>
@@ -223,7 +223,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           <code class="computeroutput">async_handler</code>
-          implies <code class="computeroutput">require_boost::asio::io_service</code>
+          implies <code class="computeroutput">require_io_context</code>
           .
         </p></td></tr>
 </table></div>
@@ -234,8 +234,8 @@
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Executor</span><span class="special">&gt;</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span><span class="special">&amp;)&gt;</span> <span class="identifier">on_exit_handler</span><span class="special">(</span><span class="identifier">Executor</span> <span class="special">&amp;</span> <span class="identifier">exec</span><span class="special">)</span>
     <span class="special">{</span>
-        <span class="keyword">auto</span> <span class="identifier">handler</span> <span class="special">=</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">handler</span><span class="special">;</span>
-        <span class="keyword">return</span> <span class="special">[</span><span class="identifier">handler</span><span class="special">](</span><span class="keyword">int</span> <span class="identifier">exit_code</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
+        <span class="keyword">auto</span> <span class="identifier">handler_</span> <span class="special">=</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">handler</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="special">[</span><span class="identifier">handler_</span><span class="special">](</span><span class="keyword">int</span> <span class="identifier">exit_code</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span> <span class="identifier">ec</span><span class="special">)</span>
                <span class="special">{</span>
                    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"hello world, I exited with "</span> <span class="special">&lt;&lt;</span> <span class="identifier">exit_code</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
                <span class="special">};</span>

@@ -28,14 +28,16 @@
 </h4></div></div></div>
 <p>
           <a class="indexterm" name="boost_asio.indexterm.dynamic_vector_buffer.consume"></a> 
-Remove
-          characters from the input sequence.
+<span class="bold"><strong>DynamicBuffer_v1:</strong></span> Remove characters from the input
+          sequence. <span class="bold"><strong>DynamicBuffer_v2:</strong></span> Consume the
+          specified number of bytes from the beginning of the underlying memory.
         </p>
 <pre class="programlisting">void consume(
     std::size_t n);
 </pre>
 <p>
-          Removes <code class="computeroutput">n</code> characters from the beginning of the input sequence.
+          <span class="bold"><strong>DynamicBuffer_v1:</strong></span> Removes <code class="computeroutput">n</code>
+          characters from the beginning of the input sequence.
         </p>
 <h6>
 <a name="boost_asio.reference.dynamic_vector_buffer.consume.h0"></a>
@@ -45,10 +47,15 @@ Remove
           If <code class="computeroutput">n</code> is greater than the size of the input sequence, the entire
           input sequence is consumed and no error is issued.
         </p>
+<p>
+          <span class="bold"><strong>DynamicBuffer_v2:</strong></span> Erases <code class="computeroutput">n</code>
+          bytes from the beginning of the vector. If <code class="computeroutput">n</code> is greater than
+          the current size of the vector, the vector is emptied.
+        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

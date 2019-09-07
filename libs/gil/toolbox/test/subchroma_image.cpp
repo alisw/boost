@@ -8,7 +8,6 @@
 #include <boost/test/unit_test.hpp>
 
 #include <boost/gil.hpp>
-
 #include <boost/gil/extension/toolbox/color_spaces/ycbcr.hpp>
 #include <boost/gil/extension/toolbox/image_types/subchroma_image.hpp>
 
@@ -45,8 +44,8 @@ BOOST_AUTO_TEST_CASE( subchroma_image_test )
     }
 
     {
-        typedef rgb8_pixel_t pixel_t;
-        typedef subchroma_image< pixel_t > image_t;
+        using pixel_t = rgb8_pixel_t;
+        using image_t = subchroma_image<pixel_t>;
 
         image_t img( 640, 480 );
 
@@ -56,14 +55,20 @@ BOOST_AUTO_TEST_CASE( subchroma_image_test )
     }
 
     {
-        typedef rgb8_pixel_t pixel_t;
+        using pixel_t = rgb8_pixel_t;
 
-        subchroma_image< pixel_t, mpl::vector_c< int, 4, 4, 4 > > a( 640, 480 ); BOOST_STATIC_ASSERT(( a.ss_X == 1 && a.ss_Y == 1 ));
-        subchroma_image< pixel_t, mpl::vector_c< int, 4, 4, 0 > > b( 640, 480 ); BOOST_STATIC_ASSERT(( b.ss_X == 1 && b.ss_Y == 2 ));
-        subchroma_image< pixel_t, mpl::vector_c< int, 4, 2, 2 > > c( 640, 480 ); BOOST_STATIC_ASSERT(( c.ss_X == 2 && c.ss_Y == 1 ));
-        subchroma_image< pixel_t, mpl::vector_c< int, 4, 2, 0 > > d( 640, 480 ); BOOST_STATIC_ASSERT(( d.ss_X == 2 && d.ss_Y == 2 ));
-        subchroma_image< pixel_t, mpl::vector_c< int, 4, 1, 1 > > e( 640, 480 ); BOOST_STATIC_ASSERT(( e.ss_X == 4 && e.ss_Y == 1 ));
-        subchroma_image< pixel_t, mpl::vector_c< int, 4, 1, 0 > > f( 640, 480 ); BOOST_STATIC_ASSERT(( f.ss_X == 4 && f.ss_Y == 2 ));
+        subchroma_image<pixel_t, mpl::vector_c<int, 4, 4, 4>> a(640, 480);
+        static_assert(a.ss_X == 1 && a.ss_Y == 1, "");
+        subchroma_image<pixel_t, mpl::vector_c<int, 4, 4, 0>> b(640, 480);
+        static_assert(b.ss_X == 1 && b.ss_Y == 2, "");
+        subchroma_image<pixel_t, mpl::vector_c<int, 4, 2, 2>> c(640, 480);
+        static_assert(c.ss_X == 2 && c.ss_Y == 1, "");
+        subchroma_image<pixel_t, mpl::vector_c<int, 4, 2, 0>> d(640, 480);
+        static_assert(d.ss_X == 2 && d.ss_Y == 2, "");
+        subchroma_image<pixel_t, mpl::vector_c<int, 4, 1, 1>> e(640, 480);
+        static_assert(e.ss_X == 4 && e.ss_Y == 1, "");
+        subchroma_image<pixel_t, mpl::vector_c<int, 4, 1, 0>> f(640, 480);
+        static_assert(f.ss_X == 4 && f.ss_Y == 2, "");
 
         fill_pixels( view( a ), pixel_t( 10, 20, 30 ) );
         fill_pixels( view( b ), pixel_t( 10, 20, 30 ) );
@@ -75,9 +80,9 @@ BOOST_AUTO_TEST_CASE( subchroma_image_test )
     }
 
     {
-        typedef ycbcr_601_8_pixel_t pixel_t;
-        typedef mpl::vector_c< int, 4, 2, 2 > factors_t;
-        typedef subchroma_image< pixel_t, factors_t > image_t;
+        using pixel_t = ycbcr_601_8_pixel_t;
+        using factors_t = mpl::vector_c<int, 4, 2, 2>;
+        using image_t = subchroma_image<pixel_t, factors_t>;
 
         std::size_t y_width     = 640;
         std::size_t y_height    = 480;
@@ -92,7 +97,8 @@ BOOST_AUTO_TEST_CASE( subchroma_image_test )
                                                                 , y_height
                                                                 , &data.front()
                                                                 );
-        rgb8_pixel_t p = *v.xy_at( 0, 0 );
+        rgb8_pixel_t p;
+        p = *v.xy_at( 0, 0 );
     }
 }
 

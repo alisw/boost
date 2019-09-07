@@ -37,7 +37,7 @@
         Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/http/fields.hpp" target="_top">boost/beast/http/fields.hpp</a>&gt;</code>
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <a href="https://en.cppreference.com/w/cpp/named_req/Allocator" target="_top"><span class="emphasis"><em>Allocator</em></span></a><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">basic_fields</span>
 </pre>
 <h5>
@@ -619,17 +619,13 @@
 <p>
         This container is designed to store the field value pairs that make up the
         fields and trailers in an HTTP message. Objects of this type are iterable,
-        with each element holding the field name and field value.
-      </p>
-<p>
-        Field names are stored as-is, but comparisons are case-insensitive. The container
-        behaves as a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">multiset</span></code>; there will be a separate value
+        with each element holding the field name and field value. Field names are
+        stored as-is, but comparisons are case-insensitive. The container behaves
+        as a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">multiset</span></code>; there will be a separate value
         for each occurrence of the same field name. When the container is iterated
         the fields are presented in the order of insertion, with fields having the
-        same name following each other consecutively.
-      </p>
-<p>
-        Meets the requirements of <span class="bold"><strong>Fields</strong></span>
+        same name following each other consecutively. Meets the requirements of
+        <span class="emphasis"><em>Fields</em></span>
       </p>
 <h5>
 <a name="beast.ref.boost__beast__http__basic_fields.h6"></a>
@@ -661,7 +657,7 @@
               </td>
 <td>
                 <p>
-                  The allocator to use. This must meet the requirements of Allocator.
+                  The allocator to use.
                 </p>
               </td>
 </tr></tbody>
@@ -672,7 +668,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -392,6 +392,13 @@
         this can be achieved by defining <code class="computeroutput"><span class="identifier">BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION</span></code>
         when building and using Boost).
       </p>
+<p>
+        Also note that enabling builtin compiler support for TLS does not remove
+        the dependency on <a href="http://www.boost.org/doc/libs/release/doc/html/thread.html" target="_top">Boost.Thread</a>
+        or lower level OS threading primitives, including those implementing TLS.
+        The purpose of using compiler intrinsics for TLS is better performance rather
+        than reducing dependencies.
+      </p>
 <h5>
 <a name="log.installation.config.h1"></a>
         <span class="phrase"><a name="log.installation.config.notes_about_native__code__phrase_role__keyword__wchar_t__phrase___code__support"></a></span><a class="link" href="config.html#log.installation.config.notes_about_native__code__phrase_role__keyword__wchar_t__phrase___code__support">Notes

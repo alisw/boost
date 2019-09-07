@@ -27,8 +27,8 @@
 <a name="beast.ref.boost__beast__static_buffer.consume"></a><a class="link" href="consume.html" title="static_buffer::consume">static_buffer::consume</a>
 </h5></div></div></div>
 <p>
-          <a class="indexterm" name="idp134390784"></a>
-Remove bytes from the input sequence.
+          <a class="indexterm" name="idm46025416224624"></a>
+Remove bytes from beginning of the readable bytes.
         </p>
 <h6>
 <a name="beast.ref.boost__beast__static_buffer.consume.h0"></a>
@@ -36,12 +36,16 @@ Remove bytes from the input sequence.
         </h6>
 <pre class="programlisting"><span class="keyword">void</span>
 <span class="identifier">consume</span><span class="special">(</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">n</span><span class="special">);</span>
 </pre>
 <h6>
 <a name="beast.ref.boost__beast__static_buffer.consume.h1"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__static_buffer.consume.description"></a></span><a class="link" href="consume.html#beast.ref.boost__beast__static_buffer.consume.description">Description</a>
         </h6>
+<p>
+          Removes n bytes from the beginning of the readable bytes. All buffers sequences
+          previously obtained using <a class="link" href="data.html" title="static_buffer::data"><code class="computeroutput"><span class="identifier">static_buffer</span><span class="special">::</span><span class="identifier">data</span></code></a> or <a class="link" href="prepare.html" title="static_buffer::prepare"><code class="computeroutput"><span class="identifier">static_buffer</span><span class="special">::</span><span class="identifier">prepare</span></code></a> are invalidated.
+        </p>
 <h6>
 <a name="beast.ref.boost__beast__static_buffer.consume.h2"></a>
           <span class="phrase"><a name="beast.ref.boost__beast__static_buffer.consume.parameters"></a></span><a class="link" href="consume.html#beast.ref.boost__beast__static_buffer.consume.parameters">Parameters</a>
@@ -66,21 +70,30 @@ Remove bytes from the input sequence.
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">size</span></code>
+                    <code class="computeroutput"><span class="identifier">n</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    The number of bytes to consume. If this is greater than the size
-                    of the input sequence, the entire input sequence is consumed.
+                    The number of bytes to remove. If this number is greater than
+                    the number of readable bytes, all readable bytes are removed.
                   </p>
                 </td>
 </tr></tbody>
 </table></div>
+<h6>
+<a name="beast.ref.boost__beast__static_buffer.consume.h3"></a>
+          <span class="phrase"><a name="beast.ref.boost__beast__static_buffer.consume.exception_safety"></a></span><a class="link" href="consume.html#beast.ref.boost__beast__static_buffer.consume.exception_safety">Exception
+          Safety</a>
+        </h6>
+<p>
+          No-throw guarantee.
+        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

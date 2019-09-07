@@ -7,7 +7,7 @@
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../windows__overlapped_ptr.html" title="windows::overlapped_ptr">
 <link rel="prev" href="release.html" title="windows::overlapped_ptr::release">
-<link rel="next" href="reset/overload1.html" title="windows::overlapped_ptr::reset (1 of 2 overloads)">
+<link rel="next" href="reset/overload1.html" title="windows::overlapped_ptr::reset (1 of 3 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -31,24 +31,35 @@
 Reset
           to empty.
         </p>
-<pre class="programlisting">void <a class="link" href="reset/overload1.html" title="windows::overlapped_ptr::reset (1 of 2 overloads)">reset</a>();
-  <span class="emphasis"><em>&#187; <a class="link" href="reset/overload1.html" title="windows::overlapped_ptr::reset (1 of 2 overloads)">more...</a></em></span>
+<pre class="programlisting">void <a class="link" href="reset/overload1.html" title="windows::overlapped_ptr::reset (1 of 3 overloads)">reset</a>();
+  <span class="emphasis"><em>&#187; <a class="link" href="reset/overload1.html" title="windows::overlapped_ptr::reset (1 of 3 overloads)">more...</a></em></span>
 </pre>
 <p>
           Reset to contain the specified handler, freeing any current OVERLAPPED
           object.
         </p>
 <pre class="programlisting">template&lt;
+    typename ExecutionContext,
     typename <a class="link" href="../Handler.html" title="Handlers">Handler</a>&gt;
-void <a class="link" href="reset/overload2.html" title="windows::overlapped_ptr::reset (2 of 2 overloads)">reset</a>(
-    boost::asio::io_context &amp; io_context,
-    Handler &amp;&amp; handler);
-  <span class="emphasis"><em>&#187; <a class="link" href="reset/overload2.html" title="windows::overlapped_ptr::reset (2 of 2 overloads)">more...</a></em></span>
+void <a class="link" href="reset/overload2.html" title="windows::overlapped_ptr::reset (2 of 3 overloads)">reset</a>(
+    ExecutionContext &amp; context,
+    Handler &amp;&amp; handler,
+    typename enable_if&lt; is_convertible&lt; ExecutionContext &amp;, execution_context &amp; &gt;::value &gt;::type *  = 0);
+  <span class="emphasis"><em>&#187; <a class="link" href="reset/overload2.html" title="windows::overlapped_ptr::reset (2 of 3 overloads)">more...</a></em></span>
+
+template&lt;
+    typename <a class="link" href="../Executor1.html" title="Executor requirements">Executor</a>,
+    typename <a class="link" href="../Handler.html" title="Handlers">Handler</a>&gt;
+void <a class="link" href="reset/overload3.html" title="windows::overlapped_ptr::reset (3 of 3 overloads)">reset</a>(
+    const Executor &amp; ex,
+    Handler &amp;&amp; handler,
+    typename enable_if&lt; is_executor&lt; Executor &gt;::value &gt;::type *  = 0);
+  <span class="emphasis"><em>&#187; <a class="link" href="reset/overload3.html" title="windows::overlapped_ptr::reset (3 of 3 overloads)">more...</a></em></span>
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

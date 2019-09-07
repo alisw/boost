@@ -644,7 +644,8 @@ assert(u() == v());
 </programlisting></para><para>Throws: range_error. Throws: bad_alloc. </para></description></method>
 </method-group>
 <constructor specifiers="explicit"><parameter name="s"><paramtype>std::size_t</paramtype></parameter><description><para>Effects: Constructs the <computeroutput>s</computeroutput>-dimensional default Faure quasi-random number generator.</para><para>Throws: bad_alloc, invalid_argument. </para></description></constructor>
-</class><typedef name="faure"><description><para><note><para>This specialization of <classname alt="boost::random::faure_engine">faure_engine</classname>  supports up to 1117 dimensions.</para></note>
+</class><typedef name="faure"><description><para><note><para>This specialization of <classname alt="boost::random::faure_engine">faure_engine</classname>  supports up to 1117 dimensions.</para>
+</note>
 However, it is possible to provide your own prime table to <classname alt="boost::random::faure_engine">faure_engine</classname>  should the default one be insufficient. </para></description><type><classname>faure_engine</classname>&lt; double, boost::uint_least64_t, default_faure_prime_table &gt;</type></typedef>
 
 </namespace>
@@ -840,20 +841,42 @@ However, it is possible to provide your own prime table to <classname alt="boost
 <class name="hyperexponential_distribution"><template>
       <template-type-parameter name="RealT"><default>double</default></template-type-parameter>
     </template><description><para>The hyperexponential distribution is a real-valued continuous distribution with two parameters, the <emphasis>phase probability vector</emphasis> <computeroutput>probs</computeroutput> and the <emphasis>rate vector</emphasis> <computeroutput>rates</computeroutput>.</para><para>A <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation>-phase hyperexponential distribution is a mixture of <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> exponential distributions. For this reason, it is also referred to as <emphasis>mixed exponential distribution</emphasis> or <emphasis>parallel <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation>-phase exponential distribution</emphasis>.</para><para>A <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation>-phase hyperexponential distribution is characterized by two parameters, namely a <emphasis>phase probability vector</emphasis> <inlineequation><alt>$\mathbf{\alpha}=(\alpha_1,\ldots,\alpha_k)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_16.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\alpha}=(\alpha_1,\ldots,\alpha_k)$</phrase></textobject></inlinemediaobject></inlineequation> and a <emphasis>rate vector</emphasis> <inlineequation><alt>$\mathbf{\lambda}=(\lambda_1,\ldots,\lambda_k)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_17.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\lambda}=(\lambda_1,\ldots,\lambda_k)$</phrase></textobject></inlinemediaobject></inlineequation>.</para><para>A <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation>-phase hyperexponential distribution is frequently used in <emphasis>queueing theory</emphasis> to model the distribution of the superposition of <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> independent events, like, for instance, the service time distribution of a queueing station with <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> servers in parallel where the <inlineequation><alt>$i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_18.png"/></imageobject><textobject role="tex"><phrase>$i$</phrase></textobject></inlinemediaobject></inlineequation>-th server is chosen with probability <inlineequation><alt>$\alpha_i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_19.png"/></imageobject><textobject role="tex"><phrase>$\alpha_i$</phrase></textobject></inlinemediaobject></inlineequation> and its service time distribution is an exponential distribution with rate <inlineequation><alt>$\lambda_i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_20.png"/></imageobject><textobject role="tex"><phrase>$\lambda_i$</phrase></textobject></inlinemediaobject></inlineequation> (Allen,1990; Papadopolous et al.,1993; Trivedi,2002).</para><para>For instance, CPUs service-time distribution in a computing system has often been observed to possess such a distribution (Rosin,1965). Also, the arrival of different types of customer to a single queueing station is often modeled as a hyperexponential distribution (Papadopolous et al.,1993). Similarly, if a product manufactured in several parallel assemply lines and the outputs are merged, the failure density of the overall product is likely to be hyperexponential (Trivedi,2002).</para><para>Finally, since the hyperexponential distribution exhibits a high Coefficient of Variation (CoV), that is a CoV &gt; 1, it is especially suited to fit empirical data with large CoV (Feitelson,2014; Wolski et al.,2013) and to approximate <emphasis>long-tail probability distributions</emphasis> (Feldmann et al.,1998).</para><para>See (Boost,2014) for more information and examples.</para><para>A <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation>-phase hyperexponential distribution has a probability density function <equation><title/><alt>\[ f(x) = \sum_{i=1}^k \alpha_i \lambda_i e^{-x\lambda_i} \]</alt><mediaobject><imageobject role="html"><imagedata format="PNG" align="center" fileref="images/random//form_21.png"/></imageobject><textobject role="tex"><phrase>\[ f(x) = \sum_{i=1}^k \alpha_i \lambda_i e^{-x\lambda_i} \]</phrase></textobject></mediaobject></equation> where:<itemizedlist>
-<listitem><para><inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> is the <emphasis>number of phases</emphasis> and also the size of the input vector parameters,</para></listitem><listitem><para><inlineequation><alt>$\mathbf{\alpha}=(\alpha_1,\ldots,\alpha_k)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_16.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\alpha}=(\alpha_1,\ldots,\alpha_k)$</phrase></textobject></inlinemediaobject></inlineequation> is the <emphasis>phase probability vector</emphasis> parameter, and</para></listitem><listitem><para><inlineequation><alt>$\mathbf{\lambda}=(\lambda_1,\ldots,\lambda_k)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_17.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\lambda}=(\lambda_1,\ldots,\lambda_k)$</phrase></textobject></inlinemediaobject></inlineequation> is the <emphasis>rate vector</emphasis> parameter.</para></listitem></itemizedlist>
+<listitem><para><inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> is the <emphasis>number of phases</emphasis> and also the size of the input vector parameters,</para>
+</listitem><listitem><para><inlineequation><alt>$\mathbf{\alpha}=(\alpha_1,\ldots,\alpha_k)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_16.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\alpha}=(\alpha_1,\ldots,\alpha_k)$</phrase></textobject></inlinemediaobject></inlineequation> is the <emphasis>phase probability vector</emphasis> parameter, and</para>
+</listitem><listitem><para><inlineequation><alt>$\mathbf{\lambda}=(\lambda_1,\ldots,\lambda_k)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_17.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\lambda}=(\lambda_1,\ldots,\lambda_k)$</phrase></textobject></inlinemediaobject></inlineequation> is the <emphasis>rate vector</emphasis> parameter.</para>
+</listitem></itemizedlist>
 Given a <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation>-phase hyperexponential distribution with phase probability vector <inlineequation><alt>$\mathbf{\alpha}$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_22.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\alpha}$</phrase></textobject></inlinemediaobject></inlineequation> and rate vector <inlineequation><alt>$\mathbf{\lambda}$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_23.png"/></imageobject><textobject role="tex"><phrase>$\mathbf{\lambda}$</phrase></textobject></inlinemediaobject></inlineequation>, the random variate generation algorithm consists of the following steps (Tyszer,1999):<orderedlist>
-<listitem><para>Generate a random variable <inlineequation><alt>$U$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_24.png"/></imageobject><textobject role="tex"><phrase>$U$</phrase></textobject></inlinemediaobject></inlineequation> uniformly distribution on the interval <inlineequation><alt>$(0,1)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_25.png"/></imageobject><textobject role="tex"><phrase>$(0,1)$</phrase></textobject></inlinemediaobject></inlineequation>.</para></listitem><listitem><para>Use <inlineequation><alt>$U$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_24.png"/></imageobject><textobject role="tex"><phrase>$U$</phrase></textobject></inlinemediaobject></inlineequation> to select the appropriate <inlineequation><alt>$\lambda_i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_20.png"/></imageobject><textobject role="tex"><phrase>$\lambda_i$</phrase></textobject></inlinemediaobject></inlineequation> (e.g., the <emphasis>alias method</emphasis> can possibly be used for this step).</para></listitem><listitem><para>Generate an exponentially distributed random variable <inlineequation><alt>$X$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_26.png"/></imageobject><textobject role="tex"><phrase>$X$</phrase></textobject></inlinemediaobject></inlineequation> with rate parameter <inlineequation><alt>$\lambda_i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_20.png"/></imageobject><textobject role="tex"><phrase>$\lambda_i$</phrase></textobject></inlinemediaobject></inlineequation>.</para></listitem><listitem><para>Return <inlineequation><alt>$X$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_26.png"/></imageobject><textobject role="tex"><phrase>$X$</phrase></textobject></inlinemediaobject></inlineequation>.</para></listitem></orderedlist>
+<listitem><para>Generate a random variable <inlineequation><alt>$U$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_24.png"/></imageobject><textobject role="tex"><phrase>$U$</phrase></textobject></inlinemediaobject></inlineequation> uniformly distribution on the interval <inlineequation><alt>$(0,1)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_25.png"/></imageobject><textobject role="tex"><phrase>$(0,1)$</phrase></textobject></inlinemediaobject></inlineequation>.</para>
+</listitem><listitem><para>Use <inlineequation><alt>$U$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_24.png"/></imageobject><textobject role="tex"><phrase>$U$</phrase></textobject></inlinemediaobject></inlineequation> to select the appropriate <inlineequation><alt>$\lambda_i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_20.png"/></imageobject><textobject role="tex"><phrase>$\lambda_i$</phrase></textobject></inlinemediaobject></inlineequation> (e.g., the <emphasis>alias method</emphasis> can possibly be used for this step).</para>
+</listitem><listitem><para>Generate an exponentially distributed random variable <inlineequation><alt>$X$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_26.png"/></imageobject><textobject role="tex"><phrase>$X$</phrase></textobject></inlinemediaobject></inlineequation> with rate parameter <inlineequation><alt>$\lambda_i$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_20.png"/></imageobject><textobject role="tex"><phrase>$\lambda_i$</phrase></textobject></inlinemediaobject></inlineequation>.</para>
+</listitem><listitem><para>Return <inlineequation><alt>$X$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_26.png"/></imageobject><textobject role="tex"><phrase>$X$</phrase></textobject></inlinemediaobject></inlineequation>.</para>
+</listitem></orderedlist>
 References:<orderedlist>
-<listitem><para>A.O. Allen, <emphasis>Probability, Statistics, and Queuing Theory with Computer Science Applications, Second Edition</emphasis>, Academic Press, 1990.</para></listitem><listitem><para>Boost C++ Libraries, <emphasis>Boost.Math / Statistical Distributions: Hyperexponential Distribution</emphasis>, Online: <ulink url="http://www.boost.org/doc/libs/release/libs/math/doc/html/dist.html">http://www.boost.org/doc/libs/release/libs/math/doc/html/dist.html</ulink> , 2014.</para></listitem><listitem><para>D.G. Feitelson, <emphasis>Workload Modeling for Computer Systems Performance Evaluation</emphasis>, Cambridge University Press, 2014</para></listitem><listitem><para>A. Feldmann and W. Whitt, <emphasis>Fitting mixtures of exponentials to long-tail distributions to analyze network performance models</emphasis>, Performance Evaluation 31(3-4):245, doi:10.1016/S0166-5316(97)00003-5, 1998.</para></listitem><listitem><para>H.T. Papadopolous, C. Heavey and J. Browne, <emphasis>Queueing Theory in Manufacturing Systems Analysis and Design</emphasis>, Chapman &amp; Hall/CRC, 1993, p. 35.</para></listitem><listitem><para>R.F. Rosin, <emphasis>Determining a computing center environment</emphasis>, Communications of the ACM 8(7):463-468, 1965.</para></listitem><listitem><para>K.S. Trivedi, <emphasis>Probability and Statistics with Reliability, Queueing, and Computer Science Applications</emphasis>, John Wiley &amp; Sons, Inc., 2002.</para></listitem><listitem><para>J. Tyszer, <emphasis>Object-Oriented Computer Simulation of Discrete-Event Systems</emphasis>, Springer, 1999.</para></listitem><listitem><para>Wikipedia, <emphasis>Hyperexponential Distribution</emphasis>, Online: <ulink url="http://en.wikipedia.org/wiki/Hyperexponential_distribution">http://en.wikipedia.org/wiki/Hyperexponential_distribution</ulink> , 2014.</para></listitem><listitem><para>Wolfram Mathematica, <emphasis>Hyperexponential Distribution</emphasis>, Online: <ulink url="http://reference.wolfram.com/language/ref/HyperexponentialDistribution.html">http://reference.wolfram.com/language/ref/HyperexponentialDistribution.html</ulink> , 2014.</para></listitem></orderedlist>
+<listitem><para>A.O. Allen, <emphasis>Probability, Statistics, and Queuing Theory with Computer Science Applications, Second Edition</emphasis>, Academic Press, 1990.</para>
+</listitem><listitem><para>Boost C++ Libraries, <emphasis>Boost.Math / Statistical Distributions: Hyperexponential Distribution</emphasis>, Online: <ulink url="http://www.boost.org/doc/libs/release/libs/math/doc/html/dist.html">http://www.boost.org/doc/libs/release/libs/math/doc/html/dist.html</ulink> , 2014.</para>
+</listitem><listitem><para>D.G. Feitelson, <emphasis>Workload Modeling for Computer Systems Performance Evaluation</emphasis>, Cambridge University Press, 2014</para>
+</listitem><listitem><para>A. Feldmann and W. Whitt, <emphasis>Fitting mixtures of exponentials to long-tail distributions to analyze network performance models</emphasis>, Performance Evaluation 31(3-4):245, doi:10.1016/S0166-5316(97)00003-5, 1998.</para>
+</listitem><listitem><para>H.T. Papadopolous, C. Heavey and J. Browne, <emphasis>Queueing Theory in Manufacturing Systems Analysis and Design</emphasis>, Chapman &amp; Hall/CRC, 1993, p. 35.</para>
+</listitem><listitem><para>R.F. Rosin, <emphasis>Determining a computing center environment</emphasis>, Communications of the ACM 8(7):463-468, 1965.</para>
+</listitem><listitem><para>K.S. Trivedi, <emphasis>Probability and Statistics with Reliability, Queueing, and Computer Science Applications</emphasis>, John Wiley &amp; Sons, Inc., 2002.</para>
+</listitem><listitem><para>J. Tyszer, <emphasis>Object-Oriented Computer Simulation of Discrete-Event Systems</emphasis>, Springer, 1999.</para>
+</listitem><listitem><para>Wikipedia, <emphasis>Hyperexponential Distribution</emphasis>, Online: <ulink url="http://en.wikipedia.org/wiki/Hyperexponential_distribution">http://en.wikipedia.org/wiki/Hyperexponential_distribution</ulink> , 2014.</para>
+</listitem><listitem><para>Wolfram Mathematica, <emphasis>Hyperexponential Distribution</emphasis>, Online: <ulink url="http://reference.wolfram.com/language/ref/HyperexponentialDistribution.html">http://reference.wolfram.com/language/ref/HyperexponentialDistribution.html</ulink> , 2014.</para>
+</listitem></orderedlist>
 <para>Marco Guazzone (<ulink url="mailto:marco.guazzone@gmail.com">marco.guazzone@gmail.com</ulink>) </para>
+
 </para></description><class name="param_type"><description><para>The parameters of a hyperexponential distribution.</para><para>Stores the <emphasis>phase probability vector</emphasis> and the <emphasis>rate vector</emphasis> of the hyperexponential distribution.</para><para><para>Marco Guazzone (<ulink url="mailto:marco.guazzone@gmail.com">marco.guazzone@gmail.com</ulink>) </para>
+
 </para></description><typedef name="distribution_type"><type><classname>hyperexponential_distribution</classname></type></typedef>
 <method-group name="public member functions">
 <method name="probabilities" cv="const"><type>std::vector&lt; RealT &gt;</type><description><para>Gets the <emphasis>phase probability vector</emphasis> parameter of the distribtuion.</para><para>
-<note><para>The returned probabilities are the normalized version of the ones passed at construction time. </para></note>
-</para></description><returns><para>The <emphasis>phase probability vector</emphasis> parameter of the distribution.</para></returns></method>
+<note><para>The returned probabilities are the normalized version of the ones passed at construction time. </para>
+</note>
+</para></description><returns><para>The <emphasis>phase probability vector</emphasis> parameter of the distribution.</para>
+</returns></method>
 <method name="rates" cv="const"><type>std::vector&lt; RealT &gt;</type><description><para>Gets the <emphasis>rate vector</emphasis> parameter of the distribtuion.</para><para>
-</para></description><returns><para>The <emphasis>rate vector</emphasis> parameter of the distribution. </para></returns></method>
+</para></description><returns><para>The <emphasis>rate vector</emphasis> parameter of the distribution. </para>
+</returns></method>
 </method-group>
 <constructor><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution::param_type">param_type</classname></computeroutput> with the default parameters of the distribution. </para></description></constructor>
 <constructor><template>
@@ -862,22 +885,26 @@ References:<orderedlist>
         </template><parameter name="prob_first"><paramtype>ProbIterT</paramtype><description><para>The iterator to the beginning of the range of non-negative real elements representing the phase probabilities; if elements don't sum to 1, they are normalized. </para></description></parameter><parameter name="prob_last"><paramtype>ProbIterT</paramtype><description><para>The iterator to the ending of the range of non-negative real elements representing the phase probabilities; if elements don't sum to 1, they are normalized. </para></description></parameter><parameter name="rate_first"><paramtype>RateIterT</paramtype><description><para>The iterator to the beginning of the range of non-negative real elements representing the rates. </para></description></parameter><parameter name="rate_last"><paramtype>RateIterT</paramtype><description><para>The iterator to the ending of the range of non-negative real elements representing the rates.</para></description></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution::param_type">param_type</classname></computeroutput> from the <emphasis>phase probability vector</emphasis> and <emphasis>rate vector</emphasis> parameters of the distribution.</para><para>The <emphasis>phase probability vector</emphasis> parameter is given by the range defined by [<emphasis>prob_first</emphasis>, <emphasis>prob_last</emphasis>) iterator pair, and the <emphasis>rate vector</emphasis> parameter is given by the range defined by [<emphasis>rate_first</emphasis>, <emphasis>rate_last</emphasis>) iterator pair.</para><para>
 
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <constructor><template>
           <template-type-parameter name="ProbRangeT"><purpose><para>Must meet the requirements of <ulink url="boost:/libs/range/doc/html/range/concepts.html">Range</ulink> concept. </para></purpose></template-type-parameter>
           <template-type-parameter name="RateRangeT"><purpose><para>Must meet the requirements of <ulink url="boost:/libs/range/doc/html/range/concepts.html">Range</ulink> concept.</para></purpose></template-type-parameter>
         </template><parameter name="prob_range"><paramtype>ProbRangeT const &amp;</paramtype><description><para>The range of non-negative real elements representing the phase probabilities; if elements don't sum to 1, they are normalized. </para></description></parameter><parameter name="rate_range"><paramtype>RateRangeT const &amp;</paramtype><description><para>The range of positive real elements representing the rates.</para></description></parameter><parameter name=""><paramtype>typename boost::disable_if_c&lt; boost::has_pre_increment&lt; ProbRangeT &gt;::value||boost::has_pre_increment&lt; RateRangeT &gt;::value &gt;::type *</paramtype><default>0</default></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution::param_type">param_type</classname></computeroutput> from the <emphasis>phase probability vector</emphasis> and <emphasis>rate vector</emphasis> parameters of the distribution.</para><para>The <emphasis>phase probability vector</emphasis> parameter is given by the range defined by <emphasis>prob_range</emphasis>, and the <emphasis>rate vector</emphasis> parameter is given by the range defined by <emphasis>rate_range</emphasis>.</para><para>
 
-<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the iterator-based two argument constructor described below. </para></note>
+<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the iterator-based two argument constructor described below. </para>
+</note>
 </para></description></constructor>
 <constructor><template>
           <template-type-parameter name="RateIterT"><purpose><para>Must meet the requirements of <computeroutput>InputIterator</computeroutput> concept (ISO,2014,sec. 24.2.3 [input.iterators]). </para></purpose></template-type-parameter>
         </template><parameter name="rate_first"><paramtype>RateIterT</paramtype><description><para>The iterator to the beginning of the range of non-negative real elements representing the rates. </para></description></parameter><parameter name="rate_last"><paramtype>RateIterT</paramtype><description><para>The iterator to the ending of the range of non-negative real elements representing the rates.</para></description></parameter><parameter name=""><paramtype>typename boost::enable_if_c&lt; boost::has_pre_increment&lt; RateIterT &gt;::value &gt;::type *</paramtype><default>0</default></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution::param_type">param_type</classname></computeroutput> from the <emphasis>rate vector</emphasis> parameter of the distribution and with equal phase probabilities.</para><para>The <emphasis>rate vector</emphasis> parameter is given by the range defined by [<emphasis>rate_first</emphasis>, <emphasis>rate_last</emphasis>) iterator pair, and the <emphasis>phase probability vector</emphasis> parameter is set to the equal phase probabilities (i.e., to a vector of the same length <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> of the <emphasis>rate vector</emphasis> and with each element set to <inlineequation><alt>$1.0/k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_27.png"/></imageobject><textobject role="tex"><phrase>$1.0/k$</phrase></textobject></inlinemediaobject></inlineequation>).</para><para>
 
-<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the range-based two argument constructor described above.</para></note>
+<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the range-based two argument constructor described above.</para>
+</note>
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <constructor><template>
           <template-type-parameter name="RateRangeT"><purpose><para>Must meet the requirements of <ulink url="boost:/libs/range/doc/html/range/concepts.html">Range</ulink> concept.</para></purpose></template-type-parameter>
@@ -886,11 +913,13 @@ References:<orderedlist>
 </para></description></constructor>
 <constructor><parameter name="l1"><paramtype>std::initializer_list&lt; RealT &gt;</paramtype><description><para>The initializer list for inizializing the phase probability vector. </para></description></parameter><parameter name="l2"><paramtype>std::initializer_list&lt; RealT &gt;</paramtype><description><para>The initializer list for inizializing the rate vector.</para></description></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution::param_type">param_type</classname></computeroutput> from the <emphasis>phase probability vector</emphasis> and <emphasis>rate vector</emphasis> parameters of the distribution.</para><para>The <emphasis>phase probability vector</emphasis> parameter is given by the <emphasis>brace-init-list</emphasis> (ISO,2014,sec. 8.5.4 [dcl.init.list]) defined by <emphasis>l1</emphasis>, and the <emphasis>rate vector</emphasis> parameter is given by the <emphasis>brace-init-list</emphasis> (ISO,2014,sec. 8.5.4 [dcl.init.list]) defined by <emphasis>l2</emphasis>.</para><para>
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <constructor><parameter name="l1"><paramtype>std::initializer_list&lt; RealT &gt;</paramtype><description><para>The initializer list for inizializing the rate vector.</para></description></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution::param_type">param_type</classname></computeroutput> from the <emphasis>rate vector</emphasis> parameter of the distribution and with equal phase probabilities.</para><para>The <emphasis>rate vector</emphasis> parameter is given by the <emphasis>brace-init-list</emphasis> (ISO,2014,sec. 8.5.4 [dcl.init.list]) defined by <emphasis>l1</emphasis>, and the <emphasis>phase probability vector</emphasis> parameter is set to the equal phase probabilities (i.e., to a vector of the same length <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> of the <emphasis>rate vector</emphasis> and with each element set to <inlineequation><alt>$1.0/k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_27.png"/></imageobject><textobject role="tex"><phrase>$1.0/k$</phrase></textobject></inlinemediaobject></inlineequation>).</para><para>
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <method-group name="friend functions">
 <method name="operator&lt;&lt;"><type>friend std::basic_ostream&lt; CharT, Traits &gt; &amp;</type><template>
@@ -912,13 +941,15 @@ References:<orderedlist>
         </template><parameter name="urng"><paramtype>URNG &amp;</paramtype><description><para>A uniform random number generator object.</para></description></parameter><description><para>Gets a random variate distributed according to the hyperexponential distribution.</para><para>
 
 
-</para></description><returns><para>A random variate distributed according to the hyperexponential distribution. </para></returns></method>
+</para></description><returns><para>A random variate distributed according to the hyperexponential distribution. </para>
+</returns></method>
 <method name="operator()" cv="const"><type>RealT</type><template>
           <template-type-parameter name="URNG"><purpose><para>Must meet the requirements of <link linkend="boost_random.reference.concepts.uniform_random_number_generator">uniform random number generator</link> .</para></purpose></template-type-parameter>
         </template><parameter name="urng"><paramtype>URNG &amp;</paramtype><description><para>A uniform random number generator object. </para></description></parameter><parameter name="param"><paramtype>const <classname>param_type</classname> &amp;</paramtype><description><para>A distribution parameter object.</para></description></parameter><description><para>Gets a random variate distributed according to the hyperexponential distribution with parameters specified by <computeroutput>param</computeroutput>.</para><para>
 
 
-</para></description><returns><para>A random variate distributed according to the hyperexponential distribution. distribution with parameters specified by <computeroutput>param</computeroutput>. </para></returns></method>
+</para></description><returns><para>A random variate distributed according to the hyperexponential distribution. distribution with parameters specified by <computeroutput>param</computeroutput>. </para>
+</returns></method>
 <method name="num_phases" cv="const"><type>std::size_t</type><description><para>Returns the number of phases of the distribution. </para></description></method>
 <method name="probabilities" cv="const"><type>std::vector&lt; RealT &gt;</type><description><para>Returns the <emphasis>phase probability vector</emphasis> parameter of the distribution. </para></description></method>
 <method name="rates" cv="const"><type>std::vector&lt; RealT &gt;</type><description><para>Returns the <emphasis>rate vector</emphasis> parameter of the distribution. </para></description></method>
@@ -935,22 +966,26 @@ References:<orderedlist>
         </template><parameter name="prob_first"><paramtype>ProbIterT</paramtype><description><para>The iterator to the beginning of the range of non-negative real elements representing the phase probabilities; if elements don't sum to 1, they are normalized. </para></description></parameter><parameter name="prob_last"><paramtype>ProbIterT</paramtype><description><para>The iterator to the ending of the range of non-negative real elements representing the phase probabilities; if elements don't sum to 1, they are normalized. </para></description></parameter><parameter name="rate_first"><paramtype>RateIterT</paramtype><description><para>The iterator to the beginning of the range of non-negative real elements representing the rates. </para></description></parameter><parameter name="rate_last"><paramtype>RateIterT</paramtype><description><para>The iterator to the ending of the range of non-negative real elements representing the rates.</para></description></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution">hyperexponential_distribution</classname></computeroutput> from the <emphasis>phase probability vector</emphasis> and <emphasis>rate vector</emphasis> parameters of the distribution.</para><para>The <emphasis>phase probability vector</emphasis> parameter is given by the range defined by [<emphasis>prob_first</emphasis>, <emphasis>prob_last</emphasis>) iterator pair, and the <emphasis>rate vector</emphasis> parameter is given by the range defined by [<emphasis>rate_first</emphasis>, <emphasis>rate_last</emphasis>) iterator pair.</para><para>
 
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <constructor><template>
           <template-type-parameter name="ProbRangeT"><purpose><para>Must meet the requirements of <ulink url="boost:/libs/range/doc/html/range/concepts.html">Range</ulink> concept. </para></purpose></template-type-parameter>
           <template-type-parameter name="RateRangeT"><purpose><para>Must meet the requirements of <ulink url="boost:/libs/range/doc/html/range/concepts.html">Range</ulink> concept.</para></purpose></template-type-parameter>
         </template><parameter name="prob_range"><paramtype>ProbRangeT const &amp;</paramtype><description><para>The range of non-negative real elements representing the phase probabilities; if elements don't sum to 1, they are normalized. </para></description></parameter><parameter name="rate_range"><paramtype>RateRangeT const &amp;</paramtype><description><para>The range of positive real elements representing the rates.</para></description></parameter><parameter name=""><paramtype>typename boost::disable_if_c&lt; boost::has_pre_increment&lt; ProbRangeT &gt;::value||boost::has_pre_increment&lt; RateRangeT &gt;::value &gt;::type *</paramtype><default>0</default></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution">hyperexponential_distribution</classname></computeroutput> from the <emphasis>phase probability vector</emphasis> and <emphasis>rate vector</emphasis> parameters of the distribution.</para><para>The <emphasis>phase probability vector</emphasis> parameter is given by the range defined by <emphasis>prob_range</emphasis>, and the <emphasis>rate vector</emphasis> parameter is given by the range defined by <emphasis>rate_range</emphasis>.</para><para>
 
-<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the iterator-based two argument constructor described below. </para></note>
+<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the iterator-based two argument constructor described below. </para>
+</note>
 </para></description></constructor>
 <constructor><template>
           <template-type-parameter name="RateIterT"><purpose><para>Must meet the requirements of <computeroutput>InputIterator</computeroutput> concept (ISO,2014,sec. 24.2.3 [input.iterators]). </para></purpose></template-type-parameter>
         </template><parameter name="rate_first"><paramtype>RateIterT</paramtype><description><para>The iterator to the beginning of the range of non-negative real elements representing the rates. </para></description></parameter><parameter name="rate_last"><paramtype>RateIterT</paramtype><description><para>The iterator to the ending of the range of non-negative real elements representing the rates.</para></description></parameter><parameter name=""><paramtype>typename boost::enable_if_c&lt; boost::has_pre_increment&lt; RateIterT &gt;::value &gt;::type *</paramtype><default>0</default></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution">hyperexponential_distribution</classname></computeroutput> from the <emphasis>rate vector</emphasis> parameter of the distribution and with equal phase probabilities.</para><para>The <emphasis>rate vector</emphasis> parameter is given by the range defined by [<emphasis>rate_first</emphasis>, <emphasis>rate_last</emphasis>) iterator pair, and the <emphasis>phase probability vector</emphasis> parameter is set to the equal phase probabilities (i.e., to a vector of the same length <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> of the <emphasis>rate vector</emphasis> and with each element set to <inlineequation><alt>$1.0/k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_27.png"/></imageobject><textobject role="tex"><phrase>$1.0/k$</phrase></textobject></inlinemediaobject></inlineequation>).</para><para>
 
-<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the range-based two argument constructor described above.</para></note>
+<note><para>The final <computeroutput>disable_if</computeroutput> parameter is an implementation detail that differentiates between this two argument constructor and the range-based two argument constructor described above.</para>
+</note>
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <constructor><template>
           <template-type-parameter name="RateRangeT"><purpose><para>Must meet the requirements of <ulink url="boost:/libs/range/doc/html/range/concepts.html">Range</ulink> concept.</para></purpose></template-type-parameter>
@@ -961,11 +996,13 @@ References:<orderedlist>
 </para></description></constructor>
 <constructor><parameter name="l1"><paramtype>std::initializer_list&lt; RealT &gt; const &amp;</paramtype><description><para>The initializer list for inizializing the phase probability vector. </para></description></parameter><parameter name="l2"><paramtype>std::initializer_list&lt; RealT &gt; const &amp;</paramtype><description><para>The initializer list for inizializing the rate vector.</para></description></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution">hyperexponential_distribution</classname></computeroutput> from the <emphasis>phase probability vector</emphasis> and <emphasis>rate vector</emphasis> parameters of the distribution.</para><para>The <emphasis>phase probability vector</emphasis> parameter is given by the <emphasis>brace-init-list</emphasis> (ISO,2014,sec. 8.5.4 [dcl.init.list]) defined by <emphasis>l1</emphasis>, and the <emphasis>rate vector</emphasis> parameter is given by the <emphasis>brace-init-list</emphasis> (ISO,2014,sec. 8.5.4 [dcl.init.list]) defined by <emphasis>l2</emphasis>.</para><para>
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <constructor><parameter name="l1"><paramtype>std::initializer_list&lt; RealT &gt; const &amp;</paramtype><description><para>The initializer list for inizializing the rate vector.</para></description></parameter><description><para>Constructs a <computeroutput><classname alt="boost::random::hyperexponential_distribution">hyperexponential_distribution</classname></computeroutput> from the <emphasis>rate vector</emphasis> parameter of the distribution and with equal phase probabilities.</para><para>The <emphasis>rate vector</emphasis> parameter is given by the <emphasis>brace-init-list</emphasis> (ISO,2014,sec. 8.5.4 [dcl.init.list]) defined by <emphasis>l1</emphasis>, and the <emphasis>phase probability vector</emphasis> parameter is set to the equal phase probabilities (i.e., to a vector of the same length <inlineequation><alt>$k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_15.png"/></imageobject><textobject role="tex"><phrase>$k$</phrase></textobject></inlinemediaobject></inlineequation> of the <emphasis>rate vector</emphasis> and with each element set to <inlineequation><alt>$1.0/k$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_27.png"/></imageobject><textobject role="tex"><phrase>$1.0/k$</phrase></textobject></inlinemediaobject></inlineequation>).</para><para>
 References:<orderedlist>
-<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para></listitem></orderedlist>
+<listitem><para>ISO, <emphasis>ISO/IEC 14882-2014: Information technology - Programming languages - C++</emphasis>, 2014</para>
+</listitem></orderedlist>
 </para></description></constructor>
 <method-group name="friend functions">
 <method name="operator&lt;&lt;"><type>friend std::basic_ostream&lt; CharT, Traits &gt; &amp;</type><template>
@@ -1102,57 +1139,7 @@ References:<orderedlist>
 <header name="boost/random/lagged_fibonacci.hpp">
 <namespace name="boost">
 <namespace name="random">
-<class name="lagged_fibonacci_engine"><template>
-      <template-type-parameter name="UIntType"/>
-      <template-nontype-parameter name="w"><type>int</type></template-nontype-parameter>
-      <template-nontype-parameter name="p"><type>unsigned int</type></template-nontype-parameter>
-      <template-nontype-parameter name="q"><type>unsigned int</type></template-nontype-parameter>
-    </template><description><para>Instantiations of class template <classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname> model a  <link linkend="boost_random.reference.concepts.pseudo_random_number_generator">pseudo-random number generator</link> . It uses a lagged Fibonacci algorithm with two lags <computeroutput>p</computeroutput> and <computeroutput>q:</computeroutput> x(i) = x(i-p) + x(i-q) (mod 2<superscript>w</superscript>) with p &gt; q. </para></description><typedef name="result_type"><type>UIntType</type></typedef>
-<data-member name="has_fixed_range" specifiers="static"><type>const bool</type></data-member>
-<data-member name="word_size" specifiers="static"><type>const int</type></data-member>
-<data-member name="long_lag" specifiers="static"><type>const unsigned int</type></data-member>
-<data-member name="short_lag" specifiers="static"><type>const unsigned int</type></data-member>
-<data-member name="default_seed" specifiers="static"><type>const UIntType</type></data-member>
-<method-group name="public static functions">
-<method name="min" specifiers="static"><type>result_type</type><description><para>Returns the smallest value that the generator can produce. </para></description></method>
-<method name="max" specifiers="static"><type>result_type</type><description><para>Returns the largest value that the generator can produce. </para></description></method>
-</method-group>
-<method-group name="public member functions">
-<method name="seed"><type>void</type><description><para>Calls <computeroutput>seed(default_seed)</computeroutput>. </para></description></method>
-<method name="seed"><type>void</type><parameter name="value"><paramtype>UIntType</paramtype></parameter><description><para>Sets the state of the generator to values produced by a <classname alt="boost::random::minstd_rand0">minstd_rand0</classname>  generator. </para></description></method>
-<method name="seed"><type>void</type><template>
-          <template-type-parameter name="SeedSeq"/>
-        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Sets the state of the generator using values produced by seq. </para></description></method>
-<method name="seed"><type>void</type><template>
-          <template-type-parameter name="It"/>
-        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Sets the state of the generator to values from the iterator range [first, last). If there are not enough elements in the range [first, last) throws <computeroutput>std::invalid_argument</computeroutput>. </para></description></method>
-<method name="operator()"><type>result_type</type><description><para>Returns the next value of the generator. </para></description></method>
-<method name="generate"><type>void</type><template>
-          <template-type-parameter name="Iter"/>
-        </template><parameter name="first"><paramtype>Iter</paramtype></parameter><parameter name="last"><paramtype>Iter</paramtype></parameter><description><para>Fills a range with random values </para></description></method>
-<method name="discard"><type>void</type><parameter name="z"><paramtype>boost::uintmax_t</paramtype></parameter><description><para>Advances the state of the generator by <computeroutput>z</computeroutput>. </para></description></method>
-</method-group>
-<constructor><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed()</computeroutput>. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="value"><paramtype>UIntType</paramtype></parameter><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed(value)</computeroutput>. </para></description></constructor>
-<constructor specifiers="explicit"><template>
-          <template-type-parameter name="SeedSeq"/>
-        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed(seq)</computeroutput>. </para></description></constructor>
-<constructor><template>
-          <template-type-parameter name="It"/>
-        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed(first, last)</computeroutput>. </para></description></constructor>
-<method-group name="friend functions">
-<method name="operator&lt;&lt;"><type>friend std::basic_ostream&lt; CharT, Traits &gt; &amp;</type><template>
-          <template-type-parameter name="CharT"/>
-          <template-type-parameter name="Traits"/>
-        </template><parameter name="os"><paramtype>std::basic_ostream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Writes the textual representation of the generator to a <computeroutput>std::ostream</computeroutput>. </para></description></method>
-<method name="operator&gt;&gt;"><type>friend std::basic_istream&lt; CharT, Traits &gt; &amp;</type><template>
-          <template-type-parameter name="CharT"/>
-          <template-type-parameter name="Traits"/>
-        </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Reads the textual representation of the generator from a <computeroutput>std::istream</computeroutput>. </para></description></method>
-<method name="operator=="><type>friend bool</type><parameter name="x_"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><parameter name="y_"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce identical sequences of outputs. </para></description></method>
-<method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce different sequences of outputs. </para></description></method>
-</method-group>
-</class><class name="lagged_fibonacci_01_engine"><template>
+<class name="lagged_fibonacci_01_engine"><template>
       <template-type-parameter name="RealType"/>
       <template-nontype-parameter name="w"><type>int</type></template-nontype-parameter>
       <template-nontype-parameter name="p"><type>unsigned int</type></template-nontype-parameter>
@@ -1201,6 +1188,56 @@ References:<orderedlist>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>lagged_fibonacci_01_engine</classname> &amp;</paramtype></parameter><description><para>Reads the textual representation of the generator from a <computeroutput>std::istream</computeroutput>. </para></description></method>
 <method name="operator=="><type>friend bool</type><parameter name="x_"><paramtype>const <classname>lagged_fibonacci_01_engine</classname> &amp;</paramtype></parameter><parameter name="y_"><paramtype>const <classname>lagged_fibonacci_01_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce identical sequences of outputs. </para></description></method>
 <method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>lagged_fibonacci_01_engine</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>lagged_fibonacci_01_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce different sequences of outputs. </para></description></method>
+</method-group>
+</class><class name="lagged_fibonacci_engine"><template>
+      <template-type-parameter name="UIntType"/>
+      <template-nontype-parameter name="w"><type>int</type></template-nontype-parameter>
+      <template-nontype-parameter name="p"><type>unsigned int</type></template-nontype-parameter>
+      <template-nontype-parameter name="q"><type>unsigned int</type></template-nontype-parameter>
+    </template><description><para>Instantiations of class template <classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname> model a  <link linkend="boost_random.reference.concepts.pseudo_random_number_generator">pseudo-random number generator</link> . It uses a lagged Fibonacci algorithm with two lags <computeroutput>p</computeroutput> and <computeroutput>q:</computeroutput> x(i) = x(i-p) + x(i-q) (mod 2<superscript>w</superscript>) with p &gt; q. </para></description><typedef name="result_type"><type>UIntType</type></typedef>
+<data-member name="has_fixed_range" specifiers="static"><type>const bool</type></data-member>
+<data-member name="word_size" specifiers="static"><type>const int</type></data-member>
+<data-member name="long_lag" specifiers="static"><type>const unsigned int</type></data-member>
+<data-member name="short_lag" specifiers="static"><type>const unsigned int</type></data-member>
+<data-member name="default_seed" specifiers="static"><type>const UIntType</type></data-member>
+<method-group name="public static functions">
+<method name="min" specifiers="static"><type>result_type</type><description><para>Returns the smallest value that the generator can produce. </para></description></method>
+<method name="max" specifiers="static"><type>result_type</type><description><para>Returns the largest value that the generator can produce. </para></description></method>
+</method-group>
+<method-group name="public member functions">
+<method name="seed"><type>void</type><description><para>Calls <computeroutput>seed(default_seed)</computeroutput>. </para></description></method>
+<method name="seed"><type>void</type><parameter name="value"><paramtype>UIntType</paramtype></parameter><description><para>Sets the state of the generator to values produced by a <classname alt="boost::random::minstd_rand0">minstd_rand0</classname>  generator. </para></description></method>
+<method name="seed"><type>void</type><template>
+          <template-type-parameter name="SeedSeq"/>
+        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Sets the state of the generator using values produced by seq. </para></description></method>
+<method name="seed"><type>void</type><template>
+          <template-type-parameter name="It"/>
+        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Sets the state of the generator to values from the iterator range [first, last). If there are not enough elements in the range [first, last) throws <computeroutput>std::invalid_argument</computeroutput>. </para></description></method>
+<method name="operator()"><type>result_type</type><description><para>Returns the next value of the generator. </para></description></method>
+<method name="generate"><type>void</type><template>
+          <template-type-parameter name="Iter"/>
+        </template><parameter name="first"><paramtype>Iter</paramtype></parameter><parameter name="last"><paramtype>Iter</paramtype></parameter><description><para>Fills a range with random values </para></description></method>
+<method name="discard"><type>void</type><parameter name="z"><paramtype>boost::uintmax_t</paramtype></parameter><description><para>Advances the state of the generator by <computeroutput>z</computeroutput>. </para></description></method>
+</method-group>
+<constructor><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed()</computeroutput>. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="value"><paramtype>UIntType</paramtype></parameter><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed(value)</computeroutput>. </para></description></constructor>
+<constructor specifiers="explicit"><template>
+          <template-type-parameter name="SeedSeq"/>
+        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed(seq)</computeroutput>. </para></description></constructor>
+<constructor><template>
+          <template-type-parameter name="It"/>
+        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Creates a new <computeroutput><classname alt="boost::random::lagged_fibonacci_engine">lagged_fibonacci_engine</classname></computeroutput> and calls <computeroutput>seed(first, last)</computeroutput>. </para></description></constructor>
+<method-group name="friend functions">
+<method name="operator&lt;&lt;"><type>friend std::basic_ostream&lt; CharT, Traits &gt; &amp;</type><template>
+          <template-type-parameter name="CharT"/>
+          <template-type-parameter name="Traits"/>
+        </template><parameter name="os"><paramtype>std::basic_ostream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Writes the textual representation of the generator to a <computeroutput>std::ostream</computeroutput>. </para></description></method>
+<method name="operator&gt;&gt;"><type>friend std::basic_istream&lt; CharT, Traits &gt; &amp;</type><template>
+          <template-type-parameter name="CharT"/>
+          <template-type-parameter name="Traits"/>
+        </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Reads the textual representation of the generator from a <computeroutput>std::istream</computeroutput>. </para></description></method>
+<method name="operator=="><type>friend bool</type><parameter name="x_"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><parameter name="y_"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce identical sequences of outputs. </para></description></method>
+<method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>lagged_fibonacci_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce different sequences of outputs. </para></description></method>
 </method-group>
 </class><typedef name="lagged_fibonacci607"><description><para>The specializations lagged_fibonacci607 ... lagged_fibonacci44497 use well tested lags.</para><para>See</para><para> <blockquote><para>  "On the Periods of Generalized Fibonacci Recurrences", Richard P. Brent Computer Sciences Laboratory Australian National University, December 1992  </para></blockquote> </para><para>The lags used here can be found in</para><para> <blockquote><para>  "Uniform random number generators for supercomputers", Richard Brent, Proc. of Fifth Australian Supercomputer Conference, Melbourne, Dec. 1992, pp. 704-706.  </para></blockquote>  </para></description><type><classname>lagged_fibonacci_01_engine</classname>&lt; double, 48, 607, 273 &gt;</type></typedef>
 <typedef name="lagged_fibonacci1279"><description><para>The specializations lagged_fibonacci607 ... lagged_fibonacci44497 use well tested lags.</para><para>See</para><para> <blockquote><para>  "On the Periods of Generalized Fibonacci Recurrences", Richard P. Brent Computer Sciences Laboratory Australian National University, December 1992  </para></blockquote> </para><para>The lags used here can be found in</para><para> <blockquote><para>  "Uniform random number generators for supercomputers", Richard Brent, Proc. of Fifth Australian Supercomputer Conference, Melbourne, Dec. 1992, pp. 704-706.  </para></blockquote>  </para></description><type><classname>lagged_fibonacci_01_engine</classname>&lt; double, 48, 1279, 418 &gt;</type></typedef>
@@ -1654,7 +1691,8 @@ References:<orderedlist>
 0.375, 0.375,
 0.875, 0.875,
 ...
-</programlisting></para></note>
+</programlisting></para>
+</note>
 In the following documentation <computeroutput>X</computeroutput> denotes the concrete class of the template <classname alt="boost::random::niederreiter_base2_engine">niederreiter_base2_engine</classname> returning objects of type <computeroutput>UIntType</computeroutput>, u and v are the values of <computeroutput>X</computeroutput>.</para><para>Some member functions may throw exceptions of type std::range_error. This happens when the quasi-random domain is exhausted and the generator cannot produce any more values. The length of the low discrepancy sequence is given by <inlineequation><alt>$L=Dimension \times (2^{w} - 1)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_31.png"/></imageobject><textobject role="tex"><phrase>$L=Dimension \times (2^{w} - 1)$</phrase></textobject></inlinemediaobject></inlineequation>. </para></description><typedef name="result_type"><type>UIntType</type></typedef>
 <method-group name="public member functions">
 <method name="dimension" cv="const"><type>std::size_t</type><description><para>Returns: The dimension of of the quasi-random domain.</para><para>Throws: nothing. </para></description></method>
@@ -1691,7 +1729,8 @@ assert(u() == v());
           <template-type-parameter name="Traits"/>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="s"><paramtype>const <classname>niederreiter_base2_engine</classname> &amp;</paramtype></parameter><purpose>Reads the textual representation of the generator from a <computeroutput>std::istream</computeroutput>. </purpose></method>
 </method-group>
-</class><typedef name="niederreiter_base2"><description><para><note><para>This specialization of <classname alt="boost::random::niederreiter_base2_engine">niederreiter_base2_engine</classname>  supports up to 4720 dimensions.</para></note>
+</class><typedef name="niederreiter_base2"><description><para><note><para>This specialization of <classname alt="boost::random::niederreiter_base2_engine">niederreiter_base2_engine</classname>  supports up to 4720 dimensions.</para>
+</note>
 Binary irreducible polynomials (primes in the ring <computeroutput>GF(2)[X]</computeroutput>, evaluated at <computeroutput>X=2</computeroutput>) were generated while condition <computeroutput>max(prime)</computeroutput> &lt; 2<superscript>16</superscript> was satisfied.</para><para>There are exactly 4720 such primes, which yields a Niederreiter base 2 table for 4720 dimensions.</para><para>However, it is possible to provide your own table to <classname alt="boost::random::niederreiter_base2_engine">niederreiter_base2_engine</classname>  should the default one be insufficient. </para></description><type><classname>niederreiter_base2_engine</classname>&lt; boost::uint_least64_t, 64u, default_niederreiter_base2_table &gt;</type></typedef>
 
 </namespace>
@@ -2242,7 +2281,8 @@ Seminumerical Algorithms", Donald Knuth, Addison-Wesley, 1981.  </para></blockqu
 0.375, 0.375,
 0.875, 0.875,
 ...
-</programlisting></para></note>
+</programlisting></para>
+</note>
 In the following documentation <computeroutput>X</computeroutput> denotes the concrete class of the template <classname alt="boost::random::sobol_engine">sobol_engine</classname> returning objects of type <computeroutput>UIntType</computeroutput>, u and v are the values of <computeroutput>X</computeroutput>.</para><para>Some member functions may throw exceptions of type <computeroutput>std::range_error</computeroutput>. This happens when the quasi-random domain is exhausted and the generator cannot produce any more values. The length of the low discrepancy sequence is given by <inlineequation><alt>$L=Dimension \times (2^{w} - 1)$</alt><inlinemediaobject><imageobject role="html"><imagedata format="PNG" fileref="images/random//form_31.png"/></imageobject><textobject role="tex"><phrase>$L=Dimension \times (2^{w} - 1)$</phrase></textobject></inlinemediaobject></inlineequation>. </para></description><typedef name="result_type"><type>UIntType</type></typedef>
 <method-group name="public member functions">
 <method name="dimension" cv="const"><type>std::size_t</type><description><para>Returns: The dimension of of the quasi-random domain.</para><para>Throws: nothing. </para></description></method>
@@ -2279,7 +2319,8 @@ assert(u() == v());
           <template-type-parameter name="Traits"/>
         </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="s"><paramtype>const <classname>sobol_engine</classname> &amp;</paramtype></parameter><description><para>Reads the textual representation of the generator from a <computeroutput>std::istream</computeroutput>. </para></description></method>
 </method-group>
-</class><typedef name="sobol"><description><para><note><para>This specialization of <classname alt="boost::random::sobol_engine">sobol_engine</classname>  supports up to 3667 dimensions.</para></note>
+</class><typedef name="sobol"><description><para><note><para>This specialization of <classname alt="boost::random::sobol_engine">sobol_engine</classname>  supports up to 3667 dimensions.</para>
+</note>
 Data on the primitive binary polynomials <computeroutput>a</computeroutput> and the corresponding starting values <computeroutput>m</computeroutput> for Sobol sequences in up to 21201 dimensions was taken from</para><para> <blockquote><para>  S. Joe and F. Y. Kuo, Constructing Sobol sequences with better two-dimensional projections, SIAM J. Sci. Comput. 30, 2635-2654 (2008).  </para></blockquote> </para><para>See the original tables up to dimension 21201: <ulink url="https://web.archive.org/web/20170802022909/http://web.maths.unsw.edu.au/~fkuo/sobol/new-joe-kuo-6.21201">https://web.archive.org/web/20170802022909/http://web.maths.unsw.edu.au/~fkuo/sobol/new-joe-kuo-6.21201</ulink></para><para>For practical reasons the default table uses only the subset of binary polynomials <computeroutput>a</computeroutput> &lt; 2<superscript>16</superscript>.</para><para>However, it is possible to provide your own table to <classname alt="boost::random::sobol_engine">sobol_engine</classname>  should the default one be insufficient. </para></description><type><classname>sobol_engine</classname>&lt; boost::uint_least64_t, 64u, default_sobol_table &gt;</type></typedef>
 
 </namespace>
@@ -2344,7 +2385,57 @@ Data on the primitive binary polynomials <computeroutput>a</computeroutput> and 
 <header name="boost/random/subtract_with_carry.hpp">
 <namespace name="boost">
 <namespace name="random">
-<class name="subtract_with_carry_engine"><template>
+<class name="subtract_with_carry_01_engine"><template>
+      <template-type-parameter name="RealType"/>
+      <template-nontype-parameter name="w"><type>std::size_t</type></template-nontype-parameter>
+      <template-nontype-parameter name="s"><type>std::size_t</type></template-nontype-parameter>
+      <template-nontype-parameter name="r"><type>std::size_t</type></template-nontype-parameter>
+    </template><description><para>Instantiations of <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> model a  <link linkend="boost_random.reference.concepts.pseudo_random_number_generator">pseudo-random number generator</link> . The algorithm is described in</para><para> <blockquote><para>  "A New Class of Random Number Generators", George Marsaglia and Arif Zaman, Annals of Applied Probability, Volume 1, Number 3 (1991), 462-480.  </para></blockquote>  </para></description><typedef name="result_type"><type>RealType</type></typedef>
+<data-member name="has_fixed_range" specifiers="static"><type>const bool</type></data-member>
+<data-member name="word_size" specifiers="static"><type>const std::size_t</type></data-member>
+<data-member name="long_lag" specifiers="static"><type>const std::size_t</type></data-member>
+<data-member name="short_lag" specifiers="static"><type>const std::size_t</type></data-member>
+<data-member name="default_seed" specifiers="static"><type>const boost::uint32_t</type></data-member>
+<method-group name="public member functions">
+<method name="seed"><type>void</type><description><para>Seeds the generator with the default seed. </para></description></method>
+<method name="seed"><type>void</type><parameter name="value"><paramtype>boost::uint32_t</paramtype></parameter><description><para>Seeds the generator with <computeroutput>value</computeroutput>. </para></description></method>
+<method name="seed"><type>void</type><template>
+          <template-type-parameter name="SeedSeq"/>
+        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Seeds the generator with values produced by <computeroutput>seq.generate()</computeroutput>. </para></description></method>
+<method name="seed"><type>void</type><template>
+          <template-type-parameter name="It"/>
+        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Seeds the generator with values from a range. Updates first to point one past the last consumed element. If there are not enough elements in the range to fill the entire state, throws <computeroutput>std::invalid_argument</computeroutput>. </para></description></method>
+<method name="operator()"><type>result_type</type><description><para>Returns the next value of the generator. </para></description></method>
+<method name="discard"><type>void</type><parameter name="z"><paramtype>boost::uintmax_t</paramtype></parameter><description><para>Advances the state of the generator by <computeroutput>z</computeroutput>. </para></description></method>
+<method name="generate"><type>void</type><template>
+          <template-type-parameter name="Iter"/>
+        </template><parameter name="first"><paramtype>Iter</paramtype></parameter><parameter name="last"><paramtype>Iter</paramtype></parameter><description><para>Fills a range with random values. </para></description></method>
+</method-group>
+<constructor><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> using the default seed. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="value"><paramtype>boost::uint32_t</paramtype></parameter><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> and seeds it with value. </para></description></constructor>
+<constructor specifiers="explicit"><template>
+          <template-type-parameter name="SeedSeq"/>
+        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> and seeds with values produced by seq.generate(). </para></description></constructor>
+<constructor><template>
+          <template-type-parameter name="It"/>
+        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> and seeds it with values from a range. Advances first to point one past the last consumed value. If the range does not contain enough elements to fill the entire state, throws <computeroutput>std::invalid_argument</computeroutput>. </para></description></constructor>
+<method-group name="public static functions">
+<method name="min" specifiers="static"><type>result_type</type><description><para>Returns the smallest value that the generator can produce. </para></description></method>
+<method name="max" specifiers="static"><type>result_type</type><description><para>Returns the largest value that the generator can produce. </para></description></method>
+</method-group>
+<method-group name="friend functions">
+<method name="operator&lt;&lt;"><type>friend std::basic_ostream&lt; CharT, Traits &gt; &amp;</type><template>
+          <template-type-parameter name="CharT"/>
+          <template-type-parameter name="Traits"/>
+        </template><parameter name="os"><paramtype>std::basic_ostream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Writes a <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> to a <computeroutput>std::ostream</computeroutput>. </para></description></method>
+<method name="operator&gt;&gt;"><type>friend std::basic_istream&lt; CharT, Traits &gt; &amp;</type><template>
+          <template-type-parameter name="CharT"/>
+          <template-type-parameter name="Traits"/>
+        </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Reads a <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> from a <computeroutput>std::istream</computeroutput>. </para></description></method>
+<method name="operator=="><type>friend bool</type><parameter name="x"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce identical sequences. </para></description></method>
+<method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce different sequences. </para></description></method>
+</method-group>
+</class><class name="subtract_with_carry_engine"><template>
       <template-type-parameter name="IntType"/>
       <template-nontype-parameter name="w"><type>std::size_t</type></template-nontype-parameter>
       <template-nontype-parameter name="s"><type>std::size_t</type></template-nontype-parameter>
@@ -2395,56 +2486,6 @@ Data on the primitive binary polynomials <computeroutput>a</computeroutput> and 
 <method name="operator=="><type>friend bool</type><parameter name="x"><paramtype>const <classname>subtract_with_carry_engine</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const <classname>subtract_with_carry_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce identical sequences of values. </para></description></method>
 <method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>subtract_with_carry_engine</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>subtract_with_carry_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce different sequences of values. </para></description></method>
 </method-group>
-</class><class name="subtract_with_carry_01_engine"><template>
-      <template-type-parameter name="RealType"/>
-      <template-nontype-parameter name="w"><type>std::size_t</type></template-nontype-parameter>
-      <template-nontype-parameter name="s"><type>std::size_t</type></template-nontype-parameter>
-      <template-nontype-parameter name="r"><type>std::size_t</type></template-nontype-parameter>
-    </template><description><para>Instantiations of <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> model a  <link linkend="boost_random.reference.concepts.pseudo_random_number_generator">pseudo-random number generator</link> . The algorithm is described in</para><para> <blockquote><para>  "A New Class of Random Number Generators", George Marsaglia and Arif Zaman, Annals of Applied Probability, Volume 1, Number 3 (1991), 462-480.  </para></blockquote>  </para></description><typedef name="result_type"><type>RealType</type></typedef>
-<data-member name="has_fixed_range" specifiers="static"><type>const bool</type></data-member>
-<data-member name="word_size" specifiers="static"><type>const std::size_t</type></data-member>
-<data-member name="long_lag" specifiers="static"><type>const std::size_t</type></data-member>
-<data-member name="short_lag" specifiers="static"><type>const std::size_t</type></data-member>
-<data-member name="default_seed" specifiers="static"><type>const boost::uint32_t</type></data-member>
-<method-group name="public member functions">
-<method name="seed"><type>void</type><description><para>Seeds the generator with the default seed. </para></description></method>
-<method name="seed"><type>void</type><parameter name="value"><paramtype>boost::uint32_t</paramtype></parameter><description><para>Seeds the generator with <computeroutput>value</computeroutput>. </para></description></method>
-<method name="seed"><type>void</type><template>
-          <template-type-parameter name="SeedSeq"/>
-        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Seeds the generator with values produced by <computeroutput>seq.generate()</computeroutput>. </para></description></method>
-<method name="seed"><type>void</type><template>
-          <template-type-parameter name="It"/>
-        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Seeds the generator with values from a range. Updates first to point one past the last consumed element. If there are not enough elements in the range to fill the entire state, throws <computeroutput>std::invalid_argument</computeroutput>. </para></description></method>
-<method name="operator()"><type>result_type</type><description><para>Returns the next value of the generator. </para></description></method>
-<method name="discard"><type>void</type><parameter name="z"><paramtype>boost::uintmax_t</paramtype></parameter><description><para>Advances the state of the generator by <computeroutput>z</computeroutput>. </para></description></method>
-<method name="generate"><type>void</type><template>
-          <template-type-parameter name="Iter"/>
-        </template><parameter name="first"><paramtype>Iter</paramtype></parameter><parameter name="last"><paramtype>Iter</paramtype></parameter><description><para>Fills a range with random values. </para></description></method>
-</method-group>
-<constructor><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> using the default seed. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="value"><paramtype>boost::uint32_t</paramtype></parameter><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> and seeds it with value. </para></description></constructor>
-<constructor specifiers="explicit"><template>
-          <template-type-parameter name="SeedSeq"/>
-        </template><parameter name="seq"><paramtype>SeedSeq &amp;</paramtype></parameter><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> and seeds with values produced by seq.generate(). </para></description></constructor>
-<constructor><template>
-          <template-type-parameter name="It"/>
-        </template><parameter name="first"><paramtype>It &amp;</paramtype></parameter><parameter name="last"><paramtype>It</paramtype></parameter><description><para>Creates a new <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> and seeds it with values from a range. Advances first to point one past the last consumed value. If the range does not contain enough elements to fill the entire state, throws <computeroutput>std::invalid_argument</computeroutput>. </para></description></constructor>
-<method-group name="public static functions">
-<method name="min" specifiers="static"><type>result_type</type><description><para>Returns the smallest value that the generator can produce. </para></description></method>
-<method name="max" specifiers="static"><type>result_type</type><description><para>Returns the largest value that the generator can produce. </para></description></method>
-</method-group>
-<method-group name="friend functions">
-<method name="operator&lt;&lt;"><type>friend std::basic_ostream&lt; CharT, Traits &gt; &amp;</type><template>
-          <template-type-parameter name="CharT"/>
-          <template-type-parameter name="Traits"/>
-        </template><parameter name="os"><paramtype>std::basic_ostream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Writes a <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> to a <computeroutput>std::ostream</computeroutput>. </para></description></method>
-<method name="operator&gt;&gt;"><type>friend std::basic_istream&lt; CharT, Traits &gt; &amp;</type><template>
-          <template-type-parameter name="CharT"/>
-          <template-type-parameter name="Traits"/>
-        </template><parameter name="is"><paramtype>std::basic_istream&lt; CharT, Traits &gt; &amp;</paramtype></parameter><parameter name="f"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Reads a <classname alt="boost::random::subtract_with_carry_01_engine">subtract_with_carry_01_engine</classname> from a <computeroutput>std::istream</computeroutput>. </para></description></method>
-<method name="operator=="><type>friend bool</type><parameter name="x"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><parameter name="y"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce identical sequences. </para></description></method>
-<method name="operator!="><type>friend bool</type><parameter name="lhs"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><parameter name="rhs"><paramtype>const <classname>subtract_with_carry_01_engine</classname> &amp;</paramtype></parameter><description><para>Returns true if the two generators will produce different sequences. </para></description></method>
-</method-group>
 </class>
 </namespace>
 </namespace>
@@ -2461,15 +2502,15 @@ Data on the primitive binary polynomials <computeroutput>a</computeroutput> and 
 <namespace name="boost">
 <namespace name="random">
 <namespace name="traits">
-<struct name="make_unsigned"><template>
-      <template-type-parameter name="T"/>
-    </template><purpose>Converts the argument type T to an unsigned type. </purpose><description><para>This trait has a single member <computeroutput>type</computeroutput> which is the unsigned type corresponding to T. Note that if T is signed, then member <computeroutput>type</computeroutput> <emphasis>should define a type with one more bit precision than T</emphasis>. For built-in types this trait defaults to <computeroutput>boost::make_unsigned&lt;T&gt;::type</computeroutput>. For user defined types it simply asserts that the argument type T is an unsigned integer (using std::numeric_limits). User defined specializations may be provided for other cases. </para></description></struct><struct name="make_unsigned_or_unbounded"><template>
-      <template-type-parameter name="T"/>
-    </template><purpose>Converts the argument type T to either an unsigned type or an unbounded integer type. </purpose><description><para>This trait has a single member <computeroutput>type</computeroutput> which is either the unsigned type corresponding to T or an unbounded integer type. This trait is used to generate types suitable for the calculation of a range: as a result if T is signed, then member <computeroutput>type</computeroutput> <emphasis>should define a type with one more bit precision than T</emphasis>. For built-in types this trait defaults to <computeroutput>boost::make_unsigned&lt;T&gt;::type</computeroutput>. For user defined types it simply asserts that the argument type T is either an unbounded integer, or an unsigned one (using std::numeric_limits). User defined specializations may be provided for other cases. </para></description></struct><struct name="is_integral"><template>
+<struct name="is_integral"><template>
       <template-type-parameter name="T"/>
     </template><inherit access="public">mpl::bool_&lt; boost::is_integral&lt; T &gt;::value||(std::numeric_limits&lt; T &gt;::is_integer)&gt;</inherit><purpose>Traits class that indicates whether type T is an integer. </purpose></struct><struct name="is_signed"><template>
       <template-type-parameter name="T"/>
-    </template><inherit access="public">mpl::bool_&lt; boost::is_signed&lt; T &gt;::value||(std::numeric_limits&lt; T &gt;::is_specialized &amp;&amp;std::numeric_limits&lt; T &gt;::is_integer &amp;&amp;std::numeric_limits&lt; T &gt;::is_signed)&gt;</inherit><purpose>Traits class that indicates whether type T is a signed integer. </purpose></struct></namespace>
+    </template><inherit access="public">mpl::bool_&lt; boost::is_signed&lt; T &gt;::value||(std::numeric_limits&lt; T &gt;::is_specialized &amp;&amp;std::numeric_limits&lt; T &gt;::is_integer &amp;&amp;std::numeric_limits&lt; T &gt;::is_signed)&gt;</inherit><purpose>Traits class that indicates whether type T is a signed integer. </purpose></struct><struct name="make_unsigned"><template>
+      <template-type-parameter name="T"/>
+    </template><purpose>Converts the argument type T to an unsigned type. </purpose><description><para>This trait has a single member <computeroutput>type</computeroutput> which is the unsigned type corresponding to T. Note that if T is signed, then member <computeroutput>type</computeroutput> <emphasis>should define a type with one more bit precision than T</emphasis>. For built-in types this trait defaults to <computeroutput>boost::make_unsigned&lt;T&gt;::type</computeroutput>. For user defined types it simply asserts that the argument type T is an unsigned integer (using std::numeric_limits). User defined specializations may be provided for other cases. </para></description></struct><struct name="make_unsigned_or_unbounded"><template>
+      <template-type-parameter name="T"/>
+    </template><purpose>Converts the argument type T to either an unsigned type or an unbounded integer type. </purpose><description><para>This trait has a single member <computeroutput>type</computeroutput> which is either the unsigned type corresponding to T or an unbounded integer type. This trait is used to generate types suitable for the calculation of a range: as a result if T is signed, then member <computeroutput>type</computeroutput> <emphasis>should define a type with one more bit precision than T</emphasis>. For built-in types this trait defaults to <computeroutput>boost::make_unsigned&lt;T&gt;::type</computeroutput>. For user defined types it simply asserts that the argument type T is either an unbounded integer, or an unsigned one (using std::numeric_limits). User defined specializations may be provided for other cases. </para></description></struct></namespace>
 
 </namespace>
 </namespace>

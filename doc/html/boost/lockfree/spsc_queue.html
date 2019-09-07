@@ -41,7 +41,7 @@
   <span class="keyword">typedef</span> <span class="identifier">implementation_defined</span><span class="special">::</span><span class="identifier">size_type</span> <a name="boost.lockfree.spsc_queue.size_type"></a><span class="identifier">size_type</span><span class="special">;</span> 
 
   <span class="comment">// member classes/structs/unions</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> Options<span class="special">&gt;</span> 
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> <span class="special">...</span> Options<span class="special">&gt;</span> 
   <span class="keyword">struct</span> <a class="link" href="spsc_queue/implementation_defined.html" title="Struct template implementation_defined">implementation_defined</a> <span class="special">{</span>
     <span class="comment">// types</span>
     <span class="keyword">typedef</span> <span class="identifier">allocator_arg</span> <a class="link" href="spsc_queue/implementation_defined.html#boost.lockfree.spsc_queue.implementation_defined.allocator"><span class="identifier">allocator</span></a><span class="special">;</span>
@@ -616,41 +616,6 @@
 <p>Availability of front element can be checked using read_available().</p>
 <p>
 
-</p>
-<div class="note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top"><p>Thread-safe and wait-free </p></td></tr>
-</table></div>
-<p>
-</p>
-<div class="variablelist"><table border="0" class="variablelist compact">
-<colgroup>
-<col align="left" valign="top">
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="term">Requires:</span></p></td>
-<td>
-<p>only a consuming thread is allowed to check front element </p>
-<p>read_available() &gt; 0. If ringbuffer is empty, it's undefined behaviour to invoke this method. </p>
-</td>
-</tr>
-<tr>
-<td><p><span class="term">Returns:</span></p></td>
-<td><p>reference to the first element in the queue</p></td>
-</tr>
-</tbody>
-</table></div>
-</li>
-<li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">&amp;</span> <a name="id-1_3_23_6_4_1_1_1_13_17-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
-<p>get reference to element in the front of the queue</p>
-<p>Availability of front element can be checked using read_available().</p>
-<p>
 
 </p>
 <div class="note"><table border="0" summary="Note">
@@ -670,10 +635,49 @@
 <tbody>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p>only a consuming thread is allowed to check front element </p>
-<p>read_available() &gt; 0. If ringbuffer is empty, it's undefined behaviour to invoke this method. </p>
-</td>
+<td><p>only a consuming thread is allowed to check front element </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>read_available() &gt; 0. If ringbuffer is empty, it's undefined behaviour to invoke this method. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>reference to the first element in the queue</p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">&amp;</span> <a name="id-1_3_23_6_4_1_1_1_13_17-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>get reference to element in the front of the queue</p>
+<p>Availability of front element can be checked using read_available().</p>
+<p>
+
+
+</p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>Thread-safe and wait-free </p></td></tr>
+</table></div>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>only a consuming thread is allowed to check front element </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>read_available() &gt; 0. If ringbuffer is empty, it's undefined behaviour to invoke this method. </p></td>
 </tr>
 <tr>
 <td><p><span class="term">Returns:</span></p></td>

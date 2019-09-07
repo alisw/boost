@@ -8,7 +8,7 @@
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../heap/reference.html#header.boost.heap.fibonacci_heap_hpp" title="Header &lt;boost/heap/fibonacci_heap.hpp&gt;">
 <link rel="prev" href="d_ary_heap.html" title="Class template d_ary_heap">
-<link rel="next" href="PriorityQueue.html" title="Struct template PriorityQueue">
+<link rel="next" href="MergablePriorityQueue.html" title="Struct template MergablePriorityQueue">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -21,7 +21,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="d_ary_heap.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.fibonacci_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="PriorityQueue.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="d_ary_heap.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.fibonacci_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="MergablePriorityQueue.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry">
 <a name="boost.heap.fibonacci_heap"></a><div class="titlepage"></div>
@@ -32,7 +32,7 @@
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../heap/reference.html#header.boost.heap.fibonacci_heap_hpp" title="Header &lt;boost/heap/fibonacci_heap.hpp&gt;">boost/heap/fibonacci_heap.hpp</a>&gt;
 
-</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Options<span class="special">&gt;</span> 
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">class</span> <span class="special">...</span> Options<span class="special">&gt;</span> 
 <span class="keyword">class</span> <a class="link" href="fibonacci_heap.html" title="Class template fibonacci_heap">fibonacci_heap</a> <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="fibonacci_heap.html#boost.heap.fibonacci_heaptypes">types</a></span>
@@ -66,7 +66,7 @@
   <span class="keyword">void</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_4-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span><span class="special">;</span>
   <span class="identifier">allocator_type</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_5-bb"><span class="identifier">get_allocator</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_6-bb"><span class="identifier">swap</span></a><span class="special">(</span><a class="link" href="fibonacci_heap.html" title="Class template fibonacci_heap">fibonacci_heap</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_7-bb"><span class="identifier">top</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_type</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_7-bb"><span class="identifier">top</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="identifier">handle_type</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_8-bb"><span class="identifier">push</span></a><span class="special">(</span><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">handle_type</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_9-bb"><span class="identifier">emplace</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_10-bb"><span class="identifier">pop</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span><span class="special">;</span>
@@ -84,7 +84,7 @@
   <span class="identifier">ordered_iterator</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_22-bb"><span class="identifier">ordered_begin</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="identifier">ordered_iterator</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_23-bb"><span class="identifier">ordered_end</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_24-bb"><span class="identifier">merge</span></a><span class="special">(</span><a class="link" href="fibonacci_heap.html" title="Class template fibonacci_heap">fibonacci_heap</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="identifier">value_compare</span> <span class="keyword">const</span> <span class="special">&amp;</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_25-bb"><span class="identifier">value_comp</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">value_compare</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_25-bb"><span class="identifier">value_comp</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> HeapType<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_26-bb"><span class="keyword">operator</span><span class="special">&lt;</span></a><span class="special">(</span><span class="identifier">HeapType</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> HeapType<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_27-bb"><span class="keyword">operator</span><span class="special">&gt;</span></a><span class="special">(</span><span class="identifier">HeapType</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> HeapType<span class="special">&gt;</span> <span class="keyword">bool</span> <a class="link" href="fibonacci_heap.html#id-1_3_18_6_3_1_1_1_23_28-bb"><span class="keyword">operator</span><span class="special">&gt;=</span></a><span class="special">(</span><span class="identifier">HeapType</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
@@ -197,7 +197,7 @@
 <p><span class="bold"><strong>Complexity:</strong></span> Constant. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <a name="id-1_3_18_6_3_1_1_1_23_7-bb"></a><span class="identifier">top</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">value_type</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a name="id-1_3_18_6_3_1_1_1_23_7-bb"></a><span class="identifier">top</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects:</strong></span> Returns a const_reference to the maximum element.</p>
 <p><span class="bold"><strong>Complexity:</strong></span> Constant. </p>
 </li>
@@ -295,7 +295,7 @@
 <p><span class="bold"><strong>Complexity:</strong></span> Constant. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">value_compare</span> <span class="keyword">const</span> <span class="special">&amp;</span> <a name="id-1_3_18_6_3_1_1_1_23_25-bb"></a><span class="identifier">value_comp</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">value_compare</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a name="id-1_3_18_6_3_1_1_1_23_25-bb"></a><span class="identifier">value_comp</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effect:</strong></span> Returns the value_compare object used by the priority queue </p>
 </li>
 <li class="listitem">
@@ -343,7 +343,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="d_ary_heap.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.fibonacci_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="PriorityQueue.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="d_ary_heap.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../heap/reference.html#header.boost.heap.fibonacci_heap_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="MergablePriorityQueue.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

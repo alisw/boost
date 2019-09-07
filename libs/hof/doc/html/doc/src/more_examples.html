@@ -71,7 +71,7 @@ objects for those who prefer to avoid them will still find the library useful.</
 <div class="section" id="projections">
 <h2>Projections<a class="headerlink" href="#projections" title="Permalink to this headline">¶</a></h2>
 <p>Instead of writing the projection multiple times in algorithms:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">people</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">people</span><span class="p">),</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">people</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">people</span><span class="p">),</span>
           <span class="p">[](</span><span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">const</span> <span class="n">Person</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">year_of_birth</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">.</span><span class="n">year_of_birth</span><span class="p">;</span>
           <span class="p">});</span>
@@ -79,7 +79,7 @@ objects for those who prefer to avoid them will still find the library useful.</
 </div>
 <p>We can use the <code class="docutils literal"><span class="pre">proj</span></code> adaptor to project <code class="docutils literal"><span class="pre">year_of_birth</span></code> on the comparison
 operator:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">people</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">people</span><span class="p">),</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span><span class="n">people</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">end</span><span class="p">(</span><span class="n">people</span><span class="p">),</span>
         <span class="n">proj</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Person</span><span class="o">::</span><span class="n">year_of_birth</span><span class="p">,</span> <span class="n">_</span> <span class="o">&lt;</span> <span class="n">_</span><span class="p">));</span>
 </pre></div>
 </div>
@@ -89,7 +89,7 @@ operator:</p>
 <p>When we write <code class="docutils literal"><span class="pre">f(foo(),</span> <span class="pre">bar())</span></code>, the standard does not guarantee the order in
 which the <code class="docutils literal"><span class="pre">foo()</span></code> and <code class="docutils literal"><span class="pre">bar()</span></code> arguments are evaluated. So with <code class="docutils literal"><span class="pre">apply_eval</span></code> we
 can order them from left-to-right:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">apply_eval</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">]{</span> <span class="k">return</span> <span class="n">foo</span><span class="p">();</span> <span class="p">},</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">]{</span> <span class="k">return</span> <span class="n">bar</span><span class="p">();</span> <span class="p">});</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">apply_eval</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">]{</span> <span class="k">return</span> <span class="n">foo</span><span class="p">();</span> <span class="p">},</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">]{</span> <span class="k">return</span> <span class="n">bar</span><span class="p">();</span> <span class="p">});</span>
 </pre></div>
 </div>
 </div>
@@ -97,7 +97,7 @@ can order them from left-to-right:</p>
 <h2>Extension methods<a class="headerlink" href="#extension-methods" title="Permalink to this headline">¶</a></h2>
 <p>Chaining many functions together, like what is done for range based libraries,
 can make things hard to read:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span>
     <span class="n">filter</span><span class="p">(</span>
         <span class="n">numbers</span><span class="p">,</span>
         <span class="p">[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
@@ -107,7 +107,7 @@ can make things hard to read:</p>
 </pre></div>
 </div>
 <p>It would be nice to write this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">numbers</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">numbers</span>
     <span class="p">.</span><span class="n">filter</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="p">})</span>
     <span class="p">.</span><span class="n">transform</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span> <span class="p">});</span>
 </pre></div>
@@ -116,14 +116,14 @@ can make things hard to read:</p>
 for Unified Call Syntax(UFCS) would have allowed a function call of <code class="docutils literal"><span class="pre">x.f(y)</span></code> to become
 <code class="docutils literal"><span class="pre">f(x,</span> <span class="pre">y)</span></code>. However, this was rejected by the comittee. So instead pipable functions can be
 used to achieve extension methods. So it can be written like this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">numbers</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">numbers</span>
     <span class="o">|</span> <span class="n">filter</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="p">})</span>
     <span class="o">|</span> <span class="n">transform</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span> <span class="p">});</span>
 </pre></div>
 </div>
 <p>Now, if some users feel a little worried about overloading the <em>bitwise or</em>
 operator, pipable functions can also be used with <a class="reference internal" href="../../include/boost/hof/flow.html"><span class="doc">flow</span></a> like this:</p>
-<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">flow</span><span class="p">(</span>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">flow</span><span class="p">(</span>
     <span class="n">filter</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}),</span>
     <span class="n">transform</span><span class="p">([](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">;</span> <span class="p">})</span>
 <span class="p">)(</span><span class="n">numbers</span><span class="p">);</span>

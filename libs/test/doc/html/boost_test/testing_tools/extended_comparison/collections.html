@@ -756,20 +756,42 @@
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-              either a C-array, where the underlying type is neither <code class="computeroutput"><span class="keyword">char</span></code> or <code class="computeroutput"><span class="keyword">wchar_t</span></code>
+              either a C-array,
             </li>
 <li class="listitem">
               or a <code class="computeroutput"><span class="keyword">class</span></code>/<code class="computeroutput"><span class="keyword">struct</span></code> that implements the member functions
-              <code class="computeroutput"><span class="identifier">begin</span></code> and <code class="computeroutput"><span class="identifier">end</span></code> and for which <code class="computeroutput"><span class="identifier">value_type</span></code>
-              is neither <code class="computeroutput"><span class="keyword">char</span></code> or <code class="computeroutput"><span class="keyword">wchar_t</span></code>
+              <code class="computeroutput"><span class="identifier">begin</span></code> and <code class="computeroutput"><span class="identifier">end</span></code>.
             </li>
 </ul></div>
 <p>
-          When the stored type <code class="computeroutput"><span class="keyword">char</span></code>
-          or <code class="computeroutput"><span class="keyword">wchar_t</span></code>, then the container
-          is considered as a string and is dispatched on <a class="link" href="strings.html" title="Strings and C-strings comparison">string
-          comparison</a> instead.
+          For collection comparisons, both sequences are also required to be different
+          than <code class="computeroutput"><span class="identifier">string</span></code> sequences.
+          In that case, the sequences are dispatched to string <a class="link" href="strings.html" title="Strings and C-strings comparison">comparison
+          instead</a>.
         </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            <code class="computeroutput"><span class="identifier">string</span></code> (or <code class="computeroutput"><span class="identifier">wstring</span></code>) meets the sequence concept
+            by definition, but their handling with <a class="link" href="../../utf_reference/testing_tool_ref/assertion_boost_test_universal_macro.html" title="BOOST_TEST"><code class="computeroutput"><span class="identifier">BOOST_TEST</span></code></a> is done differently.
+            See <a class="link" href="strings.html" title="Strings and C-strings comparison">Strings
+            and C-strings comparison</a> for more details.
+          </p></td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../../../../../../../doc/src/images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            If the behaviour of <a class="link" href="../../utf_reference/testing_tool_ref/assertion_boost_test_universal_macro.html" title="BOOST_TEST"><code class="computeroutput"><span class="identifier">BOOST_TEST</span></code></a> is not the one you
+            expect, you can always use raw comparison. See <a class="link" href="../boost_test_universal_macro.html#boost_test_statement_limitations">this
+            section</a> for details.
+          </p></td></tr>
+</table></div>
 <div class="note"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
@@ -789,8 +811,9 @@
 <tr><td align="left" valign="top"><p>
             Since <a class="link" href="../../change_log.html#ref_CHANGE_LOG_3_7">Boost.Test 3.7</a> (Boost
             1.67) the definition of <code class="computeroutput"><span class="identifier">const_iterator</span></code>
-            in the container type is not required anymore (for the compilers properly
-            supporting <code class="computeroutput"><span class="keyword">decltype</span></code>).
+            and <code class="computeroutput"><span class="identifier">value_type</span></code> in the
+            collection type is not required anymore (for the compilers properly supporting
+            <code class="computeroutput"><span class="keyword">decltype</span></code>).
           </p></td></tr>
 </table></div>
 <p>

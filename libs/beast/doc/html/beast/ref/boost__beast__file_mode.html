@@ -27,7 +27,7 @@
 <a name="beast.ref.boost__beast__file_mode"></a><a class="link" href="boost__beast__file_mode.html" title="file_mode">file_mode</a>
 </h4></div></div></div>
 <p>
-        <a class="indexterm" name="idp106889616"></a>
+        <a class="indexterm" name="idm46025444419472"></a>
 File open modes.
       </p>
 <h5>
@@ -40,14 +40,13 @@ File open modes.
 <pre class="programlisting"><span class="keyword">enum</span> <span class="identifier">file_mode</span>
 </pre>
 <p>
-        <a class="indexterm" name="idp106897680"></a>
- <a class="indexterm" name="idp106898784"></a>
- <a class="indexterm" name="idp106899888"></a>
- <a class="indexterm" name="idp106900992"></a>
- <a class="indexterm" name="idp106902096"></a>
- <a class="indexterm" name="idp106903200"></a>
- <a class="indexterm" name="idp106904304"></a>
- <a class="indexterm" name="idp106905408"></a>
+        <a class="indexterm" name="idm46025444411520"></a>
+ <a class="indexterm" name="idm46025444410368"></a>
+ <a class="indexterm" name="idm46025444409264"></a>
+ <a class="indexterm" name="idm46025444408160"></a>
+ <a class="indexterm" name="idm46025444407056"></a>
+ <a class="indexterm" name="idm46025444405952"></a>
+ <a class="indexterm" name="idm46025444404848"></a>
 
       </p>
 <h5>
@@ -80,7 +79,7 @@ File open modes.
               </td>
 <td>
                 <p>
-                  Random reading.
+                  Random read-only access to an existing file.
                 </p>
               </td>
 </tr>
@@ -92,7 +91,7 @@ File open modes.
               </td>
 <td>
                 <p>
-                  Sequential reading.
+                  Sequential read-only access to an existing file.
                 </p>
               </td>
 </tr>
@@ -104,11 +103,13 @@ File open modes.
               </td>
 <td>
                 <p>
-                  Random writing to a new or truncated file.
+                  Random reading and writing to a new or truncated file.
                 </p>
                 <p>
-                  If the file does not exist, it is created. If the file exists,
-                  it is truncated to zero size upon opening.
+                  This mode permits random-access reading and writing for the specified
+                  file. If the file does not exist prior to the function call, it
+                  is created with an initial size of zero bytes. Otherwise if the
+                  file already exists, the size is truncated to zero bytes.
                 </p>
               </td>
 </tr>
@@ -120,10 +121,13 @@ File open modes.
               </td>
 <td>
                 <p>
-                  Random writing to new file only.
+                  Random reading and writing to a new file only.
                 </p>
                 <p>
-                  If the file exists, an error is generated.
+                  This mode permits random-access reading and writing for the specified
+                  file. The file will be created with an initial size of zero bytes.
+                  If the file already exists prior to the function call, an error
+                  is returned and no file is opened.
                 </p>
               </td>
 </tr>
@@ -135,7 +139,7 @@ File open modes.
               </td>
 <td>
                 <p>
-                  Random writing to existing file.
+                  Random write-only access to existing file.
                 </p>
                 <p>
                   If the file does not exist, an error is generated.
@@ -154,24 +158,13 @@ File open modes.
                 </p>
                 <p>
                   The current file position shall be set to the end of the file prior
-                  to each write.If the file does not exist, it is created. If the
-                  file exists, it is truncated to zero size upon opening.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <code class="literal">append_new</code>
-                </p>
-              </td>
-<td>
-                <p>
-                  Appending to a new file only.
+                  to each write.
                 </p>
                 <p>
-                  The current file position shall be set to the end of the file prior
-                  to each write.If the file exists, an error is generated.
+                  @li If the file does not exist, it is created.
+                </p>
+                <p>
+                  @li If the file exists, it is truncated to zero size upon opening.
                 </p>
               </td>
 </tr>
@@ -187,7 +180,10 @@ File open modes.
                 </p>
                 <p>
                   The current file position shall be set to the end of the file prior
-                  to each write.If the file does not exist, an error is generated.
+                  to each write.
+                </p>
+                <p>
+                  If the file does not exist, an error is generated.
                 </p>
               </td>
 </tr>
@@ -198,7 +194,8 @@ File open modes.
         <span class="phrase"><a name="beast.ref.boost__beast__file_mode.description"></a></span><a class="link" href="boost__beast__file_mode.html#beast.ref.boost__beast__file_mode.description">Description</a>
       </h5>
 <p>
-        These modes are used when opening files using instances of the <span class="bold"><strong>File</strong></span> concept.
+        These modes are used when opening files using instances of the <span class="emphasis"><em>File</em></span>
+        concept.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__file_mode.h3"></a>
@@ -214,7 +211,8 @@ File open modes.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

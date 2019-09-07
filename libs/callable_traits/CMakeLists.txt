@@ -9,12 +9,6 @@ project(callable_traits CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 enable_testing()
 
-if(BUILD_CXX_STD)
-else()
-  # Defaults to C++14 if not set:
-  set(BUILD_CXX_STD 14) 
-endif()
-
 set (CMAKE_CXX_STANDARD ${callable_traits_CXX_STD})
 
 # Setting up CMake options and compiler flags (more flags can be set on a per-target basis or in subdirectories)
@@ -53,6 +47,8 @@ else()
     callable_traits_append_flag(callable_traits_HAS_STDCXX0x                   -std=c++0x)
     callable_traits_append_flag(callable_traits_HAS_STDCXX1y                   -std=c++1y)
     callable_traits_append_flag(callable_traits_HAS_STDCXX1z                   -std=c++1z)
+    callable_traits_append_flag(callable_traits_HAS_STDCXX17                   -std=c++17)
+    callable_traits_append_flag(callable_traits_HAS_STDCXX2a                   -std=c++2a)
 endif()
 
 # transactional memory - currently only available in GCC 6 and later
@@ -107,10 +103,15 @@ endfunction()
 ##############################################################################
 
 
-add_custom_target(check
+add_custom_target(callable_traits_check
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Build and then run all the tests and examples.")
+if (NOT TARGET check)
+    add_custom_target(check DEPENDS callable_traits_check)
+else()
+    add_dependencies(check callable_traits_check)
+endif()
 
 add_subdirectory(example)
 add_subdirectory(test)

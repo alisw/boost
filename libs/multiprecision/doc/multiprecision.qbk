@@ -555,7 +555,8 @@ the feature off.
  been thrown.
 * Unary negation of unsigned types results in a compiler error (static assertion).
 * This backend supports rvalue-references and is move-aware, making instantiations of `number` on this backend move aware.
-* When used at fixed precision, the size of this type is always one machine word larger than you would expect for an N-bit integer:
+* When used at fixed precision, the size of this type is always one machine word (plus any compiler-applied alignment padding) 
+larger than you would expect for an N-bit integer:
 the extra word stores both the sign, and how many machine words in the integer are actually in use.
 The latter is an optimisation for larger fixed precision integers, so that a 1024-bit integer has almost the same performance
 characteristics as a 128-bit integer, rather than being 4 times slower for addition and 16 times slower for multiplication
@@ -563,6 +564,8 @@ characteristics as a 128-bit integer, rather than being 4 times slower for addit
 Typically this means you can use
 an integer type wide enough for the "worst case scenario" with only minor performance degradation even if most of the time
 the arithmetic could in fact be done with a narrower type.
+Also note that unsigned fixed precision types small enough to fit inside the largest native integer become a simple wrapper around that type,
+this includes the "checked" variants.  Small signed types will always have an extra sign word and so be larger than their native equivalent.
 * When used at fixed precision and MaxBits is smaller than the number of bits in the largest native integer type, then
 internally `cpp_int_backend` switches to a "trivial" implementation where it is just a thin wrapper around a single
 integer.  Note that it will still be slightly slower than a bare native integer, as it emulates a
@@ -1026,6 +1029,7 @@ as a valid floating-point number.
 * When using the Intel compiler, the underlying type defaults to `__float128` if it's available and `_Quad` if not.  You can override
 the default by defining either `BOOST_MP_USE_FLOAT128` or `BOOST_MP_USE_QUAD`.
 * When the underlying type is Intel's `_Quad` type, the code must be compiled with the compiler option `-Qoption,cpp,--extended_float_type`.
+* When compiling with `gcc`, you need to use the flag `--std=gnu++11/14/17`, as the numeric literal operator 'operator""Q' is a GNU extension. Compilation fails with the flag `--std=c++11/14/17`.
 
 [h5 float128 example:]
 
@@ -1440,13 +1444,13 @@ Which results in the output:
 [section:complex_adaptor complex_adaptor]
 
    namespace boost{ namespace multiprecision{
-   
+
    template <class Backend>
    struct complex_adaptor;
-   
+
    }}
 
-Class template `complex_adaptor` is designed to sit inbetween class `number` and an actual floating point backend, 
+Class template `complex_adaptor` is designed to sit inbetween class `number` and an actual floating point backend,
 in order to create a new complex number type.
 
 It is the means by which we implement __cpp_complex and __complex128.
@@ -2657,13 +2661,27 @@ you must use `os.precision(std::numeric_limits<T>::max_digits10)`.
 `std::numeric_limits<float>::max_digits10` is wrongly defined as 8. It should be 9.
 ]
 
-[note For Microsoft Visual Studio before 2013, and default float format,
-a small range of values approximately 0.0001 to 0.004, with exponent values of 3F2 to 3F6,
-are wrongly input by one least significant bit,
-probably every third value of significand.
+[note For Microsoft Visual Studio before 2013 and the default floating-point
+format, a small range of double-precision floating-point values with a
+significand of approximately 0.0001 to 0.004 and exponent values of 1010 to
+1014 do not round-trip exactly being off by one least significant bit,
+for probably every third value of the significand.
 
-A workaround is using scientific or exponential format `<< std::scientific`.
-]
+A workaround is using the scientific or exponential format `std::scientific`.
+
+Other compilers also fail to implement round-tripping entirely fault-free, for example, see
+[@https://www.exploringbinary.com/incorrectly-rounded-conversions-in-gcc-and-glibc/  Incorrectly Rounded Conversions in GCC and GLIBC].
+
+For more details see
+[@https://www.exploringbinary.com/incorrect-round-trip-conversions-in-visual-c-plus-plus/ Incorrect Round-Trip Conversions in Visual C++],
+and references therein
+and
+[@https://arxiv.org/pdf/1310.8121.pdf  Easy Accurate Reading and Writing of Floating-Point Numbers, Aubrey Jaffer (August 2018)].
+
+Microsoft VS2017 and other recent compilers, now use the
+[@https://doi.org/10.1145/3192366.3192369 Ryu fast float-to-string conversion by Ulf Adams]
+algorithm, claimed to be both exact and fast for 32 and 64-bit floating-point numbers.
+] [/note]
 
 [note BOOST_NO_CXX11_NUMERIC_LIMITS is a suitable feature-test macro to determine if
 `std::numeric_limits<float>::max_digits10` is implemented on any platform.
@@ -5603,6 +5621,17 @@ Windows Vista machine.
 * Support for atomic loads and stores is not currently supported, but will become more important as a larger number of floating point algorithms become parallelized.
 
 [section:hist History]
+
+[h4 Multiprecision-3.1.2 (Boost-1.70)]
+
+* Fix various conversion issues in the traits classes, check for compatibility with Boost.Optional.
+* Prevent instantiation of `std::numeric_limits` on any old type when checking for convertibility.  See [@https://github.com/boostorg/multiprecision/issues/98 #98].
+* Update variable precision code to accound for arbitrary precision integers.  See [@https://github.com/boostorg/multiprecision/issues/103 #103].
+* Add support for XML serialization archives.
+* Fix bug in fixed precision iostream formatting in `mpf_float` and `mpfr_float`.  See [@https://github.com/boostorg/multiprecision/issues/113 #113].
+* Add more overloads for special functions which are better handled natively by MPFR.
+* Fixed bug in generic `exp` implementation which could cause invariant failure.
+* Fixed generic conversion from float to integer to avoid undefined behaviour.  See [@https://github.com/boostorg/multiprecision/issues/110 #110].
 
 [h4 Multiprecision-3.1.1 (Boost-1.69)]
 

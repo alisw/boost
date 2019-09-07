@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
-<link rel="up" href="../using_http.html" title="Using HTTP">
+<link rel="up" href="../using_http.html" title="HTTP">
 <link rel="prev" href="message_containers.html" title="Message Containers">
 <link rel="next" href="serializer_stream_operations.html" title="Serializer Stream Operations">
 </head>
@@ -33,7 +33,7 @@
         stream interface:
       </p>
 <div class="table">
-<a name="beast.using_http.message_stream_operations.message_stream_operations"></a><p class="title"><b>Table&#160;1.14.&#160;Message Stream Operations</b></p>
+<a name="beast.using_http.message_stream_operations.message_stream_operations"></a><p class="title"><b>Table&#160;1.18.&#160;Message Stream Operations</b></p>
 <div class="table-contents"><table class="table" summary="Message Stream Operations">
 <colgroup>
 <col>
@@ -60,7 +60,7 @@
               </td>
 <td>
                 <p>
-                  Read a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> from a <a href="../../../../../../doc/html/boost_asio/reference/SyncReadStream.html" target="_top"><span class="bold"><strong>SyncReadStream</strong></span></a>.
+                  Read a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> from a <a href="../../../../../../doc/html/boost_asio/reference/SyncReadStream.html" target="_top"><span class="emphasis"><em>SyncReadStream</em></span></a>.
                 </p>
               </td>
 </tr>
@@ -72,7 +72,7 @@
               </td>
 <td>
                 <p>
-                  Read a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> from an <a href="../../../../../../doc/html/boost_asio/reference/AsyncReadStream.html" target="_top"><span class="bold"><strong>AsyncReadStream</strong></span></a>.
+                  Read a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> from an <a href="../../../../../../doc/html/boost_asio/reference/AsyncReadStream.html" target="_top"><span class="emphasis"><em>AsyncReadStream</em></span></a>.
                 </p>
               </td>
 </tr>
@@ -84,7 +84,7 @@
               </td>
 <td>
                 <p>
-                  Write a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> to a <a href="../../../../../../doc/html/boost_asio/reference/SyncWriteStream.html" target="_top"><span class="bold"><strong>SyncWriteStream</strong></span></a>.
+                  Write a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> to a <a href="../../../../../../doc/html/boost_asio/reference/SyncWriteStream.html" target="_top"><span class="emphasis"><em>SyncWriteStream</em></span></a>.
                 </p>
               </td>
 </tr>
@@ -96,7 +96,7 @@
               </td>
 <td>
                 <p>
-                  Write a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> to an <a href="../../../../../../doc/html/boost_asio/reference/AsyncWriteStream.html" target="_top"><span class="bold"><strong>AsyncWriteStream</strong></span></a>.
+                  Write a <a class="link" href="../ref/boost__beast__http__message.html" title="http::message"><code class="computeroutput"><span class="identifier">message</span></code></a> to an <a href="../../../../../../doc/html/boost_asio/reference/AsyncWriteStream.html" target="_top"><span class="emphasis"><em>AsyncWriteStream</em></span></a>.
                 </p>
               </td>
 </tr>
@@ -116,7 +116,7 @@
 <p>
         Because a serialized header is not length-prefixed, algorithms which parse
         messages from a stream may read past the end of a message for efficiency.
-        To hold this surplus data, all stream read operations use a passed-in <a class="link" href="../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="bold"><strong>DynamicBuffer</strong></span></a>
+        To hold this surplus data, all stream read operations use a passed-in <a class="link" href="../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="emphasis"><em>DynamicBuffer</em></span></a>
         which must be persisted between calls until the end of stream is reached
         or the stream object is destroyed. Each read operation may consume bytes
         remaining in the buffer, and leave behind new bytes. In this example we declare
@@ -138,8 +138,9 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          Other Implementations of <a class="link" href="../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="bold"><strong>DynamicBuffer</strong></span></a> may avoid parser memory allocation
-          by always returning buffer sequences of length one.
+          Other Implementations of <a class="link" href="../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="emphasis"><em>DynamicBuffer</em></span></a>
+          may avoid parser memory allocation by always returning buffer sequences
+          of length one.
         </p></td></tr>
 </table></div>
 <p>
@@ -175,7 +176,7 @@
 <span class="identifier">error_code</span> <span class="identifier">ec</span><span class="special">;</span>
 <span class="identifier">request</span><span class="special">&lt;</span><span class="identifier">string_body</span><span class="special">&gt;</span> <span class="identifier">req</span><span class="special">;</span>
 <span class="identifier">read</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span> <span class="identifier">buffer</span><span class="special">,</span> <span class="identifier">req</span><span class="special">,</span> <span class="identifier">ec</span><span class="special">);</span>
-<span class="keyword">if</span><span class="special">(</span><span class="identifier">ec</span> <span class="special">==</span> <span class="identifier">error</span><span class="special">::</span><span class="identifier">buffer_overflow</span><span class="special">)</span>
+<span class="keyword">if</span><span class="special">(</span><span class="identifier">ec</span> <span class="special">==</span> <span class="identifier">http</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">buffer_overflow</span><span class="special">)</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"Buffer limit exceeded!"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 </pre>
 <h5>
@@ -216,7 +217,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="basic_seq_packet_socket/_basic_seq_packet_socket.html" title="basic_seq_packet_socket::~basic_seq_packet_socket">
+<link rel="prev" href="basic_signal_set/_basic_signal_set.html" title="basic_signal_set::~basic_signal_set">
 <link rel="next" href="basic_socket/assign.html" title="basic_socket::assign">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="basic_seq_packet_socket/_basic_seq_packet_socket.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_socket/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="basic_signal_set/_basic_signal_set.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_socket/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -30,7 +30,8 @@
         Provides socket functionality.
       </p>
 <pre class="programlisting">template&lt;
-    typename <a class="link" href="Protocol.html" title="Protocol requirements">Protocol</a>&gt;
+    typename <a class="link" href="Protocol.html" title="Protocol requirements">Protocol</a>,
+    typename <a class="link" href="Executor1.html" title="Executor requirements">Executor</a>&gt;
 class basic_socket :
   public socket_base
 </pre>
@@ -56,6 +57,18 @@ class basic_socket :
               </th>
 </tr></thead>
 <tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket__rebind_executor.html" title="basic_socket::rebind_executor"><span class="bold"><strong>rebind_executor</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Rebinds the socket type to another executor.
+                </p>
+              </td>
+</tr>
 <tr>
 <td>
                 <p>
@@ -478,32 +491,6 @@ class basic_socket :
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_socket/get_io_context.html" title="basic_socket::get_io_context"><span class="bold"><strong>get_io_context</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="basic_socket/get_io_service.html" title="basic_socket::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="basic_socket/get_option.html" title="basic_socket::get_option"><span class="bold"><strong>get_option</strong></span></a>
                 </p>
               </td>
@@ -821,13 +808,45 @@ class basic_socket :
 </tr>
 </tbody>
 </table></div>
+<h5>
+<a name="boost_asio.reference.basic_socket.h4"></a>
+        <span class="phrase"><a name="boost_asio.reference.basic_socket.protected_data_members"></a></span><a class="link" href="basic_socket.html#boost_asio.reference.basic_socket.protected_data_members">Protected
+        Data Members</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  <a class="link" href="basic_socket/impl_.html" title="basic_socket::impl_"><span class="bold"><strong>impl_</strong></span></a>
+                </p>
+              </td>
+<td>
+              </td>
+</tr></tbody>
+</table></div>
 <p>
         The <a class="link" href="basic_socket.html" title="basic_socket"><code class="computeroutput">basic_socket</code></a>
         class template provides functionality that is common to both stream-oriented
         and datagram-oriented sockets.
       </p>
 <h5>
-<a name="boost_asio.reference.basic_socket.h4"></a>
+<a name="boost_asio.reference.basic_socket.h5"></a>
         <span class="phrase"><a name="boost_asio.reference.basic_socket.thread_safety"></a></span><a class="link" href="basic_socket.html#boost_asio.reference.basic_socket.thread_safety">Thread
         Safety</a>
       </h5>
@@ -838,7 +857,7 @@ class basic_socket :
         <span class="emphasis"><em>Shared</em></span> <span class="emphasis"><em>objects:</em></span> Unsafe.
       </p>
 <h5>
-<a name="boost_asio.reference.basic_socket.h5"></a>
+<a name="boost_asio.reference.basic_socket.h6"></a>
         <span class="phrase"><a name="boost_asio.reference.basic_socket.requirements"></a></span><a class="link" href="basic_socket.html#boost_asio.reference.basic_socket.requirements">Requirements</a>
       </h5>
 <p>
@@ -850,7 +869,7 @@ class basic_socket :
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -858,7 +877,7 @@ class basic_socket :
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="basic_seq_packet_socket/_basic_seq_packet_socket.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_socket/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="basic_signal_set/_basic_signal_set.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_socket/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

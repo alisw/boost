@@ -27,8 +27,7 @@
 <a name="beast.ref.boost__beast__flat_static_buffer"></a><a class="link" href="boost__beast__flat_static_buffer.html" title="flat_static_buffer">flat_static_buffer</a>
 </h4></div></div></div>
 <p>
-        A <span class="bold"><strong>DynamicBuffer</strong></span> with a fixed size internal
-        buffer.
+        A <span class="emphasis"><em>DynamicBuffer</em></span> with a fixed size internal buffer.
       </p>
 <h5>
 <a name="beast.ref.boost__beast__flat_static_buffer.h0"></a>
@@ -72,7 +71,7 @@
               </td>
 <td>
                 <p>
-                  The type used to represent the input sequence as a list of buffers.
+                  The ConstBufferSequence used to represent the readable bytes.
                 </p>
               </td>
 </tr>
@@ -84,7 +83,19 @@
               </td>
 <td>
                 <p>
-                  The type used to represent the output sequence as a list of buffers.
+                  The MutableBufferSequence used to represent the writable bytes.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="boost__beast__flat_static_buffer/mutable_data_type.html" title="flat_static_buffer::mutable_data_type"><span class="bold"><strong>mutable_data_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  The MutableBufferSequence used to represent the readable bytes.
                 </p>
               </td>
 </tr>
@@ -141,12 +152,36 @@
 <tr>
 <td>
                 <p>
+                  <a class="link" href="boost__beast__flat_static_buffer/cdata.html" title="flat_static_buffer::cdata"><span class="bold"><strong>cdata</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Returns a constant buffer sequence representing the readable bytes.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="boost__beast__flat_static_buffer/clear.html" title="flat_static_buffer::clear"><span class="bold"><strong>clear</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Clear the readable and writable bytes to zero.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
                   <a class="link" href="boost__beast__flat_static_buffer/commit.html" title="flat_static_buffer::commit"><span class="bold"><strong>commit</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  Move bytes from the output sequence to the input sequence.
+                  Append writable bytes to the readable bytes.
                 </p>
               </td>
 </tr>
@@ -158,7 +193,7 @@
               </td>
 <td>
                 <p>
-                  Remove bytes from the input sequence.
+                  Remove bytes from beginning of the readable bytes.
                 </p>
               </td>
 </tr>
@@ -170,7 +205,10 @@
               </td>
 <td>
                 <p>
-                  Get a list of buffers that represent the input sequence.
+                  Returns a constant buffer sequence representing the readable bytes.
+                </p>
+                <p>
+                  Returns a mutable buffer sequence representing the readable bytes.
                 </p>
               </td>
 </tr>
@@ -218,20 +256,7 @@
               </td>
 <td>
                 <p>
-                  Get a list of buffers that represent the output sequence, with
-                  the given size.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="boost__beast__flat_static_buffer/reset.html" title="flat_static_buffer::reset"><span class="bold"><strong>reset</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Set the input and output sequences to size 0.
+                  Returns a mutable buffer sequence representing writable bytes.
                 </p>
               </td>
 </tr>
@@ -243,7 +268,7 @@
               </td>
 <td>
                 <p>
-                  Return the size of the input sequence.
+                  Returns the number of readable bytes.
                 </p>
               </td>
 </tr>
@@ -350,7 +375,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

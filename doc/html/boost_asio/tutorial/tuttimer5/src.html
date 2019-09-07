@@ -31,7 +31,7 @@
 // timer.cpp
 // ~~~~~~~~~
 //
-// Copyright (c) 2003-2018 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2019 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -46,7 +46,7 @@ class printer
 {
 public:
   printer(boost::asio::io_context&amp; io)
-    : strand_(io),
+    : strand_(boost::asio::make_strand(io)),
       timer1_(io, boost::asio::chrono::seconds(1)),
       timer2_(io, boost::asio::chrono::seconds(1)),
       count_(0)
@@ -92,7 +92,7 @@ public:
   }
 
 private:
-  boost::asio::io_context::strand strand_;
+  boost::asio::strand&lt;boost::asio::io_context::executor_type&gt; strand_;
   boost::asio::steady_timer timer1_;
   boost::asio::steady_timer timer2_;
   int count_;
@@ -116,7 +116,7 @@ int main()
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -7,7 +7,7 @@
 <link rel="home" href="../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="resolver_errc__try_again.html" title="resolver_errc::try_again">
-<link rel="next" href="serial_port/assign.html" title="serial_port::assign">
+<link rel="next" href="serial_port_base.html" title="serial_port_base">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,17 +20,18 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="resolver_errc__try_again.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="serial_port/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="resolver_errc__try_again.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="serial_port_base.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_asio.reference.serial_port"></a><a class="link" href="serial_port.html" title="serial_port">serial_port</a>
 </h3></div></div></div>
 <p>
-        Provides serial port functionality.
+        <a class="indexterm" name="boost_asio.indexterm.serial_port"></a> 
+Typedef for the typical usage
+        of a serial port.
       </p>
-<pre class="programlisting">class serial_port :
-  public serial_port_base
+<pre class="programlisting">typedef basic_serial_port serial_port;
 </pre>
 <h5>
 <a name="boost_asio.reference.serial_port.h0"></a>
@@ -57,7 +58,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/executor_type.html" title="serial_port::executor_type"><span class="bold"><strong>executor_type</strong></span></a>
+                  <a class="link" href="basic_serial_port/executor_type.html" title="basic_serial_port::executor_type"><span class="bold"><strong>executor_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -69,19 +70,19 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/lowest_layer_type.html" title="serial_port::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
+                  <a class="link" href="basic_serial_port/lowest_layer_type.html" title="basic_serial_port::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  A basic_serial_port is always the lowest layer.
+                  A basic_basic_serial_port is always the lowest layer.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/native_handle_type.html" title="serial_port::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
+                  <a class="link" href="basic_serial_port/native_handle_type.html" title="basic_serial_port::native_handle_type"><span class="bold"><strong>native_handle_type</strong></span></a>
                 </p>
               </td>
 <td>
@@ -118,7 +119,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/assign.html" title="serial_port::assign"><span class="bold"><strong>assign</strong></span></a>
+                  <a class="link" href="basic_serial_port/assign.html" title="basic_serial_port::assign"><span class="bold"><strong>assign</strong></span></a>
                 </p>
               </td>
 <td>
@@ -130,7 +131,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/async_read_some.html" title="serial_port::async_read_some"><span class="bold"><strong>async_read_some</strong></span></a>
+                  <a class="link" href="basic_serial_port/async_read_some.html" title="basic_serial_port::async_read_some"><span class="bold"><strong>async_read_some</strong></span></a>
                 </p>
               </td>
 <td>
@@ -142,7 +143,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/async_write_some.html" title="serial_port::async_write_some"><span class="bold"><strong>async_write_some</strong></span></a>
+                  <a class="link" href="basic_serial_port/async_write_some.html" title="basic_serial_port::async_write_some"><span class="bold"><strong>async_write_some</strong></span></a>
                 </p>
               </td>
 <td>
@@ -154,7 +155,22 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/cancel.html" title="serial_port::cancel"><span class="bold"><strong>cancel</strong></span></a>
+                  <a class="link" href="basic_serial_port/basic_serial_port.html" title="basic_serial_port::basic_serial_port"><span class="bold"><strong>basic_serial_port</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Construct a basic_serial_port without opening it. <br> <span class="silver"> &#8212;</span><br>
+                  Construct and open a basic_serial_port. <br> <span class="silver"> &#8212;</span><br> Construct
+                  a basic_serial_port on an existing native serial port. <br> <span class="silver"> &#8212;</span>
+                  <br> Move-construct a basic_serial_port from another.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="basic_serial_port/cancel.html" title="basic_serial_port::cancel"><span class="bold"><strong>cancel</strong></span></a>
                 </p>
               </td>
 <td>
@@ -166,7 +182,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/close.html" title="serial_port::close"><span class="bold"><strong>close</strong></span></a>
+                  <a class="link" href="basic_serial_port/close.html" title="basic_serial_port::close"><span class="bold"><strong>close</strong></span></a>
                 </p>
               </td>
 <td>
@@ -178,7 +194,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/get_executor.html" title="serial_port::get_executor"><span class="bold"><strong>get_executor</strong></span></a>
+                  <a class="link" href="basic_serial_port/get_executor.html" title="basic_serial_port::get_executor"><span class="bold"><strong>get_executor</strong></span></a>
                 </p>
               </td>
 <td>
@@ -190,33 +206,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/get_io_context.html" title="serial_port::get_io_context"><span class="bold"><strong>get_io_context</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="serial_port/get_io_service.html" title="serial_port::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="serial_port/get_option.html" title="serial_port::get_option"><span class="bold"><strong>get_option</strong></span></a>
+                  <a class="link" href="basic_serial_port/get_option.html" title="basic_serial_port::get_option"><span class="bold"><strong>get_option</strong></span></a>
                 </p>
               </td>
 <td>
@@ -228,7 +218,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/is_open.html" title="serial_port::is_open"><span class="bold"><strong>is_open</strong></span></a>
+                  <a class="link" href="basic_serial_port/is_open.html" title="basic_serial_port::is_open"><span class="bold"><strong>is_open</strong></span></a>
                 </p>
               </td>
 <td>
@@ -240,7 +230,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/lowest_layer.html" title="serial_port::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
+                  <a class="link" href="basic_serial_port/lowest_layer.html" title="basic_serial_port::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
                 </p>
               </td>
 <td>
@@ -253,7 +243,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/native_handle.html" title="serial_port::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
+                  <a class="link" href="basic_serial_port/native_handle.html" title="basic_serial_port::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
                 </p>
               </td>
 <td>
@@ -265,7 +255,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/open.html" title="serial_port::open"><span class="bold"><strong>open</strong></span></a>
+                  <a class="link" href="basic_serial_port/open.html" title="basic_serial_port::open"><span class="bold"><strong>open</strong></span></a>
                 </p>
               </td>
 <td>
@@ -277,19 +267,19 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/operator_eq_.html" title="serial_port::operator="><span class="bold"><strong>operator=</strong></span></a>
+                  <a class="link" href="basic_serial_port/operator_eq_.html" title="basic_serial_port::operator="><span class="bold"><strong>operator=</strong></span></a>
                 </p>
               </td>
 <td>
                 <p>
-                  Move-assign a serial_port from another.
+                  Move-assign a basic_serial_port from another.
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/read_some.html" title="serial_port::read_some"><span class="bold"><strong>read_some</strong></span></a>
+                  <a class="link" href="basic_serial_port/read_some.html" title="basic_serial_port::read_some"><span class="bold"><strong>read_some</strong></span></a>
                 </p>
               </td>
 <td>
@@ -301,7 +291,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/send_break.html" title="serial_port::send_break"><span class="bold"><strong>send_break</strong></span></a>
+                  <a class="link" href="basic_serial_port/send_break.html" title="basic_serial_port::send_break"><span class="bold"><strong>send_break</strong></span></a>
                 </p>
               </td>
 <td>
@@ -313,22 +303,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/serial_port.html" title="serial_port::serial_port"><span class="bold"><strong>serial_port</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Construct a serial_port without opening it. <br> <span class="silver"> &#8212;</span><br> Construct
-                  and open a serial_port. <br> <span class="silver"> &#8212;</span><br> Construct a serial_port on
-                  an existing native serial port. <br> <span class="silver"> &#8212;</span><br> Move-construct a
-                  serial_port from another.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="serial_port/set_option.html" title="serial_port::set_option"><span class="bold"><strong>set_option</strong></span></a>
+                  <a class="link" href="basic_serial_port/set_option.html" title="basic_serial_port::set_option"><span class="bold"><strong>set_option</strong></span></a>
                 </p>
               </td>
 <td>
@@ -340,7 +315,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/write_some.html" title="serial_port::write_some"><span class="bold"><strong>write_some</strong></span></a>
+                  <a class="link" href="basic_serial_port/write_some.html" title="basic_serial_port::write_some"><span class="bold"><strong>write_some</strong></span></a>
                 </p>
               </td>
 <td>
@@ -352,7 +327,7 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="serial_port/_serial_port.html" title="serial_port::~serial_port"><span class="bold"><strong>~serial_port</strong></span></a>
+                  <a class="link" href="basic_serial_port/_basic_serial_port.html" title="basic_serial_port::~basic_serial_port"><span class="bold"><strong>~basic_serial_port</strong></span></a>
                 </p>
               </td>
 <td>
@@ -364,7 +339,7 @@
 </tbody>
 </table></div>
 <p>
-        The <a class="link" href="serial_port.html" title="serial_port"><code class="computeroutput">serial_port</code></a>
+        The <a class="link" href="basic_serial_port.html" title="basic_serial_port"><code class="computeroutput">basic_serial_port</code></a>
         class provides a wrapper over serial port functionality.
       </p>
 <h5>
@@ -391,7 +366,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -399,7 +374,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="resolver_errc__try_again.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="serial_port/assign.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="resolver_errc__try_again.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="serial_port_base.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -5,11 +5,21 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 #
-foreach(name
-  point
-  point_concepts)
-  add_executable(gil_test_${name} "")
-  target_sources(gil_test_${name} PRIVATE ${_boost_gil_headers} ${name}.cpp)
-  target_link_libraries(gil_test_${name} PRIVATE Boost::boost)
-  add_test(gil.tests.core.${name} gil_test_${name})
+foreach(_name
+  concepts
+  point)
+  set(_target test_core_point_${_name})
+
+  add_executable(${_target} "")
+  target_sources(${_target} PRIVATE ${_name}.cpp)
+  target_link_libraries(${_target}
+    PRIVATE
+      gil_compile_options
+      gil_include_directories
+      gil_dependencies)
+  target_compile_definitions(${_target} PRIVATE BOOST_GIL_USE_CONCEPT_CHECK)
+  add_test(test.core.point.${_name} ${_target})
+
+  unset(_name)
+  unset(_target)
 endforeach()

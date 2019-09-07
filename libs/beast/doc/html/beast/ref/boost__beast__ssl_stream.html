@@ -34,7 +34,7 @@
         <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.synopsis"></a></span><a class="link" href="boost__beast__ssl_stream.html#beast.ref.boost__beast__ssl_stream.synopsis">Synopsis</a>
       </h5>
 <p>
-        Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/experimental/core/ssl_stream.hpp" target="_top">boost/beast/experimental/core/ssl_stream.hpp</a>&gt;</code>
+        Defined in header <code class="literal">&lt;<a href="../../../../../../boost/beast/ssl/ssl_stream.hpp" target="_top">boost/beast/ssl/ssl_stream.hpp</a>&gt;</code>
       </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">NextLayer</span><span class="special">&gt;</span>
@@ -84,18 +84,6 @@
 <td>
                 <p>
                   Structure for use with deprecated impl_type.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="boost__beast__ssl_stream/lowest_layer_type.html" title="ssl_stream::lowest_layer_type"><span class="bold"><strong>lowest_layer_type</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  The type of the lowest layer.
                 </p>
               </td>
 </tr>
@@ -223,18 +211,6 @@
 <tr>
 <td>
                 <p>
-                  <a class="link" href="boost__beast__ssl_stream/lowest_layer.html" title="ssl_stream::lowest_layer"><span class="bold"><strong>lowest_layer</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Get a reference to the lowest layer.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="boost__beast__ssl_stream/native_handle.html" title="ssl_stream::native_handle"><span class="bold"><strong>native_handle</strong></span></a>
                 </p>
               </td>
@@ -253,18 +229,6 @@
 <td>
                 <p>
                   Get a reference to the next layer.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="boost__beast__ssl_stream/operator_eq_.html" title="ssl_stream::operator="><span class="bold"><strong>operator=</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Move Assignment.
                 </p>
               </td>
 </tr>
@@ -338,9 +302,6 @@
                 <p>
                   Construct a stream.
                 </p>
-                <p>
-                  Move Constructor.
-                </p>
               </td>
 </tr>
 <tr>
@@ -383,15 +344,14 @@
         <span class="phrase"><a name="beast.ref.boost__beast__ssl_stream.example"></a></span><a class="link" href="boost__beast__ssl_stream.html#beast.ref.boost__beast__ssl_stream.example">Example</a>
       </h5>
 <p>
-        To use this template with a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span></code>,
-        you would write:
+        To use this template with a <a class="link" href="boost__beast__tcp_stream.html" title="tcp_stream"><code class="computeroutput"><span class="identifier">tcp_stream</span></code></a>, you would write:
       </p>
-<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">io_context</span> <span class="identifier">ioc</span><span class="special">;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">context</span> <span class="identifier">ctx</span><span class="special">{</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">context</span><span class="special">::</span><span class="identifier">sslv23</span><span class="special">};</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">ssl_stream</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">:</span><span class="identifier">ip</span><span class="special">::</span><span class="identifier">tcp</span><span class="special">::</span><span class="identifier">socket</span><span class="special">&gt;</span> <span class="identifier">sock</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
+<pre class="programlisting"><span class="identifier">net</span><span class="special">::</span><span class="identifier">io_context</span> <span class="identifier">ioc</span><span class="special">;</span>
+<span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">context</span> <span class="identifier">ctx</span><span class="special">{</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">context</span><span class="special">::</span><span class="identifier">tlsv12</span><span class="special">};</span>
+<span class="identifier">beast</span><span class="special">::</span><span class="identifier">ssl_stream</span><span class="special">&lt;</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">tcp_stream</span><span class="special">&gt;</span> <span class="identifier">sock</span><span class="special">{</span><span class="identifier">ioc</span><span class="special">,</span> <span class="identifier">ctx</span><span class="special">};</span>
 </pre>
 <p>
-        In addition to providing an interface identical to <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>, the wrapper has the following additional
+        In addition to providing an interface identical to <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>, the wrapper has the following additional
         properties:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -406,14 +366,18 @@
           </li>
 <li class="listitem">
             Uses <a class="link" href="boost__beast__flat_stream.html" title="flat_stream"><code class="computeroutput"><span class="identifier">flat_stream</span></code></a> internally, as a
-            performance work-around for a limitation of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">asio</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>
+            performance work-around for a limitation of <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">ssl</span><span class="special">::</span><span class="identifier">stream</span></code>
             when writing buffer sequences having length greater than one.
           </li>
 </ul></div>
+<p>
+        Convenience header <code class="literal">&lt;<a href="../../../../../../boost/beast/ssl.hpp" target="_top">boost/beast/ssl.hpp</a>&gt;</code>
+      </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>write (5 of 12 overloads)</title>
+<title>write (5 of 16 overloads)</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
 <link rel="up" href="../write.html" title="write">
-<link rel="prev" href="overload4.html" title="write (4 of 12 overloads)">
-<link rel="next" href="overload6.html" title="write (6 of 12 overloads)">
+<link rel="prev" href="overload4.html" title="write (4 of 16 overloads)">
+<link rel="next" href="overload6.html" title="write (6 of 16 overloads)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -24,7 +24,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="boost_asio.reference.write.overload5"></a><a class="link" href="overload5.html" title="write (5 of 12 overloads)">write (5 of 12
+<a name="boost_asio.reference.write.overload5"></a><a class="link" href="overload5.html" title="write (5 of 16 overloads)">write (5 of 16
         overloads)</a>
 </h4></div></div></div>
 <p>
@@ -32,11 +32,11 @@
         </p>
 <pre class="programlisting">template&lt;
     typename <a class="link" href="../SyncWriteStream.html" title="Buffer-oriented synchronous write stream requirements">SyncWriteStream</a>,
-    typename <a class="link" href="../DynamicBuffer.html" title="Dynamic buffer requirements">DynamicBuffer</a>&gt;
+    typename <a class="link" href="../DynamicBuffer_v1.html" title="Dynamic buffer requirements (version 1)">DynamicBuffer_v1</a>&gt;
 std::size_t write(
     SyncWriteStream &amp; s,
-    DynamicBuffer &amp;&amp; buffers,
-    typename enable_if&lt; is_dynamic_buffer&lt; typename decay&lt; DynamicBuffer &gt;::type &gt;::value &gt;::type *  = 0);
+    DynamicBuffer_v1 &amp;&amp; buffers,
+    typename enable_if&lt; is_dynamic_buffer_v1&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &amp;&amp;!is_dynamic_buffer_v2&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &gt;::type *  = 0);
 </pre>
 <p>
           This function is used to write a certain number of bytes of data to a stream.
@@ -108,7 +108,7 @@ std::size_t write(
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

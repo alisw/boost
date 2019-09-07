@@ -151,20 +151,15 @@
 <p>
         Objects of this type are filled in by callers and provided to the deflate
         codec to define the input and output areas for the next compress or decompress
-        operation.
-      </p>
-<p>
-        The application must update next_in and avail_in when avail_in has dropped
-        to zero. It must update next_out and avail_out when avail_out has dropped
-        to zero. The application must initialize zalloc, zfree and opaque before
-        calling the init function. All other fields are set by the compression library
-        and must not be updated by the application.
-      </p>
-<p>
-        The fields total_in and total_out can be used for statistics or progress
-        reports. After compression, total_in holds the total size of the uncompressed
-        data and may be saved for use in the decompressor (particularly if the decompressor
-        wants to decompress everything in a single step).
+        operation. The application must update next_in and avail_in when avail_in
+        has dropped to zero. It must update next_out and avail_out when avail_out
+        has dropped to zero. The application must initialize zalloc, zfree and opaque
+        before calling the init function. All other fields are set by the compression
+        library and must not be updated by the application. The fields total_in and
+        total_out can be used for statistics or progress reports. After compression,
+        total_in holds the total size of the uncompressed data and may be saved for
+        use in the decompressor (particularly if the decompressor wants to decompress
+        everything in a single step).
       </p>
 <p>
         Convenience header <code class="literal">&lt;<a href="../../../../../../boost/beast/zlib.hpp" target="_top">boost/beast/zlib.hpp</a>&gt;</code>
@@ -172,7 +167,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

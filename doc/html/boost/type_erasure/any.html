@@ -8,7 +8,7 @@
 <link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="../../boost_typeerasure/reference.html#header.boost.type_erasure.any_hpp" title="Header &lt;boost/type_erasure/any.hpp&gt;">
 <link rel="prev" href="../../boost_typeerasure/reference.html" title="Reference">
-<link rel="next" href="any_Conc_1_3_41_13_1_1_1_2.html" title="Class template any&lt;Concept, T &amp;&gt;">
+<link rel="next" href="any_Conc_1_3_41_13_1_1_1_2.html" title="Class template any&lt;Concept, const T &amp;&gt;">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -60,6 +60,8 @@
 <p><a class="link" href="concept_of.html" title="Struct template concept_of">concept_of</a>, <a class="link" href="placeholder_of.html" title="Struct template placeholder_of">placeholder_of</a>, <a class="link" href="any_cast.html" title="Function any_cast">any_cast</a>, <a class="link" href="is_empty.html" title="Function template is_empty">is_empty</a>, <a class="link" href="binding_of.html" title="Function template binding_of">binding_of</a>, <a class="link" href="typeid_of.html" title="Function typeid_of">typeid_of</a> </p>
 <p>
 </p>
+<p>
+</p>
 <div class="refsect2">
 <a name="id-1.3.41.13.2.3.4.4"></a><h3>Template Parameters</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -91,6 +93,8 @@
 <p> <code class="computeroutput"><a class="link" href="is_empty.html" title="Function template is_empty">is_empty</a></code> </p>
 <p>
 </p>
+<p>
+</p>
 <div class="variablelist"><table border="0" class="variablelist compact">
 <colgroup>
 <col align="left" valign="top">
@@ -112,6 +116,8 @@
 <pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> <a name="id-1_3_41_13_1_1_1_1_5-bb"></a><span class="identifier">any</span><span class="special">(</span><span class="identifier">U</span> <span class="special">&amp;&amp;</span> data<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an <code class="computeroutput"><a class="link" href="any.html" title="Class template any">any</a></code> to hold a copy of <code class="computeroutput">data</code>. The <code class="computeroutput">Concept</code> will be instantiated with the placeholder <code class="computeroutput">T</code> bound to U.</p>
 <p>
+
+
 
 
 </p>
@@ -145,11 +151,15 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">U</code> is a model of <code class="computeroutput">Concept</code>. </p>
-<p><code class="computeroutput">U</code> must be <a href="../../../../doc/html/CopyConstructible.html" target="_top">CopyConstructible</a>. </p>
-<p><code class="computeroutput">Concept</code> must not refer to any non-deduced placeholder besides <code class="computeroutput">T</code>.</p>
-</td>
+<td><p><code class="computeroutput">U</code> is a model of <code class="computeroutput">Concept</code>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">U</code> must be <a href="../../../../doc/html/CopyConstructible.html" target="_top">CopyConstructible</a>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">Concept</code> must not refer to any non-deduced placeholder besides <code class="computeroutput">T</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -163,6 +173,9 @@
   <a name="id-1_3_41_13_1_1_1_1_6-bb"></a><span class="identifier">any</span><span class="special">(</span><span class="identifier">U</span> <span class="special">&amp;&amp;</span> data<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="static_binding.html" title="Struct template static_binding">static_binding</a><span class="special">&lt;</span> <span class="identifier">Map</span> <span class="special">&gt;</span> <span class="special">&amp;</span> binding<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an <code class="computeroutput"><a class="link" href="any.html" title="Class template any">any</a></code> to hold a copy of <code class="computeroutput">data</code> with explicitly specified placeholder bindings.</p>
 <p>
+
+
+
 
 
 </p>
@@ -202,12 +215,19 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">U</code> is a model of <code class="computeroutput">Concept</code>. </p>
-<p><code class="computeroutput">U</code> must be <a href="../../../../doc/html/CopyConstructible.html" target="_top">CopyConstructible</a>. </p>
-<p><code class="computeroutput">Map</code> is an MPL map with an entry for every non-deduced placeholder referred to by <code class="computeroutput">Concept</code>. </p>
-<p><code class="computeroutput"><code class="computeroutput">T</code> must</code> map to <code class="computeroutput">U</code> in <code class="computeroutput">Map</code>.</p>
-</td>
+<td><p><code class="computeroutput">U</code> is a model of <code class="computeroutput">Concept</code>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">U</code> must be <a href="../../../../doc/html/CopyConstructible.html" target="_top">CopyConstructible</a>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">Map</code> is an MPL map with an entry for every non-deduced placeholder referred to by <code class="computeroutput">Concept</code>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput"><code class="computeroutput">T</code> must</code> map to <code class="computeroutput">U</code> in <code class="computeroutput">Map</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -260,6 +280,8 @@
 <p>
 
 
+
+
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
 <colgroup>
@@ -282,11 +304,15 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">Concept</code> must contain <a class="link" href="constructible.html" title="Struct template constructible">constructible&lt;T(const T&amp;)&gt;</a>. </p>
-<p><code class="computeroutput">Concept</code> must not refer to any non-deduced placeholder besides <code class="computeroutput">T</code>. </p>
-<p>After substituting <code class="computeroutput">T</code> for <code class="computeroutput">Tag2</code>, the requirements of <code class="computeroutput">Concept2</code> must be a superset of the requirements of <code class="computeroutput">Concept</code>.</p>
-</td>
+<td><p><code class="computeroutput">Concept</code> must contain <a class="link" href="constructible.html" title="Struct template constructible">constructible&lt;T(const T&amp;)&gt;</a>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">Concept</code> must not refer to any non-deduced placeholder besides <code class="computeroutput">T</code>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>After substituting <code class="computeroutput">T</code> for <code class="computeroutput">Tag2</code>, the requirements of <code class="computeroutput">Concept2</code> must be a superset of the requirements of <code class="computeroutput">Concept</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -301,6 +327,8 @@
       <span class="keyword">const</span> <a class="link" href="static_binding.html" title="Struct template static_binding">static_binding</a><span class="special">&lt;</span> <span class="identifier">Map</span> <span class="special">&gt;</span> <span class="special">&amp;</span> binding<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an <code class="computeroutput"><a class="link" href="any.html" title="Class template any">any</a></code> from another <code class="computeroutput"><a class="link" href="any.html" title="Class template any">any</a></code>.</p>
 <p>
+
+
 
 
 </p>
@@ -331,11 +359,15 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">Concept</code> must contain <a class="link" href="constructible.html" title="Struct template constructible">constructible&lt;T(const T&amp;)&gt;</a>. </p>
-<p><code class="computeroutput">Map</code> must be an MPL map with keys for all the non-deduced placeholders used by <code class="computeroutput">Concept</code> and values for the corresponding placeholders in <code class="computeroutput">Concept2</code>. </p>
-<p>After substituting placeholders according to <code class="computeroutput">Map</code>, the requirements of <code class="computeroutput">Concept2</code> must be a superset of the requirements of <code class="computeroutput">Concept</code>.</p>
-</td>
+<td><p><code class="computeroutput">Concept</code> must contain <a class="link" href="constructible.html" title="Struct template constructible">constructible&lt;T(const T&amp;)&gt;</a>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">Map</code> must be an MPL map with keys for all the non-deduced placeholders used by <code class="computeroutput">Concept</code> and values for the corresponding placeholders in <code class="computeroutput">Concept2</code>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>After substituting placeholders according to <code class="computeroutput">Map</code>, the requirements of <code class="computeroutput">Concept2</code> must be a superset of the requirements of <code class="computeroutput">Concept</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -349,6 +381,7 @@
   <a name="id-1_3_41_13_1_1_1_1_10-bb"></a><span class="identifier">any</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="../any.html" title="Class any">any</a><span class="special">&lt;</span> <span class="identifier">Concept2</span><span class="special">,</span> <span class="identifier">Tag2</span> <span class="special">&gt;</span> <span class="special">&amp;</span> other<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="binding.html" title="Class template binding">binding</a><span class="special">&lt;</span> <span class="identifier">Concept</span> <span class="special">&gt;</span> <span class="special">&amp;</span> binding<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs an <code class="computeroutput"><a class="link" href="any.html" title="Class template any">any</a></code> from another <code class="computeroutput"><a class="link" href="any.html" title="Class template any">any</a></code>.</p>
 <p>
+
 
 
 
@@ -389,10 +422,11 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">Concept</code> must contain <a class="link" href="constructible.html" title="Struct template constructible">constructible&lt;T(const T&amp;)&gt;</a>. </p>
-<p>The type stored in <code class="computeroutput">other</code> must match the type expected by <code class="computeroutput">binding</code>.</p>
-</td>
+<td><p><code class="computeroutput">Concept</code> must contain <a class="link" href="constructible.html" title="Struct template constructible">constructible&lt;T(const T&amp;)&gt;</a>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>The type stored in <code class="computeroutput">other</code> must match the type expected by <code class="computeroutput">binding</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
@@ -409,6 +443,8 @@
 <pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> U<span class="special">&gt;</span> <span class="keyword">explicit</span> <a name="id-1_3_41_13_1_1_1_1_11-bb"></a><span class="identifier">any</span><span class="special">(</span><span class="identifier">U</span> <span class="special">&amp;&amp;</span><span class="special">...</span> arg<span class="special">)</span><span class="special">;</span></pre>
 <p>Calls a constructor of the contained type. The bindings will be deduced from the arguments.</p>
 <p>
+
+
 
 
 </p>
@@ -442,11 +478,15 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">Concept</code> must contain an instance of <a class="link" href="constructible.html" title="Struct template constructible">constructible</a> which can be called with these arguments. </p>
-<p>At least one of the arguments must by an <a class="link" href="any.html" title="Class template any">any</a> with the same <code class="computeroutput">Concept</code> as this. </p>
-<p>The bindings of all the arguments that are <a class="link" href="any.html" title="Class template any">any</a>'s, must be the same.</p>
-</td>
+<td><p><code class="computeroutput">Concept</code> must contain an instance of <a class="link" href="constructible.html" title="Struct template constructible">constructible</a> which can be called with these arguments. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>At least one of the arguments must by an <a class="link" href="any.html" title="Class template any">any</a> with the same <code class="computeroutput">Concept</code> as this. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>The bindings of all the arguments that are <a class="link" href="any.html" title="Class template any">any</a>'s, must be the same.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Throws:</span></p></td>
@@ -460,6 +500,7 @@
   <span class="keyword">explicit</span> <a name="id-1_3_41_13_1_1_1_1_12-bb"></a><span class="identifier">any</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="binding.html" title="Class template binding">binding</a><span class="special">&lt;</span> <span class="identifier">Concept</span> <span class="special">&gt;</span> <span class="special">&amp;</span> binding<span class="special">,</span> <span class="identifier">U</span> <span class="special">&amp;&amp;</span><span class="special">...</span> arg<span class="special">)</span><span class="special">;</span></pre>
 <p>Calls a constructor of the contained type.</p>
 <p>
+
 
 
 
@@ -491,10 +532,11 @@
 </tr>
 <tr>
 <td><p><span class="term">Requires:</span></p></td>
-<td>
-<p><code class="computeroutput">Concept</code> must contain a matching instance of <a class="link" href="constructible.html" title="Struct template constructible">constructible</a>. </p>
-<p>The contained type of every argument that is an <a class="link" href="any.html" title="Class template any">any</a>, must be the same as that specified by <code class="computeroutput">binding</code>.</p>
-</td>
+<td><p><code class="computeroutput">Concept</code> must contain a matching instance of <a class="link" href="constructible.html" title="Struct template constructible">constructible</a>. </p></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p>The contained type of every argument that is an <a class="link" href="any.html" title="Class template any">any</a>, must be the same as that specified by <code class="computeroutput">binding</code>.</p></td>
 </tr>
 <tr>
 <td><p><span class="term">Postconditions:</span></p></td>
@@ -552,8 +594,8 @@
 <div class="refsect2">
 <a name="id-1.3.41.13.2.3.4.6"></a><h3>Specializations</h3>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
-<li class="listitem"><p><a class="link" href="any_Conc_1_3_41_13_1_1_1_2.html" title="Class template any&lt;Concept, T &amp;&gt;">Class template any&lt;Concept, T &amp;&gt;</a></p></li>
-<li class="listitem"><p><a class="link" href="any_Conc_1_3_41_13_1_1_1_3.html" title="Class template any&lt;Concept, const T &amp;&gt;">Class template any&lt;Concept, const T &amp;&gt;</a></p></li>
+<li class="listitem"><p><a class="link" href="any_Conc_1_3_41_13_1_1_1_2.html" title="Class template any&lt;Concept, const T &amp;&gt;">Class template any&lt;Concept, const T &amp;&gt;</a></p></li>
+<li class="listitem"><p><a class="link" href="any_Conc_1_3_41_13_1_1_1_3.html" title="Class template any&lt;Concept, T &amp;&gt;">Class template any&lt;Concept, T &amp;&gt;</a></p></li>
 <li class="listitem"><p><a class="link" href="any_Conc_1_3_41_13_1_1_1_4.html" title="Class template any&lt;Concept, T &amp;&amp;&gt;">Class template any&lt;Concept, T &amp;&amp;&gt;</a></p></li>
 </ul></div>
 </div>

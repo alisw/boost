@@ -11,10 +11,10 @@
 #include <boost/gil.hpp>
 #include <boost/gil/extension/io/bmp.hpp>
 
-#include <boost/filesystem/convenience.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <fstream>
+#include <type_traits>
 
 #include "paths.hpp"
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_SUITE( gil_io_tests )
 BOOST_AUTO_TEST_CASE( make_reader_backend_test )
 {
     {
-        BOOST_STATIC_ASSERT(( boost::is_same< gil::detail::is_supported_path_spec< char* >::type, mpl::true_ >::value ));
+        static_assert(std::is_same<gil::detail::is_supported_path_spec<char*>::type, mpl::true_>::value, "");
 
         get_reader_backend< const char*, bmp_tag >::type backend_char   = make_reader_backend( bmp_filename.c_str(), bmp_tag() );
         get_reader_backend< std::string, bmp_tag >::type backend_string = make_reader_backend( bmp_filename, bmp_tag() );
@@ -131,11 +131,9 @@ BOOST_AUTO_TEST_CASE( make_dynamic_image_reader_test )
 BOOST_AUTO_TEST_CASE( make_writer_test )
 {
     {
-        typedef get_writer< const char*
-                          , bmp_tag
-                          >::type writer_t;
+        using writer_t = get_writer<char const*, bmp_tag>::type;
 
-        BOOST_STATIC_ASSERT(( boost::is_same< gil::detail::is_writer< writer_t >::type, boost::mpl::true_ >::value ));
+        static_assert(std::is_same<gil::detail::is_writer<writer_t>::type, boost::mpl::true_>::value, "");
     }
 
     {

@@ -4934,11 +4934,17 @@ converted to <code>intrusive_ptr&lt;U&gt;</code> whenever <code>T*</code> can be
     intrusive_ptr(intrusive_ptr const &amp; r);
     template&lt;class Y&gt; intrusive_ptr(intrusive_ptr&lt;Y&gt; const &amp; r);
 
+    intrusive_ptr(intrusive_ptr &amp;&amp; r);
+    template&lt;class Y&gt; intrusive_ptr(intrusive_ptr&lt;Y&gt; &amp;&amp; r);
+
     ~intrusive_ptr();
 
     intrusive_ptr &amp; operator=(intrusive_ptr const &amp; r);
     template&lt;class Y&gt; intrusive_ptr &amp; operator=(intrusive_ptr&lt;Y&gt; const &amp; r);
     intrusive_ptr &amp; operator=(T * r);
+
+    intrusive_ptr &amp; operator=(intrusive_ptr &amp;&amp; r);
+    template&lt;class Y&gt; intrusive_ptr &amp; operator=(intrusive_ptr&lt;Y&gt; &amp;&amp; r);
 
     void reset();
     void reset(T * r);
@@ -4972,8 +4978,8 @@ converted to <code>intrusive_ptr&lt;U&gt;</code> whenever <code>T*</code> can be
   template&lt;class T, class U&gt;
     bool operator!=(T * a, intrusive_ptr&lt;U&gt; const &amp; b) noexcept;
 
-  template&lt;class T, class U&gt;
-    bool operator&lt;(intrusive_ptr&lt;T&gt; const &amp; a, intrusive_ptr&lt;U&gt; const &amp; b) noexcept;
+  template&lt;class T&gt;
+    bool operator&lt;(intrusive_ptr&lt;T&gt; const &amp; a, intrusive_ptr&lt;T&gt; const &amp; b) noexcept;
 
   template&lt;class T&gt; void swap(intrusive_ptr&lt;T&gt; &amp; a, intrusive_ptr&lt;T&gt; &amp; b) noexcept;
 
@@ -5083,6 +5089,31 @@ converted to <code>intrusive_ptr&lt;U&gt;</code> whenever <code>T*</code> can be
 </li>
 </ul>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>intrusive_ptr(intrusive_ptr &amp;&amp; r);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class Y&gt; intrusive_ptr(intrusive_ptr&lt;Y&gt; &amp;&amp; r);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Postconditions</dt>
+<dd>
+<p><code>get()</code> equals the old value of <code>r.get()</code>. <code>r.get() == 0</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect3">
 <h4 id="intrusive_ptr_destructor">destructor</h4>
@@ -5133,6 +5164,35 @@ converted to <code>intrusive_ptr&lt;U&gt;</code> whenever <code>T*</code> can be
 <dt class="hdlist1">Effects</dt>
 <dd>
 <p>Equivalent to <code>intrusive_ptr(r).swap(*this)</code>.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p><code>*this</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>intrusive_ptr &amp; operator=(intrusive_ptr &amp;&amp; r);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class Y&gt; intrusive_ptr &amp; operator=(intrusive_ptr&lt;Y&gt; &amp;&amp; r);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects</dt>
+<dd>
+<p>Equivalent to <code>intrusive_ptr(std::move(r)).swap(*this)</code>.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -5540,8 +5600,8 @@ On C++03 compilers, the return value is of an unspecified type.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>template&lt;class T, class U&gt;
-  bool operator&lt;(intrusive_ptr&lt;T&gt; const &amp; a, intrusive_ptr&lt;U&gt; const &amp; b) noexcept;</code></pre>
+<pre class="highlight"><code>template&lt;class T&gt;
+  bool operator&lt;(intrusive_ptr&lt;T&gt; const &amp; a, intrusive_ptr&lt;T&gt; const &amp; b) noexcept;</code></pre>
 </div>
 </div>
 <div class="ulist none">
@@ -10083,7 +10143,7 @@ mandates that relational operations on pointers are unspecified (5.9
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-12-05 19:58:22 UTC
+Last updated 2019-04-09 19:36:28 UTC
 </div>
 </div>
 <style>

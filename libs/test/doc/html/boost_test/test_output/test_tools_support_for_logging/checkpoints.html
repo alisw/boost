@@ -98,28 +98,24 @@
 <span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_external_interface</span> <span class="special">)</span>
 <span class="special">{</span>
   <span class="keyword">for</span><span class="special">(</span> <span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">3</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&gt;=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">--</span> <span class="special">)</span> <span class="special">{</span>
-    <span class="identifier">BOOST_TEST_CHECKPOINT</span><span class="special">(</span> <span class="string">"Calling foo with i="</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">);</span>
+    <span class="identifier">BOOST_TEST_CHECKPOINT</span><span class="special">(</span> <span class="string">"Calling 'foo' with i="</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">);</span>
     <span class="identifier">foo</span><span class="special">(</span> <span class="identifier">i</span> <span class="special">);</span>
   <span class="special">}</span>
 <span class="special">}</span>
 
-<span class="keyword">void</span> <span class="identifier">goo</span><span class="special">(</span> <span class="keyword">int</span> <span class="special">)</span>
+<span class="keyword">void</span> <span class="identifier">goo</span><span class="special">(</span> <span class="keyword">int</span> <span class="identifier">value</span> <span class="special">)</span>
 <span class="special">{</span>
+  <span class="identifier">BOOST_TEST_CHECKPOINT</span><span class="special">(</span> <span class="string">"Inside goo with value '"</span> <span class="special">&lt;&lt;</span> <span class="identifier">value</span> <span class="special">&lt;&lt;</span> <span class="string">"'"</span><span class="special">);</span>
 <span class="special">}</span>
-
-<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
-<span class="comment">// VS2017+ compiler optimizations may cause this code NOT to crash.</span>
-<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">off</span><span class="special">)</span>
-<span class="preprocessor">#endif</span>
 
 <span class="keyword">void</span> <span class="identifier">foo</span><span class="special">(</span> <span class="keyword">int</span> <span class="identifier">i</span> <span class="special">)</span>
 <span class="special">{</span>
-    <span class="identifier">goo</span><span class="special">(</span> <span class="number">2</span><span class="special">/(</span><span class="identifier">i</span><span class="special">-</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+  <span class="keyword">if</span><span class="special">(</span> <span class="identifier">i</span> <span class="special">==</span> <span class="number">1</span> <span class="special">)</span>
+      <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"Undefined Behaviour ahead!"</span><span class="special">);</span>
+  <span class="comment">// following line may not raise an exception on some compilers:</span>
+  <span class="comment">// Undefined Behaviour is implementation specific</span>
+  <span class="identifier">goo</span><span class="special">(</span> <span class="number">2</span><span class="special">/(</span><span class="identifier">i</span><span class="special">-</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
 <span class="special">}</span>
-
-<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
-<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">on</span><span class="special">)</span>
-<span class="preprocessor">#endif</span>
 </pre>
                 </td></tr></tbody>
 </table></div>
@@ -133,10 +129,10 @@
 <tbody><tr><td>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="special">&gt;</span> <span class="identifier">example</span>
 <span class="identifier">Running</span> <span class="number">1</span> <span class="identifier">test</span> <span class="keyword">case</span><span class="special">...</span>
-<span class="identifier">unknown</span> <span class="identifier">location</span><span class="special">(</span><span class="number">0</span><span class="special">):</span> <span class="identifier">fatal</span> <span class="identifier">error</span> <span class="identifier">in</span> <span class="string">"test_external_interface"</span><span class="special">:</span> <span class="identifier">signal</span><span class="special">:</span> <span class="identifier">integer</span> <span class="identifier">divide</span> <span class="identifier">by</span> <span class="identifier">zero</span><span class="special">;</span> <span class="identifier">address</span> <span class="identifier">of</span> <span class="identifier">failing</span> <span class="identifier">instruction</span><span class="special">:</span> <span class="number">0x00048090</span>
-<span class="identifier">test</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">(</span><span class="number">9</span><span class="special">):</span> <span class="identifier">last</span> <span class="identifier">checkpoint</span><span class="special">:</span> <span class="identifier">Calling</span> <span class="identifier">foo</span> <span class="identifier">with</span> <span class="identifier">i</span><span class="special">=</span><span class="number">1</span>
+<span class="identifier">unknown</span> <span class="identifier">location</span><span class="special">(</span><span class="number">0</span><span class="special">):</span> <span class="identifier">fatal</span> <span class="identifier">error</span><span class="special">:</span> <span class="identifier">in</span> <span class="string">"test_external_interface"</span><span class="special">:</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">:</span> <span class="identifier">Undefined</span> <span class="identifier">Behaviour</span> <span class="identifier">ahead</span><span class="special">!</span>
+<span class="special">../</span><span class="identifier">doc</span><span class="special">/</span><span class="identifier">examples</span><span class="special">/</span><span class="identifier">example22</span><span class="special">.</span><span class="identifier">run</span><span class="special">-</span><span class="identifier">fail</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">(</span><span class="number">17</span><span class="special">):</span> <span class="identifier">last</span> <span class="identifier">checkpoint</span><span class="special">:</span> <span class="identifier">Calling</span> <span class="char">'foo'</span> <span class="identifier">with</span> <span class="identifier">i</span><span class="special">=</span><span class="number">1</span>
 
-<span class="special">***</span> <span class="number">1</span> <span class="identifier">failures</span> <span class="identifier">is</span> <span class="identifier">detected</span> <span class="identifier">in</span> <span class="identifier">test</span> <span class="identifier">suite</span> <span class="string">"example"</span>
+<span class="special">***</span> <span class="number">1</span> <span class="identifier">failure</span> <span class="identifier">is</span> <span class="identifier">detected</span> <span class="identifier">in</span> <span class="identifier">the</span> <span class="identifier">test</span> <span class="identifier">module</span> <span class="string">"example"</span>
 </pre>
                 </td></tr></tbody>
 </table></div>
@@ -174,17 +170,9 @@
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TEST_MODULE</span> <span class="identifier">example</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">included</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
-<span class="comment">// VS2017+ compiler optimizations may cause this code NOT to crash.</span>
-<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">off</span><span class="special">)</span>
-<span class="preprocessor">#endif</span>
-
-
-<span class="keyword">void</span> <span class="identifier">foo</span><span class="special">(</span> <span class="keyword">int</span> <span class="special">)</span> <span class="special">{}</span>
-
-<span class="preprocessor">#if</span> <span class="identifier">defined</span><span class="special">(</span><span class="identifier">BOOST_MSVC</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="special">(</span><span class="identifier">BOOST_MSVC</span> <span class="special">&gt;</span> <span class="number">1900</span><span class="special">)</span>
-<span class="preprocessor">#pragma</span> <span class="identifier">optimize</span><span class="special">(</span><span class="string">""</span><span class="special">,</span> <span class="identifier">on</span><span class="special">)</span>
-<span class="preprocessor">#endif</span>
+<span class="keyword">void</span> <span class="identifier">foo</span><span class="special">(</span> <span class="keyword">int</span> <span class="identifier">value</span> <span class="special">)</span> <span class="special">{</span>
+  <span class="identifier">BOOST_TEST_CHECKPOINT</span><span class="special">(</span><span class="string">"Inside foo with value '"</span> <span class="special">&lt;&lt;</span> <span class="identifier">value</span> <span class="special">&lt;&lt;</span> <span class="string">"' (should not be there)"</span><span class="special">);</span>
+<span class="special">}</span>
 
 <span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case</span> <span class="special">)</span>
 <span class="special">{</span>

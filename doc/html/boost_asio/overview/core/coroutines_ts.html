@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Coroutines TS Support (experimental)</title>
+<title>Coroutines TS Support</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../boost_asio.html" title="Boost.Asio">
@@ -24,39 +24,35 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="boost_asio.overview.core.coroutines_ts"></a><a class="link" href="coroutines_ts.html" title="Coroutines TS Support (experimental)">Coroutines
-        TS Support (experimental)</a>
+<a name="boost_asio.overview.core.coroutines_ts"></a><a class="link" href="coroutines_ts.html" title="Coroutines TS Support">Coroutines
+        TS Support</a>
 </h4></div></div></div>
 <p>
-          (Note: "Experimental" means that this interface is provided to
-          gather feedback and may change in subsequent Boost.Asio releases.)
-        </p>
-<p>
-          Experimental support for the Coroutines TS is provided via the <a class="link" href="../../reference/experimental__co_spawn.html" title="experimental::co_spawn"><code class="computeroutput">experimental::co_spawn()</code></a>
-          function. This <code class="computeroutput">co_spawn()</code> function enables programs to implement
-          asynchronous logic in a synchronous manner, in conjunction with the <code class="computeroutput">co_await</code>
+          Support for the Coroutines TS is provided via the <a class="link" href="../../reference/awaitable.html" title="awaitable"><code class="computeroutput">awaitable</code></a>
+          class template, the <a class="link" href="../../reference/use_awaitable_t.html" title="use_awaitable_t"><code class="computeroutput">use_awaitable</code></a>
+          completion token, and the <a class="link" href="../../reference/co_spawn.html" title="co_spawn"><code class="computeroutput">co_spawn()</code></a>
+          function. These facilities allow programs to implement asynchronous logic
+          in a synchronous manner, in conjunction with the <code class="computeroutput">co_await</code>
           keyword, as shown in the following example:
         </p>
-<pre class="programlisting">boost::asio::experimental::co_spawn(executor,
+<pre class="programlisting">boost::asio::co_spawn(executor,
     [socket = std::move(socket)]() mutable
     {
       return echo(std::move(socket));
     },
-    boost::asio::experimental::detached);
+    boost::asio::detached);
 
 // ...
 
-boost::asio::experimental::awaitable&lt;void&gt; echo(tcp::socket socket)
+boost::asio::awaitable&lt;void&gt; echo(tcp::socket socket)
 {
-  auto token = co_await boost::asio::experimental::this_coro::token();
-
   try
   {
     char data[1024];
     for (;;)
     {
-      std::size_t n = co_await socket.async_read_some(boost::asio::buffer(data), token);
-      co_await async_write(socket, boost::asio::buffer(data, n), token);
+      std::size_t n = co_await socket.async_read_some(boost::asio::buffer(data), boost::asio::use_awaitable);
+      co_await async_write(socket, boost::asio::buffer(data, n), boost::asio::use_awaitable);
     }
   }
   catch (std::exception&amp; e)
@@ -73,7 +69,7 @@ boost::asio::experimental::awaitable&lt;void&gt; echo(tcp::socket socket)
           synchronisation is required.
         </p>
 <p>
-          The second argument is a nullary function object that returns a <a class="link" href="../../reference/experimental__awaitable.html" title="experimental::awaitable"><code class="computeroutput">boost::asio::awaitable&lt;R&gt;</code></a>,
+          The second argument is a nullary function object that returns a <a class="link" href="../../reference/awaitable.html" title="awaitable"><code class="computeroutput">boost::asio::awaitable&lt;R&gt;</code></a>,
           where <code class="computeroutput">R</code> is the type of return value produced by the coroutine.
           In the above example, the coroutine returns <code class="computeroutput">void</code>.
         </p>
@@ -82,22 +78,17 @@ boost::asio::experimental::awaitable&lt;void&gt; echo(tcp::socket socket)
           to produce a completion handler with signature <code class="computeroutput">void(std::exception_ptr,
           R)</code>. This completion handler is invoked with the result of the coroutine
           once it has finished. In the above example we pass a completion token type,
-          <a class="link" href="../../reference/experimental__detached.html" title="experimental::detached"><code class="computeroutput">boost::asio::experimental::detached</code></a>,
+          <a class="link" href="../../reference/detached.html" title="detached"><code class="computeroutput">boost::asio::detached</code></a>,
           which is used to explicitly ignore the result of an asynchronous operation.
         </p>
 <p>
           In this example the body of the coroutine is implemented in the <code class="computeroutput">echo</code>
-          function. This function first obtains a completion token that represents
-          the current coroutine:
+          function. When the <code class="computeroutput">use_awaitable</code> completion token is passed
+          to an asynchronous operation, the operation's initiating function returns
+          an <code class="computeroutput">awaitable</code> that may be used with the <code class="computeroutput">co_await</code>
+          keyword:
         </p>
-<pre class="programlisting">auto token = co_await boost::asio::experimental::this_coro::token();
-</pre>
-<p>
-          When this completion token is passed to an asynchronous operation, the
-          operation's initiating function returns an <code class="computeroutput">awaitable</code> that
-          may be used with the <code class="computeroutput">co_await</code> keyword:
-        </p>
-<pre class="programlisting">std::size_t n = co_await socket.async_read_some(boost::asio::buffer(data), token);
+<pre class="programlisting">std::size_t n = co_await socket.async_read_some(boost::asio::buffer(data), boost::asio::use_awaitable);
 </pre>
 <p>
           Where an asynchronous operation's handler signature has the form:
@@ -126,13 +117,11 @@ boost::asio::experimental::awaitable&lt;void&gt; echo(tcp::socket socket)
           Also</a>
         </h6>
 <p>
-          <a class="link" href="../../reference/experimental__co_spawn.html" title="experimental::co_spawn">experimental::co_spawn</a>,
-          <a class="link" href="../../reference/experimental__detached.html" title="experimental::detached">experimental::detached</a>,
-          <a class="link" href="../../reference/experimental__redirect_error.html" title="experimental::redirect_error">experimental::redirect_error</a>,
-          <a class="link" href="../../reference/experimental__awaitable.html" title="experimental::awaitable">experimental::awaitable</a>,
-          <a class="link" href="../../reference/experimental__await_token.html" title="experimental::await_token">experimental::await_token</a>,
-          <a class="link" href="../../reference/experimental__this_coro__executor.html" title="experimental::this_coro::executor">experimental::this_coro::executor</a>,
-          <a class="link" href="../../reference/experimental__this_coro__token.html" title="experimental::this_coro::token">experimental::this_coro::token</a>,
+          <a class="link" href="../../reference/co_spawn.html" title="co_spawn">co_spawn</a>, <a class="link" href="../../reference/detached.html" title="detached">detached</a>,
+          <a class="link" href="../../reference/redirect_error.html" title="redirect_error">redirect_error</a>,
+          <a class="link" href="../../reference/awaitable.html" title="awaitable">awaitable</a>, <a class="link" href="../../reference/use_awaitable_t.html" title="use_awaitable_t">use_awaitable_t</a>,
+          <a class="link" href="../../reference/use_awaitable.html" title="use_awaitable">use_awaitable</a>,
+          <a class="link" href="../../reference/this_coro__executor.html" title="this_coro::executor">this_coro::executor</a>,
           <a class="link" href="../../examples/cpp17_examples.html#boost_asio.examples.cpp17_examples.coroutines_ts_support">Coroutines
           TS examples</a>, <a class="link" href="spawn.html" title="Stackful Coroutines">Stackful
           Coroutines</a>, <a class="link" href="coroutine.html" title="Stackless Coroutines">Stackless
@@ -141,7 +130,7 @@ boost::asio::experimental::awaitable&lt;void&gt; echo(tcp::socket socket)
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -27,7 +27,7 @@
 <a name="beast.ref.boost__beast__http__error"></a><a class="link" href="boost__beast__http__error.html" title="http::error">http::error</a>
 </h4></div></div></div>
 <p>
-        <a class="indexterm" name="idp117307952"></a>
+        <a class="indexterm" name="idm46025434216832"></a>
 Error codes returned from HTTP algorithms and operations.
       </p>
 <h5>
@@ -40,29 +40,30 @@ Error codes returned from HTTP algorithms and operations.
 <pre class="programlisting"><span class="keyword">enum</span> <span class="identifier">error</span>
 </pre>
 <p>
-        <a class="indexterm" name="idp117315872"></a>
- <a class="indexterm" name="idp117316976"></a>
- <a class="indexterm" name="idp117318080"></a>
- <a class="indexterm" name="idp117319184"></a>
- <a class="indexterm" name="idp117320288"></a>
- <a class="indexterm" name="idp117321392"></a>
- <a class="indexterm" name="idp117322496"></a>
- <a class="indexterm" name="idp117323600"></a>
- <a class="indexterm" name="idp117324704"></a>
- <a class="indexterm" name="idp117325808"></a>
- <a class="indexterm" name="idp117326912"></a>
- <a class="indexterm" name="idp117328016"></a>
- <a class="indexterm" name="idp117329120"></a>
- <a class="indexterm" name="idp117330224"></a>
- <a class="indexterm" name="idp117331328"></a>
- <a class="indexterm" name="idp117332432"></a>
- <a class="indexterm" name="idp117333536"></a>
- <a class="indexterm" name="idp117334640"></a>
- <a class="indexterm" name="idp117335744"></a>
- <a class="indexterm" name="idp117336848"></a>
- <a class="indexterm" name="idp117337952"></a>
- <a class="indexterm" name="idp117339056"></a>
- <a class="indexterm" name="idp117340160"></a>
+        <a class="indexterm" name="idm46025434208976"></a>
+ <a class="indexterm" name="idm46025434207872"></a>
+ <a class="indexterm" name="idm46025434206768"></a>
+ <a class="indexterm" name="idm46025434205664"></a>
+ <a class="indexterm" name="idm46025434204560"></a>
+ <a class="indexterm" name="idm46025434203456"></a>
+ <a class="indexterm" name="idm46025434202352"></a>
+ <a class="indexterm" name="idm46025434201248"></a>
+ <a class="indexterm" name="idm46025434200144"></a>
+ <a class="indexterm" name="idm46025434199040"></a>
+ <a class="indexterm" name="idm46025434197936"></a>
+ <a class="indexterm" name="idm46025434196832"></a>
+ <a class="indexterm" name="idm46025434195728"></a>
+ <a class="indexterm" name="idm46025434194624"></a>
+ <a class="indexterm" name="idm46025434193520"></a>
+ <a class="indexterm" name="idm46025434192416"></a>
+ <a class="indexterm" name="idm46025434191312"></a>
+ <a class="indexterm" name="idm46025434190208"></a>
+ <a class="indexterm" name="idm46025434189104"></a>
+ <a class="indexterm" name="idm46025434188000"></a>
+ <a class="indexterm" name="idm46025434186896"></a>
+ <a class="indexterm" name="idm46025434185792"></a>
+ <a class="indexterm" name="idm46025434184688"></a>
+ <a class="indexterm" name="idm46025434183584"></a>
 
       </p>
 <h5>
@@ -99,8 +100,9 @@ Error codes returned from HTTP algorithms and operations.
                 </p>
                 <p>
                   This error is returned when attempting to read HTTP data, and the
-                  stream returns the error boost::asio::error::eof before any octets
-                  corresponding to a new HTTP message have been received.
+                  stream returns the error <code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">error</span><span class="special">::</span><span class="identifier">eof</span></code>
+                  before any octets corresponding to a new HTTP message have been
+                  received.
                 </p>
               </td>
 </tr>
@@ -149,7 +151,10 @@ Error codes returned from HTTP algorithms and operations.
                 </p>
                 <p>
                   This error is returned when attempting to parse body octets into
-                  a message container which has the empty_body body type.empty_body
+                  a message container which has the @ref empty_body body type.
+                </p>
+                <p>
+                  @see empty_body
                 </p>
               </td>
 </tr>
@@ -164,10 +169,15 @@ Error codes returned from HTTP algorithms and operations.
                   Additional buffers are required.
                 </p>
                 <p>
-                  This error is returned under the following conditions:During serialization
-                  when using buffer_body. The caller should update the body to point
-                  to a new buffer or indicate that there are no more octets in the
-                  body. During parsing when using buffer_body. The caller should
+                  This error is returned under the following conditions:
+                </p>
+                <p>
+                  @li During serialization when using @ref buffer_body. The caller
+                  should update the body to point to a new buffer or indicate that
+                  there are no more octets in the body.
+                </p>
+                <p>
+                  @li During parsing when using @ref buffer_body. The caller should
                   update the body to point to a new storage area to receive additional
                   body octets.
                 </p>
@@ -246,7 +256,7 @@ Error codes returned from HTTP algorithms and operations.
                 </p>
                 <p>
                   When basic_fields throws std::bad_alloc, it is converted into this
-                  error by parser.
+                  error by @ref parser.
                 </p>
               </td>
 </tr>
@@ -406,6 +416,24 @@ Error codes returned from HTTP algorithms and operations.
                 </p>
               </td>
 </tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">stale_parser</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The parser is stale.
+                </p>
+                <p>
+                  This happens when attempting to re-use a parser that has already
+                  completed parsing a message. Programs must construct a new parser
+                  for each message. This can be easily done by storing the parser
+                  in an boost or std::optional container.
+                </p>
+              </td>
+</tr>
 </tbody>
 </table></div>
 <h5>
@@ -418,7 +446,8 @@ Error codes returned from HTTP algorithms and operations.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

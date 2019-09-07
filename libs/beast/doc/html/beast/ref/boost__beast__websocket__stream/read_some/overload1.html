@@ -28,12 +28,12 @@
           (1 of 4 overloads)</a>
 </h6></div></div></div>
 <p>
-            Read part of a message.
+            Read some message data.
           </p>
 <h7><a name="beast.ref.boost__beast__websocket__stream.read_some.overload1.h0"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.read_some.overload1.synopsis"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__websocket__stream.read_some.overload1.synopsis">Synopsis</a>
           </h7><pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span>
-    <span class="keyword">class</span> <a class="link" href="../../../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="bold"><strong>DynamicBuffer</strong></span></a><span class="special">&gt;</span>
+    <span class="keyword">class</span> <a class="link" href="../../../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="emphasis"><em>DynamicBuffer</em></span></a><span class="special">&gt;</span>
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span>
 <span class="identifier">read_some</span><span class="special">(</span>
     <span class="identifier">DynamicBuffer</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">,</span>
@@ -42,36 +42,31 @@
 <h7><a name="beast.ref.boost__beast__websocket__stream.read_some.overload1.h1"></a>
             <span class="phrase"><a name="beast.ref.boost__beast__websocket__stream.read_some.overload1.description"></a></span><a class="link" href="overload1.html#beast.ref.boost__beast__websocket__stream.read_some.overload1.description">Description</a>
           </h7><p>
-            This function is used to synchronously read some message data from the
-            stream. The call blocks until one of the following is true:
+            This function is used to read some message data. The call blocks until
+            one of the following is true:
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                Some or all of the message is received.
+                Some message data is received.
               </li>
 <li class="listitem">
                 A close frame is received. In this case the error indicated by the
                 function will be <a class="link" href="../../boost__beast__websocket__error.html" title="websocket::error"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">closed</span></code></a>.
               </li>
 <li class="listitem">
-                An error occurs on the stream.
+                An error occurs.
               </li>
 </ul></div>
 <p>
-            This operation is implemented in terms of one or more calls to the next
-            layer's <code class="computeroutput"><span class="identifier">read_some</span></code> and
-            <code class="computeroutput"><span class="identifier">write_some</span></code> functions.
-          </p>
-<p>
-            Received message data, if any, is appended to the input area of the buffer.
-            The functions <a class="link" href="../got_binary.html" title="websocket::stream::got_binary"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_binary</span></code></a> and <a class="link" href="../got_text.html" title="websocket::stream::got_text"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_text</span></code></a> may be used to query
+            The algorithm, known as a <span class="emphasis"><em>composed operation</em></span>, is
+            implemented in terms of calls to the next layer's <code class="computeroutput"><span class="identifier">read_some</span></code>
+            and <code class="computeroutput"><span class="identifier">write_some</span></code> functions.
+            Received message data is appended to the buffer. The functions <a class="link" href="../got_binary.html" title="websocket::stream::got_binary"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_binary</span></code></a> and <a class="link" href="../got_text.html" title="websocket::stream::got_text"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">got_text</span></code></a> may be used to query
             the stream and determine the type of the last received message. The function
             <a class="link" href="../is_message_done.html" title="websocket::stream::is_message_done"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">stream</span><span class="special">::</span><span class="identifier">is_message_done</span></code></a> may be called
             to determine if the message received by the last read operation is complete.
-          </p>
-<p>
-            While this operation is active, the implementation will read incoming
-            control frames and handle them automatically as follows:
+            Until the call returns, the implementation will read incoming control
+            frames and handle them automatically as follows:
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -83,8 +78,8 @@
                 sent.
               </li>
 <li class="listitem">
-                If a close frame is received, the WebSocket close procedure is performed.
-                In this case, when the function returns, the error <a class="link" href="../../boost__beast__websocket__error.html" title="websocket::error"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">closed</span></code></a> will be indicated.
+                If a close frame is received, the WebSocket closing handshake is
+                performed. In this case, when the function returns, the error <a class="link" href="../../boost__beast__websocket__error.html" title="websocket::error"><code class="computeroutput"><span class="identifier">websocket</span><span class="special">::</span><span class="identifier">closed</span></code></a> will be indicated.
               </li>
 </ul></div>
 <h7><a name="beast.ref.boost__beast__websocket__stream.read_some.overload1.h2"></a>
@@ -121,8 +116,7 @@
                   </td>
 <td>
                     <p>
-                      A dynamic buffer to hold the message data after any masking
-                      or decompression has been applied.
+                      A dynamic buffer to append message data to.
                     </p>
                   </td>
 </tr>
@@ -169,8 +163,7 @@
                   </td>
 <td>
                     <p>
-                      Thrown to indicate an error. The corresponding error code may
-                      be retrieved from the exception object for inspection.
+                      Thrown on failure.
                     </p>
                   </td>
 </tr></tbody>
@@ -178,7 +171,8 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016, 2017 Vinnie Falco<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2019 Vinnie
+      Falco<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

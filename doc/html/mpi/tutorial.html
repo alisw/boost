@@ -3350,7 +3350,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_1-bb">cartesian_communicator::ndims </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_1_4_1-bb">cartesian_communicator::ndims </a></code>
                   </p>
                 </td>
 </tr>
@@ -3362,7 +3362,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_5-bb">cartesian_communicator::topology </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_1_4_5-bb">cartesian_communicator::topology </a></code>
                   </p>
                 </td>
 </tr>
@@ -3374,7 +3374,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_2-bb">cartesian_communicator::rank </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_1_4_2-bb">cartesian_communicator::rank </a></code>
                   </p>
                 </td>
 </tr>
@@ -3386,7 +3386,7 @@ Rank 6 got 2117359639
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_4_4_4-bb">cartesian_communicator::coordinates </a></code>
+                    <code class="computeroutput"><a class="link" href="../boost/mpi/cartesian_communicator.html#id-1_3_27_5_14_3_2_1_1_4_4-bb">cartesian_communicator::coordinates </a></code>
                   </p>
                 </td>
 </tr>
@@ -3918,12 +3918,13 @@ Rank 6 got 2117359639
 <p>This header defines facilities to support MPI communicators with cartesian topologies. If known at compiled time, the dimension of the implied grid can be statically enforced, through the templatized communicator class. Otherwise, a non template, dynamic, base class is provided. </p>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
+    <span class="keyword">class</span> <a class="link" href="../boost/mpi/cartesian_communicator.html" title="Class cartesian_communicator">cartesian_communicator</a><span class="special">;</span>
+
     <span class="keyword">struct</span> <a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a><span class="special">;</span>
 
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_27_5_14_3_2_1_2.html" title="Struct is_mpi_datatype&lt;cartesian_dimension&gt;">is_mpi_datatype</a><span class="special">&lt;</span><span class="identifier">cartesian_dimension</span><span class="special">&gt;</span><span class="special">;</span>
-
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/cartesian_topology.html" title="Class cartesian_topology">cartesian_topology</a><span class="special">;</span>
-    <span class="keyword">class</span> <a class="link" href="../boost/mpi/cartesian_communicator.html" title="Class cartesian_communicator">cartesian_communicator</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_27_5_14_3_2_1_4.html" title="Struct is_mpi_datatype&lt;cartesian_dimension&gt;">is_mpi_datatype</a><span class="special">&lt;</span><span class="identifier">cartesian_dimension</span><span class="special">&gt;</span><span class="special">;</span>
 
     <span class="comment">// Test if the dimensions values are identical. </span>
     <span class="keyword">bool</span> <a name="boost.mpi.operat_1_3_27_5_14_3_2_1_5"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><a class="link" href="../boost/mpi/cartesian_dimension.html" title="Struct cartesian_dimension">cartesian_dimension</a> <span class="keyword">const</span> <span class="special">&amp;</span> d1<span class="special">,</span> 
@@ -4105,13 +4106,13 @@ Rank 6 got 2117359639
 <a class="link" href="../BOOST_IS_MPI_DATATYPE.html" title="Macro BOOST_IS_MPI_DATATYPE">BOOST_IS_MPI_DATATYPE</a>(T)</pre>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_integer_datatype.html" title="Struct template is_mpi_integer_datatype">is_mpi_integer_datatype</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_27_5_14_8_2_1_2.html" title="Struct template is_mpi_floating_point_datatype">is_mpi_floating_point_datatype</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_logical_datatype.html" title="Struct template is_mpi_logical_datatype">is_mpi_logical_datatype</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_complex_datatype.html" title="Struct template is_mpi_complex_datatype">is_mpi_complex_datatype</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_byte_datatype.html" title="Struct template is_mpi_byte_datatype">is_mpi_byte_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_builtin_datatype.html" title="Struct template is_mpi_builtin_datatype">is_mpi_builtin_datatype</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_byte_datatype.html" title="Struct template is_mpi_byte_datatype">is_mpi_byte_datatype</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_complex_datatype.html" title="Struct template is_mpi_complex_datatype">is_mpi_complex_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_datatype.html" title="Struct template is_mpi_datatype">is_mpi_datatype</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_1_3_27_5_14_8_2_1_5.html" title="Struct template is_mpi_floating_point_datatype">is_mpi_floating_point_datatype</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_integer_datatype.html" title="Struct template is_mpi_integer_datatype">is_mpi_integer_datatype</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_logical_datatype.html" title="Struct template is_mpi_logical_datatype">is_mpi_logical_datatype</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">MPI_Datatype</span> <a class="link" href="../boost/mpi/get_mp_1_3_27_5_14_8_2_1_8.html" title="Function template get_mpi_datatype"><span class="identifier">get_mpi_datatype</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -4278,14 +4279,14 @@ Rank 6 got 2117359639
 <p>This header provides a mapping from function objects to <code class="computeroutput">MPI_Op</code> constants used in MPI collective operations. It also provides several new function object types not present in the standard <code class="computeroutput"></code> &lt;functional&gt; header that have direct mappings to <code class="computeroutput">MPI_Op</code>. </p>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_op.html" title="Struct template is_mpi_op">is_mpi_op</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_commutative.html" title="Struct template is_commutative">is_commutative</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/maximum.html" title="Struct template maximum">maximum</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/minimum.html" title="Struct template minimum">minimum</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/bitwise_and.html" title="Struct template bitwise_and">bitwise_and</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/bitwise_or.html" title="Struct template bitwise_or">bitwise_or</a><span class="special">;</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/logical_xor.html" title="Struct template logical_xor">logical_xor</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/bitwise_xor.html" title="Struct template bitwise_xor">bitwise_xor</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_commutative.html" title="Struct template is_commutative">is_commutative</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Op<span class="special">,</span> <span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/is_mpi_op.html" title="Struct template is_mpi_op">is_mpi_op</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/logical_xor.html" title="Struct template logical_xor">logical_xor</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/maximum.html" title="Struct template maximum">maximum</a><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/minimum.html" title="Struct template minimum">minimum</a><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
@@ -4345,11 +4346,11 @@ Rank 6 got 2117359639
 <p>This header provides facilities that allow the structure of data types (called the "skeleton") to be transmitted and received separately from the content stored in those data types. These facilities are useful when the data in a stable data structure (e.g., a mesh or a graph) will need to be transmitted repeatedly. In this case, transmitting the skeleton only once saves both communication effort (it need not be sent again) and local computation (serialization need only be performed once for the content). </p>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">mpi</span> <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/skeleton_proxy.html" title="Struct template skeleton_proxy">skeleton_proxy</a><span class="special">;</span>
-
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/content.html" title="Class content">content</a><span class="special">;</span>
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/packed_skeleton_iarchive.html" title="Class packed_skeleton_iarchive">packed_skeleton_iarchive</a><span class="special">;</span>
     <span class="keyword">class</span> <a class="link" href="../boost/mpi/packed_skeleton_oarchive.html" title="Class packed_skeleton_oarchive">packed_skeleton_oarchive</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../boost/mpi/skeleton_proxy.html" title="Struct template skeleton_proxy">skeleton_proxy</a><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/skeleton_proxy.html" title="Struct template skeleton_proxy">skeleton_proxy</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <a class="link" href="../boost/mpi/skeleton.html" title="Function template skeleton"><span class="identifier">skeleton</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
     <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">const</span> <a class="link" href="../boost/mpi/content.html" title="Class content">content</a> <a class="link" href="../boost/mpi/get_content.html" title="Function template get_content"><span class="identifier">get_content</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>

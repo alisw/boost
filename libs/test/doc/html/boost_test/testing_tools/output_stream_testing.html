@@ -216,7 +216,7 @@ File: test.cpp Line:XXX
 
 <span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test</span> <span class="special">)</span>
 <span class="special">{</span>
-  <span class="identifier">output_test_stream</span> <span class="identifier">output</span><span class="special">(</span> <span class="string">"pattern_file"</span><span class="special">,</span> <span class="keyword">true</span> <span class="special">);</span>
+  <span class="identifier">output_test_stream</span> <span class="identifier">output</span><span class="special">(</span> <span class="string">"pattern_file"</span><span class="special">,</span> <span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unit_test</span><span class="special">::</span><span class="identifier">runtime_config</span><span class="special">::</span><span class="identifier">save_pattern</span><span class="special">()</span> <span class="special">);</span>
   <span class="keyword">int</span> <span class="identifier">i</span><span class="special">=</span><span class="number">2</span><span class="special">;</span>
   <span class="identifier">output</span> <span class="special">&lt;&lt;</span> <span class="string">"i="</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span><span class="special">;</span>
   <span class="identifier">BOOST_TEST</span><span class="special">(</span> <span class="identifier">output</span><span class="special">.</span><span class="identifier">match_pattern</span><span class="special">()</span> <span class="special">);</span>

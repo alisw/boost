@@ -72,7 +72,9 @@
             to the index 1, ... <code class="computeroutput"><span class="identifier">N</span></code>
             of the the sample:
           </p>
-<pre class="programlisting"><span class="identifier">BOOST_DATA_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case_arity2</span><span class="special">,</span> <span class="identifier">data</span><span class="special">::</span><span class="identifier">xrange</span><span class="special">(</span><span class="number">2</span><span class="special">)</span> <span class="special">^</span> <span class="identifier">data</span><span class="special">::</span><span class="identifier">xrange</span><span class="special">(</span><span class="number">5</span><span class="special">),</span> <span class="identifier">apples</span><span class="special">,</span> <span class="identifier">potatoes</span><span class="special">)</span>
+<pre class="programlisting"><span class="comment">// The following definition of the dataset test case throws an exception before the</span>
+<span class="comment">// test module starts (zip of non infinite or singleton datasets of different length)</span>
+<span class="identifier">BOOST_DATA_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_case_arity2</span><span class="special">,</span> <span class="identifier">data</span><span class="special">::</span><span class="identifier">xrange</span><span class="special">(</span><span class="number">2</span><span class="special">)</span> <span class="special">^</span> <span class="identifier">data</span><span class="special">::</span><span class="identifier">xrange</span><span class="special">(</span><span class="number">5</span><span class="special">),</span> <span class="identifier">apples</span><span class="special">,</span> <span class="identifier">potatoes</span><span class="special">)</span>
 <span class="special">{</span>
   <span class="identifier">BOOST_TEST</span><span class="special">((</span><span class="identifier">apples</span> <span class="special">&lt;=</span> <span class="number">1</span> <span class="special">&amp;&amp;</span> <span class="identifier">apples</span> <span class="special">&gt;=</span> <span class="number">0</span><span class="special">));</span>
   <span class="identifier">BOOST_TEST</span><span class="special">((</span><span class="identifier">potatoes</span> <span class="special">&lt;=</span> <span class="number">4</span> <span class="special">&amp;&amp;</span> <span class="identifier">potatoes</span> <span class="special">&gt;=</span> <span class="number">0</span><span class="special">));</span>
@@ -154,28 +156,34 @@
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                identify which sample is failing (say "<code class="computeroutput"><span class="identifier">test_case_name</span><span class="special">/</span><span class="identifier">_3</span></code>")
+                identify which sample is failing (say "<code class="computeroutput"><span class="identifier">test_case_name</span><span class="special">/</span><span class="identifier">_3</span></code>"),
               </li>
 <li class="listitem">
-                allows a replay of one or several samples (or the full dataset) from
-                the command line using the <a class="link" href="../../../runtime_config/test_unit_filtering.html" title="Test unit filtering">test
-                filtering facility</a> provided by the <span class="emphasis"><em>Unit Test Framework</em></span>
+                replay the test for one or several samples (or the full dataset)
+                from the command line using the <a class="link" href="../../../runtime_config/test_unit_filtering.html" title="Test unit filtering">test
+                filtering features</a> provided by the <span class="emphasis"><em>Unit Test Framework</em></span>,
+              </li>
+<li class="listitem">
+                apply a <a class="link" href="../../decorators/explicit_decorator_declaration.html" title="Explicit decorator declaration">decorator</a>
+                to each individual test cases of the dataset, as the decorator would
+                apply to the test suite.
               </li>
 </ul></div>
 <p>
             Exactly as regular test cases, each test case (associated to a specific
-            sample) is executed within the test body in a <span class="emphasis"><em>guarded manner</em></span>:
+            sample) is executed in <span class="emphasis"><em>monitored manner</em></span>:
           </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
                 the test execution are independent: if an error occurs for one sample,
-                the remaining samples execution is not affected
+                the remaining samples execution is not affected,
               </li>
 <li class="listitem">
                 in case of error, the <a class="link" href="../../../test_output/test_tools_support_for_logging/contexts.html" title="Contexts">context</a>
-                within which the error occurred is reported in the <a class="link" href="../../../test_output.html" title="Controlling outputs">log</a>
-                along with the failing sample index. This context contains the sample
-                for which the test failed, which would ease the debugging.
+                along with the index of the sample within which the error occurred
+                is reported in the <a class="link" href="../../../test_output.html" title="Controlling outputs">log</a>.
+                This context contains the sample names and values for which the test
+                failed, which would ease the debugging.
               </li>
 </ul></div>
 </div>

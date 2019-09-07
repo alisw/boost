@@ -29,7 +29,7 @@
 <p>
           <a class="indexterm" name="boost_asio.indexterm.dynamic_string_buffer.capacity"></a> 
 Get
-          the current capacity of the dynamic buffer.
+          the maximum size that the buffer may grow to without triggering reallocation.
         </p>
 <pre class="programlisting">std::size_t capacity() const;
 </pre>
@@ -39,13 +39,13 @@ Get
           Value</a>
         </h6>
 <p>
-          The current total capacity of the buffer, i.e. for both the input sequence
-          and output sequence.
+          The current capacity of the underlying string if less than <code class="computeroutput">max_size()</code>.
+          Otherwise returns <code class="computeroutput">max_size()</code>.
         </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

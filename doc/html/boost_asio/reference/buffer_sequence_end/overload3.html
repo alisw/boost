@@ -33,12 +33,13 @@
 <pre class="programlisting">template&lt;
     typename C&gt;
 auto buffer_sequence_end(
-    C &amp; c);
+    C &amp; c,
+    typename enable_if&lt; !is_convertible&lt; const C *, const mutable_buffer * &gt;::value &amp;&amp;!is_convertible&lt; const C *, const const_buffer * &gt;::value &gt;::type *  = 0);
 </pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

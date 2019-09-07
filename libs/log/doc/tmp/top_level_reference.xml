@@ -1,19 +1,27 @@
 <?xml version="1.0" standalone="yes"?>
 <library-reference id="top_level_headers"><title>Top level headers</title><header name="boost/log/attributes.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>13.07.2009</para>
+
 This header includes other Boost.Log headers with all attributes. </para></header>
 <header name="boost/log/common.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>14.03.2009</para>
+
 This header includes other Boost.Log headers that are commonly used in logging applications. Note that the header does not include any headers required to setup the library, as usually they aren't needed in more than one translation unit of the application. </para></header>
 <header name="boost/log/core.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>19.04.2007</para>
+
 This header includes Boost.Log headers related to the logging core. </para></header>
 <header name="boost/log/exceptions.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>31.10.2009</para>
+
 The header contains exception classes declarations. </para><namespace name="boost">
 <namespace name="log">
 <class name="bad_alloc"><inherit access="public">bad_alloc</inherit><purpose>Base class for memory allocation errors. </purpose><description><para>Exceptions derived from this class indicate problems with memory allocation. </para></description><method-group name="public member functions">
@@ -27,11 +35,7 @@ The header contains exception classes declarations. </para><namespace name="boos
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>const char *</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
-</class><class name="runtime_error"><inherit access="public">runtime_error</inherit><purpose>Base class for runtime exceptions from the logging library. </purpose><description><para>Exceptions derived from this class indicate a problem that may not directly be caused by the user's code that interacts with the library, such as errors caused by input data. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
-<destructor><description><para>Destructor </para></description></destructor>
-</class><class name="missing_value"><inherit access="public">runtime_error</inherit><purpose>Exception class that is used to indicate errors of missing values. </purpose><method-group name="public member functions">
+</class><class name="conversion_error"><inherit access="public">runtime_error</inherit><purpose>Exception class that is used to indicate conversion errors. </purpose><method-group name="public member functions">
 </method-group>
 <constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
@@ -46,12 +50,35 @@ The header contains exception classes declarations. </para><namespace name="boos
 <constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
+</class><class name="limitation_error"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate library limitation. </purpose><method-group name="public member functions">
+</method-group>
+<constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
+<destructor><description><para>Destructor </para></description></destructor>
+</class><class name="logic_error"><inherit access="public">logic_error</inherit><purpose>Base class for logic exceptions from the logging library. </purpose><description><para>Exceptions derived from this class usually indicate errors on the user's side, such as incorrect library usage. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
+<destructor><description><para>Destructor </para></description></destructor>
+</class><class name="missing_value"><inherit access="public">runtime_error</inherit><purpose>Exception class that is used to indicate errors of missing values. </purpose><method-group name="public member functions">
+</method-group>
+<constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
+<destructor><description><para>Destructor </para></description></destructor>
+</class><class name="odr_violation"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate ODR violation. </purpose><method-group name="public member functions">
+</method-group>
+<constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
+<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
+<destructor><description><para>Destructor </para></description></destructor>
 </class><class name="parse_error"><inherit access="public">runtime_error</inherit><purpose>Exception class that is used to indicate parsing errors. </purpose><method-group name="public member functions">
 </method-group>
 <constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
-</class><class name="conversion_error"><inherit access="public">runtime_error</inherit><purpose>Exception class that is used to indicate conversion errors. </purpose><method-group name="public member functions">
+</class><class name="runtime_error"><inherit access="public">runtime_error</inherit><purpose>Base class for runtime exceptions from the logging library. </purpose><description><para>Exceptions derived from this class indicate a problem that may not directly be caused by the user's code that interacts with the library, such as errors caused by input data. </para></description><method-group name="public member functions">
+</method-group>
+<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
+<destructor><description><para>Destructor </para></description></destructor>
+</class><class name="setup_error"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate invalid library setup. </purpose><method-group name="public member functions">
 </method-group>
 <constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
@@ -60,26 +87,7 @@ The header contains exception classes declarations. </para><namespace name="boos
 </method-group>
 <constructor><parameter name="code"><paramtype>boost::system::error_code</paramtype></parameter><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
-</class><class name="logic_error"><inherit access="public">logic_error</inherit><purpose>Base class for logic exceptions from the logging library. </purpose><description><para>Exceptions derived from this class usually indicate errors on the user's side, such as incorrect library usage. </para></description><method-group name="public member functions">
-</method-group>
-<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
-<destructor><description><para>Destructor </para></description></destructor>
-</class><class name="odr_violation"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate ODR violation. </purpose><method-group name="public member functions">
-</method-group>
-<constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
-<destructor><description><para>Destructor </para></description></destructor>
 </class><class name="unexpected_call"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate invalid call sequence. </purpose><method-group name="public member functions">
-</method-group>
-<constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
-<destructor><description><para>Destructor </para></description></destructor>
-</class><class name="setup_error"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate invalid library setup. </purpose><method-group name="public member functions">
-</method-group>
-<constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
-<destructor><description><para>Destructor </para></description></destructor>
-</class><class name="limitation_error"><inherit access="public">logic_error</inherit><purpose>Exception class that is used to indicate library limitation. </purpose><method-group name="public member functions">
 </method-group>
 <constructor><description><para>Default constructor. Creates an exception with the default error message. </para></description></constructor>
 <constructor specifiers="explicit"><parameter name="descr"><paramtype>std::string const &amp;</paramtype></parameter><description><para>Initializing constructor. Creates an exception with the specified error message. </para></description></constructor>
@@ -89,15 +97,21 @@ The header contains exception classes declarations. </para><namespace name="boos
 </header>
 <header name="boost/log/expressions.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>10.11.2012</para>
+
 This header includes other Boost.Log headers with all template expression tools. </para></header>
 <header name="boost/log/sinks.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>13.07.2009</para>
+
 This header includes other Boost.Log headers with all sinks. </para></header>
 <header name="boost/log/trivial.hpp">
 <para><para>Andrey Semashev </para>
+
 <para>07.11.2009</para>
+
 This header defines tools for trivial logging support </para><namespace name="boost">
 <namespace name="log">
 <namespace name="trivial">

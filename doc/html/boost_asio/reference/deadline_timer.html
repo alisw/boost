@@ -219,32 +219,6 @@ Typedef for the typical
 <tr>
 <td>
                 <p>
-                  <a class="link" href="basic_deadline_timer/get_io_context.html" title="basic_deadline_timer::get_io_context"><span class="bold"><strong>get_io_context</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="basic_deadline_timer/get_io_service.html" title="basic_deadline_timer::get_io_service"><span class="bold"><strong>get_io_service</strong></span></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  (Deprecated: Use get_executor().) Get the io_context associated
-                  with the object.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
                   <a class="link" href="basic_deadline_timer/operator_eq_.html" title="basic_deadline_timer::operator="><span class="bold"><strong>operator=</strong></span></a>
                 </p>
               </td>
@@ -313,7 +287,7 @@ Typedef for the typical
         Performing a blocking wait:
       </p>
 <pre class="programlisting">// Construct a timer without setting an expiry time.
-boost::asio::deadline_timer timer(io_context);
+boost::asio::deadline_timer timer(my_context);
 
 // Set an expiry time relative to now.
 timer.expires_from_now(boost::posix_time::seconds(5));
@@ -335,7 +309,7 @@ timer.wait();
 ...
 
 // Construct a timer with an absolute expiry time.
-boost::asio::deadline_timer timer(io_context,
+boost::asio::deadline_timer timer(my_context,
     boost::posix_time::time_from_string("2005-12-07 23:59:59.000"));
 
 // Start an asynchronous wait.
@@ -399,7 +373,7 @@ void on_timeout(const boost::system::error_code&amp; e)
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2018 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
