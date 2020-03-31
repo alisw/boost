@@ -7,9 +7,16 @@
 #include <boost/core/is_same.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
-#include <boost/histogram.hpp>
+#include <boost/histogram/axis.hpp>
+#include <boost/histogram/axis/ostream.hpp>
+#include <boost/histogram/histogram.hpp>
+#include <boost/histogram/ostream.hpp>
+#include <boost/throw_exception.hpp>
+#include <string>
+#include <vector>
+#include "std_ostream.hpp"
+#include "throw_exception.hpp"
 #include "utility_histogram.hpp"
-#include "utility_meta.hpp"
 
 using namespace boost::histogram;
 
@@ -157,37 +164,11 @@ void run_tests() {
     BOOST_TEST_THROWS(a *= b, std::invalid_argument);
     BOOST_TEST_THROWS(a /= b, std::invalid_argument);
   }
-
-  // histogram_ostream
-  {
-    auto a = make(Tag(), axis::regular<>(3, -1, 1, "r"));
-    std::ostringstream os1;
-    os1 << a;
-    BOOST_TEST_EQ(os1.str(), std::string("histogram(regular(3, -1, 1, metadata=\"r\", "
-                                         "options=underflow | overflow))"));
-
-    auto b = make(Tag(), axis::regular<>(3, -1, 1, "r"), axis::integer<>(0, 2, "i"));
-    std::ostringstream os2;
-    os2 << b;
-    BOOST_TEST_EQ(
-        os2.str(),
-        std::string("histogram(\n"
-                    "  regular(3, -1, 1, metadata=\"r\", options=underflow | overflow),\n"
-                    "  integer(0, 2, metadata=\"i\", options=underflow | overflow)\n"
-                    ")"));
-  }
 }
 
 int main() {
   run_tests<static_tag>();
   run_tests<dynamic_tag>();
-
-  {
-    auto h = histogram<std::vector<axis::regular<>>>();
-    std::ostringstream os;
-    os << h;
-    BOOST_TEST_EQ(os.str(), std::string("histogram()"));
-  }
 
   return boost::report_errors();
 }

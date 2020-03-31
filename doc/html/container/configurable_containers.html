@@ -33,7 +33,20 @@
       tree-based associative ordered containers</a></span></dt>
 <dt><span class="section"><a href="configurable_containers.html#container.configurable_containers.configurable_vectors">Configurable
       vectors</a></span></dt>
+<dt><span class="section"><a href="configurable_containers.html#container.configurable_containers.configurable_deques">Configurable
+      deques</a></span></dt>
+<dt><span class="section"><a href="configurable_containers.html#container.configurable_containers.configurable_static_vectors">Configurable
+      static vector</a></span></dt>
+<dt><span class="section"><a href="configurable_containers.html#container.configurable_containers.configurable_small_vectors">Configurable
+      small vector</a></span></dt>
 </dl></div>
+<p>
+      <span class="bold"><strong>Boost.Container</strong></span> offers the possibility to
+      configure at compile time some parameters of several containers, apart from
+      the stored type and the allocator. This configuration is passed as the last
+      template parameter and defined using the utility classes. The following containers
+      can receive useful configuration options:
+    </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="container.configurable_containers.configurable_tree_based_associative_containers"></a><a class="link" href="configurable_containers.html#container.configurable_containers.configurable_tree_based_associative_containers" title="Configurable tree-based associative ordered containers">Configurable
@@ -165,10 +178,9 @@
       vectors</a>
 </h3></div></div></div>
 <p>
-        <span class="bold"><strong>Boost.Container</strong></span> offers the possibility to
-        configure at compile time some parameters of <code class="computeroutput"><a class="link" href="../boost/container/vector.html" title="Class template vector">vector</a></code>
-        implementation. This configuration is passed as the last template parameter
-        and defined using the utility class <code class="computeroutput"><a class="link" href="../boost/container/vector_options.html" title="Struct template vector_options">vector_options</a></code>.
+        The configuration for <code class="computeroutput"><a class="link" href="../boost/container/vector.html" title="Class template vector">vector</a></code>
+        is passed as the last template parameter and defined using the utility class
+        <code class="computeroutput"><a class="link" href="../boost/container/vector_options.html" title="Struct template vector_options">vector_options</a></code>.
         The following parameters can be configured:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
@@ -179,8 +191,8 @@
             growth in order to meet the amortized constant time requirement for push_back.
             A higher growth factor will make it faster as it will require less data
             movement, but it will have a greater memory impact (on average, more
-            memory will be unused). A user can provide it's own implementation and
-            some predefined policies are available: <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_50.html" title="Struct growth_factor_50">growth_factor_50</a></code>,
+            memory will be unused). A user can provide a custom implementation of
+            the growth factor and some predefined policies are available: <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_50.html" title="Struct growth_factor_50">growth_factor_50</a></code>,
             <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_60.html" title="Struct growth_factor_60">growth_factor_60</a></code>
             and <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_50.html" title="Struct growth_factor_50">growth_factor_100</a></code>.
           </li>
@@ -236,6 +248,223 @@
 
    <span class="comment">//Fill the vector until full capacity is reached</span>
    <span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">new_allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;,</span> <span class="identifier">growth_50_option_t</span> <span class="special">&gt;</span> <span class="identifier">growth_50_vector</span><span class="special">(</span><span class="number">5</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
+   <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">old_cap</span> <span class="special">=</span> <span class="identifier">growth_50_vector</span><span class="special">.</span><span class="identifier">capacity</span><span class="special">();</span>
+   <span class="identifier">growth_50_vector</span><span class="special">.</span><span class="identifier">resize</span><span class="special">(</span><span class="identifier">old_cap</span><span class="special">);</span>
+
+   <span class="comment">//Now insert an additional item and check the new buffer is 50% bigger</span>
+   <span class="identifier">growth_50_vector</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">growth_50_vector</span><span class="special">.</span><span class="identifier">capacity</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_cap</span><span class="special">*</span><span class="number">3</span><span class="special">/</span><span class="number">2</span><span class="special">);</span>
+
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.configurable_containers.configurable_deques"></a><a class="link" href="configurable_containers.html#container.configurable_containers.configurable_deques" title="Configurable deques">Configurable
+      deques</a>
+</h3></div></div></div>
+<p>
+        The configuration for <code class="computeroutput"><a class="link" href="../boost/container/deque.html" title="Class template deque">deque</a></code>
+        is passed as the last template parameter and defined using the utility class
+        <code class="computeroutput"><a class="link" href="../boost/container/deque_options.html" title="Struct template deque_options">deque_options</a></code>.
+        The following parameters can be configured:
+      </p>
+<p>
+        Parameters that control the size of deque's 'block' (deque allocates contiguous
+        chunks of elements, called 'blocks'). Only one of these paratemers can be
+        specified:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <code class="computeroutput"><a class="link" href="../boost/container/block_bytes.html" title="Struct template block_bytes">block_bytes</a></code>:
+            the number of bytes deque will allocate for store elements contiguously:
+            <code class="computeroutput"><span class="identifier">deque</span><span class="special">::</span><span class="identifier">get_block_size</span><span class="special">()</span></code>
+            will return aproximately <code class="computeroutput"><span class="identifier">block_bytes</span><span class="special">/</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">value_type</span><span class="special">)</span></code>. A value of zero means the default value.
+          </li>
+<li class="listitem">
+            <code class="computeroutput"><a class="link" href="../boost/container/block_size.html" title="Struct template block_size">block_size</a></code>:
+            the number of elements deque will allocate contiguously. If this option
+            is specified, <code class="computeroutput"><span class="identifier">deque</span><span class="special">::</span><span class="identifier">get_block_size</span><span class="special">()</span></code>
+            will return the specified <code class="computeroutput"><span class="identifier">block_size</span></code>.
+            A value of zero means the default value.
+          </li>
+</ul></div>
+<p>
+        See the following example to see how <code class="computeroutput"><a class="link" href="../boost/container/deque_options.html" title="Struct template deque_options">deque_options</a></code>
+        can be used to customize <code class="computeroutput"><span class="identifier">deque</span></code>
+        container:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">container</span><span class="special">/</span><span class="identifier">deque</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="keyword">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">//Make sure assertions are active</span>
+<span class="preprocessor">#ifdef</span> <span class="identifier">NDEBUG</span>
+<span class="preprocessor">#undef</span> <span class="identifier">NDEBUG</span>
+<span class="preprocessor">#endif</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
+<span class="special">{</span>
+   <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">;</span>
+
+   <span class="comment">//This option specifies the desired block size for deque</span>
+   <span class="keyword">typedef</span> <span class="identifier">deque_options</span><span class="special">&lt;</span> <span class="identifier">block_size</span><span class="special">&lt;</span><span class="number">128u</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">block_128_option_t</span><span class="special">;</span>
+
+   <span class="comment">//This deque will allocate blocks of 128 elements</span>
+   <span class="keyword">typedef</span> <span class="identifier">deque</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">void</span><span class="special">,</span> <span class="identifier">block_128_option_t</span> <span class="special">&gt;</span> <span class="identifier">block_128_deque_t</span><span class="special">;</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">block_128_deque_t</span><span class="special">::</span><span class="identifier">get_block_size</span><span class="special">()</span> <span class="special">==</span> <span class="number">128u</span><span class="special">);</span>
+
+   <span class="comment">//This option specifies the maximum block size for deque</span>
+   <span class="comment">//in bytes</span>
+   <span class="keyword">typedef</span> <span class="identifier">deque_options</span><span class="special">&lt;</span> <span class="identifier">block_bytes</span><span class="special">&lt;</span><span class="number">1024u</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">block_1024_bytes_option_t</span><span class="special">;</span>
+
+   <span class="comment">//This deque will allocate blocks of 1024 bytes</span>
+   <span class="keyword">typedef</span> <span class="identifier">deque</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">void</span><span class="special">,</span> <span class="identifier">block_1024_bytes_option_t</span> <span class="special">&gt;</span> <span class="identifier">block_1024_bytes_deque_t</span><span class="special">;</span>
+   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">block_1024_bytes_deque_t</span><span class="special">::</span><span class="identifier">get_block_size</span><span class="special">()</span> <span class="special">==</span> <span class="number">1024u</span><span class="special">/</span><span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">int</span><span class="special">));</span>
+
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.configurable_containers.configurable_static_vectors"></a><a class="link" href="configurable_containers.html#container.configurable_containers.configurable_static_vectors" title="Configurable static vector">Configurable
+      static vector</a>
+</h3></div></div></div>
+<p>
+        The configuration for <code class="computeroutput"><a class="link" href="../boost/container/static_vector.html" title="Class template static_vector">static_vector</a></code>
+        is passed as the last template parameter and defined using the utility class
+        <code class="computeroutput"><a class="link" href="../boost/container/static_vector_options.html" title="Struct template static_vector_options">static_vector_options</a></code>.
+        The following parameters can be configured:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <code class="computeroutput"><a class="link" href="../boost/container/inplace_alignment.html" title="Struct template inplace_alignment">inplace_alignment</a></code>:
+            the minimum alignment (in bytes) that the stored value type needs. This
+            option allows static vectors that need non-default alignments, e.g.,
+            to be used in SIMD operations.
+          </li>
+<li class="listitem">
+            <code class="computeroutput"><a class="link" href="../boost/container/throw_on_overflow.html" title="Struct template throw_on_overflow">throw_on_overflow</a></code>:
+            A boolean that specifies if the container should throw an exception when
+            the compile-time capacity is not enough to hold the requesteed number
+            of objects. When "false", if the capacit is overflowd, the
+            implementation calls to BOOST_ASSERT and if that assertion does not throw
+            or abort, undefined behavior is triggered.
+          </li>
+</ul></div>
+<p>
+        See the following example to see how <code class="computeroutput"><a class="link" href="../boost/container/static_vector_options.html" title="Struct template static_vector_options">static_vector_options</a></code>
+        can be used to customize <code class="computeroutput"><span class="identifier">static_vector</span></code>
+        container:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">container</span><span class="special">/</span><span class="identifier">static_vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="keyword">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">//Make sure assertions are active</span>
+<span class="preprocessor">#ifdef</span> <span class="identifier">NDEBUG</span>
+<span class="preprocessor">#undef</span> <span class="identifier">NDEBUG</span>
+<span class="preprocessor">#endif</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
+<span class="special">{</span>
+   <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">;</span>
+
+   <span class="comment">//This option specifies the desired alignment for value_type</span>
+   <span class="keyword">typedef</span> <span class="identifier">static_vector_options</span><span class="special">&lt;</span> <span class="identifier">inplace_alignment</span><span class="special">&lt;</span><span class="number">16u</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">alignment_16_option_t</span><span class="special">;</span>
+
+   <span class="comment">//Check 16 byte alignment option</span>
+   <span class="identifier">static_vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="identifier">alignment_16_option_t</span> <span class="special">&gt;</span> <span class="identifier">sv</span><span class="special">;</span>
+   <span class="identifier">assert</span><span class="special">(((</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="identifier">sv</span><span class="special">.</span><span class="identifier">data</span><span class="special">()</span> <span class="special">%</span> <span class="number">16u</span><span class="special">)</span> <span class="special">==</span> <span class="number">0</span><span class="special">);</span>
+
+   <span class="comment">//This static_vector won't throw on overflow, for maximum performance</span>
+   <span class="keyword">typedef</span> <span class="identifier">static_vector_options</span><span class="special">&lt;</span> <span class="identifier">throw_on_overflow</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">no_throw_options_t</span><span class="special">;</span>
+
+   <span class="comment">//Create static_vector with no throw on overflow</span>
+   <span class="identifier">static_vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="identifier">no_throw_options_t</span> <span class="special">&gt;</span> <span class="identifier">sv2</span><span class="special">;</span>
+
+   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.configurable_containers.configurable_small_vectors"></a><a class="link" href="configurable_containers.html#container.configurable_containers.configurable_small_vectors" title="Configurable small vector">Configurable
+      small vector</a>
+</h3></div></div></div>
+<p>
+        The configuration for <code class="computeroutput"><a class="link" href="../boost/container/small_vector.html" title="Class template small_vector">small_vector</a></code>
+        is passed as the last template parameter and defined using the utility class
+        <code class="computeroutput"><a class="link" href="../boost/container/small_vector_options.html" title="Struct template small_vector_options">small_vector_options</a></code>.
+        The following parameters can be configured:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            <code class="computeroutput"><a class="link" href="../boost/container/inplace_alignment.html" title="Struct template inplace_alignment">inplace_alignment</a></code>:
+            the minimum alignment (in bytes) for the in-place storage used to build
+            the "small" number of elements. <span class="bold"><strong>The alignment
+            of the dynamic memory must be provided by the allocator and it is not
+            affected by this option</strong></span>.
+          </li>
+<li class="listitem">
+            <code class="computeroutput"><a class="link" href="../boost/container/growth_factor.html" title="Struct template growth_factor">growth_factor</a></code>:
+            the growth policy of the vector. The rate at which the capacity of a
+            vector grows is implementation dependent and implementations choose exponential
+            growth in order to meet the amortized constant time requirement for push_back.
+            A higher growth factor will make it faster as it will require less data
+            movement, but it will have a greater memory impact (on average, more
+            memory will be unused). A user can provide a custom implementation of
+            the growth factor and some predefined policies are available: <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_50.html" title="Struct growth_factor_50">growth_factor_50</a></code>,
+            <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_60.html" title="Struct growth_factor_60">growth_factor_60</a></code>
+            and <code class="computeroutput"><a class="link" href="../boost/container/growth_factor_50.html" title="Struct growth_factor_50">growth_factor_100</a></code>.
+          </li>
+</ul></div>
+<p>
+        See the following example to see how <code class="computeroutput"><a class="link" href="../boost/container/small_vector_options.html" title="Struct template small_vector_options">small_vector_options</a></code>
+        can be used to customize <code class="computeroutput"><span class="identifier">small_vector</span></code>
+        container:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">container</span><span class="special">/</span><span class="identifier">small_vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="keyword">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">//Make sure assertions are active</span>
+<span class="preprocessor">#ifdef</span> <span class="identifier">NDEBUG</span>
+<span class="preprocessor">#undef</span> <span class="identifier">NDEBUG</span>
+<span class="preprocessor">#endif</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span> <span class="special">()</span>
+<span class="special">{</span>
+   <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">;</span>
+
+   <span class="comment">//This option specifies the desired alignment for the internal value_type</span>
+   <span class="keyword">typedef</span> <span class="identifier">small_vector_options</span><span class="special">&lt;</span> <span class="identifier">inplace_alignment</span><span class="special">&lt;</span><span class="number">16u</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">alignment_16_option_t</span><span class="special">;</span>
+
+   <span class="comment">//Check 16 byte alignment option</span>
+   <span class="identifier">small_vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="keyword">void</span><span class="special">,</span> <span class="identifier">alignment_16_option_t</span> <span class="special">&gt;</span> <span class="identifier">sv</span><span class="special">;</span>
+   <span class="identifier">assert</span><span class="special">(((</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="identifier">sv</span><span class="special">.</span><span class="identifier">data</span><span class="special">()</span> <span class="special">%</span> <span class="number">16u</span><span class="special">)</span> <span class="special">==</span> <span class="number">0</span><span class="special">);</span>
+
+
+   <span class="comment">//This option specifies that a vector will increase its capacity 50%</span>
+   <span class="comment">//each time the previous capacity was exhausted.</span>
+   <span class="keyword">typedef</span> <span class="identifier">small_vector_options</span><span class="special">&lt;</span> <span class="identifier">growth_factor</span><span class="special">&lt;</span><span class="identifier">growth_factor_50</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">growth_50_option_t</span><span class="special">;</span>
+
+   <span class="comment">//Fill the vector until full capacity is reached</span>
+   <span class="identifier">small_vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="keyword">void</span><span class="special">,</span> <span class="identifier">growth_50_option_t</span> <span class="special">&gt;</span> <span class="identifier">growth_50_vector</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
    <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">old_cap</span> <span class="special">=</span> <span class="identifier">growth_50_vector</span><span class="special">.</span><span class="identifier">capacity</span><span class="special">();</span>
    <span class="identifier">growth_50_vector</span><span class="special">.</span><span class="identifier">resize</span><span class="special">(</span><span class="identifier">old_cap</span><span class="special">);</span>
 

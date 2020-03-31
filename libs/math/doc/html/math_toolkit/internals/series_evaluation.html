@@ -4,7 +4,7 @@
 <title>Series Evaluation</title>
 <link rel="stylesheet" href="../../math.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Math Toolkit 2.9.0">
+<link rel="home" href="../../index.html" title="Math Toolkit 2.11.0">
 <link rel="up" href="../internals.html" title="Internal tools">
 <link rel="prev" href="../internals.html" title="Internal tools">
 <link rel="next" href="cf.html" title="Continued Fraction Evaluation">
@@ -79,8 +79,9 @@
 <p>
         The second argument is the precision required, summation will stop when the
         next term is less than <span class="emphasis"><em>tolerance</em></span> times the result. The
-        deprecated versions of sum_series take an integer number of bits here - internally
-        they just convert this to a tolerance and forward the call.
+        deprecated versions of <code class="computeroutput"><span class="identifier">sum_series</span></code>
+        take an integer number of bits here - internally they just convert this to
+        a tolerance and forward the call.
       </p>
 <p>
         The third argument <span class="emphasis"><em>max_terms</em></span> sets an upper limit on
@@ -131,9 +132,10 @@
         Let's suppose we want to implement <span class="emphasis"><em>log(1+x)</em></span> via its
         infinite series,
       </p>
-<p>
-        <span class="inlinemediaobject"><img src="../../../equations/log1pseries.svg"></span>
-      </p>
+<div class="blockquote"><blockquote class="blockquote"><p>
+          <span class="inlinemediaobject"><img src="../../../equations/log1pseries.svg"></span>
+
+        </p></blockquote></div>
 <p>
         We begin by writing a small function object to return successive terms of
         the series:
@@ -151,7 +153,7 @@
    <span class="special">{</span>
       <span class="comment">// This is the function operator invoked by the summation</span>
       <span class="comment">// algorithm, the first call to this operator should return</span>
-      <span class="comment">// the first term of the series, the second call the second </span>
+      <span class="comment">// the first term of the series, the second call the second</span>
       <span class="comment">// term and so on.</span>
       <span class="identifier">m_prod</span> <span class="special">*=</span> <span class="identifier">m_mult</span><span class="special">;</span>
       <span class="keyword">return</span> <span class="identifier">m_prod</span> <span class="special">/</span> <span class="special">++</span><span class="identifier">k</span><span class="special">;</span>
@@ -170,7 +172,7 @@
 <span class="identifier">T</span> <span class="identifier">log1p</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="comment">// We really should add some error checking on x here!</span>
-   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">fabs</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">1</span><span class="special">);</span>
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">fabs</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">1</span><span class="special">);</span>
 
    <span class="comment">// Construct the series functor:</span>
    <span class="identifier">log1p_series</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">s</span><span class="special">(</span><span class="identifier">x</span><span class="special">);</span>
@@ -199,7 +201,7 @@
    <span class="special">{</span>
       <span class="comment">// This is the function operator invoked by the summation</span>
       <span class="comment">// algorithm, the first call to this operator should return</span>
-      <span class="comment">// the first term of the series, the second call the second </span>
+      <span class="comment">// the first term of the series, the second call the second</span>
       <span class="comment">// term and so on.</span>
       <span class="identifier">m_prod</span> <span class="special">*=</span> <span class="identifier">m_mult</span><span class="special">;</span>
       <span class="keyword">return</span> <span class="identifier">m_prod</span> <span class="special">/</span> <span class="identifier">T</span><span class="special">(++</span><span class="identifier">k</span><span class="special">);</span>
@@ -216,7 +218,7 @@
 <span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">log1p</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">x</span><span class="special">)</span>
 <span class="special">{</span>
    <span class="comment">// We really should add some error checking on x here!</span>
-   <span class="identifier">assert</span><span class="special">(</span><span class="identifier">abs</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">1</span><span class="special">);</span>
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">abs</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">1</span><span class="special">);</span>
 
    <span class="comment">// Construct the series functor:</span>
    <span class="identifier">log1p_series</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">s</span><span class="special">(</span><span class="identifier">x</span><span class="special">);</span>
@@ -234,11 +236,11 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2010, 2012-2014, 2017 Nikhar
+<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2019 Nikhar
       Agrawal, Anton Bikineev, Paul A. Bristow, Marco Guazzone, Christopher Kormanyos,
-      Hubert Holin, Bruno Lalande, John Maddock, Jeremy Murphy, Johan R&#229;de, Gautam
-      Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg, Daryle Walker
-      and Xiaogang Zhang<p>
+      Hubert Holin, Bruno Lalande, John Maddock, Jeremy Murphy, Matthew Pulver, Johan
+      R&#229;de, Gautam Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg,
+      Daryle Walker and Xiaogang Zhang<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

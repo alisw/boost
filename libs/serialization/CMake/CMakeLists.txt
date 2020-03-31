@@ -95,7 +95,7 @@ endif()
 #
 
 set(Boost_DEBUG true)
-set(Boost_ADDRESS_MODEL 64 CACHE INTEGER "32/64 bits")
+set(Boost_ADDRESS_MODEL 64 CACHE STRING "32/64 bits")
 set(Boost_USE_STATIC_LIBS TRUE CACHE BOOL "Use static libraries")
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_DETAILED_FAILURE_MSG true)
@@ -269,11 +269,11 @@ serialization_test(test_dll_simple)
 target_link_libraries(test_dll_simple dll_a serialization)
 
 message(STATUS dll_polymorphic_base)
-add_library(dll_polymorphic_base SHARED ../test/polymorphic_base.cpp)
+add_library(dll_polymorphic_base SHARED ../test/dll_polymorphic_base.cpp)
 target_link_libraries(dll_polymorphic_base serialization)
 
 message(STATUS dll_polymorphic_derived2)
-add_library(dll_polymorphic_derived2 SHARED ../test/polymorphic_derived2.cpp)
+add_library(dll_polymorphic_derived2 SHARED ../test/dll_polymorphic_derived2.cpp)
 target_link_libraries(dll_polymorphic_derived2 dll_polymorphic_base serialization)
 
 # compile test_dll_plugin.cpp
@@ -390,7 +390,7 @@ polymorphic_archive_test(test_no_rtti polymorphic_base polymorphic_derived1 poly
 polymorphic_archive_test(test_exported polymorphic_base polymorphic_derived1 polymorphic_derived2)
 polymorphic_archive_test(test_polymorphic test_polymorphic_A A)
 polymorphic_archive_test(test_polymorphic2 test_polymorphic2imp)
-polymorphic_archive_test(test_polymorphic_helper)
+polymorphic_archive_test(test_p_helper)
 
 # end test targets
 ####################

@@ -374,6 +374,60 @@ auto async_xyz(T1 t1, T2 t2, CompletionToken&amp;&amp; token)
         exception propagated from the execution of a completion handler is determined
         by the executor which is executing the completion handler.
       </p>
+<h5>
+<a name="boost_asio.reference.asynchronous_operations.h13"></a>
+        <span class="phrase"><a name="boost_asio.reference.asynchronous_operations.default_completion_tokens"></a></span><a class="link" href="asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens">Default
+        completion tokens</a>
+      </h5>
+<p>
+        Every I/O executor type has an associated default completion token type.
+        This is specified via the <code class="computeroutput">default_completion_token</code> trait. This
+        trait may be used in asynchronous operation declarations as follows:
+      </p>
+<pre class="programlisting">template &lt;
+    typename IoObject,
+    typename CompletionToken =
+      typename default_completion_token&lt;
+        typename IoObject::executor_type
+      &gt;::type
+  &gt;
+auto async_xyz(
+    IoObject&amp; io_object,
+    CompletionToken&amp;&amp; token =
+      typename default_completion_token&lt;
+        typename IoObject::executor_type
+      &gt;::type{}
+  );
+</pre>
+<p>
+        If not specialised, this trait type is <code class="computeroutput">void</code>, meaning no default
+        completion token type is available for the given I/O executor.
+      </p>
+<p>
+        [<span class="emphasis"><em>Example:</em></span> The <code class="computeroutput">default_completion_token</code>
+        trait is specialised for the <code class="computeroutput">use_awaitable</code> completion token
+        so that it may be used as shown in the following example:
+      </p>
+<pre class="programlisting">auto socket = use_awaitable.as_default_on(tcp::socket(my_context));
+// ...
+co_await socket.async_connect(my_endpoint); // Defaults to use_awaitable.
+</pre>
+<p>
+        In this example, the type of the <code class="computeroutput">socket</code> object is transformed
+        from <code class="computeroutput">tcp::socket</code> to have an I/O executor with the default completion
+        token set to <code class="computeroutput">use_awaitable</code>.
+      </p>
+<p>
+        Alternatively, the socket type may be computed directly:
+      </p>
+<pre class="programlisting">using tcp_socket = use_awaitable_t&lt;&gt;::as_default_on_t&lt;tcp::socket&gt;;
+tcp_socket socket(my_context);
+// ...
+co_await socket.async_connect(my_endpoint); // Defaults to use_awaitable.
+</pre>
+<p>
+        &#8212;<span class="emphasis"><em>end example</em></span>]
+      </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

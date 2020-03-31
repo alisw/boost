@@ -35,7 +35,7 @@
 </dl></div>
 <div class="simplesect">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idm45478760920928"></a>Authors</h3></div></div></div>
+<a name="idm46687073461040"></a>Authors</h3></div></div></div>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
           Beman Dawes
@@ -109,14 +109,14 @@
 <pre class="programlisting"><span class="identifier">BOOST_SCOPED_ENUM_FORWARD_DECLARE</span><span class="special">(</span><span class="identifier">future_errc</span><span class="special">);</span>
 </pre>
 <p>
-        There are however some limitations. First, the emulated scoped enum is not
-        a C++ enum, so <code class="computeroutput"><span class="identifier">is_enum</span><span class="special">&lt;</span>
+        There are however some limitations. The emulated scoped enum is not a C++
+        enum, so <code class="computeroutput"><span class="identifier">is_enum</span><span class="special">&lt;</span>
         <span class="identifier">future_errc</span> <span class="special">&gt;</span></code>
         will be <code class="computeroutput"><span class="identifier">false_type</span></code>.
       </p>
 <p>
-        Second, the emulated scoped enum can not be used in switch nor in template
-        arguments. For these cases the user needs to use some helpers. Instead of
+        The emulated scoped enum can not be used in switch nor in template arguments.
+        For these cases the user needs to use some helpers. Instead of
       </p>
 <pre class="programlisting"><span class="keyword">switch</span> <span class="special">(</span><span class="identifier">ev</span><span class="special">)</span>
 <span class="special">{</span>
@@ -150,10 +150,31 @@
 <span class="special">};</span>
 </pre>
 <p>
-        Lastly, explicit conversion to the underlying type should be performed with
-        <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">underlying_cast</span></code> instead of <code class="computeroutput"><span class="keyword">static_cast</span></code>:
+        Explicit conversion to the underlying type should be performed with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">underlying_cast</span></code> instead of <code class="computeroutput"><span class="keyword">static_cast</span></code>:
       </p>
 <pre class="programlisting"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">val</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">underlying_cast</span><span class="special">&lt;</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="special">&gt;(</span><span class="identifier">ev</span><span class="special">);</span>
+</pre>
+<p>
+        In C++03, scoped enums behave differently in case of calling an overloaded
+        function when one overload takes a scoped enum as a parameter, and the other
+        takes a parameter of an integral type. Consider the following code:
+      </p>
+<pre class="programlisting"><span class="keyword">enum</span> <span class="identifier">enum_regular</span> <span class="special">{</span> <span class="identifier">REGULAR_A</span><span class="special">,</span> <span class="identifier">REGULAR_B</span> <span class="special">};</span>
+
+<span class="identifier">BOOST_SCOPED_ENUM_DECLARE_BEGIN</span><span class="special">(</span><span class="identifier">enum_scoped</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span>
+<span class="special">}</span>
+<span class="identifier">BOOST_SCOPED_ENUM_DECLARE_END</span><span class="special">(</span><span class="identifier">enum_scoped</span><span class="special">)</span>
+
+<span class="keyword">void</span> <span class="identifier">regular_or_int</span><span class="special">(</span><span class="identifier">enum_regular</span><span class="special">);</span> <span class="comment">// (1)</span>
+<span class="keyword">void</span> <span class="identifier">regular_or_int</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span>          <span class="comment">// (2)</span>
+<span class="keyword">void</span> <span class="identifier">scoped_or_int</span><span class="special">(</span><span class="identifier">enum_scoped</span><span class="special">);</span>   <span class="comment">// (3)</span>
+<span class="keyword">void</span> <span class="identifier">scoped_or_int</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span>           <span class="comment">// (4)</span>
+
+<span class="identifier">regular_or_int</span><span class="special">(</span><span class="identifier">REGULAR_A</span><span class="special">);</span>                  <span class="comment">// calls (1) in C++03 and C++11</span>
+<span class="identifier">scoped_or_int</span><span class="special">(</span><span class="identifier">enum_scoped</span><span class="special">::</span><span class="identifier">a</span><span class="special">);</span>              <span class="comment">// calls (3) in C++11 but (4) in C++03!</span>
+<span class="identifier">scoped_or_int</span><span class="special">(</span><span class="identifier">enum_scoped</span><span class="special">(</span><span class="identifier">enum_scoped</span><span class="special">::</span><span class="identifier">a</span><span class="special">));</span> <span class="comment">// calls (3) in C++03 and C++11</span>
 </pre>
 <p>
         Here is usage example:

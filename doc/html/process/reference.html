@@ -40,6 +40,7 @@
 <dt><span class="section"><a href="reference.html#header.boost.process.exe_hpp">Header &lt;boost/process/exe.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.process.extend_hpp">Header &lt;boost/process/extend.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.process.group_hpp">Header &lt;boost/process/group.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.process.handles_hpp">Header &lt;boost/process/handles.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.process.io_hpp">Header &lt;boost/process/io.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.process.locale_hpp">Header &lt;boost/process/locale.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reference.html#header.boost.process.pipe_hpp">Header &lt;boost/process/pipe.hpp&gt;</a></span></dt>
@@ -173,7 +174,6 @@
     <span class="keyword">typedef</span> <a class="link" href="../boost/process/basic_environment.html" title="Class template basic_environment">basic_environment</a><span class="special">&lt;</span> <span class="keyword">wchar_t</span> <span class="special">&gt;</span> <a name="boost.process.wenvironment"></a><span class="identifier">wenvironment</span><span class="special">;</span>  <span class="comment">// Type definition to hold a seperate environment. </span>
   <span class="special">}</span>
   <span class="keyword">namespace</span> <span class="identifier">this_process</span> <span class="special">{</span>
-    <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="boost.this_process.native_handle_type"></a><span class="identifier">native_handle_type</span><span class="special">;</span>  <span class="comment">// Definition of the native handle type. </span>
 
     <span class="comment">// Get the process id of the current process. </span>
     <span class="keyword">int</span> <a name="boost.this_process.get_id"></a><span class="identifier">get_id</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
@@ -282,6 +282,23 @@ Please refer to the <a class="link" href="../boost_process/extend.html" title="E
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">process</span> <span class="special">{</span>
     <span class="keyword">class</span> <a class="link" href="../boost/process/group.html" title="Class group">group</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.process.handles_hpp"></a>Header &lt;<a href="../../../../../boost/process/handles.hpp" target="_top">boost/process/handles.hpp</a>&gt;</h3></div></div></div>
+<p>Defines functions to obtain handles of the current process and limit the amount for inherited ones. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">process</span> <span class="special">{</span>
+    <span class="keyword">static</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="../boost/process/limit_handles.html" title="Global limit_handles">limit_handles</a><span class="special">;</span>
+  <span class="special">}</span>
+  <span class="keyword">namespace</span> <span class="identifier">this_process</span> <span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="../boost/this_process/native_handle_type.html" title="Type definition native_handle_type"><span class="identifier">native_handle_type</span></a><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">native_handle_type</span> <span class="special">&gt;</span> <a class="link" href="../boost/this_process/get_handles.html" title="Function get_handles"><span class="identifier">get_handles</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">native_handle_type</span> <span class="special">&gt;</span> <a class="link" href="../boost/this_process/get_handles.html" title="Function get_handles"><span class="identifier">get_handles</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a class="link" href="../boost/this_process/is_stream_handle.html" title="Function is_stream_handle"><span class="identifier">is_stream_handle</span></a><span class="special">(</span><span class="identifier">native_handle_type</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a class="link" href="../boost/this_process/is_stream_handle.html" title="Function is_stream_handle"><span class="identifier">is_stream_handle</span></a><span class="special">(</span><span class="identifier">native_handle_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">error_code</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>

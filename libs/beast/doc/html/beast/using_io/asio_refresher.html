@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Refresher &#9733;</title>
+<title>Refresher</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
-<link rel="up" href="../using_io.html" title="Networking &#9733;">
-<link rel="prev" href="../using_io.html" title="Networking &#9733;">
+<link rel="up" href="../using_io.html" title="Networking">
+<link rel="prev" href="../using_io.html" title="Networking">
 <link rel="next" href="stream_types.html" title="Streams">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,7 +24,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="beast.using_io.asio_refresher"></a><a class="link" href="asio_refresher.html" title="Refresher &#9733;">Refresher <span class="green">&#9733;</span></a>
+<a name="beast.using_io.asio_refresher"></a><a class="link" href="asio_refresher.html" title="Refresher">Refresher</a>
 </h3></div></div></div>
 <p>
         To use Beast effectively, a prior understanding of Networking is required.
@@ -453,9 +453,9 @@
         (of type <a href="../../../../../../doc/html/boost_asio/reference/use_future_t.html" target="_top"><code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">use_future_t</span><span class="special">&lt;&gt;</span></code></a>) in place of the completion
         handler. The same <code class="computeroutput"><span class="identifier">async_write</span></code>
         function overload can work with a <a href="https://en.wikipedia.org/wiki/Fiber_(computer_science)" target="_top"><span class="emphasis"><em>fiber</em></span></a>
-        launched with <a href="../../../../../../doc/html/boost_asio/reference/spawn/overload1.html" target="_top"><code class="computeroutput"><span class="identifier">net</span><span class="special">::</span><span class="identifier">spawn</span></code></a>:
+        launched with <a href="../../../../../../doc/html/boost_asio/reference/spawn/overload1.html" target="_top"><code class="computeroutput"><span class="identifier">asio</span><span class="special">::</span><span class="identifier">spawn</span></code></a>:
       </p>
-<pre class="programlisting"><span class="identifier">net</span><span class="special">::</span><span class="identifier">spawn</span><span class="special">(</span>
+<pre class="programlisting"><span class="identifier">asio</span><span class="special">::</span><span class="identifier">spawn</span><span class="special">(</span>
     <span class="special">[&amp;</span><span class="identifier">sock</span><span class="special">](</span><span class="identifier">net</span><span class="special">::</span><span class="identifier">yield_context</span> <span class="identifier">yield</span><span class="special">)</span>
     <span class="special">{</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">bytes_transferred</span> <span class="special">=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">async_write</span><span class="special">(</span><span class="identifier">sock</span><span class="special">,</span>

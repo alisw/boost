@@ -1,5 +1,5 @@
 /* Unit testing for outcomes
-(C) 2013-2019 Niall Douglas <http://www.nedproductions.biz/> (149 commits)
+(C) 2013-2019 Niall Douglas <http://www.nedproductions.biz/> (30 commits)
 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -28,10 +28,10 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #ifdef TESTING_WG21_EXPERIMENTAL_RESULT
-#include "../../include/boost/outcome/experimental/result.hpp"
+#include <boost/outcome/experimental/result.hpp>
 #define BOOST_OUTCOME_AUTO_TEST_CASE(...) BOOST_AUTO_TEST_CASE(__VA_ARGS__)
 #else
-#include "../../include/boost/outcome/result.hpp"
+#include <boost/outcome/result.hpp>
 #endif
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_monitor.hpp>

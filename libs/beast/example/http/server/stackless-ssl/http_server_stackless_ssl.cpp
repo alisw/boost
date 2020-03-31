@@ -20,6 +20,7 @@
 #include <boost/beast/ssl.hpp>
 #include <boost/beast/version.hpp>
 #include <boost/asio/coroutine.hpp>
+#include <boost/asio/dispatch.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/config.hpp>
 #include <algorithm>
@@ -238,7 +239,7 @@ fail(beast::error_code ec, char const* what)
 
 // Handles an HTTP server connection
 class session
-    : public net::coroutine
+    : public boost::asio::coroutine
     , public std::enable_shared_from_this<session>
 {
     // This is the C++11 equivalent of a generic lambda.
@@ -304,7 +305,16 @@ public:
     void
     run()
     {
-        loop({}, 0, false);
+        // We need to be executing within a strand to perform async operations
+        // on the I/O objects in this session.Although not strictly necessary
+        // for single-threaded contexts, this example code is written to be
+        // thread-safe by default.
+        net::dispatch(stream_.get_executor(),
+                      beast::bind_front_handler(&session::loop,
+                                                shared_from_this(),
+                                                beast::error_code{},
+                                                0,
+                                                false));
     }
 
     #include <boost/asio/yield.hpp>
@@ -398,7 +408,7 @@ public:
 
 // Accepts incoming connections and launches the sessions
 class listener
-    : public net::coroutine
+    : public boost::asio::coroutine
     , public std::enable_shared_from_this<listener>
 {
     net::io_context& ioc_;

@@ -29,7 +29,7 @@
   <span class="identifier">shared_ptr</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">synchronous_sink</span><span class="special">&lt;</span> <span class="identifier">sinks</span><span class="special">::</span><span class="identifier">text_file_backend</span> <span class="special">&gt;</span> <span class="special">&gt;</span> 
   <span class="identifier">add_file_log</span><span class="special">(</span><span class="identifier">ArgsT</span><span class="special">...</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idm45843790521520"></a><h2>Description</h2>
+<a name="idm45554722796704"></a><h2>Description</h2>
 <p>The function initializes the logging library to write logs to a file stream.</p>
 <p>
 
@@ -58,6 +58,7 @@
 <li class="listitem"><p><code class="computeroutput">rotation_size</code> The size of the file at which rotation should occur. See <code class="computeroutput">basic_text_file_backend</code>. </p></li>
 <li class="listitem"><p><code class="computeroutput">time_based_rotation</code> The predicate for time-based file rotations. See <code class="computeroutput">basic_text_file_backend</code>. </p></li>
 <li class="listitem"><p><code class="computeroutput">auto_flush</code> A boolean flag that shows whether the sink should automatically flush the file after each written record. </p></li>
+<li class="listitem"><p><code class="computeroutput">auto_newline_mode</code> - Specifies automatic trailing newline insertion mode. Must be a value of the <code class="computeroutput">auto_newline_mode</code> enum. By default, is <code class="computeroutput">auto_newline_mode::insert_if_missing</code>. </p></li>
 <li class="listitem"><p><code class="computeroutput">target</code> The target directory to store rotated files in. See <code class="computeroutput">sinks::file::make_collector</code>. </p></li>
 <li class="listitem"><p><code class="computeroutput">max_size</code> The maximum total size of rotated files in the target directory. See <code class="computeroutput">sinks::file::make_collector</code>. </p></li>
 <li class="listitem"><p><code class="computeroutput">min_free_space</code> Minimum free space in the target directory. See <code class="computeroutput">sinks::file::make_collector</code>. </p></li>

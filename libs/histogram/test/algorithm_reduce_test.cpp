@@ -7,12 +7,15 @@
 #include <boost/core/lightweight_test.hpp>
 #include <boost/histogram/algorithm/reduce.hpp>
 #include <boost/histogram/algorithm/sum.hpp>
+#include <boost/histogram/axis/category.hpp>
 #include <boost/histogram/axis/integer.hpp>
+#include <boost/histogram/axis/ostream.hpp>
 #include <boost/histogram/axis/regular.hpp>
 #include <boost/histogram/axis/variable.hpp>
-#include <boost/histogram/indexed.hpp>
+#include <boost/histogram/ostream.hpp>
 #include <boost/histogram/unsafe_access.hpp>
 #include <vector>
+#include "throw_exception.hpp"
 #include "utility_histogram.hpp"
 
 using namespace boost::histogram;
@@ -20,20 +23,68 @@ using namespace boost::histogram::algorithm;
 
 template <typename Tag>
 void run_tests() {
-  using regular = axis::regular<double, axis::transform::id, axis::null_type>;
-  {
-    auto h = make_s(Tag(), std::vector<int>(), regular(4, 1, 5), regular(3, -1, 2));
+  // reduce:
+  // - does not work with arguments not convertible to double
+  // - does not work with category axis, which is not ordered
 
+  using R = axis::regular<double, axis::transform::id, axis::null_type>;
+  using ID = axis::integer<double, axis::null_type>;
+  using V = axis::variable<double, axis::empty_type>;
+  using CI = axis::category<int, axis::empty_type>;
+
+  // various failures
+  {
+    auto h = make(Tag(), R(4, 1, 5), R(3, -1, 2));
+
+    // not allowed: invalid axis index
+    BOOST_TEST_THROWS((void)reduce(h, slice(10, 2, 3)), std::invalid_argument);
     // not allowed: repeated indices
+    BOOST_TEST_THROWS((void)reduce(h, slice(1, 0, 2), slice(1, 1, 3)),
+                      std::invalid_argument);
     BOOST_TEST_THROWS((void)reduce(h, rebin(0, 2), rebin(0, 2)), std::invalid_argument);
     BOOST_TEST_THROWS((void)reduce(h, shrink(1, 0, 2), shrink(1, 0, 2)),
                       std::invalid_argument);
+    // not allowed: slice with begin >= end
+    BOOST_TEST_THROWS((void)reduce(h, slice(0, 1, 1)), std::invalid_argument);
+    BOOST_TEST_THROWS((void)reduce(h, slice(0, 2, 1)), std::invalid_argument);
     // not allowed: shrink with lower == upper
     BOOST_TEST_THROWS((void)reduce(h, shrink(0, 0, 0)), std::invalid_argument);
     // not allowed: shrink axis to zero size
     BOOST_TEST_THROWS((void)reduce(h, shrink(0, 10, 11)), std::invalid_argument);
     // not allowed: rebin with zero merge
     BOOST_TEST_THROWS((void)reduce(h, rebin(0, 0)), std::invalid_argument);
+  }
+
+  // shrink behavior when value on edge and not on edge is inclusive:
+  // - lower edge of shrink: pick bin which contains edge, lower <= x < upper
+  // - upper edge of shrink: pick bin which contains edge + 1, lower < x <= upper
+  {
+    auto h = make(Tag(), ID(0, 3));
+    const auto& ax = h.axis();
+    BOOST_TEST_EQ(ax.value(0), 0);
+    BOOST_TEST_EQ(ax.value(1), 1);
+    BOOST_TEST_EQ(ax.value(2), 2);
+    BOOST_TEST_EQ(ax.value(3), 3);
+    BOOST_TEST_EQ(ax.index(-1), -1);
+    BOOST_TEST_EQ(ax.index(0), 0);
+    BOOST_TEST_EQ(ax.index(1), 1);
+    BOOST_TEST_EQ(ax.index(2), 2);
+    BOOST_TEST_EQ(ax.index(3), 3);
+
+    BOOST_TEST_EQ(reduce(h, shrink(-1, 5)).axis(), ID(0, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(0, 3)).axis(), ID(0, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(1, 3)).axis(), ID(1, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(1.001, 3)).axis(), ID(1, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(1.999, 3)).axis(), ID(1, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(2, 3)).axis(), ID(2, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(0, 2.999)).axis(), ID(0, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(0, 2.001)).axis(), ID(0, 3));
+    BOOST_TEST_EQ(reduce(h, shrink(0, 2)).axis(), ID(0, 2));
+    BOOST_TEST_EQ(reduce(h, shrink(0, 1.999)).axis(), ID(0, 2));
+  }
+
+  {
+    auto h = make_s(Tag(), std::vector<int>(), R(4, 1, 5), R(3, -1, 2));
 
     /*
       matrix layout:
@@ -54,24 +105,18 @@ void run_tests() {
     auto hr = reduce(h, shrink(1, -1, 2), rebin(0, 1));
     BOOST_TEST_EQ(hr.rank(), 2);
     BOOST_TEST_EQ(sum(hr), 10);
-    BOOST_TEST_EQ(hr.axis(0).size(), h.axis(0).size());
-    BOOST_TEST_EQ(hr.axis(1).size(), h.axis(1).size());
-    BOOST_TEST_EQ(hr.axis(0).bin(0).lower(), 1);
-    BOOST_TEST_EQ(hr.axis(0).bin(3).upper(), 5);
-    BOOST_TEST_EQ(hr.axis(1).bin(0).lower(), -1);
-    BOOST_TEST_EQ(hr.axis(1).bin(2).upper(), 2);
-    for (auto x : indexed(h, coverage::all)) BOOST_TEST_EQ(hr.at(x.indices()), *x);
+    BOOST_TEST_EQ(hr.axis(0), R(4, 1, 5));
+    BOOST_TEST_EQ(hr.axis(1), R(3, -1, 2));
+    BOOST_TEST_EQ(hr, h);
+
+    hr = reduce(h, slice(1, 0, 4), slice(0, 0, 4));
     BOOST_TEST_EQ(hr, h);
 
     hr = reduce(h, shrink(0, 2, 4));
     BOOST_TEST_EQ(hr.rank(), 2);
     BOOST_TEST_EQ(sum(hr), 10);
-    BOOST_TEST_EQ(hr.axis(0).size(), 2);
-    BOOST_TEST_EQ(hr.axis(1).size(), h.axis(1).size());
-    BOOST_TEST_EQ(hr.axis(0).bin(0).lower(), 2);
-    BOOST_TEST_EQ(hr.axis(0).bin(1).upper(), 4);
-    BOOST_TEST_EQ(hr.axis(1).bin(0).lower(), -1);
-    BOOST_TEST_EQ(hr.axis(1).bin(2).upper(), 2);
+    BOOST_TEST_EQ(hr.axis(0), R(2, 2, 4));
+    BOOST_TEST_EQ(hr.axis(1), R(3, -1, 2));
     BOOST_TEST_EQ(hr.at(-1, 0), 1); // underflow
     BOOST_TEST_EQ(hr.at(0, 0), 0);
     BOOST_TEST_EQ(hr.at(1, 0), 1);
@@ -106,9 +151,29 @@ void run_tests() {
     BOOST_TEST_EQ(hr.at(0, 0), 5);
     BOOST_TEST_EQ(hr.at(1, 0), 3); // overflow
 
-    std::vector<reduce_option> opts{{shrink_and_rebin(0, 2, 5, 2), rebin(1, 3)}};
+    // test overload that accepts iterable and test option fusion
+    std::vector<reduce_option> opts{{shrink(0, 2, 5), rebin(0, 2), rebin(1, 3)}};
     auto hr2 = reduce(h, opts);
     BOOST_TEST_EQ(hr2, hr);
+    opts = {rebin(0, 2), slice(0, 1, 4), rebin(1, 3)};
+    auto hr3 = reduce(h, opts);
+    BOOST_TEST_EQ(hr3, hr);
+  }
+
+  // mixed axis types
+  {
+    R r(5, 0.0, 1.0);
+    V v{{1., 2., 3.}};
+    CI c{{1, 2, 3}};
+    auto h = make(Tag(), r, v, c);
+    auto hr = algorithm::reduce(h, shrink(0, 0.2, 0.7));
+    BOOST_TEST_EQ(hr.axis(0).size(), 3);
+    BOOST_TEST_EQ(hr.axis(0).bin(0).lower(), 0.2);
+    BOOST_TEST_EQ(hr.axis(0).bin(2).upper(), 0.8);
+    BOOST_TEST_EQ(hr.axis(1).size(), 2);
+    BOOST_TEST_EQ(hr.axis(1).bin(0).lower(), 1);
+    BOOST_TEST_EQ(hr.axis(1).bin(1).upper(), 3);
+    BOOST_TEST_THROWS((void)algorithm::reduce(h, rebin(2, 2)), std::invalid_argument);
   }
 
   // reduce on integer axis, rebin must fail
@@ -134,7 +199,7 @@ void run_tests() {
 
   // reduce on variable axis
   {
-    auto h = make(Tag(), axis::variable<>({0, 1, 2, 3, 4, 5, 6}));
+    auto h = make(Tag(), V({0, 1, 2, 3, 4, 5, 6}));
     auto hr = reduce(h, shrink_and_rebin(1, 5, 2));
     BOOST_TEST_EQ(hr.axis().size(), 2);
     BOOST_TEST_EQ(hr.axis().value(0), 1);
@@ -144,16 +209,21 @@ void run_tests() {
 
   // reduce on axis with inverted range
   {
-    auto h = make(Tag(), regular(4, 2, -2));
-    auto hr = reduce(h, shrink(1, -1));
-    BOOST_TEST_EQ(hr.axis().size(), 2);
-    BOOST_TEST_EQ(hr.axis().bin(0).lower(), 1);
-    BOOST_TEST_EQ(hr.axis().bin(1).upper(), -1);
-  }
+    auto h = make(Tag(), R(4, 2, -2));
+    const auto& ax = h.axis();
+    BOOST_TEST_EQ(ax.index(-0.999), 2);
+    BOOST_TEST_EQ(ax.index(-1.0), 3);
+    BOOST_TEST_EQ(ax.index(-1.5), 3);
 
-  // reduce:
-  // - does not work with arguments not convertible to double
-  // - does not work with category axis, which is not ordered
+    BOOST_TEST_EQ(reduce(h, shrink(3, -3)).axis(), R(4, 2, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(2, -2)).axis(), R(4, 2, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(1.999, -2)).axis(), R(4, 2, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(1.001, -2)).axis(), R(4, 2, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(1, -2)).axis(), R(3, 1, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(2, -1.999)).axis(), R(4, 2, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(2, -1.001)).axis(), R(4, 2, -2));
+    BOOST_TEST_EQ(reduce(h, shrink(2, -1)).axis(), R(3, 2, -1));
+  }
 }
 
 int main() {

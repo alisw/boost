@@ -19,7 +19,8 @@
 Within detection using cross counting. 
 
 [heading Synopsis]
-``template<typename Point, typename PointOfSegment, typename CalculationType>
+``template<typename Point_, typename PointOfSegment_, typename CalculationType, ,
+         >
 class strategy::within::franklin
 {
   // ...
@@ -29,15 +30,18 @@ class strategy::within::franklin
 [heading Template parameter(s)]
 [table
 [[Parameter] [Default] [Description]]
-[[typename Point] [] [Any type fulfilling a Point Concept ]]
-[[typename PointOfSegment] [Point] [segment point type ]]
+[[typename Point_] [] []]
+[[typename PointOfSegment_] [Point_] []]
 [[typename CalculationType] [void] [numeric type for calculation (e.g. high precision); if [*void] then it is extracted automatically from the coordinate type and (if necessary) promoted to floating point ]]
+[[] [] [Any type fulfilling a Point Concept ]]
+[[] [] [segment point type ]]
 ]
 
 [heading Member Function(s)]
 [table
 [[Function] [Description] [Parameters]  [Returns]]
-[[``bool apply(Point const & point, PointOfSegment const & seg1, PointOfSegment const & seg2,
+[[``template<typename Point, typename PointOfSegment>
+bool apply(Point const & point, PointOfSegment const & seg1, PointOfSegment const & seg2,
            crossings & state)``
 
 ] [] [[* Point const &]: ['point]:  

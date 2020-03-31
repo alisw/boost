@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Detect SSL &#128161; &#9733;</title>
+<title>Detect SSL &#128161;</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Boost.Beast">
 <link rel="up" href="../writing_composed_operations.html" title="Writing Composed Operations">
-<link rel="prev" href="echo.html" title="Echo &#128161; &#9733;">
+<link rel="prev" href="echo.html" title="Echo &#128161;">
 <link rel="next" href="../../using_http.html" title="HTTP">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -24,8 +24,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="beast.using_io.writing_composed_operations.detect_ssl"></a><a class="link" href="detect_ssl.html" title="Detect SSL &#128161; &#9733;">Detect
-        SSL &#128161; <span class="green">&#9733;</span></a>
+<a name="beast.using_io.writing_composed_operations.detect_ssl"></a><a class="link" href="detect_ssl.html" title="Detect SSL &#128161;">Detect
+        SSL &#128161;</a>
 </h4></div></div></div>
 <p>
           In this example we will build a simple function to detect the presence
@@ -344,7 +344,9 @@
 <span class="keyword">template</span><span class="special">&lt;</span>
     <span class="keyword">class</span> <span class="identifier">AsyncReadStream</span><span class="special">,</span>
     <span class="keyword">class</span> <span class="identifier">DynamicBuffer</span><span class="special">,</span>
-    <span class="keyword">class</span> <span class="identifier">CompletionToken</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">CompletionToken</span> <span class="special">=</span>
+        <span class="identifier">net</span><span class="special">::</span><span class="identifier">default_completion_token_t</span><span class="special">&lt;</span><span class="identifier">beast</span><span class="special">::</span><span class="identifier">executor_type</span><span class="special">&lt;</span><span class="identifier">AsyncReadStream</span><span class="special">&gt;&gt;</span>
+<span class="special">&gt;</span>
 <span class="preprocessor">#if</span> <span class="identifier">BOOST_BEAST_DOXYGEN</span>
 <span class="identifier">BOOST_ASIO_INITFN_RESULT_TYPE</span><span class="special">(</span><span class="identifier">CompletionToken</span><span class="special">,</span> <span class="keyword">void</span><span class="special">(</span><span class="identifier">error_code</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">))</span>
 <span class="preprocessor">#else</span>
@@ -353,7 +355,8 @@
 <span class="identifier">async_detect_ssl</span><span class="special">(</span>
     <span class="identifier">AsyncReadStream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">,</span>
     <span class="identifier">DynamicBuffer</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">,</span>
-    <span class="identifier">CompletionToken</span><span class="special">&amp;&amp;</span> <span class="identifier">token</span><span class="special">)</span> <span class="special">-&gt;</span>
+    <span class="identifier">CompletionToken</span><span class="special">&amp;&amp;</span> <span class="identifier">token</span> <span class="special">=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">default_completion_token_t</span><span class="special">&lt;</span>
+            <span class="identifier">beast</span><span class="special">::</span><span class="identifier">executor_type</span><span class="special">&lt;</span><span class="identifier">AsyncReadStream</span><span class="special">&gt;&gt;{})</span> <span class="special">-&gt;</span>
         <span class="keyword">typename</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">async_result</span><span class="special">&lt;</span>
             <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">decay</span><span class="special">&lt;</span><span class="identifier">CompletionToken</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">,</span> <a class="co" name="beast.using_io.writing_composed_operations.detect_ssl.c0" href="detect_ssl.html#beast.using_io.writing_composed_operations.detect_ssl.c1"><img src="../../../../../../../doc/src/images/callouts/1.png" alt="1" border="0"></a>
             <span class="keyword">void</span><span class="special">(</span><span class="identifier">error_code</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">)&gt;::</span><span class="identifier">return_type</span><span class="special">;</span> <a class="co" name="beast.using_io.writing_composed_operations.detect_ssl.c2" href="detect_ssl.html#beast.using_io.writing_composed_operations.detect_ssl.c3"><img src="../../../../../../../doc/src/images/callouts/2.png" alt="2" border="0"></a>
@@ -499,7 +502,6 @@
     <span class="comment">// Non-const references need to be passed as pointers,</span>
     <span class="comment">// since we don't want a decay-copy.</span>
 
-
     <span class="keyword">return</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">async_initiate</span><span class="special">&lt;</span>
         <span class="identifier">CompletionToken</span><span class="special">,</span>
         <span class="keyword">void</span><span class="special">(</span><span class="identifier">error_code</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">)&gt;(</span>
@@ -575,7 +577,7 @@
         <span class="identifier">AsyncReadStream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">,</span>
         <span class="identifier">DynamicBuffer</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">)</span>
         <span class="special">:</span> <span class="identifier">beast</span><span class="special">::</span><span class="identifier">async_base</span><span class="special">&lt;</span>
-            <span class="identifier">DetectHandler_</span><span class="special">,</span>
+            <span class="identifier">DetectHandler</span><span class="special">,</span>
             <span class="identifier">beast</span><span class="special">::</span><span class="identifier">executor_type</span><span class="special">&lt;</span><span class="identifier">AsyncReadStream</span><span class="special">&gt;&gt;(</span>
                 <span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">DetectHandler_</span><span class="special">&gt;(</span><span class="identifier">handler</span><span class="special">),</span>
                 <span class="identifier">stream</span><span class="special">.</span><span class="identifier">get_executor</span><span class="special">())</span>

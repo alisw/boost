@@ -1977,6 +1977,8 @@
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.calc2">Calc2</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.calc3">Calc3</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.lazy_vector">Lazy Vector</a></span></dt>
+<dt><span class="section"><a href="manual.html#boost_yap.manual.examples.self_evaluating_expressions">Self-Evaluating
+        Expressions</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.tarray">TArray</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.vec3">Vec3</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.vector">Vector</a></span></dt>
@@ -2398,9 +2400,7 @@
 </table></div>
 <p>
 </p>
-<pre class="programlisting"><span class="comment">// Defining this allows the assignment below of an expression to a double</span>
-<span class="comment">// without writing any specific code to do so.</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">yap</span><span class="special">/</span><span class="identifier">expression</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">yap</span><span class="special">/</span><span class="identifier">expression</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -2500,6 +2500,265 @@
     <span class="comment">// implicit grammar.  operator+= is only defined on terminals, not</span>
     <span class="comment">// arbitrary expressions.</span>
     <span class="comment">// (v2 + v3) += v1;</span>
+
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_yap.manual.examples.self_evaluating_expressions"></a><a class="link" href="manual.html#boost_yap.manual.examples.self_evaluating_expressions" title="Self-Evaluating Expressions">Self-Evaluating
+        Expressions</a>
+</h4></div></div></div>
+<p>
+          In most of the examples, we've seen Boost.YAP expressions captured, transformed,
+          and/or evaluated either manually, or within certain operations that always
+          do certain transformations (as in the <code class="computeroutput"><span class="keyword">operator</span><span class="special">[]</span></code> in the <a class="link" href="manual.html#boost_yap.manual.examples.lazy_vector" title="Lazy Vector">Lazy
+          Vector</a> example).
+        </p>
+<p>
+          Sometimes, you want the transfrmations to happen just before a Boost.YAP
+          expression is used by non-Boost.YAP-aware code. At other times, you might
+          want an entire Boost.YAP expression to be evaluated if it appears by itself
+          in a statement (i.e. as an expression statement).
+        </p>
+<p>
+          This example uses C++17's <code class="computeroutput"><span class="keyword">if</span> <span class="keyword">constexpr</span> <span class="special">()</span></code>,
+          simply because it makes the example shorter and easier to digest. The
+          <code class="computeroutput"><span class="keyword">if</span> <span class="keyword">constexpr</span>
+          <span class="special">()</span></code> bits are not strictly necessary.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">yap</span><span class="special">/</span><span class="identifier">expression</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">optional</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">hana</span><span class="special">/</span><span class="identifier">fold</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">hana</span><span class="special">/</span><span class="identifier">maximum</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+
+
+<span class="comment">// A super-basic matrix type, and a few associated operations.</span>
+<span class="keyword">struct</span> <span class="identifier">matrix</span>
+<span class="special">{</span>
+    <span class="identifier">matrix</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">values_</span><span class="special">(),</span> <span class="identifier">rows_</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">cols_</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">{}</span>
+
+    <span class="identifier">matrix</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">rows</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">cols</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">values_</span><span class="special">(</span><span class="identifier">rows</span> <span class="special">*</span> <span class="identifier">cols</span><span class="special">),</span> <span class="identifier">rows_</span><span class="special">(</span><span class="identifier">rows</span><span class="special">),</span> <span class="identifier">cols_</span><span class="special">(</span><span class="identifier">cols</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">assert</span><span class="special">(</span><span class="number">0</span> <span class="special">&lt;</span> <span class="identifier">rows</span><span class="special">);</span>
+        <span class="identifier">assert</span><span class="special">(</span><span class="number">0</span> <span class="special">&lt;</span> <span class="identifier">cols</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">int</span> <span class="identifier">rows</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">rows_</span><span class="special">;</span> <span class="special">}</span>
+    <span class="keyword">int</span> <span class="identifier">cols</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">cols_</span><span class="special">;</span> <span class="special">}</span>
+
+    <span class="keyword">double</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="identifier">r</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">c</span><span class="special">)</span> <span class="keyword">const</span>
+    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">values_</span><span class="special">[</span><span class="identifier">r</span> <span class="special">*</span> <span class="identifier">cols_</span> <span class="special">+</span> <span class="identifier">c</span><span class="special">];</span> <span class="special">}</span>
+    <span class="keyword">double</span> <span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="identifier">r</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">c</span><span class="special">)</span>
+    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">values_</span><span class="special">[</span><span class="identifier">r</span> <span class="special">*</span> <span class="identifier">cols_</span> <span class="special">+</span> <span class="identifier">c</span><span class="special">];</span> <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">values_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">rows_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">cols_</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">matrix</span> <span class="keyword">operator</span><span class="special">*(</span><span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">matrix</span> <span class="identifier">retval</span> <span class="special">=</span> <span class="identifier">lhs</span><span class="special">;</span>
+    <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">rows</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">j</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">j</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">cols</span><span class="special">();</span> <span class="special">++</span><span class="identifier">j</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">retval</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">)</span> <span class="special">*=</span> <span class="identifier">x</span><span class="special">;</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">retval</span><span class="special">;</span>
+<span class="special">}</span>
+<span class="identifier">matrix</span> <span class="keyword">operator</span><span class="special">*(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">lhs</span> <span class="special">*</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span>
+
+<span class="identifier">matrix</span> <span class="keyword">operator</span><span class="special">+(</span><span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">rows</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">rhs</span><span class="special">.</span><span class="identifier">rows</span><span class="special">());</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">cols</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">rhs</span><span class="special">.</span><span class="identifier">cols</span><span class="special">());</span>
+    <span class="identifier">matrix</span> <span class="identifier">retval</span> <span class="special">=</span> <span class="identifier">lhs</span><span class="special">;</span>
+    <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">rows</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">j</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">j</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">cols</span><span class="special">();</span> <span class="special">++</span><span class="identifier">j</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">retval</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">rhs</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">retval</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="comment">// daxpy() means Double-precision AX Plus Y.  This crazy name comes from BLAS.</span>
+<span class="comment">// It is more efficient than a naive implementation, because it does not</span>
+<span class="comment">// create temporaries.  The covnention of using Y as an out-parameter comes</span>
+<span class="comment">// from FORTRAN BLAS.</span>
+<span class="identifier">matrix</span> <span class="special">&amp;</span> <span class="identifier">daxpy</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="special">&amp;</span> <span class="identifier">y</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">rows</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">rows</span><span class="special">());</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">cols</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">cols</span><span class="special">());</span>
+    <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">rows</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">j</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">j</span> <span class="special">&lt;</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">cols</span><span class="special">();</span> <span class="special">++</span><span class="identifier">j</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">y</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">a</span> <span class="special">*</span> <span class="identifier">x</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">y</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating_expr</span><span class="special">;</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">auto</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(</span><span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">Kind</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">);</span>
+
+<span class="comment">// This is the primary template for our expression template.  If you assign a</span>
+<span class="comment">// self_evaluating_expr to a matrix, its conversion operator transforms and</span>
+<span class="comment">// evaluates the expression with a call to evaluate_matrix_expr().</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating_expr</span>
+<span class="special">{</span>
+    <span class="keyword">operator</span> <span class="keyword">auto</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">kind</span> <span class="special">=</span> <span class="identifier">Kind</span><span class="special">;</span>
+
+    <span class="identifier">Tuple</span> <span class="identifier">elements</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="comment">// This is a specialization of our expression template for assignment</span>
+<span class="comment">// expressions.  The destructor transforms and evaluates via a call to</span>
+<span class="comment">// evaluate_matrix_expr(), and then assigns the result to the variable on the</span>
+<span class="comment">// left side of the assignment.</span>
+<span class="comment">//</span>
+<span class="comment">// In a production implementation, you'd need to have specializations for</span>
+<span class="comment">// plus_assign, minus_assign, etc.</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">assign</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="special">~</span><span class="identifier">self_evaluating_expr</span><span class="special">();</span>
+
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">kind</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">assign</span><span class="special">;</span>
+
+    <span class="identifier">Tuple</span> <span class="identifier">elements</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">struct</span> <span class="identifier">use_daxpy</span>
+<span class="special">{</span>
+    <span class="comment">// A plus-expression, which may be of the form double * matrix + matrix,</span>
+    <span class="comment">// or may be something else.  Since our daxpy() above requires a mutable</span>
+    <span class="comment">// "y", we only need to match a mutable lvalue matrix reference here.</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+    <span class="keyword">auto</span> <span class="keyword">operator</span><span class="special">()(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_tag</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&gt;,</span>
+        <span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">,</span>
+        <span class="identifier">matrix</span> <span class="special">&amp;</span> <span class="identifier">m</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="comment">// Here, we transform the left-hand side into a pair if it's the</span>
+        <span class="comment">// double * matrix operation we're looking for.  Otherwise, we just</span>
+        <span class="comment">// get a copy of the left side expression.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Note that this is a bit of a cheat, done for clarity.  If we pass a</span>
+        <span class="comment">// larger expression that happens to contain a double * matrix</span>
+        <span class="comment">// subexpression, that subexpression will be transformed into a tuple!</span>
+        <span class="comment">// In production code, this transform should probably only be</span>
+        <span class="comment">// performed on an expression with all terminal members.</span>
+        <span class="keyword">auto</span> <span class="identifier">lhs</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span>
+            <span class="identifier">expr</span><span class="special">,</span>
+            <span class="special">[](</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_tag</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">&gt;,</span>
+               <span class="keyword">double</span> <span class="identifier">d</span><span class="special">,</span>
+               <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">m</span><span class="special">)</span> <span class="special">{</span>
+                <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;&gt;(</span><span class="identifier">d</span><span class="special">,</span> <span class="identifier">m</span><span class="special">);</span>
+            <span class="special">});</span>
+
+        <span class="comment">// If we got back a copy of expr above, just re-construct the</span>
+        <span class="comment">// expression this function mathes; in other words, do not effectively</span>
+        <span class="comment">// transform anything.  Otherwise, replace the expression matched by</span>
+        <span class="comment">// this function with a call to daxpy().</span>
+        <span class="keyword">if</span> <span class="keyword">constexpr</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span><span class="keyword">decltype</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">)&gt;::</span><span class="identifier">value</span><span class="special">)</span> <span class="special">{</span>
+            <span class="keyword">return</span> <span class="identifier">expr</span> <span class="special">+</span> <span class="identifier">m</span><span class="special">;</span>
+        <span class="special">}</span> <span class="keyword">else</span> <span class="special">{</span>
+            <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">make_terminal</span><span class="special">(</span><span class="identifier">daxpy</span><span class="special">)(</span><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">lhs</span><span class="special">.</span><span class="identifier">second</span><span class="special">,</span> <span class="identifier">m</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+<span class="special">};</span>
+
+
+<span class="comment">// This is the heart of what self_evaluating_expr does.  If we had other</span>
+<span class="comment">// optimizations/transformations we wanted to do, we'd put them in this</span>
+<span class="comment">// function, either before or after the use_daxpy transformation.</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">auto</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(</span><span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">Kind</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">auto</span> <span class="identifier">daxpy_form</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span><span class="identifier">expr</span><span class="special">,</span> <span class="identifier">use_daxpy</span><span class="special">{});</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">evaluate</span><span class="special">(</span><span class="identifier">daxpy_form</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">Kind</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;::</span><span class="keyword">operator</span> <span class="keyword">auto</span><span class="special">()</span> <span class="keyword">const</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(*</span><span class="keyword">this</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">assign</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;::</span>
+    <span class="special">~</span><span class="identifier">self_evaluating_expr</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hana</span><span class="special">::</span><span class="identifier">literals</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">evaluate</span><span class="special">(</span><span class="identifier">elements</span><span class="special">[</span><span class="number">0</span><span class="identifier">_c</span><span class="special">])</span> <span class="special">=</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(</span><span class="identifier">elements</span><span class="special">[</span><span class="number">1</span><span class="identifier">_c</span><span class="special">]);</span>
+<span class="special">}</span>
+
+<span class="comment">// In order to define the = operator with the semantics we want, it's</span>
+<span class="comment">// convenient to derive a terminal type from a terminal instantiation of</span>
+<span class="comment">// self_evaluating_expr.  Note that we could have written a template</span>
+<span class="comment">// specialization here instead -- either one would work.  That would of course</span>
+<span class="comment">// have required more typing.</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating</span> <span class="special">:</span>
+    <span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">,</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hana</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">matrix</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="identifier">self_evaluating</span><span class="special">()</span> <span class="special">{}</span>
+
+    <span class="keyword">explicit</span> <span class="identifier">self_evaluating</span><span class="special">(</span><span class="identifier">matrix</span> <span class="identifier">m</span><span class="special">)</span>
+    <span class="special">{</span> <span class="identifier">elements</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hana</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">matrix</span><span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">m</span><span class="special">));</span> <span class="special">}</span>
+
+    <span class="identifier">BOOST_YAP_USER_ASSIGN_OPERATOR</span><span class="special">(</span><span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="special">::</span><span class="identifier">self_evaluating_expr</span><span class="special">);</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_YAP_USER_BINARY_OPERATOR</span><span class="special">(</span><span class="identifier">plus</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">)</span>
+<span class="identifier">BOOST_YAP_USER_BINARY_OPERATOR</span><span class="special">(</span><span class="identifier">minus</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">)</span>
+<span class="identifier">BOOST_YAP_USER_BINARY_OPERATOR</span><span class="special">(</span><span class="identifier">multiplies</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">)</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">matrix</span> <span class="identifier">identity</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>
+    <span class="identifier">identity</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span> <span class="special">=</span> <span class="number">1.0</span><span class="special">;</span>
+    <span class="identifier">identity</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">)</span> <span class="special">=</span> <span class="number">1.0</span><span class="special">;</span>
+
+    <span class="comment">// These are YAP-ified terminal expressions.</span>
+    <span class="identifier">self_evaluating</span> <span class="identifier">m1</span><span class="special">(</span><span class="identifier">identity</span><span class="special">);</span>
+    <span class="identifier">self_evaluating</span> <span class="identifier">m2</span><span class="special">(</span><span class="identifier">identity</span><span class="special">);</span>
+    <span class="identifier">self_evaluating</span> <span class="identifier">m3</span><span class="special">(</span><span class="identifier">identity</span><span class="special">);</span>
+
+    <span class="comment">// This transforms the YAP expression to use daxpy(), so it creates no</span>
+    <span class="comment">// temporaries.  The transform happens in the destructor of the</span>
+    <span class="comment">// assignment-expression specialization of self_evaluating_expr.</span>
+    <span class="identifier">m1</span> <span class="special">=</span> <span class="number">3.0</span> <span class="special">*</span> <span class="identifier">m2</span> <span class="special">+</span> <span class="identifier">m3</span><span class="special">;</span>
+
+    <span class="comment">// Same as above, except that it uses the matrix conversion operator on</span>
+    <span class="comment">// the self_evaluating_expr primary template, because here we're assigning</span>
+    <span class="comment">// a YAP expression to a non-YAP-ified matrix.</span>
+    <span class="identifier">matrix</span> <span class="identifier">m_result_1</span> <span class="special">=</span> <span class="number">3.0</span> <span class="special">*</span> <span class="identifier">m2</span> <span class="special">+</span> <span class="identifier">m3</span><span class="special">;</span>
+
+    <span class="comment">// Creates temporaries and does not use daxpy(), because the A * X + Y</span>
+    <span class="comment">// pattern does not occur within the expression.</span>
+    <span class="identifier">matrix</span> <span class="identifier">m_result_2</span> <span class="special">=</span> <span class="number">3.0</span> <span class="special">*</span> <span class="identifier">m2</span><span class="special">;</span>
 
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>

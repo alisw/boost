@@ -97,8 +97,9 @@ public:
             bool called = false;
             try
             {
-                w.handshake_ex(ws, "localhost", "/",
-                    req_decorator{called});
+                ws.set_option(stream_base::decorator(
+                    req_decorator{called}));
+                w.handshake(ws, "localhost", "/");
                 BEAST_EXPECT(called);
             }
             catch(...)
@@ -119,8 +120,9 @@ public:
             response_type res;
             try
             {
-                w.handshake_ex(ws, res, "localhost", "/",
-                    req_decorator{called});
+                ws.set_option(stream_base::decorator(
+                    req_decorator{called}));
+                w.handshake(ws, res, "localhost", "/");
                 // VFALCO validate res?
                 BEAST_EXPECT(called);
             }
@@ -355,7 +357,7 @@ public:
         po.client_max_window_bits = 0;
         po.server_no_context_takeover = false;
         po.client_no_context_takeover = false;
-        
+
         check("permessage-deflate");
 
         po.server_max_window_bits = 10;
@@ -695,7 +697,6 @@ public:
             test::connect(ws1.next_layer(), ws2.next_layer());
 
             ws2.set_option(stream_base::decorator(make_big));
-            error_code ec;
             ws2.async_accept(test::success_handler());
             ws1.async_handshake("test", "/", test::success_handler());
             ioc.run();

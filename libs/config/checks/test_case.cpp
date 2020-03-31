@@ -1,4 +1,4 @@
-//  This file was automatically generated on Mon Feb 11 18:07:32 2019
+//  This file was automatically generated on Fri Aug 23 11:11:12 2019
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -301,6 +301,11 @@
 #     error "Defect macro BOOST_NO_CXX11_DEFAULTED_MOVES is defined."
 #  endif
 #endif
+#ifdef TEST_BOOST_NO_CXX11_HDR_EXCEPTION
+#  ifdef BOOST_NO_CXX11_HDR_EXCEPTION
+#     error "Defect macro BOOST_NO_CXX11_HDR_EXCEPTION is defined."
+#  endif
+#endif
 #ifdef TEST_BOOST_NO_CXX11_FINAL
 #  ifdef BOOST_NO_CXX11_FINAL
 #     error "Defect macro BOOST_NO_CXX11_FINAL is defined."
@@ -524,6 +529,11 @@
 #ifdef TEST_BOOST_NO_CXX17_HDR_STRING_VIEW
 #  ifdef BOOST_NO_CXX17_HDR_STRING_VIEW
 #     error "Defect macro BOOST_NO_CXX17_HDR_STRING_VIEW is defined."
+#  endif
+#endif
+#ifdef TEST_BOOST_NO_CXX17_HDR_VARIANT
+#  ifdef BOOST_NO_CXX17_HDR_VARIANT
+#     error "Defect macro BOOST_NO_CXX17_HDR_VARIANT is defined."
 #  endif
 #endif
 #ifdef TEST_BOOST_NO_CXX17_IF_CONSTEXPR

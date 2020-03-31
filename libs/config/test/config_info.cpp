@@ -1107,6 +1107,7 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_NO_CXX11_HDR_CHRONO);
    PRINT_MACRO(BOOST_NO_CXX11_HDR_CODECVT);
    PRINT_MACRO(BOOST_NO_CXX11_HDR_CONDITION_VARIABLE);
+   PRINT_MACRO(BOOST_NO_CXX11_HDR_EXCEPTION);
    PRINT_MACRO(BOOST_NO_CXX11_HDR_FORWARD_LIST);
    PRINT_MACRO(BOOST_NO_CXX11_HDR_FUNCTIONAL);
    PRINT_MACRO(BOOST_NO_CXX11_HDR_FUTURE);
@@ -1161,6 +1162,7 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_NO_CXX17_FOLD_EXPRESSIONS);
    PRINT_MACRO(BOOST_NO_CXX17_HDR_OPTIONAL);
    PRINT_MACRO(BOOST_NO_CXX17_HDR_STRING_VIEW);
+   PRINT_MACRO(BOOST_NO_CXX17_HDR_VARIANT);
    PRINT_MACRO(BOOST_NO_CXX17_IF_CONSTEXPR);
    PRINT_MACRO(BOOST_NO_CXX17_INLINE_VARIABLES);
    PRINT_MACRO(BOOST_NO_CXX17_ITERATOR_TRAITS);
@@ -1231,22 +1233,6 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_NO_VOID_RETURNS);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    // END GENERATED BLOCK
 
    PRINT_MACRO(BOOST_INTEL);
@@ -1264,11 +1250,25 @@ void print_boost_macros()
    PRINT_MACRO(BOOST_FALLTHROUGH);
    PRINT_MACRO(BOOST_MAY_ALIAS);
    PRINT_MACRO(BOOST_NO_MAY_ALIAS);
+   PRINT_MACRO(BOOST_ATTRIBUTE_NO_UNIQUE_ADDRESS);
+   PRINT_MACRO(BOOST_ATTRIBUTE_UNUSED);
+   PRINT_MACRO(BOOST_UNLIKELY);
+   PRINT_MACRO(BOOST_NORETURN);
 }
 
 void print_sd6_macros()
 {
     // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0096r5.html
+
+    // C++20:
+    PRINT_MACRO(__cpp_aggregate_paren_init);
+    PRINT_MACRO(__cpp_char8_t);
+    PRINT_MACRO(__cpp_char8_type);
+    PRINT_MACRO(__cpp_conditional_explicit);
+    PRINT_MACRO(__cpp_coroutines);
+    PRINT_MACRO(__cpp_impl_destroying_delete);
+    PRINT_MACRO(__cpp_impl_three_way_comparison);
+    PRINT_MACRO(__cpp_nontype_template_parameter_class);
 
     // C++17:
     PRINT_MACRO(__cpp_hex_float);

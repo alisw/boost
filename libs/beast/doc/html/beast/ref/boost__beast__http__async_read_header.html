@@ -27,7 +27,7 @@
 <a name="beast.ref.boost__beast__http__async_read_header"></a><a class="link" href="boost__beast__http__async_read_header.html" title="http::async_read_header">http::async_read_header</a>
 </h4></div></div></div>
 <p>
-        <a class="indexterm" name="idm46025440691744"></a>
+        <a class="indexterm" name="idm45873506918000"></a>
 Read a complete message header asynchronously from
         a stream using a parser.
       </p>
@@ -42,12 +42,13 @@ Read a complete message header asynchronously from
     <span class="keyword">class</span> <a href="../../../../../../doc/html/boost_asio/reference/AsyncReadStream.html" target="_top"><span class="emphasis"><em>AsyncReadStream</em></span></a><span class="special">,</span>
     <span class="keyword">class</span> <a class="link" href="../concepts/DynamicBuffer.html" title="DynamicBuffer"><span class="emphasis"><em>DynamicBuffer</em></span></a><span class="special">,</span>
     <span class="keyword">bool</span> <span class="identifier">isRequest</span><span class="special">,</span>
-    <span class="keyword">class</span> <a href="../../../../../../doc/html/boost_asio/reference/ReadHandler.html" target="_top"><span class="emphasis"><em>ReadHandler</em></span></a><span class="special">&gt;</span>
+    <span class="keyword">class</span> <a href="../../../../../../doc/html/boost_asio/reference/ReadHandler.html" target="_top"><span class="emphasis"><em>ReadHandler</em></span></a> <span class="special">=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">default_completion_token_t</span><span class="special">&lt;</span>            <span class="identifier">executor_type</span><span class="special">&lt;</span><span class="identifier">AsyncReadStream</span><span class="special">&gt;&gt;&gt;</span>
+<a href="../../../../../../doc/html/boost_asio/reference/asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type" target="_top"><span class="emphasis"><em>DEDUCED</em></span></a>
 <span class="identifier">async_read_header</span><span class="special">(</span>
     <span class="identifier">AsyncReadStream</span><span class="special">&amp;</span> <span class="identifier">stream</span><span class="special">,</span>
     <span class="identifier">DynamicBuffer</span><span class="special">&amp;</span> <span class="identifier">buffer</span><span class="special">,</span>
     <span class="identifier">basic_parser</span><span class="special">&lt;</span> <span class="identifier">isRequest</span> <span class="special">&gt;&amp;</span> <span class="identifier">parser</span><span class="special">,</span>
-    <span class="identifier">ReadHandler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span><span class="special">);</span>
+    <span class="identifier">ReadHandler</span><span class="special">&amp;&amp;</span> <span class="identifier">handler</span> <span class="special">=</span> <span class="identifier">net</span><span class="special">::</span><span class="identifier">default_completion_token_t</span><span class="special">&lt;</span> <span class="identifier">executor_type</span><span class="special">&lt;</span> <span class="identifier">AsyncReadStream</span> <span class="special">&gt;&gt;{});</span>
 </pre>
 <h5>
 <a name="beast.ref.boost__beast__http__async_read_header.h1"></a>

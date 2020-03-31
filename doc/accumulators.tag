@@ -7,7 +7,7 @@
     <templarg>Feature</templarg>
   </compound>
   <compound kind="class">
-    <name>accumulator_set_result&lt; remove_reference&lt; parameter::binding&lt; Args, tag::accumulator &gt;::type &gt;::type, Feature &gt;</name>
+    <name>accumulator_set_result&lt; boost::remove_reference&lt; parameter::binding&lt; boost::remove_const&lt; boost::remove_reference&lt; Args &gt;::type &gt;::type, tag::accumulator &gt;::type &gt;::type, Feature &gt;</name>
     <filename>structboost_1_1accumulators_1_1detail_1_1accumulator__set__result.html</filename>
   </compound>
   <compound kind="struct">
@@ -32,7 +32,7 @@
     <filename>structboost_1_1accumulators_1_1detail_1_1argument__pack__result.html</filename>
     <templarg></templarg>
     <templarg></templarg>
-    <base>accumulator_set_result&lt; remove_reference&lt; parameter::binding&lt; Args, tag::accumulator &gt;::type &gt;::type, Feature &gt;</base>
+    <base>accumulator_set_result&lt; boost::remove_reference&lt; parameter::binding&lt; boost::remove_const&lt; boost::remove_reference&lt; Args &gt;::type &gt;::type, tag::accumulator &gt;::type &gt;::type, Feature &gt;</base>
   </compound>
   <compound kind="struct">
     <name>boost::accumulators::as_feature</name>

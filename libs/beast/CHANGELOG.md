@@ -1,3 +1,251 @@
+Version 276:
+
+* https_get example sends the Host header
+* Fix async_close error code when async_read times out
+* Refactor zlib tests and fix enum typo
+
+--------------------------------------------------------------------------------
+
+Version 275:
+
+* Async init-fns use the executor's default token
+* Add basic_stream::rebind_executor
+* Use automatically deduced return types for all async operations
+* Support Concepts for completion token params
+
+--------------------------------------------------------------------------------
+
+Version 274:
+
+* Fix leftovers in basic_parser corner case
+
+--------------------------------------------------------------------------------
+
+Version 273:
+
+* Squelch spurious websocket timer assert
+* Use the executor type in basic_stream timer
+
+--------------------------------------------------------------------------------
+
+Version 272:
+
+* Add BEAST_THROWS
+* Add zlib tests and fixes
+
+--------------------------------------------------------------------------------
+
+Version 271:
+
+* Add HTTP async client with system_executor example
+* Add WebSocket async client with system_executor example
+* Fix data race in HTTP server examples
+* Fix data race in WebSocket examples
+
+--------------------------------------------------------------------------------
+
+Version 270:
+
+* Silence unused variables
+* Fix typo
+
+--------------------------------------------------------------------------------
+
+Version 269:
+
+* Fix /permissive- missing include
+* Add test
+
+--------------------------------------------------------------------------------
+
+Version 268:
+
+* root_certificates.hpp is not for production
+
+--------------------------------------------------------------------------------
+
+Version 267:
+
+* Add package for Travis config
+* Fix signed/unsigned mismatch in file_stdio::seek
+* basic_stream dtor cannot throw
+* cmake: check policy first
+* Add default dtors to satisfy -Wnon-virtual-dtor
+* Multiple I/O of the same type is not supported
+
+--------------------------------------------------------------------------------
+
+Version 266:
+
+* Fix some missing deduced return types in the docs
+
+--------------------------------------------------------------------------------
+
+Version 265:
+
+* Fix outgoing websocket message compression
+
+--------------------------------------------------------------------------------
+
+Version 264:
+
+* Handle overflow in max size calculation in `basic_dynamic_body`
+* Fix unused variable warnings in tests
+* Fix missing initializer warning in `basic_fields`
+* Remove unused functions in `impl/static_string.hpp`
+* Fix unused variable warning in `multi_buffer`
+* Fix header-only compilation errors in some configurations
+* Workaround for miscompilation in MSVC 14.2
+
+--------------------------------------------------------------------------------
+
+Version 263:
+
+* Update documentation
+
+--------------------------------------------------------------------------------
+
+Version 262:
+
+* Fix deallocate in multi_buffer
+
+--------------------------------------------------------------------------------
+
+Version 261:
+
+* Deduplicate `websocket::read_size_hint` definition
+* Fix UB in websocket read tests
+* Remove redundant includes in websocket
+* Simplify websocket::detail::prng
+* Don't over-allocate in http::basic_fields
+* Fix multi_buffer allocation alignment
+* Tidy up buffers_range
+
+--------------------------------------------------------------------------------
+
+Version 260:
+
+* More split compilation in rfc7230.hpp
+* Qualify calls to `beast::iequals` in basic_parser.ipp
+* More split compilation in websocket/detail/mask.hpp
+* Cleanup transitive includes in beast/core/detail/type_traits.hpp
+* Simplify generation of sec-websocket-key
+* Move detail::base64 helpers to tests
+* Remove redundant includes in core
+
+--------------------------------------------------------------------------------
+
+Version 259:
+
+* Reduce the number of instantiations of filter_token_list
+* Remove the use of `static_string` from `http::fields`
+* Add gcc-9 to AzP CI test matrix
+* Enable split compilation in http::basic_fields
+* Remove redundant instation of `static_string` in websocket
+* Remove redundant use of `asio::coroutine` in `flat_stream`
+* Remove unused includes from `test::stream`
+* Move `char_buffer` into a separate file
+* Fix coverage collection in AzP CI
+* Improve performance of `http::string_to_verb`
+* Replace uses of `net::coroutine` with `asio::coroutine`
+* Replace uses of `net::spawn` with `asio::spawn`
+* Use `beast::read_size` in `detail::read`
+
+--------------------------------------------------------------------------------
+
+Version 258:
+
+* Fix separate compilation in CI
+* Fix clang inititalization warning in websocket
+* Remove redundant use of `yield_to` in parser tests
+* Add VS 2019 AzP CI matrix item
+* Clean up typo in chat websocket javascript client
+
+--------------------------------------------------------------------------------
+
+Version 257:
+
+* Add b2 features for compile-time options used in testing
+* Remove redundant dependencies in http/server/fast example
+* Remove experimental/unit_test/thread.hpp
+* Use `if` statement in basic_stream::transfer_op
+* Fix flat_buffer copy members
+
+--------------------------------------------------------------------------------
+
+Version 256:
+
+* Remove uses of the deprecated `buffers` function
+* Remove uses of deprecated methods in websocket tests
+* Remove redundant use of `static_string`
+* Remove redundant template in service_base
+* Expand CI matrix using Azure Pipelines
+* Make chat websocket javascript client more user friendly
+* `allocator_traits::construct` is used for user-defined types
+* Add 1-element specialization for `buffers_cat`
+* Fix `buffers_cat` iterator tests
+* Don't pessimize-move
+* Use steady_timer type
+* Preserve operation_aborted on partial message
+
+--------------------------------------------------------------------------------
+
+Version 255:
+
+* Add idle ping suspend test
+* Fix moved-from executor in idle ping timeout
+
+--------------------------------------------------------------------------------
+
+Version 254:
+
+* Fix data race in test::stream::connect
+* Fix UB in websocket close tests
+* Fix uninitalized memory use in deflate_stream
+* Fix gcc-8 warning in websocket::stream
+
+--------------------------------------------------------------------------------
+
+Version 253:
+
+* Fix async_detect_ssl handler type
+* member get_executor const-correctness
+* Fix min/max on MSVC
+* Relax requirements for vector_body
+
+--------------------------------------------------------------------------------
+
+Version 252:
+
+* More std::string_view fixes
+* CI copies to libs/beast
+
+--------------------------------------------------------------------------------
+
+Version 251:
+
+* Clean up CI scripts
+* detect_ssl uses bool
+* launder pointers
+* Fix compilation on MSVC with std::string_view
+* Replace static_string in parser
+
+--------------------------------------------------------------------------------
+
+Version 250:
+
+* Use SaxonHE in reference generation
+* Cleanup endianness conversions
+* Set parser status and flags even if body_limit_ has been reached
+
+--------------------------------------------------------------------------------
+
+Version 249:
+
+* Move friend function template definition
+
+--------------------------------------------------------------------------------
+
 Version 248:
 
 * Don't use a moved-from handler

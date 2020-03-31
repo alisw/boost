@@ -403,12 +403,11 @@ void test_areal()
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_11984",
         ticket_11984[0], ticket_11984[1],
         1, 2, 134, 60071.08077);
-
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_12118",
         ticket_12118[0], ticket_12118[1],
-        1, 1, 27, 2221.38713);
+        1, -1, 27, 2221.38713);
 
-#if defined(BOOST_GEOMETRY_TEST_ENABLE_FAILING) || ! defined(BOOST_GEOMETRY_USE_RESCALING)
+#if defined(BOOST_GEOMETRY_TEST_FAILURES) || ! defined(BOOST_GEOMETRY_USE_RESCALING)
     // No output if rescaling is done
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_12125",
         ticket_12125[0], ticket_12125[1],
@@ -417,8 +416,28 @@ void test_areal()
 
     TEST_UNION(ticket_12503, 42, 1, -1, 945.625);
 
-    // Generates two polygons, which should (without rescaling) be merged into one
+#if ! defined(BOOST_GEOMETRY_USE_RESCALING) || defined(BOOST_GEOMETRY_TEST_FAILURES)
+    // Failure with rescaling
+    TEST_UNION(issue_630_a, 1, 0, -1, 2.200326);
+#endif
+    TEST_UNION(issue_630_b, 1, 0, -1, 1.675976);
+#if ! defined(BOOST_GEOMETRY_USE_KRAMER_RULE) || defined(BOOST_GEOMETRY_TEST_FAILURES)
+    // Failure with Kramer rule
+    TEST_UNION(issue_630_c, 1, 0, -1, 1.670367);
+#endif
+
+#if ! defined(BOOST_GEOMETRY_USE_RESCALING) || defined(BOOST_GEOMETRY_TEST_FAILURES)
+    // With rescaling the small polygon is added on top of the outer polygon
+    TEST_UNION(issue_643, 1, 0, -1, 80.0);
+#endif
+
+#if defined(BOOST_GEOMETRY_USE_KRAMER_RULE)
+    // Two polygons, should ideally be merged
     TEST_UNION(mail_2019_01_21_johan, 2, 0, -1, 0.00058896);
+#else
+    // Correct: one polygon
+    TEST_UNION(mail_2019_01_21_johan, 1, 0, -1, 0.00058896);
+#endif
 
     TEST_UNION(mysql_23023665_7, 1, 1, -1, 99.19494);
     TEST_UNION(mysql_23023665_8, 1, 2, -1, 1400.0);
@@ -459,7 +478,9 @@ void test_specific()
 
 int test_main(int, char* [])
 {
-    test_all<bg::model::d2::point_xy<double>, true, true>();
+    BoostGeometryWriteTestConfiguration();
+    test_all<bg::model::d2::point_xy<default_test_type>, true, true>();
+
 #if ! defined(BOOST_GEOMETRY_TEST_ONLY_ONE_TYPE)
     test_all<bg::model::d2::point_xy<double>, false, false>();
 

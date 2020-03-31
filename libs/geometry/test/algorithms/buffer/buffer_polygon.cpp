@@ -552,8 +552,8 @@ void test_all()
 
         test_one<polygon_type, polygon_type>("ticket_10412", ticket_10412, join_miter, end_flat, 3109.6616, 1.5, settings);
         test_one<polygon_type, polygon_type>("ticket_11580_100", ticket_11580, join_miter, end_flat, 52.0221000, 1.00, settings);
-    #if defined(BOOST_GEOMETRY_TEST_ENABLE_FAILING)
-        // Larger distance, resulting in only one circle
+    #if defined(BOOST_GEOMETRY_TEST_FAILURES)
+        // Larger distance, resulting in only one circle. Not solved yet in non-rescaled mode.
         test_one<polygon_type, polygon_type>("ticket_11580_237", ticket_11580, join_miter, end_flat, 999.999, 2.37, settings);
     #endif
     }
@@ -828,16 +828,22 @@ void test_mixed()
 
 int test_main(int, char* [])
 {
-    typedef bg::model::point<double, 2, bg::cs::cartesian> dpoint;
+    BoostGeometryWriteTestConfiguration();
+
+    typedef bg::model::point<default_test_type, 2, bg::cs::cartesian> dpoint;
 
     test_all<true, dpoint>();
-    test_all<false, dpoint>();
-
-    typedef bg::model::point<float, 2, bg::cs::cartesian> fpoint;
-    test_deflate_special_cases<true, fpoint>();
     test_deflate_special_cases<true, dpoint>();
 
+
+#if ! defined(BOOST_GEOMETRY_TEST_ONLY_ONE_ORDER)
+    test_all<false, dpoint>();
+    test_deflate_special_cases<false, dpoint>();
+#endif
+
 #if ! defined(BOOST_GEOMETRY_TEST_ONLY_ONE_TYPE)
+    typedef bg::model::point<float, 2, bg::cs::cartesian> fpoint;
+    test_deflate_special_cases<true, fpoint>();
 
     test_mixed<dpoint, dpoint, false, false, true, true>();
     test_mixed<dpoint, dpoint, false, true, true, true>();

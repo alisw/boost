@@ -37,15 +37,16 @@
 <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
   <span class="comment">// <a class="link" href="bad_virtual_result_cast.html#boost.contract.bad_virtual_result_castconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="keyword">explicit</span> <a class="link" href="bad_virtual_result_cast.html#idm45678090796768-bb"><span class="identifier">bad_virtual_result_cast</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="bad_virtual_result_cast.html#idm45678090793184-bb"><span class="special">~</span><span class="identifier">bad_virtual_result_cast</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="bad_virtual_result_cast.html#idm45394999479088-bb"><span class="identifier">bad_virtual_result_cast</span></a><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="bad_virtual_result_cast.html#idm45394999475504-bb"><span class="special">~</span><span class="identifier">bad_virtual_result_cast</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="bad_virtual_result_cast.html#idm45678090801088-bb">public member functions</a></span>
-  <span class="keyword">virtual</span> <span class="keyword">char</span> <span class="keyword">const</span>  <span class="special">*</span> <a class="link" href="bad_virtual_result_cast.html#idm45678090800528-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="bad_virtual_result_cast.html#idm45394999483408-bb">public member functions</a></span>
+  <span class="keyword">virtual</span> <span class="keyword">char</span> <span class="keyword">const</span>  <span class="special">*</span> <a class="link" href="bad_virtual_result_cast.html#idm45394999482848-bb"><span class="identifier">what</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idm45538520511104"></a><h2>Description</h2>
-<p>This exception is internally thrown by this library when programmers specify return values for public function overrides in derived classes that are not consistent with the return types of the virtual public functions being overridden in the base classes. This allows this library to give more descriptive error messages in such cases.</p>
+<a name="idm45707996119728"></a><h2>Description</h2>
+<p>This exception is thrown when programmers pass to this library return value parameters for public function overrides in derived classes that are not consistent with the return type parameter passed for the virtual public function being overridden from the base classes. This allows this library to give more descriptive error messages in such cases of misuse.</p>
+<p>This exception is internally thrown by this library and programmers should not need to throw it from user code.</p>
 <p><span class="bold"><strong>See Also:</strong></span></p>
 <p> <a class="link" href="../../boost_contract/tutorial.html#boost_contract.tutorial.public_function_overrides__subcontracting_" title="Public Function Overrides (Subcontracting)">
         Public Function Overrides</a> </p>
@@ -54,13 +55,13 @@
 <p>
 </p>
 <div class="refsect2">
-<a name="idm45538520507840"></a><h3>
+<a name="idm45707996116064"></a><h3>
 <a name="boost.contract.bad_virtual_result_castconstruct-copy-destruct"></a><code class="computeroutput">bad_virtual_result_cast</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45678090796768-bb"></a><span class="identifier">bad_virtual_result_cast</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> from_type_name<span class="special">,</span> 
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45394999479088-bb"></a><span class="identifier">bad_virtual_result_cast</span><span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> from_type_name<span class="special">,</span> 
                                  <span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*</span> to_type_name<span class="special">)</span><span class="special">;</span></pre>Construct this object with the name of the from- and to- result types. <p>
 </p>
 <div class="variablelist"><table border="0" class="variablelist compact">
@@ -90,22 +91,22 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idm45678090793184-bb"></a><span class="special">~</span><span class="identifier">bad_virtual_result_cast</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Destruct this object. <p><span class="bold"><strong>Throws:</strong></span> This is declared <code class="computeroutput">noexcept</code> (or <code class="computeroutput">throw()</code> before C++11). </p>
+<pre class="literallayout"><a name="idm45394999475504-bb"></a><span class="special">~</span><span class="identifier">bad_virtual_result_cast</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Destruct this object. <p><span class="bold"><strong>Throws:</strong></span> This is declared <code class="computeroutput">noexcept</code> (or <code class="computeroutput">throw()</code> before C++11). </p>
 </li>
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idm45538520485232"></a><h3>
-<a name="idm45678090801088-bb"></a><code class="computeroutput">bad_virtual_result_cast</code> public member functions</h3>
+<a name="idm45707996093488"></a><h3>
+<a name="idm45394999483408-bb"></a><code class="computeroutput">bad_virtual_result_cast</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">virtual</span> <span class="keyword">char</span> <span class="keyword">const</span>  <span class="special">*</span> <a name="idm45678090800528-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Description for this error (containing both from- and to- type names). <p><span class="bold"><strong>Throws:</strong></span> This is declared <code class="computeroutput">noexcept</code> (or <code class="computeroutput">throw()</code> before C++11). </p>
+<pre class="literallayout"><span class="keyword">virtual</span> <span class="keyword">char</span> <span class="keyword">const</span>  <span class="special">*</span> <a name="idm45394999482848-bb"></a><span class="identifier">what</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Description for this error (containing both from- and to- type names). <p><span class="bold"><strong>Throws:</strong></span> This is declared <code class="computeroutput">noexcept</code> (or <code class="computeroutput">throw()</code> before C++11). </p>
 </li></ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008-2018 Lorenzo Caminiti<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008-2019 Lorenzo Caminiti<p>
         Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

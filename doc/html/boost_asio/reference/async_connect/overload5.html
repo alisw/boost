@@ -36,12 +36,12 @@
     typename <a class="link" href="../Executor1.html" title="Executor requirements">Executor</a>,
     typename Iterator,
     typename <a class="link" href="../ConnectCondition.html" title="Connect condition requirements">ConnectCondition</a>,
-    typename <a class="link" href="../IteratorConnectHandler.html" title="Iterator connect handler requirements">IteratorConnectHandler</a>&gt;
+    typename <a class="link" href="../IteratorConnectHandler.html" title="Iterator connect handler requirements">IteratorConnectHandler</a> = <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens"><span class="emphasis"><em>DEFAULT</em></span></a>&gt;
 <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type"><span class="emphasis"><em>DEDUCED</em></span></a> async_connect(
     basic_socket&lt; Protocol, Executor &gt; &amp; s,
     Iterator begin,
     ConnectCondition connect_condition,
-    IteratorConnectHandler &amp;&amp; handler,
+    IteratorConnectHandler &amp;&amp; handler = <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens"><span class="emphasis"><em>DEFAULT</em></span></a>,
     typename enable_if&lt;!is_endpoint_sequence&lt; Iterator &gt;::value &gt;::type *  = 0);
 </pre>
 <p>

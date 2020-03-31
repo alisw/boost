@@ -35,12 +35,12 @@
     typename <a class="link" href="../AsyncReadStream.html" title="Buffer-oriented asynchronous read stream requirements">AsyncReadStream</a>,
     typename <a class="link" href="../DynamicBuffer_v1.html" title="Dynamic buffer requirements (version 1)">DynamicBuffer_v1</a>,
     typename <a class="link" href="../CompletionCondition.html" title="Completion condition requirements">CompletionCondition</a>,
-    typename <a class="link" href="../ReadHandler.html" title="Read handler requirements">ReadHandler</a>&gt;
+    typename <a class="link" href="../ReadHandler.html" title="Read handler requirements">ReadHandler</a> = <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens"><span class="emphasis"><em>DEFAULT</em></span></a>&gt;
 <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type"><span class="emphasis"><em>DEDUCED</em></span></a> async_read(
     AsyncReadStream &amp; s,
     DynamicBuffer_v1 &amp;&amp; buffers,
     CompletionCondition completion_condition,
-    ReadHandler &amp;&amp; handler,
+    ReadHandler &amp;&amp; handler = <a class="link" href="../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens"><span class="emphasis"><em>DEFAULT</em></span></a>,
     typename enable_if&lt; is_dynamic_buffer_v1&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &amp;&amp;!is_dynamic_buffer_v2&lt; typename decay&lt; DynamicBuffer_v1 &gt;::type &gt;::value &gt;::type *  = 0);
 </pre>
 <p>

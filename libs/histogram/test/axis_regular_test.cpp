@@ -1,21 +1,28 @@
-// Copyright 2015-2017 Hans Dembinski
+// Copyright 2015-2019 Hans Dembinski
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/core/lightweight_test.hpp>
+#include <boost/histogram/axis/ostream.hpp>
 #include <boost/histogram/axis/regular.hpp>
 #include <limits>
 #include <sstream>
+#include <type_traits>
 #include "is_close.hpp"
+#include "std_ostream.hpp"
+#include "throw_exception.hpp"
 #include "utility_axis.hpp"
-
-using namespace boost::histogram;
-namespace tr = axis::transform;
+#include "utility_str.hpp"
 
 int main() {
+  using namespace boost::histogram;
   using def = use_default;
+  namespace tr = axis::transform;
+
+  BOOST_TEST(std::is_nothrow_move_assignable<axis::regular<>>::value);
+  BOOST_TEST(std::is_nothrow_move_constructible<axis::regular<>>::value);
 
   // bad_ctors
   {
@@ -40,8 +47,19 @@ int main() {
 
   // input, output
   {
-    axis::regular<> a{4, -2, 2};
+    axis::regular<> a{4, -2, 2, "foo"};
+    BOOST_TEST_EQ(a.metadata(), "foo");
+    BOOST_TEST_EQ(static_cast<const axis::regular<>&>(a).metadata(), "foo");
+    a.metadata() = "bar";
+    BOOST_TEST_EQ(static_cast<const axis::regular<>&>(a).metadata(), "bar");
+    BOOST_TEST_EQ(a.value(0), -2);
+    BOOST_TEST_EQ(a.value(1), -1);
+    BOOST_TEST_EQ(a.value(2), 0);
+    BOOST_TEST_EQ(a.value(3), 1);
+    BOOST_TEST_EQ(a.value(4), 2);
     BOOST_TEST_EQ(a.bin(-1).lower(), -std::numeric_limits<double>::infinity());
+    BOOST_TEST_EQ(a.bin(-1).upper(), -2);
+    BOOST_TEST_EQ(a.bin(a.size()).lower(), 2);
     BOOST_TEST_EQ(a.bin(a.size()).upper(), std::numeric_limits<double>::infinity());
     BOOST_TEST_EQ(a.index(-10.), -1);
     BOOST_TEST_EQ(a.index(-2.1), -1);
@@ -54,6 +72,9 @@ int main() {
     BOOST_TEST_EQ(a.index(-std::numeric_limits<double>::infinity()), -1);
     BOOST_TEST_EQ(a.index(std::numeric_limits<double>::infinity()), 4);
     BOOST_TEST_EQ(a.index(std::numeric_limits<double>::quiet_NaN()), 4);
+
+    BOOST_TEST_EQ(str(a),
+                  "regular(4, -2, 2, metadata=\"bar\", options=underflow | overflow)");
   }
 
   // with inverted range
@@ -94,6 +115,8 @@ int main() {
     BOOST_TEST_EQ(a.index(std::numeric_limits<double>::infinity()), 2);
 
     BOOST_TEST_THROWS((axis::regular<double, tr::log>{2, -1, 0}), std::invalid_argument);
+
+    BOOST_TEST_EQ(str(a), "regular_log(2, 1, 100, options=underflow | overflow)");
   }
 
   // with sqrt transform
@@ -114,6 +137,8 @@ int main() {
     BOOST_TEST_EQ(a.index(4), 2);
     BOOST_TEST_EQ(a.index(100), 2);
     BOOST_TEST_EQ(a.index(std::numeric_limits<double>::infinity()), 2);
+
+    BOOST_TEST_EQ(str(a), "regular_sqrt(2, 0, 4, options=underflow | overflow)");
   }
 
   // with pow transform
@@ -134,6 +159,9 @@ int main() {
     BOOST_TEST_EQ(a.index(4), 2);
     BOOST_TEST_EQ(a.index(100), 2);
     BOOST_TEST_EQ(a.index(std::numeric_limits<double>::infinity()), 2);
+
+    BOOST_TEST_EQ(str(a),
+                  "regular_pow(2, 0, 4, options=underflow | overflow, power=0.5)");
   }
 
   // with step
@@ -211,6 +239,12 @@ int main() {
 
     auto a = axis::regular<>(2, 0, 1);
     test(a.bin(0), "[0, 0.5)");
+  }
+
+  // null_type streamable
+  {
+    auto a = axis::regular<float, def, axis::null_type>(2, 0, 1);
+    BOOST_TEST_EQ(str(a), "regular(2, 0, 1, options=underflow | overflow)");
   }
 
   // shrink and rebin

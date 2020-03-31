@@ -47,7 +47,7 @@ void test_all()
     test_one<multi_point_type, polygon>("simplex3", simplex, join, end_flat, 44.5692, 3.0);
 
     test_one<multi_point_type, polygon>("three1", three, join, end_flat, 3.0 * pi, 1.0);
-#if defined(BOOST_GEOMETRY_USE_RESCALING)
+#if defined(BOOST_GEOMETRY_USE_RESCALING) || defined(BOOST_GEOMETRY_TEST_FAILURES)
     // For no-rescaling, fails in CCW mode
     test_one<multi_point_type, polygon>("three2", three, join, end_flat, 36.7592, 2.0);
 #endif
@@ -206,8 +206,13 @@ void test_many_points_per_circle()
 
 int test_main(int, char* [])
 {
-    test_all<true, bg::model::point<double, 2, bg::cs::cartesian> >();
-    test_all<false, bg::model::point<double, 2, bg::cs::cartesian> >();
+    BoostGeometryWriteTestConfiguration();
+
+    test_all<true, bg::model::point<default_test_type, 2, bg::cs::cartesian> >();
+
+#if ! defined(BOOST_GEOMETRY_TEST_ONLY_ONE_ORDER)
+    test_all<false, bg::model::point<default_test_type, 2, bg::cs::cartesian> >();
+#endif
 
 #if defined(BOOST_GEOMETRY_COMPILER_MODE_RELEASE) && ! defined(BOOST_GEOMETRY_COMPILER_MODE_DEBUG)
     test_many_points_per_circle<bg::model::point<double, 2, bg::cs::cartesian> >();

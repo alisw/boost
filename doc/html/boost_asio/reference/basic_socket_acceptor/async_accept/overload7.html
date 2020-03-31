@@ -32,11 +32,11 @@
           </p>
 <pre class="programlisting">template&lt;
     typename <a class="link" href="../../Executor1.html" title="Executor requirements">Executor1</a>,
-    typename <a class="link" href="../../MoveAcceptHandler.html" title="Move accept handler requirements">MoveAcceptHandler</a>&gt;
+    typename <a class="link" href="../../MoveAcceptHandler.html" title="Move accept handler requirements">MoveAcceptHandler</a> = <a class="link" href="../../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens"><span class="emphasis"><em>DEFAULT</em></span></a>&gt;
 <a class="link" href="../../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.automatic_deduction_of_initiating_function_return_type"><span class="emphasis"><em>DEDUCED</em></span></a> async_accept(
     const Executor1 &amp; ex,
     endpoint_type &amp; peer_endpoint,
-    MoveAcceptHandler &amp;&amp; handler,
+    MoveAcceptHandler &amp;&amp; handler = <a class="link" href="../../asynchronous_operations.html#boost_asio.reference.asynchronous_operations.default_completion_tokens"><span class="emphasis"><em>DEFAULT</em></span></a>,
     typename enable_if&lt; is_executor&lt; Executor1 &gt;::value &gt;::type *  = 0);
 </pre>
 <p>

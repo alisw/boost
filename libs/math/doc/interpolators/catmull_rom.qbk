@@ -15,12 +15,12 @@
 
 namespace boost{ namespace math{
 
-    template<class Point>
+    template<class Point, class RandomAccessContainer = std::vector<Point> >
     class catmull_rom
     {
     public:
 
-        catmull_rom(std::vector<Point>&& points, bool closed = false, Real alpha = (Real) 1/ (Real) 2)
+        catmull_rom(RandomAccessContainer&& points, bool closed = false, Real alpha = (Real) 1/ (Real) 2)
 
         catmull_rom(std::initializer_list<Point> l, bool closed = false, typename Point::value_type alpha = (typename Point::value_type) 1/ (typename Point::value_type) 2);
 
@@ -45,10 +45,10 @@ Catmull-Rom splines enjoy the following properties:
 * Local support of the basis functions: This gives stability and fast evaluation.
 * /C/[super 2]-smoothness
 * Interpolation of control points-this means the curve passes through the control points.
-Many curves (such as Bezier) are /approximating/-they do not pass through their control points.
+Many curves (such as B[eacute]zier) are /approximating/ - they do not pass through their control points.
 This makes them more difficult to use than interpolating splines.
 
-The `catmull_rom` class provided by Boost creates a cubic Catmull-Rom spline from an array of points in any dimension.
+The `catmull_rom` class provided by Boost.Math creates a cubic Catmull-Rom spline from an array of points in any dimension.
 Since there are numerous ways to represent a point in /n/-dimensional space,
 the class attempts to be flexible by templating on the point type.
 The requirements on the point type are discussing in more detail below, but roughly, it must have a dereference operator defined (e.g., `p[0]` is not a syntax error),
@@ -215,12 +215,35 @@ These conditions are satisfied by both `std::array` and `std::vector`, but it ma
 The Catmull-Rom interpolator requires memory for three more points than is provided by the user.
 This causes the class to call a `resize()` on the input vector.
 If `v.capacity() >= v.size() + 3`, then no problems arise; there are no reallocs, and in practice this condition is almost always satisfied.
-However, if `v.capacity() < v.size() + 3`, the realloc causes a performance penalty of roughly 20%.
+However, if `v.capacity() < v.size() + 3`, the `realloc` causes a performance penalty of roughly 20%.
+
+[heading Generic Containers]
+
+The `Point` type may be stored in a different container than `std::vector`.
+For example, here is how to store the points in a Boost.uBLAS vector:
+
+    mypoint3d<Real> p0(0.1, 0.2, 0.3);
+    mypoint3d<Real> p1(0.2, 0.3, 0.4);
+    mypoint3d<Real> p2(0.3, 0.4, 0.5);
+    mypoint3d<Real> p3(0.4, 0.5, 0.6);
+    mypoint3d<Real> p4(0.5, 0.6, 0.7);
+    mypoint3d<Real> p5(0.6, 0.7, 0.8);
+
+    boost::numeric::ublas::vector<mypoint3d<Real>> u(6);
+    u[0] = p0;
+    u[1] = p1;
+    u[2] = p2;
+    u[3] = p3;
+    u[4] = p4;
+    u[5] = p5;
+
+    // Tests initializer_list:
+    catmull_rom<mypoint3d<Real>, decltype(u)> cat(std::move(u));
+
 
 [heading References]
 
 * Cem Yuksel, Scott Schaefer, and John Keyser, ['Parameterization and applications of Catmull–Rom curves], Computer-Aided Design 43 (2011) 747–755.
 * Phillip J. Barry and Ronald N. Goldman, ['A Recursive Evaluation Algorithm for a Class of Catmull-Rom Splines], Computer Graphics, Volume 22, Number 4, August 1988
 
-[endsect]
-[/section:catmull_rom Catmull-Rom Splines]
+[endsect] [/section:catmull_rom Catmull-Rom Splines]

@@ -112,6 +112,19 @@ The header contains facilities that are used in different sinks to map attribute
 </namespace>
 </namespace>
 </header>
+<header name="boost/log/sinks/auto_newline_mode.hpp">
+<para><para>Andrey Semashev </para>
+
+<para>23.06.2019</para>
+
+The header contains definition of auto-newline modes. </para><namespace name="boost">
+<namespace name="log">
+<namespace name="sinks">
+<enum name="auto_newline_mode"><enumvalue name="disabled_auto_newline"><purpose>Do not insert automatic trailing newline characters. </purpose></enumvalue><enumvalue name="always_insert"><purpose>Always insert automatic trailing newline characters. </purpose></enumvalue><enumvalue name="insert_if_missing"><purpose>Insert automatic trailing newline characters, if not present already. </purpose></enumvalue><purpose>The enum lists automatic trailing newline modes. </purpose></enum>
+</namespace>
+</namespace>
+</namespace>
+</header>
 <header name="boost/log/sinks/basic_sink_backend.hpp">
 <para><para>Andrey Semashev </para>
 
@@ -761,6 +774,8 @@ The header contains implementation of a text file sink backend. </para><namespac
 </para></description></method>
 <method name="auto_flush"><type>void</type><parameter name="enable"><paramtype>bool</paramtype><default>true</default><description><para>The flag indicates whether the automatic buffer flush should be performed. </para></description></parameter><description><para>Sets the flag to automatically flush write buffers of the file being written after each log record.</para><para>
 </para></description></method>
+<method name="set_auto_newline_mode"><type>void</type><parameter name="mode"><paramtype>auto_newline_mode</paramtype><description><para>The trailing newline insertion mode. </para></description></parameter><description><para>Selects whether a trailing newline should be automatically inserted after every log record. See <computeroutput>auto_newline_mode</computeroutput> description for the possible modes of operation.</para><para>
+</para></description></method>
 <method name="get_current_file_name" cv="const"><type>filesystem::path</type><description><para>
 </para></description><returns><para>The name of the currently open log file. If no file is open, returns an empty path. </para>
 </returns></method>
@@ -792,7 +807,9 @@ The header contains implementation of a text file sink backend. </para><namespac
 </listitem>
 <listitem><para><computeroutput>enable_final_rotation</computeroutput> - Specifies a flag, whether or not perform log file rotation on sink backend destruction. By default, is <computeroutput>true</computeroutput>. </para>
 </listitem>
-<listitem><para><computeroutput>auto_flush</computeroutput> - Specifies a flag, whether or not to automatically flush the file after each written log record. By default, is <computeroutput>false</computeroutput>.</para>
+<listitem><para><computeroutput>auto_flush</computeroutput> - Specifies a flag, whether or not to automatically flush the file after each written log record. By default, is <computeroutput>false</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>auto_newline_mode</computeroutput> - Specifies automatic trailing newline insertion mode. Must be a value of the <computeroutput>auto_newline_mode</computeroutput> enum. By default, is <computeroutput>auto_newline_mode::insert_if_missing</computeroutput>.</para>
 </listitem>
 </itemizedlist>
 <note><para>Read the caution note regarding file name pattern in the <computeroutput>sinks::file::collector::scan_for_files</computeroutput> documentation. </para>
@@ -921,9 +938,18 @@ The header contains implementation of a text multi-file sink backend. </para><na
           <template-type-parameter name="ComposerT"/>
         </template><parameter name="composer"><paramtype>ComposerT const &amp;</paramtype><description><para>File name composer functor </para></description></parameter><description><para>The method sets file name composer functional object. Log record formatters are accepted, too.</para><para>
 </para></description></method>
+<method name="set_auto_newline_mode"><type>void</type><parameter name="mode"><paramtype>auto_newline_mode</paramtype><description><para>The trailing newline insertion mode. </para></description></parameter><description><para>Selects whether a trailing newline should be automatically inserted after every log record. See <computeroutput>auto_newline_mode</computeroutput> description for the possible modes of operation.</para><para>
+</para></description></method>
 <method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method writes the message to the sink </para></description></method>
 </method-group>
-<constructor><description><para>Default constructor. The constructed sink backend has no file name composer and thus will not write any files. </para></description></constructor>
+<constructor><description><para>Default constructor. The constructed sink backend has no file name composer and thus will not write any files. All other parameters are set to their defaults. </para></description></constructor>
+<constructor specifiers="explicit"><template>
+          <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype></parameter><description><para>Constructor. Creates a sink backend with the specified named parameters. The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>auto_newline_mode</computeroutput> - Specifies automatic trailing newline insertion mode. Must be a value of the <computeroutput>auto_newline_mode</computeroutput> enum. By default, is <computeroutput>auto_newline_mode::insert_if_missing</computeroutput>. </para>
+</listitem>
+</itemizedlist>
+</para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
 </class><namespace name="file">
 <class name="file_name_composer_adapter"><template>
@@ -966,11 +992,23 @@ The header contains implementation of a text output stream sink backend. </para>
 </para></description></method>
 <method name="remove_stream"><type>void</type><parameter name="strm"><paramtype>shared_ptr&lt; stream_type &gt; const &amp;</paramtype><description><para>Pointer to the stream. Must not be NULL. </para></description></parameter><description><para>The method removes a stream from the sink. If the stream is not attached to the sink, the method has no effect.</para><para>
 </para></description></method>
-<method name="auto_flush"><type>void</type><parameter name="f"><paramtype>bool</paramtype><default>true</default></parameter><description><para>Sets the flag to automatically flush buffers of all attached streams after each log record </para></description></method>
-<method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method writes the message to the sink </para></description></method>
-<method name="flush"><type>void</type><description><para>The method flushes the associated streams </para></description></method>
+<method name="auto_flush"><type>void</type><parameter name="enable"><paramtype>bool</paramtype><default>true</default><description><para>The flag indicates whether the automatic buffer flush should be performed. </para></description></parameter><description><para>Sets the flag to automatically flush buffers of all attached streams after each log record.</para><para>
+</para></description></method>
+<method name="set_auto_newline_mode"><type>void</type><parameter name="mode"><paramtype>auto_newline_mode</paramtype><description><para>The trailing newline insertion mode. </para></description></parameter><description><para>Selects whether a trailing newline should be automatically inserted after every log record. See <computeroutput>auto_newline_mode</computeroutput> description for the possible modes of operation.</para><para>
+</para></description></method>
+<method name="consume"><type>void</type><parameter name="rec"><paramtype>record_view const &amp;</paramtype></parameter><parameter name="formatted_message"><paramtype>string_type const &amp;</paramtype></parameter><description><para>The method writes the message to the sink. </para></description></method>
+<method name="flush"><type>void</type><description><para>The method flushes all attached streams. </para></description></method>
 </method-group>
 <constructor><description><para>Constructor. No streams attached to the constructed backend, auto flush feature disabled. </para></description></constructor>
+<constructor specifiers="explicit"><template>
+          <template-nontype-parameter name="ArgsT"><type>typename...</type></template-nontype-parameter>
+        </template><parameter name="args"><paramtype>ArgsT... const &amp;</paramtype></parameter><description><para>Constructor. Creates a sink backend with the specified named parameters. The following named parameters are supported:</para><para><itemizedlist>
+<listitem><para><computeroutput>auto_flush</computeroutput> - Specifies a flag, whether or not to automatically flush the attached streams after each written log record. By default, is <computeroutput>false</computeroutput>. </para>
+</listitem>
+<listitem><para><computeroutput>auto_newline_mode</computeroutput> - Specifies automatic trailing newline insertion mode. Must be a value of the <computeroutput>auto_newline_mode</computeroutput> enum. By default, is <computeroutput>auto_newline_mode::insert_if_missing</computeroutput>. </para>
+</listitem>
+</itemizedlist>
+</para></description></constructor>
 <destructor><description><para>Destructor </para></description></destructor>
 </class><typedef name="text_ostream_backend"><purpose>Convenience typedef for narrow-character logging. </purpose><type><classname>basic_text_ostream_backend</classname>&lt; char &gt;</type></typedef>
 <typedef name="wtext_ostream_backend"><purpose>Convenience typedef for wide-character logging. </purpose><type><classname>basic_text_ostream_backend</classname>&lt; wchar_t &gt;</type></typedef>

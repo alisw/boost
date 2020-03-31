@@ -711,6 +711,9 @@
 <span class="keyword">namespace</span> <span class="identifier">algo</span> <span class="special">{</span>
 
 <span class="keyword">class</span> <span class="identifier">shared_work</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">algorithm</span> <span class="special">{</span>
+    <span class="identifier">shared_work</span><span class="special">();</span>
+    <span class="identifier">shared_work</span><span class="special">(</span> <span class="keyword">bool</span> <span class="identifier">suspend</span><span class="special">);</span>
+
     <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="identifier">awakened</span><span class="special">(</span> <span class="identifier">context</span> <span class="special">*)</span> <span class="keyword">noexcept</span><span class="special">;</span>
 
     <span class="keyword">virtual</span> <span class="identifier">context</span> <span class="special">*</span> <span class="identifier">pick_next</span><span class="special">()</span> <span class="keyword">noexcept</span><span class="special">;</span>
@@ -724,6 +727,34 @@
 
 <span class="special">}}}</span>
 </pre>
+<h4>
+<a name="fiber.scheduling.h1"></a>
+      <span class="phrase"><a name="fiber.scheduling.constructor0"></a></span><a class="link" href="scheduling.html#fiber.scheduling.constructor0">Constructor</a>
+    </h4>
+<pre class="programlisting"><span class="identifier">shared_work</span><span class="special">();</span>
+<span class="identifier">shared_work</span><span class="special">(</span> <span class="keyword">bool</span> <span class="identifier">suspend</span><span class="special">);</span>
+</pre>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl class="variablelist">
+<dt><span class="term">Effects:</span></dt>
+<dd><p>
+            Constructs work-sharing scheduling algorithm.
+          </p></dd>
+<dt><span class="term">Throws:</span></dt>
+<dd><p>
+            <code class="computeroutput"><span class="identifier">system_error</span></code>
+          </p></dd>
+<dt><span class="term">Note:</span></dt>
+<dd><p>
+            If <code class="computeroutput"><span class="identifier">suspend</span></code> is set to
+            <code class="computeroutput"><span class="keyword">true</span></code> (default is <code class="computeroutput"><span class="keyword">false</span></code>), then the scheduler suspends if
+            no ready fiber could be stolen. The scheduler will by woken up if a sleeping
+            fiber times out or it was notified from remote (other thread or fiber
+            scheduler).
+          </p></dd>
+</dl>
+</div>
 <p>
       </p>
 <h5>
@@ -862,7 +893,7 @@
 </dl>
 </div>
 <h4>
-<a name="fiber.scheduling.h1"></a>
+<a name="fiber.scheduling.h2"></a>
       <span class="phrase"><a name="fiber.scheduling.custom_scheduler_fiber_properties"></a></span><a class="link" href="scheduling.html#fiber.scheduling.custom_scheduler_fiber_properties">Custom
       Scheduler Fiber Properties</a>
     </h4>
@@ -907,8 +938,8 @@
 <span class="special">}}</span>
 </pre>
 <h4>
-<a name="fiber.scheduling.h2"></a>
-      <span class="phrase"><a name="fiber.scheduling.constructor0"></a></span><a class="link" href="scheduling.html#fiber.scheduling.constructor0">Constructor</a>
+<a name="fiber.scheduling.h3"></a>
+      <span class="phrase"><a name="fiber.scheduling.constructor1"></a></span><a class="link" href="scheduling.html#fiber.scheduling.constructor1">Constructor</a>
     </h4>
 <pre class="programlisting"><span class="identifier">fiber_properties</span><span class="special">(</span> <span class="identifier">context</span> <span class="special">*</span> <span class="identifier">f</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
 </pre>

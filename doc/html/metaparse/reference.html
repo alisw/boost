@@ -10048,7 +10048,7 @@
 <a name="metaparse.reference.alphabetical.one_char_except_c.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.one_char_except_c.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.one_char_except_c.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">char</span> <span class="identifier">C1</span><span class="special">,</span> <span class="keyword">char</span> <span class="identifier">C2</span><span class="special">,</span> <span class="comment">/* ... */</span><span class="special">,</span> <span class="keyword">char</span> <span class="identifier">Cn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">char</span><span class="special">...</span> <span class="identifier">Cs</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">one_char_except_c</span><span class="special">;</span>
 </pre>
 <p>
@@ -10076,7 +10076,7 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">C1</span></code>..<code class="computeroutput"><span class="identifier">Cn</span></code>
+                    <code class="computeroutput"><span class="identifier">Cs</span></code>
                   </p>
                 </td>
 <td>
@@ -10093,15 +10093,15 @@
         </h2>
 <p>
           <code class="computeroutput"><span class="identifier">one_char_except_c</span></code> accepts
-          one character except any of <code class="computeroutput"><span class="identifier">C1</span></code>
-          ... <code class="computeroutput"><span class="identifier">Cn</span></code>. When the input
-          is empty or begins with one of the non-accepted characters, <code class="computeroutput"><span class="identifier">one_char_except_c</span></code> rejects the input.
-          Otherwise it accepts the input and the result of parsing is the character
-          value.
+          one character except any of <code class="computeroutput"><span class="identifier">Cs</span></code>.
+          When the input is empty or begins with one of the non-accepted characters,
+          <code class="computeroutput"><span class="identifier">one_char_except_c</span></code> rejects
+          the input. Otherwise it accepts the input and the result of parsing is
+          the character value.
         </p>
 <p>
-          The maximum number of template arguments this class can have is the value
-          the macro <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_CHAR_EXCEPT_SIZE</span></code>
+          On compilers, which are not C++11-compliant, the maximum number of characters
+          this class can have is the value the macro <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_CHAR_EXCEPT_SIZE</span></code>
           expands to. Its default value is 10.
         </p>
 <h2>
@@ -10174,7 +10174,7 @@
 <a name="metaparse.reference.alphabetical.one_char_except.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.one_char_except.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.one_char_except.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">C1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">C2</span><span class="special">,</span> <span class="comment">/* ... */</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Cn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Cs</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">one_char_except</span><span class="special">;</span>
 </pre>
 <p>
@@ -10202,7 +10202,7 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">C1</span></code>..<code class="computeroutput"><span class="identifier">Cn</span></code>
+                    <code class="computeroutput"><span class="identifier">Cs</span></code>
                   </p>
                 </td>
 <td>
@@ -10219,14 +10219,15 @@
         </h2>
 <p>
           <code class="computeroutput"><span class="identifier">one_char_except</span></code> accepts
-          one character except any of <code class="computeroutput"><span class="identifier">C1</span></code>
-          ... <code class="computeroutput"><span class="identifier">Cn</span></code>. When the input
-          is empty or begins with one of the non-accepted characters, <code class="computeroutput"><span class="identifier">one_char_except</span></code> rejects the input. Otherwise
-          it accepts the input and the result of parsing is the character value.
+          one character except any of <code class="computeroutput"><span class="identifier">Cs</span></code>.
+          When the input is empty or begins with one of the non-accepted characters,
+          <code class="computeroutput"><span class="identifier">one_char_except</span></code> rejects
+          the input. Otherwise it accepts the input and the result of parsing is
+          the character value.
         </p>
 <p>
-          The maximum number of template arguments this class can have is the value
-          the macro <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_CHAR_EXCEPT_SIZE</span></code>
+          On compilers, which are not C++11-compliant, the maximum number of characters
+          this class can have is the value the macro <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_CHAR_EXCEPT_SIZE</span></code>
           expands to. Its default value is 10.
         </p>
 <h2>
@@ -10397,7 +10398,7 @@
 <a name="metaparse.reference.alphabetical.one_of_c.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.one_of_c.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.one_of_c.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">long</span> <span class="identifier">P1</span><span class="special">,</span> <span class="keyword">long</span> <span class="identifier">P2</span><span class="special">,</span> <span class="comment">/* ... */</span> <span class="keyword">long</span> <span class="identifier">Pn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">char</span><span class="special">...</span> <span class="identifier">Cs</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">one_of_c</span><span class="special">;</span>
 </pre>
 <p>
@@ -10425,7 +10426,7 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">P1</span></code> .. <code class="computeroutput"><span class="identifier">Pn</span></code>
+                    <code class="computeroutput"><span class="identifier">Cs</span></code>
                   </p>
                 </td>
 <td>
@@ -10441,13 +10442,12 @@
           <span class="phrase"><a name="metaparse.reference.alphabetical.one_of_c.description"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.one_of_c.description">Description</a>
         </h2>
 <p>
-          It accepts inputs beginning with any of the <code class="computeroutput"><span class="identifier">P1</span></code>,
-          ..., <code class="computeroutput"><span class="identifier">Pn</span></code> characters. The
-          result of parsing is the first character of the input.
+          It accepts inputs beginning with any of the <code class="computeroutput"><span class="identifier">Cs</span><span class="special">...</span></code> characters. The result of parsing is
+          the first character of the input.
         </p>
 <p>
-          The maximum number of characters that can be provided is defined by the
-          <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code>
+          On compilers, which are not C++11-compliant, the maximum number of characters
+          that can be provided is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code>
           macro. Its default value is <code class="computeroutput"><span class="number">20</span></code>.
         </p>
 <h2>
@@ -10506,7 +10506,7 @@
 <a name="metaparse.reference.alphabetical.one_of.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.one_of.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.one_of.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">P1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">P2</span><span class="special">,</span> <span class="comment">/* ... */</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Pn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Ps</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">one_of</span><span class="special">;</span>
 </pre>
 <p>
@@ -10534,7 +10534,7 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">P1</span></code> .. <code class="computeroutput"><span class="identifier">Pn</span></code>
+                    <code class="computeroutput"><span class="identifier">Ps</span></code>
                   </p>
                 </td>
 <td>
@@ -10550,16 +10550,15 @@
           <span class="phrase"><a name="metaparse.reference.alphabetical.one_of.description"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.one_of.description">Description</a>
         </h2>
 <p>
-          It accepts an input when any of the <code class="computeroutput"><span class="identifier">P1</span></code>,
-          ... <code class="computeroutput"><span class="identifier">Pn</span></code> parsers accept it.
-          The result of parsing is the result of applying the first parser that accepts
-          the input. The parsers are tried in order, therefore in case of ambiguous
-          grammars the result of parsing depends on the order of the <code class="computeroutput"><span class="identifier">P1</span></code> ... <code class="computeroutput"><span class="identifier">Pn</span></code>
-          parsers.
+          It accepts an input when any of the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code> parsers accept it. The result of parsing
+          is the result of applying the first parser that accepts the input. The
+          parsers are tried in order, therefore in case of ambiguous grammars the
+          result of parsing depends on the order of the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code> parsers.
         </p>
 <p>
-          The maximum number of accepted parsers is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code> macro.
-          Its default value is <code class="computeroutput"><span class="number">20</span></code>.
+          On compilers, which are not C++11-compliant, the maximum number of accepted
+          parsers is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code>
+          macro. Its default value is <code class="computeroutput"><span class="number">20</span></code>.
         </p>
 <h2>
 <a name="metaparse.reference.alphabetical.one_of.h2"></a>
@@ -11643,7 +11642,7 @@
 <a name="metaparse.reference.alphabetical.repeated_one_of1.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.repeated_one_of1.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.repeated_one_of1.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">P1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">P2</span><span class="special">,</span> <span class="comment">/* ... */</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Pn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Ps</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">repeated_one_of1</span><span class="special">;</span>
 </pre>
 <p>
@@ -11671,7 +11670,7 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">P1</span></code> .. <code class="computeroutput"><span class="identifier">Pn</span></code>
+                    <code class="computeroutput"><span class="identifier">Ps</span></code>
                   </p>
                 </td>
 <td>
@@ -11687,24 +11686,23 @@
           <span class="phrase"><a name="metaparse.reference.alphabetical.repeated_one_of1.description"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.repeated_one_of1.description">Description</a>
         </h2>
 <p>
-          It applies the <code class="computeroutput"><span class="identifier">P1</span></code> ...
-          <code class="computeroutput"><span class="identifier">Pn</span></code> parsers repeatedly as
-          long as any of them accepts the input. In each iteration the parsers are
-          tried in order and the first one accepting the input is used, therefore
-          in case of ambiguous grammars the result of parsing depends on the order
-          of the <code class="computeroutput"><span class="identifier">P1</span></code> ... <code class="computeroutput"><span class="identifier">Pn</span></code> parsers. The result of parsing with
+          It applies the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code>
+          parsers repeatedly as long as any of them accepts the input. In each iteration
+          the parsers are tried in order and the first one accepting the input is
+          used, therefore in case of ambiguous grammars the result of parsing depends
+          on the order of the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code> parsers. The result of parsing with
           this <a class="link" href="reference.html#parser_combinator">parser combinator</a> is a sequence
           of the individual parsing results.
         </p>
 <p>
-          When none of the <code class="computeroutput"><span class="identifier">P1</span></code> ...
-          <code class="computeroutput"><span class="identifier">Pn</span></code> parsers accept the input
-          in the first iteration, <code class="computeroutput"><span class="identifier">repeated_one_of1</span></code>
+          When none of the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code>
+          parsers accept the input in the first iteration, <code class="computeroutput"><span class="identifier">repeated_one_of1</span></code>
           rejects the input.
         </p>
 <p>
-          The maximum number of accepted parsers is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code> macro.
-          Its default value is 20.
+          On compilers, which are not C++11-compliant, the maximum number of accepted
+          parsers is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code>
+          macro. Its default value is 20.
         </p>
 <h2>
 <a name="metaparse.reference.alphabetical.repeated_one_of1.h2"></a>
@@ -11775,7 +11773,7 @@
 <a name="metaparse.reference.alphabetical.repeated_one_of.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.repeated_one_of.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.repeated_one_of.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">P1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">P2</span><span class="special">,</span> <span class="comment">/* ... */</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Pn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Ps</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">repeated_one_of1</span><span class="special">;</span>
 </pre>
 <div class="table">
@@ -11800,7 +11798,7 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">P1</span></code> .. <code class="computeroutput"><span class="identifier">Pn</span></code>
+                    <code class="computeroutput"><span class="identifier">Ps</span></code>
                   </p>
                 </td>
 <td>
@@ -11819,24 +11817,23 @@
           <span class="phrase"><a name="metaparse.reference.alphabetical.repeated_one_of.description"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.repeated_one_of.description">Description</a>
         </h2>
 <p>
-          It applies the <code class="computeroutput"><span class="identifier">P1</span></code> ...
-          <code class="computeroutput"><span class="identifier">Pn</span></code> parsers repeatedly as
-          long as any of them accepts the input. In each iteration the parsers are
-          tried in order and the first one accepting the input is used, therefore
-          in case of ambiguous grammars the result of parsing depends on the order
-          of the <code class="computeroutput"><span class="identifier">P1</span></code> ... <code class="computeroutput"><span class="identifier">Pn</span></code> parsers. The result of parsing with
+          It applies the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code>
+          parsers repeatedly as long as any of them accepts the input. In each iteration
+          the parsers are tried in order and the first one accepting the input is
+          used, therefore in case of ambiguous grammars the result of parsing depends
+          on the order of the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code> parsers. The result of parsing with
           this <a class="link" href="reference.html#parser_combinator">parser combinator</a> is a sequence
           of the individual parsing results.
         </p>
 <p>
-          When none of the <code class="computeroutput"><span class="identifier">P1</span></code> ...
-          <code class="computeroutput"><span class="identifier">Pn</span></code> parsers accept the input
-          in the first iteration, <code class="computeroutput"><span class="identifier">repeated_one_of</span></code>
+          When none of the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code>
+          parsers accept the input in the first iteration, <code class="computeroutput"><span class="identifier">repeated_one_of</span></code>
           accepts the input and the result of parsing is an empty sequence.
         </p>
 <p>
-          The maximum number of accepted parsers is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code> macro.
-          Its default value is 20.
+          On compilers, which are not C++11-compliant, the maximum number of accepted
+          parsers is defined by the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_ONE_OF_SIZE</span></code>
+          macro. Its default value is 20.
         </p>
 <h2>
 <a name="metaparse.reference.alphabetical.repeated_one_of.h2"></a>
@@ -12165,7 +12162,7 @@
 <a name="metaparse.reference.alphabetical.sequence.h0"></a>
           <span class="phrase"><a name="metaparse.reference.alphabetical.sequence.synopsis"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.sequence.synopsis">Synopsis</a>
         </h2>
-<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">P1</span><span class="special">,</span> <span class="comment">/* ... */</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Pn</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Ps</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">sequence</span><span class="special">;</span>
 </pre>
 <p>
@@ -12193,12 +12190,12 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">P1</span></code> .. <code class="computeroutput"><span class="identifier">Pn</span></code>
+                    <code class="computeroutput"><span class="identifier">Ps</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <a class="link" href="reference.html#parser">parser</a>
+                    <a class="link" href="reference.html#parser">parser</a>s
                   </p>
                 </td>
 </tr></tbody>
@@ -12209,14 +12206,15 @@
           <span class="phrase"><a name="metaparse.reference.alphabetical.sequence.description"></a></span><a class="link" href="reference.html#metaparse.reference.alphabetical.sequence.description">Description</a>
         </h2>
 <p>
-          <code class="computeroutput"><span class="identifier">sequence</span></code> applies the <code class="computeroutput"><span class="identifier">P1</span></code>, ..., <code class="computeroutput"><span class="identifier">Pn</span></code>
+          <code class="computeroutput"><span class="identifier">sequence</span></code> applies the <code class="computeroutput"><span class="identifier">Ps</span><span class="special">...</span></code>
           parsers in sequence on the input. It accepts an input when all of these
           parsers accept it. The result of parsing is a sequence of the results of
           the parsers.
         </p>
 <p>
-          The maximum number of parsers <code class="computeroutput"><span class="identifier">sequence</span></code>
-          accepts can be specified with the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_SEQUENCE_SIZE</span></code>
+          On compilers, which are not C++11-compliant, the maximum number of parsers
+          <code class="computeroutput"><span class="identifier">sequence</span></code> accepts can be
+          specified with the <code class="computeroutput"><span class="identifier">BOOST_METAPARSE_LIMIT_SEQUENCE_SIZE</span></code>
           macro. Its default value is <code class="computeroutput"><span class="number">5</span></code>.
         </p>
 <h2>

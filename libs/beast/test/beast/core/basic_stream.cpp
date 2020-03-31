@@ -1204,7 +1204,6 @@ public:
         }
 
         {
-            error_code ec;
             stream_type s(ioc);
             async_teardown(role_type::server, s,
                 [](error_code)
@@ -1261,6 +1260,44 @@ public:
     //--------------------------------------------------------------------------
 
     void
+    testIssue1589()
+    {
+        net::io_context ioc;
+
+        // the timer needlessly used polymorphic executor
+        basic_stream<
+            net::ip::tcp,
+            net::io_context::executor_type>{ioc};
+
+        // make sure strands work
+        basic_stream<
+            net::ip::tcp,
+            net::strand<
+                net::io_context::executor_type>>{
+                    net::make_strand(ioc)};
+
+        // address the problem in the issue
+        {
+            net::basic_stream_socket<
+                net::ip::tcp,
+                net::strand<
+                    net::io_context::executor_type>
+                        > sock(net::make_strand(ioc));
+            basic_stream<
+                net::ip::tcp,
+                net::strand<
+                    net::io_context::executor_type>,
+                unlimited_rate_policy> stream(std::move(sock));
+            BOOST_STATIC_ASSERT(
+                std::is_convertible<
+                    decltype(sock)::executor_type,
+                    decltype(stream)::executor_type>::value);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+
+    void
     run()
     {
         testSpecialMembers();
@@ -1269,6 +1306,7 @@ public:
         testConnect();
         testMembers();
         testJavadocs();
+        testIssue1589();
     }
 };
 

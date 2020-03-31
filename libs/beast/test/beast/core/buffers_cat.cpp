@@ -38,8 +38,6 @@ public:
             net::const_buffer(&c[0], 1),
             net::const_buffer(&c[1], 1));
         decltype(bs)::const_iterator it;
-        BEAST_EXPECT(bs.end() == it);
-        BEAST_EXPECT(it == bs.end());
         decltype(bs)::const_iterator it2;
         BEAST_EXPECT(it == it2);
         BEAST_EXPECT(it2 == it);
@@ -302,13 +300,30 @@ public:
             buffers_cat(buffers_prefix(i, buffers), cb));
     }
 
+    void
+    testSingleBuffer()
+    {
+        char c[1] = {};
+        auto b = net::const_buffer(c, 1);
+        auto bs = buffers_cat(net::const_buffer(c, 1));
+        auto first = net::buffer_sequence_begin(bs);
+        auto last = net::buffer_sequence_end(bs);
+        BOOST_ASSERT(first != last);
+        BEAST_EXPECT(std::distance(first, last) == 1);
+        net::const_buffer b2(*first);
+        BEAST_EXPECT(b.data() == b2.data());
+        BEAST_EXPECT(b.size() == b2.size());
+    }
+
     void run() override
     {
+        testDefaultIterators();
         testBufferSequence();
         testExceptions();
         testEmpty();
         testGccWarning1();
         testGccWarning2();
+        testSingleBuffer();
     }
 };
 

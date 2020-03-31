@@ -5,8 +5,13 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/core/lightweight_test.hpp>
-#include <boost/histogram.hpp>
 #include <boost/histogram/axis/ostream.hpp>
+#include <boost/histogram/axis/regular.hpp>
+#include "throw_exception.hpp"
+#include <boost/histogram/histogram.hpp>
+#include <boost/histogram/indexed.hpp>
+#include <boost/histogram/literals.hpp>
+#include <boost/histogram/make_histogram.hpp>
 #include <boost/histogram/ostream.hpp>
 #include <boost/units/quantity.hpp>
 #include <boost/units/systems/si/length.hpp>

@@ -158,18 +158,18 @@ compile-fail array_fail_dereference.cpp ;
 compile-fail array_fail_member_access.cpp ;
 compile-fail array_fail_array_access.cpp ;
 
-run make_shared_array_test.cpp ;
+run make_shared_array_test.cpp : : : <toolset>msvc-8.0:<build>no ;
 run make_shared_arrays_test.cpp ; # <cxxflags>-fno-deduce-init-list no longer needed for gcc-4.6
-run make_shared_array_throws_test.cpp ;
-run make_shared_array_esft_test.cpp ;
-run make_shared_array_noinit_test.cpp ;
-run make_shared_array_value_test.cpp ;
+run make_shared_array_throws_test.cpp : : : <toolset>msvc-8.0:<build>no ;
+run make_shared_array_esft_test.cpp : : : <toolset>msvc-8.0:<build>no ;
+run make_shared_array_noinit_test.cpp : : : <toolset>msvc-8.0:<build>no ;
+run make_shared_array_value_test.cpp : : : <toolset>msvc-8.0:<build>no ;
 run allocate_shared_array_test.cpp ;
 run allocate_shared_arrays_test.cpp ; # <cxxflags>-fno-deduce-init-list no longer needed for gcc-4.6
-run allocate_shared_array_throws_test.cpp ;
-run allocate_shared_array_esft_test.cpp ;
-run allocate_shared_array_noinit_test.cpp ;
-run allocate_shared_array_value_test.cpp ;
+run allocate_shared_array_throws_test.cpp : : : <toolset>msvc-8.0:<build>no ;
+run allocate_shared_array_esft_test.cpp : : : <toolset>msvc-8.0:<build>no ;
+run allocate_shared_array_noinit_test.cpp : : : <toolset>msvc-8.0:<build>no ;
+run allocate_shared_array_value_test.cpp : : : <toolset>msvc-8.0:<build>no ;
 run allocate_shared_array_construct_test.cpp ;
 
 run make_unique_test.cpp ;
@@ -236,7 +236,7 @@ run shared_ptr_fn_test.cpp ;
 run get_deleter_test2.cpp ;
 run get_deleter_test3.cpp ;
 run get_deleter_array_test2.cpp ;
-run get_deleter_array_test3.cpp ;
+run get_deleter_array_test3.cpp : : : <toolset>msvc-8.0:<build>no ;
 
 run sp_convertible_test2.cpp ;
 
@@ -275,7 +275,7 @@ run local_sp_fn_test.cpp ;
 run lsp_convertible_test.cpp ;
 run lsp_convertible_test2.cpp ;
 
-run make_shared_array_tmp_test.cpp ;
+run make_shared_array_tmp_test.cpp : : : <toolset>msvc-8.0:<build>no ;
 
 run lw_thread_test.cpp : : : <threading>multi ;
 
@@ -306,3 +306,30 @@ run abi_test_main.cpp abi_test_nt : : : : abi_test_mt_nt ;
 
 run abi_test_main.cpp abi_test_mt/<cxxstd>0x : : : <cxxstd>98 : abi_test_03_11 ;
 run abi_test_main.cpp abi_test_mt/<cxxstd>98 : : : <cxxstd>0x : abi_test_11_03 ;
+
+run weak_ptr_alias_test.cpp ;
+run weak_ptr_alias_move_test.cpp ;
+
+run sp_typeinfo_test.cpp : : : <rtti>off : sp_typeinfo_test_no_rtti ;
+
+run get_deleter_test.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test_no_rtti ;
+run get_deleter_test2.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test2_no_rtti ;
+run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test3_no_rtti ;
+
+run shared_from_test.cpp ;
+run weak_from_test.cpp ;
+run weak_from_test2.cpp ;
+
+run allocate_unique_aggregate_test.cpp ;
+run allocate_unique_args_test.cpp ;
+run allocate_unique_array_construct_test.cpp ;
+run allocate_unique_array_noinit_test.cpp ;
+run allocate_unique_arrays_test.cpp ;
+run allocate_unique_array_test.cpp ;
+run allocate_unique_array_throws_test.cpp ;
+run allocate_unique_array_value_test.cpp ;
+run allocate_unique_construct_test.cpp ;
+run allocate_unique_noinit_test.cpp ;
+run allocate_unique_test.cpp ;
+run allocate_unique_throws_test.cpp ;
+run allocate_unique_value_test.cpp ;

@@ -4023,7 +4023,7 @@ Only <code>constexpr</code> on C++14 and higher.</p>
 {
     mp_with_index&lt;sizeof...(T)&gt;( v.index(), [&amp;]( auto I ) {
 
-        // I is mp_size_t&lt;v.index()&gt; here
+        // I is mp_size_t&lt;v.index()&gt;{} here
 
         std::cout &lt;&lt; std::get&lt;I&gt;( v ) &lt;&lt; std::endl;
 
@@ -4684,6 +4684,13 @@ to be valid <a href="../../../../libs/mpl">MPL</a> sequences.</p>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>It&#8217;s also possible to only enable support for <code>mp_list</code> by
+including <code>&lt;boost/mp11/mpl_list.hpp&gt;</code>, and for <code>std::tuple</code>
+by including <code>&lt;boost/mp11/mpl_tuple.hpp&gt;</code>. This may be required
+because some libraries, such as Boost.Fusion, contain their own MPL
+support for <code>std::tuple</code>, which conflicts with Mp11&#8217;s one.</p>
+</div>
 </div>
 </div>
 </div>
@@ -4715,12 +4722,13 @@ into this documentation by Glen Fernandes.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-09 19:36:06 UTC
+Last updated 2019-12-10 00:19:27 UTC
 </div>
 </div>
 <style>
 
 *:not(pre)>code { background: none; color: #600000; }
+:not(pre):not([class^=L])>code { background: none; color: #600000; }
 table tr.even, table tr.alt, table tr:nth-of-type(even) { background: none; }
 
 </style>

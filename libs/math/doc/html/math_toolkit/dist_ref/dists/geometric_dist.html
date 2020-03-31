@@ -4,7 +4,7 @@
 <title>Geometric Distribution</title>
 <link rel="stylesheet" href="../../../math.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../index.html" title="Math Toolkit 2.9.0">
+<link rel="home" href="../../../index.html" title="Math Toolkit 2.11.0">
 <link rel="up" href="../dists.html" title="Distributions">
 <link rel="prev" href="gamma_dist.html" title="Gamma (and Erlang) Distribution">
 <link rel="next" href="hyperexponential_dist.html" title="Hyperexponential Distribution">
@@ -31,12 +31,12 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">math</span><span class="special">{</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span> <span class="special">=</span> <span class="keyword">double</span><span class="special">,</span>
-          <span class="keyword">class</span> <a class="link" href="../../../policy.html" title="Chapter&#160;19.&#160;Policies: Controlling Precision, Error Handling etc">Policy</a>   <span class="special">=</span> <a class="link" href="../../pol_ref/pol_ref_ref.html" title="Policy Class Reference">policies::policy&lt;&gt;</a> <span class="special">&gt;</span>
+          <span class="keyword">class</span> <a class="link" href="../../../policy.html" title="Chapter&#160;20.&#160;Policies: Controlling Precision, Error Handling etc">Policy</a>   <span class="special">=</span> <a class="link" href="../../pol_ref/pol_ref_ref.html" title="Policy Class Reference">policies::policy&lt;&gt;</a> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">geometric_distribution</span><span class="special">;</span>
 
 <span class="keyword">typedef</span> <span class="identifier">geometric_distribution</span><span class="special">&lt;&gt;</span> <span class="identifier">geometric</span><span class="special">;</span>
 
-<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span><span class="special">,</span> <span class="keyword">class</span> <a class="link" href="../../../policy.html" title="Chapter&#160;19.&#160;Policies: Controlling Precision, Error Handling etc">Policy</a><span class="special">&gt;</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">RealType</span><span class="special">,</span> <span class="keyword">class</span> <a class="link" href="../../../policy.html" title="Chapter&#160;20.&#160;Policies: Controlling Precision, Error Handling etc">Policy</a><span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">geometric_distribution</span>
 <span class="special">{</span>
 <span class="keyword">public</span><span class="special">:</span>
@@ -102,43 +102,47 @@
         </p>
 <p>
           The probability that there are <span class="emphasis"><em>k</em></span> failures before the
-          first success is
+          first success
         </p>
-<p>
-          &#8192;&#8192; Pr(Y=<span class="emphasis"><em>k</em></span>) = (1-<span class="emphasis"><em>p</em></span>)<sup><span class="emphasis"><em>k</em></span></sup><span class="emphasis"><em>p</em></span>
-        </p>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            <span class="serif_italic">Pr(Y=<span class="emphasis"><em>k</em></span>) = (1-<span class="emphasis"><em>p</em></span>)<sup><span class="emphasis"><em>k</em></span></sup> <span class="emphasis"><em>p</em></span></span>
+          </p></blockquote></div>
 <p>
           For example, when throwing a 6-face dice the success probability <span class="emphasis"><em>p</em></span>
-          = 1/6 = 0.1666&#8202;&#775; &#160;. Throwing repeatedly until a <span class="emphasis"><em>three</em></span>
+          = 1/6 = 0.1666&#8202;&#775;. Throwing repeatedly until a <span class="emphasis"><em>three</em></span>
           appears, the probability distribution of the number of times <span class="emphasis"><em>not-a-three</em></span>
           is thrown is geometric.
         </p>
 <p>
           Geometric distribution has the Probability Density Function PDF:
         </p>
-<p>
-          &#8192;&#8192; (1-<span class="emphasis"><em>p</em></span>)<sup><span class="emphasis"><em>k</em></span></sup><span class="emphasis"><em>p</em></span>
-        </p>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            <span class="serif_italic">(1-<span class="emphasis"><em>p</em></span>)<sup><span class="emphasis"><em>k</em></span></sup> <span class="emphasis"><em>p</em></span></span>
+          </p></blockquote></div>
 <p>
           The following graph illustrates how the PDF and CDF vary for three examples
           of the success fraction <span class="emphasis"><em>p</em></span>, (when considering the geometric
           distribution as a continuous function),
         </p>
-<p>
-          <span class="inlinemediaobject"><img src="../../../../graphs/geometric_pdf_2.svg" align="middle"></span>
-        </p>
-<p>
-          <span class="inlinemediaobject"><img src="../../../../graphs/geometric_cdf_2.svg" align="middle"></span>
-        </p>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            <span class="inlinemediaobject"><img src="../../../../graphs/geometric_pdf_2.svg" align="middle"></span>
+
+          </p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            <span class="inlinemediaobject"><img src="../../../../graphs/geometric_cdf_2.svg" align="middle"></span>
+
+          </p></blockquote></div>
 <p>
           and as discrete.
         </p>
-<p>
-          <span class="inlinemediaobject"><img src="../../../../graphs/geometric_pdf_discrete.svg" align="middle"></span>
-        </p>
-<p>
-          <span class="inlinemediaobject"><img src="../../../../graphs/geometric_cdf_discrete.svg" align="middle"></span>
-        </p>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            <span class="inlinemediaobject"><img src="../../../../graphs/geometric_pdf_discrete.svg" align="middle"></span>
+
+          </p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+            <span class="inlinemediaobject"><img src="../../../../graphs/geometric_cdf_discrete.svg" align="middle"></span>
+
+          </p></blockquote></div>
 <h5>
 <a name="math_toolkit.dist_ref.dists.geometric_dist.h0"></a>
           <span class="phrase"><a name="math_toolkit.dist_ref.dists.geometric_dist.related_distributions"></a></span><a class="link" href="geometric_dist.html#math_toolkit.dist_ref.dists.geometric_dist.related_distributions">Related
@@ -824,11 +828,11 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2010, 2012-2014, 2017 Nikhar
+<td align="right"><div class="copyright-footer">Copyright &#169; 2006-2019 Nikhar
       Agrawal, Anton Bikineev, Paul A. Bristow, Marco Guazzone, Christopher Kormanyos,
-      Hubert Holin, Bruno Lalande, John Maddock, Jeremy Murphy, Johan R&#229;de, Gautam
-      Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg, Daryle Walker
-      and Xiaogang Zhang<p>
+      Hubert Holin, Bruno Lalande, John Maddock, Jeremy Murphy, Matthew Pulver, Johan
+      R&#229;de, Gautam Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg,
+      Daryle Walker and Xiaogang Zhang<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

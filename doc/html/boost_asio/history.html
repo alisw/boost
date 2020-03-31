@@ -28,6 +28,207 @@
 </h2></div></div></div>
 <h4>
 <a name="boost_asio.history.h0"></a>
+      <span class="phrase"><a name="boost_asio.history.asio_1_16_0___boost_1_72"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_16_0___boost_1_72">Asio
+      1.16.0 / Boost 1.72</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Changed the <code class="computeroutput">async_initiate</code> helper function to automatically
+          deduce its return type. This is enabled for C++11 or later.
+        </li>
+<li class="listitem">
+          Changed all asynchronous operations to use automatically deduced return
+          types. This allows completion token implementations to incorporate the
+          asynchronous operation initiation into the initiating function's return
+          type, without type erasure. Note that C++14 or later is required to support
+          completion tokens that use per-operation return type deduction. For C++11
+          or earlier, a completion token's async_result specialisation must still
+          provide the nested typedef <code class="computeroutput">return_type</code>.
+        </li>
+<li class="listitem">
+          Introduced three new concepts to support <code class="computeroutput">async_initiate</code>.
+          <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                <code class="computeroutput">completion_signature&lt;T&gt;</code>: Checks if <code class="computeroutput">T</code>
+                is a signature of the form <code class="computeroutput">R(Args...)</code>.
+              </li>
+<li class="listitem">
+                <code class="computeroutput">completion_handler_for&lt;T, Signature&gt;</code>: Checks if
+                <code class="computeroutput">T</code> is usable as a completion handler with the specified
+                signature.
+              </li>
+<li class="listitem">
+                <code class="computeroutput">completion_token_for&lt;T, Signature&gt;</code>: Checks if
+                <code class="computeroutput">T</code> is a completion token that can be used with async_initiate
+                and the specified signature.
+              </li>
+<li class="listitem">
+                For backward compatibility with pre-concepts C++, the macros <code class="computeroutput">BOOST_ASIO_COMPLETION_SIGNATURE</code>,
+                <code class="computeroutput">BOOST_ASIO_COMPLETION_HANDLER_FOR</code>, and <code class="computeroutput">BOOST_ASIO_COMPLETION_TOKEN_FOR</code>
+                are provided. These macros expand to <code class="computeroutput">typename</code> when concepts
+                are unsupported.
+              </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          Added the nested template type <code class="computeroutput">rebind_executor</code> to all I/O
+          object types, as a way to generically rebind them to use alternative I/O
+          executors. For example:
+<pre class="programlisting">using my_socket_type = tcp::socket::rebind_executor&lt;my_executor_type&gt;::other;
+</pre>
+          <br>
+        </li>
+<li class="listitem">
+          Changed the asynchronous operations' initiation function objects to report
+          their associated I/O executor via the nested type <code class="computeroutput">executor_type</code>
+          and member function <code class="computeroutput">get_executor()</code>. Note that the presence
+          of <code class="computeroutput">executor_type</code> and <code class="computeroutput">get_executor()</code> should be
+          treated as optional, and consequently it may be preferable to access them
+          via the <code class="computeroutput">associated_executor</code> trait and the <code class="computeroutput">get_associated_executor()</code>
+          helper function.
+        </li>
+<li class="listitem">
+          Added the <code class="computeroutput">default_completion_token</code> trait, so that every I/O
+          executor type now has an associated default completion token type. This
+          trait may be used in asynchronous operation declarations as follows:
+<pre class="programlisting">template &lt;
+    typename IoObject,
+    typename CompletionToken =
+      typename default_completion_token&lt;
+        typename IoObject::executor_type
+      &gt;::type
+  &gt;
+auto async_fyz(
+    IoObject&amp; io_object,
+    CompletionToken&amp;&amp; token =
+      typename default_completion_token&lt;
+        typename IoObject::executor_type
+      &gt;::type{}
+  );
+</pre>
+          <br> If not specialised, this trait type is <code class="computeroutput">void</code>, meaning
+          no default completion token type is available for the given I/O executor.
+        </li>
+<li class="listitem">
+          Specialised the <code class="computeroutput">default_completion_token</code> trait for the <code class="computeroutput">use_awaitable</code>
+          completion token, so that it may be used as shown in the following example:
+<pre class="programlisting">auto socket = use_awaitable.as_default_on(tcp::socket(my_context));
+// ...
+co_await socket.async_connect(my_endpoint); // Defaults to use_awaitable.
+</pre>
+          <br> In this example, the type of the <code class="computeroutput">socket</code> object is transformed
+          from <code class="computeroutput">tcp::socket</code> to have an I/O executor with the default
+          completion token set to <code class="computeroutput">use_awaitable</code>. Alternatively, the
+          socket type may be computed directly:
+<pre class="programlisting">using tcp_socket = use_awaitable_t&lt;&gt;::as_default_on_t&lt;tcp::socket&gt;;
+tcp_socket socket(my_context);
+// ...
+co_await socket.async_connect(my_endpoint); // Defaults to use_awaitable.
+</pre>
+          <br>
+        </li>
+<li class="listitem">
+          Added missing <code class="computeroutput">async_initiate</code> to the Windows-specific I/O objects'
+          asynchronous operations.
+        </li>
+<li class="listitem">
+          Ensured that the executor type is propagated to newly accepted sockets.
+          When synchronously or asynchronously accepting a new connection, but without
+          specifying an executor or execution context, the accept operation will
+          now correctly propagate the executor type from the acceptor to the socket.
+          For example, if your acceptor type is:
+<pre class="programlisting">basic_socket_acceptor&lt;ip::tcp, my_executor_type&gt;
+</pre>
+          <br> then your accepted socket type will be:
+<pre class="programlisting">basic_stream_socket&lt;ip::tcp, my_executor_type&gt;
+</pre>
+          <br>
+        </li>
+<li class="listitem">
+          Changed to require that <code class="computeroutput">Protocol</code> copy and move operations
+          never throw.
+        </li>
+<li class="listitem">
+          Changed to require that <code class="computeroutput">Endpoint</code> default constructor and move
+          operations never throw.
+        </li>
+<li class="listitem">
+          Added the <code class="computeroutput">noexcept</code> qualifier to protocol accessors.
+        </li>
+<li class="listitem">
+          Added the <code class="computeroutput">noexcept</code> qualifier to socket move constructors.
+        </li>
+<li class="listitem">
+          Fixed issues associated with opening serial ports on Windows:
+          <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
+<li class="listitem">
+                Use the correct constant to initialise the RTS control flag.
+              </li>
+<li class="listitem">
+                Specify a default baud rate (9600).
+              </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          Fixed a lost "outstanding work count" that can occur when an
+          asynchronous accept operation is automatically restarted.
+        </li>
+</ul></div>
+<h4>
+<a name="boost_asio.history.h1"></a>
+      <span class="phrase"><a name="boost_asio.history.asio_1_14_1___boost_1_71"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_14_1___boost_1_71">Asio
+      1.14.1 / Boost 1.71</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Improved performance slightly by eliminating a redundant move construction
+          when completed handlers are dispatched.
+        </li>
+<li class="listitem">
+          Eliminated a compiler warning by annotating a <code class="computeroutput">case</code> fall-through
+          in the free function <code class="computeroutput">connect()</code> implementation.
+        </li>
+<li class="listitem">
+          Fixed the <code class="computeroutput">is_*_buffer_sequence</code> detection traits for user-defined
+          sequence types.
+        </li>
+<li class="listitem">
+          Fixed some Windows-specific warnings about an incompatible pointer cast
+          when obtaining the <code class="computeroutput">CancelIoEx</code> entry point.
+        </li>
+<li class="listitem">
+          Changed to automatically set the defaults when opening a serial port on
+          Windows.
+        </li>
+<li class="listitem">
+          Changed the serial port <code class="computeroutput">get_option()</code> member function to be
+          const.
+        </li>
+<li class="listitem">
+          Fixed a name hiding issue with the WinRT stream-oriented socket backend's
+          <code class="computeroutput">shutdown</code> function.
+        </li>
+<li class="listitem">
+          Applied a minor fix to the documentation for <code class="computeroutput">is_dynamic_buffer</code>.
+        </li>
+<li class="listitem">
+          Added some support for Haiku OS.
+        </li>
+<li class="listitem">
+          Added wolfSSL compatability.
+        </li>
+<li class="listitem">
+          Changed to require C++17 or later for coroutines TS support with clang.
+        </li>
+<li class="listitem">
+          Fixed a doxygen generation problem in the tutorial.
+        </li>
+<li class="listitem">
+          Ensured example programs are correctly incorporated into the documentation.
+        </li>
+</ul></div>
+<h4>
+<a name="boost_asio.history.h2"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_14_0___boost_1_70"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_14_0___boost_1_70">Asio
       1.14.0 / Boost 1.70</a>
     </h4>
@@ -309,7 +510,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h1"></a>
+<a name="boost_asio.history.h3"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_12_2___boost_1_69"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_12_2___boost_1_69">Asio
       1.12.2 / Boost 1.69</a>
     </h4>
@@ -383,7 +584,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h2"></a>
+<a name="boost_asio.history.h4"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_12_1___boost_1_67"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_12_1___boost_1_67">Asio
       1.12.1 / Boost 1.67</a>
     </h4>
@@ -507,7 +708,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h3"></a>
+<a name="boost_asio.history.h5"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_12_0___boost_1_66"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_12_0___boost_1_66">Asio
       1.12.0 / Boost 1.66</a>
     </h4>
@@ -553,7 +754,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h4"></a>
+<a name="boost_asio.history.h6"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_10___boost_1_65"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_10___boost_1_65">Asio
       1.10.10 / Boost 1.65</a>
     </h4>
@@ -590,7 +791,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h5"></a>
+<a name="boost_asio.history.h7"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_9___boost_1_64"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_9___boost_1_64">Asio
       1.10.9 / Boost 1.64</a>
     </h4>
@@ -643,7 +844,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h6"></a>
+<a name="boost_asio.history.h8"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_8___boost_1_62"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_8___boost_1_62">Asio
       1.10.8 / Boost 1.62</a>
     </h4>
@@ -678,7 +879,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h7"></a>
+<a name="boost_asio.history.h9"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_7___boost_1_60"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_7___boost_1_60">Asio
       1.10.7 / Boost 1.60</a>
     </h4>
@@ -713,7 +914,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h8"></a>
+<a name="boost_asio.history.h10"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_6___boost_1_58"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_6___boost_1_58">Asio
       1.10.6 / Boost 1.58</a>
     </h4>
@@ -793,7 +994,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h9"></a>
+<a name="boost_asio.history.h11"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_5___boost_1_57"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_5___boost_1_57">Asio
       1.10.5 / Boost 1.57</a>
     </h4>
@@ -836,7 +1037,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h10"></a>
+<a name="boost_asio.history.h12"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_4___boost_1_56"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_4___boost_1_56">Asio
       1.10.4 / Boost 1.56</a>
     </h4>
@@ -858,7 +1059,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h11"></a>
+<a name="boost_asio.history.h13"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_3"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_3">Asio
       1.10.3</a>
     </h4>
@@ -893,7 +1094,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h12"></a>
+<a name="boost_asio.history.h14"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_2"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_2">Asio
       1.10.2</a>
     </h4>
@@ -966,7 +1167,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h13"></a>
+<a name="boost_asio.history.h15"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_1___boost_1_55"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_1___boost_1_55">Asio
       1.10.1 / Boost 1.55</a>
     </h4>
@@ -1081,7 +1282,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h14"></a>
+<a name="boost_asio.history.h16"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_10_0___boost_1_54"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_10_0___boost_1_54">Asio
       1.10.0 / Boost 1.54</a>
     </h4>
@@ -1231,7 +1432,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h15"></a>
+<a name="boost_asio.history.h17"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_8_3___boost_1_53"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_8_3___boost_1_53">Asio
       1.8.3 / Boost 1.53</a>
     </h4>
@@ -1272,7 +1473,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h16"></a>
+<a name="boost_asio.history.h18"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_8_2___boost_1_51"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_8_2___boost_1_51">Asio
       1.8.2 / Boost 1.51</a>
     </h4>
@@ -1314,7 +1515,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h17"></a>
+<a name="boost_asio.history.h19"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_8_1___boost_1_50"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_8_1___boost_1_50">Asio
       1.8.1 / Boost 1.50</a>
     </h4>
@@ -1349,7 +1550,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h18"></a>
+<a name="boost_asio.history.h20"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_8_0___boost_1_49"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_8_0___boost_1_49">Asio
       1.8.0 / Boost 1.49</a>
     </h4>
@@ -1396,7 +1597,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h19"></a>
+<a name="boost_asio.history.h21"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_6_1___boost_1_48"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_6_1___boost_1_48">Asio
       1.6.1 / Boost 1.48</a>
     </h4>
@@ -1489,7 +1690,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h20"></a>
+<a name="boost_asio.history.h22"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_6_0___boost_1_47"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_6_0___boost_1_47">Asio
       1.6.0 / Boost 1.47</a>
     </h4>
@@ -1720,7 +1921,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h21"></a>
+<a name="boost_asio.history.h23"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_9___boost_1_46_1"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_9___boost_1_46_1">Asio
       1.4.9 / Boost 1.46.1</a>
     </h4>
@@ -1751,7 +1952,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h22"></a>
+<a name="boost_asio.history.h24"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_8___boost_1_46"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_8___boost_1_46">Asio
       1.4.8 / Boost 1.46</a>
     </h4>
@@ -1767,7 +1968,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h23"></a>
+<a name="boost_asio.history.h25"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_7___boost_1_45"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_7___boost_1_45">Asio
       1.4.7 / Boost 1.45</a>
     </h4>
@@ -1846,7 +2047,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h24"></a>
+<a name="boost_asio.history.h26"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_6___boost_1_44"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_6___boost_1_44">Asio
       1.4.6 / Boost 1.44</a>
     </h4>
@@ -1914,7 +2115,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h25"></a>
+<a name="boost_asio.history.h27"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_5___boost_1_43"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_5___boost_1_43">Asio
       1.4.5 / Boost 1.43</a>
     </h4>
@@ -1981,7 +2182,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h26"></a>
+<a name="boost_asio.history.h28"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_4___boost_1_42"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_4___boost_1_42">Asio
       1.4.4 / Boost 1.42</a>
     </h4>
@@ -2042,7 +2243,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h27"></a>
+<a name="boost_asio.history.h29"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_3___boost_1_40"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_3___boost_1_40">Asio
       1.4.3 / Boost 1.40</a>
     </h4>
@@ -2097,7 +2298,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h28"></a>
+<a name="boost_asio.history.h30"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_2___boost_1_39"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_2___boost_1_39">Asio
       1.4.2 / Boost 1.39</a>
     </h4>
@@ -2150,7 +2351,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h29"></a>
+<a name="boost_asio.history.h31"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_1___boost_1_38"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_1___boost_1_38">Asio
       1.4.1 / Boost 1.38</a>
     </h4>
@@ -2182,7 +2383,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h30"></a>
+<a name="boost_asio.history.h32"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_4_0___boost_1_37"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_4_0___boost_1_37">Asio
       1.4.0 / Boost 1.37</a>
     </h4>
@@ -2217,7 +2418,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h31"></a>
+<a name="boost_asio.history.h33"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_2_0___boost_1_36"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_2_0___boost_1_36">Asio
       1.2.0 / Boost 1.36</a>
     </h4>
@@ -2267,7 +2468,7 @@ void echo_line(tcp::socket&amp; sock, DynamicBuffer buf)
         </li>
 </ul></div>
 <h4>
-<a name="boost_asio.history.h32"></a>
+<a name="boost_asio.history.h34"></a>
       <span class="phrase"><a name="boost_asio.history.asio_1_0_0___boost_1_35"></a></span><a class="link" href="history.html#boost_asio.history.asio_1_0_0___boost_1_35">Asio
       1.0.0 / Boost 1.35</a>
     </h4>

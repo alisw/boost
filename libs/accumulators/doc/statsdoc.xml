@@ -12,6 +12,9 @@
 <method-group name="public member functions">
 <method name="operator()"><type>void</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct>
@@ -410,6 +413,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -535,6 +541,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name=""><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -546,6 +555,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct>
@@ -575,6 +587,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -629,6 +644,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -648,6 +666,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct>
@@ -675,6 +696,20 @@
 <struct name="rolling_window"><inherit access="public">boost::accumulators::depends_on&lt; rolling_window_plus1 &gt;</inherit><data-member name="window_size" specifiers="static"><type>boost::parameter::keyword&lt; tag::rolling_window_size &gt; const</type><purpose>tag::rolling_window::size named parameter </purpose></data-member>
 </struct><struct name="rolling_window_plus1"><inherit access="public">boost::accumulators::depends_on&lt;&gt;</inherit><inherit access="public">rolling_window_size</inherit><data-member name="window_size" specifiers="static"><type>boost::parameter::keyword&lt; tag::rolling_window_size &gt; const</type><purpose>tag::rolling_window::size named parameter </purpose></data-member>
 </struct></namespace>
+</namespace>
+<namespace name="serialization">
+<function name="save"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+          <template-type-parameter name="T"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="b"><paramtype>const circular_buffer&lt; T &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const unsigned int</paramtype></parameter></function>
+<function name="load"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+          <template-type-parameter name="T"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="b"><paramtype>circular_buffer&lt; T &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const unsigned int</paramtype></parameter></function>
+<function name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+          <template-type-parameter name="T"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="b"><paramtype>circular_buffer&lt; T &gt; &amp;</paramtype></parameter><parameter name="version"><paramtype>const unsigned int</paramtype></parameter></function>
 </namespace>
 </namespace>
 </header>
@@ -1268,6 +1303,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="covariance_impl"><template>
@@ -1279,6 +1317,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1295,6 +1336,9 @@
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter><description><para>
 </para></description><requires><para>The number of samples must meet or exceed the cache size </para>
 </requires></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1316,6 +1360,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1329,6 +1376,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1341,6 +1391,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1354,6 +1407,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1364,6 +1420,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="lazy_variance_impl"><template>
@@ -1373,6 +1432,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="lazy_weighted_variance_impl"><template>
@@ -1392,6 +1454,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1403,6 +1468,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="median_impl"><template>
@@ -1411,6 +1479,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="min_impl"><template>
@@ -1420,6 +1491,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1435,6 +1509,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1447,6 +1524,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="non_coherent_weighted_tail_mean_impl"><template>
@@ -1470,6 +1550,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1483,6 +1566,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1498,6 +1584,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1510,6 +1599,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="pot_tail_mean_impl"><template>
@@ -1520,6 +1612,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="rolling_count_impl"><template>
@@ -1528,6 +1623,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="rolling_mean_impl"><template>
@@ -1541,6 +1639,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name=""><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1551,6 +1652,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="rolling_window_plus1_impl"><template>
@@ -1561,6 +1665,9 @@
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="full" cv="const"><type>bool</type></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1573,6 +1680,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="sum_impl"><template>
@@ -1583,6 +1693,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1595,6 +1708,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1608,6 +1724,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1626,6 +1745,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="tail_variate_impl"><template>
@@ -1647,6 +1769,9 @@
 <method name="do_result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="TailRng"/>
         </template><parameter name="rng"><paramtype>TailRng const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 </struct><struct name="tail_variate_means_impl"><template>
       <template-type-parameter name="Sample"/>
@@ -1657,6 +1782,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="variance_impl"><template>
@@ -1668,6 +1796,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1682,6 +1813,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1697,6 +1831,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1710,6 +1847,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1753,6 +1893,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1768,6 +1911,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1782,6 +1928,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1800,6 +1949,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1838,6 +1990,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1851,6 +2006,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1876,6 +2034,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="weighted_variance_impl"><template>
@@ -1888,6 +2049,9 @@
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
 <method name="result" cv="const"><type>result_type</type><parameter name=""><paramtype>dont_care</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1899,6 +2063,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1910,6 +2077,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><template>
           <template-type-parameter name="Args"/>
@@ -1921,6 +2091,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct><struct name="with_p_square_cumulative_distribution_weighted_median_impl"><template>
@@ -1931,6 +2104,9 @@
 <method name="result" cv="const"><type>result_type</type><template>
           <template-type-parameter name="Args"/>
         </template><parameter name="args"><paramtype>Args const &amp;</paramtype></parameter></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor><parameter name=""><paramtype>dont_care</paramtype></parameter></constructor>
 </struct>

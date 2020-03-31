@@ -24,10 +24,12 @@
 #
 # Boost_USE_DEBUG_LIBS:     When OFF, disables debug libraries.
 # Boost_USE_RELEASE_LIBS:   When OFF, disables release libraries.
+# Boost_USE_MULTITHREADED:  When ON, uses multithreaded Boost libraries.
+#                           When OFF, uses single-threaded libraries.
+#                           The default is to use either.
 # Boost_USE_STATIC_LIBS:    When ON, uses static Boost libraries; when OFF,
-#                           uses shared Boost libraries; when not set, the
-#                           default is to use shared when BUILD_SHARED_LIBS is
-#                           ON, static otherwise.
+#                           uses shared Boost libraries; when not set, uses
+#                           static on Windows, shared otherwise.
 # Boost_USE_STATIC_RUNTIME: When ON, uses Boost libraries linked against the
 #                           static runtime. The default is shared runtime.
 # Boost_USE_DEBUG_RUNTIME:  When ON, uses Boost libraries linked against the
@@ -36,46 +38,56 @@
 # Boost_COMPILER:           The compiler that has been used to build Boost,
 #                           such as vc141, gcc7, clang37. The default is
 #                           determined from CMAKE_CXX_COMPILER_ID.
+# Boost_PYTHON_VERSION:     The version of Python against which Boost.Python
+#                           has been built; only required when more than one
+#                           Boost.Python library is present.
+#
+# The following variables control the verbosity of the output:
+#
+# Boost_VERBOSE:            Enable verbose output
+# Boost_DEBUG:              Enable debug (even more verbose) output
 
-message(STATUS "Found Boost ${Boost_VERSION} at ${Boost_DIR}")
+if(Boost_VERBOSE OR Boost_DEBUG)
 
-# Output requested configuration (f.ex. "REQUIRED COMPONENTS filesystem")
+  message(STATUS "Found Boost ${Boost_VERSION} at ${Boost_DIR}")
 
-if(Boost_FIND_QUIETLY)
-  set(_BOOST_CONFIG "${_BOOST_CONFIG} QUIET")
-endif()
+  # Output requested configuration (f.ex. "REQUIRED COMPONENTS filesystem")
 
-if(Boost_FIND_REQUIRED)
-  set(_BOOST_CONFIG "${_BOOST_CONFIG} REQUIRED")
-endif()
-
-foreach(__boost_comp IN LISTS Boost_FIND_COMPONENTS)
-  if(${Boost_FIND_REQUIRED_${__boost_comp}})
-    list(APPEND _BOOST_COMPONENTS ${__boost_comp})
-  else()
-    list(APPEND _BOOST_OPTIONAL_COMPONENTS ${__boost_comp})
+  if(Boost_FIND_QUIETLY)
+    set(_BOOST_CONFIG "${_BOOST_CONFIG} QUIET")
   endif()
-endforeach()
 
-if(_BOOST_COMPONENTS)
-  set(_BOOST_CONFIG "${_BOOST_CONFIG} COMPONENTS ${_BOOST_COMPONENTS}")
+  if(Boost_FIND_REQUIRED)
+    set(_BOOST_CONFIG "${_BOOST_CONFIG} REQUIRED")
+  endif()
+
+  foreach(__boost_comp IN LISTS Boost_FIND_COMPONENTS)
+    if(${Boost_FIND_REQUIRED_${__boost_comp}})
+      list(APPEND _BOOST_COMPONENTS ${__boost_comp})
+    else()
+      list(APPEND _BOOST_OPTIONAL_COMPONENTS ${__boost_comp})
+    endif()
+  endforeach()
+
+  if(_BOOST_COMPONENTS)
+    set(_BOOST_CONFIG "${_BOOST_CONFIG} COMPONENTS ${_BOOST_COMPONENTS}")
+  endif()
+
+  if(_BOOST_OPTIONAL_COMPONENTS)
+    set(_BOOST_CONFIG "${_BOOST_CONFIG} OPTIONAL_COMPONENTS ${_BOOST_OPTIONAL_COMPONENTS}")
+  endif()
+
+  if(_BOOST_CONFIG)
+    message(STATUS "  Requested configuration:${_BOOST_CONFIG}")
+  endif()
+
+  unset(_BOOST_CONFIG)
+  unset(_BOOST_COMPONENTS)
+  unset(_BOOST_OPTIONAL_COMPONENTS)
+
 endif()
 
-if(_BOOST_OPTIONAL_COMPONENTS)
-  set(_BOOST_CONFIG "${_BOOST_CONFIG} OPTIONAL_COMPONENTS ${_BOOST_OPTIONAL_COMPONENTS}")
-endif()
-
-if(_BOOST_CONFIG)
-  message(STATUS "  Requested configuration:${_BOOST_CONFIG}")
-endif()
-
-unset(_BOOST_CONFIG)
-unset(_BOOST_COMPONENTS)
-unset(_BOOST_OPTIONAL_COMPONENTS)
-
-# find_dependency doesn't forward arguments until 3.9, so we have to roll our own
-
-macro(boost_find_dependency dep req)
+macro(boost_find_component comp req)
 
   set(_BOOST_QUIET)
   if(Boost_FIND_QUIETLY)
@@ -87,26 +99,63 @@ macro(boost_find_dependency dep req)
     set(_BOOST_REQUIRED REQUIRED)
   endif()
 
+  if("${comp}" MATCHES "^(python|numpy|mpi_python)([1-9])([0-9])$")
+
+    # handle pythonXY and numpyXY versioned components for compatibility
+
+    set(Boost_PYTHON_VERSION "${CMAKE_MATCH_2}.${CMAKE_MATCH_3}")
+    set(__boost_comp_nv "${CMAKE_MATCH_1}")
+
+  else()
+
+    set(__boost_comp_nv "${comp}")
+
+  endif()
+
   get_filename_component(_BOOST_CMAKEDIR "${CMAKE_CURRENT_LIST_DIR}/../" ABSOLUTE)
 
   if(Boost_DEBUG)
-    message(STATUS "BoostConfig: find_package(boost_${dep} ${Boost_VERSION} EXACT CONFIG ${_BOOST_REQUIRED} ${_BOOST_QUIET} HINTS ${_BOOST_CMAKEDIR})")
+    message(STATUS "BoostConfig: find_package(boost_${__boost_comp_nv} ${Boost_VERSION} EXACT CONFIG ${_BOOST_REQUIRED} ${_BOOST_QUIET} HINTS ${_BOOST_CMAKEDIR})")
   endif()
-  find_package(boost_${dep} ${Boost_VERSION} EXACT CONFIG ${_BOOST_REQUIRED} ${_BOOST_QUIET} HINTS ${_BOOST_CMAKEDIR})
+  find_package(boost_${__boost_comp_nv} ${Boost_VERSION} EXACT CONFIG ${_BOOST_REQUIRED} ${_BOOST_QUIET} HINTS ${_BOOST_CMAKEDIR})
 
-  string(TOUPPER ${dep} _BOOST_DEP)
-  set(Boost_${_BOOST_DEP}_FOUND ${boost_${dep}_FOUND})
+  set(__boost_comp_found ${boost_${__boost_comp_nv}_FOUND})
+
+  # FindPackageHandleStandardArgs expects <package>_<component>_FOUND
+  set(Boost_${comp}_FOUND ${__boost_comp_found})
+
+  # FindBoost sets Boost_<COMPONENT>_FOUND
+  string(TOUPPER ${comp} _BOOST_COMP)
+  set(Boost_${_BOOST_COMP}_FOUND ${__boost_comp_found})
+
+  # FindBoost compatibility variables: Boost_LIBRARIES, Boost_<C>_LIBRARY
+  if(__boost_comp_found)
+
+    list(APPEND Boost_LIBRARIES Boost::${__boost_comp_nv})
+    set(Boost_${_BOOST_COMP}_LIBRARY Boost::${__boost_comp_nv})
+
+    if(NOT "${comp}" STREQUAL "${__boost_comp_nv}" AND NOT TARGET Boost::${comp})
+
+      # Versioned target alias (f.ex. Boost::python27) for compatibility
+      add_library(Boost::${comp} INTERFACE IMPORTED)
+      set_property(TARGET Boost::${comp} APPEND PROPERTY INTERFACE_LINK_LIBRARIES Boost::${__boost_comp_nv})
+
+    endif()
+
+  endif()
 
   unset(_BOOST_REQUIRED)
   unset(_BOOST_QUIET)
   unset(_BOOST_CMAKEDIR)
-  unset(_BOOST_DEP)
+  unset(__boost_comp_nv)
+  unset(__boost_comp_found)
+  unset(_BOOST_COMP)
 
 endmacro()
 
 # Find boost_headers
 
-boost_find_dependency(headers 1)
+boost_find_component(headers 1)
 
 if(NOT boost_headers_FOUND)
 
@@ -117,11 +166,23 @@ if(NOT boost_headers_FOUND)
 
 endif()
 
+# Compatibility variables
+
+set(Boost_MAJOR_VERSION ${Boost_VERSION_MAJOR})
+set(Boost_MINOR_VERSION ${Boost_VERSION_MINOR})
+set(Boost_SUBMINOR_VERSION ${Boost_VERSION_PATCH})
+
+set(Boost_VERSION_STRING ${Boost_VERSION})
+set(Boost_VERSION_MACRO ${Boost_VERSION_MAJOR}0${Boost_VERSION_MINOR}0${Boost_VERSION_PATCH})
+
+get_target_property(Boost_INCLUDE_DIRS Boost::headers INTERFACE_INCLUDE_DIRECTORIES)
+set(Boost_LIBRARIES "")
+
 # Find components
 
 foreach(__boost_comp IN LISTS Boost_FIND_COMPONENTS)
 
-  boost_find_dependency(${__boost_comp} ${Boost_FIND_REQUIRED_${__boost_comp}})
+  boost_find_component(${__boost_comp} ${Boost_FIND_REQUIRED_${__boost_comp}})
 
 endforeach()
 

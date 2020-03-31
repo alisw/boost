@@ -228,10 +228,12 @@ private :
             {
                 continue;
             }
+#if 0 // Does not compile (SVG is not enabled by default)
             if (m_zoom && bg::disjoint(corner, m_alternate_box))
             {
                 continue;
             }
+#endif
 
             if (m_zoom && do_pieces)
             {
@@ -388,7 +390,7 @@ public :
         typedef bg::detail::overlay::turn_info
         <
             Point,
-            typename bg::segment_ratio_type<Point, RescalePolicy>::type
+            typename bg::detail::segment_ratio_type<Point, RescalePolicy>::type
         > turn_info;
 
         std::vector<turn_info> turns;

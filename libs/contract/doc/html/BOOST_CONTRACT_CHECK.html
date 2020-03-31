@@ -33,11 +33,11 @@
 
 </span>BOOST_CONTRACT_CHECK(cond)</pre></div>
 <div class="refsect1">
-<a name="idm45538521492464"></a><h2>Description</h2>
+<a name="idm45707997114384"></a><h2>Description</h2>
 <p>It is preferred to use this macro instead of programming implementation checks in a nullary functor passed to <code class="computeroutput"><a class="link" href="boost/contract/check.html" title="Class check">boost::contract::check</a></code> constructor because this macro will completely remove implementation checks from the code when <code class="computeroutput"><a class="link" href="BOOST_CONTRACT_NO_CHECKS.html" title="Macro BOOST_CONTRACT_NO_CHECKS">BOOST_CONTRACT_NO_CHECKS</a></code> is defined:</p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="special">)</span> <span class="special">{</span>
     <span class="special">...</span>
-    <span class="identifier">BOOST_CONTRACT_CHECK</span><span class="special">(</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+    <span class="identifier">BOOST_CONTRACT_CHECK</span><span class="special">(</span><span class="identifier">cond</span><span class="special">)</span><span class="special">;</span>
     <span class="special">...</span>
 <span class="special">}</span>
 </pre>
@@ -63,7 +63,7 @@
 </colgroup>
 <tbody><tr>
 <td><p><span class="term"><code class="computeroutput">cond</code></span></p></td>
-<td><p>Boolean condition to check within implementation code (function body, etc.). (This is not a variadic macro parameter so any comma it might contain must be protected by round parenthesis, <code class="computeroutput">BOOST_CONTRACT_CHECK((cond))</code> will always work.) </p></td>
+<td><p>Boolean condition to check within implementation code (function body, etc.). (This is not a variadic macro parameter so any comma it might contain must be protected by round parenthesis and <code class="computeroutput">BOOST_CONTRACT_CHECK((cond))</code> will always work.) </p></td>
 </tr></tbody>
 </table></div></td>
 </tr></tbody>
@@ -72,7 +72,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008-2018 Lorenzo Caminiti<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008-2019 Lorenzo Caminiti<p>
         Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

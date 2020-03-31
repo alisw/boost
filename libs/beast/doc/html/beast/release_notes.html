@@ -28,6 +28,240 @@
 </h2></div></div></div>
 <h4>
 <a name="beast.release_notes.h0"></a>
+      <span class="phrase"><a name="beast.release_notes.boost_1_72"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_72">Boost
+      1.72</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Examples</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Add async-ssl-system-executor http client example
+        </li>
+<li class="listitem">
+          Add async-ssl-system-executor websocket client example
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Features</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Async init-fns use the executor's default token
+        </li>
+<li class="listitem">
+          Use automatically deduced return types for all async operations (since
+          C++14)
+        </li>
+<li class="listitem">
+          Support Concepts for completion token params
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Fixes</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1664" target="_top">#1664</a> Add default dtors to satisfy -Wnon-virtual-dtor
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1682" target="_top">#1682</a> Multiple I/O of the same type is not supported
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1687" target="_top">#1687</a> Fix signed/unsigned mismatch in file_stdio::seek
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1688" target="_top">#1688</a> basic_stream dtor cannot throw
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1734" target="_top">#1734</a> Fix leftovers in basic_parser corner case:
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1751" target="_top">#1751</a> https_get example sends the Host header
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1754" target="_top">#1754</a> Fix async_close error code when async_read times out
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1782" target="_top">#1782</a> root_certificates.hpp is not for production
+        </li>
+<li class="listitem">
+          Fix data race in websocket examples
+        </li>
+<li class="listitem">
+          Fix data race in http server examples
+        </li>
+<li class="listitem">
+          Squelch spurious websocket timer assert
+        </li>
+<li class="listitem">
+          Use the executor type in basic_stream timer
+        </li>
+</ul></div>
+<h4>
+<a name="beast.release_notes.h1"></a>
+      <span class="phrase"><a name="beast.release_notes.boost_1_71"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_71">Boost
+      1.71</a>
+    </h4>
+<p>
+      <span class="bold"><strong>Improvements</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1280" target="_top">#1280</a> Add 1-element specialization for <code class="computeroutput"><span class="identifier">buffers_cat</span></code>
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1556" target="_top">#1556</a> Set parser status and flags even if body limit has been reached
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1567" target="_top">#1567</a> Relax requirements for vector_body
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1568" target="_top">#1568</a> <code class="computeroutput"><span class="identifier">detect_ssl</span></code> uses
+          <code class="computeroutput"><span class="keyword">bool</span></code> instead of <code class="computeroutput"><span class="identifier">tribool</span></code>
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1574" target="_top">#1574</a> Replace <code class="computeroutput"><span class="identifier">static_string</span></code>
+          in HTTP parser
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1606" target="_top">#1606</a> Use <code class="computeroutput"><span class="identifier">steady_timer</span></code>
+          type
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1611" target="_top">#1611</a> Make chat websocket javascript client more user friendly
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1613" target="_top">#1613</a> Remove redundant use of <code class="computeroutput"><span class="identifier">static_string</span></code>
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1636" target="_top">#1636</a> Improve performance of <code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">string_to_verb</span></code>
+        </li>
+<li class="listitem">
+          Preserve <code class="computeroutput"><span class="identifier">operation_aborted</span></code>
+          on partial message
+        </li>
+<li class="listitem">
+          Remove unused <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">experimental</span><span class="special">/</span><span class="identifier">unit_test</span><span class="special">/</span><span class="identifier">thread</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+        </li>
+<li class="listitem">
+          Reduce the number of instantiations of <code class="computeroutput"><span class="identifier">filter_token_list</span></code>
+        </li>
+<li class="listitem">
+          Add idle ping suspend test
+        </li>
+<li class="listitem">
+          Remove the use of <code class="computeroutput"><span class="identifier">bind_executor</span></code>
+          in <code class="computeroutput"><span class="identifier">basic_stream</span></code>
+        </li>
+<li class="listitem">
+          Remove redundant template in service_base
+        </li>
+<li class="listitem">
+          Remove the use of <code class="computeroutput"><span class="identifier">static_string</span></code>
+          from <code class="computeroutput"><span class="identifier">http</span><span class="special">::</span><span class="identifier">fields</span></code>
+        </li>
+<li class="listitem">
+          Enable split compilation in http::basic_fields
+        </li>
+<li class="listitem">
+          Remove redundant instation of <code class="computeroutput"><span class="identifier">static_string</span></code>
+          in websocket
+        </li>
+<li class="listitem">
+          Remove redundant use of <code class="computeroutput"><span class="identifier">asio</span><span class="special">::</span><span class="identifier">coroutine</span></code>
+          in <code class="computeroutput"><span class="identifier">flat_stream</span></code>
+        </li>
+<li class="listitem">
+          More split compilation in rfc7230.hpp
+        </li>
+<li class="listitem">
+          More split compilation in websocket/detail/mask.hpp
+        </li>
+<li class="listitem">
+          Simplify generation of sec-websocket-key
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Fixes</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1332" target="_top">#1332</a> <code class="computeroutput"><span class="identifier">allocator_traits</span><span class="special">::</span><span class="identifier">construct</span></code>
+          is used for user-defined types
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1559" target="_top">#1559</a> Member <code class="computeroutput"><span class="identifier">get_executor</span></code>
+          const-correctness
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1569" target="_top">#1569</a> Fix <code class="computeroutput"><span class="identifier">async_detect_ssl</span></code>
+          handler type
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1570" target="_top">#1570</a> Launder pointers
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1578" target="_top">#1578</a> Fix min/max on MSVC
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1586" target="_top">#1586</a> Fix uninitalized memory use in deflate_stream
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1593" target="_top">#1593</a> Fix UB in websocket close tests
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1594" target="_top">#1594</a> Fix data race in test stream
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1599" target="_top">#1599</a> Fix moved-from executor in idle ping timeout
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1607" target="_top">#1607</a> Remove uses of the deprecated <code class="computeroutput"><span class="identifier">buffers</span></code>
+          function
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1612" target="_top">#1612</a> Remove uses of deprecated methods in websocket tests
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1620" target="_top">#1620</a> Clean up typo in chat websocket javascript client
+        </li>
+<li class="listitem">
+          <a href="https://github.com/boostorg/beast/issues/1621" target="_top">#1621</a> Fix <code class="computeroutput"><span class="identifier">flat_buffer</span></code>
+          copy members
+        </li>
+<li class="listitem">
+          Silence gcc-8 warning
+        </li>
+<li class="listitem">
+          Fix <code class="computeroutput"><span class="identifier">buffers_cat</span></code> iterator
+          tests
+        </li>
+<li class="listitem">
+          Don't pessimize-move
+        </li>
+<li class="listitem">
+          Qualify calls to <code class="computeroutput"><span class="identifier">beast</span><span class="special">::</span><span class="identifier">iequals</span></code>
+          in basic_parser.ipp
+        </li>
+<li class="listitem">
+          Fix UB in websocket read tests
+        </li>
+<li class="listitem">
+          Simplify websocket::detail::prng
+        </li>
+<li class="listitem">
+          Don't over-allocate in http::basic_fields
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Documentation</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          Documentation is built with SaxonHE instead of xsltproc
+        </li></ul></div>
+<h4>
+<a name="beast.release_notes.h2"></a>
       <span class="phrase"><a name="beast.release_notes.boost_1_70"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_70">Boost
       1.70</a>
     </h4>
@@ -57,7 +291,7 @@
               </li>
 <li class="listitem">
                 Traffic-shaping policies <a class="link" href="ref/boost__beast__simple_rate_policy.html" title="simple_rate_policy"><code class="computeroutput"><span class="identifier">simple</span></code></a> and <a class="link" href="ref/boost__beast__unlimited_rate_policy.html" title="unlimited_rate_policy"><code class="computeroutput"><span class="identifier">unlimited</span></code></a>, or a user-defined
-                <a class="link" href="concepts/RatePolicy.html" title="RatePolicy &#9733;"><span class="emphasis"><em>RatePolicy</em></span></a>.
+                <a class="link" href="concepts/RatePolicy.html" title="RatePolicy"><span class="emphasis"><em>RatePolicy</em></span></a>.
               </li>
 <li class="listitem">
                 Supports <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1322r0.html" target="_top">P1322R0</a>.
@@ -221,14 +455,14 @@
           WebSocket reference documentation is revised
         </li>
 <li class="listitem">
-          Updated <a class="link" href="using_io/asio_refresher.html" title="Refresher &#9733;">Networking Refresher</a>
+          Updated <a class="link" href="using_io/asio_refresher.html" title="Refresher">Networking Refresher</a>
         </li>
 <li class="listitem">
-          Revised <a class="link" href="using_io/writing_composed_operations/echo.html" title="Echo &#128161; &#9733;">Asynchronous
+          Revised <a class="link" href="using_io/writing_composed_operations/echo.html" title="Echo &#128161;">Asynchronous
           Echo</a>
         </li>
 <li class="listitem">
-          Rewritten <a class="link" href="using_io/writing_composed_operations/detect_ssl.html" title="Detect SSL &#128161; &#9733;"><span class="bold"><strong>Detect SSL Handshake</strong></span></a>
+          Rewritten <a class="link" href="using_io/writing_composed_operations/detect_ssl.html" title="Detect SSL &#128161;"><span class="bold"><strong>Detect SSL Handshake</strong></span></a>
         </li>
 </ul></div>
 <p>
@@ -483,7 +717,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="beast.release_notes.h1"></a>
+<a name="beast.release_notes.h3"></a>
       <span class="phrase"><a name="beast.release_notes.boost_1_69"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_69">Boost
       1.69</a>
     </h4>
@@ -546,7 +780,7 @@
           Add <code class="computeroutput"><span class="identifier">timeout_socket</span></code>
         </li></ul></div>
 <h4>
-<a name="beast.release_notes.h2"></a>
+<a name="beast.release_notes.h4"></a>
       <span class="phrase"><a name="beast.release_notes.boost_1_68"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_68">Boost
       1.68</a>
     </h4>
@@ -699,7 +933,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="beast.release_notes.h3"></a>
+<a name="beast.release_notes.h5"></a>
       <span class="phrase"><a name="beast.release_notes.boost_1_67"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_67">Boost
       1.67</a>
     </h4>
@@ -898,7 +1132,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="beast.release_notes.h4"></a>
+<a name="beast.release_notes.h6"></a>
       <span class="phrase"><a name="beast.release_notes.boost_1_66"></a></span><a class="link" href="release_notes.html#beast.release_notes.boost_1_66">Boost
       1.66</a>
     </h4>

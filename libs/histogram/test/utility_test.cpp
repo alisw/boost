@@ -5,11 +5,12 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/core/lightweight_test.hpp>
+#include "throw_exception.hpp"
 #include <sstream>
 #include <tuple>
 #include <vector>
 #include "utility_allocator.hpp"
-#include "utility_meta.hpp"
+#include "std_ostream.hpp"
 
 using namespace boost::histogram;
 
@@ -40,10 +41,12 @@ int main() {
     auto p2 = b.allocate(3);
     b.deallocate(p2, 3);
     BOOST_TEST_EQ(db.size(), 2);
-    BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(char)].first, 2);
-    BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(char)].second, 2);
-    BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(int)].first, 3);
-    BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(int)].second, 3);
+    BOOST_TEST_EQ(db.at<char>().first, 0);
+    BOOST_TEST_EQ(db.at<char>().second, 2);
+    BOOST_TEST_EQ(db.at<int>().first, 0);
+    BOOST_TEST_EQ(db.at<int>().second, 3);
+    BOOST_TEST_EQ(db.first, 0);
+    BOOST_TEST_EQ(db.second, 2 + 3 * sizeof(int));
   }
 
   return boost::report_errors();

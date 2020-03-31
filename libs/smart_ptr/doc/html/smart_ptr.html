@@ -441,6 +441,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#introduction">Introduction</a></li>
+<li><a href="#changelog">Revision History</a>
+<ul class="sectlevel2">
+<li><a href="#changelog_changes_in_1_72_0">Changes in 1.72.0</a></li>
+<li><a href="#changelog_changes_in_1_71_0">Changes in 1.71.0</a></li>
+<li><a href="#changelog_changes_in_1_65_0">Changes in 1.65.0</a></li>
+</ul>
+</li>
 <li><a href="#scoped_ptr">scoped_ptr: Scoped Object Ownership</a>
 <ul class="sectlevel2">
 <li><a href="#scoped_ptr_description">Description</a></li>
@@ -500,12 +507,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#enable_shared_from_this_members">Members</a></li>
 </ul>
 </li>
+<li><a href="#enable_shared_from">enable_shared_from</a>
+<ul class="sectlevel2">
+<li><a href="#enable_shared_from_description">Description</a></li>
+<li><a href="#enable_shared_from_example">Example</a></li>
+<li><a href="#enable_shared_from_synopsis">Synopsis</a></li>
+<li><a href="#enable_shared_from_functions">Functions</a></li>
+</ul>
+</li>
 <li><a href="#make_unique">make_unique: Creating unique_ptr</a>
 <ul class="sectlevel2">
 <li><a href="#make_unique_description">Description</a></li>
 <li><a href="#make_unique_rationale">Rationale</a></li>
 <li><a href="#make_unique_synopsis">Synopsis</a></li>
 <li><a href="#make_unique_free_functions">Free Functions</a></li>
+</ul>
+</li>
+<li><a href="#allocate_unique">allocate_unique: Creating unique_ptr</a>
+<ul class="sectlevel2">
+<li><a href="#allocate_unique_description">Description</a></li>
+<li><a href="#allocate_unique_rationale">Rationale</a></li>
+<li><a href="#allocate_unique_synopsis">Synopsis</a></li>
+<li><a href="#allocate_unique_common_requirements">Common Requirements</a></li>
+<li><a href="#allocate_unique_free_functions">Free Functions</a></li>
+<li><a href="#allocate_unique_deleter">Deleter</a></li>
 </ul>
 </li>
 <li><a href="#intrusive_ptr">intrusive_ptr: Managing Objects with Embedded Counts</a>
@@ -603,6 +628,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#history_february_2014">February 2014</a></li>
 <li><a href="#history_february_2017">February 2017</a></li>
 <li><a href="#history_june_2017">June 2017</a></li>
+<li><a href="#history_august_2019">August 2019</a></li>
 </ul>
 </li>
 <li><a href="#shared_array">Appendix C: shared_array (deprecated)</a>
@@ -674,6 +700,9 @@ acquisition is initialization" idiom described in Bjarne Stroustrup&#8217;s "The
 <p><code><a href="#make_unique">make_unique</a></code>, a factory function returning <code>std::unique_ptr</code>;</p>
 </li>
 <li>
+<p><code><a href="#allocate_unique">allocate_unique</a></code>, a factory function for creating objects using an allocator that returns a <code>std::unique_ptr</code>;</p>
+</li>
+<li>
 <p><code><a href="#enable_shared_from_this">enable_shared_from_this</a></code>, a helper base class that enables the acquisition of a <code>shared_ptr</code> pointing to <code>this</code>;</p>
 </li>
 <li>
@@ -693,6 +722,50 @@ acquisition is initialization" idiom described in Bjarne Stroustrup&#8217;s "The
 <div class="paragraph">
 <p>As a general rule, the destructor or <code>operator delete</code> for an object managed by pointers in the library
 are not allowed to throw exceptions.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="changelog">Revision History</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="changelog_changes_in_1_72_0">Changes in 1.72.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Added <code>allocate_unique</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="changelog_changes_in_1_71_0">Changes in 1.71.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Added aliasing constructors to <code>weak_ptr</code></p>
+</li>
+<li>
+<p>Added <code>weak_ptr&lt;T&gt;::empty()</code></p>
+</li>
+<li>
+<p>Added <code>enable_shared_from</code>, <code>shared_from</code>, and <code>weak_from</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="changelog_changes_in_1_65_0">Changes in 1.65.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Added <code>atomic_shared_ptr</code></p>
+</li>
+<li>
+<p>Added <code>local_shared_ptr</code>, <code>make_local_shared</code></p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -1416,7 +1489,6 @@ functions defined in <code>&lt;boost/smart_ptr/make_shared.hpp&gt;</code>. These
     template&lt;class Y&gt; shared_ptr(shared_ptr&lt;Y&gt; &amp;&amp; r) noexcept;
 
     template&lt;class Y&gt; shared_ptr(shared_ptr&lt;Y&gt; const &amp; r, element_type * p) noexcept;
-
     template&lt;class Y&gt; shared_ptr(shared_ptr&lt;Y&gt; &amp;&amp; r, element_type * p) noexcept;
 
     template&lt;class Y&gt; explicit shared_ptr(weak_ptr&lt;Y&gt; const &amp; r);
@@ -1830,7 +1902,7 @@ The requirement that the copy constructor of <code>D</code> does not throw comes
 <dl>
 <dt class="hdlist1">Effects</dt>
 <dd>
-<p>constructs a <code>shared_ptr</code> that shares ownership with <code>r</code> and stores <code>p</code>.</p>
+<p>Copy-constructs a <code>shared_ptr</code> from <code>r</code>, while storing <code>p</code> instead.</p>
 </dd>
 <dt class="hdlist1">Postconditions</dt>
 <dd>
@@ -3405,6 +3477,10 @@ if(shared_ptr&lt;int&gt; r = q.lock())
 
     weak_ptr(weak_ptr &amp;&amp; r) noexcept;
 
+    template&lt;class Y&gt; weak_ptr(shared_ptr&lt;Y&gt; const &amp; r, element_type * p) noexcept;
+    template&lt;class Y&gt; weak_ptr(weak_ptr&lt;Y&gt; const &amp; r, element_type * p) noexcept;
+    template&lt;class Y&gt; weak_ptr(weak_ptr&lt;Y&gt; &amp;&amp; r, element_type * p) noexcept;
+
     ~weak_ptr() noexcept;
 
     weak_ptr &amp; operator=(weak_ptr const &amp; r) noexcept;
@@ -3414,6 +3490,8 @@ if(shared_ptr&lt;int&gt; r = q.lock())
 
     long use_count() const noexcept;
     bool expired() const noexcept;
+
+    bool empty() const noexcept;
 
     shared_ptr&lt;T&gt; lock() const noexcept;
 
@@ -3529,6 +3607,48 @@ if(shared_ptr&lt;int&gt; r = q.lock())
 </div>
 </li>
 </ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="weak_ptr_aliasing_constructors">aliasing constructors</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class Y&gt; weak_ptr(shared_ptr&lt;Y&gt; const &amp; r, element_type * p) noexcept;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class Y&gt; weak_ptr(weak_ptr&lt;Y&gt; const &amp; r, element_type * p) noexcept;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class Y&gt; weak_ptr(weak_ptr&lt;Y&gt; &amp;&amp; r, element_type * p) noexcept;</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects</dt>
+<dd>
+<p>Constructs a <code>weak_ptr</code> from <code>r</code> as if by using the corresponding converting/copy/move constructor, but stores <code>p</code> instead.</p>
+</dd>
+<dt class="hdlist1">Postconditions</dt>
+<dd>
+<p><code>use_count() == r.use_count()</code>. When <code>!expired()</code>, <code>shared_ptr&lt;T&gt;(*this).get() == p</code>.</p>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+These constructors are an extension, not present in <code>std::weak_ptr</code>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -3648,6 +3768,41 @@ The implementation is free to meet the effects (and the implied guarantees) via 
 </div>
 </li>
 </ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="weak_ptr_empty">empty</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bool empty() const noexcept;</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p><code>true</code> when <code>*this</code> is empty, <code>false</code> otherwise.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This function is an extension, not present in <code>std::weak_ptr</code>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -3907,43 +4062,43 @@ types.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>namespace boost {
-  <code>// only if T is not an array type</code>
+  <code>// T is not an array</code>
   template&lt;class T, class... Args&gt;
     shared_ptr&lt;T&gt; make_shared(Args&amp;&amp;... args);
   template&lt;class T, class A, class... Args&gt;
     shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, Args&amp;&amp;... args);
 
-  <code>// only if T is an array type of the form U[]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     shared_ptr&lt;T&gt; make_shared(std::size_t n);
   template&lt;class T, class A&gt;
     shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, std::size_t n);
 
-  <code>// only if T is an array type of the form U[N]</code>
+  <code>// T is an array of known bounds</code>
   template&lt;class T&gt;
     shared_ptr&lt;T&gt; make_shared();
   template&lt;class T, class A&gt;
     shared_ptr&lt;T&gt; allocate_shared(const A&amp; a);
 
-  <code>// only if T is an array type of the form U[]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt; shared_ptr&lt;T&gt;
     make_shared(std::size_t n, const remove_extent_t&lt;T&gt;&amp; v);
   template&lt;class T, class A&gt; shared_ptr&lt;T&gt;
     allocate_shared(const A&amp; a, std::size_t n, const remove_extent_t&lt;T&gt;&amp; v);
 
-  <code>// only if T is an array type of the form U[N]</code>
+  <code>// T is an array of known bounds</code>
   template&lt;class T&gt;
     shared_ptr&lt;T&gt; make_shared(const remove_extent_t&lt;T&gt;&amp; v);
   template&lt;class T, class A&gt;
     shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, const remove_extent_t&lt;T&gt;&amp; v);
 
-  <code>// only if T is not an array type of the form U[]</code>
+  <code>// T is not an array of unknown bounds</code>
   template&lt;class T&gt;
     shared_ptr&lt;T&gt; make_shared_noinit();
   template&lt;class T, class A&gt;
     shared_ptr&lt;T&gt; allocate_shared_noinit(const A&amp; a);
 
-  <code>// only if T is an array type of the form U[N]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     shared_ptr&lt;T&gt; make_shared_noinit(std::size_t n);
   template&lt;class T, class A&gt;
@@ -4022,7 +4177,7 @@ perform this initialization via the expression
 <code>std::allocator_traits&lt;A2&gt;::construct(a2, p, expr)</code> (where
 <code><em>expr</em></code> is <code>v</code> or <code>std::forward&lt;Args&gt;(args)...)</code> respectively), <code>p</code>
 points to storage suitable to hold an object of type <code>U</code>, and <code>a2</code> of
-type <code>A2</code> is a rebound copy <code>a</code> such that its <code>value_type</code> is <code>U</code>.</p>
+type <code>A2</code> is a potentially rebound copy of <code>a</code>.</p>
 </li>
 <li>
 <p>When a (sub)object of non-array type <code>U</code> is specified to be
@@ -4042,7 +4197,7 @@ storage suitable to hold an object of type <code>U</code>.</p>
 value-initialized, <code>allocate_shared</code> shall perform this initialization via the
 expression <code>std::allocator_traits&lt;A2&gt;::construct(a2, p)</code>, where
 <code>p</code> points to storage suitable to hold an object of type <code>U</code> and <code>a2</code> of
-type <code>A2</code> is a rebound copy of <code>a</code> such that its value_type is <code>U</code>.</p>
+type <code>A2</code> is a potentially rebound copy of <code>a</code>.</p>
 </li>
 <li>
 <p>Array elements are initialized in ascending order of their addresses.</p>
@@ -4080,27 +4235,21 @@ the reference counts.
   shared_ptr&lt;T&gt; make_shared(Args&amp;&amp;... args);</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T, class A, class... Args&gt;
   shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, Args&amp;&amp;... args);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is not an array type.</p>
+<p><code>T</code> is not an array.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4108,9 +4257,9 @@ the reference counts.
 <code>args...</code>.</p>
 </dd>
 <dt class="hdlist1">Examples</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>auto p = make_shared&lt;int&gt;();</code></p>
 </li>
@@ -4119,22 +4268,11 @@ the reference counts.
 </li>
 </ul>
 </div>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt;
   shared_ptr&lt;T&gt; make_shared(std::size_t n);</code></pre>
 </div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4142,26 +4280,25 @@ the reference counts.
   shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, std::size_t n);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[]</code>.</p>
+<p><code>T</code> is an array of unknown bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
 <p>A <code>shared_ptr</code> to a sequence of <code>n</code> value-initialized objects of
-type <code>U</code>.</p>
+type <code>remove_extent_t&lt;T&gt;</code>.</p>
 </dd>
 <dt class="hdlist1">Examples</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>auto p = make_shared&lt;double[]&gt;(1024);</code></p>
 </li>
@@ -4170,22 +4307,11 @@ type <code>U</code>.</p>
 </li>
 </ul>
 </div>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt;
   shared_ptr&lt;T&gt; make_shared();</code></pre>
 </div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4193,26 +4319,25 @@ type <code>U</code>.</p>
   shared_ptr&lt;T&gt; allocate_shared(const A&amp; a);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[N]</code>.</p>
+<p><code>T</code> is an array of known bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p>A <code>shared_ptr</code> to a sequence of <code>N</code> value-initialized objects of
-type <code>U</code>.</p>
+<p>A <code>shared_ptr</code> to a sequence of <code>extent_v&lt;T&gt;</code> value-initialized
+objects of type <code>remove_extent_t&lt;T&gt;</code>.</p>
 </dd>
 <dt class="hdlist1">Examples</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>auto p = make_shared&lt;double[1024]&gt;();</code></p>
 </li>
@@ -4221,22 +4346,11 @@ type <code>U</code>.</p>
 </li>
 </ul>
 </div>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt; shared_ptr&lt;T&gt;
   make_shared(std::size_t n, const remove_extent_t&lt;T&gt;&amp; v);</code></pre>
 </div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4244,26 +4358,25 @@ type <code>U</code>.</p>
   allocate_shared(const A&amp; a, std::size_t n, const remove_extent_t&lt;T&gt;&amp; v);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[]</code>.</p>
+<p><code>T</code> is an array of unknown bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p>A <code>shared_ptr</code> to a sequence of <code>n</code> objects of type <code>U</code>, each
-initialized to <code>v</code>.</p>
+<p>A <code>shared_ptr</code> to a sequence of <code>n</code> objects of type
+<code>remove_extent_t&lt;T&gt;</code>, each initialized to <code>v</code>.</p>
 </dd>
 <dt class="hdlist1">Examples</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>auto p = make_shared&lt;double[]&gt;(1024, 1.0);</code></p>
 </li>
@@ -4275,22 +4388,11 @@ initialized to <code>v</code>.</p>
 </li>
 </ul>
 </div>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt;
   shared_ptr&lt;T&gt; make_shared(const remove_extent_t&lt;T&gt;&amp; v);</code></pre>
 </div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4298,26 +4400,25 @@ initialized to <code>v</code>.</p>
   shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, const remove_extent_t&lt;T&gt;&amp; v);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[N]</code>.</p>
+<p><code>T</code> is an array of known bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p>A <code>shared_ptr</code> to a sequence of <code>N</code> objects of type <code>U</code>, each
-initialized to <code>v</code>.</p>
+<p>A <code>shared_ptr</code> to a sequence of <code>extent_v&lt;T&gt;</code> objects of type
+<code>remove_extent_t&lt;T&gt;</code>, each initialized to <code>v</code>.</p>
 </dd>
 <dt class="hdlist1">Examples</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>auto p = make_shared&lt;double[1024]&gt;(1.0);</code></p>
 </li>
@@ -4329,22 +4430,11 @@ initialized to <code>v</code>.</p>
 </li>
 </ul>
 </div>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt;
   shared_ptr&lt;T&gt; make_shared_noinit();</code></pre>
 </div>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4352,21 +4442,21 @@ initialized to <code>v</code>.</p>
   shared_ptr&lt;T&gt; allocate_shared_noinit(const A&amp; a);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is not an array type, or an array type of the <code>U[N]</code>.</p>
+<p><code>T</code> is not an array, or is an array of known bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
 <p>A <code>shared_ptr</code> to a default-initialized object of type <code>T</code>, or a
-sequence of <code>N</code> default-initialized objects of type <code>U</code>, respectively.</p>
+sequence of <code>extent_v&lt;T&gt;</code> default-initialized objects of type
+<code>remove_extent_t&lt;T&gt;</code>, respectively.</p>
 </dd>
 <dt class="hdlist1">Example</dt>
 <dd>
@@ -4374,8 +4464,8 @@ sequence of <code>N</code> default-initialized objects of type <code>U</code>, r
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4383,32 +4473,26 @@ sequence of <code>N</code> default-initialized objects of type <code>U</code>, r
   shared_ptr&lt;T&gt; make_shared_noinit(std::size_t n);</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T, class A&gt;
   shared_ptr&lt;T&gt; allocate_shared_noinit(const A&amp; a, std::size_t n);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[]</code>.</p>
+<p><code>T</code> is an array of unknown bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
 <p>A <code>shared_ptr</code> to a sequence of <code><em>n</em></code> default-initialized objects
-of type <code>U</code>.</p>
+of type <code>remove_extent_t&lt;T&gt;</code>.</p>
 </dd>
 <dt class="hdlist1">Example</dt>
 <dd>
@@ -4416,8 +4500,8 @@ of type <code>U</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -4658,6 +4742,153 @@ int main()
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Unlike <code>shared_from_this()</code>, <code>weak_from_this()</code> is valid in a destructor
+      and returns a <code>weak_ptr</code> that is <code>expired()</code> but still shares ownership
+      with other <code>weak_ptr</code> instances (if any) that refer to the object.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="enable_shared_from">enable_shared_from</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="enable_shared_from_description">Description</h3>
+<div class="paragraph">
+<p><code>enable_shared_from</code> is used as a base class that allows a <code>shared_ptr</code> or a
+<code>weak_ptr</code> to be obtained given a raw pointer to the object, by using the
+functions <code>shared_from</code> and <code>weak_from</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>enable_shared_from</code> differs from <code>enable_shared_from_this&lt;T&gt;</code> by the fact
+that it&#8217;s not a template, and is its recommended replacement for new code.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="enable_shared_from_example">Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>#include &lt;boost/smart_ptr/enable_shared_from.hpp&gt;
+#include &lt;boost/shared_ptr.hpp&gt;
+#include &lt;cassert&gt;
+
+class Y: public boost::enable_shared_from
+{
+public:
+
+    boost::shared_ptr&lt;Y&gt; f()
+    {
+        return boost::shared_from( this );
+    }
+};
+
+int main()
+{
+    boost::shared_ptr&lt;Y&gt; p(new Y);
+    boost::shared_ptr&lt;Y&gt; q = p-&gt;f();
+    assert(p == q);
+    assert(!(p &lt; q || q &lt; p)); // p and q must share ownership
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="enable_shared_from_synopsis">Synopsis</h3>
+<div class="paragraph">
+<p><code>enable_shared_from</code> is defined in <code>&lt;boost/smart_ptr/enable_shared_from.hpp&gt;</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>namespace boost {
+
+  class enable_shared_from: public enable_shared_from_this&lt;enable_shared_from&gt;
+  {
+  };
+
+  template&lt;class T&gt; shared_ptr&lt;T&gt; shared_from( T * p );
+  template&lt;class T&gt; weak_ptr&lt;T&gt; weak_from( T * p ) noexcept;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="enable_shared_from_functions">Functions</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T&gt; shared_ptr&lt;T&gt; shared_from( T * p );</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p><code>shared_ptr&lt;T&gt;( p-&gt;enable_shared_from::shared_from_this(), p )</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Throws <code>bad_weak_ptr</code> when <code>p</code> is not owned by a <code>shared_ptr</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T&gt; weak_ptr&lt;T&gt; weak_from( T * p ) noexcept;</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p><code>weak_ptr&lt;T&gt;( p-&gt;enable_shared_from::weak_from_this(), p )</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Unlike <code>shared_from(this)</code>, <code>weak_from(this)</code> is valid in a destructor
+      and returns a <code>weak_ptr</code> that is <code>expired()</code> but still shares ownership
+      with other <code>weak_ptr</code> instances (if any) that refer to the object.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -4696,23 +4927,23 @@ feature with <code>std::make_unique</code>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>namespace boost {
-  <code>// only if T is not an array type</code>
+  <code>// T is not an array</code>
   template&lt;class T, class... Args&gt;
     std::unique_ptr&lt;T&gt; make_unique(Args&amp;&amp;... args);
 
-  <code>// only if T is not an array type</code>
+  <code>// T is not an array</code>
   template&lt;class T&gt;
-    std::unique_ptr&lt;T&gt; make_unique(remove_reference_t&lt;T&gt;&amp;&amp; v);
+    std::unique_ptr&lt;T&gt; make_unique(type_identity_t&lt;T&gt;&amp;&amp; v);
 
-  <code>// only if T is an array type of the form U[]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     std::unique_ptr&lt;T&gt; make_unique(std::size_t n);
 
-  <code>// only if T is not an array type</code>
+  <code>// T is not an array</code>
   template&lt;class T&gt;
     std::unique_ptr&lt;T&gt; make_unique_noinit();
 
-  <code>// only if T is an array type of the form U[]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     std::unique_ptr&lt;T&gt; make_unique_noinit(std::size_t n);
 }</code></pre>
@@ -4727,16 +4958,15 @@ feature with <code>std::make_unique</code>.</p>
   std::unique_ptr&lt;T&gt; make_unique(Args&amp;&amp;... args);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is not an array type.</p>
+<p><code>T</code> is not an array.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4748,25 +4978,24 @@ feature with <code>std::make_unique</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt;
-  std::unique_ptr&lt;T&gt; make_unique(remove_reference_t&lt;T&gt;&amp;&amp; v);</code></pre>
+  std::unique_ptr&lt;T&gt; make_unique(type_identity_t&lt;T&gt;&amp;&amp; v);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is not an array type.</p>
+<p><code>T</code> is not an array.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4778,8 +5007,8 @@ feature with <code>std::make_unique</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4787,20 +5016,19 @@ feature with <code>std::make_unique</code>.</p>
   std::unique_ptr&lt;T&gt; make_unique(std::size_t n);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[]</code>.</p>
+<p><code>T</code> is an array of unknown bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p><code>std::unique_ptr&lt;U[]&gt;(new U[n]())</code>.</p>
+<p><code>std::unique_ptr&lt;T&gt;(new remove_extent_t&lt;T&gt;[n]())</code>.</p>
 </dd>
 <dt class="hdlist1">Example</dt>
 <dd>
@@ -4808,8 +5036,8 @@ feature with <code>std::make_unique</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4817,16 +5045,15 @@ feature with <code>std::make_unique</code>.</p>
   std::unique_ptr&lt;T&gt; make_unique_noinit();</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is not an array type.</p>
+<p><code>T</code> is not an array.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
@@ -4838,8 +5065,8 @@ feature with <code>std::make_unique</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4847,20 +5074,19 @@ feature with <code>std::make_unique</code>.</p>
   std::unique_ptr&lt;T&gt; make_unique_noinit(std::size_t n);</code></pre>
 </div>
 </div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"></dt>
+<dt class="hdlist1">Constraints</dt>
 <dd>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Remarks</dt>
-<dd>
-<p>These overloads shall only participate in overload resolution when
-<code>T</code> is an array type of the form <code>U[]</code>.</p>
+<p><code>T</code> is an array of unknown bounds.</p>
 </dd>
 <dt class="hdlist1">Returns</dt>
 <dd>
-<p><code>std::unique_ptr&lt;U[]&gt;(new U[n])</code>.</p>
+<p><code>std::unique_ptr&lt;T&gt;(new remove_extent_t&lt;T&gt;[n])</code>.</p>
 </dd>
 <dt class="hdlist1">Example</dt>
 <dd>
@@ -4868,8 +5094,564 @@ feature with <code>std::make_unique</code>.</p>
 </dd>
 </dl>
 </div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="allocate_unique">allocate_unique: Creating unique_ptr</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="allocate_unique_description">Description</h3>
+<div class="paragraph">
+<p>The <code>allocate_unique</code> family of function templates provide convenient and safe
+ways to obtain a <code>std::unique_ptr</code> that manages a new object created using an
+allocator.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="allocate_unique_rationale">Rationale</h3>
+<div class="paragraph">
+<p>The C&#43;&#43;14 standard introduced <code>std::make_unique</code> which used operator <code>new</code> to
+create new objects. However, there is no convenient facility in the standard
+library to use an allocator for the creation of the objects managed by
+<code>std::unique_ptr</code>. Users writing allocator aware code have often requested an
+<code>allocate_unique</code> factory function. This function is to <code>std::unique_ptr</code> what
+<code>std::allocate_shared</code> is to <code>std::shared_ptr</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="allocate_unique_synopsis">Synopsis</h3>
+<div class="paragraph">
+<p><code>allocate_unique</code> is defined in <code>&lt;boost/smart_ptr/allocate_unique.hpp&gt;</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>namespace boost {
+  template&lt;class T, class A&gt;
+  class alloc_deleter;
+
+  template&lt;class T, class A&gt;
+  using alloc_noinit_deleter = alloc_deleter&lt;T, noinit_adaptor&lt;A&gt;&gt;;
+
+  <code>// T is not an array</code>
+  template&lt;class T, class A, class... Args&gt;
+    std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+      allocate_unique(const A&amp; a, Args&amp;&amp;... args);
+
+  <code>// T is not an array</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+      allocate_unique(const A&amp; a, type_identity_t&lt;T&gt;&amp;&amp; v);
+
+  <code>// T is an array of unknown bounds</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+      allocate_unique(const A&amp; a, std::size_t n);
+
+  <code>// T is an array of known bounds</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;remove_extent_t&lt;T&gt;[], alloc_deleter&lt;T, A&gt;&gt;
+      allocate_unique(const A&amp; a);
+
+  <code>// T is an array of unknown bounds</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+      allocate_unique(const A&amp; a, std::size_t n, const remove_extent_t&lt;T&gt;&amp; v);
+
+  <code>// T is an array of known bounds</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;remove_extent_t&lt;T&gt;[], alloc_deleter&lt;T, A&gt;&gt;
+      allocate_unique(const A&amp; a, const remove_extent_t&lt;T&gt;&amp; v);
+
+  <code>// T is not an array</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;T, alloc_noinit_deleter&lt;T, A&gt;&gt;
+      allocate_unique_noinit(const A&amp; a);
+
+  <code>// T is an array of unknown bounds</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;T, alloc_noinit_deleter&lt;T, A&gt;&gt;
+      allocate_unique_noinit(const A&amp; a, std::size_t n);
+
+  <code>// T is an array of known bounds</code>
+  template&lt;class T, class A&gt;
+    std::unique_ptr&lt;remove_extent_t&lt;T&gt;[], alloc_noinit_deleter&lt;T, A&gt;&gt;
+      allocate_unique_noinit(const A&amp; a);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="allocate_unique_common_requirements">Common Requirements</h3>
+<div class="paragraph">
+<p>The common requirements that apply to all <code>allocate_unique</code> and
+<code>allocate_unique_noinit</code> overloads, unless specified otherwise, are described
+below.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Requires</dt>
+<dd>
+<p><code>A</code> shall be an <em>allocator</em>. The copy constructor and destructor
+of <code>A</code> shall not throw exceptions.</p>
+</dd>
+<dt class="hdlist1">Effects</dt>
+<dd>
+<p>Allocates memory for an object of type <code>T</code> or <code>n</code> objects of <code>U</code>
+(if <code>T</code> is an array type of the form <code>U[]</code> and  <code>n</code> is determined by
+arguments, as specified by the concrete overload). The object is initialized
+from arguments as specified by the concrete overload. Uses a rebound copy of
+<code>a</code> (for an unspecified <code>value_type</code>) to allocate memory. If an exception is
+thrown, the functions have no effect.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> instance that stores and owns the address of the
+newly constructed object.</p>
+</dd>
+<dt class="hdlist1">Postconditions</dt>
+<dd>
+<p><code>r.get() != 0</code>, where <code>r</code> is the return value.</p>
+</dd>
+<dt class="hdlist1">Throws</dt>
+<dd>
+<p>An exception thrown from <code>A::allocate</code>, or from the initialization of
+the object.</p>
+</dd>
+<dt class="hdlist1">Remarks</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>When an object of an array type is specified to be initialized to a value of
+the same type <code>v</code>, this shall be interpreted to mean that each array element
+of the object is initialized to the corresponding element from <code>v</code>.</p>
+</li>
+<li>
+<p>When an object of an array type is specified to be value-initialized, this
+shall be interpreted to mean that each array element of the object is
+value-initialized.</p>
+</li>
+<li>
+<p>When a (sub)object of non-array type <code>U</code> is specified to be initialized to a
+value <code>v</code>, or constructed from <code>args...</code>, <code>allocate_unique</code> shall perform this
+initialization via the expression
+<code>std::allocator_traits&lt;A2&gt;::construct(a2, p, expr)</code> (where <code><em>expr</em></code> is <code>v</code> or
+<code>std::forward&lt;Args&gt;(args)...)</code> respectively), <code>p</code> points to storage suitable
+to hold an object of type <code>U</code>, and <code>a2</code> of type <code>A2</code> is a potentially rebound
+copy of <code>a</code>.</p>
+</li>
+<li>
+<p>When a (sub)object of non-array type <code>U</code> is specified to be
+default-initialized, <code>allocate_unique_noinit</code> shall perform this initialization
+via the expression <code>::new(p) U</code>, where <code>p</code> has type <code>void*</code> and points to
+storage suitable to hold an object of type <code>U</code>.</p>
+</li>
+<li>
+<p>When a (sub)object of non-array type <code>U</code> is specified to be
+value-initialized, <code>allocate_unique</code> shall perform this initialization via the
+expression <code>std::allocator_traits&lt;A2&gt;::construct(a2, p)</code>, where <code>p</code> points to
+storage suitable to hold an object of type <code>U</code> and <code>a2</code> of type <code>A2</code> is a
+potentially rebound copy of <code>a</code>.</p>
+</li>
+<li>
+<p>Array elements are initialized in ascending order of their addresses.</p>
+</li>
+<li>
+<p>When the lifetime of the object managed by the return value ends, or when the
+initialization of an array element throws an exception, the initialized
+elements should be destroyed in the reverse order of their construction.</p>
+</li>
+</ul>
+</div>
 </dd>
 </dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="allocate_unique_free_functions">Free Functions</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A, class... Args&gt;
+  std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+    allocate_unique(const A&amp; a, Args&amp;&amp;... args);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is not an array.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to an object of type <code>T</code>, constructed from
+<code>args...</code>.</p>
+</dd>
+<dt class="hdlist1">Examples</dt>
+</dl>
+</div>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;int&gt;(a);</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;std::vector&lt;int&gt;&gt;(a, 16, 1);</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+    allocate_unique(const A&amp; a, type_identity_t&lt;T&gt;&amp;&amp; v);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is not an array.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to an object of type <code>T</code>, constructed from <code>v</code>.</p>
+</dd>
+<dt class="hdlist1">Example</dt>
+<dd>
+<p><code>auto p = allocate_unique&lt;std::vector&lt;int&gt;&gt;(a, {1, 2});</code></p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+    allocate_unique(const A&amp; a, std::size_t n);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is an array of unknown bounds.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a sequence of <code>n</code> value-initialized objects of
+type <code>remove_extent_t&lt;T&gt;</code>.</p>
+</dd>
+<dt class="hdlist1">Examples</dt>
+</dl>
+</div>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[]&gt;(a, 1024);</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[][2][2]&gt;(a, 6);</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;remove_extent_t&lt;T&gt;[], alloc_deleter&lt;T, A&gt;&gt;
+    allocate_unique(const A&amp; a);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is an array of known bounds.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a sequence of <code>extent_v&lt;T&gt;</code> value-initialized
+objects of type <code>remove_extent_t&lt;T&gt;</code>.</p>
+</dd>
+<dt class="hdlist1">Examples</dt>
+</dl>
+</div>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[1024]&gt;(a);</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[6][2][2]&gt;(a);</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;T, alloc_deleter&lt;T, A&gt;&gt;
+    allocate_unique(const A&amp; a, std::size_t n, const remove_extent_t&lt;T&gt;&amp; v);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is an array of unknown bounds.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a sequence of <code>n</code> objects of type
+<code>remove_extent_t&lt;T&gt;</code>, each initialized to <code>v</code>.</p>
+</dd>
+<dt class="hdlist1">Examples</dt>
+</dl>
+</div>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[]&gt;(a, 1024, 1.0);</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[][2]&gt;(a, 6, {1.0, 0.0});</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;std::vector&lt;int&gt;[]&gt;(a, 4, {1, 2});</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;remove_extent_t&lt;T&gt;[], alloc_deleter&lt;T, A&gt;&gt;
+    allocate_unique(const A&amp; a, const remove_extent_t&lt;T&gt;&amp; v);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is an array of known bounds.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a sequence of <code>extent_v&lt;T&gt;</code> objects of type
+<code>remove_extent_t&lt;T&gt;</code>, each initialized to <code>v</code>.</p>
+</dd>
+<dt class="hdlist1">Examples</dt>
+</dl>
+</div>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[1024]&gt;(a, 1.0);</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;double[6][2]&gt;(a, {1.0, 0.0});</code></p>
+</li>
+<li>
+<p><code>auto p = allocate_unique&lt;std::vector&lt;int&gt;[4]&gt;(a, {1, 2});</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;T, alloc_noinit_deleter&lt;T, A&gt;&gt;
+    allocate_unique_noinit(const A&amp; a);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is not an array.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a default-initialized object of type <code>T</code>.</p>
+</dd>
+<dt class="hdlist1">Example</dt>
+<dd>
+<p><code>auto p = allocate_unique_noinit&lt;double&gt;(a);</code></p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;T, alloc_noinit_deleter&lt;T, A&gt;&gt;
+    allocate_unique_noinit(const A&amp; a, std::size_t n);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is an array of unknown bounds.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a sequence of <code>n</code> default-initialized objects
+of type <code>remove_extent_t&lt;T&gt;</code>.</p>
+</dd>
+<dt class="hdlist1">Example</dt>
+<dd>
+<p><code>auto p = allocate_unique_noinit&lt;double[]&gt;(a, 1024);</code></p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+  std::unique_ptr&lt;remove_extent_t&lt;T&gt;, alloc_noinit_deleter&lt;T, A&gt;&gt;
+    allocate_unique_noinit(const A&amp; a);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Constraints</dt>
+<dd>
+<p><code>T</code> is an array of known bounds.</p>
+</dd>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>A <code>std::unique_ptr</code> to a sequence of <code>extent_v&lt;T&gt;</code>
+default-initialized objects of type <code>remove_extent_t&lt;T&gt;</code>.</p>
+</dd>
+<dt class="hdlist1">Example</dt>
+<dd>
+<p><code>auto p = allocate_unique_noinit&lt;double[1024]&gt;(a);</code></p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="allocate_unique_deleter">Deleter</h3>
+<div class="paragraph">
+<p>Class template <code>alloc_deleter</code> is the deleter used by the <code>allocate_unique</code>
+functions.</p>
+</div>
+<div class="sect3">
+<h4 id="allocate_unique_synopsis_2">Synopsis</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class T, class A&gt;
+class alloc_deleter {
+public:
+  using pointer = <code>unspecified</code>;
+
+  explicit alloc_deleter(const A&amp; a) noexcept;
+
+  void operator()(pointer p);
+};</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="allocate_unique_members">Members</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>using pointer = <code>unspecified</code>;</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="paragraph">
+<p>A type that satisfies <em>NullablePointer</em>.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>explicit alloc_deleter(const A&amp; a) noexcept;</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects</dt>
+<dd>
+<p>Initializes the stored allocator from <code>a</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>void operator()(pointer p);</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects</dt>
+<dd>
+<p>Destroys the objects and deallocates the storage referenced by <code>p</code>,
+using the stored allocator.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -4957,7 +5739,7 @@ converted to <code>intrusive_ptr&lt;U&gt;</code> whenever <code>T*</code> can be
 
     explicit operator bool () const noexcept;
 
-    void swap(intrusive_ptr &amp; b) noexept;
+    void swap(intrusive_ptr &amp; b) noexcept;
   };
 
   template&lt;class T, class U&gt;
@@ -5870,20 +6652,15 @@ support for threading is common, the default counter policy is
 <pre class="highlight"><code>intrusive_ref_counter() noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-</dl>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>intrusive_ref_counter(const intrusive_ref_counter&amp;) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Postconditions</dt>
@@ -5892,8 +6669,8 @@ support for threading is common, the default counter policy is
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5917,10 +6694,10 @@ would increment the reference counter.
 <pre class="highlight"><code>~intrusive_ref_counter();</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -5929,8 +6706,8 @@ would increment the reference counter.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5953,10 +6730,10 @@ through the <code>Derived</code> class.
 <pre class="highlight"><code>intrusive_ref_counter&amp; operator=(const intrusive_ref_counter&amp; v) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -5965,8 +6742,8 @@ through the <code>Derived</code> class.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -5976,10 +6753,10 @@ through the <code>Derived</code> class.
 <pre class="highlight"><code>unsigned int use_count() const noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -5988,8 +6765,8 @@ through the <code>Derived</code> class.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -6016,10 +6793,10 @@ The returned value may not be actual in multi-threaded applications.
     const intrusive_ref_counter&lt;Derived, CounterPolicy&gt;* p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -6028,8 +6805,8 @@ The returned value may not be actual in multi-threaded applications.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -6041,10 +6818,10 @@ The returned value may not be actual in multi-threaded applications.
     const intrusive_ref_counter&lt;Derived, CounterPolicy&gt;* p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -6054,8 +6831,8 @@ The returned value may not be actual in multi-threaded applications.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7551,25 +8328,25 @@ are analogous to <code>make_shared</code> and <code>allocate_shared</code> for <
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>namespace boost {
-  <code>// only if T is not an array type</code>
+  <code>// T is not an array</code>
   template&lt;class T, class... Args&gt;
     local_shared_ptr&lt;T&gt; make_local_shared(Args&amp;&amp;... args);
   template&lt;class T, class A, class... Args&gt;
     local_shared_ptr&lt;T&gt; allocate_local_shared(const A&amp; a, Args&amp;&amp;... args);
 
-  <code>// only if T is an array type of the form U[]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     local_shared_ptr&lt;T&gt; make_local_shared(std::size_t n);
   template&lt;class T, class A&gt;
     local_shared_ptr&lt;T&gt; allocate_local_shared(const A&amp; a, std::size_t n);
 
-  <code>// only if T is an array type of the form U[N]</code>
+  <code>// T is an array of known bounds</code>
   template&lt;class T&gt;
     local_shared_ptr&lt;T&gt; make_local_shared();
   template&lt;class T, class A&gt;
     local_shared_ptr&lt;T&gt; allocate_local_shared(const A&amp; a);
 
-  <code>// only if T is an array type of the form U[]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     local_shared_ptr&lt;T&gt; make_local_shared(std::size_t n,
       const remove_extent_t&lt;T&gt;&amp; v);
@@ -7577,20 +8354,20 @@ are analogous to <code>make_shared</code> and <code>allocate_shared</code> for <
     local_shared_ptr&lt;T&gt; allocate_local_shared(const A&amp; a, std::size_t n,
       const remove_extent_t&lt;T&gt;&amp; v);
 
-  <code>// only if T is an array type of the form U[N]</code>
+  <code>// T is an array of known bounds</code>
   template&lt;class T&gt;
     local_shared_ptr&lt;T&gt; make_local_shared(const remove_extent_t&lt;T&gt;&amp; v);
   template&lt;class T, class A&gt;
     local_shared_ptr&lt;T&gt; allocate_local_shared(const A&amp; a,
       const remove_extent_t&lt;T&gt;&amp; v);
 
-  <code>// only if T is not an array type of the form U[]</code>
+  <code>// T is not an array of known bounds</code>
   template&lt;class T&gt;
     local_shared_ptr&lt;T&gt; make_local_shared_noinit();
   template&lt;class T, class A&gt;
     local_shared_ptr&lt;T&gt; allocate_local_shared_noinit(const A&amp; a);
 
-  <code>// only if T is an array type of the form U[N]</code>
+  <code>// T is an array of unknown bounds</code>
   template&lt;class T&gt;
     local_shared_ptr&lt;T&gt; make_local_shared_noinit(std::size_t n);
   template&lt;class T, class A&gt;
@@ -7690,10 +8467,10 @@ pointers.</p>
 <pre class="highlight"><code>template&lt;class T, class U&gt; T* static_pointer_cast(U* p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7702,8 +8479,8 @@ pointers.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7711,10 +8488,10 @@ pointers.</p>
   static_pointer_cast(const std::shared_ptr&lt;U&gt;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7723,8 +8500,8 @@ pointers.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7732,10 +8509,10 @@ pointers.</p>
   static_pointer_cast(std::unique_ptr&lt;U&gt;&amp;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Requires</dt>
@@ -7749,8 +8526,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -7774,10 +8551,10 @@ undefined behavior, attempting to delete the same object twice.
 <pre class="highlight"><code>template&lt;class T, class U&gt; T* dynamic_pointer_cast(U* p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7786,8 +8563,8 @@ undefined behavior, attempting to delete the same object twice.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7795,10 +8572,10 @@ undefined behavior, attempting to delete the same object twice.
   dynamic_pointer_cast(const std::shared_ptr&lt;U&gt;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7807,8 +8584,8 @@ undefined behavior, attempting to delete the same object twice.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7816,29 +8593,27 @@ undefined behavior, attempting to delete the same object twice.
   dynamic_pointer_cast(std::unique_ptr&lt;U&gt;&amp;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Requires</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p>The expression <code>static_cast&lt;T*&gt;((U*)0)</code> must be well-formed.</p>
 </li>
 <li>
 <p><code>T</code> must have a virtual destructor.</p>
-</li>
-</ul>
-</div>
-</dd>
+<div class="dlist">
+<dl>
 <dt class="hdlist1">Returns</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p>When <code>dynamic_cast&lt;typename std::unique_ptr&lt;T&gt;::element_type*&gt;(p.get())</code>
 returns a non-zero value, <code>std::unique_ptr&lt;T&gt;(dynamic_cast&lt;typename
@@ -7849,12 +8624,6 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()));</code>.</p>
 </li>
 </ul>
 </div>
-</dd>
-</dl>
-</div>
-</dd>
-</dl>
-</div>
 </div>
 <div class="sect3">
 <h4 id="pointer_cast_const_pointer_cast">const_pointer_cast</h4>
@@ -7863,10 +8632,10 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()));</code>.</p>
 <pre class="highlight"><code>template&lt;class T, class U&gt; T* const_pointer_cast(U* p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7875,8 +8644,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()));</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7884,10 +8653,10 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()));</code>.</p>
   const_pointer_cast(const std::shared_ptr&lt;U&gt;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7896,8 +8665,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()));</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7905,10 +8674,10 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()));</code>.</p>
   const_pointer_cast(std::unique_ptr&lt;U&gt;&amp;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Requires</dt>
@@ -7922,8 +8691,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -7933,10 +8702,10 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
 <pre class="highlight"><code>template&lt;class T, class U&gt; T* reinterpret_pointer_cast(U* p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7945,8 +8714,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7954,10 +8723,10 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
   reinterpret_pointer_cast(const std::shared_ptr&lt;U&gt;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -7966,8 +8735,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7975,10 +8744,10 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
   reinterpret_pointer_cast(std::unique_ptr&lt;U&gt;&amp;&amp; p) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Requires</dt>
@@ -7992,8 +8761,8 @@ std::unique_ptr&lt;T&gt;::element_type*&gt;(p.release()))</code>.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -9521,6 +10290,12 @@ arrays for inclusion into the standard, and it was accepted.</p>
 <p>Peter Dimov added <code>atomic_shared_ptr</code> and <code>local_shared_ptr</code>.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="history_august_2019">August 2019</h3>
+<div class="paragraph">
+<p>Glen Fernandes implemented <code>allocate_unique</code> for scalars and arrays.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -9647,10 +10422,10 @@ below.</p>
 <pre class="highlight"><code>explicit shared_array(T* p = 0);</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9669,18 +10444,18 @@ Afterwards, the use count is 1 (even if <code>p == 0</code>; see <code>~shared_a
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class D&gt; shared_array(T* p, D d);</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9690,9 +10465,9 @@ Afterwards, the use count is 1. When the the time comes to delete the array
 pointed to by <code>p</code>, the object <code>d</code> is used in the statement <code>d(p)</code>.</p>
 </dd>
 <dt class="hdlist1">Requires</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>T</code> is a complete type.</p>
 </li>
@@ -9701,28 +10476,26 @@ pointed to by <code>p</code>, the object <code>d</code> is used in the statement
 </li>
 <li>
 <p>Invoking the object <code>d</code> with parameter <code>p</code> must not throw.</p>
-</li>
-</ul>
-</div>
-</dd>
+<div class="dlist">
+<dl>
 <dt class="hdlist1">Throws</dt>
 <dd>
 <p><code>std::bad_alloc</code>. If an exception is thrown, <code>d(p)</code> is called.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>shared_array(const shared_array&amp; v) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9737,8 +10510,8 @@ initial use count.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9748,10 +10521,10 @@ initial use count.</p>
 <pre class="highlight"><code>~shared_array() noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9762,8 +10535,8 @@ a value of 0 is harmless.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9773,10 +10546,10 @@ a value of 0 is harmless.</p>
 <pre class="highlight"><code>shared_array&amp; operator=(const shared_array&amp; v) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9794,8 +10567,8 @@ this <code>shared_array</code> with the new one, destroying the replaced object.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9805,10 +10578,10 @@ this <code>shared_array</code> with the new one, destroying the replaced object.
 <pre class="highlight"><code>void reset(T* p = 0);</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9826,18 +10599,18 @@ this <code>shared_array</code> with the new one, destroying the replaced object.
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>template&lt;class D&gt; void reset(T* p, D d);</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -9846,26 +10619,24 @@ this <code>shared_array</code> with the new one, destroying the replaced object.
 this <code>shared_array</code> with the new one, destroying the replaced object.</p>
 </dd>
 <dt class="hdlist1">Requires</dt>
-<dd>
-<div class="ulist">
-<ul>
+</dl>
+</div>
+</li>
 <li>
 <p><code>T</code> is a complete type.</p>
 </li>
 <li>
 <p>The copy constructor of <code>D</code> must not throw.</p>
-</li>
-</ul>
-</div>
-</dd>
+<div class="dlist">
+<dl>
 <dt class="hdlist1">Throws</dt>
 <dd>
 <p><code>std::bad_alloc</code>. If an exception is thrown, <code>d(p)</code> is called.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9898,10 +10669,10 @@ number of elements in the array.</p>
 <pre class="highlight"><code>T* get() const noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -9910,8 +10681,8 @@ number of elements in the array.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9921,10 +10692,10 @@ number of elements in the array.</p>
 <pre class="highlight"><code>bool unique() const noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -9934,8 +10705,8 @@ stored pointer, <code>false</code> otherwise.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9945,10 +10716,10 @@ stored pointer, <code>false</code> otherwise.</p>
 <pre class="highlight"><code>long use_count() const noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -9958,8 +10729,8 @@ stored pointer.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9969,10 +10740,10 @@ stored pointer.</p>
 <pre class="highlight"><code>explicit operator bool() const noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -9985,8 +10756,8 @@ stored pointer.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -9996,10 +10767,10 @@ stored pointer.</p>
 <pre class="highlight"><code>void swap(shared_array&lt;T&gt;&amp; b) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Effects</dt>
@@ -10008,8 +10779,8 @@ stored pointer.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -10035,10 +10806,10 @@ stored pointer.</p>
   operator&lt;(const shared_array&lt;T&gt;&amp; a, const shared_array&lt;T&gt;&amp; b) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -10048,8 +10819,8 @@ pointers.</p>
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -10078,10 +10849,10 @@ mandates that relational operations on pointers are unspecified (5.9
   void swap(shared_array&lt;T&gt;&amp; a, shared_array&lt;T&gt;&amp; b) noexcept;</code></pre>
 </div>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"></dt>
-<dd>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Returns</dt>
@@ -10094,8 +10865,8 @@ mandates that relational operations on pointers are unspecified (5.9
 </dd>
 </dl>
 </div>
-</dd>
-</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -10143,7 +10914,7 @@ mandates that relational operations on pointers are unspecified (5.9
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-09 19:36:28 UTC
+Last updated 2019-12-10 00:19:52 UTC
 </div>
 </div>
 <style>

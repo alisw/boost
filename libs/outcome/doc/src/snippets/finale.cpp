@@ -1,5 +1,5 @@
 /* Example of how to marshall Outcomes at namespace boundaries
-(C) 2017-2019 Niall Douglas <http://www.nedproductions.biz/> (149 commits)
+(C) 2017-2019 Niall Douglas <http://www.nedproductions.biz/> (11 commits)
 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -28,10 +28,10 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include "../../../include/boost/outcome.hpp"
-#if __has_include("../../../../quickcpplib/include/string_view.hpp")
-#include "../../../../quickcpplib/include/string_view.hpp"
+#if __has_include("quickcpplib/string_view.hpp")
+#include "quickcpplib/string_view.hpp"
 #else
-#include "../../../include/boost/outcome/quickcpplib/include/string_view.hpp"
+#include "../../../include/boost/outcome/quickcpplib/include/quickcpplib/string_view.hpp"
 #endif
 #include <cstring>  // for memcpy
 #include <experimental/filesystem>

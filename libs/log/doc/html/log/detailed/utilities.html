@@ -765,7 +765,7 @@
           equivalent is used.
         </p>
 <p>
-          You can also use the <code class="computeroutput"><a class="link" href="../../boost/log/make_att_idm46309328284656.html" title="Function template make_attr_ordering">make_attr_ordering</a></code> generator
+          You can also use the <code class="computeroutput"><a class="link" href="../../boost/log/make_att_idm45711343139040.html" title="Function template make_attr_ordering">make_attr_ordering</a></code> generator
           function to automatically generate the <code class="computeroutput"><a class="link" href="../../boost/log/attribute_value_ordering.html" title="Class template attribute_value_ordering">attribute_value_ordering</a></code>
           instance based on the attribute value name and the ordering function. This
           might be useful if the ordering function has a non-trivial type, like the
@@ -793,7 +793,7 @@
           by the library, therefore in order to reacquire the exception object it
           has to rethrow it. The header defines an <code class="computeroutput"><a class="link" href="../../boost/log/exception_handler.html" title="Class template exception_handler">exception_handler</a></code>
           template functor that does just that and then forwards the exception object
-          to a unary user-defined functional object. The <code class="computeroutput"><a class="link" href="../../boost/log/make_exc_idm46309335753152.html" title="Function template make_exception_handler">make_exception_handler</a></code>
+          to a unary user-defined functional object. The <code class="computeroutput"><a class="link" href="../../boost/log/make_exc_idm45711349902752.html" title="Function template make_exception_handler">make_exception_handler</a></code>
           function can be used to simplify the handler construction. All expected
           exception types should be specified explicitly in the call, in the order
           they would appear in the <code class="computeroutput"><span class="keyword">catch</span></code>
@@ -900,6 +900,8 @@
           value attaching manipulator</a></span></dt>
 <dt><span class="section"><a href="utilities.html#log.detailed.utilities.manipulators.dump">Binary
           dump manipulator</a></span></dt>
+<dt><span class="section"><a href="utilities.html#log.detailed.utilities.manipulators.auto_newline">Automatic
+          newline insertion</a></span></dt>
 </dl></div>
 <p>
           The library provides a number of stream manipulators that may be useful
@@ -913,7 +915,7 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><code class="computeroutput"><a class="link" href="../../utilities.html#header.boost.log.utility.manipulators.to_log_hpp" title="Header &lt;boost/log/utility/manipulators/to_log.hpp&gt;">boost/log/utility/manipulators/to_log.hpp</a></code><span class="special">&gt;</span>
 </pre>
 <p>
-            The <code class="computeroutput"><a class="link" href="../../boost/log/to_log_idm46309328400800.html" title="Function template to_log">to_log</a></code>
+            The <code class="computeroutput"><a class="link" href="../../boost/log/to_log_idm45711343255184.html" title="Function template to_log">to_log</a></code>
             function creates a stream manipulator that simply outputs the adopted
             value to the stream. By default its behavior is equivalent to simply
             putting the value to the stream. However, the user is able to overload
@@ -954,7 +956,7 @@
             value contexts as well. The library uses this feature to allow different
             formatting ruled for different attribute values, even if the stored value
             type is the same. To do so one has to specify an explicit template argument
-            for <code class="computeroutput"><a class="link" href="../../boost/log/to_log_idm46309328400800.html" title="Function template to_log">to_log</a></code>,
+            for <code class="computeroutput"><a class="link" href="../../boost/log/to_log_idm45711343255184.html" title="Function template to_log">to_log</a></code>,
             a tag type, which will be embedded into the manipulator type and thus
             will allow to define different insertion operators:
           </p>
@@ -1042,7 +1044,7 @@
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><code class="computeroutput"><a class="link" href="../../utilities.html#header.boost.log.utility.manipulators.dump_hpp" title="Header &lt;boost/log/utility/manipulators/dump.hpp&gt;">boost/log/utility/manipulators/dump.hpp</a></code><span class="special">&gt;</span>
 </pre>
 <p>
-            The <code class="computeroutput"><a class="link" href="../../boost/log/dump_idm46309328443920.html" title="Function template dump">dump</a></code>
+            The <code class="computeroutput"><a class="link" href="../../boost/log/dump_idm45711343298304.html" title="Function template dump">dump</a></code>
             function creates a manipulator that outputs binary contents of a contiguous
             memory region. This can be useful for logging some low level binary data,
             such as encoded network packets or entries of a binary file. The use
@@ -1066,12 +1068,12 @@
 <span class="special">}</span>
 </pre>
 <p>
-            There is another manipulator called <code class="computeroutput"><a class="link" href="../../boost/log/dump_ele_idm46309328438448.html" title="Function template dump_elements">dump_elements</a></code> for printing
+            There is another manipulator called <code class="computeroutput"><a class="link" href="../../boost/log/dump_ele_idm45711343292832.html" title="Function template dump_elements">dump_elements</a></code> for printing
             binary representation of non-byte array elements. The special manipulator
             for this case is necessary because the units of the size argument of
-            <code class="computeroutput"><a class="link" href="../../boost/log/dump_idm46309328443920.html" title="Function template dump">dump</a></code>
-            can be confusing (is it in bytes or in elements?). Therefore <code class="computeroutput"><a class="link" href="../../boost/log/dump_idm46309328443920.html" title="Function template dump">dump</a></code>
-            will not compile when used for non-byte input data. <code class="computeroutput"><a class="link" href="../../boost/log/dump_ele_idm46309328438448.html" title="Function template dump_elements">dump_elements</a></code> accepts
+            <code class="computeroutput"><a class="link" href="../../boost/log/dump_idm45711343298304.html" title="Function template dump">dump</a></code>
+            can be confusing (is it in bytes or in elements?). Therefore <code class="computeroutput"><a class="link" href="../../boost/log/dump_idm45711343298304.html" title="Function template dump">dump</a></code>
+            will not compile when used for non-byte input data. <code class="computeroutput"><a class="link" href="../../boost/log/dump_ele_idm45711343292832.html" title="Function template dump_elements">dump_elements</a></code> accepts
             the same arguments, and its size-related arguments always designate the
             number of elements to process.
           </p>
@@ -1089,6 +1091,36 @@
 <tr><td align="left" valign="top"><p>
               Both these manipulators can also be used with regular output streams,
               not necessarily loggers.
+            </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="log.detailed.utilities.manipulators.auto_newline"></a><a class="link" href="utilities.html#log.detailed.utilities.manipulators.auto_newline" title="Automatic newline insertion">Automatic
+          newline insertion</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><code class="computeroutput"><a class="link" href="../../utilities.html#header.boost.log.utility.manipulators.auto_newline_hpp" title="Header &lt;boost/log/utility/manipulators/auto_newline.hpp&gt;">boost/log/utility/manipulators/auto_newline.hpp</a></code><span class="special">&gt;</span>
+</pre>
+<p>
+            Sometimes it can be useful to be able to insert a newline character in
+            the output stream, but only if it hasn't been inserted as part of the
+            previous output. For example, if a string may or may not end with a newline,
+            and we cannot easily tell which one it is each time. The <code class="computeroutput"><span class="identifier">auto_newline</span></code> manipulator can be used
+            to ensure that all such strings are reliably terminated with a newline
+            and there are no duplicate newline characters. The manipulator will insert
+            a newline unless the last character inserted into the stream before it
+            was a newline. Its use is similar to standard stream manipulators:
+          </p>
+<pre class="programlisting"><span class="identifier">BOOST_LOG</span><span class="special">(</span><span class="identifier">lg</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="string">"Parameter: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">param</span><span class="special">.</span><span class="identifier">name</span> <span class="special">&lt;&lt;</span> <span class="string">", value: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">param</span><span class="special">.</span><span class="identifier">value</span> <span class="special">&lt;&lt;</span> <span class="identifier">logging</span><span class="special">::</span><span class="identifier">auto_newline</span><span class="special">;</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              This manipulator inspects previous output to the stream, and therefore
+              can only be used with Boost.Log streams based on <code class="computeroutput"><a class="link" href="../../boost/log/basic_formatting_ostream.html" title="Class template basic_formatting_ostream">basic_formatting_ostream</a></code>.
             </p></td></tr>
 </table></div>
 </div>
@@ -1460,7 +1492,7 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 <p>
             Pretty easy, isn't it? There is also the <code class="computeroutput"><span class="identifier">wadd_console_log</span></code>
             function for wide-character console. If you want to put logs to some
-            other standard stream, you can pass the stream to the <code class="computeroutput"><a class="link" href="../../boost/log/add_cons_idm46309328260800.html" title="Function template add_console_log">add_console_log</a></code> function
+            other standard stream, you can pass the stream to the <code class="computeroutput"><a class="link" href="../../boost/log/add_cons_idm45711343115184.html" title="Function template add_console_log">add_console_log</a></code> function
             as an argument. E.g. enabling logging to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span></code>
             instead of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">clog</span></code> would look like this:
           </p>
@@ -1506,7 +1538,7 @@ a b c d e f g h i j k l m n o p q r s t u v w x y z
 <span class="special">}</span>
 </pre>
 <p>
-            The <code class="computeroutput"><a class="link" href="../../boost/log/add_cons_idm46309328260800.html" title="Function template add_console_log">add_console_log</a></code>
+            The <code class="computeroutput"><a class="link" href="../../boost/log/add_cons_idm45711343115184.html" title="Function template add_console_log">add_console_log</a></code>
             and <code class="computeroutput"><a class="link" href="../../boost/log/add_file_log.html" title="Function template add_file_log">add_file_log</a></code>
             functions do not conflict and may be combined freely, so it is possible
             to set up logging to the console and a couple of files, including filtering
@@ -1944,7 +1976,7 @@ relation:
                       <a class="link" href="sink_backends.html#log.detailed.sink_backends.event_log" title="Windows event log backends">SimpleEventLog</a>,
                       <a class="link" href="sink_backends.html#log.detailed.sink_backends.debugger" title="Windows debugger output backend">Debugger</a>.
                       Also, user-defined sink names may also be supported if registered
-                      by calling <code class="computeroutput"><a class="link" href="../../boost/log/register_idm46309327996656.html" title="Function template register_sink_factory">register_sink_factory</a></code>.
+                      by calling <code class="computeroutput"><a class="link" href="../../boost/log/register_idm45711342847040.html" title="Function template register_sink_factory">register_sink_factory</a></code>.
                       See <a class="link" href="../extension/settings.html#log.extension.settings.sinks" title="Adding support for user-defined sinks">this</a>
                       section on how to add support for new sinks.
                     </p>
@@ -2038,6 +2070,25 @@ relation:
                     <p>
                       Log record formatter to be used by the sink. If not specified,
                       the default formatter is used.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      AutoNewline
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      "Disabled", "AlwaysInsert" or "InsertIfMissing"
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Controls whether the backend should automatically insert a
+                      trailing newline after every log record, see <code class="computeroutput"><a class="link" href="../../sinks.html#boost.log.sinks.auto_newline_mode">auto_newline_mode</a></code>.
+                      If not specified, the default value is "InsertIfMissing".
                     </p>
                   </td>
 </tr>
@@ -2140,6 +2191,25 @@ relation:
                     <p>
                       Log record formatter to be used by the sink. If not specified,
                       the default formatter is used.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      AutoNewline
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      "Disabled", "AlwaysInsert" or "InsertIfMissing"
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Controls whether the backend should automatically insert a
+                      trailing newline after every log record, see <code class="computeroutput"><a class="link" href="../../sinks.html#boost.log.sinks.auto_newline_mode">auto_newline_mode</a></code>.
+                      If not specified, the default value is "InsertIfMissing".
                     </p>
                   </td>
 </tr>
@@ -2584,30 +2654,50 @@ relation:
             The user is free to fill the settings container from whatever settings
             source he needs. The usage example is below:
           </p>
-<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">init_logging</span><span class="special">()</span>
-<span class="special">{</span>
-    <span class="identifier">logging</span><span class="special">::</span><span class="identifier">settings</span> <span class="identifier">setts</span><span class="special">;</span>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">logging</span><span class="special">::</span><span class="identifier">settings</span> <span class="identifier">setts</span><span class="special">;</span>
 
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Core"</span><span class="special">][</span><span class="string">"Filter"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"%Severity% &gt;= warning"</span><span class="special">;</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Core"</span><span class="special">][</span><span class="string">"DisableLogging"</span><span class="special">]</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Core"</span><span class="special">][</span><span class="string">"Filter"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"%Severity% &gt;= warning"</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Core"</span><span class="special">][</span><span class="string">"DisableLogging"</span><span class="special">]</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
 
-    <span class="comment">// Subsections can be referred to with a single path</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"Destination"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"Console"</span><span class="special">;</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"Filter"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"%Severity% &gt;= fatal"</span><span class="special">;</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"AutoFlush"</span><span class="special">]</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+<span class="comment">// Subsections can be referred to with a single path</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"Destination"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"Console"</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"Filter"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"%Severity% &gt;= critical"</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"Format"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"%TimeStamp% [%Severity%] %Message%"</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.Console"</span><span class="special">][</span><span class="string">"AutoFlush"</span><span class="special">]</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
 
-    <span class="comment">// ...as well as the individual parameters</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.Destination"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"TextFile"</span><span class="special">;</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.FileName"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"MyApp_%3N.log"</span><span class="special">;</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.AutoFlush"</span><span class="special">]</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
-    <span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.RotationSize"</span><span class="special">]</span> <span class="special">=</span> <span class="number">10</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">;</span> <span class="comment">// 10 MiB</span>
+<span class="comment">// ...as well as the individual parameters</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.Destination"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"TextFile"</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.FileName"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"MyApp_%3N.log"</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.AutoFlush"</span><span class="special">]</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.RotationSize"</span><span class="special">]</span> <span class="special">=</span> <span class="number">10</span> <span class="special">*</span> <span class="number">1024</span> <span class="special">*</span> <span class="number">1024</span><span class="special">;</span> <span class="comment">// 10 MiB</span>
+<span class="identifier">setts</span><span class="special">[</span><span class="string">"Sinks.File.Format"</span><span class="special">]</span> <span class="special">=</span> <span class="string">"%TimeStamp% [%Severity%] %Message%"</span><span class="special">;</span>
 
-    <span class="identifier">logging</span><span class="special">::</span><span class="identifier">init_from_settings</span><span class="special">(</span><span class="identifier">setts</span><span class="special">);</span>
-<span class="special">}</span>
+<span class="identifier">logging</span><span class="special">::</span><span class="identifier">init_from_settings</span><span class="special">(</span><span class="identifier">setts</span><span class="special">);</span>
 </pre>
 <p>
-            The settings reader also allows to be extended to support custom sink
-            types. See the <a class="link" href="../extension/settings.html" title="Extending library settings support">Extending the library</a>
+          </p>
+<p>
+            <a href="../../../../../../libs/log/example/doc/util_setup_settings.cpp" target="_top">See
+            the complete code</a>.
+          </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+              Initialization from settings does not automatically create any attributes
+              or loggers, the application developer is still responsible for creating
+              those. It can be said that loggers and attributes define the data that
+              is exported by the application and the settings only describe how that
+              data is going to be presented to the application user.
+            </p></td></tr>
+</table></div>
+<p>
+            The settings reader also can be extended to support custom sink types.
+            See the <a class="link" href="../extension/settings.html" title="Extending library settings support">Extending the library</a>
             section for more information.
           </p>
 </div>
@@ -2624,9 +2714,9 @@ relation:
             flexible format of the library settings, the library provides preliminary
             support for this feature. The functionality is implemented with a simple
             function <code class="computeroutput"><a class="link" href="../../boost/log/init_from_stream.html" title="Function template init_from_stream">init_from_stream</a></code>, which
-            accepts an STL input stream and reads the library settings from it. The
-            function then passes on the read settings to the <code class="computeroutput"><a class="link" href="../../boost/log/init_from_settings.html" title="Function template init_from_settings">init_from_settings</a></code> function,
-            described <a class="link" href="utilities.html#log.detailed.utilities.setup.settings" title="Library initialization from a settings container">above</a>.
+            accepts a <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">istream</span></code> and reads the library settings
+            from it. The function then passes on the read settings to the <code class="computeroutput"><a class="link" href="../../boost/log/init_from_settings.html" title="Function template init_from_settings">init_from_settings</a></code>
+            function, described <a class="link" href="utilities.html#log.detailed.utilities.setup.settings" title="Library initialization from a settings container">above</a>.
             Therefore the parameter names and their meaning is the same as for the
             <code class="computeroutput"><a class="link" href="../../boost/log/init_from_settings.html" title="Function template init_from_settings">init_from_settings</a></code>
             function.
@@ -2673,6 +2763,10 @@ AutoFlush=true
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
+<p>
+            See a <a href="../../../../../../libs/log/example/settings_file/main.cpp" target="_top">more
+            complete example</a>.
+          </p>
 </div>
 </div>
 </div>

@@ -21,6 +21,107 @@
 </h2></div></div></div>
 <h4>
 <a name="log.changelog.h0"></a>
+      <span class="phrase"><a name="log.changelog.2_17__boost_1_71"></a></span><a class="link" href="changelog.html#log.changelog.2_17__boost_1_71">2.17,
+      Boost 1.71</a>
+    </h4>
+<p>
+      <span class="bold"><strong>New features:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Improved support for C++17 <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string_view</span></code>
+          in <code class="computeroutput"><a class="link" href="../boost/log/basic_formatting_ostream.html" title="Class template basic_formatting_ostream">basic_formatting_ostream</a></code>.
+          The string view can now participate in character code conversion on output.
+        </li>
+<li class="listitem">
+          Added <code class="computeroutput"><span class="identifier">auto_newline</span></code> <a class="link" href="detailed/expressions.html#log.detailed.expressions.formatters.auto_newline" title="Automatic newline insertion">formatter</a>
+          and <a class="link" href="detailed/utilities.html#log.detailed.utilities.manipulators.auto_newline" title="Automatic newline insertion">stream
+          manipulator</a>. It can be used to ensure that formatted output always
+          ends with a newline while avoiding duplicate newlines.
+        </li>
+<li class="listitem">
+          In the <a class="link" href="detailed/sink_backends.html#log.detailed.sink_backends.text_ostream" title="Text stream backend">output stream</a>,
+          <a class="link" href="detailed/sink_backends.html#log.detailed.sink_backends.text_file" title="Text file backend">text file</a> and
+          <a class="link" href="detailed/sink_backends.html#log.detailed.sink_backends.text_multifile" title="Text multi-file backend">text multi-file</a>
+          sink backends added support for configuring behavior with regard to appending
+          a trailing newline to every formatted log record. The user can specify
+          a value of the <code class="computeroutput"><a class="link" href="../sinks.html#boost.log.sinks.auto_newline_mode">auto_newline_mode</a></code> enum either
+          in the <code class="computeroutput"><span class="identifier">auto_newline_mode</span></code>
+          named parameter of the backend constructor or by calling the <code class="computeroutput"><span class="identifier">set_auto_newline_mode</span></code> method on the backend
+          post-construction. The <code class="computeroutput"><span class="identifier">auto_newline_mode</span></code>
+          named parameter is also supported in the <a class="link" href="detailed/utilities.html#log.detailed.utilities.setup.convenience" title="Convenience functions">convenience
+          functions</a> for initializing sinks. When initializing from <a class="link" href="detailed/utilities.html#log.detailed.utilities.setup.settings" title="Library initialization from a settings container">settings</a>
+          or a config file, the behavior is controlled by the new "AutoNewline"
+          parameter of the sink.
+        </li>
+</ul></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The default behavior with regard to trailing newlines has changed slightly
+        compared to the previous Boost.Log releases. The backends will now only add
+        a trailing newline if there isn't one in the formatted log message string
+        already. In previous releases a newline was added unconditionally. In general,
+        users are advised to configure their formatters so that the trailing newline
+        is added there, if needed (e.g. by using <a class="link" href="detailed/expressions.html#log.detailed.expressions.formatters.auto_newline" title="Automatic newline insertion"><code class="computeroutput"><span class="identifier">auto_newline</span></code></a> formatter), and disable
+        the automatic trailing newline insertion in the sink backends. This feature
+        mostly exists for backward compatibility and can be considered deprecated.
+      </p></td></tr>
+</table></div>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <a class="link" href="detailed/sink_backends.html#log.detailed.sink_backends.text_ostream" title="Text stream backend">Output stream</a>
+          and <a class="link" href="detailed/sink_backends.html#log.detailed.sink_backends.text_multifile" title="Text multi-file backend">text multi-file</a>
+          sink backends can now be constructed with named parameters.
+        </li>
+<li class="listitem">
+          Added support for passing arbitrary function objects (as opposed to only
+          <a href="http://www.boost.org/doc/libs/release/libs/phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>
+          function objects, which were supported before) in the <code class="computeroutput"><span class="identifier">filter</span></code>
+          and <code class="computeroutput"><span class="identifier">format</span></code> named parameters
+          to sink constructors and <a class="link" href="detailed/utilities.html#log.detailed.utilities.setup.convenience" title="Convenience functions">convenience
+          functions</a> for initializing sinks. For example, it is now possible
+          to specify C++11 lambda functions directly in these parameters. ( <a href="https://github.com/boostorg/log/issues/63" target="_top">GH#63</a>)
+        </li>
+<li class="listitem">
+          In the default filter and formatter factories used in <a class="link" href="detailed/utilities.html#log.detailed.utilities.setup.filter_formatter" title="Filter and formatter parsers">filter
+          and formatter parsers</a>, added support for severity level attribute
+          values of type <code class="computeroutput"><a class="link" href="reference.html#boost.log.trivial.severity_level">boost::log::trivial::severity_level</a></code>. For filters,
+          the support is limited to attributes with "Severity" name. This
+          relieves the user from having to register filter and formatter factories
+          in order to use <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">log</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">severity_level</span></code> with filters and formatters
+          parsed from strings or <a class="link" href="detailed/utilities.html#log.detailed.utilities.setup.settings" title="Library initialization from a settings container">settings</a>.
+          Note that any other custom severity level enums must still be <a class="link" href="extension/settings.html" title="Extending library settings support">registered</a>,
+          as before.
+        </li>
+</ul></div>
+<p>
+      <span class="bold"><strong>Bug fixes:</strong></span>
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Fixed incorrect parsing of components of the rotated file names while scanning
+          for files in the <a class="link" href="detailed/sink_backends.html#log.detailed.sink_backends.text_file" title="Text file backend">text
+          file sink backend</a>. If the file name pattern ended with a placeholder
+          (for example, a file counter), the <code class="computeroutput"><span class="identifier">scan_for_files</span></code>
+          method would not find files matching that pattern in the target storage,
+          leaving them unmanaged. In particular, such files would not be deleted
+          to free target storage. ( <a href="https://github.com/boostorg/log/issues/78" target="_top">GH#78</a>)
+        </li>
+<li class="listitem">
+          Updated <code class="computeroutput"><a class="link" href="../boost/log/basic_formatting_ostream.html" title="Class template basic_formatting_ostream">basic_formatting_ostream</a></code>
+          and <code class="computeroutput"><a class="link" href="../boost/log/basic_record_ostream.html" title="Class template basic_record_ostream">basic_record_ostream</a></code>
+          to make it possible to overload stream output operators for pointers to
+          user-defined types. User-defined <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code> overloads taking <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span></code> and a pointer argument
+          should now be picked up by the compiler when the pointer is being written
+          to one of Boost.Log streams. ( <a href="https://github.com/boostorg/log/issues/84" target="_top">GH#84</a>)
+        </li>
+</ul></div>
+<h4>
+<a name="log.changelog.h1"></a>
       <span class="phrase"><a name="log.changelog.2_16__boost_1_70"></a></span><a class="link" href="changelog.html#log.changelog.2_16__boost_1_70">2.16,
       Boost 1.70</a>
     </h4>
@@ -44,7 +145,7 @@
           so that different rotated files don't conflict in the target storage.
         </li></ul></div>
 <h4>
-<a name="log.changelog.h1"></a>
+<a name="log.changelog.h2"></a>
       <span class="phrase"><a name="log.changelog.2_15__boost_1_69"></a></span><a class="link" href="changelog.html#log.changelog.2_15__boost_1_69">2.15,
       Boost 1.69</a>
     </h4>
@@ -70,7 +171,7 @@
           to write log files into directories different from the target storage directory.
         </li></ul></div>
 <h4>
-<a name="log.changelog.h2"></a>
+<a name="log.changelog.h3"></a>
       <span class="phrase"><a name="log.changelog.2_14__boost_1_68"></a></span><a class="link" href="changelog.html#log.changelog.2_14__boost_1_68">2.14,
       Boost 1.68</a>
     </h4>
@@ -81,7 +182,7 @@
           Improved support for VxWorks. ( <a href="https://github.com/boostorg/log/pull/39" target="_top">PR#39</a>)
         </li></ul></div>
 <h4>
-<a name="log.changelog.h3"></a>
+<a name="log.changelog.h4"></a>
       <span class="phrase"><a name="log.changelog.2_13__boost_1_67"></a></span><a class="link" href="changelog.html#log.changelog.2_13__boost_1_67">2.13,
       Boost 1.67</a>
     </h4>
@@ -101,7 +202,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h4"></a>
+<a name="log.changelog.h5"></a>
       <span class="phrase"><a name="log.changelog.2_12__boost_1_66"></a></span><a class="link" href="changelog.html#log.changelog.2_12__boost_1_66">2.12,
       Boost 1.66</a>
     </h4>
@@ -115,7 +216,7 @@
           named log files in the target directory after the user's application restart.
         </li></ul></div>
 <h4>
-<a name="log.changelog.h5"></a>
+<a name="log.changelog.h6"></a>
       <span class="phrase"><a name="log.changelog.2_11__boost_1_65"></a></span><a class="link" href="changelog.html#log.changelog.2_11__boost_1_65">2.11,
       Boost 1.65</a>
     </h4>
@@ -128,7 +229,7 @@
           Solaris.
         </li></ul></div>
 <h4>
-<a name="log.changelog.h6"></a>
+<a name="log.changelog.h7"></a>
       <span class="phrase"><a name="log.changelog.2_10__boost_1_63"></a></span><a class="link" href="changelog.html#log.changelog.2_10__boost_1_63">2.10,
       Boost 1.63</a>
     </h4>
@@ -181,7 +282,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h7"></a>
+<a name="log.changelog.h8"></a>
       <span class="phrase"><a name="log.changelog.2_9__boost_1_62"></a></span><a class="link" href="changelog.html#log.changelog.2_9__boost_1_62">2.9,
       Boost 1.62</a>
     </h4>
@@ -212,7 +313,7 @@
           log records. ( <a href="https://svn.boost.org/trac/boost/ticket/12178" target="_top">#12178</a>)
         </li></ul></div>
 <h4>
-<a name="log.changelog.h8"></a>
+<a name="log.changelog.h9"></a>
       <span class="phrase"><a name="log.changelog.2_8__boost_1_61"></a></span><a class="link" href="changelog.html#log.changelog.2_8__boost_1_61">2.8,
       Boost 1.61</a>
     </h4>
@@ -250,7 +351,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h9"></a>
+<a name="log.changelog.h10"></a>
       <span class="phrase"><a name="log.changelog.2_7__boost_1_60"></a></span><a class="link" href="changelog.html#log.changelog.2_7__boost_1_60">2.7,
       Boost 1.60</a>
     </h4>
@@ -318,7 +419,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h10"></a>
+<a name="log.changelog.h11"></a>
       <span class="phrase"><a name="log.changelog.2_6__boost_1_59"></a></span><a class="link" href="changelog.html#log.changelog.2_6__boost_1_59">2.6,
       Boost 1.59</a>
     </h4>
@@ -408,7 +509,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h11"></a>
+<a name="log.changelog.h12"></a>
       <span class="phrase"><a name="log.changelog.2_5__boost_1_58"></a></span><a class="link" href="changelog.html#log.changelog.2_5__boost_1_58">2.5,
       Boost 1.58</a>
     </h4>
@@ -444,7 +545,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h12"></a>
+<a name="log.changelog.h13"></a>
       <span class="phrase"><a name="log.changelog.2_4__boost_1_57"></a></span><a class="link" href="changelog.html#log.changelog.2_4__boost_1_57">2.4,
       Boost 1.57</a>
     </h4>
@@ -468,7 +569,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h13"></a>
+<a name="log.changelog.h14"></a>
       <span class="phrase"><a name="log.changelog.2_3__boost_1_56"></a></span><a class="link" href="changelog.html#log.changelog.2_3__boost_1_56">2.3,
       Boost 1.56</a>
     </h4>
@@ -564,7 +665,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h14"></a>
+<a name="log.changelog.h15"></a>
       <span class="phrase"><a name="log.changelog.2_2__boost_1_55"></a></span><a class="link" href="changelog.html#log.changelog.2_2__boost_1_55">2.2,
       Boost 1.55</a>
     </h4>
@@ -627,7 +728,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h15"></a>
+<a name="log.changelog.h16"></a>
       <span class="phrase"><a name="log.changelog.2_1__boost_1_54"></a></span><a class="link" href="changelog.html#log.changelog.2_1__boost_1_54">2.1,
       Boost 1.54</a>
     </h4>
@@ -674,7 +775,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h16"></a>
+<a name="log.changelog.h17"></a>
       <span class="phrase"><a name="log.changelog.2_0__13_april_2013"></a></span><a class="link" href="changelog.html#log.changelog.2_0__13_april_2013">2.0,
       13 April 2013</a>
     </h4>
@@ -1049,7 +1150,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h17"></a>
+<a name="log.changelog.h18"></a>
       <span class="phrase"><a name="log.changelog.1_1__02_december_2011"></a></span><a class="link" href="changelog.html#log.changelog.1_1__02_december_2011">1.1,
       02 December 2011</a>
     </h4>
@@ -1069,7 +1170,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h18"></a>
+<a name="log.changelog.h19"></a>
       <span class="phrase"><a name="log.changelog.1_0__09_may_2010"></a></span><a class="link" href="changelog.html#log.changelog.1_0__09_may_2010">1.0,
       09 May 2010</a>
     </h4>
@@ -1109,7 +1210,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h19"></a>
+<a name="log.changelog.h20"></a>
       <span class="phrase"><a name="log.changelog.release_candidate_4__08_jan_2010"></a></span><a class="link" href="changelog.html#log.changelog.release_candidate_4__08_jan_2010">Release
       Candidate 4, 08 Jan 2010</a>
     </h4>
@@ -1204,7 +1305,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h20"></a>
+<a name="log.changelog.h21"></a>
       <span class="phrase"><a name="log.changelog.release_candidate_3__08_feb_2009"></a></span><a class="link" href="changelog.html#log.changelog.release_candidate_3__08_feb_2009">Release
       Candidate 3, 08 Feb 2009</a>
     </h4>
@@ -1238,7 +1339,7 @@
         </li>
 </ul></div>
 <h4>
-<a name="log.changelog.h21"></a>
+<a name="log.changelog.h22"></a>
       <span class="phrase"><a name="log.changelog.release_candidate_2"></a></span><a class="link" href="changelog.html#log.changelog.release_candidate_2">Release
       Candidate 2</a>
     </h4>
