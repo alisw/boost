@@ -6,11 +6,9 @@
 #define BOOST_NO_EXCEPTIONS
 #define BOOST_EXCEPTION_DISABLE
 #include <boost/throw_exception.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <stdlib.h>
 
 class my_exception: public std::exception { };
-
-bool called=false;
 
 namespace
 boost
@@ -18,7 +16,7 @@ boost
     void
     throw_exception( std::exception const & )
         {
-        called=true;
+        exit(0);
         }
     }
 
@@ -26,6 +24,5 @@ int
 main()
     {
     boost::throw_exception(my_exception());
-    BOOST_TEST(called);
-    return boost::report_errors();
+    return 1;
     }

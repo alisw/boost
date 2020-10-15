@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Struct template tail_impl</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -42,6 +42,7 @@
    <a class="link" href="tail_impl.html#id-1_3_2_6_3_59_1_1_22_32_3_1-bb"><span class="identifier">BOOST_MPL_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../right.html" title="Struct right">right</a> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../left.html" title="Struct left">left</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="tail_impl.html#id-1_3_2_6_3_59_1_1_22_32_3_2-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="identifier">result_type</span> <a class="link" href="tail_impl.html#id-1_3_2_6_3_59_1_1_22_32_3_3-bb"><span class="identifier">result</span></a><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Archive<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="tail_impl.html#id-1_3_2_6_3_59_1_1_22_32_3_4-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">Archive</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="tail_impl.html#id-1_3_2_6_3_59_1_1_22_32_6-bb">private member functions</a></span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="tail_impl.html#id-1_3_2_6_3_59_1_1_22_32_6_1-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
@@ -65,6 +66,8 @@
 <li class="listitem"><pre class="literallayout"> <a name="id-1_3_2_6_3_59_1_1_22_32_3_1-bb"></a><span class="identifier">BOOST_MPL_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../right.html" title="Struct right">right</a> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">LeftRight</span><span class="special">,</span> <a class="link" href="../left.html" title="Struct left">left</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id-1_3_2_6_3_59_1_1_22_32_3_2-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">Args</span> <span class="keyword">const</span> <span class="special">&amp;</span> args<span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem"><pre class="literallayout"><span class="identifier">result_type</span> <a name="id-1_3_2_6_3_59_1_1_22_32_3_3-bb"></a><span class="identifier">result</span><span class="special">(</span><span class="identifier">dont_care</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Archive<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id-1_3_2_6_3_59_1_1_22_32_3_4-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">Archive</span> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> file_version<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 <div class="refsect2">
@@ -76,7 +79,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005, 2006 Eric Niebler<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005, 2006 Eric Niebler<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

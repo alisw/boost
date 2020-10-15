@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Lexer API</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -214,7 +214,7 @@
   <span class="special">,</span> <span class="identifier">BOOST_SCOPED_ENUM</span><span class="special">(</span><span class="identifier">skip_flag</span><span class="special">)</span> <span class="identifier">post_skip</span> <span class="special">=</span> <span class="identifier">skip_flag</span><span class="special">::</span><span class="identifier">postskip</span><span class="special">);</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Lexer</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ParserExpr</span>
-  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Skipper</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attr1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attr2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">AttrN</span><span class="special">&gt;</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Skipper</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attribute</span><span class="special">&gt;</span>
 <span class="keyword">inline</span> <span class="keyword">bool</span>
 <span class="identifier">tokenize_and_phrase_parse</span><span class="special">(</span>
     <span class="identifier">Iterator</span><span class="special">&amp;</span> <span class="identifier">first</span>
@@ -222,10 +222,10 @@
   <span class="special">,</span> <span class="identifier">Lexer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lex</span>
   <span class="special">,</span> <span class="identifier">ParserExpr</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">expr</span>
   <span class="special">,</span> <span class="identifier">Skipper</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">skipper</span>
-  <span class="special">,</span> <span class="identifier">Attr1</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attr1</span><span class="special">,</span> <span class="identifier">Attr2</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attr2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">AttrN</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attrN</span><span class="special">);</span>
+  <span class="special">,</span> <span class="identifier">Attribute</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">);</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Lexer</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ParserExpr</span>
-  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Skipper</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attr1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attr2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">AttrN</span><span class="special">&gt;</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Skipper</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Attribute</span><span class="special">&gt;</span>
 <span class="keyword">inline</span> <span class="keyword">bool</span>
 <span class="identifier">tokenize_and_phrase_parse</span><span class="special">(</span>
     <span class="identifier">Iterator</span><span class="special">&amp;</span> <span class="identifier">first</span>
@@ -233,8 +233,7 @@
   <span class="special">,</span> <span class="identifier">Lexer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lex</span>
   <span class="special">,</span> <span class="identifier">ParserExpr</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">expr</span>
   <span class="special">,</span> <span class="identifier">Skipper</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">skipper</span>
-  <span class="special">,</span> <span class="identifier">BOOST_SCOPED_ENUM</span><span class="special">(</span><span class="identifier">skip_flag</span><span class="special">)</span> <span class="identifier">post_skip</span>
-  <span class="special">,</span> <span class="identifier">Attr1</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attr1</span><span class="special">,</span> <span class="identifier">Attr2</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attr2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">AttrN</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attrN</span><span class="special">);</span>
+  <span class="special">,</span> <span class="identifier">BOOST_SCOPED_ENUM</span><span class="special">(</span><span class="identifier">skip_flag</span><span class="special">)</span> <span class="identifier">post_skip</span><span class="special">,</span> <span class="identifier">Attribute</span><span class="special">&amp;</span> <span class="identifier">attr</span><span class="special">);</span>
 </pre>
 <p>
           The maximum number of supported arguments is limited by the preprocessor
@@ -363,7 +362,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
+<td align="right"><div class="copyright-footer">Copyright © 2001-2011 Joel de Guzman, Hartmut Kaiser<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

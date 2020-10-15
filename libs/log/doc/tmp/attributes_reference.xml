@@ -538,7 +538,7 @@ The header contains an implementation of a basic attribute value implementation 
 </returns></method>
 </method-group>
 <constructor specifiers="explicit"><parameter name="v"><paramtype>value_type const &amp;</paramtype></parameter><description><para>Constructor with initialization of the stored value </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="v"><paramtype>value_type &amp;&amp;</paramtype></parameter><description><para>Constructor with initialization of the stored value </para></description></constructor>
+<constructor specifiers="explicit" cv="noexcept(boost::is_nothrow_move_constructible&lt; value_type &gt;::value))"><parameter name="v"><paramtype>value_type &amp;&amp;</paramtype></parameter><description><para>Constructor with initialization of the stored value </para></description></constructor>
 </class>
 
 
@@ -804,7 +804,7 @@ The header contains implementation of a constant attribute. </para><namespace na
     </template><inherit access="public">attribute</inherit><purpose>A class of an attribute that holds a single constant value. </purpose><description><para>The constant is a simplest and one of the most frequently used types of attributes. It stores a constant value, which it eventually returns as its value each time requested. </para></description><class name="impl"><inherit access="public">attribute_value_impl&lt; value_type &gt;</inherit><purpose>Factory implementation. </purpose><method-group name="public member functions">
 </method-group>
 <constructor specifiers="explicit"><parameter name="value"><paramtype>value_type const &amp;</paramtype></parameter><description><para>Constructor with the stored value initialization </para></description></constructor>
-<constructor specifiers="explicit"><parameter name="value"><paramtype>value_type &amp;&amp;</paramtype></parameter><description><para>Constructor with the stored value initialization </para></description></constructor>
+<constructor specifiers="explicit" cv="noexcept(boost::is_nothrow_move_constructible&lt; value_type &gt;::value))"><parameter name="value"><paramtype>value_type &amp;&amp;</paramtype></parameter><description><para>Constructor with the stored value initialization </para></description></constructor>
 </class><typedef name="value_type"><purpose>Attribute value type. </purpose><type>T</type></typedef>
 <method-group name="public member functions">
 <method name="get" cv="const"><type>value_type const  &amp;</type><description><para>
@@ -1472,13 +1472,13 @@ The header contains implementation of named scope container and an attribute tha
 <emphasis role="bold">Throws:</emphasis> Nothing. </para></description><postconditions><para><computeroutput>scope_name == sn &amp;&amp; file_name == fn &amp;&amp; line == ln</computeroutput></para>
 </postconditions></constructor>
 </struct><class name="named_scope_list"><purpose>The class implements the list of scopes. </purpose><description><para>The scope list provides a read-only access to a doubly-linked list of scopes. </para></description><typedef name="allocator_type"><purpose>Allocator type. </purpose><type>std::allocator&lt; <classname>named_scope_entry</classname> &gt;</type></typedef>
-<typedef name="value_type"><type>allocator_type::value_type</type></typedef>
-<typedef name="reference"><type>allocator_type::reference</type></typedef>
-<typedef name="const_reference"><type>allocator_type::const_reference</type></typedef>
-<typedef name="pointer"><type>allocator_type::pointer</type></typedef>
-<typedef name="const_pointer"><type>allocator_type::const_pointer</type></typedef>
-<typedef name="size_type"><type>allocator_type::size_type</type></typedef>
-<typedef name="difference_type"><type>allocator_type::difference_type</type></typedef>
+<typedef name="value_type"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="size_type"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="difference_type"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="pointer"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="const_pointer"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="reference"><type>value_type &amp;</type></typedef>
+<typedef name="const_reference"><type>value_type const  &amp;</type></typedef>
 <typedef name="const_iterator"><description><para>A constant iterator to the sequence of scopes. Complies to bidirectional iterator requirements. </para></description><type>implementation_defined</type></typedef>
 <typedef name="iterator"><description><para>An iterator to the sequence of scopes. Complies to bidirectional iterator requirements. </para></description><type>implementation_defined</type></typedef>
 <typedef name="const_reverse_iterator"><description><para>A constant reverse iterator to the sequence of scopes. Complies to bidirectional iterator requirements. </para></description><type>implementation_defined</type></typedef>

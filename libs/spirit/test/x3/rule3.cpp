@@ -7,14 +7,18 @@
 
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/home/x3.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/fusion/include/std_pair.hpp>
 
+#include <boost/variant.hpp>
 #include <string>
+#include <vector>
 #include <cstring>
 #include <iostream>
 #include "test.hpp"
 
 using boost::spirit::x3::_val;
+namespace x3 = boost::spirit::x3;
 
 struct f
 {
@@ -44,6 +48,40 @@ auto const a_def = '{' >> boost::spirit::x3::int_ >> '}';
 auto const b_def = a;
 
 BOOST_SPIRIT_DEFINE(a, b)
+
+}
+
+namespace check_recursive {
+
+using node_t = boost::make_recursive_variant<
+                   int,
+                   std::vector<boost::recursive_variant_>
+               >::type;
+
+boost::spirit::x3::rule<class grammar_r, node_t> const grammar;
+
+auto const grammar_def = '[' >> grammar % ',' >> ']' | boost::spirit::x3::int_;
+
+BOOST_SPIRIT_DEFINE(grammar)
+
+}
+
+struct recursive_tuple
+{
+    int value;
+    std::vector<recursive_tuple> children;
+};
+BOOST_FUSION_ADAPT_STRUCT(recursive_tuple,
+    value, children)
+
+// regression test for #461
+namespace check_recursive_tuple {
+
+x3::rule<class grammar_r, recursive_tuple> const grammar;
+auto const grammar_def = x3::int_ >> ('{' >> grammar % ',' >> '}' | x3::eps);
+BOOST_SPIRIT_DEFINE(grammar)
+
+BOOST_SPIRIT_INSTANTIATE(decltype(grammar), char const*, x3::unused_type)
 
 }
 
@@ -99,10 +137,17 @@ int main()
         BOOST_TEST(test("", r));
     }
 
-    { // ensure no unneded synthesization, copying and moving occured
+    { // ensure no unneeded synthesization, copying and moving occurred
         stationary st { 0 };
         BOOST_TEST(test_attr("{42}", check_stationary::b, st));
         BOOST_TEST_EQ(st.val, 42);
+    }
+
+    {
+        using namespace check_recursive;
+        node_t v;
+        BOOST_TEST(test_attr("[4,2]", grammar, v));
+        BOOST_TEST((node_t{std::vector<node_t>{{4}, {2}}} == v));
     }
 
     return boost::report_errors();

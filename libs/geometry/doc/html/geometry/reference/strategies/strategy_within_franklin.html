@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>strategy::within::franklin</title>
 <link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Geometry">
+<link rel="home" href="../../../index.html" title="Chapter 1. Geometry">
 <link rel="up" href="../strategies.html" title="Strategies">
 <link rel="prev" href="strategy_within_winding.html" title="strategy::within::winding">
 <link rel="next" href="strategy_within_crossings_multiply.html" title="strategy::within::crossings_multiply">
@@ -27,7 +27,7 @@
 <a name="geometry.reference.strategies.strategy_within_franklin"></a><a class="link" href="strategy_within_franklin.html" title="strategy::within::franklin">strategy::within::franklin</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="idm45602697258688"></a><a class="indexterm" name="idm45602697258000"></a><a class="indexterm" name="idm45602697257312"></a>
+          <a class="indexterm" name="idm46078473445120"></a><a class="indexterm" name="idm46078473444432"></a><a class="indexterm" name="idm46078473443744"></a>
 Within detection using cross counting.
         </p>
 <h6>
@@ -36,7 +36,8 @@ Within detection using cross counting.
         </h6>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Point</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointOfSegment</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CalculationType</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Point_</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointOfSegment_</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CalculationType</span><span class="special">,</span> <span class="special">,</span>
+         <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">strategy</span><span class="special">::</span><span class="identifier">within</span><span class="special">::</span><span class="identifier">franklin</span>
 <span class="special">{</span>
   <span class="comment">// ...</span>
@@ -76,32 +77,26 @@ Within detection using cross counting.
 <tr>
 <td>
                   <p>
-                    typename Point
+                    typename Point_
                   </p>
                 </td>
 <td>
                 </td>
 <td>
-                  <p>
-                    Any type fulfilling a Point Concept
-                  </p>
                 </td>
 </tr>
 <tr>
 <td>
                   <p>
-                    typename PointOfSegment
+                    typename PointOfSegment_
                   </p>
                 </td>
 <td>
                   <p>
-                    Point
+                    Point_
                   </p>
                 </td>
 <td>
-                  <p>
-                    segment point type
-                  </p>
                 </td>
 </tr>
 <tr>
@@ -120,6 +115,28 @@ Within detection using cross counting.
                     numeric type for calculation (e.g. high precision); if <span class="bold"><strong>void</strong></span> then it is extracted automatically
                     from the coordinate type and (if necessary) promoted to floating
                     point
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Any type fulfilling a Point Concept
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    segment point type
                   </p>
                 </td>
 </tr>
@@ -164,7 +181,8 @@ Within detection using cross counting.
 <td>
                   <p>
 </p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">bool</span> <span class="identifier">apply</span><span class="special">(</span><span class="identifier">Point</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">point</span><span class="special">,</span> <span class="identifier">PointOfSegment</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">seg1</span><span class="special">,</span> <span class="identifier">PointOfSegment</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">seg2</span><span class="special">,</span>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Point</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointOfSegment</span><span class="special">&gt;</span>
+<span class="keyword">bool</span> <span class="identifier">apply</span><span class="special">(</span><span class="identifier">Point</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">point</span><span class="special">,</span> <span class="identifier">PointOfSegment</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">seg1</span><span class="special">,</span> <span class="identifier">PointOfSegment</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">seg2</span><span class="special">,</span>
            <span class="identifier">crossings</span> <span class="special">&amp;</span> <span class="identifier">state</span><span class="special">)</span></pre>
 <p>
                   </p>
@@ -229,7 +247,7 @@ Within detection using cross counting.
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2019 Barend Gehrels, Bruno Lalande, Mateusz Loskot, Adam
+<td align="right"><div class="copyright-footer">Copyright © 2009-2019 Barend Gehrels, Bruno Lalande, Mateusz Loskot, Adam
       Wulkiewicz, Oracle and/or its affiliates<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)

@@ -4,9 +4,12 @@
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
 
+from __future__ import print_function
+
 import sys
 import os
 import re
+import fnmatch
 
 # Represents a sequence of arguments that must appear
 # in a fixed order.
@@ -79,6 +82,17 @@ class output_file:
         outputs.append((command_line[pos], self.id))
         return pos + 1
 
+class arg_file:
+    def __init__(self, id):
+        self.id = id
+    def match(self, command_line, pos, outputs):
+        if command_line[pos].startswith("-"):
+            return
+        if fnmatch.fnmatch(command_line[pos], self.id):
+            return pos + 1
+        else:
+            return
+
 # Matches the directory containing an input_file
 class target_path(object):
     def __init__(self, id):
@@ -92,7 +106,7 @@ class target_path(object):
                 if self.tester.check(os.path.join(arg, path)):
                     return pos + 1
         except:
-            return                 
+            return
 
 # Matches a single argument, which is composed of a prefix and a path
 # for example arguments of the form -ofilename.
@@ -178,13 +192,13 @@ def main():
     if result is not None:
         (stdout, outputs) = result
         if stdout is not None:
-            print stdout
+            print(stdout)
         for (file,id) in outputs:
             with open(file, "w") as f:
                 f.write(make_file_contents(id))
         exit(0)
     else:
-        print command_line
+        print("ERROR on command: %s"%(" ".join(command_line)))
         exit(1)
 
 # file should be the name of a file in the same directory
@@ -243,7 +257,7 @@ def verify_finalize():
         if not id in output_ids:
             verify_error("Input file does not exist: %s" % id)
     for error in verify_errors:
-        print "error: %s" % error
+        print("error: %s" % error)
     if len(verify_errors) != 0:
         return 1
     else:

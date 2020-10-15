@@ -17,7 +17,7 @@ my_exception:
     std::exception
     {
     char const *
-    what() const throw()
+    what() const BOOST_NOEXCEPT_OR_NOTHROW
         {
         return "my_exception";
         }
@@ -40,6 +40,11 @@ boost
         BOOST_TEST(s.find("my_tag")!=std::string::npos);
 #endif
         exit(boost::report_errors());
+        }
+    void
+    throw_exception(std::exception const & x, boost::source_location const &)
+        {
+        throw_exception(x);
         }
     }
 

@@ -887,7 +887,8 @@ rule resolve-reference ( target-reference : project )
     local id = $(split[1]) ;
     if ! $(split) || ! $(id)
     {
-        error "Malformed target reference $(target-reference)" ;
+        import errors ;
+        errors.error "Malformed target reference $(target-reference)" ;
     }
     local sproperties = ;
     if $(split[3])
@@ -1376,19 +1377,19 @@ class basic-target : abstract-target
                         [ property.change [ $(gur).raw ] : <relevant> ]
                         <relevant>$(relevant) ] ;
 
-                    if $(self.always)
-                    {
-                        for local t in $(result)
-                        {
-                            $(t).always ;
-                        }
-                    }
-
                     local s = [ create-subvariant $(result)
                         : [ virtual-target.recent-targets ]
                         : $(property-set) : $(source-targets)
                         : $(rproperties) : $(usage-requirements) ] ;
                     virtual-target.clear-recent-targets ;
+
+                    if $(self.always)
+                    {
+                        for local t in [ $(s).created-targets ]
+                        {
+                            $(t).always ;
+                        }
+                    }
 
                     local ur = [ compute-usage-requirements $(s) ] ;
                     ur = [ $(ur).add $(gur) ] ;

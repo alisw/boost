@@ -1,4 +1,4 @@
-/* Copyright 2016-2019 Joaquin M Lopez Munoz.
+/* Copyright 2016-2020 Joaquin M Lopez Munoz.
  * Distributed under the Boost Software License, Version 1.0.
  * (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
@@ -12,7 +12,6 @@
 #include <boost/config.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/detail/workaround.hpp>
-#include <boost/type_erasure/any_cast.hpp>
 #include <boost/type_erasure/relaxed.hpp>
 #include <scoped_allocator>
 #include <utility>
@@ -74,6 +73,14 @@ void test_allocator_aware_construction()
 
   if(AlwaysEqual)
 #endif
+#if BOOST_WORKAROUND(_MSVC_STL_UPDATE,==201811L)
+  /* This particular version of VS2019 has a bug in std::unordered_map
+   * allocator move ctor when source and target allocators are not equal.
+   * After private communication from Billy O'Neal.
+   */
+
+  if(AlwaysEqual)
+#endif
   {
     rooted_poly_collection p2{cp};
     auto                   d2=get_layout_data<Types...>(p2);
@@ -81,19 +88,20 @@ void test_allocator_aware_construction()
     auto                   d3=get_layout_data<Types...>(p3);
 
     BOOST_TEST(p3==p);
-
-#if BOOST_WORKAROUND(BOOST_LIBSTDCXX_VERSION,<40900)
-    /* Limitations from libstdc++-v3 force move construction with allocator
-     * to decay to copy construction with allocator.
-     */
-
-    (void)(d2==d3); /* Wunused-variable */
-#else
     if(AlwaysEqual)BOOST_TEST(d2==d3);
-#endif
 
     BOOST_TEST(p2.empty());
     do_((BOOST_TEST(!p2.template is_registered<Types>()),0)...);
+
+#if !defined(BOOST_MSVC)&&\
+    BOOST_WORKAROUND(BOOST_DINKUMWARE_STDLIB,BOOST_TESTED_AT(804))
+    /* Very odd behavior probably due to std::unordered_map allocator move
+     * ctor being implemented with move assignment, as reported in
+     * https://github.com/boostorg/poly_collection/issues/16
+     */
+
+    if(!(Propagate&&!AlwaysEqual))
+#endif
     BOOST_TEST(p3.get_allocator().comes_from(root2));
   }
   {
@@ -112,6 +120,14 @@ void test_allocator_aware_construction()
      */
 
     if(!((Propagate&&AlwaysEqual)||(!Propagate&&!AlwaysEqual)))
+#endif
+#if !defined(BOOST_MSVC)&&\
+    BOOST_WORKAROUND(BOOST_DINKUMWARE_STDLIB,BOOST_TESTED_AT(804))
+    /* std::unordered_map copy assignment does not propagate allocators, as
+     * reported in https://github.com/boostorg/poly_collection/issues/16
+     */
+
+    if(!Propagate)
 #endif
     BOOST_TEST(p2.get_allocator().comes_from(Propagate?root1:root2));
   }
@@ -139,6 +155,14 @@ void test_allocator_aware_construction()
      */
 
     if(!((Propagate&&AlwaysEqual)||(!Propagate&&!AlwaysEqual)))
+#endif
+#if !defined(BOOST_MSVC)&&\
+    BOOST_WORKAROUND(BOOST_DINKUMWARE_STDLIB,BOOST_TESTED_AT(804))
+    /* std::unordered_map move assignment does not propagate equal allocators,
+     * as reported in https://github.com/boostorg/poly_collection/issues/16
+     */
+
+    if(!(Propagate&&AlwaysEqual))
 #endif
     BOOST_TEST(p3.get_allocator().comes_from(Propagate?root1:root2));
   }
@@ -174,6 +198,14 @@ void test_allocator_aware_construction()
        /* std::unordered_map::swap always and only swaps unequal allocators */
 
        &&!((Propagate&&AlwaysEqual)||(!Propagate&&!AlwaysEqual))
+#endif
+#if !defined(BOOST_MSVC)&&\
+    BOOST_WORKAROUND(BOOST_DINKUMWARE_STDLIB,BOOST_TESTED_AT(804))
+      /* std::unordered_map::swap does not swap equal allocators, as reported
+       * in https://github.com/boostorg/poly_collection/issues/16
+       */
+
+      &&!(Propagate&&AlwaysEqual)
 #endif
     ){
       BOOST_TEST(p2.get_allocator().comes_from(Propagate?root2:root1));
@@ -286,6 +318,13 @@ void test_construction()
 
 void test_scoped_allocator()
 {
+#if BOOST_WORKAROUND(BOOST_LIBSTDCXX_VERSION,<50000)&&\
+    BOOST_WORKAROUND(BOOST_LIBSTDCXX_VERSION,>40704)
+  /* std::scoped_allocator_adaptor not assignable, see
+   * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=65279 .
+   * The bug prevents poly_collection below from creating any segment.
+   */
+#else
   using vector_allocator=rooted_allocator<char>;
   using vector=std::vector<char,vector_allocator>;
   using concept_=boost::type_erasure::relaxed;
@@ -305,15 +344,16 @@ void test_scoped_allocator()
   poly_collection      p{al};
 
   p.emplace<vector>();
-  auto& s=boost::type_erasure::any_cast<vector&>(*p.begin());
+  auto& s=*p.begin<vector>();
   BOOST_TEST(p.get_allocator().comes_from(roote));
 
-#if BOOST_WORKAROUND(BOOST_MSVC,>=1910)
+#if BOOST_WORKAROUND(BOOST_MSVC,>=1910)&&BOOST_WORKAROUND(BOOST_MSVC,<1916)
   /* https://developercommunity.visualstudio.com/content/problem/246251/
    *   3136309.html
    */
 #else
   BOOST_TEST(s.get_allocator().comes_from(rootv));  
+#endif
 #endif
 }
 

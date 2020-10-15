@@ -1,4 +1,4 @@
-// Copyright 2018 Hans Dembinski
+// Copyright 2018-2019 Hans Dembinski
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -8,15 +8,13 @@
 #define BOOST_HISTOGRAM_TEST_UTILITY_AXIS_HPP
 
 #include <boost/core/lightweight_test.hpp>
-#include <boost/histogram/axis/ostream.hpp>
 #include <boost/histogram/fwd.hpp>
-#include "utility_meta.hpp"
 
 namespace boost {
 namespace histogram {
 
-template <typename Axis>
-void test_axis_iterator(const Axis& a, int begin, int end) {
+template <class Axis>
+void test_axis_iterator(const Axis& a, axis::index_type begin, axis::index_type end) {
   for (auto bin : a) {
     BOOST_TEST_EQ(bin, a.bin(begin));
     ++begin;

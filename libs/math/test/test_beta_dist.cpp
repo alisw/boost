@@ -11,7 +11,7 @@
 // Basic sanity tests for the beta Distribution.
 
 // http://members.aol.com/iandjmsmith/BETAEX.HTM  beta distribution calculator
-// Appreas to be a 64-bit calculator showing 17 decimal digit (last is noisy).
+// Appears to be a 64-bit calculator showing 17 decimal digit (last is noisy).
 // Similar to mathCAD?
 
 // http://www.nuhertz.com/statmat/distributions.html#Beta
@@ -42,7 +42,7 @@ using boost::math::beta;
 
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp> // for test_main
-#include <boost/test/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE_FRACTION
+#include <boost/test/tools/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE_FRACTION
 
 #include "test_out_of_range.hpp"
 

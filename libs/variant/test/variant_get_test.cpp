@@ -3,7 +3,7 @@
 // See http://www.boost.org for updates, documentation, and revision history.
 //-----------------------------------------------------------------------------
 //
-// Copyright (c) 2014-2019 Antony Polukhin
+// Copyright (c) 2014-2020 Antony Polukhin
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -11,6 +11,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4127) // conditional expression is constant
+#pragma warning(disable: 4181) // qualifier applied to reference type; ignored
 #endif
 
 #include "boost/variant/get.hpp"

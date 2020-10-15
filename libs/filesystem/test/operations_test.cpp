@@ -18,6 +18,9 @@
 #endif
 
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/directory.hpp>
+#include <boost/filesystem/exception.hpp>
+#include <boost/filesystem/file_status.hpp>
 
 #include <boost/config.hpp>
 # if defined( BOOST_NO_STD_WSTRING )
@@ -25,7 +28,8 @@
 # endif
 
 #include <boost/cerrno.hpp>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/system/error_code.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/detail/lightweight_main.hpp>
 
 namespace fs = boost::filesystem;
@@ -79,6 +83,7 @@ inline void unsetenv_(const char* name)
 
 #else
 
+#include <unistd.h>  // sleep
 #include <stdlib.h>  // allow unqualifed calls to env funcs on SunOS
 
 inline void setenv_(const char* name, const char* val, int ovw)
@@ -151,7 +156,7 @@ namespace
   }
 
   template< typename F >
-    bool throws_fs_error(F func, errno_t en, int line)
+  bool throws_fs_error(F func, errno_t en, int line)
   {
     try { func(); }
 
@@ -272,7 +277,7 @@ namespace
   //void dump_tree(const fs::path & root)
   //{
   //  cout << "dumping tree rooted at " << root << endl;
-  //  for (fs::recursive_directory_iterator it (root, fs::symlink_option::recurse);
+  //  for (fs::recursive_directory_iterator it (root, fs::directory_options::follow_directory_symlink);
   //       it != fs::recursive_directory_iterator();
   //       ++it)
   //  {
@@ -642,18 +647,19 @@ namespace
 
   int walk_tree(bool recursive)
   {
-//    cout << "    walk_tree" << endl;
+    //cout << "    walk_tree" << endl;
     error_code ec;
     int d1f1_count = 0;
     for (fs::recursive_directory_iterator it (dir,
-      recursive ? fs::symlink_option::recurse : fs::symlink_option::no_recurse);
+      recursive ? (fs::directory_options::follow_directory_symlink | fs::directory_options::skip_dangling_symlinks) : fs::directory_options::none);
          it != fs::recursive_directory_iterator();
          it.increment(ec))
     {
-//      cout << "      " << it->path() << endl;
+      //cout << "      " << it->path() << " : " << ec << endl;
       if (it->path().filename() == "d1f1")
         ++d1f1_count;
     }
+    //cout << "      last error : " << ec << endl;
     return d1f1_count;
   }
 
@@ -668,7 +674,7 @@ namespace
     cout << "  with error_code argument" << endl;
     boost::system::error_code ec;
     int d1f1_count = 0;
-    fs::recursive_directory_iterator it(dir, fs::symlink_option::no_recurse);
+    fs::recursive_directory_iterator it(dir, fs::directory_options::none);
     fs::recursive_directory_iterator it2(it);  // test single pass shallow copy semantics
     for (;
          it != fs::recursive_directory_iterator();
@@ -728,6 +734,7 @@ namespace
       {
         BOOST_TEST(fs::is_regular_file(it->status()));
         BOOST_TEST(fs::is_symlink(it->symlink_status()));
+        BOOST_TEST(fs::is_symlink(*it));
       }
       else if (it->path().filename() == "dangling_symlink")
       {
@@ -1587,29 +1594,87 @@ namespace
     BOOST_TEST(fs::exists(d1x));
     BOOST_TEST(!fs::exists(d1x / "f2"));
     cout << " copy " << f1x << " to " << d1x / "f2" << endl;
-    fs::copy_file(f1x, d1x / "f2");
+    bool file_copied = fs::copy_file(f1x, d1x / "f2");
     cout << " copy complete" << endl;
+    BOOST_TEST(file_copied);
     BOOST_TEST(fs::exists(f1x));
     BOOST_TEST(fs::exists(d1x / "f2"));
     BOOST_TEST(!fs::is_directory(d1x / "f2"));
     verify_file(d1x / "f2", "file-f1");
 
     bool copy_ex_ok = false;
-    try { fs::copy_file(f1x, d1x / "f2"); }
+    file_copied = false;
+    try { file_copied = fs::copy_file(f1x, d1x / "f2"); }
     catch (const fs::filesystem_error &) { copy_ex_ok = true; }
     BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(!file_copied);
 
+    file_copied = false;
     copy_ex_ok = false;
-    try { fs::copy_file(f1x, d1x / "f2", fs::copy_option::fail_if_exists); }
+    try { file_copied = fs::copy_file(f1x, d1x / "f2", fs::copy_options::none); }
     catch (const fs::filesystem_error &) { copy_ex_ok = true; }
     BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(!file_copied);
 
+    fs::remove(d1x / "f2");
     create_file(d1x / "f2", "1234567890");
     BOOST_TEST_EQ(fs::file_size(d1x / "f2"), 10U);
+    file_copied = false;
     copy_ex_ok = true;
-    try { fs::copy_file(f1x, d1x / "f2", fs::copy_option::overwrite_if_exists); }
+    try { file_copied = fs::copy_file(f1x, d1x / "f2", fs::copy_options::skip_existing); }
     catch (const fs::filesystem_error &) { copy_ex_ok = false; }
     BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(!file_copied);
+    BOOST_TEST_EQ(fs::file_size(d1x / "f2"), 10U);
+    verify_file(d1x / "f2", "1234567890");
+
+    file_copied = false;
+    copy_ex_ok = true;
+    try { file_copied = fs::copy_file(f1x, d1x / "f2-non-existing", fs::copy_options::skip_existing); }
+    catch (const fs::filesystem_error &) { copy_ex_ok = false; }
+    BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(file_copied);
+    BOOST_TEST_EQ(fs::file_size(d1x / "f2-non-existing"), 7U);
+    verify_file(d1x / "f2-non-existing", "file-f1");
+    fs::remove(d1x / "f2-non-existing");
+
+    file_copied = false;
+    copy_ex_ok = true;
+    try { file_copied = fs::copy_file(f1x, d1x / "f2", fs::copy_options::update_existing); }
+    catch (const fs::filesystem_error &) { copy_ex_ok = false; }
+    BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(!file_copied);
+    BOOST_TEST_EQ(fs::file_size(d1x / "f2"), 10U);
+    verify_file(d1x / "f2", "1234567890");
+
+    // Sleep for a while so that the last modify time is more recent for new files
+#if defined(BOOST_POSIX_API)
+    sleep(2);
+#else
+    Sleep(2000);
+#endif
+
+    create_file(d1x / "f2-more-recent", "x");
+    BOOST_TEST_EQ(fs::file_size(d1x / "f2-more-recent"), 1U);
+    file_copied = false;
+    copy_ex_ok = true;
+    try { file_copied = fs::copy_file(d1x / "f2-more-recent", d1x / "f2", fs::copy_options::update_existing); }
+    catch (const fs::filesystem_error &) { copy_ex_ok = false; }
+    BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(file_copied);
+    BOOST_TEST_EQ(fs::file_size(d1x / "f2"), 1U);
+    verify_file(d1x / "f2", "x");
+    fs::remove(d1x / "f2-more-recent");
+
+    fs::remove(d1x / "f2");
+    create_file(d1x / "f2", "1234567890");
+    BOOST_TEST_EQ(fs::file_size(d1x / "f2"), 10U);
+    file_copied = false;
+    copy_ex_ok = true;
+    try { file_copied = fs::copy_file(f1x, d1x / "f2", fs::copy_options::overwrite_existing); }
+    catch (const fs::filesystem_error &) { copy_ex_ok = false; }
+    BOOST_TEST(copy_ex_ok);
+    BOOST_TEST(file_copied);
     BOOST_TEST_EQ(fs::file_size(d1x / "f2"), 7U);
     verify_file(d1x / "f2", "file-f1");
   }
@@ -1795,6 +1860,7 @@ namespace
       BOOST_TEST(fs::system_complete(fs::path("//share")).generic_string()
         ==  "//share");
 
+#if defined(BOOST_FILESYSTEM_HAS_MKLINK)
       // Issue 9016 asked that NTFS directory junctions be recognized as directories.
       // That is equivalent to recognizing them as symlinks, and then the normal symlink
       // mechanism takes care of recognizing them as directories.
@@ -1803,7 +1869,6 @@ namespace
       // and other advantages over symlinks. They can be created from the command line
       // with "mklink /j junction-name target-path".
 
-      if (create_symlink_ok)  // only if symlinks supported
       {
         cout << "  directory junction tests..." << endl;
         BOOST_TEST(fs::exists(dir));
@@ -1836,8 +1901,7 @@ namespace
         BOOST_TEST(fs::is_regular_file(junc / "d1f1"));
 
         int count = 0;
-        for (fs::directory_iterator itr(junc);
-          itr != fs::directory_iterator(); ++itr)
+        for (fs::directory_iterator itr(junc); itr != fs::directory_iterator(); ++itr)
         {
           //cout << itr->path() << endl;
           ++count;
@@ -1860,7 +1924,7 @@ namespace
         BOOST_TEST(fs::exists(dir));
         BOOST_TEST(fs::exists(dir / "d1/d1f1"));
       }
-
+#endif // defined(BOOST_FILESYSTEM_HAS_MKLINK)
     } // Windows
 
     else if (platform == "POSIX")
@@ -1911,6 +1975,15 @@ namespace
       cout << "       free = " << spi.free << '\n';
       cout << "  available = " << spi.available << '\n';
 #   endif
+
+    // Test that we can specify path to file
+    fs::path file = dir / "file";
+    create_file(file);
+
+    fs::space_info spi_file(fs::space(file));
+    BOOST_TEST_EQ(spi_file.capacity, spi.capacity);
+
+    fs::remove(file);
   }
 
   //  equivalent_tests  ----------------------------------------------------------------//
@@ -2210,11 +2283,7 @@ int cpp_main(int argc, char* argv[])
     platform = "POSIX";
 # elif defined(BOOST_WINDOWS_API)
     platform = "Windows";
-#   if !defined(__MINGW32__) && !defined(__CYGWIN__)
-      language_id = ::GetUserDefaultUILanguage();
-#   else
-      language_id = 0x0409; // Assume US English
-#   endif
+    language_id = ::GetUserDefaultUILanguage();
 # else
 #   error neither BOOST_POSIX_API nor BOOST_WINDOWS_API is defined. See boost/system/api_config.hpp
 # endif

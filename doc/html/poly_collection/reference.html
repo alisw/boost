@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Reference</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../poly_collection.html" title="Chapter&#160;28.&#160;Boost.PolyCollection">
+<link rel="up" href="../poly_collection.html" title="Chapter 28. Boost.PolyCollection">
 <link rel="prev" href="performance.html" title="Performance">
 <link rel="next" href="future_work.html" title="Future work">
 </head>
@@ -77,14 +77,14 @@
 <li class="listitem">
             A family <span class="bold"><strong>Interface</strong></span> of permissible interface
             types and, for each <code class="computeroutput"><span class="identifier">I</span></code>
-            &#8712; <span class="bold"><strong>Interface</strong></span>, the family <span class="bold"><strong>Implementation</strong></span>(<code class="computeroutput"><span class="identifier">I</span></code>)
+            ∈ <span class="bold"><strong>Interface</strong></span>, the family <span class="bold"><strong>Implementation</strong></span>(<code class="computeroutput"><span class="identifier">I</span></code>)
             of types satisfying <code class="computeroutput"><span class="identifier">I</span></code>.
           </li>
 <li class="listitem">
             For a given interface type <code class="computeroutput"><span class="identifier">I</span></code>,
             an operation <span class="bold"><strong>subobject</strong></span>(<code class="computeroutput"><span class="identifier">x</span></code>) that maps each value of an implementation
             type to its internally used value <code class="computeroutput"><span class="identifier">y</span></code>
-            of a possibly different implementation type <a href="#ftn.poly_collection.reference.polymorphism_models.f0" class="footnote" name="poly_collection.reference.polymorphism_models.f0"><sup class="footnote">[20]</sup></a>.
+            of a possibly different implementation type <a href="#ftn.poly_collection.reference.polymorphism_models.f0" class="footnote" name="poly_collection.reference.polymorphism_models.f0"><sup class="footnote">[22]</sup></a>.
           </li>
 </ul></div>
 <p>
@@ -122,24 +122,24 @@
         of some type <code class="computeroutput"><span class="identifier">T</span></code> implementing
         a given interface <code class="computeroutput"><span class="identifier">I</span></code> under
         an implicitly associated polymorphism model. Polymorphic containers satisfy
-        the requirements for <a href="http://en.cppreference.com/w/cpp/concept/Container" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">Container</span></code></strong></span></a>
-        and <a href="http://en.cppreference.com/w/cpp/concept/AllocatorAwareContainer" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">AllocatorAwareContainer</span></code></strong></span></a>
+        the requirements for <a href="http://en.cppreference.com/w/cpp/named_req/Container" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">Container</span></code></strong></span></a>
+        and <a href="http://en.cppreference.com/w/cpp/named_req/AllocatorAwareContainer" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">AllocatorAwareContainer</span></code></strong></span></a>
         with the following modifications:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
             Where it occurs, replace the requirement that <code class="computeroutput"><span class="identifier">T</span></code>
-            be <a href="http://en.cppreference.com/w/cpp/concept/CopyInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyInsertable</span></code></strong></span></a>,
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>,
-            <a href="http://en.cppreference.com/w/cpp/concept/MoveInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveInsertable</span></code></strong></span></a>,
-            <a href="http://en.cppreference.com/w/cpp/concept/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>
-            or <a href="http://en.cppreference.com/w/cpp/concept/EqualityComparable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">EqualityComparable</span></code></strong></span></a>,
+            be <a href="http://en.cppreference.com/w/cpp/named_req/CopyInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyInsertable</span></code></strong></span></a>,
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>,
+            <a href="http://en.cppreference.com/w/cpp/named_req/MoveInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveInsertable</span></code></strong></span></a>,
+            <a href="http://en.cppreference.com/w/cpp/named_req/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>
+            or <a href="http://en.cppreference.com/w/cpp/named_req/EqualityComparable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">EqualityComparable</span></code></strong></span></a>,
             with the following semantic clause: may throw if some subobject in the
-            container is not <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            (respectively, <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>,
-            <a href="http://en.cppreference.com/w/cpp/concept/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>,
-            <a href="http://en.cppreference.com/w/cpp/concept/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>,
-            <a href="http://en.cppreference.com/w/cpp/concept/EqualityComparable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">EqualityComparable</span></code></strong></span></a>).
+            container is not <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            (respectively, <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>,
+            <a href="http://en.cppreference.com/w/cpp/named_req/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>,
+            <a href="http://en.cppreference.com/w/cpp/named_req/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>,
+            <a href="http://en.cppreference.com/w/cpp/named_req/EqualityComparable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">EqualityComparable</span></code></strong></span></a>).
           </li>
 <li class="listitem">
             Replace [container.requirements.general]/3 with: <code class="computeroutput"><span class="identifier">allocator_type</span></code>
@@ -147,11 +147,11 @@
             implementing <code class="computeroutput"><span class="identifier">I</span></code> and the
             associated type <code class="computeroutput"><span class="identifier">A</span></code> =
             <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator_traits</span><span class="special">&lt;</span><span class="identifier">allocator_type</span><span class="special">&gt;::</span><span class="identifier">rebind_alloc</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>,
-            <code class="computeroutput"><span class="identifier">U</span></code> is <a href="http://en.cppreference.com/w/cpp/concept/CopyInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyInsertable</span></code></strong></span></a>
-            (respectively <a href="http://en.cppreference.com/w/cpp/concept/MoveInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveInsertable</span></code></strong></span></a>)
+            <code class="computeroutput"><span class="identifier">U</span></code> is <a href="http://en.cppreference.com/w/cpp/named_req/CopyInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyInsertable</span></code></strong></span></a>
+            (respectively <a href="http://en.cppreference.com/w/cpp/named_req/MoveInsertable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveInsertable</span></code></strong></span></a>)
             with respect to <code class="computeroutput"><span class="identifier">A</span></code> if
-            and only if <code class="computeroutput"><span class="identifier">U</span></code> is <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            (respectively <a href="http://en.cppreference.com/w/cpp/concept/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>);
+            and only if <code class="computeroutput"><span class="identifier">U</span></code> is <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            (respectively <a href="http://en.cppreference.com/w/cpp/named_req/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>);
             all subobjects of type <code class="computeroutput"><span class="identifier">U</span></code>
             stored in these containers shall be constructed using the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator_traits</span><span class="special">&lt;</span><span class="identifier">A</span><span class="special">&gt;::</span><span class="identifier">construct</span></code> function and destroyed using
             the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator_traits</span><span class="special">&lt;</span><span class="identifier">A</span><span class="special">&gt;::</span><span class="identifier">destroy</span></code> function; these functions (or
@@ -187,10 +187,10 @@
               it implements the interface associated to the container,
             </li>
 <li class="listitem">
-              it is <a href="http://en.cppreference.com/w/cpp/concept/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>,
+              it is <a href="http://en.cppreference.com/w/cpp/named_req/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>,
             </li>
 <li class="listitem">
-              it is <a href="http://en.cppreference.com/w/cpp/concept/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>
+              it is <a href="http://en.cppreference.com/w/cpp/named_req/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>
               or <a href="http://en.cppreference.com/w/cpp/types/is_move_constructible" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">is_nothrow_move_constructible</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;::</span><span class="identifier">value</span></code></a> is <code class="computeroutput"><span class="keyword">true</span></code>.
             </li>
 </ul></div>
@@ -216,9 +216,9 @@
             </li>
 <li class="listitem">
               No exceptions are thrown associated to some subobject type not being
-              <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>,
-              <a href="http://en.cppreference.com/w/cpp/concept/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>
-              or <a href="http://en.cppreference.com/w/cpp/concept/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>.
+              <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>,
+              <a href="http://en.cppreference.com/w/cpp/named_req/MoveConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveConstructible</span></code></strong></span></a>
+              or <a href="http://en.cppreference.com/w/cpp/named_req/MoveAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">MoveAssignable</span></code></strong></span></a>.
             </li>
 </ul></div>
 <p>
@@ -248,7 +248,7 @@
           traversal). Local base iterators refer to <code class="computeroutput"><span class="identifier">value_type</span></code>,
           whereas (<code class="computeroutput"><span class="identifier">const_</span></code>)<code class="computeroutput"><span class="identifier">local_iterator</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
           refers to <code class="computeroutput"><span class="identifier">U</span></code>. All local
-          iterators model <a href="http://en.cppreference.com/w/cpp/concept/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>.
+          iterators model <a href="http://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>.
           Local base iterators may not be used to iterate across segments, and comparing
           local base iterators associated to different segments is undefined behavior.
           A (const) local base iterator to a segment for <code class="computeroutput"><span class="identifier">U</span></code>
@@ -259,7 +259,7 @@
           Insertion and erasure do not invalidate iterators (global or local) except
           those from the insertion/erasure point to the end of the affected segment,
           if its capacity is not exceeded, or all iterators/references to the segment
-          otherwise <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.f0" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.f0"><sup class="footnote">[21]</sup></a>.
+          otherwise <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.f0" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.f0"><sup class="footnote">[23]</sup></a>.
         </p>
 <p>
           For the description of the remaining requirements of polymorphic collections,
@@ -351,7 +351,7 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.local_base_iterator"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">local_base_iterator</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
             with same value type, difference type and pointer and reference types
             as <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">iterator</span></code>, valid for accessing elements
             of a given segment. Implicily convertible to <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_local_base_iterator</span></code>,
@@ -362,7 +362,7 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.const_local_base_iterator"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_local_base_iterator</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
             with same value type, difference type and pointer and reference types
             as <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_iterator</span></code>, valid for accessing
             elements of a given segment. Explicitly convertible to <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_local_iterator</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
@@ -372,7 +372,7 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.local_iterator"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">local_iterator</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
             with value type <code class="computeroutput"><span class="identifier">U</span></code>, reference
             type <code class="computeroutput"><span class="identifier">U</span><span class="special">&amp;</span></code>,
             pointer type <code class="computeroutput"><span class="identifier">U</span><span class="special">*</span></code>
@@ -384,7 +384,7 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.const_local_iterator"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_local_iterator</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/RandomAccessIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">RandomAccessIterator</span></code></strong></span></a>
             with value type <code class="computeroutput"><span class="identifier">U</span></code>, reference
             type <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">U</span><span class="special">&amp;</span></code>, pointer type <code class="computeroutput"><span class="keyword">const</span>
             <span class="identifier">U</span><span class="special">*</span></code>
@@ -396,8 +396,8 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.const_base_segment_info"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_base_segment_info</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            and <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            and <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
             type with information about a given segment of a collection. If <code class="computeroutput"><span class="identifier">ci</span></code> is a possibly <code class="computeroutput"><span class="keyword">const</span></code>
             object of type <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_base_segment_info</span></code> associated
             to the segment of <code class="computeroutput"><span class="identifier">c</span></code> for
@@ -436,8 +436,8 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.base_segment_info"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">base_segment_info</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            and <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            and <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
             type publicly derived from <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_base_segment_info</span></code>
             and exposing its public interface. Additionally, if <code class="computeroutput"><span class="identifier">i</span></code>
             is an object of type <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">base_segment_info</span></code>
@@ -462,8 +462,8 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.const_segment_info"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_segment_info</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            and <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            and <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
             type with information about the segment for <code class="computeroutput"><span class="identifier">U</span></code>.
             If <code class="computeroutput"><span class="identifier">ci</span></code> is a possibly
             <code class="computeroutput"><span class="keyword">const</span></code> object of type <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_segment_info</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
@@ -488,8 +488,8 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.segment_info"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">segment_info</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            and <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            and <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
             type publicly derived from <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_segment_info</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code> and exposing its public interface.
             Additionally, if <code class="computeroutput"><span class="identifier">i</span></code> is
             an object of type <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">segment_info</span><span class="special">&lt;</span><span class="identifier">U</span><span class="special">&gt;</span></code>
@@ -508,22 +508,22 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.base_segment_info_iterator"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">base_segment_info_iterator</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/InputIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">InputIterator</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/InputIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">InputIterator</span></code></strong></span></a>
             with value type and reference type <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">base_segment_info</span></code>.
           </p>
 <p>
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.const_base_segment_info_iterator"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_base_segment_info_iterator</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/InputIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">InputIterator</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/InputIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">InputIterator</span></code></strong></span></a>
             with value type and reference type <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_base_segment_info</span></code>.
           </p>
 <p>
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.const_segment_traversal_info"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_segment_traversal_info</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            and <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            and <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
             type with <code class="computeroutput"><span class="keyword">const</span></code> member functions
             <code class="computeroutput"><span class="identifier">begin</span></code>/<code class="computeroutput"><span class="identifier">cbegin</span></code>
             and <code class="computeroutput"><span class="identifier">end</span></code>/<code class="computeroutput"><span class="identifier">cend</span></code> returning <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_base_segment_info_iterator</span></code>
@@ -534,8 +534,8 @@
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.types.segment_traversal_info"></a><code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">segment_traversal_info</span></code>
           </p>
 <p>
-            <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
-            and <a href="http://en.cppreference.com/w/cpp/concept/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
+            <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+            and <a href="http://en.cppreference.com/w/cpp/named_req/CopyAssignable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyAssignable</span></code></strong></span></a>
             type publicly derived from with <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">const_segment_traversal_info</span></code>
             and exposing its public interface. Additionally, provides non-const member
             functions <code class="computeroutput"><span class="identifier">begin</span></code> and
@@ -554,7 +554,7 @@
           </p>
 <p>
             <span class="bold"><strong>Requires:</strong></span> <code class="computeroutput"><span class="identifier">C</span><span class="special">::</span><span class="identifier">allocator_type</span></code>
-            is <a href="http://en.cppreference.com/w/cpp/concept/DefaultConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">DefaultConstructible</span></code></strong></span></a>.
+            is <a href="http://en.cppreference.com/w/cpp/named_req/DefaultConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">DefaultConstructible</span></code></strong></span></a>.
             [<code class="computeroutput"><span class="identifier">j1</span></code>, <code class="computeroutput"><span class="identifier">j2</span></code>)
             can be inserted into <code class="computeroutput"><span class="identifier">C</span></code>.<br>
             <span class="bold"><strong>Effects:</strong></span> Copy constructs the internal
@@ -791,8 +791,8 @@
             is acceptable, registers <code class="computeroutput"><span class="identifier">T</span></code>
             if needed. If <code class="computeroutput"><span class="identifier">Q</span></code> = <code class="computeroutput"><span class="identifier">T</span></code> and <code class="computeroutput"><span class="identifier">T</span></code>
             is not acceptable, throws. If <code class="computeroutput"><span class="identifier">Q</span></code>
-            &#8800; <code class="computeroutput"><span class="identifier">T</span></code> and <code class="computeroutput"><span class="identifier">Q</span></code> is not registered, throws. If <code class="computeroutput"><span class="identifier">x</span></code> is not a non-const rvalue expression
-            and <code class="computeroutput"><span class="identifier">Q</span></code> is not <a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>,
+            ≠ <code class="computeroutput"><span class="identifier">T</span></code> and <code class="computeroutput"><span class="identifier">Q</span></code> is not registered, throws. If <code class="computeroutput"><span class="identifier">x</span></code> is not a non-const rvalue expression
+            and <code class="computeroutput"><span class="identifier">Q</span></code> is not <a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>,
             throws. Inserts an element with a subobject move constructed or copy
             constructed from the subobject of <code class="computeroutput"><span class="identifier">x</span></code>:
             (1) at the end of the corresponding segment; (2) just before the position
@@ -834,7 +834,7 @@
 <p>
             <span class="bold"><strong>Effects:</strong></span> For each of the elements of
             the range in succession, registers the type of its subobject if needed
-            and inserts it into the collection <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0"><sup class="footnote">[22]</sup></a>.
+            and inserts it into the collection <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0"><sup class="footnote">[24]</sup></a>.
           </p>
 <p>
             <a name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.insert_hint_range"></a><code class="computeroutput"><span class="identifier">c</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">it</span><span class="special">,</span><span class="identifier">i1</span><span class="special">,</span><span class="identifier">i2</span><span class="special">)</span></code>
@@ -843,7 +843,7 @@
             <span class="bold"><strong>Effects:</strong></span> If <code class="computeroutput"><span class="identifier">it</span><span class="special">==</span><span class="identifier">c</span><span class="special">.</span><span class="identifier">end</span><span class="special">()</span></code>, equivalent to <code class="computeroutput"><span class="keyword">while</span><span class="special">(</span><span class="identifier">i1</span><span class="special">!=</span><span class="identifier">i2</span><span class="special">)</span><span class="identifier">c</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">it</span><span class="special">,*</span><span class="identifier">i1</span><span class="special">++)</span></code>, otherwise inserts each of the elements
             in [<code class="computeroutput"><span class="identifier">i1</span></code>, <code class="computeroutput"><span class="identifier">i2</span></code>) in succession with a hint pointing
             to <code class="computeroutput"><span class="special">*</span><span class="identifier">it</span></code>
-            <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1"><sup class="footnote">[23]</sup></a>.
+            <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1"><sup class="footnote">[25]</sup></a>.
           </p>
 <p>
             <code class="computeroutput"><span class="identifier">c</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">it</span><span class="special">,</span><span class="identifier">it1</span><span class="special">,</span><span class="identifier">it2</span><span class="special">)</span></code><br>
@@ -855,7 +855,7 @@
             version, otherwise for each of the elements in [<code class="computeroutput"><span class="identifier">i1</span></code>,
             <code class="computeroutput"><span class="identifier">i2</span></code>) in succession registers
             the type of its subobject if needed and inserts it into the collection
-            with a hint pointing to <code class="computeroutput"><span class="special">*</span><span class="identifier">it</span></code> <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2"><sup class="footnote">[24]</sup></a>.
+            with a hint pointing to <code class="computeroutput"><span class="special">*</span><span class="identifier">it</span></code> <a href="#ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2" class="footnote" name="poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2"><sup class="footnote">[26]</sup></a>.
           </p>
 <p>
             <code class="computeroutput"><span class="identifier">c</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">lbit</span><span class="special">,</span><span class="identifier">i1</span><span class="special">,</span><span class="identifier">i2</span><span class="special">)</span></code>
@@ -985,7 +985,7 @@
 </pre>
 <p>
           <code class="computeroutput"><span class="identifier">not_copy_constructible</span></code>
-          is thrown when a copy operation is tried that involves a non-<a href="http://en.cppreference.com/w/cpp/concept/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
+          is thrown when a copy operation is tried that involves a non-<a href="http://en.cppreference.com/w/cpp/named_req/CopyConstructible" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">CopyConstructible</span></code></strong></span></a>
           type.
         </p>
 <p>
@@ -1011,7 +1011,7 @@
 </pre>
 <p>
           <code class="computeroutput"><span class="identifier">not_equality_comparable</span></code>
-          is thrown when comparing two collections for (in)equality involves a non-<a href="http://en.cppreference.com/w/cpp/concept/EqualityComparable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">EqualityComparable</span></code></strong></span></a>
+          is thrown when comparing two collections for (in)equality involves a non-<a href="http://en.cppreference.com/w/cpp/named_req/EqualityComparable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">EqualityComparable</span></code></strong></span></a>
           type.
         </p>
 <p>
@@ -1380,7 +1380,7 @@
           where <code class="computeroutput"><span class="identifier">Signature</span></code> must be
           a type of the form <code class="computeroutput"><span class="identifier">R</span><span class="special">(</span><span class="identifier">Args</span><span class="special">...)</span></code>.
           <code class="computeroutput"><span class="identifier">function_collection_value_type</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code> wraps a reference to an object modeling
-          <a href="http://en.cppreference.com/w/cpp/concept/Callable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">Callable</span></code></strong></span></a>
+          <a href="http://en.cppreference.com/w/cpp/named_req/Callable" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">Callable</span></code></strong></span></a>
           for the given <code class="computeroutput"><span class="identifier">Signature</span></code>.
           The interface provided partially replicates that of <a href="http://en.cppreference.com/w/cpp/utility/functional/function" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">function</span></code></a> and adds some extra
           facilities.
@@ -2349,7 +2349,7 @@
         <code class="computeroutput"><span class="identifier">T</span><span class="special">&amp;</span></code>
         if pointing to a segment for <code class="computeroutput"><span class="identifier">T</span></code>
         and <code class="computeroutput"><span class="identifier">T</span></code> is in <code class="computeroutput"><span class="identifier">Ts</span><span class="special">...</span></code>
-        <a href="#ftn.poly_collection.reference.header_boost_poly_collection_alg.f0" class="footnote" name="poly_collection.reference.header_boost_poly_collection_alg.f0"><sup class="footnote">[25]</sup></a>.<br> <span class="bold"><strong>Effects:</strong></span> Equivalent to
+        <a href="#ftn.poly_collection.reference.header_boost_poly_collection_alg.f0" class="footnote" name="poly_collection.reference.header_boost_poly_collection_alg.f0"><sup class="footnote">[27]</sup></a>.<br> <span class="bold"><strong>Effects:</strong></span> Equivalent to
         <code class="computeroutput"><span class="identifier">expr</span></code>.<br> <span class="bold"><strong>Returns:</strong></span>
         <code class="computeroutput"><span class="identifier">expr</span></code>.<br> <span class="bold"><strong>Complexity:</strong></span>
         That of <code class="computeroutput"><span class="identifier">expr</span></code>.
@@ -2357,28 +2357,28 @@
 </div>
 <div class="footnotes">
 <br><hr style="width:100; text-align:left;margin-left: 0">
-<div id="ftn.poly_collection.reference.polymorphism_models.f0" class="footnote"><p><a href="#poly_collection.reference.polymorphism_models.f0" class="para"><sup class="para">[20] </sup></a>
+<div id="ftn.poly_collection.reference.polymorphism_models.f0" class="footnote"><p><a href="#poly_collection.reference.polymorphism_models.f0" class="para"><sup class="para">[22] </sup></a>
               This is a metalinguistic definition not directly expressible in C++.
               There are equivalent formulations that can indeed be realized in C++,
               but they add little to the comprehension of the concepts.
             </p></div>
-<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.f0" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.f0" class="para"><sup class="para">[21] </sup></a>
+<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.f0" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.f0" class="para"><sup class="para">[23] </sup></a>
             The global <code class="computeroutput"><span class="identifier">end</span><span class="special">()</span></code>
             iterator lies outside any segment, hence it always remain valid.
           </p></div>
-<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0" class="para"><sup class="para">[22] </sup></a>
+<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f0" class="para"><sup class="para">[24] </sup></a>
               Note that, unlike <code class="computeroutput"><span class="identifier">c</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">i1</span><span class="special">,</span><span class="identifier">i2</span><span class="special">)</span></code>, these versions do not throw due to
               type registration problems.
             </p></div>
-<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1" class="para"><sup class="para">[23] </sup></a>
+<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f1" class="para"><sup class="para">[25] </sup></a>
               That is, the hint remains stable even if <code class="computeroutput"><span class="identifier">it</span></code>
               may become invalid due to reallocations.
             </p></div>
-<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2" class="para"><sup class="para">[24] </sup></a>
+<div id="ftn.poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2" class="footnote"><p><a href="#poly_collection.reference.polymorphic_containers.polymorphic_collections.modifiers.f2" class="para"><sup class="para">[26] </sup></a>
               The two previous notes apply here.
             </p></div>
-<div id="ftn.poly_collection.reference.header_boost_poly_collection_alg.f0" class="footnote"><p><a href="#poly_collection.reference.header_boost_poly_collection_alg.f0" class="para"><sup class="para">[25] </sup></a>
-          Strictly speaking a proper <a href="http://en.cppreference.com/w/cpp/concept/ForwardIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">ForwardIterator</span></code></strong></span></a>
+<div id="ftn.poly_collection.reference.header_boost_poly_collection_alg.f0" class="footnote"><p><a href="#poly_collection.reference.header_boost_poly_collection_alg.f0" class="para"><sup class="para">[27] </sup></a>
+          Strictly speaking a proper <a href="http://en.cppreference.com/w/cpp/named_req/ForwardIterator" target="_top"><span class="bold"><strong><code class="computeroutput"><span class="identifier">ForwardIterator</span></code></strong></span></a>
           cannot behave like this as dereferencing must yield <span class="emphasis"><em>exactly</em></span>
           a (<code class="computeroutput"><span class="keyword">const</span></code>) <code class="computeroutput"><span class="identifier">value_type</span><span class="special">&amp;</span></code> value, which disallows this type of
           polymorphism.
@@ -2387,8 +2387,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2016-2018 Joaqu&#237;n M L&#243;pez
-      Mu&#241;oz<p>
+<td align="right"><div class="copyright-footer">Copyright © 2016-2020 Joaquín M López Muñoz<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

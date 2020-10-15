@@ -1,5 +1,5 @@
 /* Unit testing for outcomes
-(C) 2013-2019 Niall Douglas <http://www.nedproductions.biz/> (149 commits)
+(C) 2013-2020 Niall Douglas <http://www.nedproductions.biz/> (8 commits)
 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -27,7 +27,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#include "../../include/boost/outcome/experimental/status_result.hpp"
+#include <boost/outcome/experimental/status_result.hpp>
 
 template <class T, class S = BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::system_code, class NoValuePolicy = BOOST_OUTCOME_V2_NAMESPACE::experimental::policy::default_status_result_policy<T, S>> using result = BOOST_OUTCOME_V2_NAMESPACE::experimental::status_result<T, S, NoValuePolicy>;
 using BOOST_OUTCOME_V2_NAMESPACE::in_place_type;
@@ -104,8 +104,7 @@ protected:
   {
     assert(code.domain() == *this);                                  // NOLINT
     const auto &c = static_cast<const status_code_payload &>(code);  // NOLINT
-    static BOOST_OUTCOME_SYSTEM_ERROR2_CONSTEXPR14 BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::detail::generic_code_messages msgs;
-    return string_ref(msgs[static_cast<int>(c.value().ec)]);
+    return string_ref(BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::detail::generic_code_message(c.value().ec));
   }
   virtual void _do_throw_exception(const BOOST_OUTCOME_SYSTEM_ERROR2_NAMESPACE::status_code<void> &code) const override final  // NOLINT
   {

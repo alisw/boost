@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Identifiers</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;The Variadic Macro Data Library 1.9">
+<link rel="home" href="../../index.html" title="Chapter 1. The Variadic Macro Data Library 1.9">
 <link rel="up" href="../vmd_specific.html" title="Specific macros for working with data types">
 <link rel="prev" href="vmd_constraints.html" title="Macro constraints">
 <link rel="next" href="vmd_number.html" title="Numbers">
@@ -147,8 +147,8 @@
       </h5>
 <p>
         The specific macro used to test for an identifier in VMD is called BOOST_VMD_IS_IDENTIFIER.
-        The macro takes one required parameter which is the input against which to
-        test.
+        The macro takes a required parameter of variadic data which is the input
+        against which to test.
       </p>
 <p>
         When we invoke BOOST_VMD_IS_IDENTIFIER it returns 1 if the input represents
@@ -167,7 +167,7 @@
 <span class="identifier">BOOST_VMD_IS_IDENTIFIER</span><span class="special">(</span><span class="identifier">some_input</span><span class="special">)</span> <span class="comment">// returns 0 if 'some_input' is 'purple'</span>
 </pre>
 <p>
-        Essentially only registered identifiers can be found in VMD as identifiers.
+        Only registered identifiers can be found in VMD as identifiers.
       </p>
 <h5>
 <a name="variadic_macro_data.vmd_specific.vmd_identifier.h3"></a>
@@ -206,11 +206,12 @@
       </p>
 <h5>
 <a name="variadic_macro_data.vmd_specific.vmd_identifier.h4"></a>
-        <span class="phrase"><a name="variadic_macro_data.vmd_specific.vmd_identifier.parsing_identifiers_and_undefine"></a></span><a class="link" href="vmd_identifier.html#variadic_macro_data.vmd_specific.vmd_identifier.parsing_identifiers_and_undefine">Parsing
-        identifiers and undefined behavior</a>
+        <span class="phrase"><a name="variadic_macro_data.vmd_specific.vmd_identifier.parsing_identifier_constraints_a"></a></span><a class="link" href="vmd_identifier.html#variadic_macro_data.vmd_specific.vmd_identifier.parsing_identifier_constraints_a">Parsing
+        identifier constraints and undefined behavior</a>
       </h5>
 <p>
-        The technique for parsing identifiers, once it is determined that the input
+        The reason that the identifier constraints mentioned above exist is that
+        the technique for parsing identifiers, once it is determined that the input
         being parsed does not begin with a set of parentheses, uses preprocessor
         concatenation in its parsing. This technique involves the preprocessor '##'
         operator to concatenate input, and examine the results of that concatenation.
@@ -222,11 +223,12 @@
         happen. In practical use when preprocessor concatenation does not produce
         a valid preprocessing token, a compiler is most likely to generate a preprocessing
         error. If the compiler chooses not to issue a preprocessing error the outcome
-        will always mean that parsing an identifier will fail. But because the outcome
-        is undefined behavior there is no absolute way that the programmer can determine
-        what the outcome will be when preprocessor concatenation is used and the
-        input being parsed contains preprocessor input which does not meet the constraints
-        for parsing an identifier mentioned at the beginning of this topic.
+        will always be correct and mean that parsing an identifier will fail. But
+        because the outcome is undefined behavior there is no absolute way that the
+        programmer can determine what the outcome will be when preprocessor concatenation
+        is used and the input being parsed contains preprocessor input which does
+        not meet the constraints for parsing an identifier mentioned at the beginning
+        of this topic.
       </p>
 <p>
         In this documentation I will be using the abbreviation 'UB' as the shortened
@@ -251,7 +253,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2017 Tropic Software
+<td align="right"><div class="copyright-footer">Copyright © 2010-2017 Tropic Software
       East Inc</div></td>
 </tr></table>
 <hr>

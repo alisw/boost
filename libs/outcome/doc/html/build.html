@@ -54,6 +54,39 @@ Outcome/master@ned14/stable
 
 <p>Outcome will be made available by Conan at <code>&lt;outcome.hpp&gt;</code>.</p>
 
+<h2 id="usage-from-the-cmake-hunter-package-manager">Usage from the cmake hunter package manager</h2>
+
+<p>Outcome has not been submitted to the main cmake hunter package manager repo as
+it changes too frequently. You can however add it as a git submodule:</p>
+
+<pre><code>cd yourthirdpartyrepodir
+git submodule add https://github.com/ned14/quickcpplib
+git submodule add https://github.com/ned14/outcome
+cd ..
+git submodule update --init --recursive
+</code></pre>
+
+<p>Now tell cmake hunter about a git submoduled cmake hunter package by
+adding to your project&rsquo;s <code>cmake/Hunter/config.cmake</code>:</p>
+
+<pre><code>hunter_config(quickcpplib GIT_SUBMODULE &quot;yourthirdpartyrepodir/quickcpplib&quot;)
+hunter_config(outcome GIT_SUBMODULE &quot;yourthirdpartyrepodir/outcome&quot;)
+</code></pre>
+
+<p>&hellip; and finally to your <code>CMakeLists.txt</code>, now add outcome as if it were
+an ordinary cmake hunter package:</p>
+
+<pre><code>hunter_add_package(quickcpplib)
+find_package(quickcpplib CONFIG REQUIRED)
+hunter_add_package(outcome)
+find_package(outcome CONFIG REQUIRED)
+</code></pre>
+
+<p>Now you tell cmake to link to outcome as usual (see below for cmake targets):</p>
+
+<pre><code>target_link_libraries(mytarget outcome::hl)
+</code></pre>
+
 <h2 id="usage-as-a-git-submodule">Usage as a git submodule</h2>
 
 <p>If you are very keen on tracking very latest Outcome, you can add it as a git
@@ -67,7 +100,7 @@ git submodule update --init --recursive
 
 <p>After this you can bring Outcome into your code using:</p>
 
-<pre><code>#include &quot;outcome/include/outcome.hpp&quot;
+<pre><code>#include &quot;outcome/single-header/outcome.hpp&quot;
 </code></pre>
 
 <p>That&rsquo;s it, you are ready to go. From time to time, you may wish to update to
@@ -101,7 +134,7 @@ an unlikely chance that the tarball may not work on a newer compiler.</p>
 
 <h1 id="running-the-unit-test-suite">Running the unit test suite</h1>
 
-<p>To run the unit test suite you will need cmake 3.1 or later installed.</p>
+<p>To run the unit test suite you will need cmake 3.3 or later installed.</p>
 
 <pre><code>mkdir build
 cd build
@@ -124,12 +157,24 @@ ctest -C Release
 
 <hr>
 
+<h1 id="cmake-find-package-imported-targets-support">CMake <code>find_package()</code> imported targets support</h1>
+
+<p>Outcome fully complies with cmake install, so by installing Outcome, it can be
+found by cmake&rsquo;s <code>find_package()</code>.</p>
+
+<pre><code>mkdir build
+cd build
+cmake ..
+cmake --build .
+sudo cmake --build . --target install
+</code></pre>
+
 <h1 id="modular-cmake-build-support">Modular CMake build support</h1>
 
 <p>If you are using Outcome in a CMake project, Outcome is a &ldquo;modular cmake&rdquo; project
 using only modern cmake 3 throughout. This lets you add the Outcome directory as a
 cmake subdirectory with no unexpected consequence on the rest of your cmake. You will need
-to be using cmake 3.1 or better.</p>
+to be using cmake 3.3 or better.</p>
 
 <pre><code>add_subdirectory(
   &quot;${CMAKE_CURRENT_SOURCE_DIR}/outcome&quot;  # path to outcome source
@@ -153,7 +198,7 @@ suite along with your own.</li>
 
 
 
-        </div><p><small>Last revised: February 06, 2019 at 14:38:54 UTC</small></p>
+        </div><p><small>Last revised: March 12, 2020 at 10:35:42 UTC</small></p>
 <hr>
 <div class="spirit-nav">
 <a accesskey="p" href="./requirements.html"><img src="./images/prev.png" alt="Prev"></a>

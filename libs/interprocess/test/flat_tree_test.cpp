@@ -8,7 +8,6 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <boost/interprocess/detail/config_begin.hpp>
 #include <set>
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/containers/flat_set.hpp>
@@ -152,7 +151,7 @@ int main()
                   ,MyStdMap
                   ,MyShmMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyShmMap>" << std::endl;
+      std::cout << "Error in map_test<MyShmMap>" << std::endl;
       return 1;
    }
 
@@ -161,7 +160,7 @@ int main()
                   ,MyStdMap
                   ,MyShmMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyShmMap>" << std::endl;
+      std::cout << "Error in map_test<MyShmMap>" << std::endl;
       return 1;
    }
 
@@ -178,7 +177,7 @@ int main()
                   ,MyStdMap
                   ,MyMoveCopyShmMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyMoveCopyShmMap>" << std::endl;
+      std::cout << "Error in map_test<MyMoveCopyShmMap>" << std::endl;
       return 1;
    }
 
@@ -198,5 +197,3 @@ int main()
    return 0;
 
 }
-
-#include <boost/interprocess/detail/config_end.hpp>

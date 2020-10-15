@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Coroutines TS Support</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -35,12 +35,7 @@
           in a synchronous manner, in conjunction with the <code class="computeroutput">co_await</code>
           keyword, as shown in the following example:
         </p>
-<pre class="programlisting">boost::asio::co_spawn(executor,
-    [socket = std::move(socket)]() mutable
-    {
-      return echo(std::move(socket));
-    },
-    boost::asio::detached);
+<pre class="programlisting">boost::asio::co_spawn(executor, echo(std::move(socket)), boost::asio::detached);
 
 // ...
 
@@ -69,9 +64,12 @@ boost::asio::awaitable&lt;void&gt; echo(tcp::socket socket)
           synchronisation is required.
         </p>
 <p>
-          The second argument is a nullary function object that returns a <a class="link" href="../../reference/awaitable.html" title="awaitable"><code class="computeroutput">boost::asio::awaitable&lt;R&gt;</code></a>,
-          where <code class="computeroutput">R</code> is the type of return value produced by the coroutine.
-          In the above example, the coroutine returns <code class="computeroutput">void</code>.
+          The second argument is an <a class="link" href="../../reference/awaitable.html" title="awaitable"><code class="computeroutput">awaitable&lt;R&gt;</code></a>,
+          that is the result of the coroutine's entry point function, and in the
+          above example is the result of the call to <code class="computeroutput">echo</code>. (Alternatively,
+          this argument can be a function object that returns the <a class="link" href="../../reference/awaitable.html" title="awaitable"><code class="computeroutput">awaitable&lt;R&gt;</code></a>.)
+          The template parameter <code class="computeroutput">R</code> is the type of return value produced
+          by the coroutine. In the above example, the coroutine returns <code class="computeroutput">void</code>.
         </p>
 <p>
           The third argument is a completion token, and this is used by <code class="computeroutput">co_spawn()</code>
@@ -130,7 +128,8 @@ boost::asio::awaitable&lt;void&gt; echo(tcp::socket socket)
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2020 Christopher M.
+      Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

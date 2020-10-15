@@ -1,4 +1,4 @@
-//  This file was automatically generated on Mon Feb 11 18:07:32 2019
+//  This file was automatically generated on Mon Dec 09 09:47:38 2019
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -301,6 +301,11 @@
 #     error "Defect macro BOOST_NO_CXX11_DEFAULTED_MOVES is defined."
 #  endif
 #endif
+#ifdef TEST_BOOST_NO_CXX11_HDR_EXCEPTION
+#  ifdef BOOST_NO_CXX11_HDR_EXCEPTION
+#     error "Defect macro BOOST_NO_CXX11_HDR_EXCEPTION is defined."
+#  endif
+#endif
 #ifdef TEST_BOOST_NO_CXX11_FINAL
 #  ifdef BOOST_NO_CXX11_FINAL
 #     error "Defect macro BOOST_NO_CXX11_FINAL is defined."
@@ -416,6 +421,11 @@
 #     error "Defect macro BOOST_NO_CXX11_NUMERIC_LIMITS is defined."
 #  endif
 #endif
+#ifdef TEST_BOOST_NO_CXX11_OVERRIDE
+#  ifdef BOOST_NO_CXX11_OVERRIDE
+#     error "Defect macro BOOST_NO_CXX11_OVERRIDE is defined."
+#  endif
+#endif
 #ifdef TEST_BOOST_NO_CXX11_POINTER_TRAITS
 #  ifdef BOOST_NO_CXX11_POINTER_TRAITS
 #     error "Defect macro BOOST_NO_CXX11_POINTER_TRAITS is defined."
@@ -524,6 +534,11 @@
 #ifdef TEST_BOOST_NO_CXX17_HDR_STRING_VIEW
 #  ifdef BOOST_NO_CXX17_HDR_STRING_VIEW
 #     error "Defect macro BOOST_NO_CXX17_HDR_STRING_VIEW is defined."
+#  endif
+#endif
+#ifdef TEST_BOOST_NO_CXX17_HDR_VARIANT
+#  ifdef BOOST_NO_CXX17_HDR_VARIANT
+#     error "Defect macro BOOST_NO_CXX17_HDR_VARIANT is defined."
 #  endif
 #endif
 #ifdef TEST_BOOST_NO_CXX17_IF_CONSTEXPR
@@ -954,6 +969,11 @@
 #ifdef TEST_BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX
 #  ifdef BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX
 #     error "Defect macro BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX is defined."
+#  endif
+#endif
+#ifdef TEST_BOOST_NO_CXX11_UNRESTRICTED_UNION
+#  ifdef BOOST_NO_CXX11_UNRESTRICTED_UNION
+#     error "Defect macro BOOST_NO_CXX11_UNRESTRICTED_UNION is defined."
 #  endif
 #endif
 #ifdef TEST_BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL

@@ -4,24 +4,33 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/core/lightweight_test.hpp>
-#include <boost/histogram.hpp>
+#include <boost/histogram/accumulators.hpp>
 #include <boost/histogram/accumulators/ostream.hpp>
+#include <boost/histogram/algorithm/sum.hpp>
+#include <boost/histogram/axis.hpp>
+#include <boost/histogram/axis/ostream.hpp>
+#include <boost/histogram/histogram.hpp>
+#include <boost/histogram/literals.hpp>
+#include <boost/histogram/make_histogram.hpp>
+#include <boost/histogram/ostream.hpp>
 #include <sstream>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
 #include <vector>
 #include "is_close.hpp"
+#include "std_ostream.hpp"
+#include "throw_exception.hpp"
 #include "utility_allocator.hpp"
 #include "utility_axis.hpp"
 #include "utility_histogram.hpp"
-#include "utility_meta.hpp"
 
 using namespace boost::histogram;
 using namespace boost::histogram::literals; // to get _c suffix
 
-template <typename A, typename S>
+template <class A, class S>
 void pass_histogram(boost::histogram::histogram<A, S>& h) {
   BOOST_TEST_EQ(h.at(0), 0);
   BOOST_TEST_EQ(h.at(1), 1);
@@ -29,7 +38,7 @@ void pass_histogram(boost::histogram::histogram<A, S>& h) {
   BOOST_TEST_EQ(h.axis(0_c), axis::integer<>(0, 3));
 }
 
-template <typename Tag>
+template <class Tag>
 void run_tests() {
   // init_1
   {
@@ -43,41 +52,6 @@ void run_tests() {
   }
 
   // init_2
-  {
-    auto h = make(Tag(), axis::regular<>{3, -1, 1}, axis::integer<>{-1, 3});
-    BOOST_TEST_EQ(h.rank(), 2);
-    BOOST_TEST_EQ(h.size(), 30);
-    BOOST_TEST_EQ(h.axis(0_c).size(), 3);
-    BOOST_TEST_EQ(h.axis(1_c).size(), 4);
-    auto h2 = make_s(Tag(), std::vector<unsigned>(), axis::regular<>{3, -1, 1},
-                     axis::integer<>{-1, 3});
-    BOOST_TEST_EQ(h2, h);
-  }
-
-  // init_3
-  {
-    auto h = make(Tag(), axis::regular<>{3, -1, 1}, axis::integer<>{-1, 2},
-                  axis::circular<>{2, 0, 360});
-    BOOST_TEST_EQ(h.rank(), 3);
-    BOOST_TEST_EQ(h.size(), 5 * 5 * 3);
-    auto h2 = make_s(Tag(), std::vector<unsigned>(), axis::regular<>{3, -1, 1},
-                     axis::integer<>{-1, 2}, axis::circular<>{2, 0, 360});
-    BOOST_TEST_EQ(h2, h);
-  }
-
-  // init_4
-  {
-    auto h = make(Tag(), axis::regular<>{3, -1, 1}, axis::integer<>{-1, 2},
-                  axis::circular<>{2, 0, 360}, axis::variable<>{-1, 0, 1});
-    BOOST_TEST_EQ(h.rank(), 4);
-    BOOST_TEST_EQ(h.size(), 5 * 5 * 3 * 4);
-    auto h2 = make_s(Tag(), std::vector<unsigned>(), axis::regular<>{3, -1, 1},
-                     axis::integer<>{-1, 2}, axis::circular<>{2, 0, 360},
-                     axis::variable<>{-1, 0, 1});
-    BOOST_TEST_EQ(h2, h);
-  }
-
-  // init_5
   {
     auto h = make(Tag(), axis::regular<>{3, -1, 1}, axis::integer<>{-1, 2},
                   axis::circular<>{2, 0, 360}, axis::variable<>{-1, 0, 1},
@@ -96,8 +70,8 @@ void run_tests() {
     h(0, 0);
     auto h2 = decltype(h)(h);
     BOOST_TEST_EQ(h2, h);
-    auto h3 = histogram<std::tuple<axis::integer<>, axis::integer<>>,
-                        storage_adaptor<std::vector<double>>>(h);
+    auto h3 =
+        histogram<std::tuple<axis::integer<>, axis::integer<>>, dense_storage<double>>(h);
     BOOST_TEST_EQ(h3, h);
   }
 
@@ -109,8 +83,8 @@ void run_tests() {
     BOOST_TEST_NE(h, h2);
     h2 = h;
     BOOST_TEST_EQ(h, h2);
-    auto h3 = histogram<std::tuple<axis::integer<>, axis::integer<>>,
-                        storage_adaptor<std::vector<double>>>();
+    auto h3 =
+        histogram<std::tuple<axis::integer<>, axis::integer<>>, dense_storage<double>>();
     h3 = h;
     BOOST_TEST_EQ(h, h3);
   }
@@ -133,7 +107,7 @@ void run_tests() {
 
   // axis methods
   {
-    auto a = make(Tag(), axis::regular<>(1, 1, 2, "foo"));
+    auto a = make(Tag(), axis::integer<double>(1, 2, "foo"));
     BOOST_TEST_EQ(a.axis().size(), 1);
     BOOST_TEST_EQ(a.axis().bin(0).lower(), 1);
     BOOST_TEST_EQ(a.axis().bin(0).upper(), 2);
@@ -141,7 +115,7 @@ void run_tests() {
     unsafe_access::axis(a, 0).metadata() = "bar";
     BOOST_TEST_EQ(a.axis().metadata(), "bar");
 
-    auto b = make(Tag(), axis::regular<>(1, 1, 2, "foo"), axis::integer<>(1, 3));
+    auto b = make(Tag(), axis::integer<double>(1, 2, "foo"), axis::integer<>(1, 3));
 
     // check static access
     BOOST_TEST_EQ(b.axis(0_c).size(), 1);
@@ -166,14 +140,15 @@ void run_tests() {
     unsafe_access::axis(b, 0).metadata() = "baz";
     BOOST_TEST_EQ(b.axis(0).metadata(), "baz");
 
-    enum class C { A = 3, B = 5 };
-    auto c = make(Tag(), axis::category<C>({C::A, C::B}));
+    auto c = make(Tag(), axis::category<>({1, 2}));
     BOOST_TEST_EQ(c.axis().size(), 2);
     unsafe_access::axis(c, 0).metadata() = "foo";
     BOOST_TEST_EQ(c.axis().metadata(), "foo");
     // need to cast here for this to work with Tag == dynamic_tag, too
-    auto ca = axis::get<axis::category<C>>(c.axis());
-    BOOST_TEST(ca.bin(0) == C::A);
+    const auto& ca = axis::get<axis::category<>>(c.axis());
+    BOOST_TEST_EQ(ca.bin(0), 1);
+    const auto& ca2 = axis::get<axis::category<>>(c.axis(0));
+    BOOST_TEST_EQ(&ca2, &ca);
   }
 
   // equal_compare
@@ -201,10 +176,9 @@ void run_tests() {
     BOOST_TEST(c != a);
   }
 
-  // d1
+  // 1D
   {
-    auto h = make_s(Tag(), std::vector<unsigned>(),
-                    axis::integer<double, axis::null_type>{0, 2});
+    auto h = make(Tag(), axis::integer<int, axis::null_type>{0, 2});
     h(0);
     auto i = h(0);
     BOOST_TEST(i == h.begin() + 1); // +1 because of underflow
@@ -223,7 +197,7 @@ void run_tests() {
     BOOST_TEST_EQ(h.at(2), 1);
   }
 
-  // d1_2
+  // 1D no *flow
   {
     auto h = make(Tag(), axis::integer<int, axis::null_type, axis::option::none_t>(0, 2));
     h(0);
@@ -242,13 +216,13 @@ void run_tests() {
     BOOST_TEST_EQ(h.at(1), 0);
   }
 
-  // d1_3
+  // 1D category axis
   {
-    auto h = make(Tag(), axis::category<std::string>({"A", "B"}));
-    h("A");
-    h("B");
-    h("D");
-    h("E");
+    auto h = make(Tag(), axis::category<>({1, 2}));
+    h(1);
+    h(2);
+    h(4);
+    h(5);
 
     BOOST_TEST_EQ(h.rank(), 1);
     BOOST_TEST_EQ(h.axis().size(), 2);
@@ -259,10 +233,9 @@ void run_tests() {
     BOOST_TEST_EQ(h.at(2), 2); // overflow bin
   }
 
-  // d1 weight
+  // 1D weight
   {
-    auto h =
-        make_s(Tag(), std::vector<accumulators::weighted_sum<>>(), axis::integer<>(0, 2));
+    auto h = make_s(Tag(), weight_storage(), axis::integer<>(0, 2));
     h(-1);
     h(0);
     h(weight(0.5), 0);
@@ -282,10 +255,9 @@ void run_tests() {
     BOOST_TEST_EQ(h[2].variance(), 4);
   }
 
-  // d1 mean
+  // 1D profile
   {
-    auto h =
-        make_s(Tag(), std::vector<accumulators::mean<double>>(), axis::integer<>(0, 2));
+    auto h = make_s(Tag(), profile_storage(), axis::integer<>(0, 2));
 
     h(0, sample(1));
     h(0, sample(2));
@@ -302,10 +274,9 @@ void run_tests() {
     BOOST_TEST_EQ(h[1].variance(), 1);
   }
 
-  // d1 weighted mean
+  // 1D weighted profile
   {
-    auto h = make_s(Tag(), std::vector<accumulators::weighted_mean<double>>(),
-                    axis::integer<>(0, 2));
+    auto h = make_s(Tag(), weighted_profile_storage(), axis::integer<>(0, 2));
 
     h(0, sample(1));
     h(sample(1), 0);
@@ -325,9 +296,9 @@ void run_tests() {
     BOOST_TEST_EQ(h[1].value(), 2.5);
   }
 
-  // d2
+  // 2D
   {
-    auto h = make(Tag(), axis::regular<>(2, -1, 1),
+    auto h = make(Tag(), axis::integer<>(-1, 1),
                   axis::integer<int, axis::null_type, axis::option::none_t>(-1, 2));
     h(-1, -1);
     h(-1, 0);
@@ -356,10 +327,9 @@ void run_tests() {
     BOOST_TEST_EQ(h.at(2, 2), 0);
   }
 
-  // d2w
+  // 2D weight
   {
-    auto h = make_s(Tag(), std::vector<accumulators::weighted_sum<>>(),
-                    axis::regular<>(2, -1, 1),
+    auto h = make_s(Tag(), weight_storage(), axis::integer<>(-1, 1),
                     axis::integer<int, axis::null_type, axis::option::none_t>(-1, 2));
     h(-1, 0);              // -> 0, 1
     h(weight(10), -1, -1); // -> 0, 0
@@ -402,15 +372,13 @@ void run_tests() {
     BOOST_TEST_EQ(h.at(2, 2).variance(), 0);
   }
 
-  // d3w
+  // 3D weight
   {
-    auto h = make_s(Tag(), std::vector<accumulators::weighted_sum<>>(),
-                    axis::integer<>(0, 3), axis::integer<>(0, 4), axis::integer<>(0, 5));
-    for (auto i = 0; i < h.axis(0_c).size(); ++i) {
-      for (auto j = 0; j < h.axis(1_c).size(); ++j) {
-        for (auto k = 0; k < h.axis(2_c).size(); ++k) { h(i, j, k, weight(i + j + k)); }
-      }
-    }
+    auto h = make_s(Tag(), weight_storage(), axis::integer<>(0, 3), axis::integer<>(0, 4),
+                    axis::integer<>(0, 5));
+    for (auto i = 0; i < h.axis(0_c).size(); ++i)
+      for (auto j = 0; j < h.axis(1_c).size(); ++j)
+        for (auto k = 0; k < h.axis(2_c).size(); ++k) h(i, j, k, weight(i + j + k));
 
     for (auto i = 0; i < h.axis(0_c).size(); ++i) {
       for (auto j = 0; j < h.axis(1_c).size(); ++j) {
@@ -442,7 +410,7 @@ void run_tests() {
     BOOST_TEST_EQ(a[4], 3);
   }
 
-  // histogram_reset
+  // histogram reset
   {
     auto h = make(Tag(), axis::integer<int, axis::null_type, axis::option::none_t>(0, 2));
     h(0);
@@ -456,40 +424,9 @@ void run_tests() {
     BOOST_TEST_EQ(algorithm::sum(h), 0);
   }
 
-  // custom axes
+  // using containers for input and output
   {
-    struct modified_axis : public axis::integer<> {
-      using integer::integer; // inherit ctors of base
-      // customization point: convert argument and call base class
-      auto index(const char* s) const { return integer::index(std::atoi(s)); }
-    };
-
-    struct minimal {
-      auto index(int x) const { return static_cast<axis::index_type>(x % 2); }
-      auto size() const { return axis::index_type{2}; }
-    };
-
-    struct axis2d {
-      auto index(std::tuple<double, double> x) const {
-        return axis::index_type{std::get<0>(x) == 1 && std::get<1>(x) == 2};
-      }
-      auto size() const { return axis::index_type{2}; }
-    };
-
-    auto h = make(Tag(), modified_axis(0, 3), minimal(), axis2d());
-    h("0", 1, std::make_tuple(1.0, 2.0));
-    h("1", 2, std::make_tuple(2.0, 1.0));
-
-    BOOST_TEST_EQ(h.rank(), 3);
-    BOOST_TEST_EQ(h.at(0, 0, 0), 0);
-    BOOST_TEST_EQ(h.at(0, 1, 1), 1);
-    BOOST_TEST_EQ(h.at(1, 0, 0), 1);
-  }
-
-  // using containers or input and output
-  {
-    auto h = make_s(Tag(), std::vector<accumulators::weighted_sum<>>(),
-                    axis::integer<>(0, 2), axis::regular<>(2, 2, 4));
+    auto h = make(Tag(), axis::integer<>(0, 2), axis::integer<double>(2, 4));
     // tuple in
     h(std::make_tuple(0, 2.0));
     h(std::make_tuple(1, 3.0));
@@ -498,50 +435,33 @@ void run_tests() {
     auto i11 = std::make_tuple(1, 1);
 
     // tuple out
-    BOOST_TEST_EQ(h.at(i00).value(), 1);
-    BOOST_TEST_EQ(h[i00].value(), 1);
-    BOOST_TEST_EQ(h[i11].value(), 1);
+    BOOST_TEST_EQ(h.at(i00), 1);
+    BOOST_TEST_EQ(h[i00], 1);
+    BOOST_TEST_EQ(h[i11], 1);
 
     // iterable out
     int j11[] = {1, 1};
-    int j111[] = {1, 1, 1};
     BOOST_TEST_EQ(h.at(j11), 1);
     BOOST_TEST_EQ(h[j11], 1);
+    int j111[] = {1, 1, 1};
+    (void)j111;
     BOOST_TEST_THROWS((void)h.at(j111), std::invalid_argument);
+    int j13[] = {1, 3};
+    (void)j13;
+    BOOST_TEST_THROWS((void)h.at(j13), std::out_of_range);
 
     // tuple with weight
     h(std::make_tuple(weight(2), 0, 2.0));
     h(std::make_tuple(1, 3.0, weight(2)));
 
-    BOOST_TEST_EQ(h.at(i00).value(), 3);
-    BOOST_TEST_EQ(h[i00].value(), 3);
-    BOOST_TEST_EQ(h.at(i11).variance(), 5);
-    BOOST_TEST_EQ(h[i11].variance(), 5);
+    BOOST_TEST_EQ(h.at(i00), 3);
+    BOOST_TEST_EQ(h[i00], 3);
 
     // test special case of 1-dimensional histogram, which should unpack
     // 1-dimensional tuple normally, but forward larger tuples to the axis
     auto h1 = make(Tag(), axis::integer<>(0, 2));
     h1(std::make_tuple(0));                      // as if one had passed 0 directly
     BOOST_TEST_EQ(h1.at(std::make_tuple(0)), 1); // as if one had passed 0 directly
-    // passing 2d tuple is an invalid argument
-    BOOST_TEST_THROWS(h1(std::make_tuple(0, 0)), std::invalid_argument);
-
-    struct axis2d {
-      auto index(std::tuple<int, int> x) const {
-        return axis::index_type{std::get<0>(x) == 1 && std::get<1>(x) == 2};
-      }
-      auto size() const { return axis::index_type{2}; }
-    };
-    auto h2 = make(Tag(), axis2d());
-    h2(std::make_tuple(1, 2));  // ok, forwards 2d tuple to axis
-    BOOST_TEST_EQ(h2.at(0), 0); // ok, bin access is still 1d
-    BOOST_TEST_EQ(h2[std::make_tuple(1)], 1);
-    // passing two arguments directly also works
-    h2(1, 2);
-    // also works with weights
-    h2(1, 2, weight(2));
-    h2(std::make_tuple(weight(3), 1, 2));
-    BOOST_TEST_EQ(h2.at(1), 7);
   }
 
   // bad bin access
@@ -569,14 +489,14 @@ void run_tests() {
     }
 
     // int allocation for std::vector
-    BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(int)].first, db[&BOOST_CORE_TYPEID(int)].second);
-    BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(int)].first, 1002u);
+    BOOST_TEST_EQ(db.at<int>().first, 0);
+    BOOST_TEST_EQ(db.at<int>().second, 1002);
 
     if (Tag()) { // axis::variant allocation, only for dynamic histogram
       using T = axis::variant<axis::integer<>>;
-      BOOST_TEST_EQ(db[&BOOST_CORE_TYPEID(T)].first, db[&BOOST_CORE_TYPEID(T)].second);
-      BOOST_TEST_LE(db[&BOOST_CORE_TYPEID(T)].first,
-                    1u); // zero if vector uses small-vector-optimisation
+      BOOST_TEST_EQ(db.at<T>().first, 0);
+      // may be zero if vector uses small-vector-optimisation
+      BOOST_TEST_LE(db.at<T>().second, 1);
     }
   }
 }

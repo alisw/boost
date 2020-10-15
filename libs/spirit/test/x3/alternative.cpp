@@ -41,8 +41,6 @@ struct undefined {};
 struct stationary : boost::noncopyable
 {
     explicit stationary(int i) : val{i} {}
-    // TODO: fix unneeded self move in alternative
-    stationary& operator=(stationary&&) { std::abort(); }
     stationary& operator=(int i) { val = i; return *this; }
 
     int val;
@@ -64,6 +62,7 @@ main()
     using boost::spirit::x3::omit;
     using boost::spirit::x3::eps;
 
+    BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(char_ | char_);
 
     {
         BOOST_TEST((test("a", char_ | char_)));
@@ -241,12 +240,39 @@ main()
         BOOST_TEST(boost::get<char>(&boost::fusion::front(attr_)) == nullptr);
     }
 
-    { // ensure no unneded synthesization, copying and moving occured
+    { // ensure no unneeded synthesization, copying and moving occurred
         auto p = '{' >> int_ >> '}';
 
         stationary st { 0 };
         BOOST_TEST(test_attr("{42}", p | eps | p, st));
         BOOST_TEST_EQ(st.val, 42);
+    }
+
+    { // attributeless parsers must not insert values
+        std::vector<int> v;
+        BOOST_TEST(test_attr("1 2 3 - 5 - - 7 -", (int_ | '-') % ' ', v));
+        BOOST_TEST_EQ(v.size(), 5)
+            && BOOST_TEST_EQ(v[0], 1)
+            && BOOST_TEST_EQ(v[1], 2)
+            && BOOST_TEST_EQ(v[2], 3)
+            && BOOST_TEST_EQ(v[3], 5)
+            && BOOST_TEST_EQ(v[4], 7)
+            ;
+    }
+
+    { // regressing test for #603
+        using boost::spirit::x3::attr;
+        struct X {};
+        std::vector<boost::variant<std::string, int, X>> v;
+        BOOST_TEST(test_attr("xx42x9y", *(int_ | +char_('x') | 'y' >> attr(X{})), v));
+        BOOST_TEST_EQ(v.size(), 5);
+    }
+
+    { // sequence parser in alternative into container
+        std::string s;
+        BOOST_TEST(test_attr("abcbbcd",
+            *(char_('a') >> *(*char_('b') >> char_('c')) | char_('d')), s));
+        BOOST_TEST_EQ(s, "abcbbcd");
     }
 
     return boost::report_errors();

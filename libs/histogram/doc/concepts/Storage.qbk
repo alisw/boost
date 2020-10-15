@@ -1,3 +1,10 @@
+[/
+            Copyright Hans Dembinski 2018 - 2019.
+   Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+            https://www.boost.org/LICENSE_1_0.txt)
+]
+
 [section:Storage Storage]
 
 A [*Storage] handles memory for the bin counters and provides a uniform vector-like interface for accessing cell values for reading and writing. Must be [@https://en.cppreference.com/w/cpp/named_req/DefaultConstructible DefaultConstructible], [@https://en.cppreference.com/w/cpp/named_req/CopyConstructible CopyConstructible], and [@https://en.cppreference.com/w/cpp/named_req/CopyAssignable CopyAssignable].
@@ -7,9 +14,10 @@ A [*Storage] handles memory for the bin counters and provides a uniform vector-l
 * `S` is a type meeting the requirements of [*Storage]
 * `s` is a  value of types `S`
 * `i` and `n` are values of type `std::size_t`
+* `Alloc` is an allocator type for `S`
 
 [table Valid expressions
-[[Expression] [Return type] [Semantics, Pre/Post-conditions]]
+[[Expression] [Returns] [Semantics, Pre/Post-conditions]]
 [
   [`S::value_type`]
   []
@@ -43,6 +51,14 @@ A [*Storage] handles memory for the bin counters and provides a uniform vector-l
   []
   [
     Returns an STL-compliant iterator type which dereferences to `S::const_reference`.
+  ]
+]
+[
+  [`S::has_threading_support`]
+  [bool]
+  [
+    Static constexpr member. True, if storage supports parallel read-write access to all cells.
+    False, if such parallel access would either cause data corruption or require synchronization so that effectively only one cell can be accessed at a time, making cell-access single-threaded.
   ]
 ]
 [
@@ -112,7 +128,7 @@ A [*Storage] handles memory for the bin counters and provides a uniform vector-l
   [`s.get_allocator()`]
   [`Alloc`]
   [
-    Const member function which returns the allocator `Alloc` used by `S`. May be omitted if `S` does not use allocators. If this member function exists, also a special constructor must exists so that `S(s.get_allocator())` is a valid expression.
+    Const member function which returns the allocator used by `S`. Must be omitted if `S` does not use allocators. If this member function exists, also a special constructor must exist so that `S(s.get_allocator())` is a valid expression.
   ]
 ]
 ]
@@ -125,7 +141,7 @@ A [*Storage] handles memory for the bin counters and provides a uniform vector-l
 * `ar` is a value of an archive with Boost.Serialization semantics
 
 [table Valid expressions
-[[Expression] [Return type] [Semantics, Pre/Post-conditions]]
+[[Expression] [Returns] [Semantics, Pre/Post-conditions]]
 [
   [`s *= x`]
   [`S&`]
@@ -134,10 +150,10 @@ A [*Storage] handles memory for the bin counters and provides a uniform vector-l
   ]
 ]
 [
-  [`ar & s`]
+  [`s.serialize(ar, n)`]
   []
   [
-    Serializes `s` to the archive or loads serialized state from the archive.
+    `ar` is a value of an archive with Boost.Serialization semantics and `n` is an unsigned integral value. Saves to the archive or loads serialized state from the archive. The version number `n` is the stored version when the object is loaded or the current version when the object is saved.
   ]
 ]
 ]

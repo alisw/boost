@@ -10,8 +10,8 @@
     LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
 
-#if !defined(REAL_POSITION_TOKEN_HPP_HK_061109_INCLUDED)
-#define REAL_POSITION_TOKEN_HPP_HK_061109_INCLUDED
+#if !defined(BOOST_REAL_POSITION_TOKEN_HPP_HK_061109_INCLUDED)
+#define BOOST_REAL_POSITION_TOKEN_HPP_HK_061109_INCLUDED
 
 #include <boost/wave/wave_config.hpp>
 #include <boost/wave/util/file_position.hpp>
@@ -35,7 +35,7 @@ public:
 
     //  construct an invalid token
     explicit token_data(int)
-    :   id(T_UNKNOWN), refcnt(1)
+    :   id(boost::wave::T_UNKNOWN), refcnt(1)
     {}
 
     token_data(boost::wave::token_id id_, string_type const &value_, 
@@ -61,7 +61,10 @@ public:
     position_type const &get_position() const { return pos; }
     position_type const &get_corrected_position() const 
         { return corrected_pos; }
-    bool is_eoi() const { id == T_EOI; }
+    bool is_eoi() const
+    {
+        return id == boost::wave::T_EOI;
+    }
 
     void set_token_id (boost::wave::token_id id_) { id = id_; }
     void set_value (string_type const &value_) { value = value_; }
@@ -102,8 +105,9 @@ template <typename PositionT>
 class lex_token 
 {
 public:
-    typedef BOOST_WAVE_STRINGTYPE   string_type;
-    typedef PositionT               position_type;
+    typedef BOOST_WAVE_STRINGTYPE                        string_type;
+    typedef PositionT                                    position_type;
+    typedef impl::token_data<string_type, position_type> data_type;
 
     lex_token()
     :   data(new impl::token_data<string_type, position_type>())
@@ -153,7 +157,11 @@ public:
         { return data->get_position(); }
     position_type const &get_corrected_position() const 
         { return data->get_corrected_position(); }
-    bool is_valid() const { return 0 != data && token_id(*data) != T_UNKNOWN; }
+    bool is_valid() const
+    {
+        using namespace boost::wave;
+        return 0 != data && token_id(*data) != boost::wave::T_UNKNOWN;
+    }
 
     void set_token_id (boost::wave::token_id id_) 
         { make_unique(); data->set_token_id(id_); }
@@ -207,4 +215,4 @@ token_is_valid(lex_token<Position> const& t)
     return t.is_valid();
 }
 
-#endif // !defined(REAL_POSITION_TOKEN_HPP_HK_061109_INCLUDED)
+#endif // !defined(BOOST_REAL_POSITION_TOKEN_HPP_HK_061109_INCLUDED)

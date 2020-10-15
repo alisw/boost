@@ -75,7 +75,7 @@ private:
     http::response<http::dynamic_body> response_;
 
     // The timer for putting a deadline on connection processing.
-    net::basic_waitable_timer<std::chrono::steady_clock> deadline_{
+    net::steady_timer deadline_{
         socket_.get_executor(), std::chrono::seconds(60)};
 
     // Asynchronously receive a complete request message.
@@ -173,7 +173,7 @@ private:
     {
         auto self = shared_from_this();
 
-        response_.set(http::field::content_length, response_.body().size());
+        response_.content_length(response_.body().size());
 
         http::async_write(
             socket_,

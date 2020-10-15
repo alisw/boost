@@ -17,11 +17,14 @@
 #ifndef FILESYS_DWA20011025_H
 #define FILESYS_DWA20011025_H
 
+#include "config.h"
 #include "hash.h"
 #include "lists.h"
 #include "object.h"
 #include "pathsys.h"
 #include "timestamp.h"
+
+#include <string>
 
 
 typedef struct file_info_t
@@ -76,6 +79,18 @@ file_info_t * file_query( OBJECT * const path );
 void file_remove_atexit( OBJECT * const path );
 void file_supported_fmt_resolution( timestamp * const );
 int file_time( OBJECT * const path, timestamp * const );
+
+namespace b2 { namespace filesys {
+
+    inline bool is_file(const std::string &path)
+    {
+        OBJECT * path_o = object_new(path.c_str());
+        bool result = file_is_file(path_o) == 1;
+        object_free(path_o);
+        return result;
+    }
+
+}}
 
 
 /*  Archive/library file support */

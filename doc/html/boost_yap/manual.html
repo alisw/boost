@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Manual</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../yap.html" title="Chapter&#160;47.&#160;Boost.YAP">
-<link rel="prev" href="../yap.html" title="Chapter&#160;47.&#160;Boost.YAP">
+<link rel="up" href="../yap.html" title="Chapter 47. Boost.YAP">
+<link rel="prev" href="../yap.html" title="Chapter 47. Boost.YAP">
 <link rel="next" href="concepts.html" title="Concepts">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -437,7 +437,7 @@
 <p>
         For instance, here is the <code class="computeroutput"><span class="identifier">get_arity</span></code>
         transform object used in the <a class="link" href="manual.html#boost_yap.manual.examples.calc3" title="Calc3">Calc3</a>
-        example (don't worry too much about the implementation &#8212; we'll return
+        example (don't worry too much about the implementation — we'll return
         to this later in the docs in much greater detail):
       </p>
 <p>
@@ -550,7 +550,7 @@
         Instantiated with the proper template parameters, it produces <a class="link" href="concepts.html#boost_yap.concepts.expression">Expressions</a>.
       </p>
 <p>
-        Ok, so it's not that interesting by itself &#8212; <code class="computeroutput"><span class="identifier">minimal_expr</span></code>
+        Ok, so it's not that interesting by itself — <code class="computeroutput"><span class="identifier">minimal_expr</span></code>
         has no operations defined for it. But we can still use it with the Boost.YAP
         functions that take an <a class="link" href="concepts.html#boost_yap.concepts.expression">Expression</a>.
         Let's make a Boost.YAP plus-expression manually:
@@ -722,7 +722,7 @@
 <p>
         Those macros are used to define operator overloads that return <a class="link" href="concepts.html#boost_yap.concepts.expression">Expressions</a>.
         As shown here, that sort of operator can be mixed with normal, non-lazy ones
-        &#8212; the <code class="computeroutput"><span class="keyword">operator</span><span class="special">[]</span></code>
+        — the <code class="computeroutput"><span class="keyword">operator</span><span class="special">[]</span></code>
         is a normal eager function.
       </p>
 <p>
@@ -810,7 +810,7 @@
         with a few matching nodes transformed. But this does not have to be the result
         of calling <code class="computeroutput"><a class="link" href="../boost/yap/transform.html" title="Function template transform">transform()</a></code>, because a Boost.YAP transformation
         is free-form; it must return a value, but may do just about anything else.
-        It can transform an expression into anything &#8212; a new expression of
+        It can transform an expression into anything — a new expression of
         any kind, or even a non-expression value (effectively evaluating the expression).
         As before, here is the <code class="computeroutput"><span class="identifier">get_arity</span></code>
         transform from the <a class="link" href="manual.html#boost_yap.manual.examples.calc3" title="Calc3">Calc3</a>
@@ -879,7 +879,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           Often when you create an expression, you will want to evaluate it in different
-          contexts, changing its evaluation &#8212; or even entire meaning &#8212;
+          contexts, changing its evaluation — or even entire meaning —
           in each context. <code class="computeroutput"><a class="link" href="../boost/yap/evaluate.html" title="Function template evaluate">evaluate()</a></code>
           is wrong for this task, since it only takes values for substitution into
           placeholders. In these situations, you should instead use multiple transforms
@@ -986,8 +986,8 @@
 <p>
         <a class="link" href="concepts.html#boost_yap.concepts.tagtransform">TagTransforms</a> are
         most useful when the transform needs to match an expression without regard
-        to whether its operands are <a class="link" href="../boost/yap/expr_kind.html#boost.yap.expr_kind.expr_ref"><code class="computeroutput"><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">expr_ref</span></code></a> expressions, or &#8212;
-        if they are terminals &#8212; whether they contain or refer to their values.
+        to whether its operands are <a class="link" href="../boost/yap/expr_kind.html#boost.yap.expr_kind.expr_ref"><code class="computeroutput"><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">expr_ref</span></code></a> expressions, or —
+        if they are terminals — whether they contain or refer to their values.
         <a class="link" href="concepts.html#boost_yap.concepts.tagtransform">TagTransforms</a> tend
         to be far more concise.
       </p>
@@ -1094,7 +1094,9 @@
         from <code class="computeroutput"><span class="identifier">a</span></code>, then any <a class="link" href="concepts.html#boost_yap.concepts.tagtransform">TagTransform</a>
         from <code class="computeroutput"><span class="identifier">b</span></code>, and finally any
         <a class="link" href="concepts.html#boost_yap.concepts.expressiontransform">ExpressionTransform</a>
-        from <code class="computeroutput"><span class="identifier">b</span></code>.
+        from <code class="computeroutput"><span class="identifier">b</span></code>. Only the first matching
+        overload in this sequence is used; all overloads later in the sequence or
+        in later transforms, whether they match or not, are simply ignored.
       </p>
 <h5>
 <a name="boost_yap.manual.transforming_expressions.h5"></a>
@@ -1159,7 +1161,7 @@
 <p>
         What this transformation does is transform the left and right expressions,
         and then use the built-in <code class="computeroutput"><span class="keyword">operator</span><span class="special">,()</span></code> on the result. The evaluation transformations
-        for the other operators do the same thing &#8212; evaluate the operands,
+        for the other operators do the same thing — evaluate the operands,
         then return the result of applying the built-in operator to the operands.
       </p>
 <p>
@@ -1189,7 +1191,7 @@
         section, go read that first. Here are the operator macros and their uses:
       </p>
 <div class="table">
-<a name="boost_yap.manual.operator_macros.unary_and_binary_operator_defining_macros"></a><p class="title"><b>Table&#160;47.1.&#160;Unary and Binary Operator-Defining Macros</b></p>
+<a name="boost_yap.manual.operator_macros.unary_and_binary_operator_defining_macros"></a><p class="title"><b>Table 47.1. Unary and Binary Operator-Defining Macros</b></p>
 <div class="table-contents"><table class="table" summary="Unary and Binary Operator-Defining Macros">
 <colgroup>
 <col>
@@ -1373,7 +1375,7 @@
         by general-purpose the unary and binary operator macros above:
       </p>
 <div class="table">
-<a name="boost_yap.manual.operator_macros.the_member_only_operator_macros"></a><p class="title"><b>Table&#160;47.2.&#160;The Member-Only Operator Macros</b></p>
+<a name="boost_yap.manual.operator_macros.the_member_only_operator_macros"></a><p class="title"><b>Table 47.2. The Member-Only Operator Macros</b></p>
 <div class="table-contents"><table class="table" summary="The Member-Only Operator Macros">
 <colgroup>
 <col>
@@ -1487,7 +1489,7 @@
 </table></div>
 </div>
 <br class="table-break"><div class="table">
-<a name="boost_yap.manual.operator_macros.if_else_psuedo_operator_macros"></a><p class="title"><b>Table&#160;47.3.&#160;if_else Psuedo-Operator Macros</b></p>
+<a name="boost_yap.manual.operator_macros.if_else_psuedo_operator_macros"></a><p class="title"><b>Table 47.3. if_else Psuedo-Operator Macros</b></p>
 <div class="table-contents"><table class="table" summary="if_else Psuedo-Operator Macros">
 <colgroup>
 <col>
@@ -1622,7 +1624,7 @@
         "possibly <code class="computeroutput"><span class="keyword">const</span></code>-qualified").
         This is important because you might write through the terminal later in an
         assignment operation. You don't want to lose the ability to do this, or be
-        forced to write some Baroque pile of code to do so &#8212; it should be
+        forced to write some Baroque pile of code to do so — it should be
         natural and easy.
       </p>
 <p>
@@ -1665,7 +1667,7 @@
 <tr><td align="left" valign="top"><p>
           If you want to subvert the capture-by-reference semantics of using subexpressions,
           just <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">()</span></code>
-          them. That will force a move &#8212; or copy of values for which move
+          them. That will force a move — or copy of values for which move
           is not defined.
         </p></td></tr>
 </table></div>
@@ -1691,7 +1693,7 @@
         indicates such a partial decay of <code class="computeroutput"><span class="identifier">T</span></code>.
       </p>
 <div class="table">
-<a name="boost_yap.manual.how_expression_operands_are_treated.operand_handling"></a><p class="title"><b>Table&#160;47.4.&#160;Operand Handling</b></p>
+<a name="boost_yap.manual.how_expression_operands_are_treated.operand_handling"></a><p class="title"><b>Table 47.4. Operand Handling</b></p>
 <div class="table-contents"><table class="table" summary="Operand Handling">
 <colgroup>
 <col>
@@ -1977,6 +1979,8 @@
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.calc2">Calc2</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.calc3">Calc3</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.lazy_vector">Lazy Vector</a></span></dt>
+<dt><span class="section"><a href="manual.html#boost_yap.manual.examples.self_evaluating_expressions">Self-Evaluating
+        Expressions</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.tarray">TArray</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.vec3">Vec3</a></span></dt>
 <dt><span class="section"><a href="manual.html#boost_yap.manual.examples.vector">Vector</a></span></dt>
@@ -2144,7 +2148,7 @@
           This is the first of several calculator-building examples derived from
           Proto. This first one just builds lazy expressions with placeholders, and
           evaluates them. Here we can first see how much C++14-and-later language
-          features help the end user &#8212; the Proto version is much, much longer.
+          features help the end user — the Proto version is much, much longer.
         </p>
 <p>
 </p>
@@ -2398,9 +2402,7 @@
 </table></div>
 <p>
 </p>
-<pre class="programlisting"><span class="comment">// Defining this allows the assignment below of an expression to a double</span>
-<span class="comment">// without writing any specific code to do so.</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">yap</span><span class="special">/</span><span class="identifier">expression</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">yap</span><span class="special">/</span><span class="identifier">expression</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
@@ -2500,6 +2502,265 @@
     <span class="comment">// implicit grammar.  operator+= is only defined on terminals, not</span>
     <span class="comment">// arbitrary expressions.</span>
     <span class="comment">// (v2 + v3) += v1;</span>
+
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_yap.manual.examples.self_evaluating_expressions"></a><a class="link" href="manual.html#boost_yap.manual.examples.self_evaluating_expressions" title="Self-Evaluating Expressions">Self-Evaluating
+        Expressions</a>
+</h4></div></div></div>
+<p>
+          In most of the examples, we've seen Boost.YAP expressions captured, transformed,
+          and/or evaluated either manually, or within certain operations that always
+          do certain transformations (as in the <code class="computeroutput"><span class="keyword">operator</span><span class="special">[]</span></code> in the <a class="link" href="manual.html#boost_yap.manual.examples.lazy_vector" title="Lazy Vector">Lazy
+          Vector</a> example).
+        </p>
+<p>
+          Sometimes, you want the transfrmations to happen just before a Boost.YAP
+          expression is used by non-Boost.YAP-aware code. At other times, you might
+          want an entire Boost.YAP expression to be evaluated if it appears by itself
+          in a statement (i.e. as an expression statement).
+        </p>
+<p>
+          This example uses C++17's <code class="computeroutput"><span class="keyword">if</span> <span class="keyword">constexpr</span> <span class="special">()</span></code>,
+          simply because it makes the example shorter and easier to digest. The
+          <code class="computeroutput"><span class="keyword">if</span> <span class="keyword">constexpr</span>
+          <span class="special">()</span></code> bits are not strictly necessary.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">yap</span><span class="special">/</span><span class="identifier">expression</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">optional</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">hana</span><span class="special">/</span><span class="identifier">fold</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">hana</span><span class="special">/</span><span class="identifier">maximum</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cassert</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+
+
+<span class="comment">// A super-basic matrix type, and a few associated operations.</span>
+<span class="keyword">struct</span> <span class="identifier">matrix</span>
+<span class="special">{</span>
+    <span class="identifier">matrix</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">values_</span><span class="special">(),</span> <span class="identifier">rows_</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">cols_</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">{}</span>
+
+    <span class="identifier">matrix</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">rows</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">cols</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">values_</span><span class="special">(</span><span class="identifier">rows</span> <span class="special">*</span> <span class="identifier">cols</span><span class="special">),</span> <span class="identifier">rows_</span><span class="special">(</span><span class="identifier">rows</span><span class="special">),</span> <span class="identifier">cols_</span><span class="special">(</span><span class="identifier">cols</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="identifier">assert</span><span class="special">(</span><span class="number">0</span> <span class="special">&lt;</span> <span class="identifier">rows</span><span class="special">);</span>
+        <span class="identifier">assert</span><span class="special">(</span><span class="number">0</span> <span class="special">&lt;</span> <span class="identifier">cols</span><span class="special">);</span>
+    <span class="special">}</span>
+
+    <span class="keyword">int</span> <span class="identifier">rows</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">rows_</span><span class="special">;</span> <span class="special">}</span>
+    <span class="keyword">int</span> <span class="identifier">cols</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">cols_</span><span class="special">;</span> <span class="special">}</span>
+
+    <span class="keyword">double</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="identifier">r</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">c</span><span class="special">)</span> <span class="keyword">const</span>
+    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">values_</span><span class="special">[</span><span class="identifier">r</span> <span class="special">*</span> <span class="identifier">cols_</span> <span class="special">+</span> <span class="identifier">c</span><span class="special">];</span> <span class="special">}</span>
+    <span class="keyword">double</span> <span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="identifier">r</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">c</span><span class="special">)</span>
+    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">values_</span><span class="special">[</span><span class="identifier">r</span> <span class="special">*</span> <span class="identifier">cols_</span> <span class="special">+</span> <span class="identifier">c</span><span class="special">];</span> <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">values_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">rows_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">cols_</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="identifier">matrix</span> <span class="keyword">operator</span><span class="special">*(</span><span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">matrix</span> <span class="identifier">retval</span> <span class="special">=</span> <span class="identifier">lhs</span><span class="special">;</span>
+    <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">rows</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">j</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">j</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">cols</span><span class="special">();</span> <span class="special">++</span><span class="identifier">j</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">retval</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">)</span> <span class="special">*=</span> <span class="identifier">x</span><span class="special">;</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">retval</span><span class="special">;</span>
+<span class="special">}</span>
+<span class="identifier">matrix</span> <span class="keyword">operator</span><span class="special">*(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">lhs</span> <span class="special">*</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span>
+
+<span class="identifier">matrix</span> <span class="keyword">operator</span><span class="special">+(</span><span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">rows</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">rhs</span><span class="special">.</span><span class="identifier">rows</span><span class="special">());</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">cols</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">rhs</span><span class="special">.</span><span class="identifier">cols</span><span class="special">());</span>
+    <span class="identifier">matrix</span> <span class="identifier">retval</span> <span class="special">=</span> <span class="identifier">lhs</span><span class="special">;</span>
+    <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">rows</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">j</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">j</span> <span class="special">&lt;</span> <span class="identifier">retval</span><span class="special">.</span><span class="identifier">cols</span><span class="special">();</span> <span class="special">++</span><span class="identifier">j</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">retval</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">rhs</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">retval</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="comment">// daxpy() means Double-precision AX Plus Y.  This crazy name comes from BLAS.</span>
+<span class="comment">// It is more efficient than a naive implementation, because it does not</span>
+<span class="comment">// create temporaries.  The covnention of using Y as an out-parameter comes</span>
+<span class="comment">// from FORTRAN BLAS.</span>
+<span class="identifier">matrix</span> <span class="special">&amp;</span> <span class="identifier">daxpy</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="special">&amp;</span> <span class="identifier">y</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">rows</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">rows</span><span class="special">());</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span><span class="special">.</span><span class="identifier">cols</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">cols</span><span class="special">());</span>
+    <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">rows</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">j</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">j</span> <span class="special">&lt;</span> <span class="identifier">y</span><span class="special">.</span><span class="identifier">cols</span><span class="special">();</span> <span class="special">++</span><span class="identifier">j</span><span class="special">)</span> <span class="special">{</span>
+            <span class="identifier">y</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">)</span> <span class="special">+=</span> <span class="identifier">a</span> <span class="special">*</span> <span class="identifier">x</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">j</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">return</span> <span class="identifier">y</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating_expr</span><span class="special">;</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">auto</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(</span><span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">Kind</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">);</span>
+
+<span class="comment">// This is the primary template for our expression template.  If you assign a</span>
+<span class="comment">// self_evaluating_expr to a matrix, its conversion operator transforms and</span>
+<span class="comment">// evaluates the expression with a call to evaluate_matrix_expr().</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating_expr</span>
+<span class="special">{</span>
+    <span class="keyword">operator</span> <span class="keyword">auto</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">kind</span> <span class="special">=</span> <span class="identifier">Kind</span><span class="special">;</span>
+
+    <span class="identifier">Tuple</span> <span class="identifier">elements</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="comment">// This is a specialization of our expression template for assignment</span>
+<span class="comment">// expressions.  The destructor transforms and evaluates via a call to</span>
+<span class="comment">// evaluate_matrix_expr(), and then assigns the result to the variable on the</span>
+<span class="comment">// left side of the assignment.</span>
+<span class="comment">//</span>
+<span class="comment">// In a production implementation, you'd need to have specializations for</span>
+<span class="comment">// plus_assign, minus_assign, etc.</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">assign</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="special">~</span><span class="identifier">self_evaluating_expr</span><span class="special">();</span>
+
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">kind</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">assign</span><span class="special">;</span>
+
+    <span class="identifier">Tuple</span> <span class="identifier">elements</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">struct</span> <span class="identifier">use_daxpy</span>
+<span class="special">{</span>
+    <span class="comment">// A plus-expression, which may be of the form double * matrix + matrix,</span>
+    <span class="comment">// or may be something else.  Since our daxpy() above requires a mutable</span>
+    <span class="comment">// "y", we only need to match a mutable lvalue matrix reference here.</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+    <span class="keyword">auto</span> <span class="keyword">operator</span><span class="special">()(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_tag</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&gt;,</span>
+        <span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">,</span>
+        <span class="identifier">matrix</span> <span class="special">&amp;</span> <span class="identifier">m</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="comment">// Here, we transform the left-hand side into a pair if it's the</span>
+        <span class="comment">// double * matrix operation we're looking for.  Otherwise, we just</span>
+        <span class="comment">// get a copy of the left side expression.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Note that this is a bit of a cheat, done for clarity.  If we pass a</span>
+        <span class="comment">// larger expression that happens to contain a double * matrix</span>
+        <span class="comment">// subexpression, that subexpression will be transformed into a tuple!</span>
+        <span class="comment">// In production code, this transform should probably only be</span>
+        <span class="comment">// performed on an expression with all terminal members.</span>
+        <span class="keyword">auto</span> <span class="identifier">lhs</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span>
+            <span class="identifier">expr</span><span class="special">,</span>
+            <span class="special">[](</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_tag</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">multiplies</span><span class="special">&gt;,</span>
+               <span class="keyword">double</span> <span class="identifier">d</span><span class="special">,</span>
+               <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">m</span><span class="special">)</span> <span class="special">{</span>
+                <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="identifier">matrix</span> <span class="keyword">const</span> <span class="special">&amp;&gt;(</span><span class="identifier">d</span><span class="special">,</span> <span class="identifier">m</span><span class="special">);</span>
+            <span class="special">});</span>
+
+        <span class="comment">// If we got back a copy of expr above, just re-construct the</span>
+        <span class="comment">// expression this function mathes; in other words, do not effectively</span>
+        <span class="comment">// transform anything.  Otherwise, replace the expression matched by</span>
+        <span class="comment">// this function with a call to daxpy().</span>
+        <span class="keyword">if</span> <span class="keyword">constexpr</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span><span class="keyword">decltype</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">)&gt;::</span><span class="identifier">value</span><span class="special">)</span> <span class="special">{</span>
+            <span class="keyword">return</span> <span class="identifier">expr</span> <span class="special">+</span> <span class="identifier">m</span><span class="special">;</span>
+        <span class="special">}</span> <span class="keyword">else</span> <span class="special">{</span>
+            <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">make_terminal</span><span class="special">(</span><span class="identifier">daxpy</span><span class="special">)(</span><span class="identifier">lhs</span><span class="special">.</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">lhs</span><span class="special">.</span><span class="identifier">second</span><span class="special">,</span> <span class="identifier">m</span><span class="special">);</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+<span class="special">};</span>
+
+
+<span class="comment">// This is the heart of what self_evaluating_expr does.  If we had other</span>
+<span class="comment">// optimizations/transformations we wanted to do, we'd put them in this</span>
+<span class="comment">// function, either before or after the use_daxpy transformation.</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="keyword">auto</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(</span><span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">Kind</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">expr</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">auto</span> <span class="identifier">daxpy_form</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span><span class="identifier">expr</span><span class="special">,</span> <span class="identifier">use_daxpy</span><span class="special">{});</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">evaluate</span><span class="special">(</span><span class="identifier">daxpy_form</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span> <span class="identifier">Kind</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">Kind</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;::</span><span class="keyword">operator</span> <span class="keyword">auto</span><span class="special">()</span> <span class="keyword">const</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(*</span><span class="keyword">this</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Tuple</span><span class="special">&gt;</span>
+<span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">assign</span><span class="special">,</span> <span class="identifier">Tuple</span><span class="special">&gt;::</span>
+    <span class="special">~</span><span class="identifier">self_evaluating_expr</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hana</span><span class="special">::</span><span class="identifier">literals</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">evaluate</span><span class="special">(</span><span class="identifier">elements</span><span class="special">[</span><span class="number">0</span><span class="identifier">_c</span><span class="special">])</span> <span class="special">=</span> <span class="identifier">evaluate_matrix_expr</span><span class="special">(</span><span class="identifier">elements</span><span class="special">[</span><span class="number">1</span><span class="identifier">_c</span><span class="special">]);</span>
+<span class="special">}</span>
+
+<span class="comment">// In order to define the = operator with the semantics we want, it's</span>
+<span class="comment">// convenient to derive a terminal type from a terminal instantiation of</span>
+<span class="comment">// self_evaluating_expr.  Note that we could have written a template</span>
+<span class="comment">// specialization here instead -- either one would work.  That would of course</span>
+<span class="comment">// have required more typing.</span>
+<span class="keyword">struct</span> <span class="identifier">self_evaluating</span> <span class="special">:</span>
+    <span class="identifier">self_evaluating_expr</span><span class="special">&lt;</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">yap</span><span class="special">::</span><span class="identifier">expr_kind</span><span class="special">::</span><span class="identifier">terminal</span><span class="special">,</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hana</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">matrix</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="identifier">self_evaluating</span><span class="special">()</span> <span class="special">{}</span>
+
+    <span class="keyword">explicit</span> <span class="identifier">self_evaluating</span><span class="special">(</span><span class="identifier">matrix</span> <span class="identifier">m</span><span class="special">)</span>
+    <span class="special">{</span> <span class="identifier">elements</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hana</span><span class="special">::</span><span class="identifier">tuple</span><span class="special">&lt;</span><span class="identifier">matrix</span><span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(</span><span class="identifier">m</span><span class="special">));</span> <span class="special">}</span>
+
+    <span class="identifier">BOOST_YAP_USER_ASSIGN_OPERATOR</span><span class="special">(</span><span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="special">::</span><span class="identifier">self_evaluating_expr</span><span class="special">);</span>
+<span class="special">};</span>
+
+<span class="identifier">BOOST_YAP_USER_BINARY_OPERATOR</span><span class="special">(</span><span class="identifier">plus</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">)</span>
+<span class="identifier">BOOST_YAP_USER_BINARY_OPERATOR</span><span class="special">(</span><span class="identifier">minus</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">)</span>
+<span class="identifier">BOOST_YAP_USER_BINARY_OPERATOR</span><span class="special">(</span><span class="identifier">multiplies</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">,</span> <span class="identifier">self_evaluating_expr</span><span class="special">)</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">matrix</span> <span class="identifier">identity</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>
+    <span class="identifier">identity</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span> <span class="special">=</span> <span class="number">1.0</span><span class="special">;</span>
+    <span class="identifier">identity</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">1</span><span class="special">)</span> <span class="special">=</span> <span class="number">1.0</span><span class="special">;</span>
+
+    <span class="comment">// These are YAP-ified terminal expressions.</span>
+    <span class="identifier">self_evaluating</span> <span class="identifier">m1</span><span class="special">(</span><span class="identifier">identity</span><span class="special">);</span>
+    <span class="identifier">self_evaluating</span> <span class="identifier">m2</span><span class="special">(</span><span class="identifier">identity</span><span class="special">);</span>
+    <span class="identifier">self_evaluating</span> <span class="identifier">m3</span><span class="special">(</span><span class="identifier">identity</span><span class="special">);</span>
+
+    <span class="comment">// This transforms the YAP expression to use daxpy(), so it creates no</span>
+    <span class="comment">// temporaries.  The transform happens in the destructor of the</span>
+    <span class="comment">// assignment-expression specialization of self_evaluating_expr.</span>
+    <span class="identifier">m1</span> <span class="special">=</span> <span class="number">3.0</span> <span class="special">*</span> <span class="identifier">m2</span> <span class="special">+</span> <span class="identifier">m3</span><span class="special">;</span>
+
+    <span class="comment">// Same as above, except that it uses the matrix conversion operator on</span>
+    <span class="comment">// the self_evaluating_expr primary template, because here we're assigning</span>
+    <span class="comment">// a YAP expression to a non-YAP-ified matrix.</span>
+    <span class="identifier">matrix</span> <span class="identifier">m_result_1</span> <span class="special">=</span> <span class="number">3.0</span> <span class="special">*</span> <span class="identifier">m2</span> <span class="special">+</span> <span class="identifier">m3</span><span class="special">;</span>
+
+    <span class="comment">// Creates temporaries and does not use daxpy(), because the A * X + Y</span>
+    <span class="comment">// pattern does not occur within the expression.</span>
+    <span class="identifier">matrix</span> <span class="identifier">m_result_2</span> <span class="special">=</span> <span class="number">3.0</span> <span class="special">*</span> <span class="identifier">m2</span><span class="special">;</span>
 
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
@@ -3545,7 +3806,7 @@
         </p>
 <p>
           First, we start with a custom expression template, <code class="computeroutput"><span class="identifier">autodiff_expr</span></code>.
-          It supports simple arithmetic, but notice it has no call operator &#8212;
+          It supports simple arithmetic, but notice it has no call operator —
           we don't want <code class="computeroutput"><span class="special">(</span><span class="identifier">a</span>
           <span class="special">+</span> <span class="identifier">b</span><span class="special">)()</span></code> to be a valid expression.
         </p>
@@ -4421,7 +4682,7 @@
         these four functions with Google Benchmark yields these results:
       </p>
 <div class="table">
-<a name="boost_yap.manual.object_code.runtimes_of_different_map_constructions"></a><p class="title"><b>Table&#160;47.5.&#160;Runtimes of Different Map Constructions</b></p>
+<a name="boost_yap.manual.object_code.runtimes_of_different_map_constructions"></a><p class="title"><b>Table 47.5. Runtimes of Different Map Constructions</b></p>
 <div class="table-contents"><table class="table" summary="Runtimes of Different Map Constructions">
 <colgroup>
 <col>
@@ -4503,7 +4764,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2018 T. Zachary Laine<p>
+<td align="right"><div class="copyright-footer">Copyright © 2018 T. Zachary Laine<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

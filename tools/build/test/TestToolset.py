@@ -107,14 +107,16 @@ def test_toolset(toolset, version, property_sets):
         def path(t):
             return toolset.split("-")[0] + "-*" + version + compute_path(properties, t)
         os.environ["B2_PROPERTIES"] = " ".join(expand_properties(properties))
-        t.run_build_system(["--user-config="] + properties)
+        t.run_build_system(["--user-config=", "-sPYTHON_CMD=%s" % sys.executable] + properties)
         t.expect_addition("bin/%s/lib.obj" % (path("obj")))
         if "link=static" not in properties:
             t.expect_addition("bin/%s/l1.dll" % (path("dll")))
+            t.ignore_addition("bin/%s/*l1.*.rsp" % (path("dll")))
         else:
             t.expect_addition("bin/%s/l1.lib" % (path("lib")))
         t.expect_addition("bin/%s/main.obj" % (path("obj2")))
         t.expect_addition("bin/%s/test.exe" % (path("exe")))
+        t.ignore_addition("bin/%s/test.rsp" % (path("exe")))
         t.expect_nothing_more()
         t.rm("bin")
 

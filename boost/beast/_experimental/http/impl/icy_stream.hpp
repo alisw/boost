@@ -35,7 +35,7 @@ is_icy(ConstBufferSequence const& buffers)
     char buf[3];
     auto const n = net::buffer_copy(
         net::mutable_buffer(buf, 3),
-        buffers);   
+        buffers);
     if(n >= 1 && buf[0] != 'I')
         return false;
     if(n >= 2 && buf[1] != 'C')
@@ -57,7 +57,7 @@ template<class Buffers, class Handler>
 class read_op
     : public beast::async_base<Handler,
         beast::executor_type<icy_stream>>
-    , public net::coroutine
+    , public asio::coroutine
 {
     icy_stream& s_;
     Buffers b_;
@@ -259,7 +259,7 @@ read_some(MutableBufferSequence const& buffers, error_code& ec)
 template<class NextLayer>
 template<
     class MutableBufferSequence,
-    class ReadHandler>
+    BOOST_BEAST_ASYNC_TPARAM2 ReadHandler>
 BOOST_BEAST_ASYNC_RESULT2(ReadHandler)
 icy_stream<NextLayer>::
 async_read_some(
@@ -311,7 +311,7 @@ write_some(MutableBufferSequence const& buffers, error_code& ec)
 template<class NextLayer>
 template<
     class MutableBufferSequence,
-    class WriteHandler>
+    BOOST_BEAST_ASYNC_TPARAM2 WriteHandler>
 BOOST_BEAST_ASYNC_RESULT2(WriteHandler)
 icy_stream<NextLayer>::
 async_write_some(

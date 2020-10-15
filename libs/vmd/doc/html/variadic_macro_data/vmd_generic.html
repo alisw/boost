@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Generic macros for working with data types</title>
 <link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;The Variadic Macro Data Library 1.9">
-<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;The Variadic Macro Data Library 1.9">
+<link rel="home" href="../index.html" title="Chapter 1. The Variadic Macro Data Library 1.9">
+<link rel="up" href="../index.html" title="Chapter 1. The Variadic Macro Data Library 1.9">
 <link rel="prev" href="vmd_specific/vmd_identifying.html" title="Identifying data types">
 <link rel="next" href="vmd_generic/vmd_convert_sequence.html" title="Getting the type of data">
 </head>
@@ -320,12 +320,47 @@
 </pre>
 <h5>
 <a name="variadic_macro_data.vmd_generic.vmd_sequence.h4"></a>
+        <span class="phrase"><a name="variadic_macro_data.vmd_generic.vmd_sequence.distinguishing_consecutive_seqs_"></a></span><a class="link" href="vmd_generic.html#variadic_macro_data.vmd_generic.vmd_sequence.distinguishing_consecutive_seqs_">Distinguishing
+        consecutive seqs and tuples in a sequence</a>
+      </h5>
+<p>
+        As has previously been mentioned a single element tuple is also a one element
+        seq, so parsing a sequence which has seqs and tuples in them might be a problem
+        as far as identify each element of the sequence. In a multi-element sequence
+        if the data consists of a mixture of seqs and tuples consecutively we need
+        to distinguish how VMD parses the data. The rule is that VMD always parses
+        a single element tuple as a tuple unless it is followed by one or more single
+        element tuples, in which case it is a seq. Here are some examples showing
+        how the rule is applied.
+      </p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">ST_DATA</span> <span class="special">(</span><span class="identifier">somedata</span><span class="special">)(</span><span class="identifier">element1</span><span class="special">,</span><span class="identifier">element2</span><span class="special">)</span>
+</pre>
+<p>
+        VMD parses the above data as 2 consecutive tuples. The first tuple is the
+        single element tuple '(somedata)' and the second tuple is the multi element
+        tuple '(element1,element2)'.
+      </p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">ST_DATA</span> <span class="special">(</span><span class="identifier">element1</span><span class="special">,</span><span class="identifier">element2</span><span class="special">)(</span><span class="identifier">somedata</span><span class="special">)</span>
+</pre>
+<p>
+        VMD parses the above data as 2 consecutive tuples. The first tuple is the
+        multi element tuple '(element1,element2)' and the second tuple is the single
+        element tuple '(somedata)'.
+      </p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">ST_DATA</span> <span class="special">(</span><span class="identifier">somedata</span><span class="special">)(</span><span class="identifier">some_other_data</span><span class="special">)(</span><span class="identifier">element1</span><span class="special">,</span><span class="identifier">element2</span><span class="special">)</span>
+</pre>
+<p>
+        VMD parses the above data as a seq followed by a tuple. The seq is '(somedata)(some_other_data)'
+        and the tuple is '(element1,element2)'.
+      </p>
+<h5>
+<a name="variadic_macro_data.vmd_generic.vmd_sequence.h5"></a>
         <span class="phrase"><a name="variadic_macro_data.vmd_generic.vmd_sequence.using_vmd_to_parse_sequence_inpu"></a></span><a class="link" href="vmd_generic.html#variadic_macro_data.vmd_generic.vmd_sequence.using_vmd_to_parse_sequence_inpu">Using
         VMD to parse sequence input</a>
       </h5>
 <p>
-        For a VMD sequence essentially two ways of parsing into individual data types
-        are offered by the VMD library:
+        For a VMD sequence two ways of parsing into individual data types are offered
+        by the VMD library:
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -499,7 +534,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2017 Tropic Software
+<td align="right"><div class="copyright-footer">Copyright © 2010-2017 Tropic Software
       East Inc</div></td>
 </tr></table>
 <hr>

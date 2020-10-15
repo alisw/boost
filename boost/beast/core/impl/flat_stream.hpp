@@ -16,7 +16,6 @@
 #include <boost/beast/core/stream_traits.hpp>
 #include <boost/beast/websocket/teardown.hpp>
 #include <boost/asio/buffer.hpp>
-#include <boost/asio/coroutine.hpp>
 #include <memory>
 
 namespace boost {
@@ -30,7 +29,6 @@ template<class Handler>
 class write_op
     : public async_base<Handler,
         beast::executor_type<flat_stream>>
-    , public net::coroutine
 {
 public:
     template<
@@ -146,7 +144,7 @@ read_some(MutableBufferSequence const& buffers, error_code& ec)
 template<class NextLayer>
 template<
     class MutableBufferSequence,
-    class ReadHandler>
+    BOOST_BEAST_ASYNC_TPARAM2 ReadHandler>
 BOOST_BEAST_ASYNC_RESULT2(ReadHandler)
 flat_stream<NextLayer>::
 async_read_some(
@@ -227,7 +225,7 @@ write_some(ConstBufferSequence const& buffers, error_code& ec)
 template<class NextLayer>
 template<
     class ConstBufferSequence,
-    class WriteHandler>
+    BOOST_BEAST_ASYNC_TPARAM2 WriteHandler>
 BOOST_BEAST_ASYNC_RESULT2(WriteHandler)
 flat_stream<NextLayer>::
 async_write_some(

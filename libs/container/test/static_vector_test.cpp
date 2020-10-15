@@ -7,7 +7,6 @@
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-#include <boost/container/detail/config_begin.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/core/no_exceptions_support.hpp>
 #include <boost/container/vector.hpp>
@@ -496,11 +495,9 @@ void test_swap_and_move_nd()
 
       BOOST_TEST(v1.size() == N/2);
       BOOST_TEST(s1.size() == N);
-      //iG moving does not imply emptying source
-      //BOOST_TEST(v2.size() == 0);
+      BOOST_TEST(v2.size() == 0);
       BOOST_TEST(s2.size() == N);
-      //iG moving does not imply emptying source
-      //BOOST_TEST(v3.size() == 0);
+      BOOST_TEST(v3.size() == 0);
       BOOST_TEST(s3.size() == N);
       BOOST_TEST(v4.size() == N/2);
       BOOST_TEST(s4.size() == N);
@@ -824,4 +821,3 @@ int main(int, char* [])
    return boost::report_errors();
 }
 
-#include <boost/container/detail/config_end.hpp>

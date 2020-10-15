@@ -1,5 +1,5 @@
 /* Unit testing for outcomes
-(C) 2013-2019 Niall Douglas <http://www.nedproductions.biz/> (149 commits)
+(C) 2013-2020 Niall Douglas <http://www.nedproductions.biz/> (8 commits)
 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -27,12 +27,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#include "../../include/boost/outcome/result.hpp"
-#include "../../include/boost/outcome/try.hpp"
+#include <boost/outcome/result.hpp>
+#include <boost/outcome/try.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_monitor.hpp>
 
-BOOST_OUTCOME_AUTO_TEST_CASE(issues_59, "result<NonMovable> supported?")
+BOOST_OUTCOME_AUTO_TEST_CASE(issues_0059_test, "result<NonMovable> supported?")
 {
 #if defined(_MSC_VER) || __cplusplus >= 201700
   using namespace BOOST_OUTCOME_V2_NAMESPACE;

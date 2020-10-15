@@ -2,7 +2,7 @@
 //
 //  See http://www.boost.org for most recent version, including documentation.
 //
-//  Copyright Antony Polukhin, 2012-2019.
+//  Copyright Antony Polukhin, 2012-2020.
 //
 //  Distributed under the Boost
 //  Software License, Version 1.0. (See accompanying file
@@ -17,79 +17,58 @@
 #endif
 
 #include <boost/lexical_cast.hpp>
-#include <boost/test/unit_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/range/iterator_range.hpp>
+
+#include <cstdlib>
+
+#include "escape_struct.hpp"
 
 #ifndef BOOST_NO_EXCEPTIONS
 #error "This test must be compiled with -DBOOST_NO_EXCEPTIONS"
 #endif
 
-bool g_was_exception = false;
-
 namespace boost {
 
-void throw_exception(std::exception const & ) {
-    g_was_exception = true;
+BOOST_NORETURN void throw_exception(std::exception const & ) {
+    static int state = 0;
+    ++ state;
+
+    EscapeStruct v("");
+    switch(state) {
+    case 1: 
+        lexical_cast<char>(v); // should call boost::throw_exception
+        std::exit(1);
+    case 2:    
+        lexical_cast<unsigned char>(v); // should call boost::throw_exception
+        std::exit(2);
+    }
+    std::exit(boost::report_errors());
 }
 
 }
 
-using namespace boost;
+void test_exceptions_off() {
+    using namespace boost;
+    EscapeStruct v("");
+    
+    v = lexical_cast<EscapeStruct>(100);
+    BOOST_TEST_EQ(lexical_cast<int>(v), 100);
+    BOOST_TEST_EQ(lexical_cast<unsigned int>(v), 100u);
 
+    v = lexical_cast<EscapeStruct>(0.0);
+    BOOST_TEST_EQ(lexical_cast<double>(v), 0.0);
 
-struct Escape
-{
-    Escape(){}
-    Escape(const std::string& s)
-        : str_(s)
-    {}
+    BOOST_TEST_EQ(lexical_cast<short>(100), 100);
+    BOOST_TEST_EQ(lexical_cast<float>(0.0), 0.0);
 
-    std::string str_;
-};
-
-inline std::ostream& operator<< (std::ostream& o, const Escape& rhs)
-{
-    return o << rhs.str_;
+    lexical_cast<short>(700000); // should call boost::throw_exception
+    BOOST_TEST(false);
 }
 
-inline std::istream& operator>> (std::istream& i, Escape& rhs)
-{
-    return i >> rhs.str_;
-}
+int main() {
+    test_exceptions_off();
 
-void test_exceptions_off()
-{
-    Escape v("");
-
-    g_was_exception = false;
-    lexical_cast<char>(v);
-    BOOST_CHECK(g_was_exception);
-
-    g_was_exception = false;
-    lexical_cast<unsigned char>(v);
-    BOOST_CHECK(g_was_exception);
-
-    v = lexical_cast<Escape>(100);
-    BOOST_CHECK_EQUAL(lexical_cast<int>(v), 100);
-    BOOST_CHECK_EQUAL(lexical_cast<unsigned int>(v), 100u);
-
-    v = lexical_cast<Escape>(0.0);
-    BOOST_CHECK_EQUAL(lexical_cast<double>(v), 0.0);
-
-    BOOST_CHECK_EQUAL(lexical_cast<short>(100), 100);
-    BOOST_CHECK_EQUAL(lexical_cast<float>(0.0), 0.0);
-
-    g_was_exception = false;
-    lexical_cast<short>(700000);
-    BOOST_CHECK(g_was_exception);
-}
-
-unit_test::test_suite *init_unit_test_suite(int, char *[])
-{
-    unit_test::test_suite *suite =
-        BOOST_TEST_SUITE("lexical_cast. Testing with BOOST_NO_EXCEPTIONS");
-    suite->add(BOOST_TEST_CASE(&test_exceptions_off));
-
-    return suite;
+    return boost::report_errors();
 }
 

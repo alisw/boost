@@ -2,7 +2,7 @@
 //
 //  See http://www.boost.org for most recent version, including documentation.
 //
-//  Copyright Antony Polukhin, 2012-2019.
+//  Copyright Antony Polukhin, 2012-2020.
 //
 //  Distributed under the Boost
 //  Software License, Version 1.0. (See accompanying file
@@ -19,6 +19,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/range/iterator_range.hpp>
+
+#include "escape_struct.hpp"
 
 using namespace boost;
 
@@ -84,40 +86,20 @@ void test_empty_2()
     BOOST_CHECK_THROW(lexical_cast<signed char>(v), bad_lexical_cast);
 }
 
-struct Escape
-{
-    Escape(){}
-    Escape(const std::string& s)
-        : str_(s)
-    {}
-
-    std::string str_;
-};
-
-inline std::ostream& operator<< (std::ostream& o, const Escape& rhs)
-{
-    return o << rhs.str_;
-}
-
-inline std::istream& operator>> (std::istream& i, Escape& rhs)
-{
-    return i >> rhs.str_;
-}
-
 void test_empty_3()
 {
-    Escape v("");
+    EscapeStruct v("");
     do_test_on_empty_input(v);
 
     BOOST_CHECK_THROW(lexical_cast<char>(v), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<unsigned char>(v), bad_lexical_cast);
     BOOST_CHECK_THROW(lexical_cast<signed char>(v), bad_lexical_cast);
 
-    v = lexical_cast<Escape>(100);
+    v = lexical_cast<EscapeStruct>(100);
     BOOST_CHECK_EQUAL(lexical_cast<int>(v), 100);
     BOOST_CHECK_EQUAL(lexical_cast<unsigned int>(v), 100u);
 
-    v = lexical_cast<Escape>(0.0);
+    v = lexical_cast<EscapeStruct>(0.0);
     BOOST_CHECK_EQUAL(lexical_cast<double>(v), 0.0);
 }
 
@@ -126,7 +108,7 @@ inline std::ostream & operator<<(std::ostream & out, const std::vector<long> & v
 {
     std::ostream_iterator<long> it(out);
     std::copy(v.begin(), v.end(), it);
-    assert(out);
+    BOOST_CHECK(out);
     return out;
 }
 }

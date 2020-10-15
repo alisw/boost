@@ -9,6 +9,7 @@
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/detail/workaround.hpp>
 #include <string>
+#include <ios>
 
 typedef boost::error_info<struct my_tag,int> my_info;
 
@@ -73,7 +74,7 @@ derives_std_boost_exception:
         {
         }
 
-    char const * what() const throw()
+    char const * what() const BOOST_NOEXCEPT_OR_NOTHROW
         {
         return wh_;
         }

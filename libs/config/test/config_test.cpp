@@ -1,4 +1,4 @@
-//  This file was automatically generated on Mon Feb 11 18:07:32 2019
+//  This file was automatically generated on Thu Apr  9 14:27:07 2020
 //  by libs/config/tools/generate.cpp
 //  Copyright John Maddock 2002-4.
 //  Use, modification and distribution are subject to the 
@@ -127,6 +127,11 @@ namespace boost_no_cxx11_atomic_smart_ptr = empty_boost;
 #else
 namespace boost_no_cxx11_defaulted_moves = empty_boost;
 #endif
+#ifndef BOOST_NO_CXX11_HDR_EXCEPTION
+#include "boost_no_cxx11_exception.ipp"
+#else
+namespace boost_no_cxx11_hdr_exception = empty_boost;
+#endif
 #ifndef BOOST_NO_CXX11_FINAL
 #include "boost_no_cxx11_final.ipp"
 #else
@@ -242,6 +247,11 @@ namespace boost_no_cxx11_non_public_defaulted_functions = empty_boost;
 #else
 namespace boost_no_cxx11_numeric_limits = empty_boost;
 #endif
+#ifndef BOOST_NO_CXX11_OVERRIDE
+#include "boost_no_cxx11_override.ipp"
+#else
+namespace boost_no_cxx11_override = empty_boost;
+#endif
 #ifndef BOOST_NO_CXX11_POINTER_TRAITS
 #include "boost_no_cxx11_pointer_traits.ipp"
 #else
@@ -351,6 +361,11 @@ namespace boost_no_cxx17_hdr_optional = empty_boost;
 #include "boost_no_cxx17_hdr_string_view.ipp"
 #else
 namespace boost_no_cxx17_hdr_string_view = empty_boost;
+#endif
+#ifndef BOOST_NO_CXX17_HDR_VARIANT
+#include "boost_no_cxx17_hdr_variant.ipp"
+#else
+namespace boost_no_cxx17_hdr_variant = empty_boost;
 #endif
 #ifndef BOOST_NO_CXX17_IF_CONSTEXPR
 #include "boost_no_cxx17_if_constexpr.ipp"
@@ -781,6 +796,11 @@ namespace boost_no_cxx11_unicode_literals = empty_boost;
 #include "boost_no_unified_init.ipp"
 #else
 namespace boost_no_cxx11_unified_initialization_syntax = empty_boost;
+#endif
+#ifndef BOOST_NO_CXX11_UNRESTRICTED_UNION
+#include "boost_no_cxx11_unrestricted_union.ipp"
+#else
+namespace boost_no_cxx11_unrestricted_union = empty_boost;
 #endif
 #ifndef BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL
 #include "boost_no_using_breaks_adl.ipp"
@@ -1296,6 +1316,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_CXX11_DEFAULTED_MOVES at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_cxx11_hdr_exception::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX11_HDR_EXCEPTION at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_cxx11_final::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX11_FINAL at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1411,6 +1436,11 @@ int main( int, char *[] )
       std::cerr << "Failed test for BOOST_NO_CXX11_NUMERIC_LIMITS at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
+   if(0 != boost_no_cxx11_override::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX11_OVERRIDE at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
    if(0 != boost_no_cxx11_pointer_traits::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX11_POINTER_TRAITS at: " << __FILE__ << ":" << __LINE__ << std::endl;
@@ -1519,6 +1549,11 @@ int main( int, char *[] )
    if(0 != boost_no_cxx17_hdr_string_view::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX17_HDR_STRING_VIEW at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_cxx17_hdr_variant::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX17_HDR_VARIANT at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_no_cxx17_if_constexpr::test())
@@ -1949,6 +1984,11 @@ int main( int, char *[] )
    if(0 != boost_no_cxx11_unified_initialization_syntax::test())
    {
       std::cerr << "Failed test for BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX at: " << __FILE__ << ":" << __LINE__ << std::endl;
+      ++error_count;
+   }
+   if(0 != boost_no_cxx11_unrestricted_union::test())
+   {
+      std::cerr << "Failed test for BOOST_NO_CXX11_UNRESTRICTED_UNION at: " << __FILE__ << ":" << __LINE__ << std::endl;
       ++error_count;
    }
    if(0 != boost_function_scope_using_declaration_breaks_adl::test())

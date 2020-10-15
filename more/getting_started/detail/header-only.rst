@@ -32,8 +32,6 @@ The only Boost libraries that *must* be built separately are:
   before building and installing it)
 * Boost.Regex_
 * Boost.Serialization_
-* Boost.Signals_
-* Boost.System_
 * Boost.Thread_
 * Boost.Timer_
 * Boost.Wave_
@@ -42,10 +40,6 @@ __ ../../libs/log/doc/html/log/installation/config.html
 __ ../../libs/python/doc/html/building.html
 
 A few libraries have optional separately-compiled binaries:
-
-* Boost.DateTime_ has a binary component that is only needed if
-  you're using its ``to_string``\ /\ ``from_string`` or serialization
-  features, or if you're targeting Visual C++ 6.x or Borland.
 
 * Boost.Graph_ also has a binary component that is only needed if
   you intend to `parse GraphViz files`__.
@@ -64,5 +58,9 @@ A few libraries have optional separately-compiled binaries:
   exception_ptr for 32-bit _MSC_VER==1310 and _MSC_VER==1400
   which requires a separately-compiled binary. This is enabled by
   #define BOOST_ENABLE_NON_INTRUSIVE_EXCEPTION_PTR.
+
+* Boost.System_ is header-only since Boost 1.69. A stub library is
+  still built for compatibility, but linking to it is no longer
+  necessary.
 
 __ ../../libs/graph/doc/read_graphviz.html

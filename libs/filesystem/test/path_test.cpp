@@ -50,6 +50,7 @@
 #endif
 
 #include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/exception.hpp>
 
 #include <boost/config.hpp>
 # if defined( BOOST_NO_STD_WSTRING )
@@ -64,7 +65,7 @@
 #include <vector>
 #include <cstring>
 #include <cassert>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/detail/lightweight_main.hpp>
 
 namespace fs = boost::filesystem;

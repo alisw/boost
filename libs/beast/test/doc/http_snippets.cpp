@@ -37,7 +37,10 @@ net::const_buffer get_next_chunk_body()
 void fxx() {
 
     net::io_context ioc;
-    auto work = net::make_work_guard(ioc);
+    net::any_io_executor work =
+        net::require(
+            ioc.get_executor(),
+            net::execution::outstanding_work.tracked);
     std::thread t{[&](){ ioc.run(); }};
     net::ip::tcp::socket sock{ioc};
 
@@ -366,7 +369,7 @@ print_cxx14(message<isRequest, Body, Fields> const& m)
             [&sr](error_code& ec, auto const& buffer)
             {
                 ec = {};
-                std::cout << buffers(buffer);
+                std::cout << make_printable(buffer);
                 sr.consume(buffer_bytes(buffer));
             });
     }
@@ -393,7 +396,7 @@ struct lambda
     void operator()(error_code& ec, ConstBufferSequence const& buffer) const
     {
         ec = {};
-        std::cout << buffers(buffer);
+        std::cout << make_printable(buffer);
         sr.consume(buffer_bytes(buffer));
     }
 };
@@ -434,7 +437,7 @@ split_print_cxx14(message<isRequest, Body, Fields> const& m)
             [&sr](error_code& ec, auto const& buffer)
             {
                 ec = {};
-                std::cout << buffers(buffer);
+                std::cout << make_printable(buffer);
                 sr.consume(buffer_bytes(buffer));
             });
     }
@@ -448,7 +451,7 @@ split_print_cxx14(message<isRequest, Body, Fields> const& m)
                 [&sr](error_code& ec, auto const& buffer)
                 {
                     ec = {};
-                    std::cout << buffers(buffer);
+                    std::cout << make_printable(buffer);
                     sr.consume(buffer_bytes(buffer));
                 });
         }
@@ -461,6 +464,6 @@ split_print_cxx14(message<isRequest, Body, Fields> const& m)
 //]
 #endif
 
-// Highest snippet: 
+// Highest snippet:
 
 } // doc_http_snippets

@@ -4,6 +4,8 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+// clang-format off
+
 //[ getting_started_listing_03
 
 #include <boost/format.hpp>
@@ -35,9 +37,10 @@ int main() {
     Iterate over bins and print profile.
   */
   std::ostringstream os;
-  for (auto x : indexed(p)) {
-    os << boost::format("bin %i [%3.1f, %3.1f) count %i mean %g\n") % x.index() %
-              x.bin().lower() % x.bin().upper() % x->count() % x->value();
+  for (auto&& x : indexed(p)) {
+    os << boost::format("bin %i [%3.1f, %3.1f) count %i mean %g\n") 
+          % x.index() % x.bin().lower() % x.bin().upper() 
+          % x->count() % x->value();
   }
 
   std::cout << os.str() << std::flush;

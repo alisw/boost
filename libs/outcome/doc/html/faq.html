@@ -32,6 +32,10 @@
 <dt><a href="#why-is-implicit-default-construction-disabled">Why is implicit default construction disabled?</a></dt>
 <dt><a href="#how-far-away-from-the-proposed-std-expected-t-e-is-outcome-s-checked-t-e">How far away from the proposed <code>std::expected&lt;T, E&gt;</code> is Outcome&rsquo;s <code>checked&lt;T, E&gt;</code>?</a></dt>
 <dt><a href="#why-doesn-t-outcome-duplicate-std-expected-t-e-s-design">Why doesn&rsquo;t Outcome duplicate <code>std::expected&lt;T, E&gt;</code>&rsquo;s design?</a></dt>
+<dt><a href="#is-outcome-riddled-with-undefined-behaviour-for-const-const-containing-and-reference-containing-types">Is Outcome riddled with undefined behaviour for const, const-containing and reference-containing types?</a>
+<dd><dl>
+<dt><a href="#more-detail">More detail</a></dt>
+</dl></dd></dt>
 </dl></dd></dt>
 </dl>
   </div>
@@ -51,6 +55,7 @@ line codebases. <code>result</code>&rsquo;s layout is hard coded to:</p>
 <span class="p">};</span></code></pre></div>
 <p>This is C-compatible if <code>T</code> and <code>EC</code> are C-compatible. 
 <a href="https://en.cppreference.com/w/cpp/error/error_code" class="api-reference" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> <code>std::error_code</code></a>
+
 is <em>probably</em> C-compatible, but its layout is not standardised (though there is a
 normative note in the standard about its layout). Hence Outcome cannot provide a
 C macro API for standard Outcome, but we can for <a href="./experimental/c-api.html">Experimental Outcome</a>.</p>
@@ -59,6 +64,7 @@ C macro API for standard Outcome, but we can for <a href="./experimental/c-api.h
 
 <p>Variant-based alternatives to Outcome such as 
 <a href="https://wg21.link/P0323" class="api-reference" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> P0323 <code>std::expected&lt;T, E&gt;</code></a>
+
 would use <code>std::aligned_union</code> to ensure appropriate over-alignment for the storage of
 either a <code>T</code> or an <code>E</code>. This discovers the over-alignment for a type using
 <code>std::alignment_of</code>, which is defaulted to <code>alignof()</code>.</p>
@@ -90,27 +96,26 @@ throws, value and status bits would be as if the failure had not occurred, same
 as for aborting the construction of any <code>struct</code> type.</p>
 
 <p>It is recognised that these weak guarantees may be unsuitable for some people,
-so Outcome implements <code>swap()</code> with much stronger guarantees, as one can refine,
-without too much work, one&rsquo;s own classes from <code>result</code> and <code>outcome</code> implementing
-stronger guarantees using <code>swap()</code> as the primitive building block.</p>
+so Outcome implements <code>swap()</code> with much stronger guarantees, as one can locally refine,
+without too much work, one&rsquo;s own custom classes from <code>result</code> and <code>outcome</code> implementing
+stronger guarantees for construction and assignment using <code>swap()</code> as the primitive
+building block.</p>
 
-<p>Therefore for the Swap operation only,
-if no more than <strong>one</strong> of the underlying types has a throwing swap, <code>result</code> and
-<code>outcome</code> perform that operation <em>first</em> before all others. This implements the strong
-exception guarantee.</p>
+<p>The core ADL discovered implementation of strong guarantee swap is <a href="./reference/functions/strong_swap.html" class="api-reference"><code>strong_swap(bool &amp;all_good, T &amp;a, T &amp;b)</code></a>
+.
+This can be overloaded by third party code with custom strong guarantee swap
+implementations, same as for <code>std::swap()</code>. Because strong guarantee swap may fail
+when trying to restore input state during handling of failure to swap, the
+<code>all_good</code> boolean becomes false if restoration fails, at which point both
+results/outcomes get marked as tainted via <a href="./reference/types/basic_result/has_lost_consistency.html" class="api-reference"><code>has_lost_consistency()</code></a>
+.</p>
 
-<p>If <em>two or more</em> of the underlying types has a throwing swap, then only the basic
-exception guarantee is provided. Be aware that values and errors may become mismatched
-in this situation e.g. the value might get swapped, but if the error fails to swap,
-and then the value fails to get swapped back, the two results or outcomes would end
-up with mismatched values and errors. In that situation, the flags are forced into
-a consistent state i.e. there cannot be a valued <em>and</em> errored result, nor a result
-with neither value nor error. In this sense the basic guarantee is met, however
-correct program operation when values and errors have become mismatched is unlikely.</p>
-
-<p>The simple solution to avoiding this situation, or indeed to ensure the strong exception
-guarantee for all operations, is to always choose your error and exception types to
-have non-throwing constructors, assignments and swaps e.g. <code>error_code</code> and <code>exception_ptr</code>.</p>
+<p>It is <strong>up to you</strong> to check this flag to see if known good state has been lost,
+as Outcome never does so on your behalf. The simple solution to avoiding having
+to deal with this situation is to always choose your value, error and exception
+types to have non-throwing move constructors and move assignments. This causes
+the strong swap implementation to no longer be used, as it is no longer required,
+and standard swap is used instead.</p>
 
 <h2 id="does-outcome-have-a-stable-abi-and-api">Does Outcome have a stable ABI and API?</h2>
 
@@ -146,7 +151,8 @@ on the addresses of globals for correct functioning.</p>
 
 <p>The standard library is required to implement globally unique addresses for the standard library
 provided 
-<a href="https://en.cppreference.com/w/cpp/error/error_category" class="api-reference" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> <code>std::error_category</code></a> implementations e.g. <code>std::system_category()</code>.
+<a href="https://en.cppreference.com/w/cpp/error/error_category" class="api-reference" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> <code>std::error_category</code></a>
+ implementations e.g. <code>std::system_category()</code>.
 User defined error code categories may <strong>not</strong> have unique global addresses, and thus
 introduce misoperation.</p>
 
@@ -204,7 +210,8 @@ can have as few dependencies as:</p>
 library implementations. If you include only <code>&lt;basic_result.hpp&gt;</code>, and manually configure
 <code>basic_result&lt;&gt;</code> by hand, compile time impact will be minimised.</p>
 
-<p>(See reference documentation for <a href="./reference/types/basic_result.html" class="api-reference"><code>basic_result&lt;T, E, NoValuePolicy&gt;</code></a> for more detail.</p>
+<p>(See reference documentation for <a href="./reference/types/basic_result.html" class="api-reference"><code>basic_result&lt;T, E, NoValuePolicy&gt;</code></a>
+ for more detail.</p>
 
 <h2 id="is-outcome-suitable-for-fixed-latency-predictable-execution-coding-such-as-for-high-frequency-trading-or-audio">Is Outcome suitable for fixed latency/predictable execution coding such as for high frequency trading or audio?</h2>
 
@@ -222,8 +229,10 @@ for failure code paths.</p>
 <p>For code where predictability of execution, no matter the code path, is paramount,
 writing all your code to use Outcome is not a bad place to start. Obviously enough,
 do choose a non-throwing policy when configuring <code>outcome</code> or <code>result</code> such as
-<a href="./reference/policies/all_narrow.html" class="api-reference"><code>all_narrow</code></a> to guarantee that exceptions can never be thrown by Outcome
-(or use the convenience typedef for <code>result</code>, <a href="./reference/aliases/unchecked.html" class="api-reference"><code>unchecked&lt;T, E = varies&gt;</code></a> which uses <code>policy::all_narrow</code>).</p>
+<a href="./reference/policies/all_narrow.html" class="api-reference"><code>all_narrow</code></a>
+ to guarantee that exceptions can never be thrown by Outcome
+(or use the convenience typedef for <code>result</code>, <a href="./reference/aliases/unchecked.html" class="api-reference"><code>unchecked&lt;T, E = varies&gt;</code></a>
+ which uses <code>policy::all_narrow</code>).</p>
 
 <h2 id="what-kind-of-runtime-performance-impact-will-using-outcome-in-my-code-introduce">What kind of runtime performance impact will using Outcome in my code introduce?</h2>
 
@@ -238,6 +247,10 @@ caller, so for example ten stack allocated objects might be destructed, or ten l
 of stack depth might be unwound. This is not a particularly realistic test, but it
 should at least give one an idea of the performance impact of returning Outcome&rsquo;s
 <code>result</code> or <code>outcome</code> over say returning a plain integer, or throwing an exception.</p>
+
+<p>The following figures are for Outcome v2.1.0 with GCC 7.4, clang 8.0 and Visual
+Studio 2017.9. Figures for newer Outcomes with newer compilers can be found at
+<a href="https://github.com/ned14/outcome/tree/develop/benchmark">https://github.com/ned14/outcome/tree/develop/benchmark</a>.</p>
 
 <h3 id="high-end-cpu-intel-skylake-x64">High end CPU: Intel Skylake x64</h3>
 
@@ -402,6 +415,7 @@ of these forms as is the most appropriate for the use case:</p>
 
 <p>Not far, in fact after the first Boost.Outcome peer review in May 2017, Expected moved
 much closer to Outcome, and Outcome deliberately provides <a href="./reference/aliases/checked.html" class="api-reference"><code>checked&lt;T, E = varies&gt;</code></a>
+
 as a semantic equivalent.</p>
 
 <p>Here are the remaining differences which represent the
@@ -530,7 +544,7 @@ can be implemented by wrapping up <code>checked&lt;T, E&gt;</code> with the diff
   <span class="k">return</span> <span class="n">BOOST_OUTCOME_V2_NAMESPACE</span><span class="o">::</span><span class="n">failure</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">Args</span><span class="o">&gt;</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
 <span class="p">}</span>
 <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span><span class="err"> </span><span class="nc">E</span><span class="o">&gt;</span> <span class="k">using</span> <span class="n">bad_expected_access</span> <span class="o">=</span> <span class="n">BOOST_OUTCOME_V2_NAMESPACE</span><span class="o">::</span><span class="n">bad_result_access_with</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">;</span>
-</code></pre></div><a href="https://github.com/boostorg/outcome/tree/master/doc/src/snippets/expected_implementation.cpp#L5" class="code-snippet-url" target="_blank">View this code on Github</a></div>
+</code></pre></div><a href="https://github.com/boostorg/outcome/tree/master/doc/src/snippets/expected_implementation.cpp#L35" class="code-snippet-url" target="_blank">View this code on Github</a></div>
 
 
 <h2 id="why-doesn-t-outcome-duplicate-std-expected-t-e-s-design">Why doesn&rsquo;t Outcome duplicate <code>std::expected&lt;T, E&gt;</code>&rsquo;s design?</h2>
@@ -563,9 +577,83 @@ mechanisms, <a href="https://wg21.link/P0786">one of which</a> Outcome implement
 interoperate with code using Outcome.</p></li>
 </ol>
 
+<h2 id="is-outcome-riddled-with-undefined-behaviour-for-const-const-containing-and-reference-containing-types">Is Outcome riddled with undefined behaviour for const, const-containing and reference-containing types?</h2>
+
+<p>The short answer is not any more in C++ 20 and after, thanks to changes made to
+C++ 20 at the Belfast WG21 meeting in November 2019.</p>
+
+<p>The longer answer is that before C++ 20, use of placement
+new on types containing <code>const</code> member types where the resulting pointer was
+thrown away is undefined behaviour. As of the resolution of a national body
+comment, this is no longer the case, and now Outcome is free of this particular
+UB for C++ 20 onwards.</p>
+
+<p>This still affects C++ before 20, though no major compiler is affected. Still,
+if you wish to avoid UB, don&rsquo;t use <code>const</code> types within Outcome types (or any
+<code>optional&lt;T&gt;</code>, or <code>vector&lt;T&gt;</code> or any STL container type for that matter).</p>
+
+<h3 id="more-detail">More detail</h3>
+
+<p>Before the C++ 14 standard, placement new into storage which used to contain
+a const type was straight out always undefined behaviour, period. Thus all use of
+placement new within a <code>result&lt;const_containing_type&gt;</code>, or indeed an <code>optional&lt;const_containing_type&gt;</code>, is always
+undefined behaviour before C++ 14. From <code>[basic.life]</code> for the C++ 11 standard:</p>
+
+<blockquote>
+<p>Creating a new object at the storage location that a const object with static,
+thread, or automatic storage duration occupies or, at the storage location
+that such a const object used to occupy before its lifetime ended results
+in undefined behavior.</p>
+</blockquote>
+
+<p>This being excessively restrictive, from C++ 14 onwards, <code>[basic_life]</code> now states:</p>
+
+<blockquote>
+<p>If, after the lifetime of an object has ended and before the storage which
+the object occupied is reused or released, a new object is created at the
+storage location which the original object occupied, a pointer that
+pointed to the original object, a reference that referred to the original
+object, or the name of the original object will automatically refer to the
+new object and, once the lifetime of the new object has started, can be
+used to manipulate the new object, if:</p>
+
+<p>— the storage for the new object exactly overlays the storage location which
+    the original object occupied, and</p>
+
+<p>— the new object is of the same type as the original object (ignoring the
+    top-level cv-qualifiers), and</p>
+
+<p>— the type of the original object is not const-qualified, and, if a class type,
+    does not contain any non-static data member whose type is const-qualified
+    or a reference type, and</p>
+
+<p>— neither the original object nor the new object is a potentially-overlapping
+    subobject</p>
+</blockquote>
+
+<p>Leaving aside my personal objections to giving placement new of non-const
+non-reference types magical pointer renaming powers, the upshot is that if
+you want defined behaviour for placement new of types containing const types
+or references, you must store the pointer returned by placement new, and use
+that pointer for all further reference to the newly created object. This
+obviously adds eight bytes of storage to a <code>result&lt;const_containing_type&gt;</code>, which is highly
+undesirable given all the care and attention paid to keeping it small. The alternative
+is to use 
+<a href="https://en.cppreference.com/w/cpp/utility/launder" class="api-reference" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> <code>std::launder</code></a>
+, which was added in C++ 17, to &lsquo;launder&rsquo;
+the storage into which we placement new before each and every use of that
+storage. This forces the compiler to reload the object stored by placement
+new on every occasion, and not assume it can be constant propagated, which
+impacts codegen quality.</p>
+
+<p>As mentioned above, this issue (in so far as it applies to types containing
+user supplied <code>T</code> which might be <code>const</code>) has been resolved as of C++ 20 onwards,
+and it is extremely unlikely that any C++ compiler will act on any UB here in
+C++ 17 or 14 given how much of STL containers would break.</p>
 
 
-        </div><p><small>Last revised: March 03, 2019 at 00:11:47 UTC</small></p>
+
+        </div><p><small>Last revised: February 03, 2020 at 11:32:11 UTC</small></p>
 <hr>
 <div class="spirit-nav">
 <a accesskey="p" href="./reference/functions/try_throw_std_exception_from_error.html"><img src="./images/prev.png" alt="Prev"></a>

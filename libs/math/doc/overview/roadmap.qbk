@@ -1,11 +1,58 @@
 [template history[]
 
 Currently open bug reports can be viewed
-[@https://github.com/boostorg/math/issues here].
+[@https://github.com/boostorg/math/issues here] on GitHub.
 
-All bug reports including closed ones can be viewed
-[@https://svn.boost.org/trac/boost/query?status=assigned&status=closed&status=new&status=reopened&component=math&col=id&col=summary&col=status&col=type&col=milestone&col=component&order=priority here]
-and [@https://github.com/boostorg/math/issues?utf8=%E2%9C%93&q=is%3Aissue here].
+All old bug reports including closed ones can be viewed on Trac
+[@https://svn.boost.org/trac/boost/query?status=assigned&status=closed&status=new&status=reopened&component=math&col=id&col=summary&col=status&col=type&col=milestone&col=component&order=priority here].
+
+Recent issues on GitHub [@https://github.com/boostorg/math/issues?utf8=%E2%9C%93&q=is%3Aissue here].
+
+[h4 Math-2.12.0 (Boost-1.73)]
+
+* IMPORTANT: C++03 support is now deprecated and will be removed from March 2021.
+* Added [link math_toolkit.cubic_hermite Cubic Hermite Interpolation.]
+* Added [link math_toolkit.makima Modified Akima Interpolation.]
+* Added [link math_toolkit.pchip PCHIP Interpolation.]
+* Added [link math_toolkit.quintic_hermite Quintic Hermite Interpolation.]
+* Added entropy to numerous distributions.
+* Allow trivial quadrature case where the two end points are equal, and in addition allow bounds to be interchanged.
+* Fix exp_sinh quadrature to work with complex types over a non-native range.
+* Fix miscellaneous compiler warnings in factorial.hpp.
+* Use std::chrono rather than boost::chrono in timed pFq calculations.
+* Remove much of the old boost::mpl dependencies to improve constexpr support.
+
+[h4 Math-2.11.0 (Boost-1.72)]
+
+* Added Hypergeometric functions [link math_toolkit.hypergeometric.hypergeometric_1f0 1F0], [link math_toolkit.hypergeometric.hypergeometric_0f1 0F1],
+[link math_toolkit.hypergeometric.hypergeometric_2f0 2F0], [link math_toolkit.hypergeometric.hypergeometric_1f1 1F1] and [link math_toolkit.hypergeometric.hypergeometric_pfq pFq].
+* Added [link math_toolkit.sf_poly.jacobi Jacobi polynomial] (and derivatives) evaluation.
+* Added [link math_toolkit.sf_poly.gegenbauer Gegenbauer polynomial] (and derivatives) evaluation.
+* Added [link math_toolkit.sf_poly.cardinal_b_splines Cardinal B-Splines] (and derivatives) as polynomial functions in their own right.
+* Added [link math_toolkit.cardinal_trigonometric Cardinal Trigonometric Interpolation].
+* Added new statistics sub-section.
+* Added [link math_toolkit.t_test One Sample Student's T Test].
+* Added [link math_toolkit.anderson_darling Anderson Darling test for normality].
+* Added [link math_toolkit.ljung_box Ljung Box test for  auto-correlation].
+* Added [link math_toolkit.runs_test Runs test for random sequences].
+* The headers `boost/math/tools/univariate_statistics.hpp` and `boost/math/tools/bivariate_statistics.hpp`, 
+have been deprecated in favor of `boost/math/statistics/univariate_statistics.hpp` and `boost/math/statistics/bivariate_statistics.hpp`.
+* Added [link math_toolkit.dist_ref.dists.empirical_cdf The Empirical CDF distribution].
+* Reworked the Sterling approximation used by multiprecision gamma functions to be applicable
+to all the function that use the Lanczos approximation at regular precision.  Also extended
+Lanczos approximations up to 100 decimal digit precision.
+
+[h4 Math-2.10.0 (Boost-1.71)]
+
+* Catmull-Rom interpolator now works in C++11.
+* Cardinal quadratic B-spline interpolation.
+* Domain of elliptic integrals extended.
+* sin_pi and cos_pi performance improvements.
+* Forward-mode automatic differentiation.
+* Vector valued barycentric rational interpolation.
+* Ooura's method for evaluation of Fourier integrals.
+* Multiple compatibility issues with Multiprecision fixed.
+* Lambert-W fixed on a rare architecture.
 
 [h4 Math-2.9.0 (Boost-1.70)]
 
@@ -55,7 +102,7 @@ and [@https://github.com/boostorg/math/issues?utf8=%E2%9C%93&q=is%3Aissue here].
 
 New Features:
 
-* Add [link math_toolkit.cubic_b cubic B-Spline interpolation functions], with thanks to Nick Thompson.
+* Add [link math_toolkit.cardinal_cubic_b Cardinal cubic B-Spline interpolation functions], with thanks to Nick Thompson.
 * Add [link math_toolkit.barycentric barycentric rational interpolation functions], with thanks to Nick Thompson.
 * Add [link math_toolkit.trapezoidal adaptive trapezoidal quadrature], with thanks to Nick Thompson.
 * Add [link math_toolkit.sf_poly.legendre support for the zeros and derivatives of Legendre polynomials], with thanks to Nick Thompson.
@@ -111,7 +158,7 @@ Patches:
 see [@https://svn.boost.org/trac/boost/ticket/11557 11557].
 * Fix comments in code for the hypergeometric to match what it actually does, also fixes the parameter access functions to return
 the correct values.  See [@https://svn.boost.org/trac/boost/ticket/11556 11556].
-* Stopped using hidden visiblity library build with the Oracle compiler as it leads to unresolved externals from the C++ standard library.
+* Stopped using hidden visibility library build with the Oracle compiler as it leads to unresolved externals from the C++ standard library.
 See [@https://svn.boost.org/trac/boost/ticket/11547 11547].
 * Fix unintended use of __declspec when building with Oracle C++.  See [@https://svn.boost.org/trac/boost/ticket/11546 11546].
 * Fix corner case bug in root bracketing code, see [@https://svn.boost.org/trac/boost/ticket/11532 11532].
@@ -216,7 +263,7 @@ Random variate can now be infinite.
 * Fix bug in inverse incomplete beta that results in cancellation errors when the beta function is really an arcsine or Student's T distribution.
 * Fix issue in Bessel I and K function continued fractions that causes spurious over/underflow.
 * Add improvement to non-central chi squared distribution quantile due to Thomas Luu,
-[@http://discovery.ucl.ac.uk/1482128/ Fast and accurate parallel computation of quantile functions for random number generation, Doctorial Thesis 2016].
+[@http://discovery.ucl.ac.uk/1482128/ Fast and accurate parallel computation of quantile functions for random number generation, Doctoral Thesis 2016].
 [@http://discovery.ucl.ac.uk/1463470/ Efficient and Accurate Parallel Inversion of the Gamma Distribution, Thomas Luu]
 [h4 Boost-1.54]
 
@@ -300,7 +347,7 @@ So for example 128-bit rational approximations will work with UDT's and do the r
 
 * Deprecated wrongly named `twothirds` math constant in favour of `two_thirds` (with underscore separator).
 (issue [@https://svn.boost.org/trac/boost/ticket/6199 #6199]).
-* Refactored test data and some special function code to improve support for arbitary precision and/or expression-template-enabled types.
+* Refactored test data and some special function code to improve support for arbitrary precision and/or expression-template-enabled types.
 * Added new faster zeta function evaluation method.
 
 Fixed issues:

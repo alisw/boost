@@ -1,10 +1,19 @@
 +++
-title = "ASIO/Networking TS"
+title = "ASIO/Networking TS : Boost < 1.70"
 description = "How to teach ASIO/Networking TS about Outcome."
 tags = [ "asio", "networking-ts" ]
 +++
 
 *Thanks to [Christos Stratopoulos](https://github.com/cstratopoulos) for this Outcome recipe.*
+
+---
+
+### Compatibility note
+
+This recipe targets Boost versions before 1.70, where coroutine support is based around
+the `asio::experimental::this_coro::token` completion token. For integration with Boost
+versions 1.70 and onward, see [this recipe](asio-integration-1-70).
+
 
 ---
 
@@ -100,6 +109,6 @@ to seek help with ASIO voodoo. Please ask on
 Here follows the real world, production-level adapation of Outcome into
 ASIO, written and maintained by [Christos Stratopoulos](https://github.com/cstratopoulos).
 If the following does not load due to Javascript being disabled, you can visit the gist at 
-https://gist.github.com/cstratopoulos/901b5cdd41d07c6ce6d83798b09ecf9b.
+https://gist.github.com/cstratopoulos/901b5cdd41d07c6ce6d83798b09ecf9b/da584844f58353915dc2600fba959813f793b456.
 
-{{% gist "cstratopoulos" "901b5cdd41d07c6ce6d83798b09ecf9b" %}}
+{{% gist "cstratopoulos" "901b5cdd41d07c6ce6d83798b09ecf9b/da584844f58353915dc2600fba959813f793b456" %}}

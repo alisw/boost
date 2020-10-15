@@ -10,43 +10,62 @@
 #include <boost/histogram/accumulators/weighted_sum.hpp>
 #include <boost/histogram/storage_adaptor.hpp>
 #include <boost/histogram/unlimited_storage.hpp>
+#include <boost/histogram/weight.hpp>
 #include <cmath>
 #include <deque>
 #include <limits>
 #include <map>
+#include <sstream>
 #include <vector>
 #include "is_close.hpp"
+#include "throw_exception.hpp"
 #include "utility_allocator.hpp"
 
 using namespace boost::histogram;
+using namespace std::literals;
+
+template <class T>
+auto str(const T& t) {
+  std::ostringstream os;
+  os << t;
+  return os.str();
+}
 
 template <typename T>
 void tests() {
+  using Storage = storage_adaptor<T>;
   // ctor, copy, move
   {
-    storage_adaptor<T> a;
+    Storage a;
     a.reset(2);
-    storage_adaptor<T> b(a);
-    storage_adaptor<T> c;
+    Storage b(a);
+    Storage c;
     c = a;
     BOOST_TEST_EQ(std::distance(a.begin(), a.end()), 2);
     BOOST_TEST_EQ(a.size(), 2);
     BOOST_TEST_EQ(b.size(), 2);
     BOOST_TEST_EQ(c.size(), 2);
 
-    storage_adaptor<T> d(std::move(a));
+    Storage d(std::move(a));
     BOOST_TEST_EQ(d.size(), 2);
-    storage_adaptor<T> e;
+    Storage e;
     e = std::move(d);
     BOOST_TEST_EQ(e.size(), 2);
 
     const auto t = T();
     storage_adaptor<T> g(t); // tests converting ctor
+    BOOST_TEST_EQ(g.size(), 0);
+    const auto u = std::vector<typename Storage::value_type>(3, 1);
+    Storage h(u); // tests converting ctor
+    BOOST_TEST_EQ(h.size(), 3);
+    BOOST_TEST_EQ(h[0], 1);
+    BOOST_TEST_EQ(h[1], 1);
+    BOOST_TEST_EQ(h[2], 1);
   }
 
   // increment, add, sub, set, reset, compare
   {
-    storage_adaptor<T> a;
+    Storage a;
     a.reset(1);
     ++a[0];
     const auto save = a[0]++;
@@ -79,10 +98,10 @@ void tests() {
 
   // copy
   {
-    storage_adaptor<T> a;
+    Storage a;
     a.reset(1);
     ++a[0];
-    decltype(a) b;
+    Storage b;
     b.reset(2);
     BOOST_TEST(!(a == b));
     b = a;
@@ -90,7 +109,7 @@ void tests() {
     BOOST_TEST_EQ(b.size(), 1);
     BOOST_TEST_EQ(b[0], 1);
 
-    decltype(a) c(a);
+    Storage c(a);
     BOOST_TEST(a == c);
     BOOST_TEST_EQ(c.size(), 1);
     BOOST_TEST_EQ(c[0], 1);
@@ -98,17 +117,24 @@ void tests() {
 
   // move
   {
-    storage_adaptor<T> a;
+    Storage a;
     a.reset(1);
     ++a[0];
-    decltype(a) b;
+    Storage b;
     BOOST_TEST(!(a == b));
     b = std::move(a);
     BOOST_TEST_EQ(b.size(), 1);
     BOOST_TEST_EQ(b[0], 1);
-    decltype(a) c(std::move(b));
+    Storage c(std::move(b));
     BOOST_TEST_EQ(c.size(), 1);
     BOOST_TEST_EQ(c[0], 1);
+  }
+
+  {
+    Storage a;
+    a.reset(1);
+    a[0] += 2;
+    BOOST_TEST_EQ(str(a[0]), "2"s);
   }
 }
 
@@ -192,7 +218,7 @@ int main() {
     ++a[0];
     a[0] += 1;
     a[0] += 2;
-    a[0] += accumulators::weighted_sum<double>(1, 0);
+    a[0] += accumulators::weighted_sum<double>(1, 2);
     BOOST_TEST_EQ(a[0].value(), 5);
     BOOST_TEST_EQ(a[0].variance(), 6);
     a[0] *= 2;
@@ -205,7 +231,7 @@ int main() {
     auto a = storage_adaptor<std::vector<accumulators::weighted_mean<double>>>();
     a.reset(1);
     a[0](/* sample */ 1);
-    a[0](/* weight */ 2, /* sample */ 2);
+    a[0](weight(2), /* sample */ 2);
     a[0] += accumulators::weighted_mean<>(1, 0, 0, 0);
     BOOST_TEST_EQ(a[0].sum_of_weights(), 4);
     BOOST_TEST_IS_CLOSE(a[0].value(), 1.25, 1e-3);
@@ -226,42 +252,40 @@ int main() {
   {
     tracing_allocator_db db;
     tracing_allocator<char> alloc(db);
-    using map = std::map<std::size_t, double, std::less<std::size_t>,
-                         tracing_allocator<std::pair<const std::size_t, double>>>;
-    using A = storage_adaptor<map>;
-    auto a = A(map(alloc));
+    using map_t = std::map<std::size_t, double, std::less<std::size_t>,
+                           tracing_allocator<std::pair<const std::size_t, double>>>;
+    using A = storage_adaptor<map_t>;
+    auto a = A(alloc);
     // MSVC implementation allocates some structures for debugging
-    const auto baseline = db.sum.first;
+    const auto baseline = db.second;
     a.reset(10);
-    BOOST_TEST_EQ(db.sum.first, baseline); // nothing allocated yet
+    BOOST_TEST_EQ(db.first, baseline); // nothing allocated yet
     // queries do not allocate
     BOOST_TEST_EQ(a[0], 0);
     BOOST_TEST_EQ(a[9], 0);
-    BOOST_TEST_EQ(db.sum.first, baseline);
-
+    BOOST_TEST_EQ(db.first, baseline);
     ++a[5]; // causes one allocation
+    const auto node = db.first - baseline;
     BOOST_TEST_EQ(a[5], 1);
-    BOOST_TEST_EQ(db.sum.first, baseline + 1);
     a[4] += 2; // causes one allocation
     BOOST_TEST_EQ(a[4], 2);
-    BOOST_TEST_EQ(db.sum.first, baseline + 2);
+    BOOST_TEST_EQ(db.first, baseline + 2 * node);
     a[3] -= 2; // causes one allocation
     BOOST_TEST_EQ(a[3], -2);
-    BOOST_TEST_EQ(db.sum.first, baseline + 3);
+    BOOST_TEST_EQ(db.first, baseline + 3 * node);
     a[2] *= 2; // no allocation
-    BOOST_TEST_EQ(db.sum.first, baseline + 3);
+    BOOST_TEST_EQ(db.first, baseline + 3 * node);
     a[2] /= 2; // no allocation
-    BOOST_TEST_EQ(db.sum.first, baseline + 3);
-    const auto baseline_dealloc = db.sum.second;
+    BOOST_TEST_EQ(db.first, baseline + 3 * node);
     a[4] = 0; // causes one deallocation
-    BOOST_TEST_EQ(db.sum.second, baseline_dealloc + 1);
+    BOOST_TEST_EQ(db.first, baseline + 2 * node);
 
     auto b = storage_adaptor<std::vector<int>>();
     b.reset(5);
     ++b[2];
     a = b;
     // only one new allocation for non-zero value
-    BOOST_TEST_EQ(db.sum.first, baseline + 4);
+    BOOST_TEST_EQ(db.first, baseline + node);
   }
 
   return boost::report_errors();

@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>bind_executor</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -37,8 +37,8 @@ Associate an object of type
 executor_binder&lt; typename decay&lt; T &gt;::type, Executor &gt; <a class="link" href="bind_executor/overload1.html" title="bind_executor (1 of 2 overloads)">bind_executor</a>(
     const Executor &amp; ex,
     T &amp;&amp; t,
-    typename enable_if&lt; is_executor&lt; Executor &gt;::value &gt;::type *  = 0);
-  <span class="emphasis"><em>&#187; <a class="link" href="bind_executor/overload1.html" title="bind_executor (1 of 2 overloads)">more...</a></em></span>
+    typename enable_if&lt; is_executor&lt; Executor &gt;::value||execution::is_executor&lt; Executor &gt;::value &gt;::type *  = 0);
+  <span class="emphasis"><em>» <a class="link" href="bind_executor/overload1.html" title="bind_executor (1 of 2 overloads)">more...</a></em></span>
 </pre>
 <p>
         Associate an object of type <code class="computeroutput">T</code> with an execution context's executor.
@@ -50,7 +50,7 @@ executor_binder&lt; typename decay&lt; T &gt;::type, typename ExecutionContext::
     ExecutionContext &amp; ctx,
     T &amp;&amp; t,
     typename enable_if&lt; is_convertible&lt; ExecutionContext &amp;, execution_context &amp; &gt;::value &gt;::type *  = 0);
-  <span class="emphasis"><em>&#187; <a class="link" href="bind_executor/overload2.html" title="bind_executor (2 of 2 overloads)">more...</a></em></span>
+  <span class="emphasis"><em>» <a class="link" href="bind_executor/overload2.html" title="bind_executor (2 of 2 overloads)">more...</a></em></span>
 </pre>
 <h5>
 <a name="boost_asio.reference.bind_executor.h0"></a>
@@ -65,7 +65,8 @@ executor_binder&lt; typename decay&lt; T &gt;::type, typename ExecutionContext::
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2019 Christopher M. Kohlhoff<p>
+<td align="right"><div class="copyright-footer">Copyright © 2003-2020 Christopher M.
+      Kohlhoff<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -2,7 +2,7 @@
 // buffer.cpp
 // ~~~~~~~~~~
 //
-// Copyright (c) 2003-2019 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2020 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -587,9 +587,244 @@ void test()
 
 //------------------------------------------------------------------------------
 
+namespace buffer_sequence {
+
+using namespace boost::asio;
+using namespace std;
+
+struct valid_const_a
+{
+  typedef const_buffer* const_iterator;
+  typedef const_buffer value_type;
+  const_buffer* begin() const { return 0; }
+  const_buffer* end() const { return 0; }
+};
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+struct valid_const_b
+{
+  const_buffer* begin() const { return 0; }
+  const_buffer* end() const { return 0; }
+};
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+struct valid_mutable_a
+{
+  typedef mutable_buffer* const_iterator;
+  typedef mutable_buffer value_type;
+  mutable_buffer* begin() const { return 0; }
+  mutable_buffer* end() const { return 0; }
+};
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+struct valid_mutable_b
+{
+  mutable_buffer* begin() const { return 0; }
+  mutable_buffer* end() const { return 0; }
+};
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+struct invalid_const_a
+{
+  typedef int value_type;
+  int* begin() const { return 0; }
+  const_buffer* end() const { return 0; }
+};
+
+struct invalid_const_b
+{
+  typedef const_buffer value_type;
+  const_buffer* begin() const { return 0; }
+};
+
+struct invalid_const_c
+{
+  typedef const_buffer value_type;
+  const_buffer* end() const { return 0; }
+};
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+struct invalid_const_d
+{
+  int* begin() const { return 0; }
+  const_buffer* end() const { return 0; }
+};
+
+struct invalid_const_e
+{
+  const_buffer* begin() const { return 0; }
+};
+
+struct invalid_const_f
+{
+  const_buffer* end() const { return 0; }
+};
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+struct invalid_mutable_a
+{
+  typedef int value_type;
+  int* begin() const { return 0; }
+  mutable_buffer* end() const { return 0; }
+};
+
+struct invalid_mutable_b
+{
+  typedef mutable_buffer value_type;
+  mutable_buffer* begin() const { return 0; }
+};
+
+struct invalid_mutable_c
+{
+  typedef mutable_buffer value_type;
+  mutable_buffer* end() const { return 0; }
+};
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+struct invalid_mutable_d
+{
+  int* begin() const { return 0; }
+  mutable_buffer* end() const { return 0; }
+};
+
+struct invalid_mutable_e
+{
+  mutable_buffer* begin() const { return 0; }
+};
+
+struct invalid_mutable_f
+{
+  mutable_buffer* end() const { return 0; }
+};
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+void test()
+{
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<const_buffer>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<const_buffer>::value);
+
+  const_buffer b1;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b1) == &b1);
+  BOOST_ASIO_CHECK(buffer_sequence_end(b1) == &b1 + 1);
+
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<mutable_buffer>::value);
+  BOOST_ASIO_CHECK(is_mutable_buffer_sequence<mutable_buffer>::value);
+
+  mutable_buffer b2;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b2) == &b2);
+  BOOST_ASIO_CHECK(buffer_sequence_end(b2) == &b2 + 1);
+
+#if !defined(BOOST_ASIO_NO_DEPRECATED)
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<const_buffers_1>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<const_buffers_1>::value);
+
+  const_buffers_1 b3(0, 0);
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b3) == &b3);
+  BOOST_ASIO_CHECK(buffer_sequence_end(b3) == &b3 + 1);
+
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<mutable_buffers_1>::value);
+  BOOST_ASIO_CHECK(is_mutable_buffer_sequence<mutable_buffers_1>::value);
+
+  mutable_buffers_1 b4(0, 0);
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b4) == &b4);
+  BOOST_ASIO_CHECK(buffer_sequence_end(b4) == &b4 + 1);
+#endif // !defined(BOOST_ASIO_NO_DEPRECATED)
+
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<vector<const_buffer> >::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<vector<const_buffer> >::value);
+
+  vector<const_buffer> b5;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b5) == b5.begin());
+  BOOST_ASIO_CHECK(buffer_sequence_end(b5) == b5.end());
+
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<vector<mutable_buffer> >::value);
+  BOOST_ASIO_CHECK(is_mutable_buffer_sequence<vector<mutable_buffer> >::value);
+
+  vector<mutable_buffer> b6;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b6) == b6.begin());
+  BOOST_ASIO_CHECK(buffer_sequence_end(b6) == b6.end());
+
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<valid_const_a>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<valid_const_a>::value);
+
+  valid_const_a b7;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b7) == b7.begin());
+  BOOST_ASIO_CHECK(buffer_sequence_end(b7) == b7.end());
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<valid_const_b>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<valid_const_b>::value);
+
+  valid_const_b b8;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b8) == b8.begin());
+  BOOST_ASIO_CHECK(buffer_sequence_end(b8) == b8.end());
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<valid_mutable_a>::value);
+  BOOST_ASIO_CHECK(is_mutable_buffer_sequence<valid_mutable_a>::value);
+
+  valid_mutable_a b9;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b9) == b9.begin());
+  BOOST_ASIO_CHECK(buffer_sequence_end(b9) == b9.end());
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+  BOOST_ASIO_CHECK(is_const_buffer_sequence<valid_mutable_b>::value);
+  BOOST_ASIO_CHECK(is_mutable_buffer_sequence<valid_mutable_b>::value);
+
+  valid_mutable_b b10;
+  BOOST_ASIO_CHECK(buffer_sequence_begin(b10) == b10.begin());
+  BOOST_ASIO_CHECK(buffer_sequence_end(b10) == b10.end());
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+  BOOST_ASIO_CHECK(!is_const_buffer_sequence<invalid_const_a>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_a>::value);
+
+  BOOST_ASIO_CHECK(!is_const_buffer_sequence<invalid_const_b>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_b>::value);
+
+  BOOST_ASIO_CHECK(!is_const_buffer_sequence<invalid_const_c>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_c>::value);
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+  BOOST_ASIO_CHECK(!is_const_buffer_sequence<invalid_const_d>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_d>::value);
+
+  BOOST_ASIO_CHECK(!is_const_buffer_sequence<invalid_const_e>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_e>::value);
+
+  BOOST_ASIO_CHECK(!is_const_buffer_sequence<invalid_const_f>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_f>::value);
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_a>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_a>::value);
+
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_b>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_b>::value);
+
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_c>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_c>::value);
+
+#if defined(BOOST_ASIO_HAS_DECLTYPE)
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_d>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_d>::value);
+
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_e>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_e>::value);
+
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_f>::value);
+  BOOST_ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_f>::value);
+#endif // defined(BOOST_ASIO_HAS_DECLTYPE)
+}
+
+} // namespace buffer_sequence
+
+//------------------------------------------------------------------------------
+
 BOOST_ASIO_TEST_SUITE
 (
   "buffer",
   BOOST_ASIO_COMPILE_TEST_CASE(buffer_compile::test)
   BOOST_ASIO_TEST_CASE(buffer_copy_runtime::test)
+  BOOST_ASIO_TEST_CASE(buffer_sequence::test)
 )

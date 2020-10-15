@@ -67,7 +67,7 @@
 # pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #endif
 
-# include <boost/test/floating_point_comparison.hpp>
+# include <boost/test/tools/floating_point_comparison.hpp>
 #ifndef BOOST_TEST_MODULE
 # include <boost/test/included/test_exec_monitor.hpp>
 //#  include <boost/test/included/prg_exec_monitor.hpp>
@@ -161,10 +161,87 @@ struct mathematical_policy
 
 };
 
+struct ut_base_settings
+{
+    explicit ut_base_settings(bool val = true)
+        : m_test_validity(true)
+    {
+        set_test_validity(val);
+    }
+
+    inline void set_test_validity(bool val)
+    {
+#if defined(BOOST_GEOMETRY_TEST_FAILURES)
+        boost::ignore_unused(val);
+#else
+        m_test_validity = val;
+#endif
+    }
+
+    inline bool test_validity() const
+    {
+        return m_test_validity;
+    }
+
+private :
+    bool m_test_validity;
+};
+
+
+typedef double default_test_type;
+
 #if defined(BOOST_GEOMETRY_USE_RESCALING)
 #define BG_IF_RESCALED(a, b) a
 #else
 #define BG_IF_RESCALED(a, b) b
+#endif
+
+#if defined(BOOST_GEOMETRY_USE_KRAMER_RULE)
+#define BG_IF_KRAMER(a, b) a
+#else
+#define BG_IF_KRAMER(a, b) b
+#endif
+
+inline void BoostGeometryWriteTestConfiguration()
+{
+    std::cout << std::endl << "Test configuration:" << std::endl;
+#if defined(BOOST_GEOMETRY_USE_RESCALING)
+    std::cout << "  - Using rescaling" << std::endl;
+#endif
+#if defined(BOOST_GEOMETRY_USE_KRAMER_RULE)
+    std::cout << "  - Using Kramer rule" << std::endl;
+#else
+    std::cout << "  - Using general form" << std::endl;
+#endif
+#if defined(BOOST_GEOMETRY_TEST_ONLY_ONE_TYPE)
+    std::cout << "  - Testing only one type" << std::endl;
+#endif
+#if defined(BOOST_GEOMETRY_TEST_ONLY_ONE_ORDER)
+    std::cout << "  - Testing only one order" << std::endl;
+#endif
+#if defined(BOOST_GEOMETRY_TEST_FAILURES)
+    std::cout << "  - Including failing test cases" << std::endl;
+#endif
+    std::cout << "  - Default test type: " << string_from_type<default_test_type>::name() << std::endl;
+    std::cout << std::endl;
+}
+
+#ifdef BOOST_GEOMETRY_TEST_FAILURES
+#define BG_NO_FAILURES 0
+inline void BoostGeometryWriteExpectedFailures(std::size_t for_rescaling,
+                std::size_t for_no_rescaling = BG_NO_FAILURES)
+{
+    boost::ignore_unused(for_rescaling, for_no_rescaling);
+
+#if defined(BOOST_GEOMETRY_TEST_ONLY_ONE_TYPE) && defined(BOOST_GEOMETRY_TEST_ONLY_ONE_ORDER)
+    std::cout << std::endl;
+#if defined(BOOST_GEOMETRY_USE_RESCALING)
+    std::cout << "RESCALED - Expected: " << for_rescaling << " error(s)" << std::endl;
+#else
+    std::cout << "NOT RESCALED - Expected: " << for_no_rescaling << " error(s)" << std::endl;
+#endif
+#endif
+}
 #endif
 
 #endif // GEOMETRY_TEST_GEOMETRY_TEST_COMMON_HPP

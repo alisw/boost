@@ -7,7 +7,7 @@
 #include <boost/math/concepts/real_concept.hpp>
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/tools/floating_point_comparison.hpp>
 #include <boost/math/special_functions/math_fwd.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
 #include <boost/array.hpp>
@@ -70,7 +70,7 @@ void do_test_spherical_harmonic(const T& data, const char* type_name, const char
 }
 
 template <class Real, class T>
-void test_complex_spherical_harmonic(const T& data, const char* /* name */, boost::mpl::true_ const &)
+void test_complex_spherical_harmonic(const T& data, const char* /* name */, boost::true_type const &)
 {
    typedef Real                   value_type;
 
@@ -101,7 +101,7 @@ void test_complex_spherical_harmonic(const T& data, const char* /* name */, boos
 }
 
 template <class Real, class T>
-void test_complex_spherical_harmonic(const T& /* data */, const char* /* name */, boost::mpl::false_ const &)
+void test_complex_spherical_harmonic(const T& /* data */, const char* /* name */, boost::false_type const &)
 {
    // T is not a built in type, can't use std::complex with it...
 }

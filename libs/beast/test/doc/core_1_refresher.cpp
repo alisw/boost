@@ -73,7 +73,7 @@ snippets()
     }
     {
     //[code_core_1_refresher_5s
-        net::spawn(
+        asio::spawn(
             [&sock](net::yield_context yield)
             {
                 std::size_t bytes_transferred = net::async_write(sock,
@@ -288,7 +288,7 @@ struct associated_allocator<handler, Allocator>
 template<class Executor>
 struct associated_executor<handler, Executor>
 {
-    using type = boost::asio::executor;
+    using type = any_io_executor;
 
     static
     type
@@ -375,7 +375,7 @@ async_write(
                 >::return_type
 {
 //[code_core_1_refresher_10
-    
+
     return net::async_initiate<
         CompletionToken,
         void(error_code, std::size_t)>(

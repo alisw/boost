@@ -1869,6 +1869,134 @@ This function needs the TimeIterator type specifically defined as a template par
 </namespace>
 </namespace>
 </header>
+<header name="boost/numeric/odeint/stepper/adaptive_adams_bashforth_moulton.hpp">
+<namespace name="boost">
+<namespace name="numeric">
+<namespace name="odeint">
+<class name="adaptive_adams_bashforth_moulton"><template>
+      <template-nontype-parameter name="Steps"><type>size_t</type></template-nontype-parameter>
+      <template-type-parameter name="State"/>
+      <template-type-parameter name="Value"><default>double</default></template-type-parameter>
+      <template-type-parameter name="Deriv"><default>State</default></template-type-parameter>
+      <template-type-parameter name="Time"><default>Value</default></template-type-parameter>
+      <template-type-parameter name="Algebra"><default>typename algebra_dispatcher&lt; State &gt;::algebra_type</default></template-type-parameter>
+      <template-type-parameter name="Operations"><default>typename operations_dispatcher&lt; State &gt;::operations_type</default></template-type-parameter>
+      <template-type-parameter name="Resizer"><default>initially_resizer</default></template-type-parameter>
+    </template><inherit access="public">algebra_stepper_base&lt; Algebra, Operations &gt;</inherit><typedef name="order_type"><type>unsigned short</type></typedef>
+<typedef name="state_type"><type>State</type></typedef>
+<typedef name="value_type"><type>Value</type></typedef>
+<typedef name="deriv_type"><type>Deriv</type></typedef>
+<typedef name="time_type"><type>Time</type></typedef>
+<typedef name="wrapped_state_type"><type>state_wrapper&lt; state_type &gt;</type></typedef>
+<typedef name="wrapped_deriv_type"><type>state_wrapper&lt; deriv_type &gt;</type></typedef>
+<typedef name="algebra_stepper_base_type"><type>algebra_stepper_base&lt; Algebra, Operations &gt;</type></typedef>
+<typedef name="algebra_type"><type>algebra_stepper_base_type::algebra_type</type></typedef>
+<typedef name="operations_type"><type>algebra_stepper_base_type::operations_type</type></typedef>
+<typedef name="resizer_type"><type>Resizer</type></typedef>
+<typedef name="stepper_category"><type>error_stepper_tag</type></typedef>
+<typedef name="coeff_type"><type><emphasis>unspecified</emphasis></type></typedef>
+<typedef name="stepper_type"><type>adaptive_adams_bashforth_moulton&lt; Steps, State, Value, Deriv, Time, Algebra, Operations, Resizer &gt;</type></typedef>
+<data-member name="steps" specifiers="static"><type>const size_t</type></data-member>
+<data-member name="order_value" specifiers="static"><type>const order_type</type></data-member>
+<method-group name="public member functions">
+<method name="order" cv="const"><type>order_type</type></method>
+<method name="stepper_order" cv="const"><type>order_type</type></method>
+<method name="error_order" cv="const"><type>order_type</type></method>
+<method name="do_step"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter></method>
+<method name="do_step"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="in"><paramtype>const state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type</paramtype></parameter><parameter name="out"><paramtype>state_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter></method>
+<method name="do_step"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter><parameter name="xerr"><paramtype>state_type &amp;</paramtype></parameter></method>
+<method name="do_step"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="in"><paramtype>const state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type</paramtype></parameter><parameter name="out"><paramtype>state_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter><parameter name="xerr"><paramtype>state_type &amp;</paramtype></parameter></method>
+<method name="initialize"><type>void</type><template>
+          <template-type-parameter name="ExplicitStepper"/>
+          <template-type-parameter name="System"/>
+        </template><parameter name="stepper"><paramtype>ExplicitStepper</paramtype></parameter><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter></method>
+<method name="initialize"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter></method>
+<method name="do_step_impl"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="in"><paramtype>const state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type</paramtype></parameter><parameter name="out"><paramtype>state_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type &amp;</paramtype></parameter><parameter name="xerr"><paramtype>state_type &amp;</paramtype></parameter></method>
+<method name="coeff" cv="const"><type>const coeff_type &amp;</type></method>
+<method name="coeff"><type>coeff_type &amp;</type></method>
+<method name="reset"><type>void</type></method>
+<method name="dxdt" cv="const"><type>const deriv_type &amp;</type></method>
+</method-group>
+<constructor><parameter name="algebra"><paramtype>const algebra_type &amp;</paramtype><default>algebra_type()</default></parameter></constructor>
+<method-group name="private member functions">
+<method name="resize_dxdt_impl"><type>bool</type><template>
+          <template-type-parameter name="StateType"/>
+        </template><parameter name="x"><paramtype>const StateType &amp;</paramtype></parameter></method>
+<method name="resize_xnew_impl"><type>bool</type><template>
+          <template-type-parameter name="StateType"/>
+        </template><parameter name="x"><paramtype>const StateType &amp;</paramtype></parameter></method>
+<method name="resize_xerr_impl"><type>bool</type><template>
+          <template-type-parameter name="StateType"/>
+        </template><parameter name="x"><paramtype>const StateType &amp;</paramtype></parameter></method>
+</method-group>
+</class>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</namespace>
+</namespace>
+</namespace>
+</header>
 <header name="boost/numeric/odeint/stepper/bulirsch_stoer.hpp">
 <namespace name="boost">
 <namespace name="numeric">
@@ -2123,6 +2251,133 @@ This method tries to do one step with step size dt. If the error estimate is to 
 <method name="get_old_deriv" cv="const"><type>const deriv_type &amp;</type><parameter name=""><paramtype>void</paramtype></parameter></method>
 <method name="toggle_current_state"><type>void</type><parameter name=""><paramtype>void</paramtype></parameter></method>
 </method-group>
+</class>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</namespace>
+</namespace>
+</namespace>
+</header>
+<header name="boost/numeric/odeint/stepper/controlled_adams_bashforth_moulton.hpp">
+<namespace name="boost">
+<namespace name="numeric">
+<namespace name="odeint">
+<class name="controlled_adams_bashforth_moulton"><template>
+      <template-type-parameter name="ErrorStepper"/>
+      <template-type-parameter name="StepAdjuster"><default>detail::pid_step_adjuster&lt; typename ErrorStepper::state_type,     typename ErrorStepper::value_type,    typename ErrorStepper::deriv_type,    typename ErrorStepper::time_type,    typename ErrorStepper::algebra_type,    typename ErrorStepper::operations_type,    detail::H211PI    &gt;</default></template-type-parameter>
+      <template-type-parameter name="OrderAdjuster"><default>default_order_adjuster&lt; ErrorStepper::order_value,    typename ErrorStepper::state_type,    typename ErrorStepper::value_type,    typename ErrorStepper::algebra_type    &gt;</default></template-type-parameter>
+      <template-type-parameter name="Resizer"><default>initially_resizer</default></template-type-parameter>
+    </template><typedef name="stepper_type"><type>ErrorStepper</type></typedef>
+<typedef name="state_type"><type>stepper_type::state_type</type></typedef>
+<typedef name="value_type"><type>stepper_type::value_type</type></typedef>
+<typedef name="deriv_type"><type>stepper_type::deriv_type</type></typedef>
+<typedef name="time_type"><type>stepper_type::time_type</type></typedef>
+<typedef name="algebra_type"><type>stepper_type::algebra_type</type></typedef>
+<typedef name="operations_type"><type>stepper_type::operations_type</type></typedef>
+<typedef name="resizer_type"><type>Resizer</type></typedef>
+<typedef name="step_adjuster_type"><type>StepAdjuster</type></typedef>
+<typedef name="order_adjuster_type"><type>OrderAdjuster</type></typedef>
+<typedef name="stepper_category"><type>controlled_stepper_tag</type></typedef>
+<typedef name="wrapped_state_type"><type>stepper_type::wrapped_state_type</type></typedef>
+<typedef name="wrapped_deriv_type"><type>stepper_type::wrapped_deriv_type</type></typedef>
+<typedef name="error_storage_type"><type>boost::array&lt; wrapped_state_type, 4 &gt;</type></typedef>
+<typedef name="coeff_type"><type>stepper_type::coeff_type</type></typedef>
+<typedef name="controlled_stepper_type"><type>controlled_adams_bashforth_moulton&lt; ErrorStepper, StepAdjuster, OrderAdjuster, Resizer &gt;</type></typedef>
+<data-member name="order_value" specifiers="static"><type>const stepper_type::order_type</type></data-member>
+<method-group name="public member functions">
+<method name="initialize"><type>void</type><template>
+          <template-type-parameter name="ExplicitStepper"/>
+          <template-type-parameter name="System"/>
+        </template><parameter name="stepper"><paramtype>ExplicitStepper</paramtype></parameter><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter></method>
+<method name="initialize"><type>void</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type</paramtype></parameter></method>
+<method name="initialize_controlled"><type>void</type><template>
+          <template-type-parameter name="ExplicitStepper"/>
+          <template-type-parameter name="System"/>
+        </template><parameter name="stepper"><paramtype>ExplicitStepper</paramtype></parameter><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type &amp;</paramtype></parameter></method>
+<method name="try_step"><type>controlled_step_result</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="inOut"><paramtype>state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type &amp;</paramtype></parameter></method>
+<method name="try_step"><type>controlled_step_result</type><template>
+          <template-type-parameter name="System"/>
+        </template><parameter name="system"><paramtype>System</paramtype></parameter><parameter name="in"><paramtype>const state_type &amp;</paramtype></parameter><parameter name="t"><paramtype>time_type &amp;</paramtype></parameter><parameter name="out"><paramtype>state_type &amp;</paramtype></parameter><parameter name="dt"><paramtype>time_type &amp;</paramtype></parameter></method>
+<method name="reset"><type>void</type></method>
+</method-group>
+<constructor><parameter name="step_adjuster"><paramtype>step_adjuster_type</paramtype><default>step_adjuster_type()</default></parameter></constructor>
+<method-group name="private member functions">
+<method name="resize_dxdt_impl"><type>bool</type><template>
+          <template-type-parameter name="StateType"/>
+        </template><parameter name="x"><paramtype>const StateType &amp;</paramtype></parameter></method>
+<method name="resize_xerr_impl"><type>bool</type><template>
+          <template-type-parameter name="StateType"/>
+        </template><parameter name="x"><paramtype>const StateType &amp;</paramtype></parameter></method>
+<method name="resize_xnew_impl"><type>bool</type><template>
+          <template-type-parameter name="StateType"/>
+        </template><parameter name="x"><paramtype>const StateType &amp;</paramtype></parameter></method>
+</method-group>
+</class><class name="default_order_adjuster"><template>
+      <template-nontype-parameter name="MaxOrder"><type>size_t</type></template-nontype-parameter>
+      <template-type-parameter name="State"/>
+      <template-type-parameter name="Value"><default>double</default></template-type-parameter>
+      <template-type-parameter name="Algebra"><default>typename algebra_dispatcher&lt; State &gt;::algebra_type</default></template-type-parameter>
+    </template><typedef name="state_type"><type>State</type></typedef>
+<typedef name="value_type"><type>Value</type></typedef>
+<typedef name="wrapped_state_type"><type>state_wrapper&lt; state_type &gt;</type></typedef>
+<typedef name="algebra_type"><type>Algebra</type></typedef>
+<method-group name="public member functions">
+<method name="adjust_order"><type>size_t</type><parameter name="order"><paramtype>size_t</paramtype></parameter><parameter name="init"><paramtype>size_t</paramtype></parameter><parameter name="xerr"><paramtype>boost::array&lt; wrapped_state_type, 4 &gt; &amp;</paramtype></parameter></method>
+</method-group>
+<constructor><parameter name="algebra"><paramtype>const algebra_type &amp;</paramtype><default>algebra_type()</default></parameter></constructor>
 </class>
 
 
@@ -3597,7 +3852,7 @@ The dense-output functionality allows to interpolate the solution between subseq
 </method-group>
 <constructor><parameter name="atol"><paramtype>value_type</paramtype><default>1.0e-6</default></parameter><parameter name="rtol"><paramtype>value_type</paramtype><default>1.0e-6</default></parameter><parameter name="stepper"><paramtype>const stepper_type &amp;</paramtype><default>stepper_type()</default></parameter></constructor>
 <constructor><parameter name="atol"><paramtype>value_type</paramtype></parameter><parameter name="rtol"><paramtype>value_type</paramtype></parameter><parameter name="max_dt"><paramtype>time_type</paramtype></parameter><parameter name="stepper"><paramtype>const stepper_type &amp;</paramtype><default>stepper_type()</default></parameter></constructor>
-<method-group name="private member functions">
+<method-group name="protected member functions">
 <method name="resize_m_xerr"><type>bool</type><template>
           <template-type-parameter name="StateIn"/>
         </template><parameter name="x"><paramtype>const StateIn &amp;</paramtype></parameter></method>
@@ -3668,7 +3923,8 @@ The dense-output functionality allows to interpolate the solution between subseq
 <class name="rosenbrock4_dense_output"><template>
       <template-type-parameter name="ControlledStepper"/>
     </template><typedef name="controlled_stepper_type"><type>ControlledStepper</type></typedef>
-<typedef name="stepper_type"><type>controlled_stepper_type::stepper_type</type></typedef>
+<typedef name="unwrapped_controlled_stepper_type"><type>unwrap_reference&lt; controlled_stepper_type &gt;::type</type></typedef>
+<typedef name="stepper_type"><type>unwrapped_controlled_stepper_type::stepper_type</type></typedef>
 <typedef name="value_type"><type>stepper_type::value_type</type></typedef>
 <typedef name="state_type"><type>stepper_type::state_type</type></typedef>
 <typedef name="wrapped_state_type"><type>stepper_type::wrapped_state_type</type></typedef>

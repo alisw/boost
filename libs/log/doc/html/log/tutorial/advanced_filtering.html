@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Filtering revisited</title>
 <link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Log v2">
+<link rel="home" href="../../index.html" title="Chapter 1. Boost.Log v2">
 <link rel="up" href="../tutorial.html" title="Tutorial">
 <link rel="prev" href="formatters.html" title="Log record formatting">
 <link rel="next" href="wide_char.html" title="Wide character logging">
@@ -108,10 +108,25 @@
       </p>
 <p>
         Like with formatters, it is also possible to use custom functions as filters.
+        Fundamentally, a filter function must support the following signature:
+      </p>
+<pre class="programlisting"><span class="keyword">bool</span> <span class="special">(</span><span class="identifier">logging</span><span class="special">::</span><span class="identifier">attribute_value_set</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">attrs</span><span class="special">);</span>
+</pre>
+<p>
+        When the filter is called, <code class="computeroutput"><span class="identifier">attrs</span></code>
+        will contain a complete set of attribute values, which can be used to decide
+        whether the log record should be passed or suppressed. If the filter returns
+        <code class="computeroutput"><span class="keyword">true</span></code>, the log record will be
+        constructed and further processed by sinks. Otherwise, the record will be
+        discarded.
+      </p>
+<p>
         <a href="http://www.boost.org/doc/libs/release/libs/phoenix/doc/html/index.html" target="_top">Boost.Phoenix</a>
-        can be very helpful in this case as its <code class="computeroutput"><span class="identifier">bind</span></code>
-        implementation is compatible with attribute placeholders. The previous example
-        can be modified in the following way:
+        can be very helpful in constructing filters. It allows to automate extraction
+        of attribute values from the <code class="computeroutput"><span class="identifier">attrs</span></code>
+        set as its <code class="computeroutput"><span class="identifier">bind</span></code> implementation
+        is compatible with attribute placeholders. The previous example can be modified
+        in the following way:
       </p>
 <p>
 </p>
@@ -134,15 +149,14 @@
 <p>
       </p>
 <p>
-        As you can see, the custom filter receives attribute values wrapped into
-        the <a class="link" href="../detailed/utilities.html#log.detailed.utilities.value_ref" title="Value reference wrapper"><code class="computeroutput"><span class="identifier">value_ref</span></code></a>
-        template. This wrapper contains an optional reference to the attribute value
-        of the specified type; the reference is valid if the log record contains
-        the attribute value of the required type. The relational operators used in
-        <code class="computeroutput"><span class="identifier">my_filter</span></code> can be applied
-        unconditionally because they will automatically return <code class="computeroutput"><span class="keyword">false</span></code>
-        if the reference is not valid. The rest is done with the <code class="computeroutput"><span class="identifier">bind</span></code>
-        expression which will recognize the <code class="computeroutput"><span class="identifier">severity</span></code>
+        As you can see, the custom filter receives attribute values as separate arguments,
+        wrapped into the <a class="link" href="../detailed/utilities.html#log.detailed.utilities.value_ref" title="Value reference wrapper"><code class="computeroutput"><span class="identifier">value_ref</span></code></a> template. This wrapper
+        contains an optional reference to the attribute value of the specified type;
+        the reference is valid if the log record contains the attribute value of
+        the required type. The relational operators used in <code class="computeroutput"><span class="identifier">my_filter</span></code>
+        can be applied unconditionally because they will automatically return <code class="computeroutput"><span class="keyword">false</span></code> if the reference is not valid. The rest
+        is done with the <code class="computeroutput"><span class="identifier">bind</span></code> expression
+        which will recognize the <code class="computeroutput"><span class="identifier">severity</span></code>
         and <code class="computeroutput"><span class="identifier">tag_attr</span></code> keywords and
         extract the corresponding values before passing them to <code class="computeroutput"><span class="identifier">my_filter</span></code>.
       </p>
@@ -168,7 +182,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2007-2016 Andrey Semashev<p>
+<td align="right"><div class="copyright-footer">Copyright © 2007-2019 Andrey Semashev<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>).
       </p>

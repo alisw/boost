@@ -17,6 +17,9 @@
 #include <boost/beast/core/role.hpp>
 #include <initializer_list>
 #include <vector>
+#if BOOST_ASIO_HAS_CO_AWAIT
+#include <boost/asio/use_awaitable.hpp>
+#endif
 
 namespace boost {
 namespace beast {
@@ -148,7 +151,6 @@ public:
             BEAST_EXPECT(buffer_bytes(bs) <=
                 detail::flat_stream_base::max_size);
             flat_stream<test::stream> s(ioc);
-            error_code ec;
             s.async_write_some(bs,
                 [](error_code, std::size_t)
                 {
@@ -209,11 +211,30 @@ public:
         check({1,2,3,4},    3,    3, true);
     }
 
+#if BOOST_ASIO_HAS_CO_AWAIT
+    void testAwaitableCompiles(
+        flat_stream<test::stream>& stream,
+        net::mutable_buffer rxbuf,
+        net::const_buffer txbuf)
+    {
+        static_assert(std::is_same_v<
+            net::awaitable<std::size_t>, decltype(
+            stream.async_read_some(rxbuf, net::use_awaitable))>);
+
+        static_assert(std::is_same_v<
+            net::awaitable<std::size_t>, decltype(
+            stream.async_write_some(txbuf, net::use_awaitable))>);
+    }
+#endif
+
     void
     run() override
     {
         testMembers();
         testSplit();
+#if BOOST_ASIO_HAS_CO_AWAIT
+    boost::ignore_unused(&flat_stream_test::testAwaitableCompiles);
+#endif
     }
 };
 

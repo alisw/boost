@@ -10,10 +10,17 @@
 // Test that header file is self-contained.
 #include <boost/beast/websocket/stream.hpp>
 
+#include <boost/beast/_experimental/test/tcp.hpp>
+
 #include "test.hpp"
 
+#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/asio/strand.hpp>
+
+#if BOOST_ASIO_HAS_CO_AWAIT
+#include <boost/asio/use_awaitable.hpp>
+#endif
 
 namespace boost {
 namespace beast {
@@ -366,6 +373,46 @@ public:
             BEAST_EXPECT(count == 3);
         });
 
+        // suspend idle ping
+        {
+            using socket_type =
+                net::basic_stream_socket<
+                    net::ip::tcp,
+                    net::any_io_executor>;
+            net::io_context ioc;
+            stream<socket_type> ws1(ioc);
+            stream<socket_type> ws2(ioc);
+            ws1.set_option(stream_base::timeout{
+                stream_base::none(),
+                std::chrono::seconds(0),
+                true});
+            test::connect(
+                ws1.next_layer(),
+                ws2.next_layer());
+            ws1.async_handshake("localhost", "/",
+                [](error_code){});
+            ws2.async_accept([](error_code){});
+            ioc.run();
+            ioc.restart();
+            flat_buffer b1;
+            auto mb = b1.prepare(65536);
+            std::memset(mb.data(), 0, mb.size());
+            b1.commit(65536);
+            ws1.async_write(b1.data(),
+                [&](error_code, std::size_t){});
+            BEAST_EXPECT(
+                ws1.impl_->wr_block.is_locked());
+            ws1.async_read_some(net::mutable_buffer{},
+                [&](error_code, std::size_t){});
+            ioc.run();
+            ioc.restart();
+            flat_buffer b2;
+            ws2.async_read(b2,
+                [&](error_code, std::size_t){});
+            ioc.run();
+        }
+        //);
+
         {
             echo_server es{log, kind::async};
             net::io_context ioc;
@@ -440,12 +487,30 @@ public:
         }
     };
 
+#if BOOST_ASIO_HAS_CO_AWAIT
+    void testAwaitableCompiles(
+        stream<test::stream>& s,
+        ping_data& pdat)
+    {
+        static_assert(std::is_same_v<
+            net::awaitable<void>, decltype(
+            s.async_ping(pdat, net::use_awaitable))>);
+
+        static_assert(std::is_same_v<
+            net::awaitable<void>, decltype(
+            s.async_pong(pdat, net::use_awaitable))>);
+    }
+#endif
+
     void
     run() override
     {
         testPing();
         testSuspend();
         testMoveOnly();
+#if BOOST_ASIO_HAS_CO_AWAIT
+        boost::ignore_unused(&ping_test::testAwaitableCompiles);
+#endif
     }
 };
 

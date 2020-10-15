@@ -38,7 +38,7 @@ template<class Handler>
 class stream<NextLayer, deflateSupported>::close_op
     : public beast::stable_async_base<
         Handler, beast::executor_type<stream>>
-    , public net::coroutine
+    , public asio::coroutine
 {
     boost::weak_ptr<impl_type> wp_;
     error_code ev_;
@@ -382,7 +382,7 @@ close(close_reason const& cr, error_code& ec)
 }
 
 template<class NextLayer, bool deflateSupported>
-template<class CloseHandler>
+template<BOOST_BEAST_ASYNC_TPARAM1 CloseHandler>
 BOOST_BEAST_ASYNC_RESULT1(CloseHandler)
 stream<NextLayer, deflateSupported>::
 async_close(close_reason const& cr, CloseHandler&& handler)

@@ -1,5 +1,5 @@
 /* Example of how to marshall Outcomes at namespace boundaries
-(C) 2017-2019 Niall Douglas <http://www.nedproductions.biz/> (149 commits)
+(C) 2017-2020 Niall Douglas <http://www.nedproductions.biz/> (11 commits)
 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -28,13 +28,20 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include "../../../include/boost/outcome.hpp"
-#if __has_include("../../../../quickcpplib/include/string_view.hpp")
-#include "../../../../quickcpplib/include/string_view.hpp"
+#if __has_include("quickcpplib/string_view.hpp")
+#include "quickcpplib/string_view.hpp"
 #else
-#include "../../../include/boost/outcome/quickcpplib/include/string_view.hpp"
+#include "../../../include/boost/outcome/quickcpplib/include/quickcpplib/string_view.hpp"
 #endif
 #include <cstring>  // for memcpy
+
+#if __has_include(<filesystem>) && (__cplusplus >= 201700 || _HAS_CXX17)
+#include <filesystem>
+namespace filesystem = std::filesystem;
+#else
 #include <experimental/filesystem>
+namespace filesystem = std::experimental::filesystem;
+#endif
 
 //! [httplib]
 // This is some standalone library implementing high level HTTP
@@ -90,8 +97,8 @@ namespace httplib
 namespace filelib
 {
   using QUICKCPPLIB_NAMESPACE::string_view::string_view;
-  using std::experimental::filesystem::filesystem_error;
-  using std::experimental::filesystem::path;
+  using filesystem::filesystem_error;
+  using filesystem::path;
 }  // namespace filelib
 
 namespace app

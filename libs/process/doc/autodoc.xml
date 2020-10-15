@@ -104,10 +104,10 @@ on_exit(function);
 </formalpara>
 <programlisting language="c++">io_context ios;
 
-child c("ls", on_exit=[](int exit, const std::error_code&amp; ec_in){});
+child c("ls", ios, on_exit=[](int exit, const std::error_code&amp; ec_in){});
 
 std::future&lt;int&gt; exit_code;
-chlid c2("ls", on_exit=exit_code);
+chlid c2("ls", ios, on_exit=exit_code);
 </programlisting></para><para><note><para>The handler is not invoked when the launch fails. </para>
 </note>
 <warning><para>When used ignore_error it might get invoked on error. </para>
@@ -134,6 +134,7 @@ chlid c2("ls", on_exit=exit_code);
 </note>
 </para></description><type>platform_specific</type></typedef>
 <typedef name="handle_type"><description><para>Typedef for the handle representation of boost.asio. </para></description><type>platform_specific</type></typedef>
+<typedef name="executor_type"><type>handle_type::executor_type</type></typedef>
 <method-group name="public member functions">
 <method name="conversion-operator" cv="const" specifiers="explicit"><type>basic_pipe&lt; CharT, Traits &gt;</type><template>
           <template-type-parameter name="CharT"/>
@@ -645,7 +646,10 @@ spawn("b2", e);
 
 </namespace>
 <namespace name="this_process">
-<typedef name="native_handle_type"><purpose>Definition of the native handle type. </purpose><type><emphasis>unspecified</emphasis></type></typedef>
+
+
+
+
 <function name="get_id"><type>int</type><purpose>Get the process id of the current process. </purpose></function>
 <function name="native_handle"><type>native_handle_type</type><purpose>Get the native handle of the current process. </purpose></function>
 <function name="environment"><type>native_environment</type><purpose>Get the enviroment of the current process. </purpose></function>
@@ -1078,6 +1082,46 @@ else
 </namespace>
 </namespace>
 </header>
+<header name="boost/process/handles.hpp">
+<para>Defines functions to obtain handles of the current process and limit the amount for inherited ones. </para><namespace name="boost">
+<namespace name="process">
+<data-member name="limit_handles" specifiers="static"><type><emphasis>unspecified</emphasis></type><description><para>The limit_handles property sets all properties to be inherited only expcitly. It closes all unused file-descriptors on posix after the fork and removes the inherit flags on windows.</para><para><note><para>This is executed after the fork on posix.</para>
+</note>
+<programlisting language="c++">system("gcc", limit_handles);
+</programlisting></para><para>Since limit also closes the standard handles unless they are explicitly redirected they can be ignored by <computeroutput>limit_handles</computeroutput> in the following way.</para><para><programlisting language="c++">system("gcc", limit_handles.allowStd())
+</programlisting> </para></description></data-member>
+
+
+
+
+
+
+
+</namespace>
+<namespace name="this_process">
+<typedef name="native_handle_type"><purpose>The native type for handles. </purpose><description><para>Definition of the native handle type. </para></description><type><emphasis>unspecified</emphasis></type></typedef>
+<overloaded-function name="get_handles"><signature><type>std::vector&lt; native_handle_type &gt;</type></signature><signature><type>std::vector&lt; native_handle_type &gt;</type><parameter name="ec"><paramtype>std::error_code &amp;</paramtype></parameter></signature><description><para>Get a snapshot of all handles of the process (i.e. file descriptors on posix and handles on windows) of the current process.</para><para><note><para>This function might not work on certain posix systems.</para>
+</note>
+<note><para>On Windows version older than windows 8 this function will iterate all the system handles, meaning it might be quite slow.</para>
+</note>
+<warning><para>This functionality is utterly prone to race conditions, since other threads might open or close handles.</para>
+</warning>
+
+</para></description><returns><para>The list of all open handles of the current process </para>
+</returns></overloaded-function>
+
+<overloaded-function name="is_stream_handle"><signature><type>bool</type><parameter name="handle"><paramtype>native_handle_type</paramtype></parameter></signature><signature><type>bool</type><parameter name="handle"><paramtype>native_handle_type</paramtype></parameter><parameter name="ec"><paramtype>std::error_code &amp;</paramtype></parameter></signature><description><para>Determines if a given handle is a a stream-handle, i.e. any handle that can be used with read and write functions. Stream handles include pipes, regular files and sockets.</para><para>
+</para></description><returns><para>Indicates if it's a stream handle. </para>
+</returns></overloaded-function>
+
+
+
+
+
+
+</namespace>
+</namespace>
+</header>
 <header name="boost/process/io.hpp">
 <para>Header which provides the io properties. It provides the following properties:</para><para> 
 <programlisting language="c++">
@@ -1364,6 +1408,10 @@ std_out.null();
 <method name="pipe"><type><classname>pipe_type</classname> &amp;</type><purpose>Get a reference to the pipe. </purpose></method>
 <method name="pipe" cv="const"><type>const <classname>pipe_type</classname> &amp;</type><purpose>Get a const reference to the pipe. </purpose></method>
 <method name="pipe"><type><classname>pipe_type</classname> &amp;&amp;</type><purpose>Get a rvalue reference to the pipe. Qualified as rvalue. </purpose></method>
+<method name="is_open" cv="const"><type>bool</type><purpose>Check if the pipe is open. </purpose></method>
+<method name="open"><type>void</type><purpose>Open a new pipe. </purpose></method>
+<method name="open"><type>void</type><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><purpose>Open a new named pipe. </purpose></method>
+<method name="close"><type>void</type><purpose>Flush the buffer &amp; close the pipe. </purpose></method>
 </method-group>
 <constructor><purpose>Default constructor. </purpose></constructor>
 <constructor cv="= delete"><parameter name=""><paramtype>const <classname>basic_ipstream</classname> &amp;</paramtype></parameter><purpose>Copy constructor. </purpose></constructor>
@@ -1390,6 +1438,9 @@ std_out.null();
 <method name="pipe"><type><classname>pipe_type</classname> &amp;</type><purpose>Get a reference to the pipe. </purpose></method>
 <method name="pipe" cv="const"><type>const <classname>pipe_type</classname> &amp;</type><purpose>Get a const reference to the pipe. </purpose></method>
 <method name="pipe"><type><classname>pipe_type</classname> &amp;&amp;</type><purpose>Get a rvalue reference to the pipe. Qualified as rvalue. </purpose></method>
+<method name="open"><type>void</type><purpose>Open a new pipe. </purpose></method>
+<method name="open"><type>void</type><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><purpose>Open a new named pipe. </purpose></method>
+<method name="close"><type>void</type><purpose>Flush the buffer &amp; close the pipe. </purpose></method>
 </method-group>
 <constructor><purpose>Default constructor. </purpose></constructor>
 <constructor cv="= delete"><parameter name=""><paramtype>const <classname>basic_opstream</classname> &amp;</paramtype></parameter><purpose>Copy constructor. </purpose></constructor>
@@ -1449,10 +1500,15 @@ std_out.null();
 <method name="pipe"><type><classname>pipe_type</classname> &amp;</type><purpose>Get a reference to the pipe. </purpose></method>
 <method name="pipe" cv="const"><type>const <classname>pipe_type</classname> &amp;</type><purpose>Get a const reference to the pipe. </purpose></method>
 <method name="pipe"><type><classname>pipe_type</classname> &amp;&amp;</type><purpose>Get a rvalue reference to the pipe. Qualified as rvalue. </purpose></method>
+<method name="is_open" cv="const"><type>bool</type><purpose>Check if the pipe is open. </purpose></method>
+<method name="open"><type><classname>basic_pipebuf</classname>&lt; CharT, Traits &gt; *</type><purpose>Open a new pipe. </purpose></method>
+<method name="open"><type><classname>basic_pipebuf</classname>&lt; CharT, Traits &gt; *</type><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><purpose>Open a new named pipe. </purpose></method>
+<method name="close"><type><classname>basic_pipebuf</classname>&lt; CharT, Traits &gt; *</type><purpose>Flush the buffer &amp; close the pipe. </purpose></method>
 </method-group>
 <constructor><purpose>Default constructor, will also construct the pipe. </purpose></constructor>
 <constructor cv="= default"><parameter name=""><paramtype>const <classname>basic_pipebuf</classname> &amp;</paramtype></parameter><purpose>Copy Constructor. </purpose></constructor>
 <constructor cv="= default"><parameter name=""><paramtype><classname>basic_pipebuf</classname> &amp;&amp;</paramtype></parameter><purpose>Move Constructor. </purpose></constructor>
+<destructor><purpose>Destructor -&gt; writes the frest of the data. </purpose></destructor>
 <constructor><parameter name="p"><paramtype><classname>pipe_type</classname> &amp;&amp;</paramtype></parameter><purpose>Move construct from a pipe. </purpose></constructor>
 <constructor><parameter name="p"><paramtype>const <classname>pipe_type</classname> &amp;</paramtype></parameter><purpose>Construct from a pipe. </purpose></constructor>
 <copy-assignment cv="= delete"><type><classname>basic_pipebuf</classname> &amp;</type><parameter name=""><paramtype>const <classname>basic_pipebuf</classname> &amp;</paramtype></parameter><purpose>Copy assign. </purpose></copy-assignment>
@@ -1478,6 +1534,9 @@ std_out.null();
 <method name="pipe"><type><classname>pipe_type</classname> &amp;</type><purpose>Get a reference to the pipe. </purpose></method>
 <method name="pipe" cv="const"><type>const <classname>pipe_type</classname> &amp;</type><purpose>Get a const reference to the pipe. </purpose></method>
 <method name="pipe"><type><classname>pipe_type</classname> &amp;&amp;</type><purpose>Get a rvalue reference to the pipe. Qualified as rvalue. </purpose></method>
+<method name="open"><type>void</type><purpose>Open a new pipe. </purpose></method>
+<method name="open"><type>void</type><parameter name="name"><paramtype>const std::string &amp;</paramtype></parameter><purpose>Open a new named pipe. </purpose></method>
+<method name="close"><type>void</type><purpose>Flush the buffer &amp; close the pipe. </purpose></method>
 </method-group>
 <constructor><purpose>Default constructor. </purpose></constructor>
 <constructor cv="= delete"><parameter name=""><paramtype>const <classname>basic_pstream</classname> &amp;</paramtype></parameter><purpose>Copy constructor. </purpose></constructor>

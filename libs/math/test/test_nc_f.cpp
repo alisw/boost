@@ -27,7 +27,7 @@
 #include <boost/test/unit_test.hpp> // for test_main
 #include <boost/test/results_collector.hpp>
 #include <boost/test/unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE
+#include <boost/test/tools/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE
 #include "test_out_of_range.hpp"
 
 #include "functor.hpp"
@@ -233,7 +233,7 @@ void test_spots(RealType)
    BOOST_MATH_STD_USING
 
    //
-   // 5 eps expressed as a persentage, otherwise the limit of the test data:
+   // 5 eps expressed as a percentage, otherwise the limit of the test data:
    //
    RealType tol2 = (std::max)(boost::math::tools::epsilon<RealType>() * 500, RealType(1e-25));
    RealType x = 2;

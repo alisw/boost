@@ -1,50 +1,39 @@
 @ECHO OFF
 
 REM Copyright (C) 2009 Vladimir Prus
+REM Copyright 2019-2020 Rene Rivera
 REM
 REM Distributed under the Boost Software License, Version 1.0.
 REM (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
-ECHO Bootstrapping the build engine
-if exist ".\src\engine\bin.ntx86\bjam.exe" del src\engine\bin.ntx86\bjam.exe
-if exist ".\src\engine\bin.ntx86_64\bjam.exe" del src\engine\bin.ntx86_64\bjam.exe
 
+:b2_build
+ECHO Building the B2 engine..
 pushd src\engine
-call .\build.bat %* > ..\..\bootstrap.log
+call .\build.bat %*
 @ECHO OFF
 popd
+if exist ".\src\engine\b2.exe" (
+    copy .\src\engine\b2.exe . > nul
+    goto :b2_built)
+goto :b2_failure
 
-if exist ".\src\engine\bin.ntx86\b2.exe" (
-   copy .\src\engine\bin.ntx86\b2.exe . > nul
-   copy .\src\engine\bin.ntx86\bjam.exe . > nul
-   goto :bjam_built)
 
-if exist ".\src\engine\bin.ntx86_64\b2.exe" (
-   copy .\src\engine\bin.ntx86_64\b2.exe . > nul
-   copy .\src\engine\bin.ntx86_64\bjam.exe . > nul
-   goto :bjam_built)
-
-goto :bjam_failure
-
-:bjam_built
-
+:b2_built
 ECHO.
-ECHO Bootstrapping is done. To build, run:
+ECHO Building is done. To install, run:
 ECHO.
 ECHO     .\b2 --prefix=DIR install
 ECHO.
-
 goto :end
 
-:bjam_failure
 
+:b2_failure
 ECHO.
-ECHO Failed to bootstrap the build engine
-ECHO Please consult bootstrap.log for further diagnostics.
+ECHO Failed to build the B2 engine.
 ECHO.
-
-
 goto :end
+
 
 :end
 exit /b %ERRORLEVEL%

@@ -9,7 +9,7 @@
 //
 
 #include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
+#include <boost/config/workaround.hpp>
 
 #define HAVE_CONSTEXPR_INIT
 
@@ -17,7 +17,7 @@
 # undef HAVE_CONSTEXPR_INIT
 #endif
 
-#if BOOST_WORKAROUND( BOOST_MSVC, < 1920 )
+#if BOOST_WORKAROUND( BOOST_MSVC, < 1930 )
 # undef HAVE_CONSTEXPR_INIT
 #endif
 

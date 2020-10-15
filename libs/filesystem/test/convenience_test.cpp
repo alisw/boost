@@ -19,15 +19,17 @@
 #endif
 
 #include <boost/filesystem/convenience.hpp>
+#include <boost/filesystem/directory.hpp>
+#include <boost/filesystem/exception.hpp>
 
 #include <boost/config.hpp>
 # if defined( BOOST_NO_STD_WSTRING )
 #   error Configuration not supported: Boost.Filesystem V3 and later requires std::wstring support
 # endif
 
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include <boost/detail/lightweight_main.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -119,19 +121,19 @@ int cpp_main(int, char*[])
 
   it = fs::recursive_directory_iterator(unique_dir);
   BOOST_TEST(it->path() == unique_yy);
-  BOOST_TEST(it.level() == 0);
+  BOOST_TEST(it.depth() == 0);
   ++it;
   BOOST_TEST(it->path() == unique_yy_zz);
-  BOOST_TEST(it.level() == 1);
+  BOOST_TEST(it.depth() == 1);
   it.pop();
   BOOST_TEST(it->path() == unique_yya);
-  BOOST_TEST(it.level() == 0);
+  BOOST_TEST(it.depth() == 0);
   it++;
   BOOST_TEST(it == fs::recursive_directory_iterator());
 
   it = fs::recursive_directory_iterator(unique_dir);
   BOOST_TEST(it->path() == unique_yy);
-  it.no_push();
+  it.disable_recursion_pending();
   ++it;
   BOOST_TEST(it->path() == unique_yya);
   ++it;
@@ -145,16 +147,16 @@ int cpp_main(int, char*[])
 
   it = fs::recursive_directory_iterator(unique_dir);
   BOOST_TEST(it->path() == unique_yy);
-  BOOST_TEST(it.level() == 0);
+  BOOST_TEST(it.depth() == 0);
   ++it;
   BOOST_TEST(it->path() == unique_yy_zz);
-  BOOST_TEST(it.level() == 1);
+  BOOST_TEST(it.depth() == 1);
   it++;
   BOOST_TEST(it == fs::recursive_directory_iterator());
 
   it = fs::recursive_directory_iterator(unique_dir);
   BOOST_TEST(it->path() == unique_yy);
-  it.no_push();
+  it.disable_recursion_pending();
   ++it;
   BOOST_TEST(it == fs::recursive_directory_iterator());
 

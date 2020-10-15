@@ -1,9 +1,10 @@
 +++
-title = "Plugging a library into std::error_code"
-description = "Illustrates how you can hook into the std::error_code system from the Standard Library in order to work with your own set of error codes."
+title = "Plugging a library into std::error_code`"
+description = "Illustrates how you can hook into the `std::error_code` system from the Standard Library in order to work with your own set of error codes."
 weight = 50
 +++
 
+[See here for this guide, but for `boost::system::error_code`]({{% relref "plug_error_code2" %}}).
 
 This section illustrates how you can hook into the `std::error_code` system from
 the Standard Library in order to work with your own set of error codes. As is usually

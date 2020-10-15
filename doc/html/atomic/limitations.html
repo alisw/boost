@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Limitations</title>
 <link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../atomic.html" title="Chapter&#160;6.&#160;Boost.Atomic">
+<link rel="up" href="../atomic.html" title="Chapter 6. Boost.Atomic">
 <link rel="prev" href="usage_examples.html" title="Usage examples">
 <link rel="next" href="porting.html" title="Porting">
 </head>
@@ -107,6 +107,7 @@
 <li class="listitem">
           <span class="bold"><strong>No interprocess fallback</strong></span>: using <code class="computeroutput"><span class="identifier">atomic</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>
           in shared memory only works correctly, if <code class="computeroutput"><span class="identifier">atomic</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">is_lock_free</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">true</span></code>.
+          Same with <code class="computeroutput"><span class="identifier">atomic_ref</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>.
         </li>
 <li class="listitem">
           <span class="bold"><strong>Signed integers must use <a href="https://en.wikipedia.org/wiki/Two%27s_complement" target="_top">two's
@@ -114,16 +115,30 @@
           makes this requirement in order to implement conversions between signed
           and unsigned integers internally. C++11 requires all atomic arithmetic
           operations on integers to be well defined according to two's complement
-          arithmetics, which means that Boost.Atomic has to operate on unsigned integers
-          internally to avoid undefined behavior that results from signed integer
-          overflows. Platforms with other signed integer representations are not
-          supported.
+          arithmetics, which means that <span class="bold"><strong>Boost.Atomic</strong></span>
+          has to operate on unsigned integers internally to avoid undefined behavior
+          that results from signed integer overflows. Platforms with other signed
+          integer representations are not supported. Note that C++20 makes two's
+          complement representation of signed integers mandatory.
+        </li>
+<li class="listitem">
+          <span class="bold"><strong>Types with padding bits are not supported</strong></span>:
+          As discussed in <a class="link" href="interface.html#atomic.interface.interface_atomic_ref.caveats" title="Caveats">this
+          section</a>, <span class="bold"><strong>Boost.Atomic</strong></span> cannot support
+          types with padding bits because their content is undefined, and there is
+          no portable way to initialize them to a predefined value. This makes operations
+          like <code class="computeroutput"><span class="identifier">compare_exchange_strong</span></code>/<code class="computeroutput"><span class="identifier">compare_exchange_weak</span></code> fail, and given
+          that in some cases other operations are built upon these, potentially all
+          operations become unreliable. <span class="bold"><strong>Boost.Atomic</strong></span>
+          does support padding bits for floating point types on platforms where the
+          location of the padding bits is known at compile time.
         </li>
 </ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Helge Bahmann<br>Copyright &#169; 2012 Tim Blechmann<br>Copyright &#169; 2013, 2017, 2018 Andrey Semashev<p>
+<td align="right"><div class="copyright-footer">Copyright © 2011 Helge Bahmann<br>Copyright © 2012 Tim Blechmann<br>Copyright © 2013, 2017, 2018, 2020 Andrey
+      Semashev<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

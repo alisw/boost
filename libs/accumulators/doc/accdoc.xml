@@ -20,9 +20,6 @@
 </para></description></method>
 <method name="operator()"><type>void</type><description><para>Accumulation 
 </para></description></method>
-<method name="operator()"><type>void</type><template>
-          <template-type-parameter name="A1"/>
-        </template><parameter name="a1"><paramtype>A1 const &amp;</paramtype></parameter></method>
 <method name="extract"><type><classname>apply</classname>&lt; Feature &gt;::type &amp;</type><template>
           <template-type-parameter name="Feature"/>
         </template><purpose>Extraction. </purpose></method>
@@ -32,10 +29,17 @@
 <method name="drop"><type>void</type><template>
           <template-type-parameter name="Feature"/>
         </template><purpose>Drop. </purpose></method>
+<method name="serialize"><type>void</type><template>
+          <template-type-parameter name="Archive"/>
+        </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="file_version"><paramtype>const unsigned int</paramtype></parameter></method>
 </method-group>
 <constructor specifiers="explicit"><template>
           <template-type-parameter name="A1"/>
-        </template><parameter name="a1"><paramtype>A1 const &amp;</paramtype><description><para>Optional named parameter to be passed to all the accumulators </para></description></parameter><description><para>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</para><para>
+        </template><parameter name="a1"><paramtype>A1 const &amp;</paramtype><description><para>Optional named parameter to be passed to all the accumulators </para></description></parameter><parameter name=""><paramtype><emphasis>unspecified</emphasis></paramtype><default><emphasis>unspecified</emphasis></default></parameter><description><para>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</para><para>
+</para></description></constructor>
+<constructor specifiers="explicit"><template>
+          <template-type-parameter name="A1"/>
+        </template><parameter name="a1"><paramtype>A1 const &amp;</paramtype><description><para>Optional sample parameter to be passed to all the accumulators </para></description></parameter><parameter name=""><paramtype><emphasis>unspecified</emphasis></paramtype><default><emphasis>unspecified</emphasis></default></parameter><description><para>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</para><para>
 </para></description></constructor>
 </struct><struct name="as_feature"><template>
       <template-type-parameter name="Feature"/>
@@ -142,11 +146,6 @@
           <template-type-parameter name="Feature"/>
           <template-type-parameter name="AccumulatorSet"/>
         </template><parameter name="acc"><paramtype>AccumulatorSet const &amp;</paramtype></parameter></function>
-<function name="extract_result"><type>mpl::apply&lt; AccumulatorSet, Feature &gt;::type::result_type</type><template>
-          <template-type-parameter name="Feature"/>
-          <template-type-parameter name="AccumulatorSet"/>
-          <template-type-parameter name="A1"/>
-        </template><parameter name="acc"><paramtype>AccumulatorSet const &amp;</paramtype></parameter><parameter name="a1"><paramtype>A1 const &amp;</paramtype></parameter></function>
 
 </namespace>
 </namespace>
@@ -155,7 +154,6 @@
 <macro name="BOOST_ACCUMULATORS_PROTO_DISABLE_IF_IS_CONST" kind="functionlike"><macro-parameter name="T"/></macro>
 <macro name="BOOST_ACCUMULATORS_GCC_VERSION"/>
 <macro name="BOOST_ACCUMULATORS_IGNORE_GLOBAL" kind="functionlike"><macro-parameter name="X"/></macro>
-<macro name="BOOST_PARAMETER_NESTED_KEYWORD" kind="functionlike"><macro-parameter name="tag_namespace"/><macro-parameter name="name"/><macro-parameter name="alias"/></macro>
 </header>
 <header name="boost/accumulators/framework/accumulator_base.hpp">
 <namespace name="boost">
@@ -175,7 +173,6 @@
 </struct>
 
 
-
 </namespace>
 </namespace>
 </header>
@@ -191,14 +188,12 @@
 </struct>
 
 
-
 </namespace>
 </namespace>
 </header>
 <header name="boost/accumulators/framework/accumulator_set.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-
 
 
 <function name="find_accumulator"><type>mpl::apply&lt; AccumulatorSet, Feature &gt;::type &amp;</type><template>
@@ -230,7 +225,6 @@
 
 
 
-
 </namespace>
 </namespace>
 </header>
@@ -249,7 +243,6 @@
       <template-type-parameter name="Tag"/>
     </template><specialization><template-arg>Feature</template-arg><template-arg>Tag</template-arg><template-arg>void</template-arg></specialization><inherit access="public">boost::accumulators::depends_on&lt;&gt;</inherit><typedef name="impl"><type><emphasis>unspecified</emphasis></type></typedef>
 </struct-specialization></namespace>
-
 
 
 
@@ -281,7 +274,6 @@
 
 
 
-
 </namespace>
 </namespace>
 </header>
@@ -310,14 +302,12 @@
 
 
 
-
 </namespace>
 </namespace>
 </header>
 <header name="boost/accumulators/framework/depends_on.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-
 
 
 
@@ -332,7 +322,6 @@
 
 
 
-
 </namespace>
 </namespace>
 <macro name="BOOST_ACCUMULATORS_DEFINE_EXTRACTOR" kind="functionlike"><macro-parameter name="Tag"/><macro-parameter name="Feature"/><macro-parameter name="ParamSeq"/></macro>
@@ -343,17 +332,12 @@
 
 
 
-
 </namespace>
 </namespace>
 </header>
 <header name="boost/accumulators/framework/parameters/accumulator.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-<namespace name="tag">
-<struct name="accumulator"/></namespace>
-<data-member name="accumulator"><type>boost::parameter::keyword&lt; tag ::accumulator &gt; const</type></data-member>
-
 
 
 
@@ -363,10 +347,6 @@
 <header name="boost/accumulators/framework/parameters/sample.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-<namespace name="tag">
-<struct name="sample"/></namespace>
-<data-member name="sample"><type>boost::parameter::keyword&lt; tag ::sample &gt; const</type></data-member>
-
 
 
 
@@ -376,10 +356,6 @@
 <header name="boost/accumulators/framework/parameters/weight.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-<namespace name="tag">
-<struct name="weight"/></namespace>
-<data-member name="weight"><type>boost::parameter::keyword&lt; tag ::weight &gt; const</type></data-member>
-
 
 
 
@@ -389,10 +365,6 @@
 <header name="boost/accumulators/framework/parameters/weights.hpp">
 <namespace name="boost">
 <namespace name="accumulators">
-<namespace name="tag">
-<struct name="weights"/></namespace>
-<data-member name="weights"><type>boost::parameter::keyword&lt; tag ::weights &gt; const</type></data-member>
-
 
 
 

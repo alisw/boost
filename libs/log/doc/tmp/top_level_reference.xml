@@ -121,7 +121,12 @@ This header defines tools for trivial logging support </para><namespace name="bo
 </method-group>
 </struct><enum name="severity_level"><enumvalue name="trace"/><enumvalue name="debug"/><enumvalue name="info"/><enumvalue name="warning"/><enumvalue name="error"/><enumvalue name="fatal"/><purpose>Trivial severity levels. </purpose></enum>
 <typedef name="logger_type"><purpose>Trivial logger type. </purpose><type>sources::severity_logger_mt&lt; severity_level &gt;</type></typedef>
-<function name="to_string"><type>const char *</type><parameter name="lvl"><paramtype>severity_level</paramtype></parameter><purpose>Returns stringized enumeration value or <computeroutput>NULL</computeroutput>, if the value is not valid. </purpose></function>
+<function name="to_string"><type>const CharT *</type><template>
+          <template-type-parameter name="CharT"/>
+        </template><parameter name="lvl"><paramtype>severity_level</paramtype></parameter><purpose>Returns stringized enumeration value or <computeroutput>NULL</computeroutput>, if the value is not valid. </purpose></function>
+<function name="from_string"><type>bool</type><template>
+          <template-type-parameter name="CharT"/>
+        </template><parameter name="str"><paramtype>const CharT *</paramtype></parameter><parameter name="len"><paramtype>std::size_t</paramtype></parameter><parameter name="lvl"><paramtype>severity_level &amp;</paramtype></parameter><purpose>Parses enumeration value from string and returns <computeroutput>true</computeroutput> on success and <computeroutput>false</computeroutput> otherwise. </purpose></function>
 <function name="operator&lt;&lt;"><type>std::basic_ostream&lt; CharT, TraitsT &gt; &amp;</type><template>
           <template-type-parameter name="CharT"/>
           <template-type-parameter name="TraitsT"/>

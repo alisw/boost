@@ -213,15 +213,15 @@ public:
 
     struct async_read_stream
     {
-        net::io_context::executor_type get_executor();
-        template<class MutableBufferSequence, class ReadHandler>
+        net::io_context::executor_type get_executor() noexcept;
+        template<class MutableBufferSequence, BOOST_BEAST_ASYNC_TPARAM2 ReadHandler>
         void async_read_some(MutableBufferSequence const&, ReadHandler&&);
     };
 
     struct async_write_stream
     {
-        net::io_context::executor_type get_executor();
-        template<class ConstBufferSequence, class WriteHandler>
+        net::io_context::executor_type get_executor() noexcept;
+        template<class ConstBufferSequence, BOOST_BEAST_ASYNC_TPARAM2 WriteHandler>
         void async_write_some(ConstBufferSequence const&, WriteHandler&&);
     };
 
@@ -231,10 +231,10 @@ public:
 
     struct async_stream : async_read_stream, async_write_stream
     {
-        net::io_context::executor_type get_executor();
-        template<class MutableBufferSequence, class ReadHandler>
+        net::io_context::executor_type get_executor() noexcept;
+        template<class MutableBufferSequence, BOOST_BEAST_ASYNC_TPARAM2 ReadHandler>
         void async_read_some(MutableBufferSequence const&, ReadHandler&&);
-        template<class ConstBufferSequence, class WriteHandler>
+        template<class ConstBufferSequence, BOOST_BEAST_ASYNC_TPARAM2 WriteHandler>
         void async_write_some(ConstBufferSequence const&, WriteHandler&&);
     };
 

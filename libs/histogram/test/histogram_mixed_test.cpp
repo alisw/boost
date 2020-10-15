@@ -6,11 +6,15 @@
 
 #include <boost/core/lightweight_test.hpp>
 #include <boost/histogram/axis/integer.hpp>
+#include <boost/histogram/axis/ostream.hpp>
 #include <boost/histogram/axis/regular.hpp>
 #include <boost/histogram/histogram.hpp>
 #include <boost/histogram/literals.hpp>
+#include <boost/histogram/ostream.hpp>
 #include <boost/histogram/storage_adaptor.hpp>
 #include <boost/histogram/unlimited_storage.hpp>
+#include <vector>
+#include "throw_exception.hpp"
 #include "utility_histogram.hpp"
 
 using namespace boost::histogram;
@@ -74,6 +78,14 @@ void run_tests() {
 int main() {
   run_tests<static_tag, dynamic_tag>();
   run_tests<dynamic_tag, static_tag>();
+
+  // copy assign
+  {
+    auto a = make(static_tag{}, axis::regular<>{3, 0, 3}, axis::integer<>{0, 2});
+    auto b = make(dynamic_tag{}, axis::regular<>{3, 0, 3}, axis::regular<>{2, 0, 2},
+                  axis::integer<>{0, 2});
+    BOOST_TEST_THROWS(a = b, std::invalid_argument);
+  }
 
   return boost::report_errors();
 }

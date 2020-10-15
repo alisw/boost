@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#assertion_macros_boostassert_hpp">Assertion Macros, &lt;boost/assert.hpp&gt;</a>
+<li><a href="#assertion_macros">Assertion Macros, &lt;boost/assert.hpp&gt;</a>
 <ul class="sectlevel2">
 <li><a href="#boost_assert">BOOST_ASSERT</a></li>
 <li><a href="#boost_assert_msg">BOOST_ASSERT_MSG</a></li>
@@ -449,9 +449,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#boost_assert_is_void">BOOST_ASSERT_IS_VOID</a></li>
 </ul>
 </li>
-<li><a href="#current_function_macro_boostcurrent_function_hpp">Current Function Macro, &lt;boost/current_function.hpp&gt;</a>
+<li><a href="#current_function_macro">Current Function Macro, &lt;boost/current_function.hpp&gt;</a>
 <ul class="sectlevel2">
 <li><a href="#boost_current_function">BOOST_CURRENT_FUNCTION</a></li>
+</ul>
+</li>
+<li><a href="#source_location_support">Source Location Support, &lt;boost/assert/source_location.hpp&gt;</a>
+<ul class="sectlevel2">
+<li><a href="#description">Description</a></li>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#source_location">source_location</a></li>
+<li><a href="#operator">operator&lt;&lt;</a></li>
+<li><a href="#boost_current_location">BOOST_CURRENT_LOCATION</a></li>
+</ul>
+</li>
+<li><a href="#changes">Revision History</a>
+<ul class="sectlevel2">
+<li><a href="#changes_in_1_73_0">Changes in 1.73.0</a></li>
 </ul>
 </li>
 <li><a href="#copyright_and_license">Appendix A: Copyright and License</a></li>
@@ -468,7 +482,7 @@ similar in behavior and purpose to the standard macro <code>assert</code> from <
 </div>
 </div>
 <div class="sect1">
-<h2 id="assertion_macros_boostassert_hpp">Assertion Macros, &lt;boost/assert.hpp&gt;</h2>
+<h2 id="assertion_macros">Assertion Macros, &lt;boost/assert.hpp&gt;</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="boost_assert">BOOST_ASSERT</h3>
@@ -687,7 +701,7 @@ Its purpose is to avoid compiling and potentially running code that is only inte
 </div>
 </div>
 <div class="sect1">
-<h2 id="current_function_macro_boostcurrent_function_hpp">Current Function Macro, &lt;boost/current_function.hpp&gt;</h2>
+<h2 id="current_function_macro">Current Function Macro, &lt;boost/current_function.hpp&gt;</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="boost_current_function">BOOST_CURRENT_FUNCTION</h3>
@@ -714,6 +728,150 @@ the final executable for security reasons.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="source_location_support">Source Location Support, &lt;boost/assert/source_location.hpp&gt;</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="description">Description</h3>
+<div class="paragraph">
+<p>The header <code>&lt;boost/assert/source_location.hpp&gt;</code> defines <code>source_location</code>,
+a class representing a source location and containing file, line, function
+and column information. It&#8217;s similar to <code>std::source_location</code> from C&#43;&#43;20,
+but only requires C&#43;&#43;03.</p>
+</div>
+<div class="paragraph">
+<p>The macro <code>BOOST_CURRENT_LOCATION</code> creates a <code>source_location</code> object
+containing information about the current source location.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="synopsis">Synopsis</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>namespace boost
+{
+
+struct source_location
+{
+  constexpr source_location() noexcept;
+  constexpr source_location(char const* file, uint_least32_t line,
+    char const* function, uint_least32_t column = 0) noexcept;
+
+  constexpr char const* file_name() const noexcept;
+  constexpr char const* function_name() const noexcept;
+  constexpr uint_least32_t line() const noexcept;
+  constexpr uint_least32_t column() const noexcept;
+};
+
+template&lt;class E, class T&gt;
+  std::basic_ostream&lt;E, T&gt; &amp;
+  operator&lt;&lt;( std::basic_ostream&lt;E, T&gt; &amp; os, source_location const &amp; loc );
+
+} // namespace boost
+
+#define BOOST_CURRENT_LOCATION \
+  ::boost::source_location(__FILE__, __LINE__, BOOST_CURRENT_FUNCTION)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="source_location">source_location</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>constexpr source_location() noexcept;</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects: </dt>
+<dd>
+<p>Constructs a <code>source_location</code> object for which <code>file_name()</code>
+and <code>function_name()</code> return <code>"(unknown)"</code>, and <code>line()</code> and <code>column()</code>
+return <code>0</code>.</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>constexpr source_location(char const* file, uint_least32_t line,
+  char const* function, uint_least32_t column = 0) noexcept;</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects: </dt>
+<dd>
+<p>Constructs a <code>source_location</code> object for which <code>file_name()</code>
+returns <code>file</code>, <code>function_name()</code> returns <code>function</code>, <code>line()</code> returns the
+<code>line</code> argument and <code>column()</code> returns the <code>column</code> argument.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="operator">operator&lt;&lt;</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>template&lt;class E, class T&gt;
+  std::basic_ostream&lt;E, T&gt; &amp;
+  operator&lt;&lt;( std::basic_ostream&lt;E, T&gt; &amp; os, source_location const &amp; loc );</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Effects: </dt>
+<dd>
+<p>Outputs a string representation of <code>loc</code> to <code>os</code>.</p>
+</dd>
+<dt class="hdlist1">Returns: </dt>
+<dd>
+<p><code>os</code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boost_current_location">BOOST_CURRENT_LOCATION</h3>
+<div class="paragraph">
+<p>When <code>BOOST_DISABLE_CURRENT_LOCATION</code> is not defined, the definition of
+<code>BOOST_CURRENT_LOCATION</code> is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>#define BOOST_CURRENT_LOCATION \
+  ::boost::source_location(__FILE__, __LINE__, BOOST_CURRENT_FUNCTION)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Otherwise, <code>BOOST_CURRENT_LOCATION</code> is defined as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>#define BOOST_CURRENT_LOCATION ::boost::source_location()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This allows producing executables that contain no identifying information,
+for security reasons.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="changes">Revision History</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="changes_in_1_73_0">Changes in 1.73.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Added <code>source_location</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="copyright_and_license">Appendix A: Copyright and License</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -722,7 +880,7 @@ the final executable for security reasons.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Copyright 2002, 2007, 2014, 2017 Peter Dimov</p>
+<p>Copyright 2002, 2007, 2014, 2017, 2019, 2020 Peter Dimov</p>
 </li>
 <li>
 <p>Copyright 2011 Beman Dawes</p>
@@ -740,12 +898,13 @@ the final executable for security reasons.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-09 19:35:21 UTC
+Last updated 2020-08-11 14:55:32 UTC
 </div>
 </div>
 <style>
 
 *:not(pre)>code { background: none; color: #600000; }
+:not(pre):not([class^=L])>code { background: none; color: #600000; }
 
 </style>
 </body>

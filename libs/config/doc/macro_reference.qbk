@@ -647,6 +647,7 @@ default template arguments for function templates.
 [[`BOOST_NO_CXX11_HDR_CHRONO`][The standard library does not provide header <chrono>.]]
 [[`BOOST_NO_CXX11_HDR_CODECVT`][The standard library does not provide header <codecvt>.]]
 [[`BOOST_NO_CXX11_HDR_CONDITION_VARIABLE`][The standard library does not provide header <condition_variable>.]]
+[[`BOOST_NO_CXX11_HDR_EXCEPTION`][The standard library does not provide a C++11 compatible version of <exception>.]]
 [[`BOOST_NO_CXX11_HDR_FORWARD_LIST`][The standard library does not provide header <forward_list>.]]
 [[`BOOST_NO_CXX11_HDR_FUNCTIONAL`][The standard library does not provide a C++11 compatible version of <functional>.]]
 [[`BOOST_NO_CXX11_HDR_FUTURE`][The standard library does not provide header <future>.]]
@@ -683,6 +684,8 @@ compilers implementing an early draft of the C++11 standard (in particular, inco
 ]]
 [[`BOOST_NO_CXX11_NUMERIC_LIMITS`][The standard library `<limits>` header does
 not support the C++11 version of `numeric_limits`. 
+]]
+[[`BOOST_NO_CXX11_OVERRIDE`][The compiler does not support `override`.
 ]]
 [[`BOOST_NO_CXX11_POINTER_TRAITS`][The standard library does not provide a
 C++11 version of `std::pointer_traits` in <memory>.]]
@@ -726,6 +729,10 @@ Unicode (`u8`, `u`, `U`) literals.
 ]]
 [[`BOOST_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX`][The compiler does not support
 the [@http://en.wikipedia.org/wiki/C%2B%2B0x#Uniform_initialization C++11 Unified Initialization Syntax].
+]]
+[[`BOOST_NO_CXX11_UNRESTRICTED_UNION`][The compiler does not support an unrestricted union. This is
+a union that may contain static data as well as user-defined member data with non-trivial special
+member functions.
 ]]
 [[`BOOST_NO_CXX11_USER_DEFINED_LITERALS`][The compiler does not support user defined literals. 
 ]]
@@ -787,6 +794,10 @@ with:
 ``
   static BOOST_CONSTEXPR_OR_CONST UIntType xor_mask = a;
 ``
+]]
+[[`BOOST_OVERRIDE`][
+If `BOOST_NO_CXX11_OVERRIDE` is not defined (i.e. C++11 compliant compilers),
+expands to `override` keyword, otherwise expands to nothing.
 ]]
 [[`BOOST_STATIC_CONSTEXPR`][
 This is a shortcut for `static BOOST_CONSTEXPR_OR_CONST`. For example, when defining const expr variables replace:
@@ -880,6 +891,10 @@ If `BOOST_NO_CXX11_NOEXCEPT` is not defined (i.e. C++11 compliant compilers) the
 ``
 ]
 ]]
+[[`BOOST_FINAL`][
+If `BOOST_NO_CXX11_FINAL` is not defined (i.e. C++11 compliant compilers), expands to `final` keyword,
+otherwise expands to nothing.
+]]
 [[`BOOST_MSVC_ENABLE_2012_NOV_CTP`][
 For Microsoft Visual C++ 2012, enable the C++11 features supplied by the
 November 2012 Community Technology Preview. These features are not automatically
@@ -935,7 +950,7 @@ provide compliant C++14 support.
 
 [table
 [[Macro ][ Description ]]
-[[`BOOST_CXX14_CONSTEXPR`][This macro works similar to BOOST_CONSTEXPR, but expands to `constexpr` only if the C++14 "relaxed" `constexpr` is available.]]
+[[`BOOST_CXX14_CONSTEXPR`][This macro works similar to `BOOST_CONSTEXPR`, but expands to `constexpr` only if the C++14 "relaxed" `constexpr` is available.]]
 ]
 
 [endsect]
@@ -948,11 +963,29 @@ that are not yet supported by a particular compiler or library.
 [table
 [[Macro ][Description ]]
 [[`BOOST_NO_CXX17_HDR_OPTIONAL`][The compiler does not support the header `<optional>`.]]
+[[`BOOST_NO_CXX17_HDR_VARIANT`][The compiler does not support the header `<variant>`.]]
 [[`BOOST_NO_CXX17_HDR_STRING_VIEW`][The compiler does not support the header `<string_view>`.]]
 [[`BOOST_NO_CXX17_STD_APPLY`][The compiler does not support `std::apply()`.]]
 [[`BOOST_NO_CXX17_STD_INVOKE`][The compiler does not support `std::invoke()`.]]
 [[`BOOST_NO_CXX17_ITERATOR_TRAITS`][The compiler does not support SFINAE-friendly `std::iterator_traits`.]]
 [[`BOOST_NO_CXX17_IF_CONSTEXPR`][The compiler does not support `if constexpr`.]]
+[[`BOOST_NO_CXX17_INLINE_VARIABLES`][The compiler does not support `inline` variables.]]
+]
+
+[endsect]
+
+[#config_17_for_14]
+
+[section Macros that allow use of C++17 features with C++14 or earlier compilers]
+
+The following macros allow use of C++17 features even with compilers that do not yet
+provide compliant C++17 support.
+
+[table
+[[Macro ][ Description ]]
+[[`BOOST_INLINE_VARIABLE`][This macro expands to `inline` on compilers that support C++17 inline variables and to nothing otherwise. Users may need to check for `BOOST_NO_CXX17_INLINE_VARIABLES` for further adjustments to the code.]]
+[[`BOOST_IF_CONSTEXPR`][Expands to `if constexpr` when supported, or `if` otherwise.]]
+[[`BOOST_INLINE_CONSTEXPR`][This is a shortcut for `BOOST_INLINE_VARIABLE BOOST_CONSTEXPR_OR_CONST`.]]
 ]
 
 [endsect]
@@ -1274,6 +1307,10 @@ Usage example:
 ]]
 [[`BOOST_ATTRIBUTE_UNUSED`][Expands to `__attribute__((unused))` when this is available - 
 can be used to disable compiler warnings relating to unused types or variables.]]
+[[`BOOST_ATTRIBUTE_NODISCARD`][Expands to `[[nodiscard]]` when this is available - 
+can be used to create a warning when a type or variable is unused.]]
+[[`BOOST_ATTRIBUTE_NO_UNIQUE_ADDRESS`][Expands to `[[no_unique_address]]` when this is available - 
+can be used to indicate that a non-static data member need not have a unique address (for example empty classes).]]
 [[`BOOST_MAY_ALIAS`, `BOOST_NO_MAY_ALIAS`][
 `BOOST_MAY_ALIAS` expands to a type attribute that can be used to mark types that may
 alias other types. Pointers or references to such marked types can be used to access objects
@@ -1352,6 +1389,18 @@ compiler version macro.
 [[`BOOST_CLANG`][`<boost/config.hpp>`][
 Defined to 1 if the compiler is the Clang compiler.
 ]]
+[[`BOOST_BORLANDC`][`<boost/config.hpp>`][
+Defined to the value of __BORLANDC__ if the compiler is the Embarcadero
+non-clang based compiler.
+]]
+[[`BOOST_CODEGEARC`][`<boost/config.hpp>`][
+Defined to the value of __CODEGEARC__ if the compiler is the Embarcadero
+non-clang based compiler.
+]]
+[[`BOOST_EMBTC`][`<boost/config.hpp>`][
+Defined to the value of __CODEGEARC__ if the compiler is the Embarcadero
+clang based compiler.
+]]
 [[`BOOST_WINDOWS`][`<boost/config.hpp>`][
 Defined if the Windows platform API is available.
 ]]
@@ -1374,6 +1423,11 @@ library in use. Mainly for debugging the configuration.
 [[`BOOST_PLATFORM`][`<boost/config.hpp>`][
 Defined as a string describing the name of the platform. Mainly for debugging
 the configuration.
+]]
+[[`BOOST_LIBSTDCXX_VERSION`][`<boost/config.hpp>`][
+Defined if the libstdc++ standard library is in use.
+Has the value of normalised 5 digit integer of the form VVMMM where
+VV is the major version number, MM is the minor version number.
 ]]
 ]
 

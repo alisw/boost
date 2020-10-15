@@ -41,7 +41,7 @@ async_echo (AsyncStream& stream, DynamicBuffer& buffer, CompletionToken&& token)
     This function is used to asynchronously read a line ending
     in a newline (`"\n"`) from the stream, and then write
     it back.
-    
+
     This call always returns immediately. The asynchronous operation
     will continue until one of the following conditions is true:
 
@@ -76,7 +76,7 @@ async_echo (AsyncStream& stream, DynamicBuffer& buffer, CompletionToken&& token)
         beast::error_code error      // Result of operation.
     );
     @endcode
-    
+
     Regardless of whether the asynchronous operation completes immediately or
     not, the handler will not be invoked from within this function. Invocation
     of the handler will be performed in a manner equivalent to using
@@ -161,10 +161,10 @@ async_echo(
 
     // This nested class implements the echo composed operation as a
     // stateful completion handler. We derive from `async_base` to
-    // take care of boilerplate and we derived from net::coroutine to
+    // take care of boilerplate and we derived from asio::coroutine to
     // allow the reenter and yield keywords to work.
 
-    struct echo_op : base_type, net::coroutine
+    struct echo_op : base_type, boost::asio::coroutine
     {
         AsyncStream& stream_;
         DynamicBuffer& buffer_;
@@ -332,6 +332,7 @@ async_echo(
 
 struct move_only_handler
 {
+    move_only_handler() = default;
     move_only_handler(move_only_handler&&) = default;
     move_only_handler(move_only_handler const&) = delete;
 
@@ -354,8 +355,8 @@ int main(int argc, char** argv)
     }
 
     namespace net = boost::asio;
-    auto const address{net::ip::make_address(argv[1])};
-    auto const port{static_cast<unsigned short>(std::atoi(argv[2]))};
+    auto const address = net::ip::make_address(argv[1]);
+    auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
 
     using endpoint_type = net::ip::tcp::endpoint;
 
@@ -363,7 +364,7 @@ int main(int argc, char** argv)
     // the echo, and then shut everything down and exit.
     net::io_context ioc;
     net::ip::tcp::acceptor acceptor{ioc};
-    endpoint_type ep{address, port};
+    endpoint_type ep(address, port);
     acceptor.open(ep.protocol());
     acceptor.set_option(net::socket_base::reuse_address(true));
     acceptor.bind(ep);

@@ -12,7 +12,6 @@
 #include <boost/core/addressof.hpp>
 #include <boost/core/checked_delete.hpp>
 #include <boost/core/demangle.hpp>
-#include <boost/detail/iterator.hpp>
 #include <boost/core/enable_if.hpp>
 #include <boost/core/explicit_operator_bool.hpp>
 #include <boost/get_pointer.hpp>
@@ -24,7 +23,6 @@
 #include <boost/core/pointer_traits.hpp>
 #include <boost/ref.hpp>
 #include <boost/core/scoped_enum.hpp>
-#include <boost/detail/sp_typeinfo.hpp>
 #include <boost/core/typeinfo.hpp>
 #include <boost/core/underlying_type.hpp>
 #include <boost/visit_each.hpp>

@@ -452,6 +452,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#changelog">Revision History</a>
 <ul class="sectlevel2">
+<li><a href="#changes_in_1_74_0">Changes in 1.74.0</a></li>
+<li><a href="#changes_in_1_73_0">Changes in 1.73.0</a></li>
 <li><a href="#changes_in_1_70_0">Changes in 1.70.0</a></li>
 <li><a href="#changes_in_1_69_0">Changes in 1.69.0</a></li>
 </ul>
@@ -527,6 +529,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#mp_invoke_qq_t">mp_invoke_q&lt;Q, T&#8230;&#8203;&gt;</a></li>
 <li><a href="#mp_not_fnp">mp_not_fn&lt;P&gt;</a></li>
 <li><a href="#mp_not_fn_qq">mp_not_fn_q&lt;Q&gt;</a></li>
+<li><a href="#mp_composef">mp_compose&lt;F&#8230;&#8203;&gt;</a></li>
+<li><a href="#mp_compose_qq">mp_compose_q&lt;Q&#8230;&#8203;&gt;</a></li>
 </ul>
 </li>
 <li><a href="#algorithm">Algorithms, &lt;boost/mp11/algorithm.hpp&gt;</a>
@@ -547,6 +551,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#mp_repeatl_n">mp_repeat&lt;L, N&gt;</a></li>
 <li><a href="#mp_productf_l">mp_product&lt;F, L&#8230;&#8203;&gt;</a></li>
 <li><a href="#mp_product_qq_l">mp_product_q&lt;Q, L&#8230;&#8203;&gt;</a></li>
+<li><a href="#mp_power_setl">mp_power_set&lt;L&gt;</a></li>
 <li><a href="#mp_drop_cl_n">mp_drop_c&lt;L, N&gt;</a></li>
 <li><a href="#mp_dropl_n">mp_drop&lt;L, N&gt;</a></li>
 <li><a href="#mp_from_sequences">mp_from_sequence&lt;S&gt;</a></li>
@@ -567,11 +572,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#mp_replace_if_ql_q_w">mp_replace_if_q&lt;L, Q, W&gt;</a></li>
 <li><a href="#mp_replace_at_cl_i_w">mp_replace_at_c&lt;L, I, W&gt;</a></li>
 <li><a href="#mp_replace_atl_i_w">mp_replace_at&lt;L, I, W&gt;</a></li>
+<li><a href="#mp_rotate_left_cl_n">mp_rotate_left_c&lt;L, N&gt;</a></li>
+<li><a href="#mp_rotate_leftl_n">mp_rotate_left&lt;L, N&gt;</a></li>
+<li><a href="#mp_rotate_right_cl_n">mp_rotate_right_c&lt;L, N&gt;</a></li>
+<li><a href="#mp_rotate_rightl_n">mp_rotate_right&lt;L, N&gt;</a></li>
 <li><a href="#mp_copy_ifl_p">mp_copy_if&lt;L, P&gt;</a></li>
 <li><a href="#mp_copy_if_ql_q">mp_copy_if_q&lt;L, Q&gt;</a></li>
 <li><a href="#mp_removel_v">mp_remove&lt;L, V&gt;</a></li>
 <li><a href="#mp_remove_ifl_p">mp_remove_if&lt;L, P&gt;</a></li>
 <li><a href="#mp_remove_if_ql_q">mp_remove_if_q&lt;L, Q&gt;</a></li>
+<li><a href="#mp_flattenl">mp_flatten&lt;L&gt;</a></li>
 <li><a href="#mp_partitionl_p">mp_partition&lt;L, P&gt;</a></li>
 <li><a href="#mp_partition_ql_q">mp_partition_q&lt;L, Q&gt;</a></li>
 <li><a href="#mp_sortl_p">mp_sort&lt;L, P&gt;</a></li>
@@ -591,7 +601,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#mp_fold_ql_v_q">mp_fold_q&lt;L, V, Q&gt;</a></li>
 <li><a href="#mp_reverse_foldl_v_f">mp_reverse_fold&lt;L, V, F&gt;</a></li>
 <li><a href="#mp_reverse_fold_ql_v_q">mp_reverse_fold_q&lt;L, V, Q&gt;</a></li>
+<li><a href="#mp_partial_suml_v_f">mp_partial_sum&lt;L, V, F&gt;</a></li>
+<li><a href="#mp_partial_sum_ql_v_q">mp_partial_sum_q&lt;L, V, Q&gt;</a></li>
+<li><a href="#mp_iteratev_f_r">mp_iterate&lt;V, F, R&gt;</a></li>
+<li><a href="#mp_iterate_qv_qf_qr">mp_iterate_q&lt;V, Qf, Qr&gt;</a></li>
 <li><a href="#mp_uniquel">mp_unique&lt;L&gt;</a></li>
+<li><a href="#mp_unique_ifl_p">mp_unique_if&lt;L, P&gt;</a></li>
+<li><a href="#mp_unique_if_ql_q">mp_unique_if_q&lt;L, Q&gt;</a></li>
 <li><a href="#mp_all_ofl_p">mp_all_of&lt;L, P&gt;</a></li>
 <li><a href="#mp_all_of_ql_q">mp_all_of_q&lt;L, Q&gt;</a></li>
 <li><a href="#mp_none_ofl_p">mp_none_of&lt;L, P&gt;</a></li>
@@ -667,6 +683,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#tuple_applyf_tp">tuple_apply(f, tp)</a></li>
 <li><a href="#construct_from_tuplettp">construct_from_tuple&lt;T&gt;(tp)</a></li>
 <li><a href="#tuple_for_eachtp_f">tuple_for_each(tp, f)</a></li>
+<li><a href="#tuple_transformf_tp">tuple_transform(f, tp&#8230;&#8203;)</a></li>
 </ul>
 </li>
 <li><a href="#mp11">Convenience Header, &lt;boost/mp11.hpp&gt;</a></li>
@@ -1213,7 +1230,7 @@ template&lt;class... Tp,
 <div class="sect2">
 <h3 id="computing_return_types">Computing Return Types</h3>
 <div class="paragraph">
-<p>C++17 has a standard variant type, called <code>std::variant</code>. It also defines a function template
+<p>C&#43;&#43;17 has a standard variant type, called <code>std::variant</code>. It also defines a function template
 <code>std::visit</code> that can be used to apply a function to the contained value of one or more variants.
 So for instance, if the variant <code>v1</code> contains <code>1</code>, and the variant <code>v2</code> contains <code>2.0f</code>,
 <code>std::visit(f, v1, v2)</code> will call <code>f(1, 2.0f)</code>.</p>
@@ -1266,20 +1283,37 @@ calling <code>f</code> with all possible combinations of variant values.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>(Unfortunately, we can&#8217;t just define this metafunction inside <code>rvisit</code>; the language prohibits defining template aliases inside functions.)</p>
+<p>It turns out that C&#43;&#43;17 already contains a metafunction that returns the result of the application of a function <code>F</code> to arguments
+of type <code>T&#8230;&#8203;</code>: <code>std::invoke_result_t&lt;F, T&#8230;&#8203;&gt;</code>. We can make use of it to simplify our <code>Qret</code> to</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class F&gt; struct Qret
+{
+    template&lt;class... T&gt; using fn = std::invoke_result_t&lt;F, T...&gt;;
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which in Mp11 can be expressed more concisely as</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>using Qret = mp_bind_front&lt;std::invoke_result_t, F&gt;;</pre>
+</div>
 </div>
 <div class="paragraph">
 <p>With <code>Qret</code> in hand, a <code>variant</code> of the possible return types is just a matter of applying it over the possible combinations of the variant values:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>using R = mp_product_q&lt;Qret&lt;F&gt;, std::remove_reference_t&lt;V&gt;...&gt;;</pre>
+<pre>using R = mp_product_q&lt;Qret, remove_cv_ref&lt;V&gt;...&gt;;</pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Why does this work? <code>mp_product&lt;F, L1&lt;T1&#8230;&#8203;&gt;, L2&lt;T2&#8230;&#8203;&gt;, &#8230;&#8203;, Ln&lt;Tn&#8230;&#8203;&gt;&gt;</code> returns <code>L1&lt;F&lt;U1, U2, &#8230;&#8203;, Un&gt;, &#8230;&#8203;&gt;</code>, where <code>Ui</code> traverse all
 possible combinations of list values. Since in our case all <code>Li</code> are <code>std::variant</code>, the result will also be <code>std::variant</code>. (<code>mp_product_q</code> is
-the same as <code>mp_product</code>, but for quoted metafunctions such as our <code>Qret&lt;F&gt;</code>.)</p>
+the same as <code>mp_product</code>, but for quoted metafunctions such as our <code>Qret</code>.)</p>
 </div>
 <div class="paragraph">
 <p>One more step remains. Suppose that, as above, we&#8217;re passing two variants of type <code>std::variant&lt;short, int, float&gt;</code> and <code>F</code> is
@@ -1288,7 +1322,7 @@ elements will be the same, either <code>int</code> or <code>float</code>, and we
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>using R = mp_unique&lt;mp_product_q&lt;Qret&lt;F&gt;, std::remove_reference_t&lt;V&gt;...&gt;&gt;;</pre>
+<pre>using R = mp_unique&lt;mp_product_q&lt;Qret, remove_cv_ref&lt;V&gt;...&gt;&gt;;</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1305,15 +1339,14 @@ elements will be the same, either <code>int</code> or <code>float</code>, and we
 
 using namespace boost::mp11;
 
-template&lt;class F&gt; struct Qret
-{
-    template&lt;class... T&gt; using fn =
-        decltype( std::declval&lt;F&gt;()( std::declval&lt;T&gt;()... ) );
-};
+template&lt;class T&gt; using remove_cv_ref = typename std::remove_cv&lt;
+    typename std::remove_reference&lt;T&gt;::type&gt;::type;
 
 template&lt;class F, class... V&gt; auto rvisit( F&amp;&amp; f, V&amp;&amp;... v )
 {
-    using R = mp_unique&lt;mp_product_q&lt;Qret&lt;F&gt;, std::remove_reference_t&lt;V&gt;...&gt;&gt;;
+    using Qret = mp_bind_front&lt;std::invoke_result_t, F&gt;;
+
+    using R = mp_unique&lt;mp_product_q&lt;Qret, remove_cv_ref&lt;V&gt;...&gt;&gt;;
 
     return std::visit( [&amp;]( auto&amp;&amp;... x )
         { return R( std::forward&lt;F&gt;(f)( std::forward&lt;decltype(x)&gt;(x)... ) ); },
@@ -1339,7 +1372,7 @@ int main()
 
     print_variant( "v1", v1 );
 
-    std::variant&lt;short, int, double&gt; v2( 3.14 );
+    std::variant&lt;short, int, double&gt; const v2( 3.14 );
 
     print_variant( "v2", v2 );
 
@@ -1355,6 +1388,47 @@ int main()
 <div class="sect1">
 <h2 id="changelog">Revision History</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="changes_in_1_74_0">Changes in 1.74.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Improved compilation performance of <code>mp_with_index&lt;N&gt;</code> for large <code>N</code></p>
+</li>
+<li>
+<p>Added <code>tuple_transform</code> (contributed by Hans Dembinski)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="changes_in_1_73_0">Changes in 1.73.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Added <code>mp_unique_if</code> (contributed by Kris Jusiak)</p>
+</li>
+<li>
+<p>Added <code>mp_flatten</code></p>
+</li>
+<li>
+<p>Added <code>mp_rotate_left</code>, <code>mp_rotate_right</code> (contributed by Duncan Barber)</p>
+</li>
+<li>
+<p>Added <code>mp_compose</code></p>
+</li>
+<li>
+<p>Added <code>mp_power_set</code></p>
+</li>
+<li>
+<p>Added <code>mp_partial_sum</code></p>
+</li>
+<li>
+<p>Added <code>mp_iterate</code></p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="changes_in_1_70_0">Changes in 1.70.0</h3>
 <div class="ulist">
@@ -2247,7 +2321,7 @@ is to avoid evaluating <code>F&lt;U&#8230;&#8203;&gt;</code> when the condition 
 <div class="title">Code Example 42. Using mp_eval_if_c to select the first pack element, or void</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class... T&gt; using first_or_void =
-    mp_eval_if_c&lt;sizeof...(T) == 0, void, mp_apply, mp_first, mp_list&lt;T...&gt;&gt;;</code></pre>
+    mp_eval_if_c&lt;sizeof...(T) == 0, void, mp_first, mp_list&lt;T...&gt;&gt;;</code></pre>
 </div>
 </div>
 </div>
@@ -2346,6 +2420,13 @@ template&lt;class T&gt; struct has_nested_type: mp_valid&lt;get_nested_type, T&g
 <div class="paragraph">
 <p><code>mp_eval_or&lt;T, F, U&#8230;&#8203;&gt;</code> is an alias for <code>F&lt;U&#8230;&#8203;&gt;</code> when this expression is valid, for <code>T</code> otherwise.</p>
 </div>
+<div class="listingblock">
+<div class="title">Code Example 45. Using mp_eval_or to select the first pack element, or void</div>
+<div class="content">
+<pre class="highlight"><code>template&lt;class... T&gt; using first_or_void =
+    mp_eval_or&lt;void, mp_first, mp_list&lt;T...&gt;&gt;;</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="mp_eval_or_qt_q_u">mp_eval_or_q&lt;T, Q, U&#8230;&#8203;&gt;</h4>
@@ -2375,7 +2456,7 @@ When <code>static_cast&lt;bool&gt;(C::value)</code> is <code>false</code>, it&#8
 failure.)</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 45. Using mp_cond</div>
+<div class="title">Code Example 46. Using mp_cond</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;int N&gt; using unsigned_ = mp_cond&lt;
     mp_bool&lt;N ==  8&gt;, uint8_t,
@@ -2413,7 +2494,7 @@ failure.)</p>
 <p><code>mp_quote&lt;F&gt;</code> transforms the template <code>F</code> into a <em>quoted metafunction</em>, a type with a nested template <code>fn</code> such that <code>fn&lt;T&#8230;&#8203;&gt;</code> returns <code>F&lt;T&#8230;&#8203;&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 46. Using mp_quote to make a list of metafunctions</div>
+<div class="title">Code Example 47. Using mp_quote to make a list of metafunctions</div>
 <div class="content">
 <pre class="highlight"><code>using LQ = mp_list&lt;mp_quote&lt;std::is_const&gt;, mp_quote&lt;std::is_volatile&gt;&gt;;</code></pre>
 </div>
@@ -2433,7 +2514,7 @@ failure.)</p>
 <p><code>mp_quote_trait&lt;F&gt;</code> transforms the C++03-style trait <code>F</code> into a quoted metafunction.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 47. Using mp_quote_trait with std::add_pointer</div>
+<div class="title">Code Example 48. Using mp_quote_trait with std::add_pointer</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = mp_list&lt;int, void, float&gt;;
 using R1 = mp_transform_q&lt;mp_quote_trait&lt;std::add_pointer&gt;, L1&gt;;
@@ -2452,26 +2533,26 @@ using R1 = mp_transform_q&lt;mp_quote_trait&lt;std::add_pointer&gt;, L1&gt;;
 <p><code>mp_invoke_q&lt;Q, T&#8230;&#8203;&gt;</code> evaluates the nested template <code>fn</code> of a quoted metafunction. <code>mp_invoke_q&lt;mp_quote&lt;F&gt;, T&#8230;&#8203;&gt;</code> returns <code>F&lt;T&#8230;&#8203;&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 48. Using mp_invoke_q to invoke a list of metafunctions, technique 1</div>
+<div class="title">Code Example 49. Using mp_invoke_q to invoke a list of metafunctions, technique 1</div>
 <div class="content">
 <pre class="highlight"><code>using LQ = mp_list&lt;mp_quote&lt;std::is_const&gt;, mp_quote&lt;std::is_volatile&gt;&gt;;
 
 template&lt;class T&gt; using is_const_and_volatile =
-    mp_all&lt;mp_product&lt;mp_invoke_q, LQ, mp_list&lt;T&gt;&gt;&gt;;</code></pre>
+    mp_apply&lt;mp_all, mp_product&lt;mp_invoke_q, LQ, mp_list&lt;T&gt;&gt;&gt;;</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 49. Using mp_invoke_q to invoke a list of metafunctions, technique 2</div>
+<div class="title">Code Example 50. Using mp_invoke_q to invoke a list of metafunctions, technique 2</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt; using is_const_and_volatile =
-    mp_all&lt;mp_transform_q&lt;mp_bind_back&lt;mp_invoke_q, T&gt;, LQ&gt;&gt;;</code></pre>
+    mp_apply&lt;mp_all, mp_transform_q&lt;mp_bind_back&lt;mp_invoke_q, T&gt;, LQ&gt;&gt;;</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 50. Using mp_invoke_q to invoke a list of metafunctions, technique 3</div>
+<div class="title">Code Example 51. Using mp_invoke_q to invoke a list of metafunctions, technique 3</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt; using is_const_and_volatile =
-    mp_all&lt;mp_transform&lt;mp_invoke_q, LQ, mp_fill&lt;LQ, T&gt;&gt;&gt;;</code></pre>
+    mp_apply&lt;mp_all, mp_transform&lt;mp_invoke_q, LQ, mp_fill&lt;LQ, T&gt;&gt;&gt;;</code></pre>
 </div>
 </div>
 </div>
@@ -2503,6 +2584,30 @@ template&lt;class T&gt; using is_const_and_volatile =
 <p>As <code>mp_not_fn</code>, but takes a quoted metafunction.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="mp_composef">mp_compose&lt;F&#8230;&#8203;&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;template&lt;class...&gt; class... F&gt; struct mp_compose;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>mp_compose&lt;F1, F2, &#8230;&#8203;, Fn&gt;</code> is a quoted metafunction that applies
+<code>F1</code>, <code>F2</code>, &#8230;&#8203;, <code>Fn</code> to its argument, in sequence. That is,
+<code>mp_compose&lt;F1, F2, &#8230;&#8203;, Fn&gt;::fn&lt;T&gt;</code> is <code>Fn&lt;&#8230;&#8203;F2&lt;F1&lt;T&gt;&gt;&#8230;&#8203;&gt;</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_compose_qq">mp_compose_q&lt;Q&#8230;&#8203;&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class... Q&gt; struct mp_compose_q;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As <code>mp_compose</code>, but takes quoted metafunctions.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="algorithm">Algorithms, &lt;boost/mp11/algorithm.hpp&gt;</h3>
@@ -2517,7 +2622,7 @@ template&lt;class T&gt; using is_const_and_volatile =
 <p><code>mp_transform&lt;F, L1&lt;T1&#8230;&#8203;&gt;, L2&lt;T2&#8230;&#8203;&gt;, &#8230;&#8203;, Ln&lt;Tn&#8230;&#8203;&gt;&gt;</code> applies <code>F</code> to each successive tuple of elements and returns <code>L1&lt;F&lt;T1, T2, &#8230;&#8203;, Tn&gt;&#8230;&#8203;&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 51. Using mp_transform to produce a list of pointers from a list of pointees</div>
+<div class="title">Code Example 52. Using mp_transform to produce a list of pointers from a list of pointees</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class T&gt; using add_pointer_t =
     typename std::add_pointer&lt;T&gt;::type;  // std::add_pointer_t in C++14
@@ -2527,23 +2632,23 @@ using R1 = mp_transform&lt;add_pointer_t, L1&gt;; // std::tuple&lt;void*, int*, 
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 52. Using mp_transform to compare the contents of two lists of types</div>
+<div class="title">Code Example 53. Using mp_transform to compare the contents of two lists of types</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::tuple&lt;void, int, float&gt;;
 using L2 = mp_list&lt;void, int, float&gt;;
 
-using R1 = mp_all&lt;mp_transform&lt;std::is_same, L1, L2&gt;&gt;; // mp_true</code></pre>
+using R1 = mp_apply&lt;mp_all, mp_transform&lt;std::is_same, L1, L2&gt;&gt;; // mp_true</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 53. Using mp_transform to compare the contents of two lists of integral constants</div>
+<div class="title">Code Example 54. Using mp_transform to compare the contents of two lists of integral constants</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class T1, class T2&gt; using eq = mp_bool&lt;T1::value == T2::value&gt;;
 
 using L1 = std::tuple&lt;mp_int&lt;1&gt;, mp_int&lt;2&gt;, mp_int&lt;3&gt;&gt;;
 using L2 = mp_list&lt;mp_size_t&lt;1&gt;, mp_size_t&lt;2&gt;, mp_size_t&lt;3&gt;&gt;;
 
-using R1 = mp_all&lt;mp_transform&lt;eq, L1, L2&gt;&gt;; // mp_true</code></pre>
+using R1 = mp_apply&lt;mp_all, mp_transform&lt;eq, L1, L2&gt;&gt;; // mp_true</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 85%;">
@@ -2627,7 +2732,7 @@ using R1 = mp_all&lt;mp_transform&lt;eq, L1, L2&gt;&gt;; // mp_true</code></pre>
 <p>As <code>mp_transform</code>, but takes a quoted metafunction.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 54. Using mp_transform_q to count the occurrences of <code>void</code> in a list</div>
+<div class="title">Code Example 55. Using mp_transform_q to count the occurrences of <code>void</code> in a list</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::tuple&lt;void, int, float, void, int&gt;;
 
@@ -2688,7 +2793,7 @@ using R1 = mp_apply&lt;mp_plus,
 <code>F&lt;T1, T2, &#8230;&#8203;, Tn&gt;</code>, and returns the result, where <code>Ti</code> are the corresponding elements of <code>Li</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 55. Using mp_transform_if to replace the occurrences of 'void' in a list with the corresponding elements of a second list</div>
+<div class="title">Code Example 56. Using mp_transform_if to replace the occurrences of 'void' in a list with the corresponding elements of a second list</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::tuple&lt;void, int, float, void, int&gt;;
 using L2 = std::tuple&lt;char[1], char[2], char[3], char[4], char[5]&gt;;
@@ -2762,7 +2867,7 @@ using R1 = mp_transform_if&lt;first_is_void, second, L1, L2&gt;;
 <p>As <code>mp_transform_if</code>, but takes quoted metafunctions.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 56. Using mp_transform_if_q to replace the occurrences of 'void' in a list with the corresponding elements of a second list</div>
+<div class="title">Code Example 57. Using mp_transform_if_q to replace the occurrences of 'void' in a list with the corresponding elements of a second list</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::tuple&lt;void, int, float, void, int&gt;;
 using L2 = std::tuple&lt;char[1], char[2], char[3], char[4], char[5]&gt;;
@@ -2848,7 +2953,7 @@ is <code>mp_false</code> and returns the result, where <code>Ti</code> are the c
 <p>As <code>mp_filter</code>, but takes a quoted metafunction.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 57. Using mp_filter_q to pick elements of a list based on a mask in another list</div>
+<div class="title">Code Example 58. Using mp_filter_q to pick elements of a list based on a mask in another list</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::tuple&lt;void, int, float&gt;;
 using L2 = mp_list&lt;mp_true, mp_false, mp_true&gt;;
@@ -2867,14 +2972,14 @@ using R1 = mp_filter_q&lt;_2, L1, L2&gt;; // std::tuple&lt;void, float&gt;</code
 <p><code>mp_fill&lt;L&lt;T&#8230;&#8203;&gt;, V&gt;</code> returns <code>L&lt;V, V, &#8230;&#8203;, V&gt;</code>, with the result having the same size as the input.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 58. Using mp_fill with std::tuple</div>
+<div class="title">Code Example 59. Using mp_fill with std::tuple</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::tuple&lt;void, int, float&gt;;
 using R1 = mp_fill&lt;L1, double&gt;; // std::tuple&lt;double, double, double&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 59. Using mp_fill with std::pair</div>
+<div class="title">Code Example 60. Using mp_fill with std::pair</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = std::pair&lt;int, float&gt;;
 using R1 = mp_fill&lt;L1, void&gt;; // std::pair&lt;void, void&gt;</code></pre>
@@ -2977,7 +3082,7 @@ otherwise.</p>
 <p><code>mp_repeat_c&lt;L, N&gt;</code> returns a list of the same form as <code>L</code> that consists of <code>N</code> concatenated copies of <code>L</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 60. Using mp_repeat_c</div>
+<div class="title">Code Example 61. Using mp_repeat_c</div>
 <div class="content">
 <pre class="highlight"><code>using L1 = tuple&lt;int&gt;;
 using R1 = mp_repeat_c&lt;L1, 3&gt;; // tuple&lt;int, int, int&gt;
@@ -3014,7 +3119,8 @@ using R4 = mp_repeat_c&lt;L4, 0&gt;; // mp_list&lt;&gt;</code></pre>
 <div class="paragraph">
 <p><code>mp_product&lt;F, L1&lt;T1&#8230;&#8203;&gt;, L2&lt;T2&#8230;&#8203;&gt;, &#8230;&#8203;, Ln&lt;Tn&#8230;&#8203;&gt;&gt;</code> evaluates <code>F&lt;U1, U2, &#8230;&#8203;, Un&gt;</code> for values <code>Ui</code> taken from
 the Cartesian product of the lists, as if the elements <code>Ui</code> are formed by <code>n</code> nested loops, each traversing <code>Li</code>.
-It returns a list of the form <code>L1&lt;V&#8230;&#8203;&gt;</code> containing the results of the application of <code>F</code>.</p>
+It returns a list of the form <code>L1&lt;V&#8230;&#8203;&gt;</code> containing the results of the application of <code>F</code>. The degenerate case
+of zero lists, <code>mp_product&lt;F&gt;</code>, returns <code>mp_list&lt;F&lt;&gt;&gt;</code>.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 85%;">
 <caption class="title">Illustration 7. mp_product on two lists</caption>
@@ -3083,6 +3189,29 @@ It returns a list of the form <code>L1&lt;V&#8230;&#8203;&gt;</code> containing 
 </div>
 <div class="paragraph">
 <p>As <code>mp_product</code>, but takes a quoted metafunction.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_power_setl">mp_power_set&lt;L&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L&gt; using mp_power_set = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>mp_power_set&lt;L&gt;</code> returns a list (of the same form as <code>L</code>) of all possible 2<sup>n</sup> subsets of <code>L</code> (where <code>n</code> is the length of <code>L</code>.)</p>
+</div>
+<div class="paragraph">
+<p><code>mp_power_set&lt;L&lt;&gt;&gt;</code> returns <code>L&lt;L&lt;&gt;&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>mp_power_set&lt;L&lt;T1&gt;&gt;</code> returns <code>L&lt;L&lt;&gt;, L&lt;T1&gt;&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>mp_power_set&lt;L&lt;T1, T2&gt;&gt;</code> returns <code>L&lt;L&lt;&gt;, L&lt;T2&gt;, L&lt;T1&gt;, L&lt;T1, T2&gt;&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>mp_power_set&lt;L&lt;T1, T&#8230;&#8203;&gt;&gt;</code> returns the concatenation of <code>mp_power_set&lt;L&lt;T&#8230;&#8203;&gt;&gt;</code> and that same list with <code>T1</code> prepended to each element.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3557,6 +3686,52 @@ where <code>T</code> is the type of <code>N::value</code>.</p>
 </div>
 </div>
 <div class="sect3">
+<h4 id="mp_rotate_left_cl_n">mp_rotate_left_c&lt;L, N&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, std::size_t N&gt; using mp_rotate_left_c = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moves the <code>N % M</code> initial elements of the list <code>L</code> to the back, where <code>M</code> is the size of <code>L</code>. Empty
+lists are unchanged.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_rotate_leftl_n">mp_rotate_left&lt;L, N&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class N&gt; using mp_rotate_left = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Same as <code>mp_rotate_left_c</code>, but with a type argument <code>N</code>. <code>N::value</code> must be a nonnegative number.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_rotate_right_cl_n">mp_rotate_right_c&lt;L, N&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, std::size_t N&gt; using mp_rotate_right_c = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Moves the <code>N % M</code> trailing elements of the list <code>L</code> to the front, where <code>M</code> is the size of <code>L</code>. Empty
+lists are unchanged.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_rotate_rightl_n">mp_rotate_right&lt;L, N&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class N&gt; using mp_rotate_right = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Same as <code>mp_rotate_right_c</code>, but with a type argument <code>N</code>. <code>N::value</code> must be a nonnegative number.</p>
+</div>
+</div>
+<div class="sect3">
 <h4 id="mp_copy_ifl_p">mp_copy_if&lt;L, P&gt;</h4>
 <div class="literalblock">
 <div class="content">
@@ -3612,6 +3787,32 @@ where <code>T</code> is the type of <code>N::value</code>.</p>
 </div>
 </div>
 <div class="sect3">
+<h4 id="mp_flattenl">mp_flatten&lt;L&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class L2 = mp_clear&lt;L&gt;&gt; using mp_flatten = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replaces all elements <code>T</code> of <code>L</code> that are lists of the same form as <code>L2</code> (that is, those for which
+<code>mp_similar&lt;T, L2&gt;</code> is <code>mp_true</code>) with their elements and returns the result.</p>
+</div>
+<div class="listingblock">
+<div class="title">Code Example 62. Using mp_flatten</div>
+<div class="content">
+<pre class="highlight"><code>using L1 = tuple&lt;int, tuple&lt;&gt;, void, tuple&lt;float, double&gt;&gt;;
+using R1 = mp_flatten&lt;L1&gt;; // tuple&lt;int, void, float, double&gt;
+
+using L2 = mp_list&lt;int, mp_list&lt;float&gt;, tuple&lt;void&gt;&gt;;
+using R2a = mp_flatten&lt;L2&gt;; // mp_list&lt;int, float, tuple&lt;void&gt;&gt;
+using R2b = mp_flatten&lt;L2, tuple&lt;&gt;&gt;; // mp_list&lt;int, mp_list&lt;float&gt;, void&gt;
+
+using L3 = mp_list&lt;mp_list&lt;float&gt;, mp_list&lt;mp_list&lt;void&gt;&gt;&gt;;
+using R3 = mp_flatten&lt;L3&gt;; // mp_list&lt;float, mp_list&lt;void&gt;&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="mp_partitionl_p">mp_partition&lt;L, P&gt;</h4>
 <div class="literalblock">
 <div class="content">
@@ -3645,7 +3846,7 @@ for the elements of <code>L&lt;U1&#8230;&#8203;&gt;</code> and <code>mp_false</c
 <p><code>mp_sort&lt;L, P&gt;</code> sorts the list <code>L</code> according to the strict weak ordering <code>mp_to_bool&lt;P&lt;T, U&gt;&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 61. Using mp_sort to sort a list of std::ratio values</div>
+<div class="title">Code Example 63. Using mp_sort to sort a list of std::ratio values</div>
 <div class="content">
 <pre>#include &lt;ratio&gt;
 
@@ -3837,7 +4038,7 @@ is <code>mp_size&lt;L&gt;</code>.</p>
 <p><code>mp_fold&lt;L&lt;T1, T2, &#8230;&#8203;, Tn&gt;, V, F&gt;</code> is <code>F&lt; F&lt; F&lt; F&lt;V, T1&gt;, T2&gt;, &#8230;&#8203;&gt;, Tn&gt;</code>, or <code>V</code>, if <code>L</code> is empty.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 62. Using mp_fold to add the contents of a list of std::ratio values</div>
+<div class="title">Code Example 64. Using mp_fold to add the contents of a list of std::ratio values</div>
 <div class="content">
 <pre>#include &lt;ratio&gt;
 
@@ -3883,6 +4084,116 @@ using R1 = mp_fold&lt;L1, std::ratio&lt;0,1&gt;, std::ratio_add&gt;; // std::rat
 </div>
 </div>
 <div class="sect3">
+<h4 id="mp_partial_suml_v_f">mp_partial_sum&lt;L, V, F&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class V, template&lt;class...&gt; class F&gt; using mp_partial_sum = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>mp_partial_sum&lt;L, V, F&gt;</code> is similar to <code>mp_fold&lt;L, V, F&gt;</code>, but instead of its final result, it returns
+a list (of the same form as <code>L</code>) holding the intermediate results of the fold. The last element of the
+result of <code>mp_partial_sum</code> is the same as the result of <code>mp_fold</code>.</p>
+</div>
+<div class="paragraph">
+<p>For example, <code>mp_fold&lt;mp_list&lt;X1, X2, X3&gt;, V, F&gt;</code> is <code>F&lt;F&lt;F&lt;V, X1&gt;, X2&gt;, X3&gt;</code>, but
+<code>mp_partial_sum&lt;mp_list&lt;X1, X2, X3&gt;, V, F&gt;</code> is <code>mp_list&lt;F&lt;V, X1&gt;, F&lt;F&lt;V, X1&gt;, X2&gt;, F&lt;F&lt;F&lt;V, X1&gt;, X2&gt;, X3&gt;&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s common for <code>F</code> to be <code>mp_plus</code>, in which case the result contains the partial sums of <code>L</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Code Example 65. Using mp_partial_sum</div>
+<div class="content">
+<pre>using L1 = mp_list_c&lt;int, 1, 2, 3, 4&gt;;
+using R1 = mp_partial_sum&lt;L1, mp_int&lt;0&gt;, mp_plus&gt;; // mp_list_c&lt;int, 1, 3, 6, 10&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_partial_sum_ql_v_q">mp_partial_sum_q&lt;L, V, Q&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class V, class Q&gt; using mp_partial_sum_q =
+    mp_partial_sum&lt;L, V, Q::template fn&gt;;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As <code>mp_partial_sum</code>, but takes a quoted metafunction.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_iteratev_f_r">mp_iterate&lt;V, F, R&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class V, template&lt;class...&gt; class F, template&lt;class...&gt; class R&gt;
+    using mp_iterate = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>mp_iterate&lt;V, F, R&gt;</code> applies <code>R</code> to <code>V</code> successively until that&#8217;s no longer possible,
+yielding the sequence <code>V</code>, <code>R&lt;V&gt;</code>, <code>R&lt;R&lt;V&gt;&gt;</code>, <code>R&lt;R&lt;R&lt;V&gt;&gt;&gt;</code>&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>It then returns an <code>mp_list</code> whose elements are formed by applying <code>F</code> to the above
+sequence of values. That is, it returns <code>mp_list&lt;F&lt;V&gt;, F&lt;R&lt;V&gt;&gt;, F&lt;R&lt;R&lt;V&gt;&gt;&gt;, &#8230;&#8203;&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>mp_iterate</code> is in a way the reverse operation of <code>mp_reverse_fold</code>. Given</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class T, class U&gt; struct cons {};
+struct nil {};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>mp_reverse_fold&lt;mp_list&lt;X1, X2, X3&gt;, nil, cons&gt;</code> produces <code>cons&lt;X1, cons&lt;X2, cons&lt;X3, nil&gt;&gt;&gt;</code>,
+which when passed as <code>V</code> to <code>mp_iterate&lt;V, mp_first, mp_second&gt;</code> recovers the original
+<code>mp_list&lt;X1, X2, X3&gt;</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Code Example 66. Using mp_iterate</div>
+<div class="content">
+<pre>struct X1 {};
+struct X2 {};
+struct X3 {};
+
+using L1 = mp_list&lt;X1, X2, X3&gt;;
+using R1 = mp_iterate&lt;L1, mp_first, mp_rest&gt;; // L1
+
+template&lt;class T, class U&gt; struct cons {};
+struct nil {};
+
+using V2 = mp_reverse_fold&lt;L1, nil, cons&gt;; // cons&lt;X1, cons&lt;X2, cons&lt;X3, nil&gt;&gt;&gt;
+using R2 = mp_iterate&lt;V2, mp_first, mp_second&gt;; // L1
+
+struct Y1 {};
+struct Y2 { using value_type = double; using next_type = Y1; };
+struct Y3 { using value_type = float; using next_type = Y2; };
+struct Y4 { using value_type = int; using next_type = Y3; };
+
+template&lt;class T&gt; using value_type = typename T::value_type;
+template&lt;class T&gt; using next_type = typename T::next_type;
+
+using R3 = mp_iterate&lt;Y4, mp_identity_t, next_type&gt;; // mp_list&lt;Y4, Y3, Y2, Y1&gt;
+using R4 = mp_iterate&lt;Y4, value_type, next_type&gt;; // mp_list&lt;int, float, double&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_iterate_qv_qf_qr">mp_iterate_q&lt;V, Qf, Qr&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class V, class Qf, class Qr&gt; using mp_iterate_q =
+    mp_iterate&lt;V, Qf::template fn, Qr::template fn&gt;;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As <code>mp_iterate</code>, but takes quoted metafunctions.</p>
+</div>
+</div>
+<div class="sect3">
 <h4 id="mp_uniquel">mp_unique&lt;L&gt;</h4>
 <div class="literalblock">
 <div class="content">
@@ -3891,6 +4202,29 @@ using R1 = mp_fold&lt;L1, std::ratio&lt;0,1&gt;, std::ratio_add&gt;; // std::rat
 </div>
 <div class="paragraph">
 <p><code>mp_unique&lt;L&gt;</code> returns a list of the same form as <code>L</code> with the duplicate elements removed.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_unique_ifl_p">mp_unique_if&lt;L, P&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, template&lt;class...&gt; class P&gt; using mp_unique_if = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As <code>mp_unique</code>, but two elements <code>T</code> and <code>U</code> are considered duplicates when <code>mp_to_bool&lt;P&lt;T, U&gt;&gt;</code> is <code>mp_true</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_unique_if_ql_q">mp_unique_if_q&lt;L, Q&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class Q&gt; using mp_unique_if_q =
+    mp_unique_if&lt;L, Q::template fn&gt;;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As <code>mp_unique_if</code>, but takes a quoted metafunction.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3976,7 +4310,7 @@ using R1 = mp_fold&lt;L1, std::ratio&lt;0,1&gt;, std::ratio_add&gt;; // std::rat
 <p>Returns <code>std::forward&lt;F&gt;(f)</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 63. Using mp_for_each and a C++14 lambda to print a tuple</div>
+<div class="title">Code Example 67. Using mp_for_each and a C++14 lambda to print a tuple</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class... T&gt; void print( std::tuple&lt;T...&gt; const &amp; tp )
 {
@@ -4017,13 +4351,13 @@ Only <code>constexpr</code> on C++14 and higher.</p>
 <p>Returns <code>mp_with_index&lt;N::value&gt;(i, f)</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 64. Using mp_with_index and a C++14 lambda to print the active element of a variant</div>
+<div class="title">Code Example 68. Using mp_with_index and a C++14 lambda to print the active element of a variant</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class... T&gt; void print( std::variant&lt;T...&gt; const&amp; v )
 {
     mp_with_index&lt;sizeof...(T)&gt;( v.index(), [&amp;]( auto I ) {
 
-        // I is mp_size_t&lt;v.index()&gt; here
+        // I is mp_size_t&lt;v.index()&gt;{} here
 
         std::cout &lt;&lt; std::get&lt;I&gt;( v ) &lt;&lt; std::endl;
 
@@ -4194,7 +4528,7 @@ replaces the existing element with <code>T</code>.</p>
 replaces the existing element <code>L&lt;X, Y&#8230;&#8203;&gt;</code> with <code>L&lt;X, F&lt;X, Y&#8230;&#8203;&gt;&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 65. Using mp_map_update to count the number of occurrences of types in a list</div>
+<div class="title">Code Example 69. Using mp_map_update to count the number of occurrences of types in a list</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class T, class U&gt; using inc2nd = mp_int&lt;U::value + 1&gt;;
 
@@ -4269,7 +4603,7 @@ returns <code>mp_false</code>. If the application causes a substitution failure,
 returns <code>mp_true</code>. <code>mp_and&lt;&gt;</code> is <code>mp_true</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 66. mp_and behavior</div>
+<div class="title">Code Example 70. mp_and behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_and&lt;mp_true, mp_true&gt;;   // mp_true
 
@@ -4295,7 +4629,7 @@ is an error because <code>void</code> does not have a nested <code>value</code>.
 mask substitution failures as <code>mp_and</code> does.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 67. mp_all behavior</div>
+<div class="title">Code Example 71. mp_all behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_all&lt;mp_true, mp_true&gt;;   // mp_true
 
@@ -4319,7 +4653,7 @@ using R4 = mp_all&lt;void, mp_true&gt;;      // compile-time error</code></pre>
 returns <code>mp_true</code>. If all results are <code>mp_false</code>, returns <code>mp_false</code>. <code>mp_or&lt;&gt;</code> is <code>mp_false</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 68. mp_or behavior</div>
+<div class="title">Code Example 72. mp_or behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_or&lt;mp_true, mp_false&gt;;   // mp_true
 
@@ -4343,7 +4677,7 @@ using R4 = mp_or&lt;void, mp_true&gt;;       // compile-time error</code></pre>
 <code>mp_or</code>, but does not perform short-circuit evaluation.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 69. mp_any behavior</div>
+<div class="title">Code Example 73. mp_any behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_any&lt;mp_true, mp_false&gt;;  // mp_true
 
@@ -4378,7 +4712,7 @@ using R4 = mp_any&lt;void, mp_true&gt;;      // compile-time error</code></pre>
 whose parameters are all types, <code>mp_false</code> otherwise. <code>mp_similar&lt;&gt;</code> is <code>mp_true</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 70. mp_similar</div>
+<div class="title">Code Example 74. mp_similar</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_similar&lt;void&gt;;                        // mp_true
 using R2 = mp_similar&lt;void, void&gt;;                  // mp_true
@@ -4650,11 +4984,36 @@ The name of the function doesn&#8217;t match the C&#43;&#43;17 one to avoid ambi
 </div>
 </div>
 <div class="paragraph">
-<p><code>tuple_for_each(tp, f)</code> applies the function object <code>f</code> to each element of <code>tp</code> by evaluating the
+<p><code>tuple_for_each(tp, f)</code> applies the function object <code>f</code> to each element of <code>tp</code> in order by evaluating the
 expression <code>f(std::get&lt;J&gt;(std::forward&lt;Tp&gt;(tp)))</code> for <code>J</code> in 0..<code>N-1</code>, where <code>N</code> is <code>std::tuple_size&lt;typename std::remove_reference&lt;Tp&gt;::type&gt;::value</code>.</p>
 </div>
 <div class="paragraph">
 <p>Returns <code>std::forward&lt;F&gt;(f)</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="tuple_transformf_tp">tuple_transform(f, tp&#8230;&#8203;)</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class F, class... Tp&gt; constexpr /*...*/ tuple_transform(F const&amp; f, Tp&amp;&amp;... tp);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>tuple_transform(f, tp&#8230;&#8203;)</code> accepts a function object <code>f</code> followed by one or more tuples of equal length
+(<code>std::tuple</code>, <code>std::pair</code> and <code>std::array</code> are considered tuples.)</p>
+</div>
+<div class="paragraph">
+<p>The callable <code>f</code> must accept as many arguments as there are tuples. The function object is called with the
+first elements of each tuple, with the second elements of each tuple, and so on, as if by evaluating
+the expression <code>f(std::get&lt;J&gt;(std::forward&lt;Tp&gt;(tp))&#8230;&#8203;)</code> for <code>J</code> in 0..<code>N-1</code>, where <code>N</code> is the length of
+the tuples.</p>
+</div>
+<div class="paragraph">
+<p>The order in which the elements of the tuples are processed is unspecified.</p>
+</div>
+<div class="paragraph">
+<p>The results are returned as a <code>std::tuple&lt;T&#8230;&#8203;&gt;</code> with <code>T&#8230;&#8203;</code> deduced from the return values of <code>f</code> (lvalue
+references are preserved, rvalue references are returned by value.)</p>
 </div>
 </div>
 </div>
@@ -4683,6 +5042,13 @@ to be valid <a href="../../../../libs/mpl">MPL</a> sequences.</p>
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>It&#8217;s also possible to only enable support for <code>mp_list</code> by
+including <code>&lt;boost/mp11/mpl_list.hpp&gt;</code>, and for <code>std::tuple</code>
+by including <code>&lt;boost/mp11/mpl_tuple.hpp&gt;</code>. This may be required
+because some libraries, such as Boost.Fusion, contain their own MPL
+support for <code>std::tuple</code>, which conflicts with Mp11&#8217;s one.</p>
 </div>
 </div>
 </div>
@@ -4715,12 +5081,13 @@ into this documentation by Glen Fernandes.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-09 19:36:06 UTC
+Last updated 2020-08-11 14:56:26 UTC
 </div>
 </div>
 <style>
 
 *:not(pre)>code { background: none; color: #600000; }
+:not(pre):not([class^=L])>code { background: none; color: #600000; }
 table tr.even, table tr.alt, table tr:nth-of-type(even) { background: none; }
 
 </style>

@@ -36,11 +36,11 @@ struct multi_tokens : lex::lexer<Lexer>
         this->self = 
                 a [ ++phoenix::ref(level) ]
             |   b
-            |   c [
+            |   c [(
                       _state = "in_dedenting",
                       _end = _start,
                       _pass = pass_flags::pass_ignore
-                  ]
+                  )]
             ;
 
         d = ".";
@@ -74,9 +74,8 @@ struct dumper
 
     std::stringstream& strm;
 
-private:
     // silence MSVC warning C4512: assignment operator could not be generated
-    dumper& operator= (dumper const&);
+    BOOST_DELETED_FUNCTION(dumper& operator= (dumper const&));
 };
 
 ///////////////////////////////////////////////////////////////////////////////

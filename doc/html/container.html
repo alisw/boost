@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;9.&#160;Boost.Container</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Chapter 9. Boost.Container</title>
 <link rel="stylesheet" href="../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="libraries.html" title="Part&#160;I.&#160;The Boost C++ Libraries (BoostBook Subset)">
+<link rel="up" href="libraries.html" title="Part I. The Boost C++ Libraries (BoostBook Subset)">
 <link rel="prev" href="circular_buffer/s14.html" title="Index">
 <link rel="next" href="container/main_features.html" title="Main features">
 </head>
@@ -26,11 +26,11 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="container"></a>Chapter&#160;9.&#160;Boost.Container</h2></div>
+<a name="container"></a>Chapter 9. Boost.Container</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Ion</span> <span class="surname">Gaztanaga</span>
 </h3></div></div>
-<div><p class="copyright">Copyright &#169; 2009-2018 Ion Gaztanaga</p></div>
+<div><p class="copyright">Copyright © 2009-2018 Ion Gaztanaga</p></div>
 <div><div class="legalnotice">
 <a name="container.legal"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
@@ -83,6 +83,12 @@
       tree-based associative ordered containers</a></span></dt>
 <dt><span class="section"><a href="container/configurable_containers.html#container.configurable_containers.configurable_vectors">Configurable
       vectors</a></span></dt>
+<dt><span class="section"><a href="container/configurable_containers.html#container.configurable_containers.configurable_deques">Configurable
+      deques</a></span></dt>
+<dt><span class="section"><a href="container/configurable_containers.html#container.configurable_containers.configurable_static_vectors">Configurable
+      static vector</a></span></dt>
+<dt><span class="section"><a href="container/configurable_containers.html#container.configurable_containers.configurable_small_vectors">Configurable
+      small vector</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="container/extended_allocators.html">Extended functionality:
     Extended allocators</a></span></dt>
@@ -178,6 +184,12 @@
     and links</a></span></dt>
 <dt><span class="section"><a href="container/release_notes.html">Release Notes</a></span></dt>
 <dd><dl>
+<dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_74_00">Boost
+      1.74 Release</a></span></dt>
+<dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_72_00">Boost
+      1.72 Release</a></span></dt>
+<dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_71_00">Boost
+      1.71 Release</a></span></dt>
 <dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_70_00">Boost
       1.70 Release</a></span></dt>
 <dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_69_00">Boost
@@ -256,8 +268,9 @@
           emulation for pre-C++17 compilers
         </li>
 <li class="listitem">
-          New advanced features (e.g. recursive containers, configuration options
-          for containers) are present.
+          New advanced features (e.g. recursive containers) and configurability options
+          <a class="link" href="container/configurable_containers.html" title="Extended functionality: Configurable containers">container.configurable_containers</a>
+          for containers.
         </li>
 <li class="listitem">
           Containers support stateful allocators and are compatible with <span class="bold"><strong>Boost.Interprocess</strong></span> (they can be safely placed in
@@ -337,32 +350,22 @@
 <a name="container.intro.tested_compilers"></a><a class="link" href="container.html#container.intro.tested_compilers" title="Tested compilers">Tested compilers</a>
 </h3></div></div></div>
 <p>
-        <span class="bold"><strong>Boost.Container</strong></span> requires a decent C++98
+        <span class="bold"><strong>Boost.Container</strong></span> requires a decent C++03
         compatibility. Some compilers known to work are:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-            Visual C++ &gt;= 7.1.
+            Visual C++ &gt;= 10.0
           </li>
 <li class="listitem">
-            GCC &gt;= 4.1.
+            GCC &gt;= 4.8
           </li>
 </ul></div>
-<div class="warning"><table border="0" summary="Warning">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../doc/src/images/warning.png"></td>
-<th align="left">Warning</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-          GCC &lt; 4.3 and MSVC &lt; 9.0 are deprecated and will be removed in the
-          next version.
-        </p></td></tr>
-</table></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: April 09, 2019 at 19:43:10 GMT</small></p></td>
+<td align="left"><p><small>Last revised: August 11, 2020 at 15:03:12 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

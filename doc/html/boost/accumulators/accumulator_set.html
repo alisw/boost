@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Struct template accumulator_set</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
@@ -27,7 +27,7 @@
 <a name="boost.accumulators.accumulator_set"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2><span class="refentrytitle">Struct template accumulator_set</span></h2>
-<p>boost::accumulators::accumulator_set &#8212; A set of accumulators. </p>
+<p>boost::accumulators::accumulator_set — A set of accumulators. </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
 <div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../accumulators/reference.html#header.boost.accumulators.accumulators_fwd_hpp" title="Header &lt;boost/accumulators/accumulators_fwd.hpp&gt;">boost/accumulators/accumulators_fwd.hpp</a>&gt;
@@ -35,17 +35,20 @@
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sample<span class="special">,</span> <span class="keyword">typename</span> Features<span class="special">,</span> <span class="keyword">typename</span> Weight<span class="special">&gt;</span> 
 <span class="keyword">struct</span> <a class="link" href="accumulator_set.html" title="Struct template accumulator_set">accumulator_set</a> <span class="special">{</span>
   <span class="comment">// <a class="link" href="accumulator_set.html#boost.accumulators.accumulator_setconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> <span class="keyword">explicit</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_5-bb"><span class="identifier">accumulator_set</span></a><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> 
+    <span class="keyword">explicit</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_5-bb"><span class="identifier">accumulator_set</span></a><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="special">=</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> 
+    <span class="keyword">explicit</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_6-bb"><span class="identifier">accumulator_set</span></a><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="special">=</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span><span class="special">)</span><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4-bb">public member functions</a></span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> UnaryFunction<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_1-bb"><span class="identifier">visit</span></a><span class="special">(</span><span class="identifier">UnaryFunction</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> FilterPred<span class="special">,</span> <span class="keyword">typename</span> UnaryFunction<span class="special">&gt;</span> 
     <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_2-bb"><span class="identifier">visit_if</span></a><span class="special">(</span><span class="identifier">UnaryFunction</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
   <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_3-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_4-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&amp;</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_5-bb"><span class="identifier">extract</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_6-bb"><span class="identifier">extract</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_7-bb"><span class="identifier">drop</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&amp;</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_4-bb"><span class="identifier">extract</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_5-bb"><span class="identifier">extract</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_6-bb"><span class="identifier">drop</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Archive<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="accumulator_set.html#id-1_3_2_6_2_3_1_1_1_4_7-bb"><span class="identifier">serialize</span></a><span class="special">(</span><span class="identifier">Archive</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">)</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
 <a name="id-1.3.2.6.2.3.10.4"></a><h2>Description</h2>
@@ -56,8 +59,10 @@
 <a name="boost.accumulators.accumulator_setconstruct-copy-destruct"></a><code class="computeroutput">accumulator_set</code> 
         public
        construct/copy/destruct</h3>
-<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> <span class="keyword">explicit</span> <a name="id-1_3_2_6_2_3_1_1_1_5-bb"></a><span class="identifier">accumulator_set</span><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span> a1<span class="special">)</span><span class="special">;</span></pre>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> 
+  <span class="keyword">explicit</span> <a name="id-1_3_2_6_2_3_1_1_1_5-bb"></a><span class="identifier">accumulator_set</span><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span> a1<span class="special">,</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="special">=</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span><span class="special">)</span><span class="special">;</span></pre>
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
 <p>
 </p>
@@ -80,7 +85,34 @@
 </table></div></td>
 </tr></tbody>
 </table></div>
-</li></ol></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> 
+  <span class="keyword">explicit</span> <a name="id-1_3_2_6_2_3_1_1_1_6-bb"></a><span class="identifier">accumulator_set</span><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span> a1<span class="special">,</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <span class="special">=</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span><span class="special">)</span><span class="special">;</span></pre>
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0" class="variablelist compact">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">a1</code></span></p></td>
+<td><p>Optional sample parameter to be passed to all the accumulators </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+</ol></div>
 </div>
 <div class="refsect2">
 <a name="id-1.3.2.6.2.3.10.4.5"></a><h3>
@@ -140,22 +172,23 @@
 <p>Accumulation 
 </p>
 </li>
-<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A1<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id-1_3_2_6_2_3_1_1_1_4_4-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span> a1<span class="special">)</span><span class="special">;</span></pre></li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&amp;</span> <a name="id-1_3_2_6_2_3_1_1_1_4_5-bb"></a><span class="identifier">extract</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Extraction. </li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&amp;</span> <a name="id-1_3_2_6_2_3_1_1_1_4_4-bb"></a><span class="identifier">extract</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Extraction. </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a name="id-1_3_2_6_2_3_1_1_1_4_6-bb"></a><span class="identifier">extract</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> apply<span class="special">&lt;</span> <span class="identifier">Feature</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="keyword">const</span>  <span class="special">&amp;</span> <a name="id-1_3_2_6_2_3_1_1_1_4_5-bb"></a><span class="identifier">extract</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id-1_3_2_6_2_3_1_1_1_4_7-bb"></a><span class="identifier">drop</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Drop. </li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Feature<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id-1_3_2_6_2_3_1_1_1_4_6-bb"></a><span class="identifier">drop</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Drop. </li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Archive<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id-1_3_2_6_2_3_1_1_1_4_7-bb"></a><span class="identifier">serialize</span><span class="special">(</span><span class="identifier">Archive</span> <span class="special">&amp;</span> ar<span class="special">,</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> file_version<span class="special">)</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2005, 2006 Eric Niebler<p>
+<td align="right"><div class="copyright-footer">Copyright © 2005, 2006 Eric Niebler<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

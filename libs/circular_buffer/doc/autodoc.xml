@@ -1,9 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <library-reference id="boost_circular_buffer_c___reference"><title>Boost.Circular_buffer C++ Reference</title><header name="boost/circular_buffer.hpp">
-<macro name="BOOST_CB_ENABLE_DEBUG"/>
-<macro name="BOOST_CB_ASSERT" kind="functionlike"><macro-parameter name="Expr"/></macro>
-<macro name="BOOST_CB_IS_CONVERTIBLE" kind="functionlike"><macro-parameter name="Iterator"/><macro-parameter name="Type"/></macro>
-<macro name="BOOST_CB_ASSERT_TEMPLATED_ITERATOR_CONSTRUCTORS"/>
+<para>Includes &lt;boost/circular_buffer/base.hpp&gt; </para><macro name="BOOST_CB_ENABLE_DEBUG"><description><para>Debug support control. </para></description></macro>
 </header>
 <header name="boost/circular_buffer/base.hpp">
 <namespace name="boost">
@@ -11,7 +8,7 @@
       <template-type-parameter name="T"><purpose><para>The type of the elements stored in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </para></purpose></template-type-parameter>
       <template-type-parameter name="Alloc"><purpose><para>The allocator type used for all internal memory management. </para></purpose></template-type-parameter>
     </template><inherit access="private">empty_value&lt; Alloc &gt;</inherit><purpose>Circular buffer - a STL compliant container. </purpose><description><para>
-<formalpara><title>Type Requirements T</title><para>The <computeroutput>T</computeroutput> has to be <ulink url="http://www.sgi.com/tech/stl/Assignable.html">SGIAssignable</ulink> (SGI STL defined combination of <ulink url="../../../utility/Assignable.html">Assignable</ulink> and <ulink url="../../../utility/CopyConstructible.html">CopyConstructible</ulink>). Moreover <computeroutput>T</computeroutput> has to be <ulink url="http://www.sgi.com/tech/stl/DefaultConstructible.html">DefaultConstructible</ulink> if supplied as a default parameter when invoking some of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>'s methods e.g. <computeroutput>insert(iterator pos, const value_type&amp; item = value_type())</computeroutput>. And <ulink url="http://www.sgi.com/tech/stl/EqualityComparable.html">EqualityComparable</ulink> and/or <ulink url="../../../utility/LessThanComparable.html">LessThanComparable</ulink> if the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> will be compared with another container. </para>
+<formalpara><title>Type Requirements T</title><para>The <computeroutput>T</computeroutput> has to be <ulink url="https://www.boost.org/sgi/stl/Assignable.html">SGIAssignable</ulink> (SGI STL defined combination of <ulink url="../../../utility/Assignable.html">Assignable</ulink> and <ulink url="../../../utility/CopyConstructible.html">CopyConstructible</ulink>). Moreover <computeroutput>T</computeroutput> has to be <ulink url="https://www.boost.org/sgi/stl/DefaultConstructible.html">DefaultConstructible</ulink> if supplied as a default parameter when invoking some of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>'s methods e.g. <computeroutput>insert(iterator pos, const value_type&amp; item = value_type())</computeroutput>. And <ulink url="https://www.boost.org/sgi/stl/EqualityComparable.html">EqualityComparable</ulink> and/or <ulink url="../../../utility/LessThanComparable.html">LessThanComparable</ulink> if the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> will be compared with another container. </para>
 </formalpara>
 
 <formalpara><title>Type Requirements Alloc</title><para>The <computeroutput>Alloc</computeroutput> has to meet the allocator requirements imposed by STL. </para>
@@ -19,20 +16,20 @@
 <formalpara><title>Default Alloc</title><para>std::allocator&lt;T&gt;</para>
 </formalpara>
 For detailed documentation of the <classname alt="boost::circular_buffer">circular_buffer</classname> visit: <ulink url="http://www.boost.org/libs/circular_buffer/doc/circular_buffer.html">http://www.boost.org/libs/circular_buffer/doc/circular_buffer.html</ulink> </para></description><typedef name="this_type"><purpose>The type of this <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type><classname>circular_buffer</classname>&lt; T, Alloc &gt;</type></typedef>
-<typedef name="value_type"><purpose>The type of elements stored in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>cb_details::allocator_traits&lt; Alloc &gt;::value_type</type></typedef>
-<typedef name="pointer"><purpose>A pointer to an element. </purpose><type>cb_details::allocator_traits&lt; Alloc &gt;::pointer</type></typedef>
-<typedef name="const_pointer"><purpose>A const pointer to the element. </purpose><type>cb_details::allocator_traits&lt; Alloc &gt;::const_pointer</type></typedef>
+<typedef name="value_type"><purpose>The type of elements stored in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>Alloc::value_type</type></typedef>
+<typedef name="pointer"><purpose>A pointer to an element. </purpose><type>allocator_pointer&lt; Alloc &gt;::type</type></typedef>
+<typedef name="const_pointer"><purpose>A const pointer to the element. </purpose><type>allocator_const_pointer&lt; Alloc &gt;::type</type></typedef>
 <typedef name="reference"><purpose>A reference to an element. </purpose><type>value_type &amp;</type></typedef>
 <typedef name="const_reference"><purpose>A const reference to an element. </purpose><type>const value_type &amp;</type></typedef>
-<typedef name="difference_type"><purpose>The distance type. </purpose><description><para>(A signed integral type used to represent the distance between two iterators.) </para></description><type>cb_details::allocator_traits&lt; Alloc &gt;::difference_type</type></typedef>
-<typedef name="size_type"><purpose>The size type. </purpose><description><para>(An unsigned integral type that can represent any non-negative value of the container's distance type.) </para></description><type>cb_details::allocator_traits&lt; Alloc &gt;::size_type</type></typedef>
+<typedef name="difference_type"><purpose>The distance type. </purpose><description><para>(A signed integral type used to represent the distance between two iterators.) </para></description><type>allocator_difference_type&lt; Alloc &gt;::type</type></typedef>
+<typedef name="size_type"><purpose>The size type. </purpose><description><para>(An unsigned integral type that can represent any non-negative value of the container's distance type.) </para></description><type>allocator_size_type&lt; Alloc &gt;::type</type></typedef>
 <typedef name="allocator_type"><purpose>The type of an allocator used in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>Alloc</type></typedef>
-<typedef name="const_iterator"><purpose>A const (random access) iterator used to iterate through the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type><classname>cb_details::iterator</classname>&lt; <classname>circular_buffer</classname>&lt; T, Alloc &gt;, <classname>cb_details::const_traits</classname>&lt; cb_details::allocator_traits&lt; Alloc &gt; &gt; &gt;</type></typedef>
-<typedef name="iterator"><purpose>A (random access) iterator used to iterate through the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type><classname>cb_details::iterator</classname>&lt; <classname>circular_buffer</classname>&lt; T, Alloc &gt;, <classname>cb_details::nonconst_traits</classname>&lt; cb_details::allocator_traits&lt; Alloc &gt; &gt; &gt;</type></typedef>
+<typedef name="const_iterator"><purpose>A const (random access) iterator used to iterate through the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>cb_details::iterator&lt; <classname>circular_buffer</classname>&lt; T, Alloc &gt;, cb_details::const_traits&lt; Alloc &gt; &gt;</type></typedef>
+<typedef name="iterator"><purpose>A (random access) iterator used to iterate through the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>cb_details::iterator&lt; <classname>circular_buffer</classname>&lt; T, Alloc &gt;, cb_details::nonconst_traits&lt; Alloc &gt; &gt;</type></typedef>
 <typedef name="const_reverse_iterator"><purpose>A const iterator used to iterate backwards through a <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>std::reverse_iterator&lt; const_iterator &gt;</type></typedef>
 <typedef name="reverse_iterator"><purpose>An iterator used to iterate backwards through a <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><type>std::reverse_iterator&lt; iterator &gt;</type></typedef>
-<typedef name="array_range"><purpose>An array range. </purpose><description><para>(A typedef for the <ulink url="http://www.sgi.com/tech/stl/pair.html"><computeroutput>std::pair</computeroutput></ulink> where its first element is a pointer to a beginning of an array and its second element represents a size of the array.) </para></description><type>std::pair&lt; pointer, size_type &gt;</type></typedef>
-<typedef name="const_array_range"><purpose>A range of a const array. </purpose><description><para>(A typedef for the <ulink url="http://www.sgi.com/tech/stl/pair.html"><computeroutput>std::pair</computeroutput></ulink> where its first element is a pointer to a beginning of a const array and its second element represents a size of the const array.) </para></description><type>std::pair&lt; const_pointer, size_type &gt;</type></typedef>
+<typedef name="array_range"><purpose>An array range. </purpose><description><para>(A typedef for the <ulink url="https://www.boost.org/sgi/stl/pair.html"><computeroutput>std::pair</computeroutput></ulink> where its first element is a pointer to a beginning of an array and its second element represents a size of the array.) </para></description><type>std::pair&lt; pointer, size_type &gt;</type></typedef>
+<typedef name="const_array_range"><purpose>A range of a const array. </purpose><description><para>(A typedef for the <ulink url="https://www.boost.org/sgi/stl/pair.html"><computeroutput>std::pair</computeroutput></ulink> where its first element is a pointer to a beginning of a const array and its second element represents a size of the const array.) </para></description><type>std::pair&lt; const_pointer, size_type &gt;</type></typedef>
 <typedef name="capacity_type"><purpose>The capacity type. </purpose><description><para>(Same as <computeroutput>size_type</computeroutput> - defined for consistency with the __cbso class. </para></description><type>size_type</type></typedef>
 <typedef name="param_value_type"><purpose>A type representing the "best" way to pass the value_type to a method. </purpose><type>const value_type &amp;</type></typedef>
 <typedef name="rvalue_type"><description><para>A type representing rvalue from param type. On compilers without rvalue references support this type is the Boost.Moves type used for emulation. </para></description><type>value_type &amp;&amp;</type></typedef>
@@ -99,6 +96,7 @@ For detailed documentation of the <classname alt="boost::circular_buffer">circul
 </para>
 </para></description><returns><para>A const random access iterator pointing to the first element of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. If the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> is empty it returns an iterator equal to the one returned by <computeroutput>end() const</computeroutput>. </para>
 </returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
+<method name="cbegin" cv="const noexcept"><type>const_iterator</type></method>
 <method name="end" cv="const noexcept"><type>const_iterator</type><purpose>Get the const iterator pointing to the end of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><description><para>
 
 <formalpara><title>Exception Safety</title><para>No-throw. </para>
@@ -111,6 +109,7 @@ For detailed documentation of the <classname alt="boost::circular_buffer">circul
 </para>
 </para></description><returns><para>A const random access iterator pointing to the element "one behind" the last element of the <computeroutput> <classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. If the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> is empty it returns an iterator equal to the one returned by <computeroutput>begin() const</computeroutput> const. </para>
 </returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
+<method name="cend" cv="const noexcept"><type>const_iterator</type></method>
 <method name="rbegin" cv="noexcept"><type>reverse_iterator</type><purpose>Get the iterator pointing to the beginning of the "reversed" <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><description><para>
 
 <formalpara><title>Exception Safety</title><para>No-throw. </para>
@@ -377,7 +376,7 @@ For detailed documentation of the <classname alt="boost::circular_buffer">circul
 </para>
 </para></description><returns><para><computeroutput>true</computeroutput> if the internal buffer is linearized into a continuous array (i.e. the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> meets a condition <computeroutput>&amp;(*this)[0] &lt; &amp;(*this)[1] &lt; ... &lt; &amp;(*this)[size() - 1]</computeroutput>); <computeroutput>false</computeroutput> otherwise. </para>
 </returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></method>
-<method name="rotate"><type>void</type><parameter name="new_begin"><paramtype>const_iterator</paramtype><description><para>The new beginning. </para></description></parameter><purpose>Rotate elements in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><description><para>A more effective implementation of <computeroutput><ulink url="http://www.sgi.com/tech/stl/rotate.html">std::rotate</ulink></computeroutput>. 
+<method name="rotate"><type>void</type><parameter name="new_begin"><paramtype>const_iterator</paramtype><description><para>The new beginning. </para></description></parameter><purpose>Rotate elements in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </purpose><description><para>A more effective implementation of <computeroutput><ulink url="https://www.boost.org/sgi/stl/rotate.html">std::rotate</ulink></computeroutput>. 
 
 
 
@@ -387,7 +386,7 @@ For detailed documentation of the <classname alt="boost::circular_buffer">circul
 </formalpara>
 <formalpara><title>Complexity</title><para>Linear (in <computeroutput>(std::min)(m, n)</computeroutput>); constant if the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> is full. </para>
 </formalpara>
-<para><emphasis role="bold">See Also:</emphasis><para><computeroutput><ulink url="http://www.sgi.com/tech/stl/rotate.html">std::rotate</ulink></computeroutput> </para>
+<para><emphasis role="bold">See Also:</emphasis><para><computeroutput><ulink url="https://www.boost.org/sgi/stl/rotate.html">std::rotate</ulink></computeroutput> </para>
 </para>
 </para></description><requires><para><computeroutput>new_begin</computeroutput> is a valid iterator pointing to the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> <emphasis role="bold">except</emphasis> its end. </para>
 </requires><postconditions><para>Before calling the method suppose:<sbr/>
@@ -582,7 +581,7 @@ then after call to the method:<sbr/>
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>operator=</computeroutput>, <computeroutput>assign(size_type, const_reference)</computeroutput>, <computeroutput>assign(capacity_type, size_type, const_reference)</computeroutput>, <computeroutput>assign(capacity_type, InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity() == std::distance(first, last) &amp;&amp; size() == std::distance(first, last) &amp;&amp; (*this)[0]== *first &amp;&amp; (*this)[1] == *(first + 1) &amp;&amp; ... &amp;&amp; (*this)[std::distance(first, last) - 1] == *(last - 1)</computeroutput> </para>
 </postconditions><throws><simpara><classname>An allocation error</classname> if memory is exhausted (<computeroutput>std::bad_alloc</computeroutput> if the standard allocator is used). Whatever <computeroutput>T::T(const T&amp;)</computeroutput> throws. </simpara></throws></method>
 <method name="assign"><type>void</type><template>
@@ -595,12 +594,12 @@ then after call to the method:<sbr/>
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Invalidates all iterators pointing to the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> (except iterators equal to <computeroutput>end()</computeroutput>). </para>
 </formalpara>
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity, std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity, std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>operator=</computeroutput>, <computeroutput>assign(size_type, const_reference)</computeroutput>, <computeroutput>assign(capacity_type, size_type, const_reference)</computeroutput>, <computeroutput>assign(InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity() == buffer_capacity &amp;&amp; size() &lt;= std::distance(first, last) &amp;&amp; (*this)[0]== *(last - buffer_capacity) &amp;&amp; (*this)[1] == *(last - buffer_capacity + 1) &amp;&amp; ... &amp;&amp; (*this)[buffer_capacity - 1] == *(last - 1)</computeroutput><sbr/>
 <sbr/>
  If the number of items to be copied from the range <computeroutput>[first, last)</computeroutput> is greater than the specified <computeroutput>buffer_capacity</computeroutput> then only elements from the range <computeroutput>[last - buffer_capacity, last)</computeroutput> will be copied. </para>
@@ -824,7 +823,7 @@ The number of <computeroutput>min[pos - begin(), max[0, n - reserve()]]</compute
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Invalidates iterators pointing to the elements at the insertion point (including <computeroutput>pos</computeroutput>) and iterators behind the insertion point (towards the end; except iterators equal to <computeroutput>end()</computeroutput>). It also invalidates iterators pointing to the overwritten elements. </para>
 </formalpara>
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[std::distance(pos, end()) + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity(), std::distance(pos, end()) + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[std::distance(pos, end()) + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity(), std::distance(pos, end()) + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 <formalpara><title>Example</title><para>Consider a <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> with the capacity of 6 and the size of 4. Its internal buffer may look like the one below.<sbr/>
 <sbr/>
@@ -845,7 +844,7 @@ For comparison if the capacity would not be preserved the internal buffer would 
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>insert(iterator, value_type)</computeroutput>, <computeroutput>insert(iterator, size_type, value_type)</computeroutput>, <computeroutput>rinsert(iterator, value_type)</computeroutput>, <computeroutput>rinsert(iterator, size_type, value_type)</computeroutput>, <computeroutput>rinsert(iterator, InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para><computeroutput>pos</computeroutput> is a valid iterator pointing to the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> or its end.<sbr/>
- Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para>Elements from the range <computeroutput>[first + max[0, distance(first, last) - (pos - begin()) - reserve()], last)</computeroutput> will be inserted at the position <computeroutput>pos</computeroutput>.<sbr/>
 The number of <computeroutput>min[pos - begin(), max[0, distance(first, last) - reserve()]]</computeroutput> elements will be overwritten at the beginning of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>.<sbr/>
 (See <emphasis>Example</emphasis> for the explanation.) </para>
@@ -946,7 +945,7 @@ The number of <computeroutput>min[end() - pos, max[0, n - reserve()]]</computero
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Invalidates iterators pointing to the elements before the insertion point (towards the beginning and excluding <computeroutput>pos</computeroutput>). It also invalidates iterators pointing to the overwritten elements. </para>
 </formalpara>
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[std::distance(begin(), pos) + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity(), std::distance(begin(), pos) + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[std::distance(begin(), pos) + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity(), std::distance(begin(), pos) + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 <formalpara><title>Example</title><para>Consider a <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> with the capacity of 6 and the size of 4. Its internal buffer may look like the one below.<sbr/>
 <sbr/>
@@ -967,7 +966,7 @@ For comparison if the capacity would not be preserved the internal buffer would 
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>rinsert(iterator, value_type)</computeroutput>, <computeroutput>rinsert(iterator, size_type, value_type)</computeroutput>, <computeroutput>insert(iterator, value_type)</computeroutput>, <computeroutput>insert(iterator, size_type, value_type)</computeroutput>, <computeroutput>insert(iterator, InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para><computeroutput>pos</computeroutput> is a valid iterator pointing to the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput> or its end.<sbr/>
- Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para>Elements from the range <computeroutput>[first, last - max[0, distance(first, last) - (end() - pos) - reserve()])</computeroutput> will be inserted before the position <computeroutput>pos</computeroutput>.<sbr/>
 The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - reserve()]]</computeroutput> elements will be overwritten at the end of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>.<sbr/>
 (See <emphasis>Example</emphasis> for the explanation.) </para>
@@ -1152,7 +1151,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 <formalpara><title>Complexity</title><para>Linear (in the <computeroutput>std::distance(first, last)</computeroutput>). </para>
 </formalpara>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity() == std::distance(first, last) &amp;&amp; full() &amp;&amp; (*this)[0]== *first &amp;&amp; (*this)[1] == *(first + 1) &amp;&amp; ... &amp;&amp; (*this)[std::distance(first, last) - 1] == *(last - 1)</computeroutput> </para>
 </postconditions><throws><simpara><classname>An allocation error</classname> if memory is exhausted (<computeroutput>std::bad_alloc</computeroutput> if the standard allocator is used). Whatever <computeroutput>T::T(const T&amp;)</computeroutput> throws. </simpara></throws></constructor>
 <constructor><template>
@@ -1161,10 +1160,10 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 
 
 
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity, std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity, std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity() == buffer_capacity &amp;&amp; size() &lt;= std::distance(first, last) &amp;&amp; (*this)[0]== *(last - buffer_capacity) &amp;&amp; (*this)[1] == *(last - buffer_capacity + 1) &amp;&amp; ... &amp;&amp; (*this)[buffer_capacity - 1] == *(last - 1)</computeroutput><sbr/>
 <sbr/>
  If the number of items to be copied from the range <computeroutput>[first, last)</computeroutput> is greater than the specified <computeroutput>buffer_capacity</computeroutput> then only elements from the range <computeroutput>[last - buffer_capacity, last)</computeroutput> will be copied. </para>
@@ -1199,145 +1198,6 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 </para></description><requires><para>C++ compiler with rvalue references support. </para>
 </requires><postconditions><para><computeroutput>cb.empty()</computeroutput> </para>
 </postconditions><throws><simpara><classname>Nothing.</classname> </simpara></throws></copy-assignment>
-<method-group name="private member functions">
-<method name="push_back_impl"><type>void</type><template>
-          <template-type-parameter name="ValT"/>
-        </template><parameter name="item"><paramtype>ValT</paramtype></parameter></method>
-<method name="push_front_impl"><type>void</type><template>
-          <template-type-parameter name="ValT"/>
-        </template><parameter name="item"><paramtype>ValT</paramtype></parameter></method>
-<method name="insert_impl"><type>iterator</type><template>
-          <template-type-parameter name="ValT"/>
-        </template><parameter name="pos"><paramtype>iterator</paramtype></parameter><parameter name="item"><paramtype>ValT</paramtype></parameter></method>
-<method name="rinsert_impl"><type>iterator</type><template>
-          <template-type-parameter name="ValT"/>
-        </template><parameter name="pos"><paramtype>iterator</paramtype></parameter><parameter name="item"><paramtype>ValT</paramtype></parameter></method>
-<method name="check_position" cv="const"><type>void</type><parameter name="index"><paramtype>size_type</paramtype></parameter><purpose>Check if the <computeroutput>index</computeroutput> is valid. </purpose></method>
-<method name="increment" cv="const"><type>void</type><template>
-          <template-type-parameter name="Pointer"/>
-        </template><parameter name="p"><paramtype>Pointer &amp;</paramtype></parameter><purpose>Increment the pointer. </purpose></method>
-<method name="decrement" cv="const"><type>void</type><template>
-          <template-type-parameter name="Pointer"/>
-        </template><parameter name="p"><paramtype>Pointer &amp;</paramtype></parameter><purpose>Decrement the pointer. </purpose></method>
-<method name="add" cv="const"><type>Pointer</type><template>
-          <template-type-parameter name="Pointer"/>
-        </template><parameter name="p"><paramtype>Pointer</paramtype></parameter><parameter name="n"><paramtype>difference_type</paramtype></parameter><purpose>Add <computeroutput>n</computeroutput> to the pointer. </purpose></method>
-<method name="sub" cv="const"><type>Pointer</type><template>
-          <template-type-parameter name="Pointer"/>
-        </template><parameter name="p"><paramtype>Pointer</paramtype></parameter><parameter name="n"><paramtype>difference_type</paramtype></parameter><purpose>Subtract <computeroutput>n</computeroutput> from the pointer. </purpose></method>
-<method name="map_pointer" cv="const"><type>pointer</type><parameter name="p"><paramtype>pointer</paramtype></parameter><purpose>Map the null pointer to virtual end of circular buffer. </purpose></method>
-<method name="alloc" cv="const"><type>const Alloc &amp;</type></method>
-<method name="alloc"><type>Alloc &amp;</type></method>
-<method name="allocate"><type>pointer</type><parameter name="n"><paramtype>size_type</paramtype></parameter><purpose>Allocate memory. </purpose></method>
-<method name="deallocate"><type>void</type><parameter name="p"><paramtype>pointer</paramtype></parameter><parameter name="n"><paramtype>size_type</paramtype></parameter><purpose>Deallocate memory. </purpose></method>
-<method name="is_uninitialized" cv="const noexcept"><type>bool</type><parameter name="p"><paramtype>const_pointer</paramtype></parameter><purpose>Does the pointer point to the uninitialized memory? </purpose></method>
-<method name="replace"><type>void</type><parameter name="pos"><paramtype>pointer</paramtype></parameter><parameter name="item"><paramtype>param_value_type</paramtype></parameter><purpose>Replace an element. </purpose></method>
-<method name="replace"><type>void</type><parameter name="pos"><paramtype>pointer</paramtype></parameter><parameter name="item"><paramtype>rvalue_type</paramtype></parameter><purpose>Replace an element. </purpose></method>
-<method name="construct_or_replace"><type>void</type><parameter name="construct"><paramtype>bool</paramtype></parameter><parameter name="pos"><paramtype>pointer</paramtype></parameter><parameter name="item"><paramtype>param_value_type</paramtype></parameter><purpose>Construct or replace an element. </purpose><description><para><computeroutput>construct</computeroutput> has to be set to <computeroutput>true</computeroutput> if and only if <computeroutput>pos</computeroutput> points to an uninitialized memory. </para></description></method>
-<method name="construct_or_replace"><type>void</type><parameter name="construct"><paramtype>bool</paramtype></parameter><parameter name="pos"><paramtype>pointer</paramtype></parameter><parameter name="item"><paramtype>rvalue_type</paramtype></parameter><purpose>Construct or replace an element. </purpose><description><para><computeroutput>construct</computeroutput> has to be set to <computeroutput>true</computeroutput> if and only if <computeroutput>pos</computeroutput> points to an uninitialized memory. </para></description></method>
-<method name="destroy_item"><type>void</type><parameter name="p"><paramtype>pointer</paramtype></parameter><purpose>Destroy an item. </purpose></method>
-<method name="destroy_if_constructed"><type>void</type><parameter name="pos"><paramtype>pointer</paramtype></parameter><purpose>Destroy an item only if it has been constructed. </purpose></method>
-<method name="destroy_content"><type>void</type><purpose>Destroy the whole content of the circular buffer. </purpose></method>
-<method name="destroy_content"><type>void</type><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized destroy_content method. </purpose></method>
-<method name="destroy_content"><type>void</type><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized destroy_content method. </purpose></method>
-<method name="destroy" cv="noexcept"><type>void</type><purpose>Destroy content and free allocated memory. </purpose></method>
-<method name="initialize_buffer"><type>void</type><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><purpose>Initialize the internal buffer. </purpose></method>
-<method name="initialize_buffer"><type>void</type><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="item"><paramtype>param_value_type</paramtype></parameter><purpose>Initialize the internal buffer. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized initialize method. </purpose></method>
-<method name="initialize"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="buffer_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name="distance"><paramtype>size_type</paramtype></parameter><purpose>Initialize the circular buffer. </purpose></method>
-<method name="reset"><type>void</type><parameter name="buff"><paramtype>pointer</paramtype></parameter><parameter name="last"><paramtype>pointer</paramtype></parameter><parameter name="new_capacity"><paramtype>capacity_type</paramtype></parameter><purpose>Reset the circular buffer. </purpose></method>
-<method name="swap_allocator"><type>void</type><parameter name=""><paramtype><classname>circular_buffer</classname>&lt; T, Alloc &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized method for swapping the allocator. </purpose></method>
-<method name="swap_allocator"><type>void</type><parameter name="cb"><paramtype><classname>circular_buffer</classname>&lt; T, Alloc &gt; &amp;</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized method for swapping the allocator. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="new_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="new_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="new_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="new_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized assign method. </purpose></method>
-<method name="assign_n"><type>void</type><template>
-          <template-type-parameter name="Functor"/>
-        </template><parameter name="new_capacity"><paramtype>capacity_type</paramtype></parameter><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name="fnc"><paramtype>const Functor &amp;</paramtype></parameter><purpose>Helper assign method. </purpose></method>
-<method name="insert_item"><type>iterator</type><template>
-          <template-type-parameter name="ValT"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="item"><paramtype>ValT</paramtype></parameter><purpose>Helper insert method. </purpose></method>
-<method name="insert"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="insert"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="insert"><type>void</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="pos"><paramtype>iterator</paramtype></parameter><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="insert"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="insert_n"><type>void</type><template>
-          <template-type-parameter name="Wrapper"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name="wrapper"><paramtype>const Wrapper &amp;</paramtype></parameter><purpose>Helper insert method. </purpose></method>
-<method name="rinsert"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized rinsert method. </purpose></method>
-<method name="rinsert"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized rinsert method. </purpose></method>
-<method name="rinsert"><type>void</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="pos"><paramtype>iterator</paramtype></parameter><parameter name="first"><paramtype>InputIterator</paramtype></parameter><parameter name="last"><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="rinsert"><type>void</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized rinsert method. </purpose></method>
-<method name="rinsert_n"><type>void</type><template>
-          <template-type-parameter name="Wrapper"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name="wrapper"><paramtype>const Wrapper &amp;</paramtype></parameter><purpose>Helper rinsert method. </purpose></method>
-<method name="erase_begin"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized erase_begin method. </purpose></method>
-<method name="erase_begin"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized erase_begin method. </purpose></method>
-<method name="erase_end"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized erase_end method. </purpose></method>
-<method name="erase_end"><type>void</type><parameter name="n"><paramtype>size_type</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized erase_end method. </purpose></method>
-</method-group>
 </class><function name="operator=="><type>bool</type><template>
           <template-type-parameter name="T"/>
           <template-type-parameter name="Alloc"/>
@@ -1348,7 +1208,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Does not invalidate any iterators. </para>
 </formalpara>
-</para></description><returns><para><computeroutput>lhs.size() == rhs.size() &amp;&amp; <ulink url="http://www.sgi.com/tech/stl/equal.html">std::equal</ulink>(lhs.begin(), lhs.end(), rhs.begin())</computeroutput> </para>
+</para></description><returns><para><computeroutput>lhs.size() == rhs.size() &amp;&amp; <ulink url="https://www.boost.org/sgi/stl/equal.html">std::equal</ulink>(lhs.begin(), lhs.end(), rhs.begin())</computeroutput> </para>
 </returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></function>
 <function name="operator&lt;"><type>bool</type><template>
           <template-type-parameter name="T"/>
@@ -1360,7 +1220,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Does not invalidate any iterators. </para>
 </formalpara>
-</para></description><returns><para><computeroutput><ulink url="http://www.sgi.com/tech/stl/lexicographical_compare.html">std::lexicographical_compare</ulink>(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())</computeroutput> </para>
+</para></description><returns><para><computeroutput><ulink url="https://www.boost.org/sgi/stl/lexicographical_compare.html">std::lexicographical_compare</ulink>(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())</computeroutput> </para>
 </returns><throws><simpara><classname>Nothing.</classname> </simpara></throws></function>
 <function name="operator!="><type>bool</type><template>
           <template-type-parameter name="T"/>
@@ -1441,42 +1301,6 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 
 </namespace>
 </header>
-<header name="boost/circular_buffer/debug.hpp">
-<namespace name="boost">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</namespace>
-</header>
-<header name="boost/circular_buffer/details.hpp">
-<namespace name="boost">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</namespace>
-</header>
 <header name="boost/circular_buffer/space_optimized.hpp">
 <namespace name="boost">
 <class name="circular_buffer_space_optimized"><template>
@@ -1512,7 +1336,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
  size_type min_capacity() const { return m_min_capacity; }<sbr/>
  operator size_type() const { return m_capacity; }<sbr/>
  };<sbr/>
- </computeroutput> </para><para>Always <computeroutput>capacity &gt;= min_capacity</computeroutput>. </para><para>The <computeroutput>capacity()</computeroutput> represents the capacity of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> and the <computeroutput>min_capacity()</computeroutput> determines the minimal allocated size of its internal buffer. </para><para>The converting constructor of the <computeroutput>capacity_control</computeroutput> allows implicit conversion from <computeroutput>size_type</computeroutput>-like types which ensures compatibility of creating an instance of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> with other STL containers.</para><para>On the other hand the operator <computeroutput>size_type()</computeroutput> provides implicit conversion to the <computeroutput>size_type</computeroutput> which allows to treat the capacity of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> the same way as in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </para></description><type><classname>cb_details::capacity_control</classname>&lt; size_type &gt;</type></typedef>
+ </computeroutput> </para><para>Always <computeroutput>capacity &gt;= min_capacity</computeroutput>. </para><para>The <computeroutput>capacity()</computeroutput> represents the capacity of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> and the <computeroutput>min_capacity()</computeroutput> determines the minimal allocated size of its internal buffer. </para><para>The converting constructor of the <computeroutput>capacity_control</computeroutput> allows implicit conversion from <computeroutput>size_type</computeroutput>-like types which ensures compatibility of creating an instance of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> with other STL containers.</para><para>On the other hand the operator <computeroutput>size_type()</computeroutput> provides implicit conversion to the <computeroutput>size_type</computeroutput> which allows to treat the capacity of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> the same way as in the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>. </para></description><type>cb_details::capacity_control&lt; size_type &gt;</type></typedef>
 <method-group name="public member functions">
 <method name="full" cv="const noexcept"><type>bool</type><purpose>Is the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> full? </purpose><description><para>
 
@@ -1677,7 +1501,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>operator=</computeroutput>, <computeroutput>assign(size_type, const_reference)</computeroutput>, <computeroutput>assign(capacity_type, size_type, const_reference)</computeroutput>, <computeroutput>assign(capacity_type, InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity().capacity() == std::distance(first, last) &amp;&amp; capacity().min_capacity() == 0 &amp;&amp; size() == std::distance(first, last) &amp;&amp; (*this)[0]== *first &amp;&amp; (*this)[1] == *(first + 1) &amp;&amp; ... &amp;&amp; (*this)[std::distance(first, last) - 1] == *(last - 1)</computeroutput><sbr/>
 <sbr/>
  The amount of allocated memory in the internal buffer is <computeroutput>std::distance(first, last)</computeroutput>. </para>
@@ -1692,12 +1516,12 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Invalidates all iterators pointing to the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> (except iterators equal to <computeroutput>end()</computeroutput>). </para>
 </formalpara>
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity_ctrl.capacity(), std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity_ctrl.capacity(), std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>operator=</computeroutput>, <computeroutput>assign(size_type, const_reference)</computeroutput>, <computeroutput>assign(capacity_type, size_type, const_reference)</computeroutput>, <computeroutput>assign(InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity() == capacity_ctrl &amp;&amp; size() &lt;= std::distance(first, last) &amp;&amp; (*this)[0]== *(last - capacity) &amp;&amp; (*this)[1] == *(last - capacity + 1) &amp;&amp; ... &amp;&amp; (*this)[capacity - 1] == *(last - 1)</computeroutput><sbr/>
 <sbr/>
  If the number of items to be copied from the range <computeroutput>[first, last)</computeroutput> is greater than the specified <computeroutput>capacity</computeroutput> then only elements from the range <computeroutput>[last - capacity, last)</computeroutput> will be copied.<sbr/>
@@ -1947,7 +1771,7 @@ The number of <computeroutput>min[pos - begin(), max[0, n - reserve()]]</compute
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Invalidates all iterators pointing to the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> (except iterators equal to <computeroutput>end()</computeroutput>). </para>
 </formalpara>
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[size() + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity().capacity(), size() + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[size() + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity().capacity(), size() + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 <formalpara><title>Example</title><para>Consider a <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> with the capacity of 6 and the size of 4. Its internal buffer may look like the one below.<sbr/>
 <sbr/>
@@ -1968,7 +1792,7 @@ For comparison if the capacity would not be preserved the internal buffer would 
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>insert(iterator, value_type)</computeroutput>, <computeroutput>insert(iterator, size_type, value_type)</computeroutput>, <computeroutput>rinsert(iterator, value_type)</computeroutput>, <computeroutput>rinsert(iterator, size_type, value_type)</computeroutput>, <computeroutput>rinsert(iterator, InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para><computeroutput>pos</computeroutput> is a valid iterator pointing to the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> or its end.<sbr/>
-Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para>Elements from the range <computeroutput>[first + max[0, distance(first, last) - (pos - begin()) - reserve()], last)</computeroutput> will be inserted at the position <computeroutput>pos</computeroutput>.<sbr/>
 The number of <computeroutput>min[pos - begin(), max[0, distance(first, last) - reserve()]]</computeroutput> elements will be overwritten at the beginning of the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput>.<sbr/>
 (See <emphasis>Example</emphasis> for the explanation.)<sbr/>
@@ -2079,7 +1903,7 @@ The number of <computeroutput>min[end() - pos, max[0, n - reserve()]]</computero
 </formalpara>
 <formalpara><title>Iterator Invalidation</title><para>Invalidates all iterators pointing to the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> (except iterators equal to <computeroutput>end()</computeroutput>). </para>
 </formalpara>
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[size() + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity().capacity(), size() + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>[size() + std::distance(first, last)]</computeroutput>; in <computeroutput>min[capacity().capacity(), size() + std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 <formalpara><title>Example</title><para>Consider a <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> with the capacity of 6 and the size of 4. Its internal buffer may look like the one below.<sbr/>
 <sbr/>
@@ -2100,7 +1924,7 @@ For comparison if the capacity would not be preserved the internal buffer would 
 <para><emphasis role="bold">See Also:</emphasis><para><computeroutput>rinsert(iterator, value_type)</computeroutput>, <computeroutput>rinsert(iterator, size_type, value_type)</computeroutput>, <computeroutput>insert(iterator, value_type)</computeroutput>, <computeroutput>insert(iterator, size_type, value_type)</computeroutput>, <computeroutput>insert(iterator, InputIterator, InputIterator)</computeroutput> </para>
 </para>
 </para></description><requires><para><computeroutput>pos</computeroutput> is a valid iterator pointing to the <computeroutput><classname alt="boost::circular_buffer_space_optimized">circular_buffer_space_optimized</classname></computeroutput> or its end.<sbr/>
- Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ Valid range <computeroutput>[first, last)</computeroutput> where <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> meet the requirements of an <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para>Elements from the range <computeroutput>[first, last - max[0, distance(first, last) - (end() - pos) - reserve()])</computeroutput> will be inserted before the position <computeroutput>pos</computeroutput>.<sbr/>
 The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - reserve()]]</computeroutput> elements will be overwritten at the end of the <computeroutput><classname alt="boost::circular_buffer">circular_buffer</classname></computeroutput>.<sbr/>
 (See <emphasis>Example</emphasis> for the explanation.)<sbr/>
@@ -2267,7 +2091,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 <formalpara><title>Complexity</title><para>Linear (in the <computeroutput>std::distance(first, last)</computeroutput>). </para>
 </formalpara>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity().capacity() == std::distance(first, last) &amp;&amp; capacity().min_capacity() == 0 &amp;&amp; full() &amp;&amp; (*this)[0]== *first &amp;&amp; (*this)[1] == *(first + 1) &amp;&amp; ... &amp;&amp; (*this)[std::distance(first, last) - 1] == *(last - 1)</computeroutput><sbr/>
 <sbr/>
  The amount of allocated memory in the internal buffer is <computeroutput>std::distance(first, last)</computeroutput>. </para>
@@ -2278,10 +2102,10 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 
 
 
-<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity_ctrl.capacity(), std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="http://www.sgi.com/tech/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
+<formalpara><title>Complexity</title><para>Linear (in <computeroutput>std::distance(first, last)</computeroutput>; in <computeroutput>min[capacity_ctrl.capacity(), std::distance(first, last)]</computeroutput> if the <computeroutput>InputIterator</computeroutput> is a <ulink url="https://www.boost.org/sgi/stl/RandomAccessIterator.html">RandomAccessIterator</ulink>). </para>
 </formalpara>
 </para></description><requires><para>Valid range <computeroutput>[first, last)</computeroutput>.<sbr/>
- <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="http://www.sgi.com/tech/stl/InputIterator.html">InputIterator</ulink>. </para>
+ <computeroutput>first</computeroutput> and <computeroutput>last</computeroutput> have to meet the requirements of <ulink url="https://www.boost.org/sgi/stl/InputIterator.html">InputIterator</ulink>. </para>
 </requires><postconditions><para><computeroutput>capacity() == capacity_ctrl &amp;&amp; size() &lt;= std::distance(first, last) &amp;&amp; (*this)[0]== (last - capacity_ctrl.capacity()) &amp;&amp; (*this)[1] == *(last - capacity_ctrl.capacity() + 1) &amp;&amp; ... &amp;&amp; (*this)[capacity_ctrl.capacity() - 1] == *(last - 1)</computeroutput><sbr/>
 <sbr/>
  If the number of items to be copied from the range <computeroutput>[first, last)</computeroutput> is greater than the specified <computeroutput>capacity_ctrl.capacity()</computeroutput> then only elements from the range <computeroutput>[last - capacity_ctrl.capacity(), last)</computeroutput> will be copied.<sbr/>
@@ -2312,40 +2136,7 @@ The number of <computeroutput>min[end() - pos, max[0, distance(first, last) - re
 </para></description><requires><para>C++ compiler with rvalue references support. </para>
 </requires><postconditions><para><computeroutput>cb.empty()</computeroutput> </para>
 </postconditions><throws><simpara><classname>Nothing.</classname> </simpara></throws></copy-assignment>
-<method-group name="private member functions">
-<method name="adjust_min_capacity"><type>void</type><purpose>Adjust the amount of allocated memory. </purpose></method>
-<method name="ensure_reserve" cv="const"><type>size_type</type><parameter name="new_capacity"><paramtype>size_type</paramtype></parameter><parameter name="buffer_size"><paramtype>size_type</paramtype></parameter><purpose>Ensure the reserve for possible growth up. </purpose></method>
-<method name="check_low_capacity"><type>void</type><parameter name="n"><paramtype>size_type</paramtype><default>1</default></parameter><purpose>Check for low capacity. </purpose></method>
-<method name="check_high_capacity"><type>void</type><purpose>Check for high capacity. </purpose></method>
-<method name="reduce_capacity"><type>void</type><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized method for reducing the capacity. </purpose></method>
-<method name="reduce_capacity"><type>void</type><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized method for reducing the capacity. </purpose></method>
-<method name="insert"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="insert"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized insert method. </purpose></method>
-<method name="rinsert"><type>void</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name="item"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized rinsert method. </purpose></method>
-<method name="rinsert"><type>void</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="pos"><paramtype>const iterator &amp;</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized rinsert method. </purpose></method>
-</method-group>
 <method-group name="private static functions">
-<method name="init_capacity" specifiers="static"><type>size_type</type><parameter name="capacity_ctrl"><paramtype>const capacity_type &amp;</paramtype></parameter><parameter name="n"><paramtype>size_type</paramtype></parameter><purpose>Determine the initial capacity. </purpose></method>
-<method name="init_capacity" specifiers="static"><type>size_type</type><template>
-          <template-type-parameter name="IntegralType"/>
-        </template><parameter name="capacity_ctrl"><paramtype>const capacity_type &amp;</paramtype></parameter><parameter name="n"><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>IntegralType</paramtype></parameter><parameter name=""><paramtype>const true_type &amp;</paramtype></parameter><purpose>Specialized method for determining the initial capacity. </purpose></method>
-<method name="init_capacity" specifiers="static"><type>size_type</type><template>
-          <template-type-parameter name="Iterator"/>
-        </template><parameter name="capacity_ctrl"><paramtype>const capacity_type &amp;</paramtype></parameter><parameter name="first"><paramtype>Iterator</paramtype></parameter><parameter name="last"><paramtype>Iterator</paramtype></parameter><parameter name=""><paramtype>const false_type &amp;</paramtype></parameter><purpose>Specialized method for determining the initial capacity. </purpose></method>
-<method name="init_capacity" specifiers="static"><type>size_type</type><template>
-          <template-type-parameter name="InputIterator"/>
-        </template><parameter name="capacity_ctrl"><paramtype>const capacity_type &amp;</paramtype></parameter><parameter name=""><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>InputIterator</paramtype></parameter><parameter name=""><paramtype>const std::input_iterator_tag &amp;</paramtype></parameter><purpose>Specialized method for determining the initial capacity. </purpose></method>
-<method name="init_capacity" specifiers="static"><type>size_type</type><template>
-          <template-type-parameter name="ForwardIterator"/>
-        </template><parameter name="capacity_ctrl"><paramtype>const capacity_type &amp;</paramtype></parameter><parameter name="first"><paramtype>ForwardIterator</paramtype></parameter><parameter name="last"><paramtype>ForwardIterator</paramtype></parameter><parameter name=""><paramtype>const std::forward_iterator_tag &amp;</paramtype></parameter><purpose>Specialized method for determining the initial capacity. </purpose></method>
 </method-group>
 </class>
 

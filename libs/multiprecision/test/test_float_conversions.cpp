@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////
 //  Copyright 2015 John Maddock. Distributed under the Boost
 //  Software License, Version 1.0. (See accompanying file
-//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_
+//  LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
 //
 
 #ifdef _MSC_VER
-#  define _SCL_SECURE_NO_WARNINGS
+#define _SCL_SECURE_NO_WARNINGS
 #endif
 
 #include <boost/detail/lightweight_test.hpp>
@@ -24,6 +24,7 @@ int main()
    BOOST_STATIC_ASSERT(!(boost::is_convertible<long double, cpp_bin_float_single>::value));
 
    cpp_bin_float_single s = boost::math::constants::pi<cpp_bin_float_single>();
+   std::cout << s << std::endl;
 
    typedef number<backends::cpp_bin_float<11, backends::digit_base_2, void, boost::int8_t, -14, 15>, et_off> cpp_bin_float_half;
 
@@ -35,9 +36,7 @@ int main()
 #endif
 
    cpp_bin_float_half hs = boost::math::constants::pi<cpp_bin_float_half>();
+   std::cout << hs << std::endl;
 
    return boost::report_errors();
 }
-
-
-
