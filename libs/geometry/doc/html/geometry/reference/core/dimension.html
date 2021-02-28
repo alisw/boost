@@ -27,7 +27,7 @@
 <a name="geometry.reference.core.dimension"></a><a class="link" href="dimension.html" title="dimension">dimension</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="idm46078490331760"></a>
+          <a class="indexterm" name="idm45353177568000"></a>
 Metafunction defining <span class="bold"><strong>value</strong></span> as the number
           of coordinates (the number of axes of any geometry) of the point type making
           up the specified geometry type.
@@ -40,7 +40,7 @@ Metafunction defining <span class="bold"><strong>value</strong></span> as the nu
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Geometry</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">dimension</span>
-      <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">core_dispatch</span><span class="special">::</span><span class="identifier">dimension</span><span class="special">&lt;</span> <span class="identifier">tag</span><span class="special">&lt;</span> <span class="identifier">Geometry</span> <span class="special">&gt;::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">geometry</span><span class="special">::</span><span class="identifier">util</span><span class="special">::</span><span class="identifier">bare_type</span><span class="special">&lt;</span> <span class="identifier">Geometry</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="special">&gt;</span>
+      <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">core_dispatch</span><span class="special">::</span><span class="identifier">dimension</span><span class="special">&lt;</span> <span class="identifier">tag</span><span class="special">&lt;</span> <span class="identifier">Geometry</span> <span class="special">&gt;::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">util</span><span class="special">::</span><span class="identifier">remove_cptrref</span><span class="special">&lt;</span> <span class="identifier">Geometry</span> <span class="special">&gt;::</span><span class="identifier">type</span> <span class="special">&gt;</span>
 <span class="special">{</span>
   <span class="comment">// ...</span>
 <span class="special">};</span>

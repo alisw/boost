@@ -452,6 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#changelog">Revision History</a>
 <ul class="sectlevel2">
+<li><a href="#changes_in_1_75_0">Changes in 1.75.0</a></li>
 <li><a href="#changes_in_1_74_0">Changes in 1.74.0</a></li>
 <li><a href="#changes_in_1_73_0">Changes in 1.73.0</a></li>
 <li><a href="#changes_in_1_70_0">Changes in 1.70.0</a></li>
@@ -603,6 +604,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#mp_reverse_fold_ql_v_q">mp_reverse_fold_q&lt;L, V, Q&gt;</a></li>
 <li><a href="#mp_partial_suml_v_f">mp_partial_sum&lt;L, V, F&gt;</a></li>
 <li><a href="#mp_partial_sum_ql_v_q">mp_partial_sum_q&lt;L, V, Q&gt;</a></li>
+<li><a href="#mp_pairwise_foldl_f">mp_pairwise_fold&lt;L, F&gt;</a></li>
+<li><a href="#mp_pairwise_fold_ql_q">mp_pairwise_fold_q&lt;L, Q&gt;</a></li>
 <li><a href="#mp_iteratev_f_r">mp_iterate&lt;V, F, R&gt;</a></li>
 <li><a href="#mp_iterate_qv_qf_qr">mp_iterate_q&lt;V, Qf, Qr&gt;</a></li>
 <li><a href="#mp_uniquel">mp_unique&lt;L&gt;</a></li>
@@ -1388,6 +1391,19 @@ int main()
 <div class="sect1">
 <h2 id="changelog">Revision History</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="changes_in_1_75_0">Changes in 1.75.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Added <code>mp_pairwise_fold</code> (suggested by Barry Revzin)</p>
+</li>
+<li>
+<p>Removed <code>mp_invoke</code> (use <code>mp_invoke_q</code>)</p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="changes_in_1_74_0">Changes in 1.74.0</h3>
 <div class="ulist">
@@ -4123,6 +4139,50 @@ using R1 = mp_partial_sum&lt;L1, mp_int&lt;0&gt;, mp_plus&gt;; // mp_list_c&lt;i
 </div>
 </div>
 <div class="sect3">
+<h4 id="mp_pairwise_foldl_f">mp_pairwise_fold&lt;L, F&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, template&lt;class...&gt; class F&gt; using mp_pairwise_fold = /*...*/;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>mp_pairwise_fold&lt;L, F&gt;</code> returns a list of the same form as <code>L</code> whose elements are
+the result of the application of the binary metafunction <code>F</code> to each pair of adjacent
+elements of <code>L</code>. That is, <code>mp_pairwise_fold&lt;L&lt;T1, T2, T3&gt;, F&gt;</code> is
+<code>L&lt;F&lt;T1, T2&gt;, F&lt;T2, T3&gt;&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p>The result has one fewer element than the original. If <code>L</code> has only one element, the
+result is an empty list. If <code>L</code> is an empty list, the result is also an empty list.</p>
+</div>
+<div class="listingblock">
+<div class="title">Code Example 66. Using mp_pairwise_fold</div>
+<div class="content">
+<pre>template&lt;class L&gt; using is_increasing = mp_all_of&lt;
+    mp_pairwise_fold&lt;L, mp_less&gt;, mp_to_bool&gt;;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mp_pairwise_fold_ql_q">mp_pairwise_fold_q&lt;L, Q&gt;</h4>
+<div class="literalblock">
+<div class="content">
+<pre>template&lt;class L, class Q&gt; using mp_pairwise_fold_q =
+    mp_pairwise_fold&lt;L, Q::template fn&gt;;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As <code>mp_pairwise_fold</code>, but takes a quoted metafunction.</p>
+</div>
+<div class="listingblock">
+<div class="title">Code Example 67. Using mp_pairwise_fold_q</div>
+<div class="content">
+<pre>template&lt;class L, template&lt;class...&gt; class P&gt; using is_sorted =
+    mp_none_of&lt;mp_pairwise_fold_q&lt;L, mp_bind&lt;P, _2, _1&gt;&gt;, mp_to_bool&gt;;</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
 <h4 id="mp_iteratev_f_r">mp_iterate&lt;V, F, R&gt;</h4>
 <div class="literalblock">
 <div class="content">
@@ -4153,7 +4213,7 @@ which when passed as <code>V</code> to <code>mp_iterate&lt;V, mp_first, mp_secon
 <code>mp_list&lt;X1, X2, X3&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 66. Using mp_iterate</div>
+<div class="title">Code Example 68. Using mp_iterate</div>
 <div class="content">
 <pre>struct X1 {};
 struct X2 {};
@@ -4310,7 +4370,7 @@ using R4 = mp_iterate&lt;Y4, value_type, next_type&gt;; // mp_list&lt;int, float
 <p>Returns <code>std::forward&lt;F&gt;(f)</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 67. Using mp_for_each and a C++14 lambda to print a tuple</div>
+<div class="title">Code Example 69. Using mp_for_each and a C++14 lambda to print a tuple</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class... T&gt; void print( std::tuple&lt;T...&gt; const &amp; tp )
 {
@@ -4351,7 +4411,7 @@ Only <code>constexpr</code> on C++14 and higher.</p>
 <p>Returns <code>mp_with_index&lt;N::value&gt;(i, f)</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 68. Using mp_with_index and a C++14 lambda to print the active element of a variant</div>
+<div class="title">Code Example 70. Using mp_with_index and a C++14 lambda to print the active element of a variant</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class... T&gt; void print( std::variant&lt;T...&gt; const&amp; v )
 {
@@ -4528,7 +4588,7 @@ replaces the existing element with <code>T</code>.</p>
 replaces the existing element <code>L&lt;X, Y&#8230;&#8203;&gt;</code> with <code>L&lt;X, F&lt;X, Y&#8230;&#8203;&gt;&gt;</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 69. Using mp_map_update to count the number of occurrences of types in a list</div>
+<div class="title">Code Example 71. Using mp_map_update to count the number of occurrences of types in a list</div>
 <div class="content">
 <pre class="highlight"><code>template&lt;class T, class U&gt; using inc2nd = mp_int&lt;U::value + 1&gt;;
 
@@ -4603,7 +4663,7 @@ returns <code>mp_false</code>. If the application causes a substitution failure,
 returns <code>mp_true</code>. <code>mp_and&lt;&gt;</code> is <code>mp_true</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 70. mp_and behavior</div>
+<div class="title">Code Example 72. mp_and behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_and&lt;mp_true, mp_true&gt;;   // mp_true
 
@@ -4629,7 +4689,7 @@ is an error because <code>void</code> does not have a nested <code>value</code>.
 mask substitution failures as <code>mp_and</code> does.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 71. mp_all behavior</div>
+<div class="title">Code Example 73. mp_all behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_all&lt;mp_true, mp_true&gt;;   // mp_true
 
@@ -4653,7 +4713,7 @@ using R4 = mp_all&lt;void, mp_true&gt;;      // compile-time error</code></pre>
 returns <code>mp_true</code>. If all results are <code>mp_false</code>, returns <code>mp_false</code>. <code>mp_or&lt;&gt;</code> is <code>mp_false</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 72. mp_or behavior</div>
+<div class="title">Code Example 74. mp_or behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_or&lt;mp_true, mp_false&gt;;   // mp_true
 
@@ -4677,7 +4737,7 @@ using R4 = mp_or&lt;void, mp_true&gt;;       // compile-time error</code></pre>
 <code>mp_or</code>, but does not perform short-circuit evaluation.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 73. mp_any behavior</div>
+<div class="title">Code Example 75. mp_any behavior</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_any&lt;mp_true, mp_false&gt;;  // mp_true
 
@@ -4712,7 +4772,7 @@ using R4 = mp_any&lt;void, mp_true&gt;;      // compile-time error</code></pre>
 whose parameters are all types, <code>mp_false</code> otherwise. <code>mp_similar&lt;&gt;</code> is <code>mp_true</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">Code Example 74. mp_similar</div>
+<div class="title">Code Example 76. mp_similar</div>
 <div class="content">
 <pre class="highlight"><code>using R1 = mp_similar&lt;void&gt;;                        // mp_true
 using R2 = mp_similar&lt;void, void&gt;;                  // mp_true
@@ -5081,7 +5141,7 @@ into this documentation by Glen Fernandes.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-11 14:56:26 UTC
+Last updated 2020-12-03 05:01:57 UTC
 </div>
 </div>
 <style>

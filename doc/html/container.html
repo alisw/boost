@@ -61,6 +61,7 @@
 <dt><span class="section"><a href="container/non_standard_containers.html#container.non_standard_containers.stable_vector"><span class="emphasis"><em>stable_vector</em></span></a></span></dt>
 <dt><span class="section"><a href="container/non_standard_containers.html#container.non_standard_containers.flat_xxx"><span class="emphasis"><em>flat_(multi)map/set</em></span>
       associative containers</a></span></dt>
+<dt><span class="section"><a href="container/non_standard_containers.html#container.non_standard_containers.devector"><span class="emphasis"><em>devector</em></span></a></span></dt>
 <dt><span class="section"><a href="container/non_standard_containers.html#container.non_standard_containers.slist"><span class="emphasis"><em>slist</em></span></a></span></dt>
 <dt><span class="section"><a href="container/non_standard_containers.html#container.non_standard_containers.static_vector"><span class="emphasis"><em>static_vector</em></span></a></span></dt>
 <dt><span class="section"><a href="container/non_standard_containers.html#container.non_standard_containers.small_vector"><span class="emphasis"><em>small_vector</em></span></a></span></dt>
@@ -141,6 +142,8 @@
 <dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.container_fwd_hpp">Header &lt;boost/container/container_fwd.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.deque_hpp">Header &lt;boost/container/deque.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.pmr.deque_hpp">Header &lt;boost/container/pmr/deque.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.devector_hpp">Header &lt;boost/container/devector.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.pmr.devector_hpp">Header &lt;boost/container/pmr/devector.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.flat_map_hpp">Header &lt;boost/container/flat_map.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.pmr.flat_map_hpp">Header &lt;boost/container/pmr/flat_map.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="boost_container_header_reference.html#header.boost.container.flat_set_hpp">Header &lt;boost/container/flat_set.hpp&gt;</a></span></dt>
@@ -184,6 +187,8 @@
     and links</a></span></dt>
 <dt><span class="section"><a href="container/release_notes.html">Release Notes</a></span></dt>
 <dd><dl>
+<dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_75_00">Boost
+      1.75 Release</a></span></dt>
 <dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_74_00">Boost
       1.74 Release</a></span></dt>
 <dt><span class="section"><a href="container/release_notes.html#container.release_notes.release_notes_boost_1_72_00">Boost
@@ -297,17 +302,23 @@
                 iterators and list-like iterator stability in insertions and erasures.
               </li>
 <li class="listitem">
-                <code class="computeroutput"><a class="link" href="boost/container/static_vector.html" title="Class template static_vector">static_vector </a></code>:
+                <code class="computeroutput"><a class="link" href="boost/container/static_vector.html" title="Class template static_vector">static_vector</a></code>:
                 a vector-like container that internally embeds (statically allocates)
                 all needed memory up to the maximum capacity. Maximum capacity can't
                 be increased and it's specified at compile time.
               </li>
 <li class="listitem">
-                <code class="computeroutput"><a class="link" href="boost/container/small_vector.html" title="Class template small_vector">small_vector </a></code>:
+                <code class="computeroutput"><a class="link" href="boost/container/small_vector.html" title="Class template small_vector">small_vector</a></code>:
                 a vector-like container that internally embeds (statically allocates)
                 a minimum amount of memory, but dynamically allocates elements when
                 capacity has to be increased. This minimum capacity is specified
                 at compile time.
+              </li>
+<li class="listitem">
+                <code class="computeroutput"><a class="link" href="boost/container/devector.html" title="Class template devector">devector</a></code>:
+                is a hybrid of the standard vector and deque containers. It offers
+                cheap (amortized constant time) insertion at both the front and back
+                ends.
               </li>
 <li class="listitem">
                 <code class="computeroutput"><a class="link" href="boost/container/slist.html" title="Class template slist">slist</a></code>: the classic
@@ -365,7 +376,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: August 11, 2020 at 15:03:12 GMT</small></p></td>
+<td align="left"><p><small>Last revised: December 03, 2020 at 05:08:51 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

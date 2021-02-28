@@ -907,7 +907,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__basic_dynamic_body.size size]]
@@ -932,7 +932,7 @@ using value_type = DynamicBuffer;
 ```
 
 [heading Description]
-This determines the type of [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] when this body type is used with a message container. 
+This determines the type of [link beast.ref.boost__beast__http__message.body `message::body`] when this body type is used with a message container. 
 
 [endsect]
 
@@ -980,7 +980,7 @@ size(
 ```
 
 [heading Description]
-When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload.overload1 `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
+When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
 
 [endsect]
 
@@ -1162,6 +1162,7 @@ Return a copy of the allocator associated with the container.
     [
 
 Insert a field. 
+
     ]
   ]
   [
@@ -1198,6 +1199,7 @@ Returns the value for a case-insensitive matching header, or `""` if it does not
     [
 
 Set a field value, removing any other instances of that field. 
+
     ]
   ]
   [
@@ -2062,20 +2064,42 @@ void
   ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload1 `more...`]]``
 
 void
-``[link beast.ref.boost__beast__http__basic_fields.insert.overload2 insert]``(
+``[link beast.ref.boost__beast__http__basic_fields.insert.overload3 insert]``(
     string_view name,
     string_view const& value);
-  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload2 `more...`]]``
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload3 `more...`]]``
 
 void
-``[link beast.ref.boost__beast__http__basic_fields.insert.overload3 insert]``(
+``[link beast.ref.boost__beast__http__basic_fields.insert.overload5 insert]``(
     field name,
     string_view name_string,
     string_view const& value);
-  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload3 `more...`]]``
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload5 `more...`]]``
+```
+
+
+```
+void
+``[link beast.ref.boost__beast__http__basic_fields.insert.overload2 insert]``(
+    field,
+    std::nullptr_t);
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload2 `more...`]]``
+
+void
+``[link beast.ref.boost__beast__http__basic_fields.insert.overload4 insert]``(
+    string_view,
+    std::nullptr_t);
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload4 `more...`]]``
+
+void
+``[link beast.ref.boost__beast__http__basic_fields.insert.overload6 insert]``(
+    field,
+    string_view,
+    std::nullptr_t);
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.insert.overload6 `more...`]]``
 ```
  
-[section:overload1 http::basic_fields::insert (1 of 3 overloads)]
+[section:overload1 http::basic_fields::insert (1 of 6 overloads)]
 
 Insert a field. 
 [heading Synopsis]
@@ -2109,7 +2133,21 @@ The value of the field, as a [link beast.ref.boost__beast__string_view `string_v
 
 [endsect]
 
-[section:overload2 http::basic_fields::insert (2 of 3 overloads)]
+[section:overload2 http::basic_fields::insert (2 of 6 overloads)]
+
+[heading Synopsis]
+```
+void
+insert(
+    field,
+    std::nullptr_t);
+```
+
+[heading Description]
+
+[endsect]
+
+[section:overload3 http::basic_fields::insert (3 of 6 overloads)]
 
 Insert a field. 
 [heading Synopsis]
@@ -2143,7 +2181,21 @@ The value of the field, as a [link beast.ref.boost__beast__string_view `string_v
 
 [endsect]
 
-[section:overload3 http::basic_fields::insert (3 of 3 overloads)]
+[section:overload4 http::basic_fields::insert (4 of 6 overloads)]
+
+[heading Synopsis]
+```
+void
+insert(
+    string_view,
+    std::nullptr_t);
+```
+
+[heading Description]
+
+[endsect]
+
+[section:overload5 http::basic_fields::insert (5 of 6 overloads)]
 
 Insert a field. 
 [heading Synopsis]
@@ -2185,6 +2237,21 @@ The value of the field, as a [link beast.ref.boost__beast__string_view `string_v
 
 [endsect]
 
+[section:overload6 http::basic_fields::insert (6 of 6 overloads)]
+
+[heading Synopsis]
+```
+void
+insert(
+    field,
+    string_view,
+    std::nullptr_t);
+```
+
+[heading Description]
+
+[endsect]
+
 
 [endsect]
 
@@ -2201,13 +2268,28 @@ void
   ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.set.overload1 `more...`]]``
 
 void
-``[link beast.ref.boost__beast__http__basic_fields.set.overload2 set]``(
+``[link beast.ref.boost__beast__http__basic_fields.set.overload3 set]``(
     string_view name,
     string_view const& value);
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.set.overload3 `more...`]]``
+```
+
+
+```
+void
+``[link beast.ref.boost__beast__http__basic_fields.set.overload2 set]``(
+    field,
+    std::nullptr_t);
   ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.set.overload2 `more...`]]``
+
+void
+``[link beast.ref.boost__beast__http__basic_fields.set.overload4 set]``(
+    string_view,
+    std::nullptr_t);
+  ``[''''&raquo;''' [link beast.ref.boost__beast__http__basic_fields.set.overload4 `more...`]]``
 ```
  
-[section:overload1 http::basic_fields::set (1 of 2 overloads)]
+[section:overload1 http::basic_fields::set (1 of 4 overloads)]
 
 Set a field value, removing any other instances of that field. 
 [heading Synopsis]
@@ -2243,7 +2325,21 @@ The field value.
 
 [endsect]
 
-[section:overload2 http::basic_fields::set (2 of 2 overloads)]
+[section:overload2 http::basic_fields::set (2 of 4 overloads)]
+
+[heading Synopsis]
+```
+void
+set(
+    field,
+    std::nullptr_t);
+```
+
+[heading Description]
+
+[endsect]
+
+[section:overload3 http::basic_fields::set (3 of 4 overloads)]
 
 Set a field value, removing any other instances of that field. 
 [heading Synopsis]
@@ -2274,6 +2370,20 @@ The value of the field, as a [link beast.ref.boost__beast__string_view `string_v
     ]
   ]
 ]
+
+[endsect]
+
+[section:overload4 http::basic_fields::set (4 of 4 overloads)]
+
+[heading Synopsis]
+```
+void
+set(
+    string_view,
+    std::nullptr_t);
+```
+
+[heading Description]
 
 [endsect]
 
@@ -2876,7 +2986,7 @@ Algorithm for storing buffers when parsing.
     ]
     [
 
-The type of the [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] member. 
+The type of the [link beast.ref.boost__beast__http__message.body `message::body`] member. 
     ]
   ]
   [
@@ -2888,7 +2998,7 @@ Algorithm for retrieving buffers when serializing.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__basic_file_body.size size]]
@@ -3147,11 +3257,11 @@ Exchange two dynamic buffers.
 A dynamic buffer encapsulates memory storage that may be automatically resized as required, where the memory is divided into two regions: readable bytes followed by writable bytes. These memory regions are internal to the dynamic buffer, but direct access to the elements is provided to permit them to be efficiently used with I/O operations.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_flat_buffer.data `data`] when `this` is non-const.
 
 * A configurable maximum buffer size may be set upon construction. Attempts to exceed the buffer size will throw `std::length_error`.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] and [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`], will have length one.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_flat_buffer.data `data`] and [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`], will have length one.
 
 Upon construction, a maximum size for the buffer may be specified. If this limit is exceeded, the `std::length_error` exception will be thrown.
 
@@ -3309,7 +3419,7 @@ basic_flat_buffer();
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size.overload1 `max_size`] will return the largest value which may be passed to the allocator's `allocate` function. 
+After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size `max_size`] will return the largest value which may be passed to the allocator's `allocate` function. 
 
 [endsect]
 
@@ -3323,7 +3433,7 @@ basic_flat_buffer(
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size.overload1 `max_size`] will return the specified value of `limit`.
+After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size `max_size`] will return the specified value of `limit`.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3348,7 +3458,7 @@ basic_flat_buffer(
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size.overload1 `max_size`] will return the largest value which may be passed to the allocator's `allocate` function.
+After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size `max_size`] will return the largest value which may be passed to the allocator's `allocate` function.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3377,7 +3487,7 @@ basic_flat_buffer(
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size.overload1 `max_size`] will return the specified value of `limit`.
+After construction, [link beast.ref.boost__beast__basic_flat_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_flat_buffer.max_size `max_size`] will return the specified value of `limit`.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3413,7 +3523,7 @@ basic_flat_buffer(
 
 [heading Description]
 The container is constructed with the contents of `other` using move semantics. The maximum size will be the same as the moved-from object.
-Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] remain valid after the move.
+Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] remain valid after the move.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3443,7 +3553,7 @@ basic_flat_buffer(
 
 [heading Description]
 Using `alloc` as the allocator for the new container, the contents of `other` are moved. If `alloc != other.get_allocator()`, this results in a copy. The maximum size will be the same as the moved-from object.
-Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid after the move.
+Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid after the move.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3682,7 +3792,7 @@ operator=(
 
 [heading Description]
 The container is assigned with the contents of `other` using move semantics. The maximum size will be the same as the moved-from object.
-Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] remain valid after the move.
+Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] remain valid after the move.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3873,7 +3983,7 @@ reserve(
 
 [heading Description]
 This function adjusts the internal storage (if necessary) to guarantee space for at least `n` bytes.
-Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -3934,7 +4044,7 @@ clear();
 ```
 
 [heading Description]
-This clears the buffer without changing capacity. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
+This clears the buffer without changing capacity. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -4049,7 +4159,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage. Memory may be reallocated as needed.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4067,7 +4177,7 @@ The desired number of bytes in the returned buffer sequence.
     [`std::length_error`
     ]
     [
-if [link beast.ref.boost__beast__basic_flat_buffer.size `size()`] + n exceeds either [link beast.ref.boost__beast__basic_flat_buffer.max_size.overload1 `max_size()`] or the allocator's maximum allocation size.
+if [link beast.ref.boost__beast__basic_flat_buffer.size `size()`] + n exceeds either [link beast.ref.boost__beast__basic_flat_buffer.max_size `max_size()`] or the allocator's maximum allocation size.
     ]
   ]
 ]
@@ -4091,7 +4201,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4123,7 +4233,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_flat_buffer.data `data`] or [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`] become invalid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4332,13 +4442,13 @@ A dynamic buffer encapsulates memory storage that may be automatically resized a
 The implementation uses a sequence of one or more byte arrays of varying sizes to represent the readable and writable bytes. Additional byte array objects are appended to the sequence to accommodate changes in the desired size. The behavior and implementation of this container is most similar to `std::deque`.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_multi_buffer.data `data`] when `this` is non-const.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] and [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`], may have length greater than one.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_multi_buffer.data `data`] and [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`], may have length greater than one.
 
 * A configurable maximum size may be set upon construction and adjusted afterwards. Calls to [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] that would exceed this size will throw `std::length_error`.
 
-* Sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] remain valid after calls to [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] or [link beast.ref.boost__beast__basic_multi_buffer.commit `commit`].
+* Sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] remain valid after calls to [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] or [link beast.ref.boost__beast__basic_multi_buffer.commit `commit`].
 
 [heading Template Parameters]
 [table [[Type][Description]]
@@ -4502,7 +4612,7 @@ basic_multi_buffer();
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size.overload1 `max_size`] will return the largest value which may be passed to the allocator's `allocate` function. 
+After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size `max_size`] will return the largest value which may be passed to the allocator's `allocate` function. 
 
 [endsect]
 
@@ -4516,7 +4626,7 @@ basic_multi_buffer(
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size.overload1 `max_size`] will return the specified value of `limit`.
+After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size `max_size`] will return the specified value of `limit`.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4541,7 +4651,7 @@ basic_multi_buffer(
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size.overload1 `max_size`] will return the largest value which may be passed to the allocator's `allocate` function.
+After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size `max_size`] will return the largest value which may be passed to the allocator's `allocate` function.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4570,7 +4680,7 @@ basic_multi_buffer(
 ```
 
 [heading Description]
-After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size.overload1 `max_size`] will return the specified value of `limit`.
+After construction, [link beast.ref.boost__beast__basic_multi_buffer.capacity `capacity`] will return zero, and [link beast.ref.boost__beast__basic_multi_buffer.max_size `max_size`] will return the specified value of `limit`.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4606,7 +4716,7 @@ basic_multi_buffer(
 
 [heading Description]
 The container is constructed with the contents of `other` using move semantics. The maximum size will be the same as the moved-from object.
-Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] remain valid after the move.
+Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] remain valid after the move.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4636,7 +4746,7 @@ basic_multi_buffer(
 
 [heading Description]
 Using `alloc` as the allocator for the new container, the contents of `other` are moved. If `alloc != other.get_allocator()`, this results in a copy. The maximum size will be the same as the moved-from object.
-Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid after the move.
+Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid after the move.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -4871,7 +4981,7 @@ operator=(
 
 [heading Description]
 The container is assigned with the contents of `other` using move semantics. The maximum size will be the same as the moved-from object.
-Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] remain valid after the move.
+Buffer sequences previously obtained from `other` using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] remain valid after the move.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -5059,7 +5169,7 @@ reserve(
 
 [heading Description]
 This function adjusts the internal storage (if necessary) to guarantee space for at least `n` bytes.
-Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] remain valid, while buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] remain valid, while buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -5099,7 +5209,7 @@ shrink_to_fit();
 ```
 
 [heading Description]
-Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -5119,7 +5229,7 @@ clear();
 ```
 
 [heading Description]
-This clears the buffer without changing capacity. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid.
+This clears the buffer without changing capacity. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -5243,7 +5353,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage. Memory may be reallocated as needed.
-All buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] remain valid.
+All buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] remain valid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -5261,7 +5371,7 @@ The desired number of bytes in the returned buffer sequence.
     [`std::length_error`
     ]
     [
-if [link beast.ref.boost__beast__basic_multi_buffer.size `size()`] + n exceeds [link beast.ref.boost__beast__basic_multi_buffer.max_size.overload1 `max_size()`].
+if [link beast.ref.boost__beast__basic_multi_buffer.size `size()`] + n exceeds [link beast.ref.boost__beast__basic_multi_buffer.max_size `max_size()`].
     ]
   ]
 ]
@@ -5285,7 +5395,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] remain valid.
+All buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] remain valid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -5317,7 +5427,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] or [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -5607,7 +5717,7 @@ Move assignment.
   ]
 ]
 [heading Description]
-This parser is designed to efficiently parse messages in the HTTP/1 wire format. It allocates no memory when input is presented as a single contiguous buffer, and uses minimal state. It will handle chunked encoding and it understands the semantics of the Connection, Content-Length, and Upgrade fields. The parser is optimized for the case where the input buffer sequence consists of a single contiguous buffer. The [link beast.ref.boost__beast__basic_flat_buffer `beast::basic_flat_buffer`] class is provided, which guarantees that the input sequence of the stream buffer will be represented by exactly one contiguous buffer. To ensure the optimum performance of the parser, use [link beast.ref.boost__beast__basic_flat_buffer `beast::basic_flat_buffer`] with HTTP algorithms such as [link beast.ref.boost__beast__http__read.overload1 `read`], [link beast.ref.boost__beast__http__read_some.overload1 `read_some`], [link beast.ref.boost__beast__http__async_read.overload1 `async_read`], and [link beast.ref.boost__beast__http__async_read_some `async_read_some`]. Alternatively, the caller may use custom techniques to ensure that the structured portion of the HTTP message (header or chunk header) is contained in a linear buffer.
+This parser is designed to efficiently parse messages in the HTTP/1 wire format. It allocates no memory when input is presented as a single contiguous buffer, and uses minimal state. It will handle chunked encoding and it understands the semantics of the Connection, Content-Length, and Upgrade fields. The parser is optimized for the case where the input buffer sequence consists of a single contiguous buffer. The [link beast.ref.boost__beast__basic_flat_buffer `beast::basic_flat_buffer`] class is provided, which guarantees that the input sequence of the stream buffer will be represented by exactly one contiguous buffer. To ensure the optimum performance of the parser, use [link beast.ref.boost__beast__basic_flat_buffer `beast::basic_flat_buffer`] with HTTP algorithms such as [link beast.ref.boost__beast__http__read `read`], [link beast.ref.boost__beast__http__read_some `read_some`], [link beast.ref.boost__beast__http__async_read `async_read`], and [link beast.ref.boost__beast__http__async_read_some `async_read_some`]. Alternatively, the caller may use custom techniques to ensure that the structured portion of the HTTP message (header or chunk header) is contained in a linear buffer.
 The interface to the parser uses virtual member functions. To use this class, derive your type from [link beast.ref.boost__beast__http__basic_parser `basic_parser`]. When bytes are presented, the implementation will make a series of zero or more calls to virtual functions, which the derived class must implement.
 Every virtual function must be provided by the derived class, or else a compilation error will be generated. The implementation will make sure that `ec` is clear before each virtual function is invoked. If a virtual function sets an error, it is propagated out of the parser to the caller.
 
@@ -6806,7 +6916,7 @@ Completion handlers with explicit associated executors (such as those arising fr
 * Function objects submitted to the executor shall never run concurrently with each other.
 
 The executor type `net::strand` meets these requirements. Use of a strand as the executor in the stream class template offers an additional notational convenience: the strand does not need to be specified in each individual initiating function call.
-Unlike other stream wrappers, the underlying socket is accessed through the [link beast.ref.boost__beast__basic_stream.socket.overload1 `socket`] member function instead of `next_layer`. This causes the [link beast.ref.boost__beast__basic_stream `basic_stream`] to be returned in calls to [link beast.ref.boost__beast__get_lowest_layer `get_lowest_layer`].
+Unlike other stream wrappers, the underlying socket is accessed through the [link beast.ref.boost__beast__basic_stream.socket `socket`] member function instead of `next_layer`. This causes the [link beast.ref.boost__beast__basic_stream `basic_stream`] to be returned in calls to [link beast.ref.boost__beast__get_lowest_layer `get_lowest_layer`].
 
 [heading Usage]
 
@@ -7229,7 +7339,7 @@ expires_after(
 
 [heading Description]
 This sets either the read timer, the write timer, or both timers to expire after the specified amount of time has elapsed. If a timer expires when the corresponding asynchronous operation is outstanding, the stream will be closed and any outstanding operations will complete with the error [link beast.ref.boost__beast__error `beast::error::timeout`]. Otherwise, if the timer expires while no operations are outstanding, and the expiraton is not set again, the next operation will time out immediately.
-The timer applies collectively to any asynchronous reads or writes initiated after the expiration is set, until the expiration is set again. A call to [link beast.ref.boost__beast__basic_stream.async_connect.overload1 `async_connect`] counts as both a read and a write.
+The timer applies collectively to any asynchronous reads or writes initiated after the expiration is set, until the expiration is set again. A call to [link beast.ref.boost__beast__basic_stream.async_connect `async_connect`] counts as both a read and a write.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -7258,7 +7368,7 @@ expires_at(
 
 [heading Description]
 This sets either the read timer, the write timer, or both timers to expire at the specified time point. If a timer expires when the corresponding asynchronous operation is outstanding, the stream will be closed and any outstanding operations will complete with the error [link beast.ref.boost__beast__error `beast::error::timeout`]. Otherwise, if the timer expires while no operations are outstanding, and the expiraton is not set again, the next operation will time out immediately.
-The timer applies collectively to any asynchronous reads or writes initiated after the expiration is set, until the expiration is set again. A call to [link beast.ref.boost__beast__basic_stream.async_connect.overload1 `async_connect`] counts as both a read and a write.
+The timer applies collectively to any asynchronous reads or writes initiated after the expiration is set, until the expiration is set again. A call to [link beast.ref.boost__beast__basic_stream.async_connect `async_connect`] counts as both a read and a write.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -7467,7 +7577,7 @@ Thrown on failure.
   ]
 ]
 [heading See Also]
-[link beast.ref.boost__beast__basic_stream.connect.overload1 `connect`]
+[link beast.ref.boost__beast__basic_stream.connect `connect`]
 
 [endsect]
 
@@ -7503,7 +7613,7 @@ Set to indicate what error occurred, if any.
   ]
 ]
 [heading See Also]
-[link beast.ref.boost__beast__basic_stream.connect.overload1 `connect`]
+[link beast.ref.boost__beast__basic_stream.connect `connect`]
 
 [endsect]
 
@@ -8034,7 +8144,7 @@ Regardless of whether the asynchronous operation completes immediately or not, t
   ]
 ]
 [heading See Also]
-[link beast.ref.boost__beast__basic_stream.async_connect.overload1 `async_connect`]
+[link beast.ref.boost__beast__basic_stream.async_connect `async_connect`]
 
 [endsect]
 
@@ -8464,7 +8574,7 @@ This call always returns immediately. The asynchronous operation will continue u
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__basic_stream.read_some.overload1 `read_some`] or [link beast.ref.boost__beast__basic_stream.async_read_some `async_read_some`] are performed until this operation completes.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__basic_stream.read_some `read_some`] or [link beast.ref.boost__beast__basic_stream.async_read_some `async_read_some`] are performed until this operation completes.
 If the timeout timer expires while the operation is outstanding, the operation will be canceled and the completion handler will be invoked with the error [link beast.ref.boost__beast__error `error::timeout`].
 
 [heading Parameters]
@@ -8727,7 +8837,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__basic_string_body.size size]]
@@ -8752,7 +8862,7 @@ using value_type = std::basic_string< CharT, Traits, Allocator >;
 ```
 
 [heading Description]
-This determines the type of [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] when this body type is used with a message container. 
+This determines the type of [link beast.ref.boost__beast__http__message.body `message::body`] when this body type is used with a message container. 
 
 [endsect]
 
@@ -8800,7 +8910,7 @@ size(
 ```
 
 [heading Description]
-When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload.overload1 `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
+When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
 
 [endsect]
 
@@ -9783,16 +9893,6 @@ Returns the original mutable buffer sequence.
     ]
   ]
 ]
-[heading Friends]
-[table [[Name][Description]]
-  [
-    [[*[link beast.ref.boost__beast__buffers_adaptor.buffers_adaptor_test_hook buffers_adaptor_test_hook]]
-    ]
-    [
-
-    ]
-  ]
-]
 [heading Description]
 This class wraps a ['MutableBufferSequence] to meet the requirements of ['DynamicBuffer]. Upon construction the input and output sequences are empty. A copy of the mutable buffer sequence object is stored; however, ownership of the underlying memory is not transferred. The caller is responsible for making sure that referenced memory remains valid for the duration of any operations.
 The size of the mutable buffer sequence determines the maximum number of bytes which may be prepared and committed.
@@ -10103,7 +10203,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage. This function does not allocate memory. Instead, the storage comes from the underlying mutable buffer sequence.
-All buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.data.overload1 `data`] remain valid.
+All buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.data `data`] remain valid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -10145,7 +10245,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.data.overload1 `data`] remain valid.
+All buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.prepare `prepare`] are invalidated. Buffer sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.data `data`] remain valid.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -10177,7 +10277,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.data.overload1 `data`] or [link beast.ref.boost__beast__buffers_adaptor.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__buffers_adaptor.data `data`] or [link beast.ref.boost__beast__buffers_adaptor.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -10809,14 +10909,6 @@ Constructor.
 ```
 ``[link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload1 buffers_suffix]``();
   ``[''''&raquo;''' [link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload1 `more...`]]``
-```
-
-
-Copy Constructor. 
-```
-``[link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload2 buffers_suffix]``(
-    buffers_suffix const&);
-  ``[''''&raquo;''' [link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload2 `more...`]]``
 
 explicit
 ``[link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload3 buffers_suffix]``(
@@ -10830,6 +10922,14 @@ explicit
     boost::in_place_init_t,
     Args&&... args);
   ``[''''&raquo;''' [link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload4 `more...`]]``
+```
+
+
+Copy Constructor. 
+```
+``[link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload2 buffers_suffix]``(
+    buffers_suffix const&);
+  ``[''''&raquo;''' [link beast.ref.boost__beast__buffers_suffix.buffers_suffix.overload2 `more...`]]``
 ```
  
 [section:overload1 buffers_suffix::buffers_suffix (1 of 4 overloads)]
@@ -12688,7 +12788,7 @@ params(
 ```
 
 [heading Description]
-This function dynamically updates the compression level and compression strategy. The interpretation of level and strategy is as in [link beast.ref.boost__beast__zlib__deflate_stream.reset.overload1 `reset`]. This can be used to switch between compression and straight copy of the input data, or to switch to a different kind of input data requiring a different strategy. If the compression level is changed, the input available so far is compressed with the old level (and may be flushed); the new level will take effect only at the next call of [link beast.ref.boost__beast__zlib__deflate_stream.write `write`].
+This function dynamically updates the compression level and compression strategy. The interpretation of level and strategy is as in [link beast.ref.boost__beast__zlib__deflate_stream.reset `reset`]. This can be used to switch between compression and straight copy of the input data, or to switch to a different kind of input data requiring a different strategy. If the compression level is changed, the input available so far is compressed with the old level (and may be flushed); the new level will take effect only at the next call of [link beast.ref.boost__beast__zlib__deflate_stream.write `write`].
 Before the call of `params`, the stream state must be set as for a call of [link beast.ref.boost__beast__zlib__deflate_stream.write `write`], since the currently available input may have to be compressed and flushed. In particular, `zs.avail_out` must be non-zero.
 
 [heading Return Value]
@@ -12779,7 +12879,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__empty_body.size size]]
@@ -12840,7 +12940,7 @@ size(
 ```
 
 [heading Description]
-When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload.overload1 `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
+When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
 
 [endsect]
 
@@ -15622,7 +15722,7 @@ Reset the pointed-to buffer.
   ]
 ]
 [heading Description]
-Buffer sequences returned by [link beast.ref.boost__beast__flat_static_buffer.data.overload1 `data`] and [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] will always be of length one. This implements a dynamic buffer using no memory allocations.
+Buffer sequences returned by [link beast.ref.boost__beast__flat_static_buffer.data `data`] and [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] will always be of length one. This implements a dynamic buffer using no memory allocations.
 
 [heading Template Parameters]
 [table [[Type][Description]]
@@ -15784,7 +15884,7 @@ clear();
 
 [heading Description]
 This function causes the readable and writable bytes to become empty. The capacity is not changed.
-Buffer sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -15884,7 +15984,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -15926,7 +16026,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -15958,7 +16058,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer.data `data`] or [link beast.ref.boost__beast__flat_static_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -16183,9 +16283,9 @@ Reset the pointed-to buffer.
 A dynamic buffer encapsulates memory storage that may be automatically resized as required, where the memory is divided into two regions: readable bytes followed by writable bytes. These memory regions are internal to the dynamic buffer, but direct access to the elements is provided to permit them to be efficiently used with I/O operations.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__flat_static_buffer_base.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__flat_static_buffer_base.data `data`] when `this` is non-const.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__flat_static_buffer_base.data.overload1 `data`] and [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`], will have length one.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__flat_static_buffer_base.data `data`] and [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`], will have length one.
 
 * Ownership of the underlying storage belongs to the derived class.
 
@@ -16232,11 +16332,7 @@ Constructor.
     void* p,
     std::size_t n);
   ``[''''&raquo;''' [link beast.ref.boost__beast__flat_static_buffer_base.flat_static_buffer_base.overload1 `more...`]]``
-```
 
-
-Constructor. 
-```
 ``[link beast.ref.boost__beast__flat_static_buffer_base.flat_static_buffer_base.overload2 flat_static_buffer_base]``();
   ``[''''&raquo;''' [link beast.ref.boost__beast__flat_static_buffer_base.flat_static_buffer_base.overload2 `more...`]]``
 ```
@@ -16303,7 +16399,7 @@ clear();
 
 [heading Description]
 This function causes the readable and writable bytes to become empty. The capacity is not changed.
-Buffer sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -16433,7 +16529,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -16475,7 +16571,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -16507,7 +16603,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__flat_static_buffer_base.data `data`] or [link beast.ref.boost__beast__flat_static_buffer_base.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -17878,12 +17974,12 @@ method() const;
 ```
 
 [heading Description]
-If the request-method is not one of the recognized verbs, [link beast.ref.boost__beast__http__field `verb::unknown`] is returned. Callers may use [link beast.ref.boost__beast__http__header.method_string.overload1 `method_string`] to retrieve the exact text.
+If the request-method is not one of the recognized verbs, [link beast.ref.boost__beast__http__field `verb::unknown`] is returned. Callers may use [link beast.ref.boost__beast__http__header.method_string `method_string`] to retrieve the exact text.
 
 [heading Remarks]
 This function is only available when `isRequest == true`.
 [heading See Also]
-[link beast.ref.boost__beast__http__header.method_string.overload1 `method_string`]
+[link beast.ref.boost__beast__http__header.method_string `method_string`]
 
 [endsect]
 
@@ -17962,7 +18058,7 @@ method_string() const;
 [heading Remarks]
 This function is only available when `isRequest == true`.
 [heading See Also]
-[link beast.ref.boost__beast__http__header.method.overload1 `method`]
+[link beast.ref.boost__beast__http__header.method `method`]
 
 [endsect]
 
@@ -18149,7 +18245,7 @@ result(
 ```
 
 [heading Description]
-This sets the status code to the exact number passed in. If the number does not correspond to one of the known status codes, the function [link beast.ref.boost__beast__http__header.result.overload1 `result`] will return [link beast.ref.boost__beast__http__field `status::unknown`]. Use [link beast.ref.boost__beast__http__header.result_int `result_int`] to obtain the original raw status-code.
+This sets the status code to the exact number passed in. If the number does not correspond to one of the known status codes, the function [link beast.ref.boost__beast__http__header.result `result`] will return [link beast.ref.boost__beast__http__field `status::unknown`]. Use [link beast.ref.boost__beast__http__header.result_int `result_int`] to obtain the original raw status-code.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -19672,7 +19768,7 @@ using body_type = Body;
 ```
 
 [heading Description]
-The [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] member will be of type `body_type::value_type`. 
+The [link beast.ref.boost__beast__http__message.body `message::body`] member will be of type `body_type::value_type`. 
 
 [endsect]
 
@@ -20556,18 +20652,18 @@ need_eof() const;
 ```
 
 [heading Description]
-For HTTP requests, this function returns the logical NOT of a call to [link beast.ref.boost__beast__http__message.keep_alive.overload1 `keep_alive`].
-For HTTP responses, this function returns the logical NOT of a call to [link beast.ref.boost__beast__http__message.keep_alive.overload1 `keep_alive`] if any of the following are true:
+For HTTP requests, this function returns the logical NOT of a call to [link beast.ref.boost__beast__http__message.keep_alive `keep_alive`].
+For HTTP responses, this function returns the logical NOT of a call to [link beast.ref.boost__beast__http__message.keep_alive `keep_alive`] if any of the following are true:
 
 * [link beast.ref.boost__beast__http__message.has_content_length `has_content_length`] would return `true`
 
-* [link beast.ref.boost__beast__http__message.chunked.overload1 `chunked`] would return `true`
+* [link beast.ref.boost__beast__http__message.chunked `chunked`] would return `true`
 
-* [link beast.ref.boost__beast__http__message.result.overload1 `result`] returns [link beast.ref.boost__beast__http__status `status::no_content`]
+* [link beast.ref.boost__beast__http__message.result `result`] returns [link beast.ref.boost__beast__http__status `status::no_content`]
 
-* [link beast.ref.boost__beast__http__message.result.overload1 `result`] returns [link beast.ref.boost__beast__http__status `status::not_modified`]
+* [link beast.ref.boost__beast__http__message.result `result`] returns [link beast.ref.boost__beast__http__status `status::not_modified`]
 
-* [link beast.ref.boost__beast__http__message.result.overload1 `result`] returns any informational status class (100 to 199)
+* [link beast.ref.boost__beast__http__message.result `result`] returns any informational status class (100 to 199)
 
 Otherwise, the function returns `true`.
 
@@ -20792,12 +20888,12 @@ method() const;
 ```
 
 [heading Description]
-If the request-method is not one of the recognized verbs, [link beast.ref.boost__beast__http__field `verb::unknown`] is returned. Callers may use [link beast.ref.boost__beast__http__message.method_string.overload1 `method_string`] to retrieve the exact text.
+If the request-method is not one of the recognized verbs, [link beast.ref.boost__beast__http__field `verb::unknown`] is returned. Callers may use [link beast.ref.boost__beast__http__message.method_string `method_string`] to retrieve the exact text.
 
 [heading Remarks]
 This function is only available when `isRequest == true`.
 [heading See Also]
-[link beast.ref.boost__beast__http__message.method_string.overload1 `method_string`]
+[link beast.ref.boost__beast__http__message.method_string `method_string`]
 
 [endsect]
 
@@ -20878,7 +20974,7 @@ method_string() const;
 [heading Remarks]
 This function is only available when `isRequest == true`.
 [heading See Also]
-[link beast.ref.boost__beast__http__message.method.overload1 `method`]
+[link beast.ref.boost__beast__http__message.method `method`]
 
 [endsect]
 
@@ -21071,7 +21167,7 @@ result(
 ```
 
 [heading Description]
-This sets the status code to the exact number passed in. If the number does not correspond to one of the known status codes, the function [link beast.ref.boost__beast__http__message.result.overload1 `result`] will return [link beast.ref.boost__beast__http__field `status::unknown`]. Use [link beast.ref.boost__beast__http__message.result_int `result_int`] to obtain the original raw status-code.
+This sets the status code to the exact number passed in. If the number does not correspond to one of the known status codes, the function [link beast.ref.boost__beast__http__message.result `result`] will return [link beast.ref.boost__beast__http__field `status::unknown`]. Use [link beast.ref.boost__beast__http__message.result_int `result_int`] to obtain the original raw status-code.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -22099,6 +22195,7 @@ Return a copy of the allocator associated with the container.
     [
 
 Insert a field. 
+
     ]
   ]
   [
@@ -22135,6 +22232,7 @@ Returns the value for a case-insensitive matching header, or `""` if it does not
     [
 
 Set a field value, removing any other instances of that field. 
+
     ]
   ]
   [
@@ -23184,7 +23282,7 @@ Maximum server window bits to offer.
 These settings control the permessage-deflate extension, which allows messages to be compressed.
 
 [heading Remarks]
-Objects of this type are used with [link beast.ref.boost__beast__websocket__stream.set_option.overload1 `beast::websocket::stream::set_option`]. 
+Objects of this type are used with [link beast.ref.boost__beast__websocket__stream.set_option `beast::websocket::stream::set_option`]. 
  
 [section:server_enable websocket::permessage_deflate::server_enable]
 [indexterm2 server_enable..websocket::permessage_deflate]
@@ -23696,7 +23794,7 @@ Completion handlers with explicit associated executors (such as those arising fr
 * Function objects submitted to the executor shall never run concurrently with each other.
 
 The executor type `net::strand` meets these requirements. Use of a strand as the executor in the stream class template offers an additional notational convenience: the strand does not need to be specified in each individual initiating function call.
-Unlike other stream wrappers, the underlying socket is accessed through the [link beast.ref.boost__beast__basic_stream.socket.overload1 `socket`] member function instead of `next_layer`. This causes the [link beast.ref.boost__beast__basic_stream `basic_stream`] to be returned in calls to [link beast.ref.boost__beast__get_lowest_layer `get_lowest_layer`].
+Unlike other stream wrappers, the underlying socket is accessed through the [link beast.ref.boost__beast__basic_stream.socket `socket`] member function instead of `next_layer`. This causes the [link beast.ref.boost__beast__basic_stream `basic_stream`] to be returned in calls to [link beast.ref.boost__beast__get_lowest_layer `get_lowest_layer`].
 
 [heading Usage]
 
@@ -25380,7 +25478,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__span_body.size size]]
@@ -25568,7 +25666,7 @@ The type pointed to by span iterators
   ]
 ]
 [heading Description]
-This determines the type of [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] when this body type is used with a message container. 
+This determines the type of [link beast.ref.boost__beast__http__message.body `message::body`] when this body type is used with a message container. 
 
 [endsect]
 
@@ -25616,7 +25714,7 @@ size(
 ```
 
 [heading Description]
-When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload.overload1 `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
+When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
 
 [endsect]
 
@@ -27781,9 +27879,9 @@ Constructor.
 A dynamic buffer encapsulates memory storage that may be automatically resized as required, where the memory is divided into two regions: readable bytes followed by writable bytes. These memory regions are internal to the dynamic buffer, but direct access to the elements is provided to permit them to be efficiently used with I/O operations.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__static_buffer.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__static_buffer.data `data`] when `this` is non-const.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__static_buffer.data.overload1 `data`] and [link beast.ref.boost__beast__static_buffer.prepare `prepare`], may have length up to two.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__static_buffer.data `data`] and [link beast.ref.boost__beast__static_buffer.prepare `prepare`], may have length up to two.
 
 * All operations execute in constant time.
 
@@ -27947,7 +28045,7 @@ clear();
 
 [heading Description]
 This function causes the readable and writable bytes to become empty. The capacity is not changed.
-Buffer sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -28047,7 +28145,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage. Memory may be reallocated as needed.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -28089,7 +28187,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -28121,7 +28219,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer.data `data`] or [link beast.ref.boost__beast__static_buffer.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -28288,9 +28386,9 @@ Constructor.
 A dynamic buffer encapsulates memory storage that may be automatically resized as required, where the memory is divided into two regions: readable bytes followed by writable bytes. These memory regions are internal to the dynamic buffer, but direct access to the elements is provided to permit them to be efficiently used with I/O operations.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__static_buffer_base.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__static_buffer_base.data `data`] when `this` is non-const.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__static_buffer_base.data.overload1 `data`] and [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`], may have length up to two.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__static_buffer_base.data `data`] and [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`], may have length up to two.
 
 * All operations execute in constant time.
 
@@ -28377,7 +28475,7 @@ clear();
 
 [heading Description]
 This function causes the readable and writable bytes to become empty. The capacity is not changed.
-Buffer sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] become invalid.
+Buffer sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] become invalid.
 
 [heading Exception Safety]
 
@@ -28507,7 +28605,7 @@ prepare(
 
 [heading Description]
 Returns a mutable buffer sequence representing the writable bytes containing exactly `n` bytes of storage. Memory may be reallocated as needed.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -28549,7 +28647,7 @@ commit(
 
 [heading Description]
 Appends n bytes from the start of the writable bytes to the end of the readable bytes. The remainder of the writable bytes are discarded. If n is greater than the number of writable bytes, all writable bytes are appended to the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -28581,7 +28679,7 @@ consume(
 
 [heading Description]
 Removes n bytes from the beginning of the readable bytes.
-All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data.overload1 `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] are invalidated.
+All buffers sequences previously obtained using [link beast.ref.boost__beast__static_buffer_base.data `data`] or [link beast.ref.boost__beast__static_buffer_base.prepare `prepare`] are invalidated.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -29046,7 +29144,7 @@ Exchange the contents of this string with another.
     ]
   ]
 ]
-[heading Data Members]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__static_string.max_size_n max_size_n]]
@@ -32700,10 +32798,10 @@ control_callback(
 [heading Description]
 Sets the callback to be invoked whenever a ping, pong, or close control frame is received during a call to one of the following functions:
 
-* [link beast.ref.boost__beast__websocket__stream.read.overload1 `beast::websocket::stream::read`]
-* [link beast.ref.boost__beast__websocket__stream.read_some.overload1 `beast::websocket::stream::read_some`]
+* [link beast.ref.boost__beast__websocket__stream.read `beast::websocket::stream::read`]
+* [link beast.ref.boost__beast__websocket__stream.read_some `beast::websocket::stream::read_some`]
 * [link beast.ref.boost__beast__websocket__stream.async_read `beast::websocket::stream::async_read`]
-* [link beast.ref.boost__beast__websocket__stream.async_read_some.overload1 `beast::websocket::stream::async_read_some`]
+* [link beast.ref.boost__beast__websocket__stream.async_read_some `beast::websocket::stream::async_read_some`]
 
 Unlike completion handlers, the callback will be invoked for each control frame during a call to any synchronous or asynchronous read function. The operation is passive, with no associated error code, and triggered by reads.
 For close frames, the close reason code may be obtained by calling the function [link beast.ref.boost__beast__websocket__stream.reason `reason`].
@@ -33581,9 +33679,9 @@ The call blocks until one of the following conditions is true:
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `read_some` and `write_some` functions.
 If a valid upgrade request is received, an HTTP response with a [@https://tools.ietf.org/html/rfc7230#section-3.1.2 status-code] of [link beast.ref.boost__beast__http__status `beast::http::status::switching_protocols`] is sent to the peer, otherwise a non-successful error is associated with the operation.
-If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read.overload1 `
+If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read `
             http::read
-         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept.overload1 `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept.overload1 `async_accept`]
+         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept `async_accept`]
 
 [heading Exceptions]
 [table [[Type][Thrown On]]
@@ -33622,9 +33720,9 @@ The call blocks until one of the following conditions is true:
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `read_some` and `write_some` functions.
 If a valid upgrade request is received, an HTTP response with a [@https://tools.ietf.org/html/rfc7230#section-3.1.2 status-code] of [link beast.ref.boost__beast__http__status `beast::http::status::switching_protocols`] is sent to the peer, otherwise a non-successful error is associated with the operation.
-If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read.overload1 `
+If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read `
             http::read
-         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept.overload1 `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept.overload1 `async_accept`]
+         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept `async_accept`]
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -33665,9 +33763,9 @@ The call blocks until one of the following conditions is true:
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `read_some` and `write_some` functions.
 If a valid upgrade request is received, an HTTP response with a [@https://tools.ietf.org/html/rfc7230#section-3.1.2 status-code] of [link beast.ref.boost__beast__http__status `beast::http::status::switching_protocols`] is sent to the peer, otherwise a non-successful error is associated with the operation.
-If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read.overload1 `
+If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read `
             http::read
-         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept.overload1 `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept.overload1 `async_accept`]
+         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept `async_accept`]
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -33719,9 +33817,9 @@ The call blocks until one of the following conditions is true:
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `read_some` and `write_some` functions.
 If a valid upgrade request is received, an HTTP response with a [@https://tools.ietf.org/html/rfc7230#section-3.1.2 status-code] of [link beast.ref.boost__beast__http__status `beast::http::status::switching_protocols`] is sent to the peer, otherwise a non-successful error is associated with the operation.
-If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read.overload1 `
+If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__read `
             http::read
-         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept.overload1 `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept.overload1 `async_accept`]
+         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept `async_accept`]
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -33905,9 +34003,9 @@ This call always returns immediately. The asynchronous operation will continue u
 
 The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. No other operation may be performed on the stream until this operation completes.
 If a valid upgrade request is received, an HTTP response with a [@https://tools.ietf.org/html/rfc7230#section-3.1.2 status-code] of [link beast.ref.boost__beast__http__status `beast::http::status::switching_protocols`] is sent to the peer, otherwise a non-successful error is associated with the operation.
-If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__async_read.overload1 `
+If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__async_read `
             http::async_read
-         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept.overload1 `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept.overload1 `async_accept`]
+         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept `async_accept`]
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -33958,9 +34056,9 @@ This call always returns immediately. The asynchronous operation will continue u
 
 The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. No other operation may be performed on the stream until this operation completes.
 If a valid upgrade request is received, an HTTP response with a [@https://tools.ietf.org/html/rfc7230#section-3.1.2 status-code] of [link beast.ref.boost__beast__http__status `beast::http::status::switching_protocols`] is sent to the peer, otherwise a non-successful error is associated with the operation.
-If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__async_read.overload1 `
+If the request size exceeds the capacity of the stream's internal buffer, the error [link beast.ref.boost__beast__websocket__error `error::buffer_overflow`] will be indicated. To handle larger requests, an application should read the HTTP request directly using [link beast.ref.boost__beast__http__async_read `
             http::async_read
-         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept.overload1 `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept.overload1 `async_accept`]
+         `] and then pass the request to the appropriate overload of [link beast.ref.boost__beast__websocket__stream.accept `accept`] or [link beast.ref.boost__beast__websocket__stream.async_accept `async_accept`]
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -34355,7 +34453,7 @@ This function is used to asynchronously send a [@https://tools.ietf.org/html/rfc
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.ping.overload1 `ping`], [link beast.ref.boost__beast__websocket__stream.pong.overload1 `pong`], [link beast.ref.boost__beast__websocket__stream.async_ping `async_ping`], or [link beast.ref.boost__beast__websocket__stream.async_pong `async_pong`] are performed until this operation completes.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.ping `ping`], [link beast.ref.boost__beast__websocket__stream.pong `pong`], [link beast.ref.boost__beast__websocket__stream.async_ping `async_ping`], or [link beast.ref.boost__beast__websocket__stream.async_pong `async_pong`] are performed until this operation completes.
 If a close frame is sent or received before the ping frame is sent, the error received by this completion handler will be `net::error::operation_aborted`.
 
 [heading Parameters]
@@ -34515,7 +34613,7 @@ This function is used to asynchronously send a [@https://tools.ietf.org/html/rfc
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.ping.overload1 `ping`], [link beast.ref.boost__beast__websocket__stream.pong.overload1 `pong`], [link beast.ref.boost__beast__websocket__stream.async_ping `async_ping`], or [link beast.ref.boost__beast__websocket__stream.async_pong `async_pong`] are performed until this operation completes.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.ping `ping`], [link beast.ref.boost__beast__websocket__stream.pong `pong`], [link beast.ref.boost__beast__websocket__stream.async_ping `async_ping`], or [link beast.ref.boost__beast__websocket__stream.async_pong `async_pong`] are performed until this operation completes.
 If a close frame is sent or received before the pong frame is sent, the error received by this completion handler will be `net::error::operation_aborted`.
 WebSocket allows pong frames to be sent at any time, without first receiving a ping. An unsolicited pong sent in this fashion may indicate to the remote peer that the connection is still active.
 
@@ -34595,7 +34693,7 @@ The algorithm, known as a ['composed operation], is implemented in terms of call
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message.
 Until the call returns, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -34653,7 +34751,7 @@ The algorithm, known as a ['composed operation], is implemented in terms of call
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message.
 Until the call returns, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -34710,11 +34808,11 @@ This call always returns immediately. The asynchronous operation will continue u
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.read.overload1 `read`], [link beast.ref.boost__beast__websocket__stream.read_some.overload1 `read_some`], [link beast.ref.boost__beast__websocket__stream.async_read `async_read`], or [link beast.ref.boost__beast__websocket__stream.async_read_some.overload1 `async_read_some`] are performed until this operation completes.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.read `read`], [link beast.ref.boost__beast__websocket__stream.read_some `read_some`], [link beast.ref.boost__beast__websocket__stream.async_read `async_read`], or [link beast.ref.boost__beast__websocket__stream.async_read_some `async_read_some`] are performed until this operation completes.
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message.
 Until the operation completes, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -34817,7 +34915,7 @@ The algorithm, known as a ['composed operation], is implemented in terms of call
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message. The function [link beast.ref.boost__beast__websocket__stream.is_message_done `is_message_done`] may be called to determine if the message received by the last read operation is complete.
 Until the call returns, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -34883,7 +34981,7 @@ The algorithm, known as a ['composed operation], is implemented in terms of call
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message. The function [link beast.ref.boost__beast__websocket__stream.is_message_done `is_message_done`] may be called to determine if the message received by the last read operation is complete.
 Until the call returns, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -34944,7 +35042,7 @@ The algorithm, known as a ['composed operation], is implemented in terms of call
 The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message. The function [link beast.ref.boost__beast__websocket__stream.is_message_done `is_message_done`] may be called to determine if the message received by the last read operation is complete.
 Until the call returns, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -35002,7 +35100,7 @@ The algorithm, known as a ['composed operation], is implemented in terms of call
 The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message. The function [link beast.ref.boost__beast__websocket__stream.is_message_done `is_message_done`] may be called to determine if the message received by the last read operation is complete.
 Until the call returns, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -35084,11 +35182,11 @@ This call always returns immediately. The asynchronous operation will continue u
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.read.overload1 `read`], [link beast.ref.boost__beast__websocket__stream.read_some.overload1 `read_some`], [link beast.ref.boost__beast__websocket__stream.async_read `async_read`], or [link beast.ref.boost__beast__websocket__stream.async_read_some.overload1 `async_read_some`] are performed until this operation completes.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.read `read`], [link beast.ref.boost__beast__websocket__stream.read_some `read_some`], [link beast.ref.boost__beast__websocket__stream.async_read `async_read`], or [link beast.ref.boost__beast__websocket__stream.async_read_some `async_read_some`] are performed until this operation completes.
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message.
 Until the operation completes, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -35156,11 +35254,11 @@ This call always returns immediately. The asynchronous operation will continue u
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.read.overload1 `read`], [link beast.ref.boost__beast__websocket__stream.read_some.overload1 `read_some`], [link beast.ref.boost__beast__websocket__stream.async_read `async_read`], or [link beast.ref.boost__beast__websocket__stream.async_read_some.overload1 `async_read_some`] are performed until this operation completes.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_read_some` and `async_write_some` functions. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.read `read`], [link beast.ref.boost__beast__websocket__stream.read_some `read_some`], [link beast.ref.boost__beast__websocket__stream.async_read `async_read`], or [link beast.ref.boost__beast__websocket__stream.async_read_some `async_read_some`] are performed until this operation completes.
 Received message data is appended to the buffer. The functions [link beast.ref.boost__beast__websocket__stream.got_binary `got_binary`] and [link beast.ref.boost__beast__websocket__stream.got_text `got_text`] may be used to query the stream and determine the type of the last received message.
 Until the operation completes, the implementation will read incoming control frames and handle them automatically as follows:
 
-* The [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `control_callback`] will be invoked for each control frame.
+* The [link beast.ref.boost__beast__websocket__stream.control_callback `control_callback`] will be invoked for each control frame.
 
 * For each received ping frame, a pong frame will be automatically sent.
 
@@ -35243,7 +35341,7 @@ The call blocks until one of the following is true:
 * An error occurs.
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `write_some` function.
-The current setting of the [link beast.ref.boost__beast__websocket__stream.binary.overload1 `binary`] option controls whether the message opcode is set to text or binary. If the [link beast.ref.boost__beast__websocket__stream.auto_fragment.overload1 `auto_fragment`] option is set, the message will be split into one or more frames as necessary. The actual payload contents sent may be transformed as per the WebSocket protocol settings.
+The current setting of the [link beast.ref.boost__beast__websocket__stream.binary `binary`] option controls whether the message opcode is set to text or binary. If the [link beast.ref.boost__beast__websocket__stream.auto_fragment `auto_fragment`] option is set, the message will be split into one or more frames as necessary. The actual payload contents sent may be transformed as per the WebSocket protocol settings.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -35292,7 +35390,7 @@ The call blocks until one of the following is true:
 * An error occurs.
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `write_some` function.
-The current setting of the [link beast.ref.boost__beast__websocket__stream.binary.overload1 `binary`] option controls whether the message opcode is set to text or binary. If the [link beast.ref.boost__beast__websocket__stream.auto_fragment.overload1 `auto_fragment`] option is set, the message will be split into one or more frames as necessary. The actual payload contents sent may be transformed as per the WebSocket protocol settings.
+The current setting of the [link beast.ref.boost__beast__websocket__stream.binary `binary`] option controls whether the message opcode is set to text or binary. If the [link beast.ref.boost__beast__websocket__stream.auto_fragment `auto_fragment`] option is set, the message will be split into one or more frames as necessary. The actual payload contents sent may be transformed as per the WebSocket protocol settings.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -35343,8 +35441,8 @@ This call always returns immediately. The asynchronous operation will continue u
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.write.overload1 `write`], [link beast.ref.boost__beast__websocket__stream.write_some.overload1 `write_some`], [link beast.ref.boost__beast__websocket__stream.async_write `async_write`], or [link beast.ref.boost__beast__websocket__stream.async_write_some `async_write_some`] are performed until this operation completes.
-The current setting of the [link beast.ref.boost__beast__websocket__stream.binary.overload1 `binary`] option controls whether the message opcode is set to text or binary. If the [link beast.ref.boost__beast__websocket__stream.auto_fragment.overload1 `auto_fragment`] option is set, the message will be split into one or more frames as necessary. The actual payload contents sent may be transformed as per the WebSocket protocol settings.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.write `write`], [link beast.ref.boost__beast__websocket__stream.write_some `write_some`], [link beast.ref.boost__beast__websocket__stream.async_write `async_write`], or [link beast.ref.boost__beast__websocket__stream.async_write_some `async_write_some`] are performed until this operation completes.
+The current setting of the [link beast.ref.boost__beast__websocket__stream.binary `binary`] option controls whether the message opcode is set to text or binary. If the [link beast.ref.boost__beast__websocket__stream.auto_fragment `auto_fragment`] option is set, the message will be split into one or more frames as necessary. The actual payload contents sent may be transformed as per the WebSocket protocol settings.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -35423,7 +35521,7 @@ The call blocks until one of the following is true:
 * An error occurs.
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `write_some` function.
-If this is the beginning of a new message, the message opcode will be set to text or binary based on the current setting of the [link beast.ref.boost__beast__websocket__stream.binary.overload1 `binary`] (or [link beast.ref.boost__beast__websocket__stream.text.overload1 `text`]) option. The actual payload sent may be transformed as per the WebSocket protocol settings.
+If this is the beginning of a new message, the message opcode will be set to text or binary based on the current setting of the [link beast.ref.boost__beast__websocket__stream.binary `binary`] (or [link beast.ref.boost__beast__websocket__stream.text `text`]) option. The actual payload sent may be transformed as per the WebSocket protocol settings.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -35480,7 +35578,7 @@ The call blocks until one of the following is true:
 * An error occurs.
 
 The algorithm, known as a ['composed operation], is implemented in terms of calls to the next layer's `write_some` function.
-If this is the beginning of a new message, the message opcode will be set to text or binary based on the current setting of the [link beast.ref.boost__beast__websocket__stream.binary.overload1 `binary`] (or [link beast.ref.boost__beast__websocket__stream.text.overload1 `text`]) option. The actual payload sent may be transformed as per the WebSocket protocol settings.
+If this is the beginning of a new message, the message opcode will be set to text or binary based on the current setting of the [link beast.ref.boost__beast__websocket__stream.binary `binary`] (or [link beast.ref.boost__beast__websocket__stream.text `text`]) option. The actual payload sent may be transformed as per the WebSocket protocol settings.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -35541,8 +35639,8 @@ This call always returns immediately. The asynchronous operation will continue u
 
 * An error occurs.
 
-The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.write.overload1 `write`], [link beast.ref.boost__beast__websocket__stream.write_some.overload1 `write_some`], [link beast.ref.boost__beast__websocket__stream.async_write `async_write`], or [link beast.ref.boost__beast__websocket__stream.async_write_some `async_write_some`] are performed until this operation completes.
-If this is the beginning of a new message, the message opcode will be set to text or binary based on the current setting of the [link beast.ref.boost__beast__websocket__stream.binary.overload1 `binary`] (or [link beast.ref.boost__beast__websocket__stream.text.overload1 `text`]) option. The actual payload sent may be transformed as per the WebSocket protocol settings.
+The algorithm, known as a ['composed asynchronous operation], is implemented in terms of calls to the next layer's `async_write_some` function. The program must ensure that no other calls to [link beast.ref.boost__beast__websocket__stream.write `write`], [link beast.ref.boost__beast__websocket__stream.write_some `write_some`], [link beast.ref.boost__beast__websocket__stream.async_write `async_write`], or [link beast.ref.boost__beast__websocket__stream.async_write_some `async_write_some`] are performed until this operation completes.
+If this is the beginning of a new message, the message opcode will be set to text or binary based on the current setting of the [link beast.ref.boost__beast__websocket__stream.binary `binary`] (or [link beast.ref.boost__beast__websocket__stream.text `text`]) option. The actual payload sent may be transformed as per the WebSocket protocol settings.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -35788,13 +35886,13 @@ Destructor.
 ]
 [heading Description]
 An instance of this class simulates a traditional socket, while also providing features useful for unit testing. Each endpoint maintains an independent buffer called the input area. Writes from one endpoint append data to the peer's pending input area. When an endpoint performs a read and data is present in the input area, the data is delivered to the blocking or asynchronous operation. Otherwise the operation is blocked or deferred until data is made available, or until the endpoints become disconnected.
-These streams may be used anywhere an algorithm accepts a reference to a synchronous or asynchronous read or write stream. It is possible to use a test stream in a call to `net::read_until`, or in a call to [link beast.ref.boost__beast__http__async_write.overload1 `boost::beast::http::async_write`] for example.
+These streams may be used anywhere an algorithm accepts a reference to a synchronous or asynchronous read or write stream. It is possible to use a test stream in a call to `net::read_until`, or in a call to [link beast.ref.boost__beast__http__async_write `boost::beast::http::async_write`] for example.
 As with Boost.Asio I/O objects, a [link beast.ref.boost__beast__test__stream `stream`] constructs with a reference to the `net::io_context` to use for handling asynchronous I/O. For asynchronous operations, the stream follows the same rules as a traditional asio socket with respect to how completion handlers for asynchronous operations are performed.
 To facilitate testing, these streams support some additional features:
 
 * The input area, represented by a [link beast.ref.boost__beast__basic_flat_buffer `beast::basic_flat_buffer`], may be directly accessed by the caller to inspect the contents before or after the remote endpoint writes data. This allows a unit test to verify that the received data matches.
 
-* Data may be manually appended to the input area. This data will delivered in the next call to [link beast.ref.boost__beast__test__stream.read_some.overload1 `stream::read_some`] or [link beast.ref.boost__beast__test__stream.async_read_some `stream::async_read_some`]. This allows predefined test vectors to be set up for testing read algorithms.
+* Data may be manually appended to the input area. This data will delivered in the next call to [link beast.ref.boost__beast__test__stream.read_some `stream::read_some`] or [link beast.ref.boost__beast__test__stream.async_read_some `stream::async_read_some`]. This allows predefined test vectors to be set up for testing read algorithms.
 
 * The stream may be constructed with a fail count. The stream will eventually fail with a predefined error after a certain number of operations, where the number of operations is controlled by the test. When a test loops over a range of operation counts, it is possible to exercise every possible point of failure in the algorithm being tested. When used correctly the technique allows the tests to reach a high percentage of code coverage.
 
@@ -36628,7 +36726,7 @@ Stream option to control the behavior of websocket timeouts.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__websocket__stream_base.never never]]
@@ -36745,7 +36843,7 @@ Defined in header [include_file boost/beast/websocket/stream_base.hpp]
 struct timeout
 ```
 
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__websocket__stream_base__timeout.suggested suggested]]
@@ -37149,7 +37247,7 @@ struct value_type
 ```
 
 [heading Description]
-This determines the type of [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] when this body type is used with a message container. 
+This determines the type of [link beast.ref.boost__beast__http__message.body `message::body`] when this body type is used with a message container. 
 
 
 [endsect]
@@ -37264,7 +37362,7 @@ This field is not used during parsing.
 
 [section:boost__beast__http__basic_file_body__value_type http::basic_file_body::value_type]
 
-The type of the [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] member. 
+The type of the [link beast.ref.boost__beast__http__message.body `message::body`] member. 
 [heading Synopsis]
 Defined in header [include_file boost/beast/http/basic_file_body.hpp]
   
@@ -37344,16 +37442,6 @@ Constructor.
     [
 
 Destructor. 
-    ]
-  ]
-]
-[heading Friends]
-[table [[Name][Description]]
-  [
-    [[*[link beast.ref.boost__beast__http__basic_file_body__value_type.basic_file_body basic_file_body]]
-    ]
-    [
-
     ]
   ]
 ]
@@ -37794,7 +37882,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__vector_body.size size]]
@@ -37819,7 +37907,7 @@ using value_type = std::vector< T, Allocator >;
 ```
 
 [heading Description]
-This determines the type of [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] when this body type is used with a message container. 
+This determines the type of [link beast.ref.boost__beast__http__message.body `message::body`] when this body type is used with a message container. 
 
 [endsect]
 
@@ -37867,7 +37955,7 @@ size(
 ```
 
 [heading Description]
-When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload.overload1 `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
+When this body is used with [link beast.ref.boost__beast__http__message.prepare_payload `message::prepare_payload`], the Content-Length will be set to the payload size, and any chunked Transfer-Encoding will be removed. 
 
 [endsect]
 
@@ -38807,11 +38895,11 @@ Exchange two dynamic buffers.
 A dynamic buffer encapsulates memory storage that may be automatically resized as required, where the memory is divided into two regions: readable bytes followed by writable bytes. These memory regions are internal to the dynamic buffer, but direct access to the elements is provided to permit them to be efficiently used with I/O operations.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_flat_buffer.data `data`] when `this` is non-const.
 
 * A configurable maximum buffer size may be set upon construction. Attempts to exceed the buffer size will throw `std::length_error`.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_flat_buffer.data.overload1 `data`] and [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`], will have length one.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_flat_buffer.data `data`] and [link beast.ref.boost__beast__basic_flat_buffer.prepare `prepare`], will have length one.
 
 Upon construction, a maximum size for the buffer may be specified. If this limit is exceeded, the `std::length_error` exception will be thrown.
 
@@ -39009,13 +39097,13 @@ A dynamic buffer encapsulates memory storage that may be automatically resized a
 The implementation uses a sequence of one or more byte arrays of varying sizes to represent the readable and writable bytes. Additional byte array objects are appended to the sequence to accommodate changes in the desired size. The behavior and implementation of this container is most similar to `std::deque`.
 Objects of this type meet the requirements of ['DynamicBuffer] and have the following additional properties:
 
-* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] when `this` is non-const.
+* A mutable buffer sequence representing the readable bytes is returned by [link beast.ref.boost__beast__basic_multi_buffer.data `data`] when `this` is non-const.
 
-* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] and [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`], may have length greater than one.
+* Buffer sequences representing the readable and writable bytes, returned by [link beast.ref.boost__beast__basic_multi_buffer.data `data`] and [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`], may have length greater than one.
 
 * A configurable maximum size may be set upon construction and adjusted afterwards. Calls to [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] that would exceed this size will throw `std::length_error`.
 
-* Sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data.overload1 `data`] remain valid after calls to [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] or [link beast.ref.boost__beast__basic_multi_buffer.commit `commit`].
+* Sequences previously obtained using [link beast.ref.boost__beast__basic_multi_buffer.data `data`] remain valid after calls to [link beast.ref.boost__beast__basic_multi_buffer.prepare `prepare`] or [link beast.ref.boost__beast__basic_multi_buffer.commit `commit`].
 
 [heading Template Parameters]
 [table [[Type][Description]]
@@ -39669,7 +39757,7 @@ Completion handlers with explicit associated executors (such as those arising fr
 * Function objects submitted to the executor shall never run concurrently with each other.
 
 The executor type `net::strand` meets these requirements. Use of a strand as the executor in the stream class template offers an additional notational convenience: the strand does not need to be specified in each individual initiating function call.
-Unlike other stream wrappers, the underlying socket is accessed through the [link beast.ref.boost__beast__basic_stream.socket.overload1 `socket`] member function instead of `next_layer`. This causes the [link beast.ref.boost__beast__basic_stream `basic_stream`] to be returned in calls to [link beast.ref.boost__beast__get_lowest_layer `get_lowest_layer`].
+Unlike other stream wrappers, the underlying socket is accessed through the [link beast.ref.boost__beast__basic_stream.socket `socket`] member function instead of `next_layer`. This causes the [link beast.ref.boost__beast__basic_stream `basic_stream`] to be returned in calls to [link beast.ref.boost__beast__get_lowest_layer `get_lowest_layer`].
 
 [heading Usage]
 
@@ -44384,6 +44472,38 @@ enum field
     ]
   ]
   [
+    [`sec_fetch_dest`
+    ]
+    [
+
+
+    ]
+  ]
+  [
+    [`sec_fetch_mode`
+    ]
+    [
+
+
+    ]
+  ]
+  [
+    [`sec_fetch_site`
+    ]
+    [
+
+
+    ]
+  ]
+  [
+    [`sec_fetch_user`
+    ]
+    [
+
+
+    ]
+  ]
+  [
     [`sec_websocket_accept`
     ]
     [
@@ -46060,7 +46180,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__basic_dynamic_body.size size]]
@@ -46253,6 +46373,7 @@ Return a copy of the allocator associated with the container.
     [
 
 Insert a field. 
+
     ]
   ]
   [
@@ -46289,6 +46410,7 @@ Returns the value for a case-insensitive matching header, or `""` if it does not
     [
 
 Set a field value, removing any other instances of that field. 
+
     ]
   ]
   [
@@ -46472,7 +46594,7 @@ Algorithm for storing buffers when parsing.
     ]
     [
 
-The type of the [link beast.ref.boost__beast__http__message.body.overload1 `message::body`] member. 
+The type of the [link beast.ref.boost__beast__http__message.body `message::body`] member. 
     ]
   ]
   [
@@ -46484,7 +46606,7 @@ Algorithm for retrieving buffers when serializing.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__basic_file_body.size size]]
@@ -48235,7 +48357,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__basic_string_body.size size]]
@@ -49343,7 +49465,7 @@ Thrown on failure.
   ]
 ]
 [heading Remarks]
-The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `false` on the parser passed in. 
+The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `false` on the parser passed in. 
 
 
 [endsect]
@@ -49417,7 +49539,7 @@ Set to the error, if any occurred.
 [heading Return Value]
 The number of bytes transferred from the stream.
 [heading Remarks]
-The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `false` on the parser passed in. 
+The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `false` on the parser passed in. 
 
 
 [endsect]
@@ -49504,7 +49626,7 @@ Regardless of whether the asynchronous operation completes immediately or not, t
   ]
 ]
 [heading Remarks]
-The completion handler will receive as a parameter the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `false` on the parser passed in. 
+The completion handler will receive as a parameter the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `false` on the parser passed in. 
 
 
 [endsect]
@@ -49641,7 +49763,7 @@ Thrown on failure.
   ]
 ]
 [heading Remarks]
-The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `true` on the parser passed in. 
+The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `true` on the parser passed in. 
 
 
 [endsect]
@@ -49715,7 +49837,7 @@ Set to the error, if any occurred.
 [heading Return Value]
 The number of bytes transferred from the stream.
 [heading Remarks]
-The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `true` on the parser passed in. 
+The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `true` on the parser passed in. 
 
 
 [endsect]
@@ -49793,7 +49915,7 @@ Thrown on failure.
   ]
 ]
 [heading Remarks]
-The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `true` on the parser passed in. 
+The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `true` on the parser passed in. 
 
 
 [endsect]
@@ -49869,7 +49991,7 @@ Set to the error, if any occurred.
 [heading Return Value]
 The number of bytes transferred from the stream.
 [heading Remarks]
-The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `true` on the parser passed in. 
+The function returns the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `true` on the parser passed in. 
 
 
 [endsect]
@@ -49993,7 +50115,7 @@ Regardless of whether the asynchronous operation completes immediately or not, t
   ]
 ]
 [heading Remarks]
-The completion handler will receive as a parameter the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `true` on the parser passed in. 
+The completion handler will receive as a parameter the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `true` on the parser passed in. 
 
 
 [endsect]
@@ -50077,7 +50199,7 @@ Regardless of whether the asynchronous operation completes immediately or not, t
   ]
 ]
 [heading Remarks]
-The completion handler will receive as a parameter the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager.overload1 `basic_parser::eager`] with the value `true` on the parser passed in. 
+The completion handler will receive as a parameter the total number of bytes transferred from the stream. This may be zero for the case where there is sufficient pre-existing message data in the dynamic buffer. The implementation will call [link beast.ref.boost__beast__http__basic_parser.eager `basic_parser::eager`] with the value `true` on the parser passed in. 
 
 
 [endsect]
@@ -50319,7 +50441,7 @@ This function is used to write part of a message to a stream using a caller-prov
 * An error occurs on the stream.
 
 This operation is implemented in terms of one or more calls to the stream's `write_some` function.
-The amount of data actually transferred is controlled by the behavior of the underlying stream, subject to the buffer size limit of the serializer obtained or set through a call to [link beast.ref.boost__beast__http__serializer.limit.overload1 `serializer::limit`]. Setting a limit and performing bounded work helps applications set reasonable timeouts. It also allows application-level flow control to function correctly. For example when using a TCP/IP based stream.
+The amount of data actually transferred is controlled by the behavior of the underlying stream, subject to the buffer size limit of the serializer obtained or set through a call to [link beast.ref.boost__beast__http__serializer.limit `serializer::limit`]. Setting a limit and performing bounded work helps applications set reasonable timeouts. It also allows application-level flow control to function correctly. For example when using a TCP/IP based stream.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -50385,7 +50507,7 @@ This function is used to write part of a message to a stream using a caller-prov
 * An error occurs on the stream.
 
 This operation is implemented in terms of one or more calls to the stream's `write_some` function.
-The amount of data actually transferred is controlled by the behavior of the underlying stream, subject to the buffer size limit of the serializer obtained or set through a call to [link beast.ref.boost__beast__http__serializer.limit.overload1 `serializer::limit`]. Setting a limit and performing bounded work helps applications set reasonable timeouts. It also allows application-level flow control to function correctly. For example when using a TCP/IP based stream.
+The amount of data actually transferred is controlled by the behavior of the underlying stream, subject to the buffer size limit of the serializer obtained or set through a call to [link beast.ref.boost__beast__http__serializer.limit `serializer::limit`]. Setting a limit and performing bounded work helps applications set reasonable timeouts. It also allows application-level flow control to function correctly. For example when using a TCP/IP based stream.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -50454,7 +50576,7 @@ This function is used to write part of a message to a stream asynchronously usin
 * An error occurs on the stream.
 
 This operation is implemented in terms of zero or more calls to the stream's `async_write_some` function, and is known as a ['composed operation]. The program must ensure that the stream performs no other writes until this operation completes.
-The amount of data actually transferred is controlled by the behavior of the underlying stream, subject to the buffer size limit of the serializer obtained or set through a call to [link beast.ref.boost__beast__http__serializer.limit.overload1 `serializer::limit`]. Setting a limit and performing bounded work helps applications set reasonable timeouts. It also allows application-level flow control to function correctly. For example when using a TCP/IP based stream.
+The amount of data actually transferred is controlled by the behavior of the underlying stream, subject to the buffer size limit of the serializer obtained or set through a call to [link beast.ref.boost__beast__http__serializer.limit `serializer::limit`]. Setting a limit and performing bounded work helps applications set reasonable timeouts. It also allows application-level flow control to function correctly. For example when using a TCP/IP based stream.
 
 [heading Parameters]
 [table [[Name][Description]]
@@ -50582,7 +50704,7 @@ Thrown on failure.
   ]
 ]
 [heading Remarks]
-The implementation will call [link beast.ref.boost__beast__http__serializer.split.overload1 `serializer::split`] with the value `true` on the serializer passed in.
+The implementation will call [link beast.ref.boost__beast__http__serializer.split `serializer::split`] with the value `true` on the serializer passed in.
 [heading See Also]
 [link beast.ref.boost__beast__http__serializer `serializer`]
 
@@ -50644,7 +50766,7 @@ Set to indicate what error occurred, if any.
 [heading Return Value]
 The number of bytes written to the stream.
 [heading Remarks]
-The implementation will call [link beast.ref.boost__beast__http__serializer.split.overload1 `serializer::split`] with the value `true` on the serializer passed in.
+The implementation will call [link beast.ref.boost__beast__http__serializer.split `serializer::split`] with the value `true` on the serializer passed in.
 [heading See Also]
 [link beast.ref.boost__beast__http__serializer `serializer`]
 
@@ -50719,7 +50841,7 @@ Regardless of whether the asynchronous operation completes immediately or not, t
   ]
 ]
 [heading Remarks]
-The implementation will call [link beast.ref.boost__beast__http__serializer.split.overload1 `serializer::split`] with the value `true` on the serializer passed in.
+The implementation will call [link beast.ref.boost__beast__http__serializer.split `serializer::split`] with the value `true` on the serializer passed in.
 [heading See Also]
 [link beast.ref.boost__beast__http__serializer `serializer`]
 
@@ -52356,7 +52478,7 @@ A pong frame was received.
   ]
 ]
 [heading Description]
-Values of this type are passed to the control frame callback set using [link beast.ref.boost__beast__websocket__stream.control_callback.overload1 `stream::control_callback`]. 
+Values of this type are passed to the control frame callback set using [link beast.ref.boost__beast__websocket__stream.control_callback `stream::control_callback`]. 
 
 
 [endsect]
@@ -52400,7 +52522,7 @@ The algorithm for serializing the body.
     ]
   ]
 ]
-[heading Member Functions]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__http__empty_body.size size]]
@@ -52879,7 +53001,7 @@ Exchange the contents of this string with another.
     ]
   ]
 ]
-[heading Data Members]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__static_string.max_size_n max_size_n]]
@@ -53352,7 +53474,7 @@ Exchange the contents of this string with another.
     ]
   ]
 ]
-[heading Data Members]
+[heading Static Members]
 [table [[Name][Description]]
   [
     [[*[link beast.ref.boost__beast__static_string.max_size_n max_size_n]]

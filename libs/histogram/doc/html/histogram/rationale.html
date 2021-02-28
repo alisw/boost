@@ -48,6 +48,8 @@
       to Boost.Accumulators</a></span></dt>
 <dt><span class="section"><a href="rationale.html#histogram.rationale.why_is_boost_histogram_not_built">Why
       is Boost.Histogram not built on top of Boost.MultiArray?</a></span></dt>
+<dt><span class="section"><a href="rationale.html#histogram.rationale.axis_metadata_and_equality_check">Axis
+      metadata and equality checks</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -564,6 +566,34 @@
 <p>
         There is only one type index and the number of allocated bytes for the array
         can adapted dynamically to the size of the value type.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="histogram.rationale.axis_metadata_and_equality_check"></a><a class="link" href="rationale.html#histogram.rationale.axis_metadata_and_equality_check" title="Axis metadata and equality checks">Axis
+      metadata and equality checks</a>
+</h3></div></div></div>
+<p>
+        The Boost.Histogram library allows one to attach metadata to histogram axes.
+        The intended purpose of metadata is to distinguish between otherwise identical
+        axes, e.g. distinguish <code class="computeroutput"><span class="identifier">axis</span><span class="special">::</span><span class="identifier">regular</span><span class="special">(</span><span class="number">10</span><span class="special">,</span>
+        <span class="number">0</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="string">"time
+        in seconds"</span><span class="special">)</span></code> from <code class="computeroutput"><span class="identifier">axis</span><span class="special">::</span><span class="identifier">regular</span><span class="special">(</span><span class="number">10</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span>
+        <span class="string">"length in meters"</span><span class="special">)</span></code>.
+        The library does not assign any meaning to metadata, but it is checked for
+        equality when axes (and histograms) are compared. Histograms with the same
+        cell layout but different axis metadata do not compare equal and cannot be
+        added. The assumption here is that one can only add histograms with identical
+        layout in a meaningful way, not only identical cell layout but also logical
+        layout in terms of what these axes mean.
+      </p>
+<p>
+        If this check is not desired, there are two ways to suppress it. If the metadata
+        class is under control of the user, it is enough to simply override <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>
+        to always return <code class="computeroutput"><span class="keyword">true</span></code>. Another
+        option is to inherit a custom axis from a builtin axis and override its
+        <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>
+        to not check the metadata for equality.
       </p>
 </div>
 <div class="footnotes">

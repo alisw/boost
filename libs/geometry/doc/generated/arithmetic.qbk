@@ -152,7 +152,7 @@ Computes the cross product of two vectors.
 All vectors should have the same dimension, 3 or 2.
 
 [heading Synopsis]
-``template<typename ResultP, typename P1, typename P2>
+``template<typename ResultP, typename P1, typename P2, std::enable_if_t< dimension< ResultP >::value !=3||! traits::make< ResultP >::is_specialized, int >>
 ResultP cross_product(P1 const & p1, P2 const & p2)``
 
 [heading Parameters]
@@ -160,6 +160,7 @@ ResultP cross_product(P1 const & p1, P2 const & p2)``
 [table
 [[Type] [Concept] [Name] [Description] ]
 [[ResultP] [] [ - ] [Must be specified]]
+[[std::enable_if_t< dimension< ResultP >::value !=3||! traits::make< ResultP >::is_specialized, int >] [] [ - ] [Must be specified]]
 [[P1 const &] [] [p1] [first vector ]]
 [[P2 const &] [] [p2] [second vector ]]
 ]
@@ -183,13 +184,14 @@ Computes the cross product of two vectors.
 All vectors should have the same dimension, 3 or 2.
 
 [heading Synopsis]
-``template<typename P>
+``template<typename P, std::enable_if_t< dimension< P >::value !=3||! traits::make< P >::is_specialized, int >>
 P cross_product(P const & p1, P const & p2)``
 
 [heading Parameters]
 
 [table
 [[Type] [Concept] [Name] [Description] ]
+[[std::enable_if_t< dimension< P >::value !=3||! traits::make< P >::is_specialized, int >] [] [ - ] [Must be specified]]
 [[P const &] [] [p1] [first vector ]]
 [[P const &] [] [p2] [second vector ]]
 ]
@@ -279,7 +281,7 @@ Computes the dot product (or scalar product) of 2 vectors (points).
 
 [heading Synopsis]
 ``template<typename Point1, typename Point2>
-select_coordinate_type<Point1, Point2>::type dot_product(Point1 const & p1, Point2 const & p2)``
+constexpr select_coordinate_type<Point1, Point2>::type dot_product(Point1 const & p1, Point2 const & p2)``
 
 [heading Parameters]
 

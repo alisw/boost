@@ -241,6 +241,11 @@ namespace
     fs::remove(bad_remove_dir);
   }
 
+  void bad_space()
+  {
+    fs::space("no-such-path");
+  }
+
   class renamer
   {
   public:
@@ -1374,7 +1379,7 @@ namespace
     cout << "remove_symlink_tests..." << endl;
 
     // remove() dangling symbolic link
-    fs::path link("dangling_link");
+    fs::path link = dir / "dangling_link";
     fs::remove(link);  // remove any residue from past tests
     BOOST_TEST(!fs::is_symlink(link));
     BOOST_TEST(!fs::exists(link));
@@ -1385,7 +1390,7 @@ namespace
     BOOST_TEST(!fs::is_symlink(link));
 
     // remove() self-refering symbolic link
-    link = "link_to_self";
+    link = dir / "link_to_self";
     fs::remove(link);  // remove any residue from past tests
     BOOST_TEST(!fs::is_symlink(link));
     BOOST_TEST(!fs::exists(link));
@@ -1395,8 +1400,8 @@ namespace
     BOOST_TEST(!fs::is_symlink(link));
 
     // remove() cyclic symbolic link
-    link = "link_to_a";
-    fs::path link2("link_to_b");
+    link = dir / "link_to_a";
+    fs::path link2 = dir / "link_to_b";
     fs::remove(link);   // remove any residue from past tests
     fs::remove(link2);  // remove any residue from past tests
     BOOST_TEST(!fs::is_symlink(link));
@@ -1410,14 +1415,14 @@ namespace
     BOOST_TEST(!fs::is_symlink(link));
 
     // remove() symbolic link to file
-    fs::path f1x = "link_target";
+    fs::path f1x = dir / "link_target";
     fs::remove(f1x);  // remove any residue from past tests
     BOOST_TEST(!fs::exists(f1x));
     create_file(f1x, "");
     BOOST_TEST(fs::exists(f1x));
     BOOST_TEST(!fs::is_directory(f1x));
     BOOST_TEST(fs::is_regular_file(f1x));
-    link = "non_dangling_link";
+    link = dir / "non_dangling_link";
     fs::create_symlink(f1x, link);
     BOOST_TEST(fs::exists(link));
     BOOST_TEST(!fs::is_directory(link));
@@ -1774,6 +1779,40 @@ namespace
     BOOST_TEST(copy_ex_ok);
   }
 
+  //  creation_time_tests  -------------------------------------------------------------//
+
+  void creation_time_tests(const fs::path& dirx)
+  {
+    cout << "creation_time_tests..." << endl;
+
+    fs::path f1x = dirx / "creation_time_file";
+
+    std::time_t start = std::time(NULL);
+    create_file(f1x, "creation_time_file");
+    BOOST_TEST(fs::is_regular_file(f1x));
+    try
+    {
+      std::time_t ft = fs::creation_time(f1x);
+      std::time_t finish = std::time(NULL);
+
+      BOOST_TEST(ft >= start && ft <= finish);
+    }
+    catch (fs::filesystem_error& e)
+    {
+      if (e.code() == make_error_condition(boost::system::errc::function_not_supported))
+      {
+        cout << "creation_time is not supported by the current system" << endl;
+      }
+      else
+      {
+        cout << "creation_time failed: " << e.what() << endl;
+        BOOST_TEST(false);
+      }
+    }
+
+    fs::remove(f1x);
+  }
+
   //  write_time_tests  ----------------------------------------------------------------//
 
   void write_time_tests(const fs::path& dirx)
@@ -1984,6 +2023,9 @@ namespace
     BOOST_TEST_EQ(spi_file.capacity, spi.capacity);
 
     fs::remove(file);
+
+    // Test that an error is indicated if a path to a non-existing file is passed
+    BOOST_TEST(CHECK_EXCEPTION(bad_space, ENOENT));
   }
 
   //  equivalent_tests  ----------------------------------------------------------------//
@@ -2368,6 +2410,7 @@ int cpp_main(int argc, char* argv[])
   remove_tests(dir);
   if (create_symlink_ok)  // only if symlinks supported
     remove_symlink_tests();
+  creation_time_tests(dir);
   write_time_tests(dir);
   temp_directory_path_tests();
 

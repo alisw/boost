@@ -93,7 +93,10 @@
    <span class="keyword">public</span><span class="special">:</span>
    <span class="keyword">explicit</span> <span class="identifier">file_descriptor</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">char</span> <span class="special">*</span><span class="identifier">filename</span><span class="special">)</span>              <span class="comment">//Constructor</span>
       <span class="special">:</span> <span class="identifier">os_descr_</span><span class="special">(</span><span class="identifier">operating_system_open_file</span><span class="special">(</span><span class="identifier">filename</span><span class="special">))</span>
-   <span class="special">{</span>  <span class="keyword">if</span><span class="special">(!</span><span class="identifier">os_descr_</span><span class="special">)</span> <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"file not found"</span><span class="special">);</span>  <span class="special">}</span>
+   <span class="special">{</span>
+      <span class="keyword">if</span><span class="special">(!</span><span class="identifier">os_descr_</span><span class="special">)</span>
+         <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"file not found"</span><span class="special">);</span>
+   <span class="special">}</span>
 
    <span class="special">~</span><span class="identifier">file_descriptor</span><span class="special">()</span>                                          <span class="comment">//Destructor</span>
    <span class="special">{</span>  <span class="keyword">if</span><span class="special">(</span><span class="identifier">os_descr_</span><span class="special">)</span>  <span class="identifier">operating_system_close_file</span><span class="special">(</span><span class="identifier">os_descr_</span><span class="special">);</span>  <span class="special">}</span>

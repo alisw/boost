@@ -38,19 +38,19 @@
   <span class="keyword">typedef</span> <span class="identifier">T</span> <a class="link" href="reference_wrapper.html#boost.reference_wrapper.type"><span class="identifier">type</span></a><span class="special">;</span>
 
   <span class="comment">// <a class="link" href="reference_wrapper.html#boost.reference_wrapperconstruct-copy-destruct">construct/copy/destruct</a></span>
-  <span class="keyword">explicit</span> <a class="link" href="reference_wrapper.html#idm44990036826864-bb"><span class="identifier">reference_wrapper</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="reference_wrapper.html#idm44990036823296-bb"><span class="identifier">reference_wrapper</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="reference_wrapper.html#idm45898475999968-bb"><span class="identifier">reference_wrapper</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="reference_wrapper.html#idm45898475996400-bb"><span class="identifier">reference_wrapper</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="reference_wrapper.html#idm44990036835584-bb">public member functions</a></span>
-  <a class="link" href="reference_wrapper.html#idm44990036835024-bb"><span class="keyword">operator</span> <span class="identifier">T</span> <span class="special">&amp;</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">T</span> <span class="special">&amp;</span> <a class="link" href="reference_wrapper.html#idm44990036832464-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
-  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="reference_wrapper.html#idm44990036829552-bb"><span class="identifier">get_pointer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="reference_wrapper.html#idm45898476008512-bb">public member functions</a></span>
+  <a class="link" href="reference_wrapper.html#idm45898476007952-bb"><span class="keyword">operator</span> <span class="identifier">T</span> <span class="special">&amp;</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">T</span> <span class="special">&amp;</span> <a class="link" href="reference_wrapper.html#idm45898476005104-bb"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">T</span> <span class="special">*</span> <a class="link" href="reference_wrapper.html#idm45898476002656-bb"><span class="identifier">get_pointer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idm46188349693440"></a><h2>Description</h2>
+<a name="idm45290485837504"></a><h2>Description</h2>
 <p><code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code> is primarily used to "feed" references to function templates (algorithms) that take their parameter by value. It provides an implicit conversion to <code class="computeroutput">T&amp;</code>, which usually allows the function templates to work on references unmodified. </p>
 <div class="refsect2">
-<a name="idm46188349690848"></a><h3>
+<a name="idm45290485834816"></a><h3>
 <a name="boost.reference_wrappertypes"></a><code class="computeroutput">reference_wrapper</code> 
         public
        types</h3>
@@ -61,13 +61,13 @@
 </li></ol></div>
 </div>
 <div class="refsect2">
-<a name="idm46188349684192"></a><h3>
+<a name="idm45290485828288"></a><h3>
 <a name="boost.reference_wrapperconstruct-copy-destruct"></a><code class="computeroutput">reference_wrapper</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><span class="keyword">explicit</span> <a name="idm44990036826864-bb"></a><span class="identifier">reference_wrapper</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idm45898475999968-bb"></a><span class="identifier">reference_wrapper</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
 <p>Constructs a <code class="computeroutput"><code class="computeroutput"><a class="link" href="reference_wrapper.html" title="Class template reference_wrapper">reference_wrapper</a></code></code> object that stores a reference to <code class="computeroutput">t</code>.</p>
 <p>Does not throw. </p>
 <p>
@@ -75,7 +75,7 @@
 </p>
 </li>
 <li class="listitem">
-<pre class="literallayout"><a name="idm44990036823296-bb"></a><span class="identifier">reference_wrapper</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span> t<span class="special">)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idm45898475996400-bb"></a><span class="identifier">reference_wrapper</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span> t<span class="special">)</span> <span class="special">=</span> <span class="keyword">delete</span><span class="special">;</span></pre>
 <p>Construction from a temporary object is disabled. </p>
 <p>
 
@@ -84,11 +84,11 @@
 </ol></div>
 </div>
 <div class="refsect2">
-<a name="idm46188349666256"></a><h3>
-<a name="idm44990036835584-bb"></a><code class="computeroutput">reference_wrapper</code> public member functions</h3>
+<a name="idm45290485810336"></a><h3>
+<a name="idm45898476008512-bb"></a><code class="computeroutput">reference_wrapper</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-<pre class="literallayout"><a name="idm44990036835024-bb"></a><span class="keyword">operator</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><a name="idm45898476007952-bb"></a><span class="keyword">operator</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>
 </p>
 <p>Does not throw. </p>
@@ -107,7 +107,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">&amp;</span> <a name="idm44990036832464-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">&amp;</span> <a name="idm45898476005104-bb"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>
 </p>
 <p>Does not throw. </p>
@@ -126,7 +126,7 @@
 </table></div>
 </li>
 <li class="listitem">
-<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idm44990036829552-bb"></a><span class="identifier">get_pointer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<pre class="literallayout"><span class="identifier">T</span> <span class="special">*</span> <a name="idm45898476002656-bb"></a><span class="identifier">get_pointer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p>
 </p>
 <p>Does not throw. </p>

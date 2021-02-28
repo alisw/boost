@@ -666,8 +666,19 @@
             <span class="comment">// by the move, are first moved to the stack before calling the</span>
             <span class="comment">// initiating function.</span>
 
-            <span class="identifier">yield</span> <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span>
-                <span class="identifier">read_size</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">,</span> <span class="number">1536</span><span class="special">)),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>
+            <span class="identifier">yield</span>
+            <span class="special">{</span>
+                <span class="comment">// This macro facilitates asynchrnous handler tracking and</span>
+                <span class="comment">// debugging when the preprocessor macro</span>
+                <span class="comment">// BOOST_ASIO_CUSTOM_HANDLER_TRACKING is defined.</span>
+
+                <span class="identifier">BOOST_ASIO_HANDLER_LOCATION</span><span class="special">((</span>
+                    <span class="identifier">__FILE__</span><span class="special">,</span> <span class="identifier">__LINE__</span><span class="special">,</span>
+                    <span class="string">"async_detect_ssl"</span><span class="special">));</span>
+
+                <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span>
+                    <span class="identifier">read_size</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">,</span> <span class="number">1536</span><span class="special">)),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>
+            <span class="special">}</span>
 
             <span class="comment">// Commit what we read into the buffer's input area.</span>
             <span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">commit</span><span class="special">(</span><span class="identifier">bytes_transferred</span><span class="special">);</span>
@@ -701,7 +712,14 @@
             <span class="comment">// used in the call to async_read_some above, to avoid</span>
             <span class="comment">// instantiating another version of the function template.</span>
 
-            <span class="identifier">yield</span> <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>
+            <span class="identifier">yield</span>
+            <span class="special">{</span>
+                <span class="identifier">BOOST_ASIO_HANDLER_LOCATION</span><span class="special">((</span>
+                    <span class="identifier">__FILE__</span><span class="special">,</span> <span class="identifier">__LINE__</span><span class="special">,</span>
+                    <span class="string">"async_detect_ssl"</span><span class="special">));</span>
+
+                <span class="identifier">stream_</span><span class="special">.</span><span class="identifier">async_read_some</span><span class="special">(</span><span class="identifier">buffer_</span><span class="special">.</span><span class="identifier">prepare</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">move</span><span class="special">(*</span><span class="keyword">this</span><span class="special">));</span>
+            <span class="special">}</span>
 
             <span class="comment">// Restore the saved error code</span>
             <span class="identifier">ec</span> <span class="special">=</span> <span class="identifier">ec_</span><span class="special">;</span>

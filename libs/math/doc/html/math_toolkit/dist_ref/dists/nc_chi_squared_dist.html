@@ -4,7 +4,7 @@
 <title>Noncentral Chi-Squared Distribution</title>
 <link rel="stylesheet" href="../../../math.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="../../../index.html" title="Math Toolkit 2.12.0">
+<link rel="home" href="../../../index.html" title="Math Toolkit 2.13.0">
 <link rel="up" href="../dists.html" title="Distributions">
 <link rel="prev" href="nc_beta_dist.html" title="Noncentral Beta Distribution">
 <link rel="next" href="nc_f_dist.html" title="Noncentral F Distribution">
@@ -66,9 +66,9 @@
 </pre>
 <p>
           The noncentral chi-squared distribution is a generalization of the <a class="link" href="chi_squared_dist.html" title="Chi Squared Distribution">Chi Squared Distribution</a>.
-          If <span class="emphasis"><em>X<sub>i</sub></em></span> are /ν/ independent, normally distributed random
-          variables with means /μ<sub>i</sub>/ and variances <span class="emphasis"><em>σ<sub>i</sub><sup>2</sup></em></span>, then the
-          random variable
+          If <span class="emphasis"><em>X<sub>i</sub></em></span> are ν independent, normally distributed random
+          variables with means μ<sub>i</sub> and variances <span class="emphasis"><em>σ<sub>i</sub><sup>2</sup></em></span>, then the random
+          variable
         </p>
 <div class="blockquote"><blockquote class="blockquote"><p>
             <span class="inlinemediaobject"><img src="../../../../equations/nc_chi_squ_ref1.svg"></span>
@@ -78,7 +78,7 @@
           is distributed according to the noncentral chi-squared distribution.
         </p>
 <p>
-          The noncentral chi-squared distribution has two parameters: /ν/ which specifies
+          The noncentral chi-squared distribution has two parameters: ν which specifies
           the number of degrees of freedom (i.e. the number of <span class="emphasis"><em>X<sub>i</sub>)</em></span>,
           and λ which is related to the mean of the random variables <span class="emphasis"><em>X<sub>i</sub></em></span>
           by:
@@ -98,7 +98,7 @@
 
           </p></blockquote></div>
 <p>
-          where <span class="emphasis"><em>f(x;k)</em></span> is the central chi-squared distribution
+          where <span class="emphasis"><em>f(x;ν)</em></span> is the central chi-squared distribution
           PDF, and <span class="emphasis"><em>I<sub>v</sub>(x)</em></span> is a modified Bessel function of the
           first kind.
         </p>
@@ -118,17 +118,16 @@
 <pre class="programlisting"><span class="identifier">non_central_chi_squared_distribution</span><span class="special">(</span><span class="identifier">RealType</span> <span class="identifier">v</span><span class="special">,</span> <span class="identifier">RealType</span> <span class="identifier">lambda</span><span class="special">);</span>
 </pre>
 <p>
-          Constructs a Chi-Squared distribution with <span class="emphasis"><em>v</em></span> degrees
-          of freedom and non-centrality parameter <span class="emphasis"><em>lambda</em></span>.
+          Constructs a Chi-Squared distribution with ν degrees of freedom and non-centrality
+          parameter <span class="emphasis"><em>lambda</em></span>.
         </p>
 <p>
-          Requires v &gt; 0 and lambda &gt;= 0, otherwise calls <a class="link" href="../../error_handling.html#math_toolkit.error_handling.domain_error">domain_error</a>.
+          Requires ν &gt; 0 and lambda &gt;= 0, otherwise calls <a class="link" href="../../error_handling.html#math_toolkit.error_handling.domain_error">domain_error</a>.
         </p>
 <pre class="programlisting"><span class="identifier">RealType</span> <span class="identifier">degrees_of_freedom</span><span class="special">()</span><span class="keyword">const</span><span class="special">;</span>
 </pre>
 <p>
-          Returns the parameter <span class="emphasis"><em>v</em></span> from which this object was
-          constructed.
+          Returns the parameter ν from which this object was constructed.
         </p>
 <pre class="programlisting"><span class="identifier">RealType</span> <span class="identifier">non_centrality</span><span class="special">()</span><span class="keyword">const</span><span class="special">;</span>
 </pre>
@@ -139,8 +138,7 @@
 <pre class="programlisting"><span class="keyword">static</span> <span class="identifier">RealType</span> <span class="identifier">find_degrees_of_freedom</span><span class="special">(</span><span class="identifier">RealType</span> <span class="identifier">lambda</span><span class="special">,</span> <span class="identifier">RealType</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">RealType</span> <span class="identifier">p</span><span class="special">);</span>
 </pre>
 <p>
-          This function returns the number of degrees of freedom <span class="emphasis"><em>v</em></span>
-          such that: <code class="computeroutput"><span class="identifier">cdf</span><span class="special">(</span><span class="identifier">non_central_chi_squared</span><span class="special">&lt;</span><span class="identifier">RealType</span><span class="special">,</span> <span class="identifier">Policy</span><span class="special">&gt;(</span><span class="identifier">v</span><span class="special">,</span> <span class="identifier">lambda</span><span class="special">),</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">p</span></code>
+          This function returns the number of degrees of freedom ν such that: <code class="computeroutput"><span class="identifier">cdf</span><span class="special">(</span><span class="identifier">non_central_chi_squared</span><span class="special">&lt;</span><span class="identifier">RealType</span><span class="special">,</span> <span class="identifier">Policy</span><span class="special">&gt;(</span><span class="identifier">v</span><span class="special">,</span> <span class="identifier">lambda</span><span class="special">),</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">p</span></code>
         </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">B</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">C</span><span class="special">&gt;</span>
 <span class="keyword">static</span> <span class="identifier">RealType</span> <span class="identifier">find_degrees_of_freedom</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">complemented3_type</span><span class="special">&lt;</span><span class="identifier">A</span><span class="special">,</span><span class="identifier">B</span><span class="special">,</span><span class="identifier">C</span><span class="special">&gt;&amp;</span> <span class="identifier">c</span><span class="special">);</span>
@@ -148,8 +146,7 @@
 <p>
           When called with argument <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">complement</span><span class="special">(</span><span class="identifier">lambda</span><span class="special">,</span> <span class="identifier">x</span><span class="special">,</span>
           <span class="identifier">q</span><span class="special">)</span></code>
-          this function returns the number of degrees of freedom <span class="emphasis"><em>v</em></span>
-          such that:
+          this function returns the number of degrees of freedom ν such that:
         </p>
 <p>
           <code class="computeroutput"><span class="identifier">cdf</span><span class="special">(</span><span class="identifier">complement</span><span class="special">(</span><span class="identifier">non_central_chi_squared</span><span class="special">&lt;</span><span class="identifier">RealType</span><span class="special">,</span> <span class="identifier">Policy</span><span class="special">&gt;(</span><span class="identifier">v</span><span class="special">,</span> <span class="identifier">lambda</span><span class="special">),</span> <span class="identifier">x</span><span class="special">))</span> <span class="special">==</span> <span class="identifier">q</span></code>.
@@ -527,7 +524,7 @@
 
           </p></blockquote></div>
 <p>
-          Where <span class="emphasis"><em>f(x; v)</em></span> is the PDF of the central <a class="link" href="chi_squared_dist.html" title="Chi Squared Distribution">Chi
+          Where <span class="emphasis"><em>f(x;ν)</em></span> is the PDF of the central <a class="link" href="chi_squared_dist.html" title="Chi Squared Distribution">Chi
           Squared Distribution</a> and <span class="emphasis"><em>I<sub>v</sub>(x)</em></span> is a modified
           Bessel function, see <a class="link" href="../../bessel/mbessel.html" title="Modified Bessel Functions of the First and Second Kinds">cyl_bessel_i</a>.
           For small values of the non-centrality parameter the relation in terms
@@ -566,11 +563,10 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2006-2019 Nikhar
-      Agrawal, Anton Bikineev, Paul A. Bristow, Marco Guazzone, Christopher Kormanyos,
-      Hubert Holin, Bruno Lalande, John Maddock, Jeremy Murphy, Matthew Pulver, Johan
-      Råde, Gautam Sewani, Benjamin Sobotta, Nicholas Thompson, Thijs van den Berg,
-      Daryle Walker and Xiaogang Zhang<p>
+<td align="right"><div class="copyright-footer">Copyright © 2006-2020 Nikhar Agrawal, Anton Bikineev, Paul A. Bristow, Marco Guazzone, Christopher
+      Kormanyos, Hubert Holin, Bruno Lalande, John Maddock, Evan Miller, Jeremy Murphy,
+      Matthew Pulver, Johan Råde, Gautam Sewani, Benjamin Sobotta, Nicholas Thompson,
+      Thijs van den Berg, Daryle Walker and Xiaogang Zhang<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

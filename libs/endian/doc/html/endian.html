@@ -453,6 +453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#changelog">Revision History</a>
 <ul class="sectlevel2">
+<li><a href="#overview_changes_in_1_75_0">Changes in 1.75.0</a></li>
 <li><a href="#overview_changes_in_1_74_0">Changes in 1.74.0</a></li>
 <li><a href="#overview_changes_in_1_72_0">Changes in 1.72.0</a></li>
 <li><a href="#overview_changes_in_1_71_0">Changes in 1.71.0</a></li>
@@ -1095,6 +1096,20 @@ does not necessarily produce another valid floating point number.</p>
 <div class="sect1">
 <h2 id="changelog">Revision History</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="overview_changes_in_1_75_0">Changes in 1.75.0</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>endian_arithmetic</code> no longer inherits from <code>endian_buffer</code></p>
+</li>
+<li>
+<p>When <code>BOOST_ENDIAN_NO_CTORS</code> is defined, the unaligned <code>endian_buffer</code> and
+<code>endian_arithmetic</code> are C&#43;&#43;03 PODs, to enable use of <code>__attribute__((packed))</code></p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="overview_changes_in_1_74_0">Changes in 1.74.0</h3>
 <div class="ulist">
@@ -3773,7 +3788,6 @@ namespace boost
     template &lt;order Order, class T, std::size_t n_bits,
       align Align = align::no&gt;
     class endian_arithmetic
-      : public endian_buffer&lt;Order, T, n_bits, Align&gt;
     {
     public:
 
@@ -3786,9 +3800,9 @@ namespace boost
 
       endian_arithmetic&amp; operator=(T v) noexcept;
       operator value_type() const noexcept;
-      value_type value() const noexcept; // for exposition; see endian_buffer
-      unsigned char* data() noexcept; // for exposition; see endian_buffer
-      unsigned char const* data() const noexcept; // for exposition; see endian_buffer
+      value_type value() const noexcept;
+      unsigned char* data() noexcept;
+      unsigned char const* data() const noexcept;
 
       // arithmetic operations
       //   note that additional operations are provided by the value_type
@@ -4025,6 +4039,51 @@ namespace boost
 <dt class="hdlist1">Returns</dt>
 <dd>
 <p><code>*this</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>value_type value() const noexcept;</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>See <code>endian_buffer::value()</code>.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>unsigned char* data() noexcept;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>unsigned char const* data() const noexcept;</code></pre>
+</div>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Returns</dt>
+<dd>
+<p>See <code>endian_buffer::data()</code>.</p>
 </dd>
 </dl>
 </div>
@@ -4553,7 +4612,7 @@ anyone has been missed.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-08-11 14:55:46 UTC
+Last updated 2020-12-03 05:01:20 UTC
 </div>
 </div>
 <style>
