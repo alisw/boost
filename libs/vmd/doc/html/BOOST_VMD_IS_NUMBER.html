@@ -4,7 +4,7 @@
 <title>Macro BOOST_VMD_IS_NUMBER</title>
 <link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
-<link rel="home" href="index.html" title="Chapter 1. The Variadic Macro Data Library 1.9">
+<link rel="home" href="index.html" title="Chapter 1. The Variadic Macro Data Library 1.10">
 <link rel="up" href="header/boost/vmd/is_number_hpp.html" title="Header &lt;boost/vmd/is_number.hpp&gt;">
 <link rel="prev" href="header/boost/vmd/is_number_hpp.html" title="Header &lt;boost/vmd/is_number.hpp&gt;">
 <link rel="next" href="header/boost/vmd/is_parens_empty_hpp.html" title="Header &lt;boost/vmd/is_parens_empty.hpp&gt;">
@@ -33,8 +33,8 @@
 
 </span>BOOST_VMD_IS_NUMBER(sequence)</pre></div>
 <div class="refsect1">
-<a name="idm46167810709696"></a><h2>Description</h2>
-<p>The macro checks to see if a sequence is a Boost PP number. A Boost PP number is a value from 0 to 256.</p>
+<a name="idm46252397719776"></a><h2>Description</h2>
+<p>The macro checks to see if a sequence is a Boost PP number. A Boost PP number is a value from 0 to BOOST_PP_LIMIT_MAG.</p>
 <p>sequence = a possible number</p>
 <p>returns = 1 if the sequence is a Boost PP number, 0 if it is not.</p>
 <p>If the input is not a VMD data type this macro could lead to a preprocessor error. This is because the macro uses preprocessor concatenation to determine if the input is a number once it is determined that the input does not start with parenthesis. If the data being concatenated would lead to an invalid preprocessor token the compiler can issue a preprocessor error. </p>

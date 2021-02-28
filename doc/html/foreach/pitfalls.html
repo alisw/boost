@@ -44,13 +44,13 @@
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
 
 <span class="comment">// ERROR! Too many arguments to BOOST_FOREACH macro.</span>
-<span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...</span>
+<span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...</span>
 </pre>
 <p>
       One way to fix this is with a typedef.
     </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
-<span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">pair_t</span><span class="special">;</span>
+<span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">pair_t</span><span class="special">;</span>
 
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">pair_t</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...</span>
 </pre>
@@ -58,7 +58,7 @@
       Another way to fix it is to predeclare the loop variable:
     </p>
 <pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">m</span><span class="special">;</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
 
 <span class="identifier">BOOST_FOREACH</span><span class="special">(</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">m</span><span class="special">)</span> <span class="comment">// ...</span>
 </pre>

@@ -313,8 +313,8 @@
 <method name="operator==" cv="const noexcept"><type>bool</type><parameter name="rhs"><paramtype>const <classname>mean</classname> &amp;</paramtype></parameter></method>
 <method name="operator!=" cv="const noexcept"><type>bool</type><parameter name="rhs"><paramtype>const <classname>mean</classname> &amp;</paramtype></parameter></method>
 <method name="count" cv="const noexcept"><type>const_reference</type><purpose>Return how many samples were accumulated. </purpose></method>
-<method name="value" cv="const noexcept"><type>const_reference</type><purpose>Return mean value of accumulated samples. </purpose></method>
-<method name="variance" cv="const noexcept"><type>value_type</type><purpose>Return variance of accumulated samples. </purpose></method>
+<method name="value" cv="const noexcept"><type>const_reference</type><purpose>Return mean value of accumulated samples. </purpose><description><para>The result is undefined, if <computeroutput>count() &lt; 1</computeroutput>. </para></description></method>
+<method name="variance" cv="const noexcept"><type>value_type</type><purpose>Return variance of accumulated samples. </purpose><description><para>The result is undefined, if <computeroutput>count() &lt; 2</computeroutput>. </para></description></method>
 <method name="serialize"><type>void</type><template>
           <template-type-parameter name="Archive"/>
         </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name="version"><paramtype>unsigned</paramtype></parameter></method>
@@ -557,8 +557,8 @@ for (auto&amp;&amp; x : indexed(hist))
 <method name="operator!=" cv="const noexcept"><type>bool</type><parameter name="rhs"><paramtype>const <classname>weighted_mean</classname> &amp;</paramtype></parameter></method>
 <method name="sum_of_weights" cv="const noexcept"><type>const_reference</type><purpose>Return sum of weights. </purpose></method>
 <method name="sum_of_weights_squared" cv="const noexcept"><type>const_reference</type><purpose>Return sum of weights squared (variance of weight distribution) </purpose></method>
-<method name="value" cv="const noexcept"><type>const_reference</type><purpose>Return mean of accumulated weighted samples. </purpose></method>
-<method name="variance" cv="const"><type>value_type</type><purpose>Return variance of accumulated weighted samples. </purpose></method>
+<method name="value" cv="const noexcept"><type>const_reference</type><purpose>Return mean value of accumulated weighted samples. </purpose><description><para>The result is undefined, if <computeroutput>sum_of_weights() == 0</computeroutput>. </para></description></method>
+<method name="variance" cv="const"><type>value_type</type><purpose>Return variance of accumulated weighted samples. </purpose><description><para>The result is undefined, if <computeroutput>sum_of_weights() == 0</computeroutput> or <computeroutput>sum_of_weights() == sum_of_weights_squared()</computeroutput>. </para></description></method>
 <method name="serialize"><type>void</type><template>
           <template-type-parameter name="Archive"/>
         </template><parameter name="ar"><paramtype>Archive &amp;</paramtype></parameter><parameter name=""><paramtype>unsigned</paramtype></parameter></method>
@@ -1741,11 +1741,11 @@ The axis computes the number of bins as n = abs(stop - start) / step, rounded do
           <template-nontype-parameter name="Ts"><type>class...</type></template-nontype-parameter>
           <template-type-parameter name="U"/>
         </template><parameter name="axis"><paramtype>const <classname>variant</classname>&lt; Ts... &gt; &amp;</paramtype></parameter><parameter name="value"><paramtype>const U &amp;</paramtype></parameter></function>
-<function name="rank"><type>constexpr unsigned</type><template>
+<function name="rank"><type>constexpr unsigned int</type><template>
           <template-type-parameter name="Axis"/>
         </template><parameter name="axis"><paramtype>const Axis &amp;</paramtype><description><para>any axis instance </para></description></parameter><purpose>Return axis rank (how many arguments it processes). </purpose><description><para>
 </para></description></function>
-<function name="rank"><type>unsigned</type><template>
+<function name="rank"><type>unsigned int</type><template>
           <template-nontype-parameter name="Ts"><type>class...</type></template-nontype-parameter>
         </template><parameter name="axis"><paramtype>const <classname>axis::variant</classname>&lt; Ts... &gt; &amp;</paramtype></parameter></function>
 <function name="update"><type>std::pair&lt; index_type, index_type &gt;</type><template>

@@ -1,3 +1,65 @@
+Version 306:
+
+* Revert removal of lowest_layer_type from test stream.
+
+--------------------------------------------------------------------------------
+
+Version 305:
+
+* Fix documentation build.
+
+--------------------------------------------------------------------------------
+
+Version 304:
+
+* Fix C++20 coroutine tests.
+* Fix links to Bishop Fox Security Assessment.
+
+--------------------------------------------------------------------------------
+
+Version 303:
+
+* Add Bishop Fox Security Assessment.
+
+--------------------------------------------------------------------------------
+
+Version 302:
+
+* Fix assert when basic_stream used as underlying of ssl::stream with zero-length write.
+* Add Sec-* HTTP headers.
+* Fix nullptr implicit cast on `fields::set()`.
+
+--------------------------------------------------------------------------------
+
+Version 301:
+
+* Fix Travis CI bug.
+* Fix erroneous error when HTTP `body_limit` is `none`.
+* Fix unreachable code warning with MSVC.
+* Fix logic error in advance_server_flex.
+* Fix file open with append_existing flag on posix.
+* Websocket SSL `teardown` also tears down underlying TCP.
+* Update WebSocket examples to set TLS SNI.
+* Add handler tracking locations to websocket.
+* Add handler tracking locations to tcp teardown.
+* Eliminate spurious uninitialised variable warning in detect_ssl.
+* Add handler tracking locations to flat_stream.
+* Add handler tracking locations to detect_ssl.
+* Add handler tracking locations to icy_stream.
+* Add handler tracking locations to basic_stream.
+* Add handler tracking locations to http operations.
+
+API Changes:
+
+* Previously, `teardown` and `async_teardown` of a websocket connection over SSL
+  would only shut down the SSL layer, leaving the TCP layer connected. Now the 
+  SSL teardown will tear down both the SSL and TCP layers, cleanly shutting down 
+  the TCP connection and closing the socket.
+  Should the client expect the TCP socket to remain connected, users will need to 
+  re-engineer their code.
+
+--------------------------------------------------------------------------------
+
 Version 300:
 
 * Fix compile errors under Clang 3.4

@@ -31,6 +31,7 @@
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.stable_vector"><span class="emphasis"><em>stable_vector</em></span></a></span></dt>
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.flat_xxx"><span class="emphasis"><em>flat_(multi)map/set</em></span>
       associative containers</a></span></dt>
+<dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.devector"><span class="emphasis"><em>devector</em></span></a></span></dt>
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.slist"><span class="emphasis"><em>slist</em></span></a></span></dt>
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.static_vector"><span class="emphasis"><em>static_vector</em></span></a></span></dt>
 <dt><span class="section"><a href="non_standard_containers.html#container.non_standard_containers.small_vector"><span class="emphasis"><em>small_vector</em></span></a></span></dt>
@@ -344,6 +345,31 @@
             for non-movable types)
           </li>
 </ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container.non_standard_containers.devector"></a><a class="link" href="non_standard_containers.html#container.non_standard_containers.devector" title="devector"><span class="emphasis"><em>devector</em></span></a>
+</h3></div></div></div>
+<p>
+        <code class="computeroutput"><span class="identifier">devector</span></code> is a hybrid of the
+        standard vector and deque containers originally written by Thaler Benedek.
+        It offers cheap (amortized constant time) insertion at both the front and
+        back ends, while also providing the regular features of <code class="computeroutput"><span class="identifier">vector</span></code>,
+        in particular the contiguous underlying memory.
+      </p>
+<p>
+        Unlike <code class="computeroutput"><span class="identifier">vector</span></code>, devector can
+        have free capacity both before and after the elements. This enables efficient
+        implementation of methods that modify the devector at the front. In general,
+        <code class="computeroutput"><span class="identifier">devector</span></code>'s available methods
+        are a superset of those of <code class="computeroutput"><span class="identifier">vector</span></code>
+        with identical behaviour, barring a couple of iterator invalidation guarantees
+        that differ.
+      </p>
+<p>
+        The overhead for devector is one extra <code class="computeroutput"><span class="identifier">size_t</span></code>
+        per container: Usually sizeof(devector) == 4*sizeof(T*).
+      </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
