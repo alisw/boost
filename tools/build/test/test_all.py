@@ -1,17 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Copyright 2002-2005 Dave Abrahams.
 # Copyright 2002-2006 Vladimir Prus.
 # Distributed under the Boost Software License, Version 1.0.
-#    (See accompanying file LICENSE_1_0.txt or copy at
-#         http://www.boost.org/LICENSE_1_0.txt)
+#    (See accompanying file LICENSE.txt or copy at
+#         https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 from __future__ import print_function
 
 import BoostBuild
 
+import concurrent.futures
 import os
 import os.path
+import time
+import signal
 import sys
 
 xml = "--xml" in sys.argv
@@ -28,6 +31,24 @@ for s in ("BOOST_ROOT", "BOOST_BUILD_PATH", "JAM_TOOLSET", "BCCROOT",
         pass
 
 BoostBuild.set_defer_annotations(1)
+
+
+def iterfutures(futures):
+    while futures:
+        done, futures = concurrent.futures.wait(
+            futures,return_when=concurrent.futures.FIRST_COMPLETED)
+        for future in done:
+            yield future, futures
+
+
+def run_test(test):
+    ts = time.perf_counter()
+    exc = None
+    try:
+        __import__(test)
+    except BaseException as e:
+        exc = e
+    return test, time.perf_counter() - ts, exc, BoostBuild.annotations
 
 
 def run_tests(critical_tests, other_tests):
@@ -49,24 +70,53 @@ def run_tests(critical_tests, other_tests):
         if len(x) > max_test_name_len:
             max_test_name_len = len(x)
 
+    cancelled = False
+    executor = concurrent.futures.ProcessPoolExecutor()
+
+    def handler(sig, frame):
+        cancelled = True
+        processes = executor._processes.values()
+        executor.shutdown(wait=False, cancel_futures=True)
+        for process in processes:
+            process.terminate()
+
+    signal.signal(signal.SIGINT, handler)
+
     pass_count = 0
     failures_count = 0
-
-    for test in all_tests:
+    start_ts = time.perf_counter()
+    isatty = sys.stdout.isatty() or "--interactive" in sys.argv
+    futures = {executor.submit(run_test, test): test for test in all_tests}
+    for future, pending in iterfutures(futures):
+        test = futures[future]
         if not xml:
             s = "%%-%ds :" % max_test_name_len % test
+            if isatty:
+                s = f"\r{s}"
             print(s, end='')
 
         passed = 0
+        ts = float('nan')
         try:
-            __import__(test)
+            test, ts, exc, annotations = future.result()
+            BoostBuild.annotations += annotations
+            if exc is not None:
+                raise exc from None
             passed = 1
+        except concurrent.futures.process.BrokenProcessPool:
+            # It could be us who broke the pool by terminating its threads
+            if not cancelled:
+                raise
         except KeyboardInterrupt:
             """This allows us to abort the testing manually using Ctrl-C."""
-            raise
-        except SystemExit:
+            print("\n\nTesting was cancelled by external signal.")
+            cancelled = True
+            break
+        except SystemExit as e:
             """This is the regular way our test scripts are supposed to report
             test failures."""
+            if e.code is None or e.code == 0:
+                passed = 1
         except:
             exc_type, exc_value, exc_tb = sys.exc_info()
             try:
@@ -96,10 +146,19 @@ def run_tests(critical_tests, other_tests):
 
         if not xml:
             if passed:
-                print("PASSED")
+                print(f"PASSED {ts * 1000:>5.0f}ms")
             else:
-                print("FAILED")
+                print(f"FAILED {ts * 1000:>5.0f}ms")
                 BoostBuild.flush_annotations()
+
+            if isatty:
+                msg = ", ".join(futures[future] for future in pending if future.running())
+                if msg:
+                    msg = f"[{len(futures) - len(pending)}/{len(futures)}] {msg}"
+                    max_len = max_test_name_len + len(" :PASSED 12345ms")
+                    if len(msg) > max_len:
+                        msg = msg[:max_len - 3] + "..."
+                    print(msg, end='')
         else:
             rs = "succeed"
             if not passed:
@@ -122,14 +181,15 @@ def run_tests(critical_tests, other_tests):
         open("test_results.txt", "w").close()
 
     if not xml:
-        print('''
+        print(f'''
         === Test summary ===
-        PASS: %d
-        FAIL: %d
-        ''' % (pass_count, failures_count))
+        PASS: {pass_count}
+        FAIL: {failures_count}
+        TIME: {time.perf_counter() - start_ts:.0f}s
+        ''')
 
     # exit with failure with failures
-    if failures_count > 0:
+    if cancelled or failures_count > 0:
         sys.exit(1)
 
 def last_failed_test():
@@ -152,7 +212,7 @@ def reorder_tests(tests, first_test):
         return tests
 
 
-critical_tests = ["unit_tests", "module_actions", "startup_v2", "core_d12",
+critical_tests = ["docs", "unit_tests", "module_actions", "core_d12",
     "core_typecheck", "core_delete_module", "core_language", "core_arguments",
     "core_varnames", "core_import_module"]
 
@@ -164,7 +224,8 @@ critical_tests = ["unit_tests", "module_actions", "startup_v2", "core_d12",
 if xml:
     critical_tests.insert(0, "collect_debug_info")
 
-tests = ["absolute_sources",
+tests = ["abs_workdir",
+         "absolute_sources",
          "alias",
          "alternatives",
          "always",
@@ -176,16 +237,19 @@ tests = ["absolute_sources",
          "builtin_echo",
          "builtin_exit",
          "builtin_glob",
+         "builtin_readlink",
          "builtin_split_by_characters",
          "bzip2",
          "c_file",
          "chain",
          "clean",
+         "cli_property_expansion",
          "command_line_properties",
          "composite",
          "conditionals",
          "conditionals2",
          "conditionals3",
+         "conditionals4",
          "conditionals_multiple",
          "configuration",
          "configure",
@@ -195,9 +259,11 @@ tests = ["absolute_sources",
          "core_actions_quietly",
          "core_at_file",
          "core_bindrule",
+         "core_dependencies",
          "core_syntax_error_exit_status",
          "core_fail_expected",
          "core_jamshell",
+         "core_modifiers",
          "core_multifile_actions",
          "core_nt_cmd_line",
          "core_option_d2",
@@ -212,7 +278,8 @@ tests = ["absolute_sources",
          "core_variables_in_actions",
          "custom_generator",
          "debugger",
-         "debugger-mi",
+# Newly broken?
+#         "debugger-mi",
          "default_build",
          "default_features",
 # This test is known to be broken itself.
@@ -241,8 +308,12 @@ tests = ["absolute_sources",
          "inherit_toolset",
          "inherited_dependency",
          "inline",
+         "install_build_no",
+         "lang_asm",
          "libjpeg",
          "liblzma",
+         "libpng",
+         "libtiff",
          "libzstd",
          "lib_source_property",
          "lib_zlib",
@@ -257,11 +328,14 @@ tests = ["absolute_sources",
          "no_type",
          "notfile",
          "ordered_include",
+# FIXME: Disabled due to bug in B2
+#         "ordered_properties",
          "out_of_tree",
          "package",
          "param",
          "path_features",
          "prebuilt",
+         "preprocessor",
          "print",
          "project_dependencies",
          "project_glob",
@@ -271,6 +345,8 @@ tests = ["absolute_sources",
          "project_test3",
          "project_test4",
          "property_expansion",
+# FIXME: Disabled due lack of qt5 detection
+#         "qt5",
          "rebuilds",
          "relative_sources",
          "remove_requirement",
@@ -290,6 +366,8 @@ tests = ["absolute_sources",
          "suffix",
          "tag",
          "test_rc",
+         "test1",
+         "test2",
          "testing",
          "timedata",
          "toolset_clang_darwin",
@@ -299,7 +377,9 @@ tests = ["absolute_sources",
          "toolset_defaults",
          "toolset_gcc",
          "toolset_intel_darwin",
+         "toolset_msvc",
          "toolset_requirements",
+         "transitive_skip",
          "unit_test",
          "unused",
          "use_requirements",
@@ -324,9 +404,13 @@ if toolset.startswith("gcc") and os.name != "nt":
     # assumes otherwise. Hence enable it only when not on Windows.
     tests.append("gcc_runtime")
 
-# PCH test seems broken in strange ways. Disable it.
-# if toolset.startswith("gcc") or toolset.startswith("msvc"):
-#     tests.append("pch")
+if toolset.startswith("clang") or toolset.startswith("gcc") or toolset.startswith("msvc"):
+    tests.append("pch")
+    tests.append("feature_force_include")
+
+# Clang includes Objective-C driver everywhere, but GCC usually in a separate gobj package
+if toolset.startswith("clang") or "darwin" in toolset:
+    tests.append("lang_objc")
 
 # Disable on OSX as it doesn't seem to work for unknown reasons.
 if sys.platform != 'darwin':
@@ -341,7 +425,8 @@ if "--extras" in sys.argv:
     tests.append("example_customization")
     # Requires gettext tools.
     tests.append("example_gettext")
-elif not xml:
+elif not xml and __name__ == "__main__":
     print("Note: skipping extra tests")
 
-run_tests(critical_tests, tests)
+if __name__ == "__main__":
+    run_tests(critical_tests, tests)

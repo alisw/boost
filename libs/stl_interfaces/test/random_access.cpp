@@ -11,13 +11,16 @@
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <numeric>
 #include <tuple>
 #include <type_traits>
 
 
 struct basic_random_access_iter : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                       basic_random_access_iter,
+#endif
                                       std::random_access_iterator_tag,
                                       int>
 {
@@ -56,9 +59,57 @@ static_assert(
         plus_eq<basic_random_access_iter, std::ptrdiff_t>::value,
     "");
 
+// This is here explicitly to check that the nested typedefs make it into the
+// derived iterator type when boost::stl_interfaces::iterator_interface<...>
+// is a dependent type.
+template<typename ValueType>
+struct basic_random_access_iter_dependent
+    : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
+          basic_random_access_iter_dependent<ValueType>,
+#endif
+          std::random_access_iterator_tag,
+          ValueType>
+{
+    basic_random_access_iter_dependent() {}
+    basic_random_access_iter_dependent(ValueType * it) : it_(it) {}
+
+    ValueType & operator*() const { return *it_; }
+    basic_random_access_iter_dependent & operator+=(std::ptrdiff_t i)
+    {
+        it_ += i;
+        return *this;
+    }
+    friend std::ptrdiff_t operator-(
+        basic_random_access_iter_dependent lhs,
+        basic_random_access_iter_dependent rhs) noexcept
+    {
+        return lhs.it_ - rhs.it_;
+    }
+
+private:
+    ValueType * it_;
+};
+
+using basic_random_access_iter_dependent_category =
+    basic_random_access_iter_dependent<int>::iterator_category;
+
+BOOST_STL_INTERFACES_STATIC_ASSERT_CONCEPT(
+    basic_random_access_iter_dependent<int>, std::random_access_iterator)
+BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
+    basic_random_access_iter_dependent<int>,
+    std::random_access_iterator_tag,
+    std::random_access_iterator_tag,
+    int,
+    int &,
+    int *,
+    std::ptrdiff_t)
+
 struct basic_adapted_random_access_iter
     : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           basic_adapted_random_access_iter,
+#endif
           std::random_access_iterator_tag,
           int>
 {
@@ -86,7 +137,9 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 
 template<typename ValueType>
 struct adapted_random_access_iter : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                         adapted_random_access_iter<ValueType>,
+#endif
                                         std::random_access_iterator_tag,
                                         ValueType>
 {
@@ -135,7 +188,9 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 
 template<typename ValueType>
 struct random_access_iter : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                 random_access_iter<ValueType>,
+#endif
                                 std::random_access_iterator_tag,
                                 ValueType>
 {
@@ -193,7 +248,9 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
     std::ptrdiff_t)
 
 struct zip_iter : boost::stl_interfaces::proxy_iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                       zip_iter,
+#endif
                       std::random_access_iterator_tag,
                       std::tuple<int, int>,
                       std::tuple<int &, int &>>
@@ -253,7 +310,9 @@ struct int_t
 };
 
 struct udt_zip_iter : boost::stl_interfaces::proxy_iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                           udt_zip_iter,
+#endif
                           std::random_access_iterator_tag,
                           std::tuple<int_t, int>,
                           std::tuple<int_t &, int &>>
@@ -350,6 +409,8 @@ std::array<std::tuple<int_t, int>, 10> udt_tuples = {{
 ////////////////////
 #include "view_tests.hpp"
 
+#if !BOOST_STL_INTERFACES_USE_CONCEPTS
+
 template<typename T>
 using data_t = decltype(std::declval<T>().data());
 
@@ -359,7 +420,7 @@ static_assert(
         subrange<
             basic_random_access_iter,
             basic_random_access_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous>>::value,
+            boost::stl_interfaces::element_layout::discontiguous>>::value,
     "");
 static_assert(
     ill_formed<
@@ -367,7 +428,7 @@ static_assert(
         subrange<
             basic_random_access_iter,
             basic_random_access_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous> const>::
+            boost::stl_interfaces::element_layout::discontiguous> const>::
         value,
     "");
 
@@ -380,7 +441,7 @@ static_assert(
         subrange<
             int *,
             int const *,
-            boost::stl_interfaces::v1::element_layout::discontiguous>>::value,
+            boost::stl_interfaces::element_layout::discontiguous>>::value,
     "");
 static_assert(
     ill_formed<
@@ -388,9 +449,11 @@ static_assert(
         subrange<
             int *,
             int const *,
-            boost::stl_interfaces::v1::element_layout::discontiguous> const>::
+            boost::stl_interfaces::element_layout::discontiguous> const>::
         value,
     "");
+
+#endif
 
 
 int main()
@@ -878,9 +941,9 @@ int main()
     basic_random_access_iter first(ints.data());
     basic_random_access_iter last(ints.data() + ints.size());
 
-    auto r = range<boost::stl_interfaces::v1::element_layout::contiguous>(
+    auto r = range<boost::stl_interfaces::element_layout::contiguous>(
         first, last);
-    auto empty = range<boost::stl_interfaces::v1::element_layout::contiguous>(
+    auto empty = range<boost::stl_interfaces::element_layout::contiguous>(
         first, first);
 
     // range begin/end
@@ -909,6 +972,11 @@ int main()
         BOOST_TEST(!cempty);
     }
 
+    // Before LWG 3545 (Reimplement pointer_traits to be SFINAE-friendly),
+    // GCC's std::to_address() breaks the contiguous_iterator concept.
+    // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=96416
+#if !BOOST_STL_INTERFACES_USE_CONCEPTS ||                                      \
+    defined(__GNUC__) && __GNUC__ >= 11 && __GNUC_MINOR__ >= 3
     // data
     {
         BOOST_TEST(r.data() != nullptr);
@@ -923,6 +991,7 @@ int main()
         auto const cempty = empty;
         BOOST_TEST(cempty.data() != nullptr);
     }
+#endif
 
     // size
     {
@@ -961,10 +1030,10 @@ int main()
     zip_iter first(ints.data(), ones.data());
     zip_iter last(ints.data() + ints.size(), ones.data() + ones.size());
 
-    auto r = range<boost::stl_interfaces::v1::element_layout::discontiguous>(
+    auto r = range<boost::stl_interfaces::element_layout::discontiguous>(
         first, last);
     auto empty =
-        range<boost::stl_interfaces::v1::element_layout::discontiguous>(
+        range<boost::stl_interfaces::element_layout::discontiguous>(
             first, first);
 
     // range begin/end

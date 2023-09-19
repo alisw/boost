@@ -2,6 +2,11 @@
 // Unit Test Helper
 
 // Copyright (c) 2010-2019 Barend Gehrels, Amsterdam, the Netherlands.
+
+// This file was modified by Oracle on 2021.
+// Modifications copyright (c) 2021, Oracle and/or its affiliates.
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -132,7 +137,7 @@ public :
             return;
         }
 
-        BOOST_FOREACH(pair_type const& p, points)
+        for (pair_type const& p : points)
         {
             mappers.push_back(new mapper_visitor<Point>(complete_caseid, p.second, p.first));
         }
@@ -141,10 +146,9 @@ public :
     template <typename PieceCollection>
     inline void apply(PieceCollection const& collection, int phase)
     {
-        for(typename container_type::iterator it = mappers.begin();
-            it != mappers.end(); ++it)
+        for (auto& item : mappers)
         {
-            it->apply(collection, phase);
+            item.apply(collection, phase);
         }
     }
 
@@ -152,10 +156,9 @@ public :
     void map_input_output(Geometry const& geometry,
             GeometryBuffer const& buffered, bool negative)
     {
-        for(typename container_type::iterator it = mappers.begin();
-            it != mappers.end(); ++it)
+        for (auto& item : mappers)
         {
-           it->map_input_output(geometry, buffered, negative);
+           item.map_input_output(geometry, buffered, negative);
         }
     }
 };

@@ -31,20 +31,29 @@
 #include <cstdlib>
 #include <random>
 
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
+
 namespace mp11 = boost::mp11;
 namespace bmp = boost::multiprecision;
+namespace diff = boost::math::differentiation::autodiff_v1::detail;
+
 
 #if defined(BOOST_USE_VALGRIND) || defined(BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS)
 using bin_float_types = mp11::mp_list<float>;
+#elif defined(__STDCPP_FLOAT32_T__) && defined(__STDCPP_FLOAT64_T__)
+using bin_float_types = mp11::mp_list<std::float32_t, std::float64_t>;
 #else
 using bin_float_types = mp11::mp_list<float, double, long double>;
 #endif
+
 
 // cpp_dec_float_50 cannot be used with close_at_tolerance
 /*using multiprecision_float_types =
     mp_list<bmp::cpp_dec_float_50, bmp::cpp_bin_float_50>;*/
 
-#if !defined(BOOST_VERSION) || BOOST_VERSION < 107000 || defined(BOOST_USE_VALGRIND) || defined(BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS) || defined(BOOST_NO_STRESS_TEST)
+#if !defined(BOOST_VERSION) || BOOST_VERSION < 107000 || defined(BOOST_USE_VALGRIND) || defined(BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS) || defined(BOOST_NO_STRESS_TEST) || defined(BOOST_MATH_STANDALONE)
 using multiprecision_float_types = mp11::mp_list<>;
 #else
 #define BOOST_AUTODIFF_TESTING_INCLUDE_MULTIPRECISION
@@ -74,7 +83,7 @@ template <typename T, std::size_t OrderValue>
 struct test_constants_t {
   static constexpr auto n_samples = if_t<mp11::mp_or<bmp::is_number<T>, bmp::is_number_expression<T>>, mp11::mp_int<10>, mp11::mp_int<25>>::value;
   static constexpr auto order = OrderValue;
-  static constexpr T pct_epsilon() BOOST_NOEXCEPT {
+  static constexpr T pct_epsilon() noexcept {
     return (is_multiprecision_t<T>::value ? 2 : 1) * std::numeric_limits<T>::epsilon() * 100;
   }
 };
@@ -153,7 +162,7 @@ static_assert(std::is_same<RandomSample<bmp::cpp_bin_float_50>::dist_t,
 }  // namespace test_detail
 
 template<typename T>
-auto isNearZero(const T& t) noexcept -> typename std::enable_if<!detail::is_fvar<T>::value, bool>::type
+auto isNearZero(const T& t) noexcept -> typename std::enable_if<!diff::is_fvar<T>::value, bool>::type
 {
   using std::sqrt;
   using bmp::sqrt;
@@ -167,7 +176,7 @@ auto isNearZero(const T& t) noexcept -> typename std::enable_if<!detail::is_fvar
 }
 
 template<typename T>
-auto isNearZero(const T& t) noexcept -> typename std::enable_if<detail::is_fvar<T>::value, bool>::type
+auto isNearZero(const T& t) noexcept -> typename std::enable_if<diff::is_fvar<T>::value, bool>::type
 {
   using root_type = typename T::root_type;
   return isNearZero(static_cast<root_type>(t));

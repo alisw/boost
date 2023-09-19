@@ -34,12 +34,18 @@ namespace beast {
 namespace {
 
 #if defined(BOOST_ASIO_NO_TS_EXECUTORS)
+
+static struct ex1_context : net::execution_context
+{
+
+} ex1ctx;
+
 struct ex1_type
 {
 
     net::execution_context &
     query(net::execution::context_t c) const noexcept
-    { return *reinterpret_cast<net::execution_context *>(0); }
+    { return *reinterpret_cast<net::execution_context *>(&ex1ctx); }
 
     net::execution::blocking_t
     query(net::execution::blocking_t) const noexcept
@@ -101,6 +107,11 @@ struct nested_alloc
     struct allocator_type
     {
     };
+
+    allocator_type get_allocator() const noexcept
+    {
+        return allocator_type{};
+    }
 };
 
 struct intrusive_alloc
@@ -108,11 +119,21 @@ struct intrusive_alloc
     struct allocator_type
     {
     };
+
+    allocator_type get_allocator() const noexcept
+    {
+        return allocator_type{};
+    }
 };
 
 struct no_ex
 {
     using executor_type = net::system_executor;
+
+    executor_type get_executor() const noexcept
+    {
+        return executor_type{};
+    }
 };
 
 struct nested_ex
@@ -120,6 +141,11 @@ struct nested_ex
     struct executor_type
     {
     };
+
+    executor_type get_executor() const noexcept
+    {
+        return executor_type{};
+    }
 };
 
 struct intrusive_ex
@@ -127,6 +153,11 @@ struct intrusive_ex
     struct executor_type
     {
     };
+
+    executor_type get_executor() const noexcept
+    {
+        return executor_type{};
+    }
 };
 
 template<class E, class A>
@@ -565,7 +596,7 @@ public:
                     ioc1.get_executor());
             op->complete(false);
             delete op;
-            BEAST_EXPECT(ioc1.run() == 0);
+            BEAST_EXPECT(ioc1.run() == 1);
             BEAST_EXPECT(ioc2.run() == 1);
         }
         {
@@ -716,9 +747,9 @@ public:
 
                 net::steady_timer timer;
 
-                temporary_data(std::string message_, net::io_context& ctx)
+                temporary_data(std::string message_, net::any_io_executor ex)
                     : message(std::move(message_))
-                    , timer(ctx)
+                    , timer(std::move(ex))
                 {
                 }
             };
@@ -733,7 +764,7 @@ public:
                 , repeats_(repeats)
                 , data_(allocate_stable<temporary_data>(*this,
                     std::move(message),
-                    net::query(stream.get_executor(), net::execution::context)))
+                    stream.get_executor()))
             {
                 (*this)(); // start the operation
             }

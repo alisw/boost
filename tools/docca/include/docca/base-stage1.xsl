@@ -1,24 +1,28 @@
-<!DOCTYPE xsl:stylesheet [
-<!-- TODO: complete this list -->
-<!ENTITY BLOCK_LEVEL_ELEMENT "programlisting
-                            | itemizedlist
-                            | orderedlist
-                            | parameterlist
-                            | simplesect
-                            | para
-                            | table
-                            | linebreak">
-]>
 <xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:d="http://github.com/vinniefalco/docca"
-  exclude-result-prefixes="xs d"
+  xmlns:my="http://localhost"
+  exclude-result-prefixes="xs d my"
   expand-text="yes">
 
   <xsl:include href="common.xsl"/>
 
   <xsl:output indent="yes"/>
+
+  <xsl:function name="my:block-level-element-children">
+    <xsl:param name="context"/>
+    <!-- TODO: complete this list -->
+    <xsl:sequence select="$context/( programlisting
+                                   | itemizedlist
+                                   | orderedlist
+                                   | parameterlist
+                                   | simplesect
+                                   | para
+                                   | table
+                                   | linebreak
+                                   )"/>
+  </xsl:function>
 
   <xsl:template match="/doxygen" priority="1">
     <page id="{@d:page-id}" type="{@d:page-type}">
@@ -184,6 +188,7 @@
                 <xsl:apply-templates select="param"/>
               </params>
               <xsl:apply-templates mode="modifier" select="@const[. eq 'yes']"/>
+              <xsl:apply-templates mode="suffix" select="argsstring"/>
             </overloaded-member>
           </xsl:template>
 
@@ -192,6 +197,11 @@
                   </xsl:template>
                   <xsl:template mode="modifier" match="@virt">
                     <modifier>virtual</modifier>
+                  </xsl:template>
+
+                  <xsl:template mode="suffix" match="argsstring"/>
+                  <xsl:template mode="suffix" match="argsstring[ends-with(., '=delete')]">
+                    <suffix> = delete</suffix>
                   </xsl:template>
 
 
@@ -211,6 +221,26 @@
 
   <!-- TODO: Should this be a custom rule or built-in? -->
   <xsl:template mode="section" match="simplesect[matches(title,'Concepts:?')]"/>
+
+  <!-- Omit description section if it has no body -->
+  <xsl:template mode="section" match="detaileddescription[not(normalize-space(.))]" priority="2"/>
+
+  <!-- Omit the "Description" heading (only show the body) if it has nothing but a parameterlist or simplesect -->
+  <xsl:template mode="section" match="detaileddescription[not(normalize-space(d:strip-sections(.)))]" priority="1">
+    <xsl:apply-templates mode="section-body" select="."/>
+  </xsl:template>
+
+          <xsl:function name="d:strip-sections" as="element(detaileddescription)">
+            <xsl:param name="desc" as="element(detaileddescription)"/>
+            <xsl:apply-templates mode="strip-sections" select="$desc"/>
+          </xsl:function>
+
+                  <xsl:template mode="strip-sections" match="parameterlist | simplesect"/>
+                  <xsl:template mode="strip-sections" match="@* | node()">
+                    <xsl:copy>
+                      <xsl:apply-templates mode="#current" select="@* | node()"/>
+                    </xsl:copy>
+                  </xsl:template>
 
   <xsl:template mode="section" match="*">
     <section>
@@ -238,26 +268,31 @@
   <xsl:template mode="section-heading" match="parameterlist[@kind eq 'templateparam']">Template Parameters</xsl:template>
   <xsl:template mode="section-heading" match="parameterlist                          ">Parameters</xsl:template>
 
-  <xsl:template mode="section-heading" match="innerclass
-                                            | sectiondef[@kind eq 'public-type']">Types</xsl:template>
-  <xsl:template mode="section-heading" match="sectiondef[@kind eq 'friend'     ]">Friends</xsl:template>
-  <xsl:template mode="section-heading" match="sectiondef[@kind eq 'related'    ]">Related Functions</xsl:template>
+  <xsl:template mode="section-heading" match="innerclass">Types</xsl:template>
 
-  <xsl:template mode="section-heading" match="sectiondef[@kind eq 'enum']">Values</xsl:template>
+  <xsl:template mode="section-heading" match="sectiondef[@kind eq 'friend' ]">Friends</xsl:template>
+  <xsl:template mode="section-heading" match="sectiondef[@kind eq 'related']">Related Functions</xsl:template>
+  <xsl:template mode="section-heading" match="sectiondef[@kind eq 'enum'   ]">Values</xsl:template>
 
   <xsl:template mode="section-heading" match="sectiondef">
-    <xsl:apply-templates mode="access-level" select="@kind"/>
-    <xsl:apply-templates mode="member-kind" select="@kind"/>
+    <xsl:apply-templates mode="access-level"  select="@kind"/>
+    <xsl:apply-templates mode="storage-class" select="@kind"/>
+    <xsl:apply-templates mode="member-kind"  select="@kind"/>
   </xsl:template>
 
-          <xsl:template mode="access-level" match="@kind[starts-with(.,'public'   )]"/>
-          <xsl:template mode="access-level" match="@kind[starts-with(.,'protected')]">Protected </xsl:template>
-          <xsl:template mode="access-level" match="@kind[starts-with(.,'private'  )]">Private </xsl:template>
+          <xsl:template mode="access-level" match="@kind[starts-with(.,'public-'   )]"/>
+          <xsl:template mode="access-level" match="@kind[starts-with(.,'protected-')]">Protected </xsl:template>
+          <xsl:template mode="access-level" match="@kind[starts-with(.,'private-'  )]">Private </xsl:template>
 
-          <xsl:template mode="member-kind" match="@kind[contains(.,'-static-')]" priority="1"
-                                                                               >Static Members</xsl:template>
-          <xsl:template mode="member-kind" match="@kind[ends-with(.,'func'  )]">Member Functions</xsl:template>
-          <xsl:template mode="member-kind" match="@kind[ends-with(.,'attrib')]">Data Members</xsl:template>
+          <xsl:template mode="storage-class" match="@*"/>
+          <xsl:template mode="storage-class" match="@kind[contains(.,'-static-')]">Static </xsl:template>
+
+          <xsl:template mode="member-kind" priority="1"
+                                           match="@kind[ends-with(.,'-static-attrib')]">Members</xsl:template>
+          <xsl:template mode="member-kind" match="@kind[ends-with(.,'-attrib'       )]">Data Members</xsl:template>
+          <xsl:template mode="member-kind" match="@kind[ends-with(.,'-func'         )]">Member Functions</xsl:template>
+          <xsl:template mode="member-kind" match="@kind[ends-with(.,'-type'         )]">Types</xsl:template>
+
 
   <xsl:template mode="section-body" match="sectiondef | innerclass | parameterlist">
     <table>
@@ -289,16 +324,20 @@
           <xsl:template mode="parameter-row" match="parameteritem">
             <tr>
               <td>
-                <code>
-                  <!-- ASSUMPTION: <parameternamelist> only ever has one <parametername> child -->
-                  <xsl:apply-templates select="parameternamelist/parametername/node()"/>
-                </code>
+                <xsl:apply-templates mode="parameter-name" select="parameternamelist/parametername"/>
               </td>
               <td>
                 <xsl:apply-templates select="parameterdescription/node()"/>
               </td>
             </tr>
           </xsl:template>
+
+                  <xsl:template mode="parameter-name" match="parametername">
+                    <code>
+                      <xsl:apply-templates/>
+                    </code>
+                    <xsl:if test="position() ne last()">, </xsl:if>
+                  </xsl:template>
 
   <xsl:template mode="table-body" match="sectiondef[@kind eq 'enum']">
     <xsl:apply-templates mode="enum-row" select="memberdef/enumvalue"/> <!-- Use input order for enum values -->
@@ -320,7 +359,10 @@
       <xsl:apply-templates mode="member-nodes" select="."/>
     </xsl:variable>
     <xsl:for-each-group select="$member-nodes" group-by="d:member-name(.)">
-      <xsl:sort select="current-grouping-key()"/>
+      <!-- Sort by member name, but don't change the relative order of a list of operators -->
+      <xsl:sort select="if (matches(current-grouping-key(), '^operator..?$'))
+                        then 'operator'
+                        else current-grouping-key()"/>
       <xsl:apply-templates mode="member-row" select="."/>
     </xsl:for-each-group>
   </xsl:template>
@@ -365,6 +407,7 @@
               <td>
                 <bold>
                   <ref d:refid="{@d:page-refid}">{current-grouping-key()}</ref>
+                  <xsl:apply-templates mode="member-annotation" select="."/>
                 </bold>
               </td>
               <td>
@@ -373,6 +416,22 @@
             </tr>
           </xsl:template>
 
+                  <xsl:template mode="member-annotation" match="*">
+                    <xsl:variable name="member-name" select="current-grouping-key()"/>
+                    <xsl:variable name="is-destructor" select="starts-with($member-name, '~')"/>
+                    <xsl:variable name="is-constructor" select="$member-name = d:strip-ns(/doxygen/compounddef/compoundname)"/>
+                    <xsl:if test="$is-destructor or $is-constructor">
+                      <xsl:text>&#160;</xsl:text>
+                      <role class="silver">
+                        <xsl:choose>
+                          <xsl:when test="$is-destructor">[destructor]</xsl:when>
+                          <xsl:otherwise                 >[constructor]</xsl:otherwise>
+                        </xsl:choose>
+                      </role>
+                    </xsl:if>
+                  </xsl:template>
+
+
                   <xsl:template mode="member-description" match="innerclass">
                     <xsl:apply-templates select="d:referenced-inner-class/compounddef/briefdescription"/>
                   </xsl:template>
@@ -380,7 +439,13 @@
                     <xsl:variable name="descriptions" select="current-group()/briefdescription"/>
                     <!-- Pull in any overload descriptions but only if they vary -->
                     <xsl:for-each select="distinct-values($descriptions)">
-                      <xsl:apply-templates select="$descriptions[. eq current()][1]"/>
+                      <!-- ASSUMPTION: <briefdescription> always contains one <para> -->
+                      <xsl:apply-templates select="$descriptions[. eq current()][1]/para/node()"/>
+                      <xsl:if test="position() ne last()">
+                        <br/>
+                        <role class="silver">—</role>
+                        <br/>
+                      </xsl:if>
                     </xsl:for-each>
                   </xsl:template>
 
@@ -399,7 +464,8 @@
       <xsl:apply-templates mode="normalize-params" select="templateparamlist"/>
       <kind>{@kind}</kind>
       <name>{d:strip-ns(compoundname)}</name>
-      <xsl:for-each select="basecompoundref[not(d:should-ignore-base(.))]">
+      <xsl:for-each select="basecompoundref[not(d:should-ignore-base(.))]
+                                           [not(@prot eq 'private')]">
         <base>
           <prot>{@prot}</prot>
           <name>{d:strip-doc-ns(.)}</name>
@@ -458,19 +524,23 @@
         <xsl:apply-templates select="param"/>
       </params>
       <xsl:apply-templates mode="modifier" select="@const[. eq 'yes']"/>
+      <xsl:apply-templates mode="suffix" select="argsstring"/>
     </function>
   </xsl:template>
 
-          <!-- TODO: make sure this is robust and handles all the possible cases well -->
+          <!-- Extract <declname> when Doxygen hides it in the <type> -->
           <xsl:template mode="normalize-params" match="templateparamlist/param/type[not(../declname)]
-                                                                                   [starts-with(.,'class ')]"
+                                                                                   [starts-with(.,'class ') or
+                                                                                    starts-with(.,'typename ')]"
                                                 priority="1">
-            <type>class</type>
-            <declname>{substring-after(.,'class ')}</declname>
+            <type>{substring-before(.,' ')}</type>
+            <declname>{substring-after(.,' ')}</declname>
           </xsl:template>
 
-          <xsl:template mode="normalize-params" match="templateparamlist/param/type[not(../declname)]">
-            <ERROR message="param neither has a declname nor a 'class ' prefix in the type"/>
+          <!-- Flag as error if no declname value could be found (unless the type is simply "class") -->
+          <xsl:template mode="normalize-params" match="templateparamlist/param/type[not(../declname)]
+                                                                                   [not(. = 'class')]">
+            <ERROR message="param neither has a declname nor a 'class ' or 'typename ' prefix in the type"/>
           </xsl:template>
 
           <xsl:template mode="normalize-params" match="templateparamlist/param/defname"/>
@@ -486,6 +556,31 @@
   </xsl:template>
 
   <xsl:template match="simplesect/title"/>
+
+  <xsl:template match="table">
+    <table>
+      <xsl:apply-templates select="row"/>
+    </table>
+  </xsl:template>
+
+          <xsl:template match="row">
+            <tr>
+              <xsl:apply-templates select="entry"/>
+            </tr>
+          </xsl:template>
+
+                  <xsl:template match="entry[@thead eq 'yes']">
+                    <th>
+                      <xsl:apply-templates/>
+                    </th>
+                  </xsl:template>
+
+                  <xsl:template match="entry">
+                    <td>
+                      <xsl:apply-templates/>
+                    </td>
+                  </xsl:template>
+
 
   <!-- TODO: verify we don't need this; it was causing duplicate headings in simplesect sections
   <xsl:template match="title">
@@ -527,7 +622,7 @@
 
 
   <!-- When a <para> directly contains a mix of inline nodes and block-level elements, normalize its content -->
-  <xsl:template match="para[&BLOCK_LEVEL_ELEMENT;]">
+  <xsl:template match="para[my:block-level-element-children(.)]">
     <para>
       <xsl:for-each-group select="* | text()" group-adjacent="d:is-inline(.)">
         <xsl:apply-templates mode="capture-ranges" select="."/>
@@ -537,7 +632,7 @@
 
           <xsl:function name="d:is-inline">
             <xsl:param name="node"/>
-            <xsl:sequence select="not($node/../(&BLOCK_LEVEL_ELEMENT;)[. is $node])"/>
+            <xsl:sequence select="not($node/../my:block-level-element-children(.)[. is $node])"/>
           </xsl:function>
 
           <!-- Process the block-level elements as usual -->

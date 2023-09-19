@@ -1,7 +1,8 @@
 // Boost.Geometry
 
-// Copyright (c) 2019, Oracle and/or its affiliates.
+// Copyright (c) 2019-2023, Oracle and/or its affiliates.
 
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Licensed under the Boost Software License version 1.0.
@@ -33,7 +34,7 @@ template
 struct call_equals
 {
     template <typename S>
-    static void apply(G1 const& g1, G2 const& g2, S const& s) {}
+    static void apply(G1 const& , G2 const& , S const& ) {}
 };
 
 template <typename G1, typename G2, std::size_t Dim>
@@ -56,7 +57,7 @@ template
 struct call_overlaps
 {
     template <typename S>
-    static void apply(G1 const& g1, G2 const& g2, S const& s) {}
+    static void apply(G1 const& , G2 const& , S const& ) {}
 };
 
 template <typename G1, typename G2, std::size_t Dim>
@@ -89,7 +90,7 @@ template <typename G1, typename G2>
 struct call_touches<G1, G2, 0, 0>
 {
     template <typename S>
-    static void apply(G1 const& g1, G2 const& g2, S const& s) {}
+    static void apply(G1 const& , G2 const& , S const& ) {}
 };
 
 template
@@ -112,14 +113,14 @@ template <typename G1, typename G2>
 struct call_crosses<G1, G2, 0, 0>
 {
     template <typename S>
-    static void apply(G1 const& g1, G2 const& g2, S const& s) {}
+    static void apply(G1 const& , G2 const& , S const& ) {}
 };
 
 template <typename G1, typename G2>
 struct call_crosses<G1, G2, 2, 2>
 {
     template <typename S>
-    static void apply(G1 const& g1, G2 const& g2, S const& s) {}
+    static void apply(G1 const& , G2 const& , S const& ) {}
 };
 
 template <typename G1, typename G2, typename S>
@@ -131,7 +132,7 @@ inline void rel(G1 const& g1, G2 const& g2, S const& s)
     call_crosses<G1, G2>::apply(g1, g2, s);
     bg::disjoint(g1, g2, s);
     call_equals<G1, G2>::apply(g1, g2, s);
-    bg::intersects(g1, g2, s);    
+    bg::intersects(g1, g2, s);
     call_overlaps<G1, G2>::apply(g1, g2, s);
     call_touches<G1, G2>::apply(g1, g2, s);
     bg::within(g1, g2, s);

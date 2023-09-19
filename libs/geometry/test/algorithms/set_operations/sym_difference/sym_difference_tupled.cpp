@@ -14,7 +14,6 @@
 #include <boost/geometry/algorithms/sym_difference.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
 #include <boost/geometry/io/wkt/wkt.hpp>
-#include <boost/geometry/strategies/cartesian/area.hpp>
 #include <boost/geometry/strategies/cartesian/intersection.hpp>
 #include <boost/geometry/strategies/cartesian/point_in_poly_winding.hpp>
 #include <boost/geometry/strategies/cartesian/point_in_point.hpp>
@@ -35,11 +34,7 @@ typedef bg::model::multi_point<Pt> MPt;
 typedef bg::model::multi_linestring<Ls> MLs;
 typedef bg::model::multi_polygon<Po> MPo;
 
-#ifdef BOOST_GEOMETRY_CXX11_TUPLE
-
 #include <tuple>
-
-#endif
 
 template <typename G>
 inline void check(std::string const& wkt1,
@@ -86,8 +81,6 @@ inline void check(std::string const& wkt1,
     check(wkt1, wkt2, pair.second, out_l_str);
 }
 
-#ifdef BOOST_GEOMETRY_CXX11_TUPLE
-
 inline void check(std::string const& wkt1,
                   std::string const& wkt2,
                   std::tuple<MPt, MLs, MPo> const& tup,
@@ -99,8 +92,6 @@ inline void check(std::string const& wkt1,
     check(wkt1, wkt2, std::get<1>(tup), out_l_str);
     check(wkt1, wkt2, std::get<2>(tup), out_a_str);
 }
-
-#endif
 
 template <typename In1, typename In2, typename Tup>
 inline void test_one(std::string const& in1_str,
@@ -349,7 +340,7 @@ inline void test_aa()
         "MULTIPOLYGON(((0 0, 0 5, 5 5, 5 0, 0 0),(0 0, 4 1, 4 4, 1 4, 0 0)),"
                      "((2 6, 2 8, 8 8, 8 5, 7 5, 7 6, 2 6)))",
         "MULTIPOLYGON(((0 0, 1 4, 5 4, 5 1, 4 1, 0 0),(0 0, 2 1, 2 2, 1 2, 0 0)),"
-                     "((5 0, 5 1, 6 1, 6 4, 5 4, 3 6, 2 5, 2 7, 7 7, 7 0 5 0)))",
+                     "((5 0, 5 1, 6 1, 6 4, 5 4, 3 6, 2 5, 2 7, 7 7, 7 0, 5 0)))",
         "MULTIPOINT()",
         "MULTILINESTRING()",
         "MULTIPOLYGON(((0 0,0 5,4 5,3 6,7 6,7 7,2 7,2 8,8 8,8 5,7 5,7 0,0 0),"
@@ -380,10 +371,7 @@ int test_main(int, char* [])
 {
     test_pair<std::pair<MPt, MLs> >();
     test_tuple<boost::tuple<MPt, MLs, MPo> >();
-
-#ifdef BOOST_GEOMETRY_CXX11_TUPLE
     test_tuple<std::tuple<MPt, MLs, MPo> >();
-#endif
 
     return 0;
 }

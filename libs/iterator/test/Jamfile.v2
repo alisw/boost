@@ -26,6 +26,8 @@ test-suite iterator
     [ run zip_iterator_test_std_tuple.cpp ]
     [ run zip_iterator_test_std_pair.cpp ]
 
+    [ run is_iterator.cpp ]
+
     # These tests should work for just about everything.
     [ compile is_lvalue_iterator.cpp ]
     [ compile is_readable_iterator.cpp ]
@@ -50,6 +52,8 @@ test-suite iterator
     [ run permutation_iterator_test.cpp : : : # <stlport-iostream>on
     ]
     [ run function_input_iterator_test.cpp ]
+    [ run function_output_iterator_test.cpp ]
+    [ compile-fail function_output_iterator_cf.cpp ]
 
     [ run generator_iterator_test.cpp ]
 

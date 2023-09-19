@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 # Copyright 2003, 2004, 2005, 2006 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Test that a chain of libraries works ok, no matter if we use static or shared
 # linking.
@@ -117,7 +117,7 @@ void a() {}
 t.run_build_system(subdir="a")
 t.expect_addition("a/dist/a.dll")
 
-if sys.platform == 'win32':
+if t.is_implib_expected():
     # This is a Windows import library.
     file = t.adjust_name("a.implib")
 else:

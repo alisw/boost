@@ -208,15 +208,17 @@ project boost/log
         <threading>multi:<library>/boost/atomic//boost_atomic
         <threading>multi:<library>/boost/thread//boost_thread
 
+        <target-os>windows:<define>BOOST_USE_WINDOWS_H
         <target-os>windows:<library>ws2_32
         <target-os>windows:<library>mswsock
         <target-os>windows:<library>advapi32
 
+        <target-os>cygwin:<define>BOOST_USE_WINDOWS_H
+        # Boost.Interprocess does not compile on Cygwin: https://github.com/boostorg/interprocess/issues/76
+        <target-os>cygwin:<define>BOOST_LOG_WITHOUT_IPC
         <target-os>cygwin:<library>ws2_32
         <target-os>cygwin:<library>mswsock
         <target-os>cygwin:<library>advapi32
-        # Boost.Interprocess does not compile on Cygwin: https://github.com/boostorg/interprocess/issues/76
-        <target-os>cygwin:<define>BOOST_LOG_WITHOUT_IPC
 
         <target-os>linux:<library>rt
 
@@ -342,6 +344,7 @@ rule select-platform-specific-sources ( properties * )
     if <target-os>windows in $(properties)
     {
         result += <source>windows/light_rw_mutex.cpp ;
+        result += <source>windows/is_debugger_present.cpp ;
 
         if ! [ has-config-flag BOOST_LOG_WITHOUT_IPC : $(properties) ]
         {
@@ -415,10 +418,23 @@ local BOOST_LOG_SETUP_COMMON_SRC =
     default_formatter_factory.cpp
     ;
 
+rule check-boost_log_setup-enabled ( properties * )
+{
+    local result ;
+
+    if [ has-config-flag BOOST_LOG_WITHOUT_SETTINGS_PARSERS : $(properties) ]
+    {
+        result = <build>no ;
+    }
+
+    return $(result) ;
+}
+
 lib boost_log_setup
     : ## sources ##
         setup/$(BOOST_LOG_SETUP_COMMON_SRC)
     : ## requirements ##
+        <conditional>@check-boost_log_setup-enabled
         <link>shared:<define>BOOST_LOG_DYN_LINK=1
         <link>shared:<define>BOOST_LOG_SETUP_DLL
         <define>BOOST_LOG_SETUP_BUILDING_THE_LIB=1

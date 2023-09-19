@@ -3,6 +3,10 @@
 
 // Copyright (c) 2020 Digvijay Janartha, Hamirpur, India.
 
+// This file was modified by Oracle on 2023.
+// Modifications copyright (c) 2023, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,6 +18,7 @@
 #include <boost/core/ignore_unused.hpp>
 #include <boost/geometry/algorithms/make.hpp>
 #include <boost/geometry/algorithms/append.hpp>
+#include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
@@ -28,13 +33,11 @@
 BOOST_GEOMETRY_REGISTER_C_ARRAY_CS(cs::cartesian)
 BOOST_GEOMETRY_REGISTER_BOOST_TUPLE_CS(cs::cartesian)
 
-#ifdef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
 #include <initializer_list>
-#endif//BOOST_NO_CXX11_HDR_INITIALIZER_LIST
 
 template <typename P>
 bg::model::polygon<P> create_polygon()
-{   
+{
     bg::model::polygon<P> pl1;
     P p1;
     P p2;
@@ -42,7 +45,8 @@ bg::model::polygon<P> create_polygon()
     bg::assign_values(p1, 1, 2);
     bg::assign_values(p2, 2, 0);
     bg::assign_values(p3, 0, 0);
-    
+
+
     bg::append(pl1, p1);
     bg::append(pl1, p2);
     bg::append(pl1, p3);
@@ -62,7 +66,7 @@ bg::model::multi_polygon<PL> create_multi_polygon()
 
 template <typename MPL, typename PL>
 void check_multi_polygon(MPL& to_check, PL pl1)
-{   
+{
     MPL cur;
     cur.push_back(pl1);
     cur.push_back(pl1);
@@ -97,7 +101,7 @@ void test_copy_assignment()
 
 template <typename PL>
 void test_concept()
-{   
+{
     typedef bg::model::multi_polygon<PL> MPL;
 
     BOOST_CONCEPT_ASSERT( (bg::concepts::ConstMultiPolygon<MPL>) );
@@ -110,7 +114,7 @@ void test_concept()
 
 template <typename P>
 void test_all()
-{   
+{
     typedef bg::model::polygon<P> PL;
 
     test_default_constructor<P, PL>();
@@ -121,7 +125,7 @@ void test_all()
 
 template <typename P>
 void test_custom_multi_polygon(bg::model::polygon<P> IL)
-{   
+{
     typedef bg::model::polygon<P> PL;
 
     std::initializer_list<PL> PIL = {IL};
@@ -133,13 +137,11 @@ void test_custom_multi_polygon(bg::model::polygon<P> IL)
 
 template <typename P>
 void test_custom()
-{   
-#ifdef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
+{
     std::initializer_list<P> IL = {P(3, 3), P(3, 0), P(0, 0), P(0, 3), P(3, 3)};
     bg::model::ring<P> r1(IL);
     std::initializer_list<bg::model::ring<P> > RIL = {r1};
     test_custom_multi_polygon<P>(RIL);
-#endif//BOOST_NO_CXX11_HDR_INITIALIZER_LIST
 }
 
 template <typename CS>
@@ -154,7 +156,7 @@ void test_cs()
 
 
 int test_main(int, char* [])
-{   
+{
     test_cs<bg::cs::cartesian>();
     test_cs<bg::cs::spherical<bg::degree> >();
     test_cs<bg::cs::spherical_equatorial<bg::degree> >();

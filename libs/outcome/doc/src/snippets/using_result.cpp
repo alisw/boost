@@ -1,5 +1,5 @@
 /* Documentation snippet
-(C) 2017-2020 Niall Douglas <http://www.nedproductions.biz/> (7 commits), Andrzej Krzemienski <akrzemi1@gmail.com> (4 commits) and Krzemienski <sg0897542@global.ad.sabre.com> (2 commits)
+(C) 2017-2023 Niall Douglas <http://www.nedproductions.biz/> (7 commits), Andrzej Krzemienski <akrzemi1@gmail.com> (4 commits) and Krzemienski <sg0897542@global.ad.sabre.com> (2 commits)
 File Created: Mar 2017
 
 
@@ -147,23 +147,23 @@ outcome::result<void> print_half(const std::string& text);
 //! [half_impl]
 outcome::result<void> print_half(const std::string& text)
 {
-  if (outcome::result<int> r = convert(text))     // #1
+  if (outcome::result<int> r = convert(text))         // #1
   {
-    std::cout << (r.value() / 2) << std::endl;    // #2
+    std::cout << (r.value() / 2) << std::endl;        // #2
   }
   else
   {
-    if (r.error() == ConversionErrc::TooLong)     // #3
+    if (r.error() == ConversionErrc::TooLong)         // #3
     {
-      BOOST_OUTCOME_TRY (i, BigInt::fromString(text));  // #4
+      BOOST_OUTCOME_TRY(auto i, BigInt::fromString(text));  // #4
       std::cout << i.half() << std::endl;
     }
     else
     {
-      return r.as_failure();                      // #5
+      return r.as_failure();                          // #5
     }
   }
-  return outcome::success();                      // #6
+  return outcome::success();                          // #6
 }
 //! [half_impl]
 

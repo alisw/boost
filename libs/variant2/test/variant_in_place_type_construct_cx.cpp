@@ -80,7 +80,7 @@ int main()
         constexpr variant<int, float> v( in_place_type_t<float>{}, 3.14f );
 
         STATIC_ASSERT( v.index() == 1 );
-        STATIC_ASSERT( get<1>(v) == 3.14f );
+        STATIC_ASSERT( get<1>(v) == (float)3.14f ); // see FLT_EVAL_METHOD
 
         STATIC_ASSERT( holds_alternative<float>(v) );
     }
@@ -89,7 +89,7 @@ int main()
         constexpr variant<int, int, float, X> v( in_place_type_t<float>{}, 3.14f );
 
         STATIC_ASSERT( v.index() == 2 );
-        STATIC_ASSERT( get<2>(v) == 3.14f );
+        STATIC_ASSERT( get<2>(v) == (float)3.14f );
 
         STATIC_ASSERT( holds_alternative<float>(v) );
     }
@@ -102,9 +102,9 @@ int main()
         STATIC_ASSERT( holds_alternative<X>(v) );
     }
 
-#if BOOST_WORKAROUND(BOOST_GCC, >= 100000 && BOOST_GCC < 100200)
+#if BOOST_WORKAROUND(BOOST_GCC, >= 100000 && BOOST_GCC < 120000)
 
-    // no idea why this fails on g++ 10
+    // no idea why this fails on g++ 10/11
 
 #else
 

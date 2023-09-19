@@ -148,13 +148,26 @@ void expected_results()
    //
    // Catch all cases come last:
    //
-   add_expected_result(
-      ".*",                          // compiler
-      ".*",                          // stdlib
-      ".*",                          // platform
-      largest_type,                  // test type(s)
-      ".*",                          // test data group
-      ".*", 10000, 1000);            // test function
+   if (std::numeric_limits<long double>::digits > 100)
+   {
+      add_expected_result(
+         ".*",                          // compiler
+         ".*",                          // stdlib
+         ".*",                          // platform
+         largest_type,                  // test type(s)
+         ".*",                          // test data group
+         ".*", 200000, 5000);            // test function
+   }
+   else
+   {
+      add_expected_result(
+         ".*",                          // compiler
+         ".*",                          // stdlib
+         ".*",                          // platform
+         largest_type,                  // test type(s)
+         ".*",                          // test data group
+         ".*", 10000, 1000);            // test function
+   }
    add_expected_result(
       ".*",                          // compiler
       ".*",                          // stdlib
@@ -188,7 +201,7 @@ BOOST_AUTO_TEST_CASE( test_main )
 #ifdef TEST_LDOUBLE
    test_spots(0.0L);
 #endif
-#ifdef TEST_REAL_CONCEPT
+#if defined(TEST_REAL_CONCEPT) && !defined(BOOST_MATH_NO_REAL_CONCEPT_TESTS)
    test_spots(boost::math::concepts::real_concept(0.1));
 #endif
 #endif

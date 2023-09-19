@@ -8,39 +8,19 @@
 === Initialization
 
 Immediately upon starting, the B2 engine (*`b2`*) loads the Jam
-code that implements the build system. To do this, it searches for a
-file called `boost-build.jam`, first in the invocation directory, then
-in its parent and so forth up to the filesystem root, and finally in the
-directories specified by the environment variable BOOST_BUILD_PATH. On
-Unix BOOST_BUILD_PATH defaults to `/usr/share/boost-build`. When
-found, the file is interpreted, and should specify the build system
-location by calling the boost-build rule:
-
-[source]
-----
-rule boost-build ( location ? )
-----
-
-If location is a relative path, it is treated as relative to the
-directory of `boost-build.jam`. The directory specified by that location
-and the directories in BOOST_BUILD_PATH are then searched for a file
-called `bootstrap.jam`, which is expected to bootstrap the build system.
-This arrangement allows the build system to work without any
-command-line or environment variable settings. For example, if the build
-system files were located in a directory "build-system/" at your project
-root, you might place a `boost-build.jam` at the project root
-containing:
-
-[source]
-----
-boost-build build-system ;
-----
-
-In this case, running *`b2`* anywhere in the project tree will
-automatically find the build system.
+code that implements the build system. To do this, it searches for the
+build system `bootstrap.jam` file in specific installation locations.
+The search is based on the location of the `b2(.exe)` executable
+location.
 
 The default `bootstrap.jam`, after loading some standard definitions,
 loads both `site-config.jam` and `user-config.jam`.
+
+NOTE: To maintain backward compatibility the file called
+`boost-build.jam`, is loaded if present. The search starts first in the
+invocation directory, then in its parent and so forth up to the filesystem
+root, and finally in the directories specified by the environment variable
+BOOST_BUILD_PATH. On Unix BOOST_BUILD_PATH defaults to `/usr/share/b2`.
 
 [[bbv2.reference.rules]]
 == Builtin rules
@@ -215,6 +195,7 @@ include::../../src/tools/features/asmflags-feature.jam[tag=doc]
 include::../../src/tools/features/exception-feature.jam[tag=asynch-doc]
 include::../../src/tools/features/build-feature.jam[tag=doc]
 include::../../src/tools/features/cflags-feature.jam[tag=doc]
+include::../../src/tools/features/compileflags-feature.jam[tag=doc]
 include::../../src/tools/features/conditional-feature.jam[tag=doc]
 include::../../src/tools/features/coverage-feature.jam[tag=doc]
 include::../../src/tools/features/cxxflags-feature.jam[tag=doc]
@@ -243,6 +224,7 @@ include::../../src/tools/features/instruction-set-feature.jam[tag=doc]
 include::../../src/tools/features/library-feature.jam[tag=doc]
 include::../../src/tools/features/find-lib-feature.jam[tag=path-doc]
 include::../../src/tools/features/sanitizers-feature.jam[tag=leak-doc]
+include::../../src/tools/features/linemarkers-feature.jam[tag=doc]
 include::../../src/tools/features/link-feature.jam[tag=doc]
 include::../../src/tools/features/linkflags-feature.jam[tag=doc]
 include::../../src/tools/features/local-visibility-feature.jam[tag=doc]
@@ -263,6 +245,7 @@ include::../../src/tools/features/strip-feature.jam[tag=doc]
 include::../../src/tools/features/dll-feature.jam[tag=suppress-doc]
 include::../../src/tools/features/tag-feature.jam[tag=doc]
 include::../../src/tools/features/os-feature.jam[tag=doc]
+include::../../src/tools/features/threadapi-feature.jam[tag=doc]
 include::../../src/tools/features/threading-feature.jam[tag=doc]
 include::../../src/tools/features/sanitizers-feature.jam[tag=thread-doc]
 include::../../src/tools/features/toolset-feature.jam[tag=doc]
@@ -277,6 +260,7 @@ include::../../src/tools/features/visibility-feature.jam[tag=doc]
 include::../../src/tools/features/warnings-feature.jam[tag=doc]
 include::../../src/tools/features/translate-path-feature.jam[tag=doc]
 include::../../src/tools/features/lto-feature.jam[tag=doc]
+include::../../src/tools/features/response-file-feature.jam[tag=doc]
 
 [[bbv2.reference.tools]]
 == Builtin tools
@@ -319,6 +303,7 @@ include::../../src/tools/borland.jam[tag=doc]
 include::../../src/tools/como.jam[tag=doc]
 include::../../src/tools/cw.jam[tag=doc]
 include::../../src/tools/dmc.jam[tag=doc]
+include::../../src/tools/embarcadero.jam[tag=doc]
 include::../../src/tools/gcc.jam[tag=doc]
 include::../../src/tools/hp_cxx.jam[tag=doc]
 include::../../src/tools/intel.jam[tag=doc]

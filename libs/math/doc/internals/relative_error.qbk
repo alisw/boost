@@ -47,7 +47,7 @@ caused the largest relative error.  Public members of type test_result are:
 [[`T min()const;`][Returns the smallest relative error found.]]
 [[`T max()const;`][Returns the largest relative error found.]]
 [[`T mean()const;`][Returns the mean error found.]]
-[[`boost::uintmax_t count()const;`][Returns the number of test cases.]]
+[[`std::uintmax_t count()const;`][Returns the number of test cases.]]
 [[`T variance()const;`][Returns the variance of the errors found.]]
 [[`T variance1()const;`][Returns the unbiased variance of the errors found.]]
 [[`T rms()const`][Returns the Root Mean Square, or quadratic mean of the errors.]]
@@ -62,7 +62,7 @@ dimensional array passed to function /test/, roughly that's
 Parameter /a/ is a matrix of test data: and must be a standard library Sequence type,
 that contains another Sequence type:
 typically it will be a two dimensional instance of 
-[^boost::array].  Each row
+[^std::array].  Each row
 of /a/ should contain all the parameters that are passed to the function 
 under test as well as the expected result.
 
@@ -87,7 +87,7 @@ two-dimensional matrix of test data, each row is one test case, and contains
 three elements: the input value, and the expected results for the `tgamma` and
 `lgamma` functions respectively.
 
-   static const boost::array<boost::array<TestType, 3>, NumberOfTests> 
+   static const std::array<std::array<TestType, 3>, NumberOfTests> 
       factorials = {
          /* big array of test data goes here */
       };

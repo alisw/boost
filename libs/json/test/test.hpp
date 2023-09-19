@@ -10,6 +10,7 @@
 #ifndef BOOST_JSON_TEST_HPP
 #define BOOST_JSON_TEST_HPP
 
+#include <boost/container_hash/hash.hpp>
 #include <boost/json/basic_parser.hpp>
 #include <boost/json/value.hpp>
 #include <boost/json/serializer.hpp>
@@ -23,7 +24,8 @@
 
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 //----------------------------------------------------------
 
@@ -182,7 +184,7 @@ public:
     }
 
     explicit
-    null_parser(parse_options po) 
+    null_parser(parse_options po)
         : p_(po)
     {
     }
@@ -281,7 +283,7 @@ class fail_parser
         bool
         on_key_part(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code& ec)
         {
             return maybe_fail(ec);
@@ -290,16 +292,16 @@ class fail_parser
         bool
         on_key(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code& ec)
         {
             return maybe_fail(ec);
         }
-        
+
         bool
         on_string_part(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code& ec)
         {
             return maybe_fail(ec);
@@ -308,7 +310,7 @@ class fail_parser
         bool
         on_string(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code& ec)
         {
             return maybe_fail(ec);
@@ -363,19 +365,19 @@ class fail_parser
             return maybe_fail(ec);
         }
 
-        bool 
+        bool
         on_comment_part(
-            string_view, 
-            error_code& ec) 
-        { 
-            return maybe_fail(ec); 
+            string_view,
+            error_code& ec)
+        {
+            return maybe_fail(ec);
         }
-    
+
         bool
         on_comment(
-            string_view, 
-            error_code& ec) 
-        { 
+            string_view,
+            error_code& ec)
+        {
             return maybe_fail(ec);
         }
     };
@@ -525,7 +527,7 @@ class throw_parser
         bool
         on_key_part(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code&)
         {
             return maybe_throw();
@@ -534,16 +536,16 @@ class throw_parser
         bool
         on_key(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code&)
         {
             return maybe_throw();
         }
-        
+
         bool
         on_string_part(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code&)
         {
             return maybe_throw();
@@ -552,7 +554,7 @@ class throw_parser
         bool
         on_string(
             string_view,
-            std::size_t, 
+            std::size_t,
             error_code&)
         {
             return maybe_throw();
@@ -607,19 +609,19 @@ class throw_parser
             return maybe_throw();
         }
 
-        bool 
+        bool
         on_comment_part(
-            string_view, 
-            error_code&) 
-        { 
-            return maybe_throw(); 
+            string_view,
+            error_code&)
+        {
+            return maybe_throw();
         }
-    
+
         bool
         on_comment(
-            string_view, 
-            error_code&) 
-        { 
+            string_view,
+            error_code&)
+        {
             return maybe_throw();
         }
     };
@@ -1053,6 +1055,37 @@ equal(
     return false;
 }
 
+template<typename T>
+bool
+check_hash_equal(
+    T const& lhs,
+    T const& rhs)
+{
+    if( lhs != rhs )
+        return false;
+
+    if( std::hash<T>()(lhs) != std::hash<T>()(rhs) )
+        return false;
+
+    return boost::hash<T>()(lhs) == boost::hash<T>()(rhs);
+}
+
+template<typename T>
+inline
+bool
+expect_hash_not_equal(
+    T const& lhs,
+    T const& rhs)
+{
+    if( std::hash<T>()(lhs) == std::hash<T>()(rhs) )
+        return true; // pass if hash values collide
+
+    if( boost::hash<T>()(lhs) == boost::hash<T>()(rhs) )
+        return true; // pass if hash values collide
+
+    return lhs != rhs;
+}
+
 //----------------------------------------------------------
 
 namespace detail {
@@ -1107,6 +1140,7 @@ check_array(
 
 //----------------------------------------------------------
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost
 
 #endif

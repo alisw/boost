@@ -1,9 +1,10 @@
-// Copyright (c) 2018-2020 Emil Dotchevski and Reverge Studios, Inc.
+// Copyright 2018-2022 Emil Dotchevski and Reverge Studios, Inc.
 
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/leaf/detail/config.hpp>
+#include <boost/leaf/config.hpp>
+
 #ifdef BOOST_LEAF_NO_EXCEPTIONS
 
 #include <iostream>
@@ -16,9 +17,14 @@ int main()
 
 #else
 
-#include <boost/leaf/on_error.hpp>
-#include <boost/leaf/handle_errors.hpp>
-#include <boost/leaf/exception.hpp>
+#ifdef BOOST_LEAF_TEST_SINGLE_HEADER
+#   include "leaf.hpp"
+#else
+#   include <boost/leaf/on_error.hpp>
+#   include <boost/leaf/handle_errors.hpp>
+#   include <boost/leaf/exception.hpp>
+#endif
+
 #include "lightweight_test.hpp"
 
 namespace leaf = boost::leaf;
@@ -32,14 +38,14 @@ struct info
 void f0()
 {
     auto load = leaf::on_error( [] { return info<0>{-1}; } );
-    throw leaf::exception(info<1>{-1});
+    leaf::throw_exception(info<1>{-1});
 }
 
 void f1()
 {
     auto load = leaf::on_error( [] { return info<0>{0}; }, [] { return info<1>{1}; }, [] { return info<2>{2}; } );
     try { f0(); } catch(...) { }
-    throw leaf::exception();
+    leaf::throw_exception();
 }
 
 leaf::error_id f2()

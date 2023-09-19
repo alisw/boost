@@ -8,10 +8,10 @@
 // using algorithm of Thomas Luu.
 // https://svn.boost.org/trac/boost/ticket/11027
 
+#ifndef BOOST_MATH_STANDALONE
+
 #include <boost/config.hpp> // for BOOST_PLATFORM, BOOST_COMPILER,  BOOST_STDLIB ...
 #include <boost/version.hpp>   // for BOOST_MSVC versions.
-#include <boost/cstdint.hpp>
-#include <boost/exception/exception.hpp>  // boost::exception
 #include <boost/math/constants/constants.hpp> // For exp_minus_one == 3.67879441171442321595523770161460867e-01.
 
 #define BOOST_MATH_INSTRUMENT_LAMBERT_W  // #define only for diagnostic output.
@@ -237,3 +237,5 @@ int main()
 
 //] [/lambert_w_output_1]
    */
+
+#endif // BOOST_MATH_STANDALONE

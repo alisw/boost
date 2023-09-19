@@ -1,15 +1,13 @@
 # Copyright 2019 Mike Dev
+# Copyright 2023 Ion Gaztanaga
 # Distributed under the Boost Software License, Version 1.0.
 # See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
-#
-# NOTE: CMake support for Boost.Intrusive is currently experimental at best
-#       and the interface is likely to change in the future
 
-cmake_minimum_required( VERSION 3.5 )
+cmake_minimum_required( VERSION 3.5...3.20 )
 
-project( Boost.Intrusive LANGUAGES CXX )
+project( boost_intrusive VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX )
 
-add_library (boost_intrusive INTERFACE )
+add_library( boost_intrusive INTERFACE )
 add_library( Boost::intrusive ALIAS boost_intrusive )
 
 target_include_directories( boost_intrusive INTERFACE include )
@@ -19,7 +17,6 @@ target_link_libraries( boost_intrusive
         Boost::assert
         Boost::config
         Boost::container_hash
-        Boost::core
         Boost::move
         Boost::static_assert
 )

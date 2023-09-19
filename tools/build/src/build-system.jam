@@ -2,8 +2,8 @@
 # Copyright 2006, 2007 Rene Rivera
 # Copyright 2003, 2004, 2005, 2006 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # This file is part of Boost Build version 2. You can think of it as forming the
 # main() routine. It is invoked by the bootstrapping code in bootstrap.jam.
@@ -644,7 +644,7 @@ local rule should-clean-project ( project )
             }
             else if [ os.name ] = MACOSX
             {
-                default-toolset = darwin ;
+                default-toolset = clang ;
             }
         }
 
@@ -653,7 +653,7 @@ local rule should-clean-project ( project )
         ECHO "warning: If the default is wrong, your build may not work correctly." ;
         ECHO "warning: Use the \"toolset=xxxxx\" option to override our guess." ;
         ECHO "warning: For more configuration options, please consult" ;
-        ECHO "warning: http://boost.org/boost-build2/doc/html/bbv2/advanced/configuration.html" ;
+        ECHO "warning: https://www.bfgroup.xyz/b2/manual/release/index.html#bbv2.overview.configuration" ;
 
         toolset.using $(default-toolset) : $(default-toolset-version) ;
     }
@@ -771,14 +771,22 @@ local rule should-clean-project ( project )
     # on the command line) have been loaded.
     if $(properties)
     {
-        expanded += [ build-request.convert-command-line-elements $(properties) ] ;
-        expanded = [ build-request.expand-no-defaults $(expanded) ] ;
-        local xexpanded ;
-        for local e in $(expanded)
+        local cli_properties = [ build-request.convert-command-line-elements $(properties) ] ;
+        if $(cli_properties)
         {
-            xexpanded += [ property-set.create [ feature.split $(e) ] ] ;
+            expanded += $(cli_properties) ;
+            expanded = [ build-request.expand-no-defaults $(expanded) ] ;
+            local xexpanded ;
+            for local e in $(expanded)
+            {
+                xexpanded += [ property-set.create [ feature.split $(e) ] ] ;
+            }
+            expanded = $(xexpanded) ;
         }
-        expanded = $(xexpanded) ;
+        else
+        {
+            expanded = [ property-set.empty ] ;
+        }
     }
     else
     {
@@ -803,6 +811,25 @@ local rule should-clean-project ( project )
         }
     }
 
+    local durations = [ MATCH "(--durations(=([0-9]+))?)" : $(.argv) ] ;
+    if $(durations) {
+        durations = $(durations[3]) ;
+        durations ?= 10 ;
+
+        .target-times = ;
+        rule record-time ( : target : start end user system clock )
+        {
+            # limit precision to milliseconds
+            clock = [ MATCH "^([0-9]+[.][0-9][0-9][0-9])" : $(clock) ] ;
+
+            .target-times += "$(clock):::$(target)" ;
+        }
+        IMPORT build-system : record-time : : build-system.record-time ;
+
+        # When no __TIMING_RULE__ is set "on" a target, the search falls back to
+        # the global module.
+        module { __TIMING_RULE__ = build-system.record-time ; }
+    }
 
     # Convert collected virtual targets into actual raw Jam targets.
     for t in $(virtual-targets)
@@ -1074,6 +1101,20 @@ local rule should-clean-project ( project )
         else
         {
             UPDATE all $(.out-xml) ;
+        }
+        if $(durations) {
+            ECHO "============================= slowest $(durations) durations =============================" ;
+            local sorted-durations = [ SORT $(.target-times) ] ;
+            for local t in [ sequence.reverse $(sorted-durations[-$(durations)--1]) ] {
+                t = [ SPLIT_BY_CHARACTERS $(t) : ":::" ] ;
+                local action = [ on $(t[-1]) return $(.action) ] ;
+                if $(action) {
+                    ECHO $(t[1])s [ indirect.get-rule [ $(action).action-name ] ] $(t[-1]) ;
+                }
+                else {
+                    ECHO $(t[1])s $(t[-1]) ;
+                }
+            }
         }
     }
 }

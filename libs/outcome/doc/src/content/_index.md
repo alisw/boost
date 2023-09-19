@@ -2,18 +2,14 @@
 title = "Home"
 +++
 
-# Outcome 2.1 library
+# Outcome 2.2 library
 
 {{% boost-copyright %}}
 
 {{% notice note %}}
-The final release of Outcome v2.1 will be in Boost 1.75 (end of 2020). From Boost 1.76
-(start of 2021) onwards Outcome v2.2 shall become the default. Please consider upgrading
-your code now to v2.2 using [the v2.1 => v2.2 upgrade guide]({{% relref "/changelog/upgrade_v21_v22" %}}).
-The v2.2 branch has a number of major breaking changes to Outcome v2.1, see
-[the list of v2.2 major changes]({{% relref "/changelog/v22" %}}).
-<br><br>
-This library's tutorial remains v2.1 based. It shall be ported to v2.2 in early 2021.
+At the end of December 2021, Standalone Outcome
+<a href="{{% relref "/abi-stability" %}}">went guaranteed future ABI stable</a>.
+From v2.2.3 onwards, you get ABI compatibilty guarantees across Outcome releases.
 {{% /notice %}}
 
 Outcome is a set of tools for reporting and handling function failures in contexts where *directly* using C++ exception handling is unsuitable. Such contexts include:
@@ -43,6 +39,10 @@ Outcome addresses failure handling through returning a special type from functio
 Particular care has been taken to ensure that Outcome has the lowest possible impact on build times,
 thus making it suitable for use in the global headers of really large codebases. Storage layout is
 guaranteed and is C-compatible for `result<T, E>`[^1], thus making Outcome based code long term ABI-stable.
+
+Fully deterministic all-`noexcept` C++ Coroutine support in Outcome is particularly strong, and we
+supply Outcome-optimising {{< api "eager<T, Executor = void>/atomic_eager<T, Executor = void>" >}}, {{< api "lazy<T, Executor = void>/atomic_lazy<T, Executor = void>" >}}
+and {{<api "generator<T, Executor = void>" >}} awaitables which work for any user type.
 
 ## Sample usage
 

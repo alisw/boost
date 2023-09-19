@@ -12,11 +12,24 @@
 
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 class parser_test
 {
 public:
+    bool
+    hasLocation(std::error_code const&)
+    {
+        return true;
+    }
+
+    bool
+    hasLocation(error_code const& ec)
+    {
+        return ec.has_location();
+    }
+
     void
     testCtors()
     {
@@ -111,6 +124,7 @@ public:
     #endif
     }
 
+    template <class ErrorCode>
     void
     testMembers()
     {
@@ -120,12 +134,12 @@ public:
             p.reset();
         }
 
-        // write_some(char const*, size_t, error_code&)
+        // write_some(char const*, size_t, ErrorCode&)
         {
             // valid json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write_some("null", 4, ec);
                 BOOST_TEST(! ec);
@@ -135,7 +149,7 @@ public:
             // valid json with trailing space
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write_some("null ", 5, ec);
                 BOOST_TEST(! ec);
@@ -145,7 +159,7 @@ public:
             // valid json with invalid trailing char
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write_some("null*", 5, ec);
                 BOOST_TEST(! ec);
@@ -155,18 +169,18 @@ public:
             // partial json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 p.write_some("nul", 3, ec);
                 BOOST_TEST(ec);
             }
         }
 
-        // write_some(string_view, error_code&)
+        // write_some(string_view, ErrorCode&)
         {
             // valid json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write_some("null", ec);
                 BOOST_TEST(! ec);
@@ -176,7 +190,7 @@ public:
             // partial json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 p.write_some("nul", ec);
                 BOOST_TEST(ec);
             }
@@ -195,9 +209,7 @@ public:
             // partial json
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.write_some("nul", 3),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.write_some("nul", 3) );
             }
         }
 
@@ -214,20 +226,18 @@ public:
             // partial json
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.write_some("nul"),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.write_some("nul") );
             }
         }
 
         //--------------------------------------------------
 
-        // write(char const*, size_t, error_code&)
+        // write(char const*, size_t, ErrorCode&)
         {
             // valid json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write("null", 4, ec);
                 BOOST_TEST(! ec);
@@ -237,7 +247,7 @@ public:
             // valid json with trailing space
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write("null ", 5, ec);
                 BOOST_TEST(! ec);
@@ -247,7 +257,7 @@ public:
             // valid json with invalid trailing char
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 p.write("null*", 5, ec);
                 BOOST_TEST(ec);
             }
@@ -255,18 +265,18 @@ public:
             // partial json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 p.write("nul", 3, ec);
                 BOOST_TEST(ec);
             }
         }
 
-        // write(string_view, error_code&)
+        // write(string_view, ErrorCode&)
         {
             // valid json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 auto const n =
                     p.write("null", ec);
                 BOOST_TEST(! ec);
@@ -276,7 +286,7 @@ public:
             // partial json
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 p.write("nul", ec);
                 BOOST_TEST(ec);
             }
@@ -295,17 +305,13 @@ public:
             // valid json with invalid trailing char
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.write("null*", 5),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.write("null*", 5) );
             }
 
             // partial json
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.write("nul", 3),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.write("nul", 3) );
             }
         }
 
@@ -322,17 +328,13 @@ public:
             // valid json with invalid trailing char
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.write("null*"),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.write("null*") );
             }
 
             // partial json
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.write("nul"),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.write("nul") );
             }
         }
 
@@ -349,20 +351,17 @@ public:
             // release with no write
             {
                 parser p;
-                BOOST_TEST_THROWS(
-                    p.release(),
-                    system_error);
+                BOOST_TEST_THROWS_WITH_LOCATION( p.release() );
             }
 
             // release after error
             {
                 parser p;
-                error_code ec;
+                ErrorCode ec;
                 p.write("nul", ec);
                 BOOST_TEST(ec);
-                BOOST_TEST_THROWS(
-                    p.release(),
-                    system_error);
+                BOOST_TEST(hasLocation(ec));
+                BOOST_TEST_THROWS_WITH_LOCATION( p.release() );
             }
         }
     }
@@ -371,10 +370,12 @@ public:
     run()
     {
         testCtors();
-        testMembers();
+        testMembers<error_code>();
+        testMembers<std::error_code>();
     }
 };
 
 TEST_SUITE(parser_test, "boost.json.parser");
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost

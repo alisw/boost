@@ -1,11 +1,58 @@
 [/==============================================================================
-    Copyright (C) 2018-2020 Nikita Kniazev
+    Copyright (C) 2018-2021 Nikita Kniazev
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ===============================================================================/]
 
 [section Changelog]
+
+[/////////////////////////////////////////////////////////////////////////////]
+[section:spirit_3_10 Spirit V3.10 (Boost V1.78.0)]
+
+* Fortified against `min` and `max` macros. [gh_pr 697]
+* Producing a variant attribute in an alternative parser branch was leading to a
+  compilation error when parsed into a superset variant attribute due to
+  swapped parameters to `is_substitute` trait. [gh_pr 702] [gh 701] [gh 679]
+
+[endsect]
+
+[/////////////////////////////////////////////////////////////////////////////]
+[section:spirit_3_0_9 Spirit V3.0.9 (Boost V1.77.0)]
+
+*Breaking change*: Optional parser no longer unflattens sequence, parsers like
+  `int_ >> -(int_ >> int_)` into `tuple<int, optional<int>, optional<int>>`
+  will produce a compilation error in sequence parser. This was a bugfeature
+  which might be reimplemented in the future.
+
+* Fixed list parser with attribute-less subject in sequence parser. [gh_pr 663]
+* Fixed optional parser with container attribute in sequence parser. [gh_pr 665]
+* Fixed `error_handler` newline/whitespace handling issues. [gh_pr 669] [gh_pr 670]
+* Fixed `seek[...]` directive going past the end of input introduced in [gh_pr 30],
+  triggered when pre-skip leaves no data. [gh_pr 658] [gh_pr 683]
+* Removed rollback in rules to fix a regression introduced in [gh_pr 670]. [gh_pr 686]
+
+[endsect]
+
+[/////////////////////////////////////////////////////////////////////////////]
+[section:spirit_3_0_8 Spirit V3.0.8 (Boost V1.76.0)]
+
+* Fixed assertion in standard parser with an input containing characters from
+  extended charset (on values above 0x7F) [gh_pr 620]
+* Enhanced debug output to print unicode code points as hex [gh_pr 634]
+* Skip rule definition binder creation in `parse_rule` [gh_pr 646]
+* Replaced Boost.Math with std alternatives [gh_pr 648]
+* Fixed unqualified `get<typename>` call in `parse_rule`
+* Removed unused header `no_case_string_parse.hpp`
+* Make literal binary parser constructor non-templated 
+* Fixed unqualified `get<typename>` call in `annotate_on_success::on_success` [gh 526]
+* Fixed multiple times missed `force_attribute` parameter. Adresses compilation
+  errors and slow compilation due to rule definition injection into context
+  when `force_attribute` is set to `true` [gh_pr 651]
+* Skip rule definition injection into context when a rule placeholder  constructed
+  and immediately consumed (like `auto const grammar = rule<tag>{} = parser`) [gh_pr 650]
+
+[endsect]
 
 [/////////////////////////////////////////////////////////////////////////////]
 [section:spirit_3_0_7 Spirit V3.0.7 (Boost V1.74.0)]

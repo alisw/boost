@@ -19,6 +19,10 @@
 #include <boost/multiprecision/float128.hpp>
 #endif
 
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
+
 using std::sqrt;
 using std::abs;
 using std::numeric_limits;
@@ -40,7 +44,7 @@ void test_interpolation_condition()
         y[i] = dis(gen);
     }
 
-    boost::math::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size());
+    boost::math::interpolators::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size());
 
     for (size_t i = 0; i < x.size(); ++i)
     {
@@ -51,7 +55,7 @@ void test_interpolation_condition()
     // Make sure that the move constructor does the same thing:
     std::vector<Real> x_copy = x;
     std::vector<Real> y_copy = y;
-    boost::math::barycentric_rational<Real> move_interpolator(std::move(x), std::move(y));
+    boost::math::interpolators::barycentric_rational<Real> move_interpolator(std::move(x), std::move(y));
 
     for (size_t i = 0; i < x_copy.size(); ++i)
     {
@@ -77,7 +81,7 @@ void test_interpolation_condition_high_order()
     }
 
     // Order 5 approximation:
-    boost::math::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size(), 5);
+    boost::math::interpolators::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size(), 5);
 
     for (size_t i = 0; i < x.size(); ++i)
     {
@@ -105,7 +109,7 @@ void test_constant()
         y[i] = y[0];
     }
 
-    boost::math::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size());
+    boost::math::interpolators::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size());
 
     for (size_t i = 0; i < x.size(); ++i)
     {
@@ -136,7 +140,7 @@ void test_constant_high_order()
     }
 
     // Set interpolation order to 7:
-    boost::math::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size(), 7);
+    boost::math::interpolators::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size(), 7);
 
     for (size_t i = 0; i < x.size(); ++i)
     {
@@ -165,7 +169,7 @@ void test_runge()
         y[i] = 1/(1+25*x[i]*x[i]);
     }
 
-    boost::math::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size(), 5);
+    boost::math::interpolators::barycentric_rational<Real> interpolator(x.data(), y.data(), y.size(), 5);
 
     for (size_t i = 0; i < x.size(); ++i)
     {
@@ -218,7 +222,7 @@ void test_weights()
         y[i] = 1/(1+25*x[i]*x[i]);
     }
 
-    boost::math::detail::barycentric_rational_imp<Real> interpolator(x.data(), x.data() + x.size(), y.data(), 0);
+    boost::math::interpolators::detail::barycentric_rational_imp<Real> interpolator(x.data(), x.data() + x.size(), y.data(), 0);
 
     for (size_t i = 0; i < x.size(); ++i)
     {
@@ -234,7 +238,7 @@ void test_weights()
     }
 
     // d = 1:
-    interpolator = boost::math::detail::barycentric_rational_imp<Real>(x.data(), x.data() + x.size(), y.data(), 1);
+    interpolator = boost::math::interpolators::detail::barycentric_rational_imp<Real>(x.data(), x.data() + x.size(), y.data(), 1);
 
     for (size_t i = 1; i < x.size() -1; ++i)
     {
@@ -258,30 +262,53 @@ BOOST_AUTO_TEST_CASE(barycentric_rational)
     // The tests took too long at the higher precisions.
     // They still pass, but the CI system is starting to time out,
     // so I figured it'd be polite to comment out the most expensive tests.
-    test_weights<double>();
-
+    
+    #ifdef __STDCPP_FLOAT32_T__
+    
+    test_constant<std::float32_t>();
+    //test_constant_high_order<std::float32_t>();
+    test_interpolation_condition<std::float32_t>();
+    //test_interpolation_condition_high_order<std::float32_t>();
+    
+    #else
+    
     test_constant<float>();
-    //test_constant<double>();
-    test_constant<long double>();
-    //test_constant<cpp_bin_float_50>();
-
     //test_constant_high_order<float>();
-    test_constant_high_order<double>();
-    //test_constant_high_order<long double>();
-    //test_constant_high_order<cpp_bin_float_50>();
-
     test_interpolation_condition<float>();
-    test_interpolation_condition<double>();
-    //test_interpolation_condition<long double>();
-    //test_interpolation_condition<cpp_bin_float_50>();
-
     //test_interpolation_condition_high_order<float>();
+    
+    #endif
+    
+    #ifdef __STDCPP_FLOAT64_T__
+    
+    test_weights<std::float64_t>();
+    //test_constant<std::float64_t>();
+    test_constant_high_order<std::float64_t>();
+    test_interpolation_condition<std::float64_t>();
+    test_interpolation_condition_high_order<std::float64_t>();
+    test_runge<std::float64_t>();
+    
+    #else
+    
+    test_weights<double>();
+    //test_constant<double>();
+    test_constant_high_order<double>();
+    test_interpolation_condition<double>();
     test_interpolation_condition_high_order<double>();
-    //test_interpolation_condition_high_order<long double>();
-    //test_interpolation_condition_high_order<cpp_bin_float_50>();
-
     test_runge<double>();
+    
+    #endif
+
+    test_constant<long double>();
+    //test_constant_high_order<long double>();
+    //test_interpolation_condition<long double>();
+    //test_interpolation_condition_high_order<long double>();
     //test_runge<long double>();
+
+    //test_constant<cpp_bin_float_50>();
+    //test_constant_high_order<cpp_bin_float_50>();
+    //test_interpolation_condition<cpp_bin_float_50>();
+    //test_interpolation_condition_high_order<cpp_bin_float_50>();
     //test_runge<cpp_bin_float_50>();
 
 #ifdef BOOST_HAS_FLOAT128

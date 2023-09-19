@@ -1,5 +1,5 @@
 [/
- / Copyright (c) 2003-2020 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+ / Copyright (c) 2003-2023 Christopher M. Kohlhoff (chris at kohlhoff dot com)
  /
  / Distributed under the Boost Software License, Version 1.0. (See accompanying
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -29,6 +29,20 @@ with Boost.Asio's needs.
       Support alias templates on compilers known to allow it.
     ]
     [`BOOST_ASIO_DISABLE_ALIAS_TEMPLATES`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_ALIGNOF`]
+    [
+      Support for the alignof operator.
+    ]
+    [`BOOST_ASIO_DISABLE_ALIGNOF`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_BOOST_ALIGN`]
+    [
+      Boost align library.
+    ]
+    [`BOOST_ASIO_DISABLE_BOOST_ALIGN`]
   ]
   [
     [`BOOST_ASIO_HAS_BOOST_ARRAY`]
@@ -61,9 +75,23 @@ with Boost.Asio's needs.
   [
     [`BOOST_ASIO_HAS_BOOST_CONFIG`]
     [
-      
+      Boost.Config library is available.
     ]
     []
+  ]
+  [
+    [`BOOST_ASIO_HAS_BOOST_CONTEXT_FIBER`]
+    [
+      Boost support for the Context library's fibers.
+    ]
+    [`BOOST_ASIO_DISABLE_BOOST_CONTEXT_FIBER`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_BOOST_COROUTINE`]
+    [
+      Boost support for the Coroutine library.
+    ]
+    [`BOOST_ASIO_DISABLE_BOOST_COROUTINE`]
   ]
   [
     [`BOOST_ASIO_HAS_BOOST_DATE_TIME`]
@@ -85,6 +113,13 @@ with Boost.Asio's needs.
       Boost regex library.
     ]
     [`BOOST_ASIO_DISABLE_BOOST_REGEX`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_BOOST_SOURCE_LOCATION`]
+    [
+      Boost support for source_location and system errors.
+    ]
+    [`BOOST_ASIO_DISABLE_BOOST_SOURCE_LOCATION`]
   ]
   [
     [`BOOST_ASIO_HAS_BOOST_THROW_EXCEPTION`]
@@ -178,6 +213,13 @@ with Boost.Asio's needs.
     [`BOOST_ASIO_DISABLE_DEV_POLL`]
   ]
   [
+    [`BOOST_ASIO_HAS_ENUM_CLASS`]
+    [
+      Support enum classes on compilers known to allow them.
+    ]
+    [`BOOST_ASIO_DISABLE_ENUM_CLASS`]
+  ]
+  [
     [`BOOST_ASIO_HAS_EPOLL`]
     [
       Linux: epoll, eventfd and timerfd.
@@ -190,6 +232,13 @@ with Boost.Asio's needs.
       Linux: epoll, eventfd and timerfd.
     ]
     [`BOOST_ASIO_DISABLE_EVENTFD`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_FILE`]
+    [
+      Files.
+    ]
+    [`BOOST_ASIO_DISABLE_FILE`]
   ]
   [
     [`BOOST_ASIO_HAS_GETADDRINFO`]
@@ -211,6 +260,13 @@ with Boost.Asio's needs.
       Windows: IO Completion Ports.
     ]
     [`BOOST_ASIO_DISABLE_IOCP`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_IO_URING_AS_DEFAULT`]
+    [
+      Linux: io_uring is used instead of epoll.
+    ]
+    []
   ]
   [
     [`BOOST_ASIO_HAS_KQUEUE`]
@@ -248,11 +304,25 @@ with Boost.Asio's needs.
     [`BOOST_ASIO_DISABLE_NOEXCEPT`]
   ]
   [
+    [`BOOST_ASIO_HAS_NOEXCEPT_FUNCTION_TYPE`]
+    [
+      Support noexcept on function types on compilers known to allow it.
+    ]
+    [`BOOST_ASIO_DISABLE_NOEXCEPT_FUNCTION_TYPE`]
+  ]
+  [
     [`BOOST_ASIO_HAS_NULLPTR`]
     [
       Standard library support for the nullptr_t type.
     ]
     [`BOOST_ASIO_DISABLE_NULLPTR`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_PIPE`]
+    [
+      Pipes.
+    ]
+    [`BOOST_ASIO_DISABLE_PIPE`]
   ]
   [
     [`BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR`]
@@ -339,6 +409,13 @@ with Boost.Asio's needs.
     [`BOOST_ASIO_DISABLE_STD_ADDRESSOF`]
   ]
   [
+    [`BOOST_ASIO_HAS_STD_ALIGNED_ALLOC`]
+    [
+      Standard library support for aligned allocation.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_ALIGNED_ALLOC`]
+  ]
+  [
     [`BOOST_ASIO_HAS_STD_ALLOCATOR_ARG`]
     [
       Standard library support for allocator_arg_t.
@@ -392,6 +469,13 @@ with Boost.Asio's needs.
     []
   ]
   [
+    [`BOOST_ASIO_HAS_STD_CONCEPTS`]
+    [
+      Support concepts on compilers known to allow them.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_CONCEPTS`]
+  ]
+  [
     [`BOOST_ASIO_HAS_STD_COROUTINE`]
     [
       Standard library support for coroutines.
@@ -434,6 +518,20 @@ with Boost.Asio's needs.
     [`BOOST_ASIO_DISABLE_STD_FUTURE`]
   ]
   [
+    [`BOOST_ASIO_HAS_STD_HASH`]
+    [
+      Standard library support for std::hash.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_HASH`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_STD_INDEX_SEQUENCE`]
+    [
+      Standard library support for std::index_sequence.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_INDEX_SEQUENCE`]
+  ]
+  [
     [`BOOST_ASIO_HAS_STD_INVOKE_RESULT`]
     [
       Standard library has invoke_result (which supersedes result_of).
@@ -462,6 +560,13 @@ with Boost.Asio's needs.
     [`BOOST_ASIO_DISABLE_STD_NESTED_EXCEPTION`]
   ]
   [
+    [`BOOST_ASIO_HAS_STD_REFERENCE_WRAPPER`]
+    [
+      Standard library support for the reference_wrapper class.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_REFERENCE_WRAPPER`]
+  ]
+  [
     [`BOOST_ASIO_HAS_STD_SHARED_PTR`]
     [
       Standard library support for shared_ptr and weak_ptr.
@@ -488,6 +593,20 @@ with Boost.Asio's needs.
       Standard library support for the thread class.
     ]
     [`BOOST_ASIO_DISABLE_STD_THREAD`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_STD_TO_ADDRESS`]
+    [
+      Standard library support for std::to_address.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_TO_ADDRESS`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_STD_TUPLE`]
+    [
+      Standard library support for std::tuple.
+    ]
+    [`BOOST_ASIO_DISABLE_STD_TUPLE`]
   ]
   [
     [`BOOST_ASIO_HAS_STD_TYPE_TRAITS`]
@@ -539,6 +658,13 @@ with Boost.Asio's needs.
       Support template variables on compilers known to allow it.
     ]
     [`BOOST_ASIO_DISABLE_VARIABLE_TEMPLATES`]
+  ]
+  [
+    [`BOOST_ASIO_HAS_VARIADIC_LAMBDA_CAPTURES`]
+    [
+      Support for capturing parameter packs in lambdas.
+    ]
+    [`BOOST_ASIO_DISABLE_VARIADIC_LAMBDA_CAPTURES`]
   ]
   [
     [`BOOST_ASIO_HAS_VARIADIC_TEMPLATES`]

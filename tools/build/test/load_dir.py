@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 """
 Traverses a directory and output the code that would create the same directory
@@ -37,12 +37,12 @@ def create_file(arg, dirname, fnames):
             print('\n""")\n')
 
 
-header = """#!/usr/bin/python
+header = """#!/usr/bin/env python3
 
 #  Copyright (C) FILL SOMETHING HERE 2005.
 #  Distributed under the Boost Software License, Version 1.0. (See
-#  accompanying file LICENSE_1_0.txt or copy at
-#  http://www.boost.org/LICENSE_1_0.txt)
+#  accompanying file LICENSE.txt or copy at
+#  https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 import BoostBuild
 

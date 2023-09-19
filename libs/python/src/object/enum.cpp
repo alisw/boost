@@ -113,7 +113,6 @@ static PyTypeObject enum_type_object = {
 #if PY_VERSION_HEX < 0x03000000
     | Py_TPFLAGS_CHECKTYPES
 #endif
-    | Py_TPFLAGS_HAVE_GC
     | Py_TPFLAGS_BASETYPE,                  /* tp_flags */
     0,                                      /* tp_doc */
     0,                                      /* tp_traverse */
@@ -153,7 +152,7 @@ namespace
   {
       if (enum_type_object.tp_dict == 0)
       {
-          Py_TYPE(&enum_type_object) = incref(&PyType_Type);
+          Py_SET_TYPE(&enum_type_object, incref(&PyType_Type));
 #if PY_VERSION_HEX >= 0x03000000
           enum_type_object.tp_base = &PyLong_Type;
 #else

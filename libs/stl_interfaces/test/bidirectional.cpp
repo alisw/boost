@@ -11,13 +11,16 @@
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <numeric>
 #include <list>
 #include <type_traits>
 
 
 struct basic_bidirectional_iter : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                       basic_bidirectional_iter,
+#endif
                                       std::bidirectional_iterator_tag,
                                       int>
 {
@@ -42,7 +45,9 @@ struct basic_bidirectional_iter : boost::stl_interfaces::iterator_interface<
     }
 
     using base_type = boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
         basic_bidirectional_iter,
+#endif
         std::bidirectional_iterator_tag,
         int>;
     using base_type::operator++;
@@ -70,7 +75,9 @@ static_assert(
 
 struct basic_adapted_bidirectional_ptr_iter
     : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           basic_adapted_bidirectional_ptr_iter,
+#endif
           std::bidirectional_iterator_tag,
           int>
 {
@@ -98,7 +105,9 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 
 struct basic_adapted_bidirectional_list_iter
     : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           basic_adapted_bidirectional_list_iter,
+#endif
           std::bidirectional_iterator_tag,
           int>
 {
@@ -128,7 +137,9 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 template<typename ValueType>
 struct adapted_bidirectional_ptr_iter
     : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           adapted_bidirectional_ptr_iter<ValueType>,
+#endif
           std::bidirectional_iterator_tag,
           ValueType>
 {
@@ -153,11 +164,11 @@ private:
 };
 
 static_assert(
-    !boost::stl_interfaces::v1_dtl::ra_iter<
+    !boost::stl_interfaces::v1::v1_dtl::ra_iter<
         adapted_bidirectional_ptr_iter<int>>::value,
     "");
 static_assert(
-    !boost::stl_interfaces::v1_dtl::ra_iter<
+    !boost::stl_interfaces::v1::v1_dtl::ra_iter<
         adapted_bidirectional_ptr_iter<int const>>::value,
     "");
 
@@ -184,7 +195,9 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 
 template<typename ValueType>
 struct bidirectional_iter : boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                 bidirectional_iter<ValueType>,
+#endif
                                 std::bidirectional_iterator_tag,
                                 ValueType>
 {
@@ -215,7 +228,9 @@ struct bidirectional_iter : boost::stl_interfaces::iterator_interface<
     }
 
     using base_type = boost::stl_interfaces::iterator_interface<
+#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
         bidirectional_iter<ValueType>,
+#endif
         std::bidirectional_iterator_tag,
         ValueType>;
     using base_type::operator++;
@@ -271,7 +286,7 @@ static_assert(
         subrange<
             basic_bidirectional_iter,
             basic_bidirectional_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous>>::value,
+            boost::stl_interfaces::element_layout::discontiguous>>::value,
     "");
 static_assert(
     ill_formed<
@@ -279,7 +294,7 @@ static_assert(
         subrange<
             basic_bidirectional_iter,
             basic_bidirectional_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous> const>::
+            boost::stl_interfaces::element_layout::discontiguous> const>::
         value,
     "");
 
@@ -292,7 +307,7 @@ static_assert(
         subrange<
             basic_bidirectional_iter,
             basic_bidirectional_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous>>::value,
+            boost::stl_interfaces::element_layout::discontiguous>>::value,
     "");
 static_assert(
     ill_formed<
@@ -300,7 +315,7 @@ static_assert(
         subrange<
             basic_bidirectional_iter,
             basic_bidirectional_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous> const>::
+            boost::stl_interfaces::element_layout::discontiguous> const>::
         value,
     "");
 
@@ -313,7 +328,7 @@ static_assert(
         subrange<
             basic_bidirectional_iter,
             basic_bidirectional_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous>>::value,
+            boost::stl_interfaces::element_layout::discontiguous>>::value,
     "");
 static_assert(
     ill_formed<
@@ -321,7 +336,7 @@ static_assert(
         subrange<
             basic_bidirectional_iter,
             basic_bidirectional_iter,
-            boost::stl_interfaces::v1::element_layout::discontiguous> const>::
+            boost::stl_interfaces::element_layout::discontiguous> const>::
         value,
     "");
 
@@ -482,7 +497,7 @@ int main()
             (int const *)ints.data() + ints.size());
 
         static_assert(
-            !boost::stl_interfaces::v1_dtl::ra_iter<
+            !boost::stl_interfaces::v1::v1_dtl::ra_iter<
                 adapted_bidirectional_ptr_iter<int>>::value,
             "");
 
@@ -621,10 +636,10 @@ int main()
     basic_bidirectional_iter first(ints.data());
     basic_bidirectional_iter last(ints.data() + ints.size());
 
-    auto r = range<boost::stl_interfaces::v1::element_layout::discontiguous>(
+    auto r = range<boost::stl_interfaces::element_layout::discontiguous>(
         first, last);
     auto empty =
-        range<boost::stl_interfaces::v1::element_layout::discontiguous>(
+        range<boost::stl_interfaces::element_layout::discontiguous>(
             first, first);
 
     // range begin/end

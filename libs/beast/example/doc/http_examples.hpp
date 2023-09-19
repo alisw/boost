@@ -137,7 +137,7 @@ receive_expect_100_continue(
         return;
 
     // Check for the Expect field value
-    if(parser.get()[field::expect] == "100-continue")
+    if(beast::iequals(parser.get()[field::expect], "100-continue"))
     {
         // send 100 response
         response<empty_body> res;
@@ -902,6 +902,42 @@ read_and_print_body(
 
 //]
 
+//------------------------------------------------------------------------------
+//
+// Example: Read large response body 
+//
+//------------------------------------------------------------------------------
+
+//[example_read_large_response_body
+
+/*  This function uses custom size limit of the resposne body.
+    The key method is 'body_limit' of the parser.
+    body_limit is expressed in bytes.
+*/
+template<
+    class SyncReadStream,
+    class DynamicBuffer,
+    bool isRequest, class Body, class Allocator>
+std::size_t
+read_large_response_body(
+    SyncReadStream& stream,
+    DynamicBuffer& buffer,
+    message<isRequest, Body, basic_fields<Allocator>>& msg,
+    std::size_t body_limit,
+    error_code& ec)
+{
+    parser<isRequest, Body, Allocator> p(std::move(msg));
+    p.eager(true);
+    p.body_limit(body_limit);
+    auto const bytes_transferred =
+        http::read(stream, buffer, p, ec);
+    if(ec)
+        return bytes_transferred;
+    msg = p.release();
+    return bytes_transferred;
+}
+
+//]
 
 //------------------------------------------------------------------------------
 //

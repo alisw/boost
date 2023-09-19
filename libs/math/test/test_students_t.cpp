@@ -268,6 +268,12 @@ void test_spots(RealType)
       // tolerance is 50 eps expressed as a percent:
       //
       tolerance = boost::math::tools::epsilon<RealType>() * 5000;
+      //
+      // But higher error rates at 128 bit precision?
+      //
+      if (boost::math::tools::digits<RealType>() > 100)
+         tolerance *= 500;
+
       BOOST_CHECK_CLOSE(boost::math::quantile(
          students_t_distribution<RealType>(2.00390625L),                     // degrees_of_freedom.
          static_cast<RealType>(0.5625L)),                                    //  probability.
@@ -755,7 +761,7 @@ BOOST_AUTO_TEST_CASE( test_main )
   test_spots(0.0); // Test double. OK at decdigits 7, tolerance = 1e07 %
 #ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
   test_spots(0.0L); // Test long double.
-#if !BOOST_WORKAROUND(BOOST_BORLANDC, BOOST_TESTED_AT(0x582))
+#if !BOOST_WORKAROUND(BOOST_BORLANDC, BOOST_TESTED_AT(0x582)) && !defined(BOOST_MATH_NO_REAL_CONCEPT_TESTS)
   test_spots(boost::math::concepts::real_concept(0.)); // Test real concept.
 #endif
 #else

@@ -11,6 +11,149 @@
 
 [/-----------------------------------------------------------------------------]
 
+[heading Boost 1.82]
+
+[*Features]
+
+* [issue 2475] Add `error_code`s use source_location
+
+[*Fixes]
+
+* [issue 2602] tcp_stream uses the correct executor of the timer.
+* [issue 2638] `std::placeholders` ambiguity fix.
+
+[*Improvements]
+
+* error_categories use numeric ids
+* `file_body` support seek
+
+
+[heading Boost 1.81]
+
+[*Features]
+
+* Add `buffers_generator`
+* Add [link beast.ref.boost__beast__http__message_generator `http::message_generator`]
+* Add [link beast.ref.boost__beast__buffer_ref `buffer_ref`]
+* Support for per-operation cancellation
+
+[*Fixes]
+
+* [issue 2439] Fix CVE-2018-25032 in zlib streams
+* [issue 264] Websocket support continue in upgrade
+* [issue 471] Unquote takes s by reference
+
+[*Improvements]
+
+* [issue 2104] C++20 awaitable examples.
+* [issue 226], [issue 227] per-message compression options
+* [issue 2449] websocket timeout option api
+* [issue 2468] multiple content length error
+
+[*Miscellaneous]
+
+* Use `span` from Boost.Core
+* Use `static_string` from Boost.StaticString
+* `serializer::is_done` is `const`
+* Support for default-completion and rebind
+* [issue 2469] s390x architecture support
+
+[*Documentation]
+
+* [issue 891] Feature table for buffers
+* [issue 516] Case-insensitivity for fields is stated
+* [issue 298] api version is documented
+
+
+[heading Boost 1.80]
+
+[*Miscellaneous]
+
+* [issue 2363] Remove `BOOST_BEAST_USE_STD_STRING_VIEW`
+* [issue 2417] use boost::core::string_view. This improves inter-conversion between string_view implementations. Some observable differences for users:
+ * `core::string_view` no longer supports the `.to_string()` or `.clear()` extensions from Utility
+ * code that relied on `.max_size()` returning `.size(),` needs to be fixed to use `.size()` instead
+ * `remove_suffix()` and `remove_prefix()` were more lenient than the standard specs; be sure you don't rely on it clamping the argument to valid range
+ * `BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS` no longer suppresses conversions to `std::string`
+
+
+[heading Boost 1.79]
+
+[*Fixes]
+
+* [issue 2391] Add missing include for file_body test.
+* [issue 2364] Fix WebSocket handshake response on failure.
+* [issue 2280] (related) Fix open append mode for file_posix.
+* [issue 2280] Fix open append mode for file_win32.
+* [issue 2280] Fix file open with append/append_existing flag on Windows
+* [issue 2354] Fix clang-cl UTF8 path handling for `file_win32`.
+* [issue 2354] Fix clang-cl UTF8 path handling for `file_stdio`.
+
+[*Miscellaneous]
+
+* [issue 2375] Add ARM64 builds to drone CI
+* [issue 2217] Fix async_base documentation link
+* [issue 2280] Add tests for file open in append/append_existing mode
+* [issue 2351] Update CI to include gcc 11, clang 12, msvc 14.3
+* [issue 2350] Add individual tests to CMake workflow
+
+[heading Boost 1.78]
+
+[*Fixes]
+
+* Fix CVE-2016-9840 in zlib implementation.
+* Fix TLS SNI handling in websocket_client_async_ssl example.
+* [issue 2313] Fix reuse of sliding window in WebSocket permessage_deflate.
+* Fix accept error handling in http_server_async example.
+
+[*Miscellaneous]
+
+* Remove test framework's dependency on RTTI.
+* Move library-specific docca configuration to Beast.
+* Remove dependency on RTTI in `test::stream`.
+* Fix missing includes in test headers.
+
+
+
+[heading Boost 1.77]
+
+[*Fixes]
+
+* [issue 2233] Remove use of POSIX-only constant.
+
+[*Miscellaneous]
+
+* Fixes to tests.
+* Improvements and fixes in Github and Drone CI.
+* Accommodate Docca updates.
+* Update example root certificates.
+* Add example of reading large response body.
+* Remove Travis CI.
+* Update CMakeLists.txt
+
+
+[heading Boost 1.76]
+
+[*Fixes]
+
+* [issue 2139] Add executor rebind to test::stream.
+* Fix unused variable compiler warning in WebSocket async shutdown.
+
+[*Improvements]
+
+* [issue 2124] Floating point support no longer required to use Beast.
+* Reduce size of websockety compiled code by using a common buffers type for all operations.
+* HTTP Parser has improved detection of incorrect use.
+
+
+[*Miscellaneous]
+
+* [issue 2140] Add cxxstd tag to library metadata.
+* Move to Drone CI.
+* Minor documentation formatting improvements.
+* CML now finds required Boost::thread library during in-tree build.
+
+
 [heading Boost 1.75]
 
 [*Fixes]
@@ -65,10 +208,10 @@
     enable deprecated functionality is now the macro `BOOST_BEAST_ALLOW_DEPRECATED` which is
     undefined by default. That is, all deprecated behaviour is disabled by default.
   * The following deprecated functions have been removed:
-    - `websocket::async_accept_ex`
-    - `websocket::async_handshake_ex`
-    - `websocket::accept_ex`
-    - `websocket::handshake_ex`
+    * `websocket::async_accept_ex`
+    * `websocket::async_handshake_ex`
+    * `websocket::accept_ex`
+    * `websocket::handshake_ex`
     Programs still using these names should be refactored to use the `decorator` feature and
     the remaining handshake and accept functions.
   * `websocket::role_type` has been removed. Users should use `beast::role_type` instead.
@@ -76,11 +219,11 @@
     `bind_front_handler` instead.
   * Code that depends on `mutable_data_type` should be refactored to use
     `mutable_buffers_type`. Classes affected are:
-    - `buffers_adaptor`
-    - `flat_buffer`
-    - `flat_static_buffer`
-    - `multi_buffer`
-    - `static_buffer`
+    * `buffers_adaptor`
+    * `flat_buffer`
+    * `flat_static_buffer`
+    * `multi_buffer`
+    * `static_buffer`
   * The `reset` function has been removed from `flat_static_buffer`. Use the
     `clear` function instead.
   * The `core/type_traits.hpp` public header has been removed and along with it
@@ -128,11 +271,11 @@
 [*API Changes]
 
 * Nested `mutable_data_type` in Beast dynamic buffers is deprecated. Affected types:
-  - `buffers_adaptor`
-  - `flat_buffer`
-  - `flat_static_buffer`
-  - `multi_buffer`
-  - `static_buffer`
+  * `buffers_adaptor`
+  * `flat_buffer`
+  * `flat_static_buffer`
+  * `multi_buffer`
+  * `static_buffer`
 
 
 [*Changes Required]
@@ -516,7 +659,7 @@
 
 * `file_mode::append_new` is removed, as it makes no sense.
   ['Actions Required]:
-  - Replace `file_mode::append_new` with either
+  * Replace `file_mode::append_new` with either
     `file_mode::append` or
     `file_mode::append_existing`
     as needed.
@@ -526,7 +669,7 @@
 * `buffers_range_ref`
   is preferred to `std::reference_wrapper`.
   ['Actions Required]:
-  - Call
+  * Call
     `buffers_range_ref`
     with the buffer, instead of calling
     `buffers_range`
@@ -541,10 +684,10 @@
 * WebSocket decorator is a socket option:
   * Overloads of the following functions which accept a Decorator
     are deprecated:
-    - `accept`, `accept_ex`
-    - `handshake`, `handshake_ex`
-    - `async_accept`, `async_accept_ex`
-    - `async_handshake`, `async_handshake_ex`
+    * `accept`, `accept_ex`
+    * `handshake`, `handshake_ex`
+    * `async_accept`, `async_accept_ex`
+    * `async_handshake`, `async_handshake_ex`
 
 * ([issue 1375]) The value returned from `basic_parser::content_length`
   no longer changes as the body of the message is received.

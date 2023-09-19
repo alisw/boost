@@ -1,4 +1,4 @@
-// Copyright 2016-2020 Antony Polukhin
+// Copyright 2016-2023 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -12,6 +12,7 @@
 #include <boost/pfr.hpp>
 #include <boost/type_index.hpp>
 
+// boost-no-inspect
 void test_examples() {
 
 #if BOOST_PFR_USE_CPP17
@@ -55,7 +56,7 @@ void test_examples() {
 
   {
 //[pfr_quick_examples_for_each_idx
-    // Iterate over fields of a varible and output index and
+    // Iterate over fields of a variable and output index and
     // type of a variable.
 
     struct tag0{};
@@ -90,7 +91,7 @@ void test_examples() {
 
   {
 //[pfr_quick_examples_get
-    // Get field by index and assign new value to that field
+    // Get field by index/type and assign new value to that field
 
     struct sample {
         char c;
@@ -99,8 +100,9 @@ void test_examples() {
 
     sample var{};
     boost::pfr::get<1>(var) = 42.01f;
+    boost::pfr::get<char>(var) = 'A';
 
-    std::cout << var.f; // Outputs: 42.01
+    std::cout << var.c << var.f; // Outputs: A 42.01
 //]
   }
 

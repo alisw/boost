@@ -1,10 +1,11 @@
-// Copyright (c) 2018-2020 Emil Dotchevski and Reverge Studios, Inc.
+// Copyright 2018-2022 Emil Dotchevski and Reverge Studios, Inc.
 
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/leaf/detail/config.hpp>
-#ifdef BOOST_LEAF_NO_EXCEPTIONS
+#include <boost/leaf/config.hpp>
+
+#if defined(BOOST_LEAF_NO_EXCEPTIONS) || !BOOST_LEAF_CFG_CAPTURE
 
 #include <iostream>
 
@@ -16,10 +17,15 @@ int main()
 
 #else
 
-#include <boost/leaf/capture.hpp>
-#include <boost/leaf/handle_errors.hpp>
-#include <boost/leaf/exception.hpp>
-#include <boost/leaf/on_error.hpp>
+#ifdef BOOST_LEAF_TEST_SINGLE_HEADER
+#   include "leaf.hpp"
+#else
+#   include <boost/leaf/capture.hpp>
+#   include <boost/leaf/handle_errors.hpp>
+#   include <boost/leaf/exception.hpp>
+#   include <boost/leaf/on_error.hpp>
+#endif
+
 #include "lightweight_test.hpp"
 
 namespace leaf = boost::leaf;
@@ -133,7 +139,7 @@ void test( F f_ )
             {
                 std::rethrow_exception(ep); return true;
             },
-            []( info<1> const & x, info<2> const & )
+            []( info<1> const &, info<2> const & )
             {
                 return true;
             },
@@ -143,7 +149,7 @@ void test( F f_ )
                 BOOST_TEST_EQ(y.value, 3);
                 return false;
             },
-            []( info<1> const & x )
+            []( info<1> const & )
             {
                 return true;
             },
@@ -161,7 +167,7 @@ void test( F f_ )
             {
                 std::rethrow_exception(ep); return false;
             },
-            []( info<1> const & x, info<2> const & )
+            []( info<1> const &, info<2> const & )
             {
                 return false;
             },
@@ -171,7 +177,7 @@ void test( F f_ )
                 BOOST_TEST_EQ(y.value, 3);
                 return true;
             },
-            []( info<1> const & x )
+            []( info<1> const & )
             {
                 return false;
             },
@@ -188,13 +194,13 @@ int main()
     test<info<1>, info<2>, info<3>>(
         []
         {
-            throw leaf::exception(info<1>{1}, info<3>{3}); // Derives from leaf::leaf::error_id
+            leaf::throw_exception(info<1>{1}, info<3>{3}); // Derives from leaf::leaf::error_id
         } );
     test<info<1>, info<2>, info<3>>(
         []
         {
             auto load = leaf::on_error( info<1>{1}, info<3>{3} );
-            throw leaf::exception(); // Derives from leaf::leaf::error_id
+            leaf::throw_exception(); // Derives from leaf::leaf::error_id
         } );
     test<info<1>, info<2>, info<3>>(
         []

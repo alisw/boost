@@ -12,10 +12,15 @@
 
 #include <boost/json/monotonic_resource.hpp>
 
+#include <forward_list>
+#include <list>
+#include <iterator>
+
 #include "test.hpp"
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 BOOST_STATIC_ASSERT( std::is_nothrow_destructible<array>::value );
 BOOST_STATIC_ASSERT( std::is_nothrow_move_constructible<array>::value );
@@ -148,6 +153,29 @@ public:
 
         // array(InputIt, InputIt, storage)
         {
+            // empty range
+            {
+                // random-access iterator
+                std::vector<value> i1;
+                array a1(i1.begin(), i1.end());
+                BOOST_TEST(a1.empty());
+
+                // bidirectional iterator
+                std::list<value> i2;
+                array a2(i2.begin(), i2.end());
+                BOOST_TEST(a2.empty());
+
+                // forward iterator
+                std::forward_list<value> i3;
+                array a3(i3.begin(), i3.end());
+                BOOST_TEST(a3.empty());
+
+                // input iterator
+                auto const it = make_input_iterator(i3.begin());
+                array a4(it, it);
+                BOOST_TEST(a4.empty());
+            }
+
             // default storage
             {
                 init_list init{ 0, 1, str_, 3, 4 };
@@ -423,41 +451,36 @@ public:
     void
     testAccess()
     {
-        // at(pos)
+        // at(pos) &
         {
             array a({1, true, str_});
             BOOST_TEST(a.at(0).is_number());
             BOOST_TEST(a.at(1).is_bool());
             BOOST_TEST(a.at(2).is_string());
-            try
-            {
-                a.at(3);
-                BOOST_TEST_FAIL();
-            }
-            catch(std::out_of_range const&)
-            {
-                BOOST_TEST_PASS();
-            }
+            BOOST_TEST_THROWS_WITH_LOCATION( a.at(3) );
         }
 
-        // at(pos) const
+        // at(pos) &&
+        {
+            array a({1, true, str_});
+            BOOST_TEST(std::move(a).at(0).is_number());
+            BOOST_TEST(std::move(a).at(1).is_bool());
+            BOOST_TEST(std::move(a).at(2).is_string());
+            BOOST_TEST_THROWS_WITH_LOCATION( a.at(3) );
+            value&& rv = std::move(a).at(0);
+            (void)rv;
+        }
+
+        // at(pos) const&
         {
             array const a({1, true, str_});
             BOOST_TEST(a.at(0).is_number());
             BOOST_TEST(a.at(1).is_bool());
             BOOST_TEST(a.at(2).is_string());
-            try
-            {
-                a.at(3);
-                BOOST_TEST_FAIL();
-            }
-            catch(std::out_of_range const&)
-            {
-                BOOST_TEST_PASS();
-            }
+            BOOST_TEST_THROWS_WITH_LOCATION( a.at(3) );
         }
 
-        // operator[&](size_type)
+        // operator[&](size_type) &
         {
             array a({1, true, str_});
             BOOST_TEST(a[0].is_number());
@@ -465,7 +488,7 @@ public:
             BOOST_TEST(a[2].is_string());
         }
 
-        // operator[&](size_type) const
+        // operator[&](size_type) const&
         {
             array const a({1, true, str_});
             BOOST_TEST(a[0].is_number());
@@ -473,28 +496,54 @@ public:
             BOOST_TEST(a[2].is_string());
         }
 
-        // front()
+        // operator[&](size_type) &&
+        {
+            array a({1, true, str_});
+            BOOST_TEST(std::move(a)[0].is_number());
+            BOOST_TEST(std::move(a)[1].is_bool());
+            BOOST_TEST(std::move(a)[2].is_string());
+            value&& rv = std::move(a)[0];
+            (void)rv;
+        }
+
+        // front() &
         {
             array a({1, true, str_});
             BOOST_TEST(a.front().is_number());
         }
 
-        // front() const
+        // front() const&
         {
             array const a({1, true, str_});
             BOOST_TEST(a.front().is_number());
         }
 
-        // back()
+        // front() &&
+        {
+            array a({1, true, str_});
+            BOOST_TEST(std::move(a).front().is_number());
+            value&& rv = std::move(a).front();
+            (void)rv;
+        }
+
+        // back() &
         {
             array a({1, true, str_});
             BOOST_TEST(a.back().is_string());
         }
 
-        // back() const
+        // back() const&
         {
             array const a({1, true, str_});
             BOOST_TEST(a.back().is_string());
+        }
+
+        // back() &&
+        {
+            array a({1, true, str_});
+            BOOST_TEST(std::move(a).back().is_string());
+            value&& rv = std::move(a).back();
+            (void)rv;
         }
 
         // if_contains()
@@ -1127,6 +1176,12 @@ public:
                 check(a1);
                 BOOST_TEST(a2.size() == 1);
             });
+            fail_loop([&](storage_ptr const& sp)
+            {
+                array a({1, true, str_}, sp);
+                swap(a, a);
+                check(a);
+            });
         }
     }
 
@@ -1224,6 +1279,40 @@ public:
     }
 
     void
+    testHash()
+    {
+        BOOST_TEST(check_hash_equal(
+            array{}, array()));
+        BOOST_TEST(check_hash_equal(
+            array{1,1}, array{1,1}));
+        BOOST_TEST(check_hash_equal(
+            array{1,1}, array{1,1}));
+        BOOST_TEST(expect_hash_not_equal(
+            array{1,1}, array{1,2}));
+        BOOST_TEST(check_hash_equal(
+            array{"a", "b", 17},
+            array{"a", "b", 17U}));
+        BOOST_TEST(expect_hash_not_equal(
+            array{"a", "b", nullptr},
+            array{nullptr, "a", "b"}));
+    }
+
+    void
+    testIssue692()
+    {
+        array a;
+        object obj;
+        obj["test1"] = "hello";
+        a.push_back(obj);
+        a.push_back(obj);
+        a.push_back(obj);
+        a.push_back(obj);
+        a.push_back(obj);
+        while(a.size())
+            a.erase(a.begin());
+    }
+
+    void
     run()
     {
         testDestroy();
@@ -1236,9 +1325,12 @@ public:
         testModifiers();
         testExceptions();
         testEquality();
+        testHash();
+        testIssue692();
     }
 };
 
 TEST_SUITE(array_test, "boost.json.array");
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost

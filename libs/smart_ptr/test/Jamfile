@@ -64,7 +64,13 @@ run spinlock_pool_test.cpp
   <toolset>msvc-9.0,<variant>release:<build>no ;
 
 run make_shared_test.cpp ;
-run make_shared_move_emulation_test.cpp ;
+run make_shared_move_emulation_test.cpp
+  : : :
+  <toolset>clang-3.5,<cxxstd>03:<build>no
+  <toolset>clang-3.6,<cxxstd>03:<build>no
+  <toolset>clang-3.7,<cxxstd>03:<build>no
+  ;
+
 run make_shared_perfect_forwarding_test.cpp ;
 run shared_ptr_convertible_test.cpp ;
 run wp_convertible_test.cpp ;
@@ -81,7 +87,7 @@ run sp_recursive_assign_rv_test.cpp ;
 run sp_recursive_assign2_rv_test.cpp ;
 
 compile-fail auto_ptr_lv_fail.cpp
-  : <toolset>gcc-4.4.7:<build>no ;
+  : <toolset>gcc-4.4.7:<build>no <toolset>gcc-4.4:<build>no ;
 
 run atomic_count_test2.cpp ;
 run sp_typeinfo_test.cpp ;
@@ -306,7 +312,7 @@ lib dll_test : dll_test_lib.cpp : <link>shared:<define>DLL_TEST_DYN_LINK=1 ;
 explicit dll_test ;
 
 run dll_test_main.cpp dll_test : : : <link>static : dll_test_static ;
-run dll_test_main.cpp dll_test : : : <link>shared : dll_test_shared ;
+run dll_test_main.cpp dll_test : : : <link>shared <undefined-sanitizer>norecover:<build>no : dll_test_shared ;
 
 run make_shared_const_test.cpp ;
 run make_local_shared_const_test.cpp ;
@@ -331,9 +337,9 @@ run weak_ptr_alias_move_test.cpp ;
 
 run sp_typeinfo_test.cpp : : : <rtti>off : sp_typeinfo_test_no_rtti ;
 
-run get_deleter_test.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test_no_rtti ;
-run get_deleter_test2.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test2_no_rtti ;
-run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no : get_deleter_test3_no_rtti ;
+run get_deleter_test.cpp  : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no <toolset>gcc-4.4,<cxxstd>0x:<build>no : get_deleter_test_no_rtti ;
+run get_deleter_test2.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no <toolset>gcc-4.4,<cxxstd>0x:<build>no : get_deleter_test2_no_rtti ;
+run get_deleter_test3.cpp : : : <rtti>off <toolset>gcc-4.4.7,<cxxstd>0x:<build>no <toolset>gcc-4.4,<cxxstd>0x:<build>no : get_deleter_test3_no_rtti ;
 
 run shared_from_test.cpp ;
 run weak_from_test.cpp ;
@@ -352,6 +358,7 @@ run allocate_unique_noinit_test.cpp ;
 run allocate_unique_test.cpp ;
 run allocate_unique_throws_test.cpp ;
 run allocate_unique_value_test.cpp ;
+run get_allocator_pointer_test.cpp ;
 
 run sp_guides_test.cpp ;
 run sp_guides_test2.cpp ;
@@ -365,7 +372,9 @@ compile sp_pedantic_test.cpp
   : <warnings>pedantic
     <toolset>msvc:<warnings-as-errors>on
     <toolset>gcc:<warnings-as-errors>on
-    <toolset>clang:<warnings-as-errors>on ;
+    <toolset>clang:<warnings-as-errors>on
+    <toolset>clang-15:<cxxflags>-Wno-deprecated-builtins
+    ;
 
 run sp_owner_before_test.cpp ;
 run sp_owner_equals_test.cpp ;
@@ -408,3 +417,6 @@ run wp_unordered_test.cpp ;
 
 run owner_hash_test.cpp ;
 run sp_unordered_test.cpp ;
+
+run sp_unique_ptr_test2.cpp ;
+run sp_move_only_deleter.cpp ;

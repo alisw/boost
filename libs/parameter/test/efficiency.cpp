@@ -5,8 +5,8 @@
 
 #include <boost/parameter/name.hpp>
 #include <boost/config/workaround.hpp>
-#include <boost/timer.hpp>
 #include <iostream>
+#include "timer.hpp"
 
 namespace test {
 
@@ -40,7 +40,7 @@ namespace test {
     //      or other processes and even device hardware interrupts may
     //      interfere by causing caches to be flushed.
 
-    // Accumulator function object with plain C++ interface 
+    // Accumulator function object with plain C++ interface
     template <typename T>
     struct plain_weight_running_total
     {
@@ -147,7 +147,7 @@ namespace test {
         test::hammer<Accumulator>(x, repeats);
 
         // Now start a timer.
-        boost::timer time;
+        test::timer time;
         test::hammer<Accumulator>(x, repeats);  // This time, we'll measure.
         return time.elapsed();
     }
@@ -163,7 +163,7 @@ int main()
     {
         repeats *= 10;
 
-        boost::timer time;
+        test::timer time;
 
         test::hammer<test::plain_weight_running_total<double> >(.1, repeats);
         test::hammer<test::named_param_weight_running_total<double> >(
@@ -172,7 +172,7 @@ int main()
 
         measured = time.elapsed();
     }
-    
+
     std::cout
         << "plain time:           "
         << test::measure<test::plain_weight_running_total<double> >(

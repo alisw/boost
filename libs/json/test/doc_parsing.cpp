@@ -19,7 +19,8 @@
 
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 //----------------------------------------------------------
 
@@ -82,7 +83,7 @@ value jv = parse( "[1,2,3,] // comment ", storage_ptr(), opt );
 #if __cpp_designated_initializers >= 201707L
 //[doc_parsing_6
 value jv = parse( "[1,2,3,] // comment ", storage_ptr(),
-    { 
+    {
         .allow_comments = true,             // permit C and C++ style comments to appear in whitespace
         .allow_trailing_commas = true,      // allow a trailing comma in object and array lists
         .allow_invalid_utf8 = true          // skip utf-8 validation of keys and strings
@@ -136,7 +137,7 @@ parse_options opt;                                  // All extensions default to
 opt.allow_comments = true;                          // Permit C and C++ style comments to appear in whitespace
 opt.allow_trailing_commas = true;                   // Allow an additional trailing comma in object and array element lists
 opt.allow_invalid_utf8 = true;                      // Skip utf-8 validation of keys and strings
-stream_parser p( storage_ptr(), opt );                     // The stream_parser will use the options
+stream_parser p( storage_ptr(), opt );              // The stream_parser will use the options
 //]
 }
 //----------------------------------------------------------
@@ -159,6 +160,42 @@ value read_json( std::istream& is, error_code& ec )
     if( ec )
         return nullptr;
     return p.release();
+}
+//]
+
+//[doc_parsing_14
+std::vector<value> read_jsons( std::istream& is, error_code& ec )
+{
+    std::vector< value > jvs;
+    stream_parser p;
+    std::string line;
+    std::size_t n = 0;
+    while( true )
+    {
+        if( n == line.size() )
+        {
+            if( !std::getline( is, line ) )
+                break;
+            n = 0;
+        }
+
+        n += p.write_some( line.data() + n, line.size() - n, ec );
+
+        if( p.done() )
+        {
+            jvs.push_back( p.release() );
+            p.reset();
+        }
+    }
+    if( !p.done() )   // this part handles the cases when the last JSON text in
+    {                 // the input is either incomplete or doesn't have a marker
+        p.finish(ec); // for end of the value (e.g. it is a number)
+        if( ec.failed() )
+            return jvs;
+        jvs.push_back( p.release() );
+    }
+
+    return jvs;
 }
 //]
 
@@ -216,7 +253,7 @@ stream_parser p(
 template< class Handler >
 void do_rpc( string_view s, Handler&& handler )
 {
-    unsigned char temp[ 4096 ];                 // The stream_parser will use this storage for its temporary needs
+    unsigned char temp[ 4096 ];                 // The parser will use this storage for its temporary needs
     parser p(                                   // Construct a strict parser using the temp buffer and no dynamic memory
         get_null_resource(),                    // The null resource never dynamically allocates memory
         parse_options(),                        // Default constructed parse options allow only standard JSON
@@ -237,6 +274,20 @@ void do_rpc( string_view s, Handler&& handler )
 
 //----------------------------------------------------------
 
+void
+testPrecise()
+{
+    //[doc_parsing_precise
+    parse_options opt;
+    opt.numbers = number_precision::precise;
+    value jv = parse( "1002.9111801605201", storage_ptr(), opt );
+    //]
+    (void)jv;
+    assert( jv == 1002.9111801605201 );
+}
+
+//----------------------------------------------------------
+
 class doc_parsing_test
 {
 public:
@@ -246,9 +297,29 @@ public:
         (void)&set1;
         (void)&set2;
         (void)&set3;
+        {
+            std::stringstream ss( "[1,2,3\n"
+                                  ",4]nul\n"
+                                  "l12345\n"
+                                  "6\"!\n"
+                                  "\"[2]3" );
+            error_code ec;
+            auto jvs = read_jsons( ss, ec );
+            assert( !ec.failed() );
+            assert( jvs.size() == 6 );
+            assert(( jvs[0] == array{ 1, 2, 3, 4} ));
+            assert(( jvs[1] == value() ));
+            assert(( jvs[2] == 123456 ));
+            assert(( jvs[3] == "!" ));
+            assert(( jvs[4] == array{2} ));
+            assert(( jvs[5] == 3 ));
+        }
+
+        testPrecise();
     }
 };
 
 TEST_SUITE(doc_parsing_test, "boost.json.doc_parsing");
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost

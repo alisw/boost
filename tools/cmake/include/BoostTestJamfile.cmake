@@ -9,6 +9,10 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.10)
   include_guard()
 endif()
 
+if(BUILD_TESTING AND CMAKE_VERSION VERSION_LESS 3.9)
+  message(AUTHOR_WARNING "BoostTestJamfile requires CMake 3.9") # CMAKE_MATCH_x
+endif()
+
 include(BoostMessage)
 
 # boost_test_jamfile( FILE jamfile [PREFIX prefix]
@@ -27,7 +31,7 @@ function(boost_test_jamfile)
   endif()
 
   if(__LIBRARIES)
-    boost_message(VERBOSE "boost_test_jamfile: LIBRARIES is deprecated, use LINK_LIBRARIES")
+    message(AUTHOR_WARNING "boost_test_jamfile: LIBRARIES is deprecated, use LINK_LIBRARIES")
   endif()
 
   if(NOT __FILE)
@@ -39,42 +43,39 @@ function(boost_test_jamfile)
     return()
   endif()
 
-  file(STRINGS ${__FILE} data)
+  file(STRINGS "${__FILE}" data)
 
-  set(types compile compile-fail link link-fail run run-fail)
+  set(types "compile|compile-fail|link|link-fail|run|run-fail")
 
   foreach(line IN LISTS data)
-    if(line)
+    # Extract type and remaining part, (silently) ignore any other line
+    if(line MATCHES "^[ \t]*(${types})([ \t].*|$)")
+      set(type ${CMAKE_MATCH_1})
+      set(args ${CMAKE_MATCH_2}) # This starts with a space
 
-      string(REGEX MATCHALL "[^ ]+" ll ${line})
-
-      if(ll)
-        list(GET ll 0 e0)
-
-        if(e0 IN_LIST types)
-
-          list(LENGTH ll lln)
-
-          if(NOT lln EQUAL 2)
-
-            boost_message(VERBOSE "boost_test_jamfile: Jamfile line ignored: ${line}")
-
-          else()
-
-            list(GET ll 1 e1)
-
-            boost_test(PREFIX ${__PREFIX} TYPE ${e0}
-              SOURCES ${e1}
-              LINK_LIBRARIES ${__LIBRARIES} ${__LINK_LIBRARIES}
-              COMPILE_DEFINITIONS ${__COMPILE_DEFINITIONS}
-              COMPILE_OPTIONS ${__COMPILE_OPTIONS}
-              COMPILE_FEATURES ${__COMPILE_FEATURES}
-            )
-
-          endif()
-        endif()
+      if(args MATCHES "^[ \t]+([^ \t]+)[ \t]*(;[ \t]*)?$")
+        # Single source, e.g. 'run foo.c ;'
+        # Semicolon is optional to support e.g. 'run mytest.cpp\n : : : something ;' (ignore 'something')
+        set(sources ${CMAKE_MATCH_1})
+      elseif(args MATCHES "^(([ \t]+[a-zA-Z0-9_]+\.cpp)+)[ \t]*(;[ \t]*)?$")
+        # Multiple sources with restricted names to avoid false positives, e.g. 'run foo.cpp bar.cpp ;'
+        # Again with optional semicolon
+        string(STRIP "${CMAKE_MATCH_1}" sources)
+        # Convert space-separated list into CMake list
+        string(REGEX REPLACE "\.cpp[ \t]+" ".cpp;" sources "${sources}")
+      else()
+        boost_message(VERBOSE "boost_test_jamfile: Jamfile line ignored: ${line}")
+        continue()
       endif()
-    endif()
-  endforeach(line)
 
-endfunction(boost_test_jamfile)
+      boost_test(PREFIX "${__PREFIX}" TYPE "${type}"
+        SOURCES ${sources}
+        LINK_LIBRARIES ${__LIBRARIES} ${__LINK_LIBRARIES}
+        COMPILE_DEFINITIONS ${__COMPILE_DEFINITIONS}
+        COMPILE_OPTIONS ${__COMPILE_OPTIONS}
+        COMPILE_FEATURES ${__COMPILE_FEATURES}
+      )
+    endif()
+
+  endforeach()
+endfunction()

@@ -28,7 +28,6 @@
 #include "propagate_allocator_test.hpp"
 #include "vector_test.hpp"
 #include "default_init_test.hpp"
-#include <boost/core/no_exceptions_support.hpp>
 #include "../../intrusive/test/iterator_test.hpp"
 
 using namespace boost::container;
@@ -46,13 +45,13 @@ bool deque_copyable_only(V1 &cntdeque, V2 &stddeque, dtl::true_type)
 {
    typedef typename V1::value_type IntType;
    std::size_t size = cntdeque.size();
-   stddeque.insert(stddeque.end(), 50, 1);
-   cntdeque.insert(cntdeque.end(), 50, IntType(1));
+   stddeque.insert(stddeque.end(), 50u, 1);
+   cntdeque.insert(cntdeque.end(), 50u, IntType(1));
    if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
    {
       IntType move_me(1);
-      stddeque.insert(stddeque.begin()+size/2, 50, 1);
-      cntdeque.insert(cntdeque.begin()+size/2, 50, boost::move(move_me));
+      stddeque.insert(stddeque.begin()+std::ptrdiff_t(size)/2, 50u, 1);
+      cntdeque.insert(cntdeque.begin()+std::ptrdiff_t(size/2), 50u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
    }
    {
@@ -65,28 +64,28 @@ bool deque_copyable_only(V1 &cntdeque, V2 &stddeque, dtl::true_type)
       IntType move_me(1);
       stddeque.clear();
       cntdeque.clear();
-      stddeque.insert(stddeque.begin(), 50, 1);
-      cntdeque.insert(cntdeque.begin(), 50, boost::move(move_me));
+      stddeque.insert(stddeque.begin(), 50u, 1);
+      cntdeque.insert(cntdeque.begin(), 50u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
-      stddeque.insert(stddeque.begin()+20, 50, 1);
-      cntdeque.insert(cntdeque.begin()+20, 50, boost::move(move_me));
+      stddeque.insert(stddeque.begin()+20, 50u, 1);
+      cntdeque.insert(cntdeque.begin()+20, 50u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
-      stddeque.insert(stddeque.begin()+20, 20, 1);
-      cntdeque.insert(cntdeque.begin()+20, 20, boost::move(move_me));
+      stddeque.insert(stddeque.begin()+20, 20u, 1);
+      cntdeque.insert(cntdeque.begin()+20, 20u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
    }
    {
       IntType move_me(1);
       stddeque.clear();
       cntdeque.clear();
-      stddeque.insert(stddeque.end(), 50, 1);
-      cntdeque.insert(cntdeque.end(), 50, boost::move(move_me));
+      stddeque.insert(stddeque.end(), 50u, 1);
+      cntdeque.insert(cntdeque.end(), 50u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
-      stddeque.insert(stddeque.end()-20, 50, 1);
-      cntdeque.insert(cntdeque.end()-20, 50, boost::move(move_me));
+      stddeque.insert(stddeque.end()-20, 50u, 1);
+      cntdeque.insert(cntdeque.end()-20, 50u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
-      stddeque.insert(stddeque.end()-20, 20, 1);
-      cntdeque.insert(cntdeque.end()-20, 20, boost::move(move_me));
+      stddeque.insert(stddeque.end()-20, 20u, 1);
+      cntdeque.insert(cntdeque.end()-20, 20u, boost::move(move_me));
       if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
    }
 
@@ -204,10 +203,10 @@ bool do_test()
             aux_vect2[i] = i;
          }
 
-         cntdeque.insert(cntdeque.begin()+cntdeque.size()
+         cntdeque.insert(cntdeque.begin()+std::ptrdiff_t(cntdeque.size())
                            ,boost::make_move_iterator(&aux_vect[0])
                            ,boost::make_move_iterator(aux_vect + 50));
-         stddeque.insert(stddeque.begin()+stddeque.size(), aux_vect2, aux_vect2 + 50);
+         stddeque.insert(stddeque.begin()+std::ptrdiff_t(stddeque.size()), aux_vect2, aux_vect2 + 50);
          if(!test::CheckEqualContainers(cntdeque, stddeque)) return false;
 
          for(int i = 0, j = static_cast<int>(cntdeque.size()); i < j; ++i){

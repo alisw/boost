@@ -9,16 +9,16 @@ ifdef::backend-pdf[]
 = QVM
 endif::[]
 ifndef::backend-pdf[]
-= QVM pass:[<a href="https://ci.appveyor.com/project/zajo/qvm"><img style="margin-left:8px; margin-top:21px; float:right; vertical-align: top" src="https://ci.appveyor.com/api/projects/status/rphx1liilphuk1t5?svg=true"></a> <a href="https://travis-ci.org/boostorg/qvm"><img style="margin-top:21px; float:right; vertical-align: top" src="https://travis-ci.org/boostorg/qvm.svg?branch=master"></a><div style="z-index: 3; bottom:-16px; right:4px; position:fixed"><input width="32" height="32" type="image" alt="Skin" src="./skin.png" onclick="this.blur();switch_style();return false;"/></div>]
+= QVM pass:[<div style="z-index: 3; bottom:-9px; right:4px; position:fixed"><input width="32" height="32" type="image" alt="Skin" src="./skin.png" onclick="this.blur();switch_style();return false;"/></div>]
 endif::[]
-Quaternion / Vector / Matrix Library for {CPP}-11 | Emil Dotchevski
+Quaternion / Vector / Matrix Library written in C++03 | Emil Dotchevski
 ifndef::backend-pdf[]
 :toc: left
 :toclevels: 3
 :toc-title:
 
 [.text-right]
-https://github.com/boostorg/qvm[GitHub] | link:./qvm.pdf[PDF]
+https://github.com/boostorg/qvm[GitHub] | https://boostorg.github.io/qvm/qvm.pdf[PDF]
 endif::[]
 
 [abstract]
@@ -27,15 +27,43 @@ QVM is a generic library for working with Quaternions, Vectors and Matrices of s
 
 ====
 * Emphasis on 2, 3 and 4-dimensional operations needed in graphics, video games and simulation applications.
-* Free function templates operate on any compatible user-defined quaternion, vector or matrix type.
-* Quaternion, vector and matrix types from different libraries or subsystems can be safely mixed in the same expression.
-* Type-safe mapping between compatible lvalue types with no temporary objects; e.g. transpose remaps the elements, rather than transforming the matrix.
+* Free function templates operate on any compatible user-defined Quaternion, Vector or Matrix type.
+* Enables Quaternion, Vector and Matrix types from different libraries to be safely mixed in the same expression.
+* Type-safe mapping between compatible lvalue types with no temporary objects; f.ex. transpose remaps the access to the elements, rather than transforming the matrix.
+* Requires only {CPP}03.
+* Zero dependencies.
 ====
 
 ifndef::backend-pdf[]
 [.text-right]
 <<tutorial>> | <<reference>> | <<rationale>>
 endif::[]
+
+[[support]]
+== Support
+
+* https://Cpplang.slack.com[cpplang on Slack] (use the `#boost` channel)
+* https://lists.boost.org/mailman/listinfo.cgi/boost-users[Boost Users Mailing List]
+* https://lists.boost.org/mailman/listinfo.cgi/boost[Boost Developers Mailing List]
+* https://github.com/boostorg/qvm/issues[Report an issue] on GitHub
+
+== Portability
+
+QVM requires only {CPP}03 but is tested on many compiler versions and {CPP} standards.
+
+== Distribution
+
+Copyright 2008-2023 Emil Dotchevski. Distributed under the http://www.boost.org/LICENSE_1_0.txt[Boost Software License, Version 1.0].
+
+There are three distribution channels:
+
+* QVM is included in official https://www.boost.org/[Boost] releases.
+* The source code is hosted on https://github.com/boostorg/qvm[GitHub].
+* For maximum portability, the latest release of the library is also available in single-header format, in two variants (direct download links):
+** link:https://raw.githubusercontent.com/boostorg/qvm/gh-pages/qvm.hpp[qvm.hpp]: single header containing the complete QVM source, including the complete set of <<swizzling,swizzling>> overloads.
+** link:https://raw.githubusercontent.com/boostorg/qvm/gh-pages/qvm_lite.hpp[qvm_lite.hpp]: single header containing everything except for the swizzling overloads.
+
+NOTE: QVM does not depend on Boost or other libraries.
 
 [[tutorial]]
 == Tutorial
@@ -134,11 +162,24 @@ float3 vrot = m * v;
 
 User-defined quaternion types are similarly introduced to QVM by specializing the <<quat_traits,`quat_traits`>> template.
 
+[TIP]
+--
+In order to support vector types that can not provide access to elements by reference, the `write_element` / `write_element_idx` static member functions can be defined as `void` functions taking a scalar to write into an element, for example:
+[source,c++]
+----
+template <int I>
+static inline void write_element( float3 & v, scalar_type s ) {
+  v.a[I] = s;
+}
+----
+Boost QVM automatically detects which alternative is provided.
+--
+
 '''
 
-=== C Arrays
+=== C/{CPP} Arrays
 
-In <<boost/qvm/quat_traits_array.hpp,`boost/qvm/quat_traits_array.hpp`>>, <<boost/qvm/vec_traits_array.hpp,`boost/qvm/vec_traits_array.hpp`>> and <<boost/qvm/mat_traits_array.hpp,`boost/qvm/mat_traits_array.hpp`>> QVM defines appropriate <<quat_traits,`quat_traits`>>, <<vec_traits,`vec_traits`>> and <<mat_traits,`mat_traits`>> specializations that allow QVM functions to operate directly on plain old C arrays:
+In `boost/qvm/quat_traits_array.hpp`, `vec_traits_array.hpp` and `mat_traits_array.hpp`, QVM defines appropriate <<quat_traits,`quat_traits`>>, <<vec_traits,`vec_traits`>> and <<mat_traits,`mat_traits`>> specializations that allow QVM functions to operate directly on plain old C arrays:
 
 [source,c++]
 ----
@@ -161,6 +202,8 @@ The <<vref,`vref`>> and <<mref,`mref`>> function templates can be used to work a
 float v[3] = {0,0,7};
 vref(v) *= 42;
 ----
+
+If {CPP}-11 is available, the same headers define appropriate `quat_traits`, `vec_traits` and `mat_traits` for `std::array` objects.
 
 '''
 
@@ -285,7 +328,7 @@ The answer is that by default, QVM returns some kind of compatible matrix type, 
 
 [source,c++]
 ----
-auto & m = m1 * m2;
+auto & m = m1 * m2; // auto requires C++11
 ----
 
 However, the type deduced by default converts implicitly to any compatible matrix type, so the following is also valid, at the cost of a temporary:
@@ -352,6 +395,8 @@ QVM is split into multiple headers to allow different compilation units to `#inc
 The tables below list commonly used components and the headers they're found in. Header names containing a number define functions that only work with objects of that dimension; e.g. `vec_operations2.hpp` contains only functions for working with 2D vectors.
 
 The header `boost/qvm/all.hpp` is provided for convenience. It includes all other QVM headers.
+
+In addition, Boost QVM is available in single-header format for maximum portability. See <<Distribution>>.
 
 .Quaternion header files
 [cols="1,2l"]
@@ -502,7 +547,7 @@ namespace boost { namespace qvm {
   template <class A,class B>
   struct deduce_scalar
   {
-    typedef typename impl<A,B>::type type;
+    typedef typename /*exact definition unspecified*/ type;
   };
 
 } }
@@ -512,11 +557,22 @@ Requires: :: `A` and `B` satisfy the <<scalar_requirements,scalar requirements>>
 
 Returns: ::
 
-If `A` and `B` are the same type, `impl<A,B>::type` returns that type. Otherwise, `impl<A,B>::type` is well defined for the following types only: `signed`/`unsigned char`, `signed`/`unsigned short`, `signed`/`unsigned int`, `signed`/`unsigned long`, `float` and `double`. The deduction logic is as follows:
+If `A` and `B` are the same type, `scalar_traits<A,B>::type` is defined as that type. Otherwise for the following types:
+
+* `signed`/`unsigned char`,
+* `signed`/`unsigned short`,
+* `signed`/`unsigned int`,
+* `signed`/`unsigned long`,
+* `float`,
+* `double`,
+
+the deduction logic is as follows:
 
 - if either of `A` and `B` is `double`, the result is `double`;
 - else, if one of `A` or `B` is an integer type and the other is `float`, the result is `float`;
 - else, if one of `A` or `B` is a signed integer and the other type is unsigned integer, the signed type is changed to unsigned, and then the lesser of the two integers is promoted to the other.
+
+For any other types `scalar_traits<A,B>::type` is defined as `void`. It can be specialized for user-defined scalar types.
 
 NOTE: This template is used by generic binary operations that return a scalar, to deduce the return type based on the (possibly different) scalars of their arguments.
 
@@ -599,6 +655,11 @@ namespace boost { namespace qvm {
     template <int I>
     static inline scalar_type & write_element( Quaternion & q );
 
+    // Alternative signature for write_element:
+
+    template <int I>
+    static inline void write_element( Quaternion & q, scalar_type s );
+
   };
   */
 
@@ -617,7 +678,10 @@ In addition, valid specializations of the `quat_traits` template must define at 
 
 - `read_element`: the expression `quat_traits<Quaternion>::read_element<I>(q)` returns either a copy of or a `const` reference to the `I`-th element of `q`.
 
-- `write_element`: the expression `quat_traits<Quaternion>::write_element<I>(q)` returns mutable reference to the `I`-th element of `q`.
+- `write_element`: the expression `quat_traits<Quaternion>::write_element<I>(q)` returns mutable reference to the `I`-th 
+element of `q`.
+
+TIP: Alternatively, `write_element` may be defined as `void` function that takes (as the last argument) a scalar to write into the specified element. QVM automatically detects this case by examining the signature of the `write_element` template.
 
 NOTE: For the quaternion `a + bi + cj + dk`, the elements are assumed to be in the following order: `a`, `b`, `c`, `d`; that is, `I`=`0`/`1`/`2`/`3` would access `a`/`b`/`c`/`d`.
 
@@ -713,7 +777,8 @@ The `quat_traits_defaults` template is designed to be used as a public base for 
 ----
 namespace boost { namespace qvm {
 
-  template <class Q>
+  template <class Q,
+    class S=typename quat_traits<Q>::scalar_type>
   struct deduce_quat {
     typedef Q type;
   };
@@ -724,12 +789,14 @@ namespace boost { namespace qvm {
 Requires: ::
 
 - `<<is_quat,is_quat>><Q>::value` is `true`;
-- `<<is_quat,is_quat>><deduce_quat<Q>::type>::value` must be `true`;
-- `deduce_quat<Q>::type` must be copyable.
+- `<<is_scalar,is_scalar>><S>::value` is `true`;
+- `<<is_quat,is_quat>><deduce_quat<Q,S>::type>::value` must be `true`;
+- `<<quat_traits,quat_traits>><deduce_quat<Q,S>::type>::scalar_type` must be the same type as `S`;
+- `deduce_quat<Q,S>::type` must be copyable.
 
-This template is used by QVM whenever it needs to deduce a copyable quaternion type from a single user-supplied function parameter of quaternion type. Note that `Q` itself may be non-copyable.
+This template is used by QVM whenever it needs to deduce a copyable quaternion type from the quaternion type `Q`, with a scalar type `S`. Note that `Q` itself may be non-copyable.
 
-The main template definition returns `Q`, which means that it is suitable only for copyable quaternion types. QVM also defines (partial) specializations for the non-copyable quaternion types it produces. Users can define other (partial) specializations for their own types.
+The main template definition returns an unspecified quaternion type, except if `S` is the same type as `<<quat_traits,quat_traits>><Q>::scalar_type`, in which case it returns `Q`, which is only suitable if `Q` is copyable. QVM also defines (partial) specializations for the non-copyable quaternion types it produces. Users can define other (partial) specializations for their own types.
 
 A typical use of the `deduce_quat` template is for specifying the preferred quaternion type to be returned by the generic function template overloads in QVM depending on the type of their arguments.
 
@@ -743,7 +810,10 @@ A typical use of the `deduce_quat` template is for specifying the preferred quat
 ----
 namespace boost { namespace qvm {
 
-  template <class A,class B>
+  template <class A,class B,
+    class S=typename deduce_scalar<
+      typename scalar<A>::type,
+      typename scalar<B>::type>::type>
   struct deduce_quat2 {
     typedef /*unspecified*/ type;
   };
@@ -755,12 +825,14 @@ Requires: ::
 
 - Both `<<scalar,scalar>><A>::type` and `scalar<B>::type` are well defined;
 - `<<is_quat,is_quat>><A>::value` || `is_quat<B>::value` is `true`;
-- `is_quat<deduce_quat2<A,B>::type>::value` must be `true`;
-- `deduce_quat2<A,B>::type` must be copyable.
+- `<<is_scalar,is_scalar>><S>::value` is `true`;
+- `is_quat<deduce_quat2<A,B,S>::type>::value` must be `true`;
+- `<<quat_traits,quat_traits>><deduce_quat2<A,B,S>::type>::scalar_type` must be the same type as `S`;
+- `deduce_quat2<A,B,S>::type` must be copyable.
 
-This template is used by QVM whenever it needs to deduce a quaternion type from the types of two user-supplied function parameters. The returned type must have accessible copy constructor (the `A` and `B` types themselves could be non-copyable, and either one of them may not be a quaternion type.)
+This template is used by QVM whenever it needs to deduce a quaternion type from the types of two user-supplied function parameters, with scalar type `S`. The returned type must have accessible copy constructor (the `A` and `B` types themselves could be non-copyable, and either one of them may not be a quaternion type.)
 
-The main template definition returns an unspecified quaternion type with <<quat_traits,`scalar_type`>> obtained by `<<deduce_scalar,deduce_scalar>><A,B>::type`, except if `A` and `B` are the same quaternion type `Q`, in which case `Q` is returned, which is only suitable for copyable types. QVM also defines (partial) specializations for the non-copyable quaternion types it produces. Users can define other (partial) specializations for their own types.
+The main template definition returns an unspecified quaternion type with <<quat_traits,`scalar_type`>> `S`, except if `A` and `B` are the same quaternion type `Q`, in which case `Q` is returned, which is only suitable for copyable types. QVM also defines (partial) specializations for the non-copyable quaternion types it produces. Users can define other (partial) specializations for their own types.
 
 A typical use of the `deduce_quat2` template is for specifying the preferred quaternion type to be returned by the generic function template overloads in QVM depending on the type of their arguments.
 
@@ -816,11 +888,19 @@ namespace boost { namespace qvm {
     template <int I>
     static inline scalar_type read_element( Vector const & v );
 
+    static inline scalar_type read_element_idx( int i, Vector const & v );
+
     template <int I>
     static inline scalar_type & write_element( Vector & v );
 
-    static inline scalar_type read_element_idx( int i, Vector const & v );
     static inline scalar_type & write_element_idx( int i, Vector & v );
+
+    // Alternative signature for write_element and write_element_idx:
+
+    template <int I>
+    static inline void write_element( Vector & v, scalar_type s );
+
+    static inline void write_element_idx( int i, Vector & v, scalar_type s );
 
   };
   */
@@ -842,11 +922,13 @@ In addition, valid specializations of the `vec_traits` template may define the f
 
 - `read_element`: the expression `vec_traits<Vector>::read_element<I>(v)` returns either a copy of or a const reference to the `I`-th element of `v`.
 
-- `write_element`: the expression `vec_traits<Vector>::write_element<I>(v)` returns mutable reference to the `I`-th element of `v`.
-
 - `read_element_idx`: the expression `vec_traits<Vector>::read_element_idx(i,v)` returns either a copy of or a `const` reference to the `i`-th element of `v`.
 
+- `write_element`: the expression `vec_traits<Vector>::write_element<I>(v)` returns mutable reference to the `I`-th element of `v`.
+
 - `write_element_idx`: the expression `vec_traits<Vector>::write_element_idx(i,v)` returns mutable reference to the `i`-th element of `v`.
+
+TIP: Alternatively, `write_element` and `write_element_idx` may be defined as `void` functions that take (as the last argument) a scalar to write into the specified element. QVM automatically detects this case by examining the signature of the `write_element` template.
 
 It is illegal to call any of the above functions unless `is_vec<Vector>::value` is true. Even then, vector types are allowed to define only a subset of the access functions. The general requirements are:
 
@@ -971,7 +1053,9 @@ Optionally, the user may also define `write_element_idx`, in which case the `vec
 ----
 namespace boost { namespace qvm {
 
-  template <class V, int Dim=vec_traits<Vector>::dim>
+  template <class V,
+    int D=vec_traits<Vector>::dim,
+    class S=typename vec_traits<V>::scalar_type>
   struct deduce_vec {
 
     typedef /*unspecified*/ type;
@@ -984,13 +1068,15 @@ namespace boost { namespace qvm {
 Requires: ::
 
 - `<<is_vec,is_vec>><V>::value` is `true`;
-- `is_vec<deduce_vec<V>::type>::value` must be `true`;
-- `deduce_vec<V>::type` must be copyable;
-- `vec_traits<deduce_vec<V>::type>::dim==Dim`.
+- `<<is_scalar,is_scalar>><S>::value` is `true`;
+- `is_vec<deduce_vec<V,D,S>::type>::value` must be `true`;
+- `deduce_vec<V,D,S>::type` must be copyable;
+- `vec_traits<deduce_vec<V,D,S>::type>::dim==D`;
+- `vec_traits<deduce_vec<V,D,S>::type>::scalar_type` is the same type as `S`.
 
 This template is used by QVM whenever it needs to deduce a copyable vector type of certain dimension from a single user-supplied function parameter of vector type. The returned type must have accessible copy constructor. Note that `V` may be non-copyable.
 
-The main template definition returns an unspecified copyable vector type of size `Dim`, except if `<<vec_traits,vec_traits>><V>::dim==Dim`, in which case it returns `V`, which is suitable only if `V` is a copyable type. QVM also defines (partial) specializations for the non-copyable vector types it produces. Users can define other (partial) specializations for their own types.
+The main template definition returns an unspecified copyable vector type of size `D` and scalar type `S`, except if `<<vec_traits,vec_traits>><V>::dim==D` and `<<vec_traits,vec_traits>><V>::scalar_type` is the same type as `S`, in which case it returns `V`, which is suitable only if `V` is a copyable type. QVM also defines (partial) specializations for the non-copyable vector types it produces. Users can define other (partial) specializations for their own types.
 
 A typical use of the `deduce_vec` template is for specifying the preferred vector type to be returned by the generic function template overloads in QVM depending on the type of their arguments.
 
@@ -1004,7 +1090,10 @@ A typical use of the `deduce_vec` template is for specifying the preferred vecto
 ----
 namespace boost { namespace qvm {
 
-  template <class A,class B,int Dim>
+  template <class A,class B,int D,
+    class S=typename deduce_scalar<
+      typename scalar<A>::type,
+      typename scalar<B>::type>::type>
   struct deduce_vec2 {
     typedef /*unspecified*/ type;
   };
@@ -1016,13 +1105,15 @@ Requires: ::
 
 - Both `<<scalar,scalar>><A>::type` and `scalar<B>::type` are well defined;
 - `<<is_vec,is_vec>><A>::value || is_vec<B>::value` is `true`;
-- `is_vec<deduce_vec2<A,B>::type>::value` must be `true`;
-- `deduce_vec2<A,B>::type` must be copyable;
-- `vec_traits<deduce_vec2<A,B>::type>::dim==Dim`.
+- `<<is_scalar,is_scalar>><S>::value` is `true`;
+- `is_vec<deduce_vec2<A,B,D,S>::type>::value` must be `true`;
+- `deduce_vec2<A,B,D,S>::type` must be copyable;
+- `vec_traits<deduce_vec2<A,B,D,S>::type>::dim==D`.
+- `vec_traits<deduce_vec2<A,B,D,S>::type>::scalar_type` is the same type as `S`.
 
-This template is used by QVM whenever it needs to deduce a vector type of certain dimension from the types of two user-supplied function parameters. The returned type must have accessible copy constructor (the `A` and `B` types themselves could be non-copyable, and either one of them may not be a vector type.)
+This template is used by QVM whenever it needs to deduce a vector type of certain dimension from the types of two user-supplied function parameters. The returned type must have accessible copy constructor (the `A` and `B` types themselves could be non-copyable, and either one of them may be a non-vector type.)
 
-The main template definition returns an unspecified vector type of the requested dimension with <<vec_traits,`scalar_type`>> obtained by `<<deduce_scalar,deduce_scalar>><A,B>::type`, except if `A` and `B` are the same vector type `V` of dimension `Dim`, in which case `V` is returned, which is only suitable for copyable types. QVM also defines (partial) specializations for the non-copyable vector types it produces. Users can define other (partial) specializations for their own types.
+The main template definition returns an unspecified vector type of the requested dimension with <<vec_traits,`scalar_type`>> `S`, except if `A` and `B` are the same vector type `V`, in which case `V` is returned, which is only suitable for copyable types. QVM also defines (partial) specializations for the non-copyable vector types it produces. Users can define other (partial) specializations for their own types.
 
 A typical use of the `deduce_vec2` template is for specifying the preferred vector type to be returned by the generic function template overloads in QVM depending on the type of their arguments.
 
@@ -1078,11 +1169,19 @@ namespace boost { namespace qvm {
     template <int R,int C>
     static inline scalar_type read_element( Matrix const & m );
 
+    static inline scalar_typeread_element_idx( int r, int c, Matrix const & m );
+
     template <int R,int C>
     static inline scalar_type & write_element( Matrix & m );
 
-    static inline scalar_typeread_element_idx( int r, int c, Matrix const & m );
     static inline scalar_type & write_element_idx( int r, int c, Matrix & m );
+
+    // Alternative signature for write_element and write_element_idx:
+
+    template <int R,int C>
+    static inline void write_element( Matrix & m, scalar_type s );
+
+    static inline void write_element_idx( int r, int c, Matrix & m, scalar_type s );
 
   };
   */
@@ -1103,9 +1202,11 @@ The main `mat_traits` template members are not specified. Valid specializations 
 In addition, valid specializations of the `mat_traits` template may define the following access functions as static members, where `m` is an object of type `Matrix`, `R` and `C` are compile-time integer constants, and `r` and `c` are variables of type `int`:
 
 - `read_element`: the expression `mat_traits<Matrix>::read_element<R,C>(m)` returns either a copy of or a const reference to the element at row `R` and column `C` of `m`.
-- `write_element`: the expression `mat_traits<Matrix>::write_element<R,C>(m)` returns mutable reference to the element at row `R` and column `C` of `m`.
 - `read_element_idx`: the expression `mat_traits<Matrix>::read_element_idx(r,c,m)` returns either a copy of or a const reference to the element at row `r` and column `c` of `m`.
+- `write_element`: the expression `mat_traits<Matrix>::write_element<R,C>(m)` returns mutable reference to the element at row `R` and column `C` of `m`.
 - `write_element_idx`: the expression `mat_traits<Matrix>::write_element_idx(r,c,m)` returns mutable reference to the element at row `r` and column `c` of `m`.
+
+TIP: Alternatively, `write_element` and `write_element_idx` may be defined as `void` functions that take (as the last argument) a scalar to write into the specified element. QVM automatically detects this case by examining the signature of the `write_element` template.
 
 It is illegal to call any of the above functions unless `is_mat<Matrix>::value` is true. Even then, matrix types are allowed to define only a subset of the access functions. The general requirements are:
 
@@ -1229,8 +1330,9 @@ namespace boost { namespace qvm {
 
   template <
     class M,
-    int Rows=mat_traits<Matrix>::rows,
-    int Cols=mat_traits<Matrix>::cols>
+    int R=mat_traits<Matrix>::rows,
+    int C=mat_traits<Matrix>::cols,
+    class S=typename mat_traits<M>::scalar_type>
   struct deduce_mat {
 
     typedef /*unspecified*/ type;
@@ -1242,15 +1344,16 @@ namespace boost { namespace qvm {
 
 Requires: ::
 
-- `<<is_mat,is_mat>><M>::value` is `true`;
-- `is_mat<deduce_mat<M>::type>::value` must be `true`;
-- `deduce_mat<M>::type` must be copyable;
-- `<<mat_traits,mat_traits>><deduce_mat<M>::type>::rows==Rows`;
-- `mat_traits<deduce_mat<M>::type>::cols==Cols`.
+- `<<is_mat,is_mat>><M,R,C,S>::value` is `true`;
+- `is_mat<deduce_mat<M,R,C,S>::type>::value` must be `true`;
+- `deduce_mat<M,R,C,S>::type` must be copyable;
+- `<<mat_traits,mat_traits>><deduce_mat<M,R,C,S>::type>::rows==R`;
+- `mat_traits<deduce_mat<M,R,C,S>::type>::cols==C`,
+- `mat_traits<deduce_mat<M,R,C,S>::type::scalar_type` is the same type as `S`.
 
 This template is used by QVM whenever it needs to deduce a copyable matrix type of certain dimensions from a single user-supplied function parameter of matrix type. The returned type must have accessible copy constructor. Note that M itself may be non-copyable.
 
-The main template definition returns an unspecified copyable matrix type of size `Rows` x `Cols`, except if `<<mat_traits,mat_traits>><M>::rows==Rows && mat_traits<M>::cols==Cols`, in which case it returns `M`, which is suitable only if `M` is a copyable type. QVM also defines (partial) specializations for the non-copyable matrix types it produces. Users can define other (partial) specializations for their own types.
+The main template definition returns an unspecified copyable matrix type of size `R` x `C` and scalar type `S`, except if `<<mat_traits,mat_traits>><M>::rows==R` and `mat_traits<M>::cols==Cols` and `mat_traits<M>::scalar_type` is S, in which case it returns `M`, which is suitable only if `M` is a copyable type. QVM also defines (partial) specializations for the non-copyable matrix types it produces. Users can define other (partial) specializations for their own types.
 
 A typical use of the deduce_mat template is for specifying the preferred matrix type to be returned by the generic function template overloads in QVM depending on the type of their arguments.
 
@@ -1264,7 +1367,10 @@ A typical use of the deduce_mat template is for specifying the preferred matrix 
 ----
 namespace boost { namespace qvm {
 
-  template <class A,class B,int Rows,int Cols>
+  template <class A,class B,int R,int C,
+    class S = typename deduce_scalar<
+      typename scalar<A>::type,
+      typename scalar<B>::type>::type
   struct deduce_mat2 {
 
     typedef /*unspecified*/ type;
@@ -1278,14 +1384,16 @@ Requires: ::
 
 - Both `<<scalar,scalar>><A>::type` and `scalar<B>::type` are well defined;
 - `<<is_mat,is_mat>><A>::value || is_mat<B>::value` is `true`;
+- `<<is_scalar,is_scalar>><S>::value` is `true`;
 - `is_mat<deduce_mat2<A,B>::type>::value` must be `true`;
-- `deduce_mat2<A,B>::type` must be copyable;
-- `<<mat_traits,mat_traits>><deduce_mat2<A,B>::type>::rows==Rows`;
-- `mat_traits<deduce_mat2<A,B>::type>::cols==Cols`.
+- `deduce_mat2<A,B,R,C,S>::type` must be copyable;
+- `<<mat_traits,mat_traits>><deduce_mat2<A,B,R,C,S>::type>::rows==R`;
+- `mat_traits<deduce_mat2<A,B,R,C,S>::type>::cols==C`;
+- `mat_traits<deduce_mat2<A,B,R,C,S>::type>::scalar_type` is the same type as `S`.
 
 This template is used by QVM whenever it needs to deduce a matrix type of certain dimensions from the types of two user-supplied function parameters. The returned type must have accessible copy constructor (the `A` and `B` types themselves could be non-copyable, and either one of them may be a non-matrix type.)
 
-The main template definition returns an unspecified matrix type of the requested dimensions with <<mat_traits,`scalar_type`>> obtained by `<<deduce_scalar,deduce_scalar>><A,B>::type`, except if `A` and `B` are the same matrix type `M` of dimensions `Rows` x `Cols`, in which case `M` is returned, which is only suitable for copyable types. QVM also defines (partial) specializations for the non-copyable matrix types it produces. Users can define other (partial) specializations for their own types.
+The main template definition returns an unspecified matrix type of the requested dimensions with <<mat_traits,`scalar_type`>> `S`, except if `A` and `B` are the same matrix type `M`, in which case `M` is returned, which is only suitable for copyable types. QVM also defines (partial) specializations for the non-copyable matrix types it produces. Users can define other (partial) specializations for their own types.
 
 A typical use of the `deduce_mat2` template is for specifying the preferred matrix type to be returned by the generic function template overloads in QVM depending on the type of their arguments.
 
@@ -1925,7 +2033,7 @@ namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value && is_scalar<B>::value
   template <class A,class B>
-  typename deduce_quat<A>::type
+  typename deduce_quat2<A,B>>::type
   operator/( A const & a, B b );
 
 } }
@@ -1933,7 +2041,7 @@ namespace boost { namespace qvm {
 
 Returns: :: A quaternion that is the result of dividing the quaternion `a` by the scalar `b`.
 
-NOTE: The <<deduce_quat,`deduce_quat`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_quat2,`deduce_quat2`>> template can be specialized to deduce the desired return type from the types `A` and `B`.
 
 '''
 
@@ -1995,7 +2103,7 @@ namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value && is_scalar<B>::value
   template <class A,class B>
-  typename deduce_quat<A>::type
+  typename deduce_quat2<A,B>::type
   operator*( A const & a, B b );
 
 } }
@@ -2003,7 +2111,7 @@ namespace boost { namespace qvm {
 
 Returns: :: A quaternion that is the result of multiplying the quaternion `a` by the scalar `b`.
 
-NOTE: The <<deduce_quat,`deduce_quat`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_quat2,`deduce_quat2`>> template can be specialized to deduce the desired return type from the types `A` and `B`.
 
 '''
 
@@ -2255,7 +2363,7 @@ NOTE: The <<deduce_quat,`deduce_quat`>> template can be specialized to deduce th
 '''
 
 [[slerp]]
-==== `slerp`
+==== `slerp180` / `slerp360`
 
 .#include <boost/qvm/quat_operations.hpp>
 [source,c++]
@@ -2266,7 +2374,22 @@ namespace boost { namespace qvm {
   //  is_quat<A>::value && is_quat<B>::value && is_scalar<C>
   template <class A,class B,class C>
   typename deduce_quat2<A,B> >::type
-  slerp( A const & a, B const & b, C c );
+  slerp180( A const & a, B const & b, C c );
+
+  //Only enabled if:
+  //  is_quat<A>::value && is_quat<B>::value && is_scalar<C>
+  template <class A,class B,class C>
+  typename deduce_quat2<A,B> >::type
+  slerp360( A const & a, B const & b, C c );
+
+  //Only enabled if:
+  //  is_quat<A>::value && is_quat<B>::value && is_scalar<C>
+  template <class A,class B,class C>
+  typename deduce_quat2<A,B> >::type
+  slerp( A const & a, B const & b, C c ) // Deprecated
+    {
+    return slerp360(a, b, t);
+    }
 
 } }
 ----
@@ -2274,6 +2397,23 @@ namespace boost { namespace qvm {
 Preconditions: :: `t>=0 && t\<=1`.
 
 Returns: :: A quaternion that is the result of Spherical Linear Interpolation of the quaternions `a` and `b` and the interpolation parameter `c`. When `slerp` is applied to unit quaternions, the quaternion path maps to a path through 3D rotations in a standard way. The effect is a rotation with uniform angular velocity around a fixed rotation axis.
+
+When rotations represented by `a` and `b` are separated by more than 180 degrees, `slerp180` always takes the shorter path on the sphere, while `slerp360` does not. There are use cases for both behaviors, since each introduces a discontinuity under different conditions.
+
+Mathematically:
+
+[source,c++]
+----
+auto q = slerp180(a, b, t);
+----
+is equivalent to
+
+[source,c++]
+----
+auto q = slerp360(dot(a, b) < 0 ? -a : a, b, t);
+----
+
+NOTE: Previous versions of QVM implemented only the `slerp360` behavior, but under the name `slerp`. This is preserved for compatibility, but `slerp` is now deprecated. Please use either `slerp180` or `slerp360`.
 
 NOTE: The <<deduce_quat2,`deduce_quat2`>> template can be specialized to deduce the desired return type, given the types `A` and `B`.
 
@@ -2375,8 +2515,8 @@ namespace boost { namespace qvm {
 
   //Only enabled if:
   //  is_vec<A>::value && vec_traits<A>::dim==3
-  template <class A>
-  -unspecified-return-type- rot_quat( A const & axis, typename vec_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  -unspecified-return-type- rot_quat( A const & axis, Angle angle );
 
 } }
 ----
@@ -2400,8 +2540,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_quat<A>::value &&
   //  is_vec<B>::value && vec_traits<B>::dim==3
-  template <class A>
-  void set_rot( A & a, B const & axis, typename vec_traits<B>::scalar_type angle );
+  template <class A,class B, class Angle>
+  void set_rot( A & a, B const & axis, Angle angle );
 
 } }
 ----
@@ -2428,8 +2568,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_quat<A>::value &&
   //  is_vec<B>::value && vec_traits<B>::dim==3
-  template <class A,class B>
-  void rotate( A & a, B const & axis, typename quat_traits<A>::scalar_type angle );
+  template <class A,class B,class Angle>
+  void rotate( A & a, B const & axis, Angle angle );
 
 } }
 ----
@@ -2465,8 +2605,8 @@ Returns: :: A <<view_proxy,view proxy>> quaternion of unspecified type and scala
 namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value
-  template <class A>
-  void set_rotx( A & a, typename quat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void set_rotx( A & a, Angle angle );
 
 } }
 ----
@@ -2491,8 +2631,8 @@ assign(
 namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value
-  template <class A>
-  void rotate_x( A & a, typename quat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void rotate_x( A & a, Angle angle );
 
 } }
 ----
@@ -2528,8 +2668,8 @@ Returns: :: A <<view_proxy,view proxy>> quaternion of unspecified type and scala
 namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value
-  template <class A>
-  void set_rotz( A & a, typename quat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void set_rotz( A & a, Angle angle );
 
 } }
 ----
@@ -2554,8 +2694,8 @@ assign(
 namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value
-  template <class A>
-  void rotate_y( A & a, typename quat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void rotate_y( A & a, Angleangle );
 
 } }
 ----
@@ -2591,8 +2731,8 @@ Returns: :: A <<view_proxy,view proxy>> quaternion of unspecified type and scala
 namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value
-  template <class A>
-  void set_rotz( A & a, typename quat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void set_rotz( A & a, Angle angle );
 
 } }
 ----
@@ -2617,8 +2757,8 @@ assign(
 namespace boost { namespace qvm {
 
   //Only enabled if: is_quat<A>::value
-  template <class A>
-  void rotate_z( A & a, typename quat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void rotate_z( A & a, Angle angle );
 
 } }
 ----
@@ -2864,7 +3004,7 @@ namespace boost { namespace qvm {
 
     //Only enabled if: is_vec<A>::value && is_scalar<B>::value
     template <class A,class B>
-    typename deduce_vec<A>::type
+    typename deduce_vec2<A,B,vec_traits<A>::dim>::type
     operator/( A const & a, B b );
 
 } }
@@ -2872,7 +3012,7 @@ namespace boost { namespace qvm {
 
 Returns: :: A vector that is the result of dividing the vector `a` by the scalar `b`.
 
-NOTE: The <<deduce_vec,`deduce_vec`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_vec2,`deduce_vec2`>> template can be specialized to deduce the desired return type from the types `A` and `B`.
 
 '''
 
@@ -2906,16 +3046,21 @@ Returns: :: `a`.
 namespace boost { namespace qvm {
 
     //Only enabled if: is_vec<A>::value && is_scalar<B>::value
-    template <class A>
-    typename deduce_vec<A>::type
+    template <class A,class B>
+    typename deduce_vec2<A,B,vec_traits<A>::dim>::type
     operator*( A const & a, B b );
+
+    //Only enabled if: is_scalar<B>::value && is_vec<A>::value
+    template <class B,class A>
+    typename deduce_vec2<A,B,vec_traits<A>::dim>::type
+    operator*( B b, A const & a );
 
 } }
 ----
 
 Returns: :: A vector that is the result of multiplying the vector `a` by the scalar `b`.
 
-NOTE: The <<deduce_vec,`deduce_vec`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_vec2,`deduce_vec2`>> template can be specialized to deduce the desired return type from the types `A` and `B`.
 
 '''
 
@@ -3123,12 +3268,21 @@ namespace boost { namespace qvm {
     typename deduce_vec2<A,B,3>::type
     cross( A const & a, B const & b );
 
+    //Only enabled if:
+    //  is_vec<A>::value && is_vec<B>::value &&
+    //  vec_traits<A>::dim==2 && vec_traits<B>::dim==2
+    template <class A,class B>
+    typename deduce_scalar<
+      typename vec_traits<A>::scalar_type,
+      typename vec_traits<B>::scalar_type>::type
+    cross( A const & a, B const & b );
+
 } }
 ----
 
 Returns: :: The cross product of the vectors `a` and `b`.
 
-NOTE: The <<deduce_vec2,`deduce_vec2`>> template can be specialized to deduce the desired return type, given the types `A` and `B`.
+NOTE: The <<deduce_vec2,`deduce_vec2`>> (and <<deduce_scalar,`deduce_scalar`>>) templates can be specialized to deduce the desired return type, given the types `A` and `B`.
 
 '''
 
@@ -3421,7 +3575,7 @@ namespace boost { namespace qvm {
 
   //Only enabled if: is_mat<A>::value && is_scalar<B>::value
   template <class A,class B>
-  typename deduce_mat<A>::type
+  typename deduce_mat2<A,B,mat_traits<A>::rows,mat_traits<A>::cols>::type
   operator/( A const & a, B b );
 
 } }
@@ -3429,7 +3583,7 @@ namespace boost { namespace qvm {
 
 Returns: :: A matrix that is the result of dividing the matrix `a` by the scalar `b`.
 
-NOTE: The <<deduce_mat,`deduce_mat`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_mat2,`deduce_mat2`>> template can be specialized to deduce the desired return type from the types `A` and `B`.
 
 '''
 
@@ -3518,12 +3672,12 @@ namespace boost { namespace qvm {
 
   //Only enabled if: is_mat<A>::value && is_scalar<B>::value
   template <class A,class B>
-  typename deduce_mat<A>::type
+  typename deduce_mat2<A,B,mat_traits<A>::rows,mat_traits<A>::cols>::type
   operator*( A const & a, B b );
 
   //Only enabled if: is_scalar<B>::value && is_mat<A>::value
   template <class B,class A>
-  typename deduce_mat<A>::type
+  typename deduce_mat2<A,B,mat_traits<A>::rows,mat_traits<A>::cols>::type
   operator*( B b, A const & a );
 
 } }
@@ -3531,7 +3685,7 @@ namespace boost { namespace qvm {
 
 Returns: :: A matrix that is the result of multiplying the matrix `a` by the scalar `b`.
 
-NOTE: The <<deduce_mat,`deduce_mat`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_mat2,`deduce_mat2`>> template can be specialized to deduce the desired return type from the types `A` and `B`.
 
 '''
 
@@ -3614,7 +3768,7 @@ namespace boost { namespace qvm {
   //  mat_traits<A>::rows==mat_traits<A>::cols
 
   template <class A,class B>
-  typename deduce_mat<A>::type
+  typename deduce_mat2<A,B,mat_traits<A>::rows,mat_traits<A>::cols>::type
   inverse( A const & a, B det );
 
   template <class A>
@@ -3624,13 +3778,13 @@ namespace boost { namespace qvm {
 } }
 ----
 
-Preconditions: :: `det!=<<scalar_traits,scalar_traits>><typename <<mat_traits,mat_traits<A>::scalar_type>>>::value(0)`
+Preconditions: :: `det!=0`
 
 Returns: :: Both overloads compute the inverse of `a`. The first overload takes the pre-computed determinant of `a`.
 
 Throws: :: The second overload computes the determinant automatically and throws <<zero_determinant_error,`zero_determinant_error`>> if the computed determinant is zero.
 
-NOTE: The <<deduce_mat,`deduce_mat`>> template can be specialized to deduce the desired return type from the type `A`.
+NOTE: The <<deduce_mat,`deduce_mat`>> (and <<deduce_mat2,`deduce_mat2`>>) templates can be specialized to deduce the desired return type from the type `A` (and `B`).
 
 '''
 
@@ -3817,8 +3971,8 @@ namespace boost { namespace qvm {
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols &&
   //  is_vec<B>::value && vec_traits<B>::dim==3
-  template <class A>
-  void set_rot( A & a, B const & axis, typename vec_traits<B>::scalar_type angle );
+  template <class A,class B, class Angle>
+  void set_rot( A & a, B const & axis, Angle angle );
 
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
@@ -3917,8 +4071,8 @@ namespace boost { namespace qvm {
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols &&
   //  is_vec<B>::value && vec_traits<B>::dim==3
-  template <class A,class B>
-  void rotate( A & a, B const & axis, typename mat_traits<A>::scalar_type angle );
+  template <class A,class B,class Angle>
+  void rotate( A & a, B const & axis, Angle angle );
 
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
@@ -4028,8 +4182,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols
-  template <class A>
-  void set_rotx( A & a, typename mat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void set_rotx( A & a, Angle angle );
 
 } }
 ----
@@ -4056,8 +4210,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols
-  template <class A>
-  void rotate_x( A & a, typename mat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void rotate_x( A & a, Angle angle );
 
 } }
 ----
@@ -4096,8 +4250,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols
-  template <class A>
-  void set_roty( A & a, typename mat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void set_roty( A & a, Angle angle );
 
 } }
 ----
@@ -4124,8 +4278,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols
-  template <class A>
-  void rotate_y( A & a, typename mat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void rotate_y( A & a, Angle angle );
 
 } }
 ----
@@ -4163,8 +4317,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols
-  template <class A>
-  void set_rotz( A & a, typename mat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void set_rotz( A & a, Angle angle );
 
 } }
 ----
@@ -4191,8 +4345,8 @@ namespace boost { namespace qvm {
   //Only enabled if:
   //  is_mat<A>::value && mat_traits<A>::rows>=3 &&
   //  mat_traits<A>::rows==mat_traits<A>::cols
-  template <class A>
-  void rotate_z( A & a, typename mat_traits<A>::scalar_type angle );
+  template <class A,class Angle>
+  void rotate_z( A & a, Angle angle );
 
 } }
 ----
@@ -4712,14 +4866,15 @@ namespace boost { namespace qvm {
 
   //Only enabled if:
   //  is_mat<A>::value &&
-  //  mat_traits<A>::rows==mat_traits<A>::cols && mat_traits<A>::rows>=3
+  //  (mat_traits<A>::rows==mat_traits<A>::cols || mat_traits<A>::rows+1==mat_traits<A>::cols) &&
+  //  mat_traits<A>::cols>=3
   template <class A>
   -unspecified-return-type- translation( A & a );
 
 } }
 ----
 
-The expression `translation(m)` returns an lvalue <<view_proxy,view proxy>> that accesses the translation component of the square matrix `m`, which is a vector of size `D`-1, where `D` is the size of `m`.
+The expression `translation(m)` returns an lvalue <<view_proxy,view proxy>> that accesses the translation component of the square matrix `m`, which is a vector of size `C`-1, where `C` is the number of column in `m`.
 
 '''
 
@@ -4782,7 +4937,7 @@ This exception indicates that an operation requires a matrix with non-zero deter
 ==== `INLINE`
 ===== `BOOST_QVM_INLINE`
 
-.#include <boost/qvm/inline.hpp>
+.#include <boost/qvm/config.hpp>
 [source,c++]
 ----
 namespace boost { namespace qvm {
@@ -4794,7 +4949,7 @@ namespace boost { namespace qvm {
 } }
 ----
 
-This macro is not used directly by QVM, except as the default value of other macros from `<boost/qvm/inline.hpp>`. A user-defined `BOOST_QVM_INLINE` should expand to a value that is valid substitution of the `inline` keyword in function definitions.
+This macro is not used directly by QVM, except as the default value of other macros from `<boost/qvm/config.hpp>`. A user-defined `BOOST_QVM_INLINE` should expand to a value that is valid substitution of the `inline` keyword in function definitions.
 
 '''
 
@@ -4802,7 +4957,7 @@ This macro is not used directly by QVM, except as the default value of other mac
 ==== `FORCE_INLINE`
 ===== `BOOST_QVM_FORCE_INLINE`
 
-.#include <boost/qvm/inline.hpp>
+.#include <boost/qvm/config.hpp>
 [source,c++]
 ----
 namespace boost { namespace qvm {
@@ -4814,7 +4969,7 @@ namespace boost { namespace qvm {
 } }
 ----
 
-This macro is not used directly by QVM, except as the default value of other macros from `<boost/qvm/inline.hpp>`. A user-defined `BOOST_QVM_FORCE_INLINE` should expand to a value that is valid substitution of the `inline` keyword in function definitions, to indicate that the compiler must inline the function. Of course, actual inlining may or may not occur.
+This macro is not used directly by QVM, except as the default value of other macros from `<boost/qvm/config.hpp>`. A user-defined `BOOST_QVM_FORCE_INLINE` should expand to a value that is valid substitution of the `inline` keyword in function definitions, to indicate that the compiler must inline the function. Of course, actual inlining may or may not occur.
 
 '''
 
@@ -4822,7 +4977,7 @@ This macro is not used directly by QVM, except as the default value of other mac
 ==== `INLINE_TRIVIAL`
 ===== `BOOST_QVM_INLINE_TRIVIAL`
 
-.#include <boost/qvm/inline.hpp>
+.#include <boost/qvm/config.hpp>
 [source,c++]
 ----
 namespace boost { namespace qvm {
@@ -4842,7 +4997,7 @@ QVM uses `BOOST_QVM_INLINE_TRIVIAL` in definitions of functions that are not cri
 ==== `INLINE_CRITICAL`
 ===== `BOOST_QVM_INLINE_CRITICAL`
 
-.#include <boost/qvm/inline.hpp>
+.#include <boost/qvm/config.hpp>
 [source,c++]
 ----
 namespace boost { namespace qvm {
@@ -4862,7 +5017,7 @@ QVM uses `BOOST_QVM_INLINE_CRITICAL` in definitions of functions that are critic
 ==== `INLINE_OPERATIONS`
 ===== `BOOST_QVM_INLINE_OPERATIONS`
 
-.#include <boost/qvm/inline.hpp>
+.#include <boost/qvm/config.hpp>
 [source,c++]
 ----
 namespace boost { namespace qvm {
@@ -4882,7 +5037,7 @@ QVM uses `BOOST_QVM_INLINE_OPERATIONS` in definitions of functions that implemen
 ==== `INLINE_RECURSION`
 ===== `BOOST_QVM_INLINE_RECURSION`
 
-.#include <boost/qvm/inline.hpp>
+.#include <boost/qvm/config.hpp>
 [source,c++]
 ----
 namespace boost { namespace qvm {
@@ -5080,22 +5235,6 @@ QVM itself defines specializations of the math function templates only for `floa
 
 Because of this, a call to e.g. `<<rot_mat,rot_mat>>(axis,1)` will compile successfully but fail to link, since it calls e.g. `boost::qvm::sin<int>`, which is undefined. Because rotations by integer number of radians are rarely needed, in QVM there is no protection against such errors. In such cases the solution is to use `rot_mat(axis,1.0f)` instead.
 
-== Distribution
-
-QVM is part of https://www.boost.org/[Boost] and is distributed under the http://www.boost.org/LICENSE_1_0.txt[Boost Software License, Version 1.0].
-
-The source code is available in https://github.com/boostorg/qvm[QVM GitHub repository].
-
-(C) 2008-2018 Emil Dotchevski and Reverge Studios, Inc.
-
-== Portability
-
-See the link:https://travis-ci.org/boostorg/qvm[QVM Travis CI Builds].
-
-== Feedback / Support
-
-Please use the link:https://lists.boost.org/mailman/listinfo.cgi/boost[Boost Developers mailing list].
-
 == Q&A
 
 [qanda]
@@ -5111,4 +5250,4 @@ Why doesn't QVM use [] or () to access vector and matrix elements?:: Because it'
 Documentation rendered by https://asciidoctor.org/[Asciidoctor] with https://github.com/zajo/asciidoctor_skin[these customizations].
 
 [.text-right]
-(C) 2008-2020 Emil Dotchevski and Reverge Studios, Inc.
+Copyright 2008-2023 Emil Dotchevski and Reverge Studios, Inc.

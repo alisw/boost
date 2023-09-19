@@ -10,7 +10,7 @@
 #define BOOST_USE_WINDOWS_H
 
 #include <boost/program_options.hpp>
-#include <boost/filesystem.hpp>
+#include <boost/process/filesystem.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/range/iterator_range.hpp>
 #include <boost/range/algorithm/transform.hpp>
@@ -23,6 +23,7 @@
 #include <iterator>
 #include <iostream>
 #include <cstdlib>
+#include <thread>
 #if defined(BOOST_POSIX_API)
 #   include <boost/lexical_cast.hpp>
 #   include <boost/iostreams/device/file_descriptor.hpp>
@@ -148,7 +149,8 @@ int main(int argc, char *argv[])
     }
     else if (vm["loop"].as<bool>())
     {
-        while (true);
+        while (true)
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     else if (vm["abort"].as<bool>())
     {
@@ -170,7 +172,7 @@ int main(int argc, char *argv[])
     }
     else if (vm["pwd"].as<bool>())
     {
-        std::cout << boost::filesystem::current_path().string() << std::endl;
+        std::cout << boost::process::filesystem::current_path().string() << std::endl;
     }
     else if (vm.count("query"))
     {

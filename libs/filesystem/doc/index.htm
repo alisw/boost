@@ -20,7 +20,7 @@
  width="300" height="86" border="0"></a></td>
     <td align="middle">
     <font size="7">Filesystem Library<br>
-    Version 3</font>
+    Version 4</font>
     </td>
   </tr>
 </table>
@@ -34,6 +34,7 @@
     <a href="faq.htm">FAQ</a> &nbsp;&nbsp;
     <a href="release_history.html">Releases</a> &nbsp;&nbsp;
     <a href="portability_guide.htm">Portability</a> &nbsp;&nbsp;
+    <a href="v4.html">V4</a> &nbsp;&nbsp;
     <a href="v3.html">V3 Intro</a> &nbsp;&nbsp;
     <a href="v3_design.html">V3 Design</a> &nbsp;&nbsp;
     <a href="deprecated.html">Deprecated</a> &nbsp;&nbsp;
@@ -147,6 +148,9 @@ concerned with writing code to run on multiple operating systems.</p>
 <p><b><a href="deprecated.html">Deprecated Features</a></b> - Identifies
 deprecated features and their replacements.</p>
 
+<p><b><a href="v4.html">Version 4 Description</a></b> - Summary of changes from
+Version 3.</p>
+
 <p><b><a href="v3.html">Version 3 Introduction</a></b> - Aimed at users of prior
 Boost.Filesystem versions.</p>
 
@@ -229,11 +233,12 @@ noexcept</code> never throw exceptions.</p>
   <li>Header &lt;<a href="../../../boost/filesystem.hpp">boost/filesystem.hpp</a>&gt;
   provides access to all features of the library, except file streams.<br>
 &nbsp;</li>
-  <li>Header &lt;<a href="../../../boost/filesystem/fstream.hpp">boost/filesystem<i>/</i>fstream.hpp</a>&gt;
+  <li>Header &lt;<a href="../../../boost/filesystem/fstream.hpp">boost/filesystem/fstream.hpp</a>&gt;
   inherits the same components as the C++ Standard
   Library's <i>fstream</i> header, but files are identified by <code>const path&amp;</code>
   arguments rather that <code>const char*</code> arguments.</li>
 </ul>
+
 <h2><a name="Examples">Example programs</a></h2>
 <p>See the <a href="tutorial.html">tutorial</a> for example programs.</p>
 <h2><a name="Implementation">Implementation</a></h2>
@@ -242,14 +247,21 @@ the POSIX or Windows API's.</p>
 <p>The library is in regular use on Apple  OS X, HP-UX, IBM AIX, Linux,
 Microsoft Windows, SGI IRIX, and Sun Solaris operating systems using a variety
 of compilers. It is also used by several smart phone operating systems.</p>
+
 <h2><a name="Macros">Macros</a></h2>
-<p>Users may defined the following macros if desired. Sensible defaults are
+<p>Users may define the following macros if desired. Sensible defaults are
 provided, so users can ignore these macros unless they have special needs.</p>
 <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
   <tr>
     <td><b><i>Macro Name</i></b></td>
     <td><b><i>Default</i></b></td>
     <td><b><i>Effect if defined</i></b></td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_VERSION</code></td>
+    <td valign="top">3</td>
+    <td valign="top">Selects the Boost.Filesystem library version. Can have values of 3 or 4.
+      Defining to 4 also implies <code>BOOST_FILESYSTEM_NO_DEPRECATED</code>.</td>
   </tr>
   <tr>
     <td valign="top"><code>BOOST_FILESYSTEM_NO_DEPRECATED</code></td>
@@ -270,7 +282,37 @@ provided, so users can ignore these macros unless they have special needs.</p>
     <td valign="top">Boost.Filesystem library does not use the Boost auto-link
     facility.</td>
   </tr>
-  </table>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DISABLE_SENDFILE</code></td>
+    <td valign="top">Not defined. <code>sendfile</code> API presence detected at library build time.</td>
+    <td valign="top">Boost.Filesystem library does not use the <code>sendfile</code> system call on Linux. The <code>sendfile</code> system call started accepting regular file descriptors as the target in Linux 2.6.33.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DISABLE_COPY_FILE_RANGE</code></td>
+    <td valign="top">Not defined. <code>copy_file_range</code> API presence detected at library build time.</td>
+    <td valign="top">Boost.Filesystem library does not use the <code>copy_file_range</code> system call on Linux. The <code>copy_file_range</code> system call was introduced in Linux kernel 4.5 and started operating across filesystems in 5.3.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DISABLE_STATX</code></td>
+    <td valign="top">Not defined. <code>statx</code> presence detected at library build time.</td>
+    <td valign="top">Boost.Filesystem library does not use the <code>statx</code> system call on Linux. The <code>statx</code> system call was introduced in Linux kernel 4.11.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DISABLE_GETRANDOM</code></td>
+    <td valign="top">Not defined. <code>getrandom</code> API presence detected at library build time.</td>
+    <td valign="top">Boost.Filesystem library does not use the <code>getrandom</code> system call on Linux. The <code>getrandom</code> system call was introduced in Linux kernel 3.17.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DISABLE_ARC4RANDOM</code></td>
+    <td valign="top">Not defined. <code>arc4random</code> API presence detected at library build time.</td>
+    <td valign="top">Boost.Filesystem library does not use the <code>arc4random_buf</code> system call on BSD systems. The <code>arc4random</code> API was introduced in OpenBSD 2.1 and FreeBSD 8.0.</td>
+  </tr>
+  <tr>
+    <td valign="top"><code>BOOST_FILESYSTEM_DISABLE_BCRYPT</code></td>
+    <td valign="top">Not defined. BCrypt API presence detected at library build time.</td>
+    <td valign="top">Boost.Filesystem library does not use the BCrypt API on Windows. Has no effect on other platforms.</td>
+  </tr>
+</table>
 <p>User-defined BOOST_POSIX_API and BOOST_WINDOWS_API macros are no longer
 supported.</p>
 <h2><a name="Building">Building</a> the object-library</h2>
@@ -291,7 +333,7 @@ systems and so will work with the Filesystem Library.</p>
 This is controlled by the BOOST_ALL_DYN_LINK or BOOST_FILESYSTEM_DYN_LINK
 macros. See the <a href="http://www.boost.org/development/separate_compilation.html">Separate
 Compilation</a> page for a description of the techniques used.</p>
-<h3>Note for <a name="Cgywin">Cygwin</a> users</h3>
+<h3>Note for <a name="Cygwin">Cygwin</a> users</h3>
 <p> <a href="http://www.cygwin.com/">Cygwin</a> version 1.7 or later is
 required because only versions of GCC with wide character strings are supported.</p>
 
@@ -303,11 +345,12 @@ syntax.</p>
 
 <h3>Version 4</h3>
 
-<p><b>Under development </b>- Add support for the
-<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4099.html">ISO
-C++ File System Technical Specification</a>. The Filesystem TS is based on
+<p><b>Under development</b> - Improve compatibility with std::filesystem introduced in C++17
+(original proposal: <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4099.html">ISO
+C++ File System Technical Specification</a>). The Filesystem TS was based on
 Boost.Filesystem Version 3, with only a small number of changes. Most user code
-written for Version 3 should work unchanged with Version 4.</p>
+written for Version 3 should work unchanged with Version 4. The differences can be seen in a
+<a href="v4.html">separate section</a>.</p>
 
 <h3>Version 3</h3>
 
@@ -338,7 +381,7 @@ performance issues.</p>
 
 <p>The Filesystem Library was designed and implemented by Beman Dawes. The
 original <i>directory_iterator</i> and <i>filesystem_error</i> classes were
-based on prior work from Dietmar Kuehl, as modified by Jan Langer. Thomas Witt
+based on prior work from Dietmar Kühl, as modified by Jan Langer. Thomas Witt
 was a particular help in later stages of initial development. Peter Dimov and
 Rob Stewart made many useful suggestions and comments over a long period of
 time. Howard Hinnant helped with internationalization issues.</p>
@@ -370,7 +413,7 @@ Darin Adler,
 David Abrahams,
 David Held,
 Davlet Panech,
-Dietmar Kuehl,
+Dietmar Kühl,
 Douglas Gregor,
 Dylan Nicholson,
 Ed Brey,
@@ -443,10 +486,9 @@ of portability&quot; problem, particularly in postings by PJ Plauger and Pete Be
 version 1.31.0.&nbsp;</p>
 
 <hr>
-<p>Revised
-<!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%d %B, %Y" startspan -->25 October, 2015<!--webbot bot="Timestamp" endspan i-checksum="38877" --></p>
 
 <p>&copy; Copyright Beman Dawes, 2002-2005</p>
+<p>&copy; Copyright Andrey Semashev, 2021</p>
 <p> Use, modification, and distribution are subject to the Boost Software
 License, Version 1.0. See <a href="http://www.boost.org/LICENSE_1_0.txt">
 www.boost.org/LICENSE_1_0.txt</a></p>

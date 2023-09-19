@@ -178,6 +178,8 @@ using R1 = mp_filter_q<_2, L1, L2>; // std::tuple<void, float>
 
 `mp_fill<L<T...>, V>` returns `L<V, V, ..., V>`, with the result having the same size as the input.
 
+Supports a value list as `L` under {cpp}17. In that case, the elements are replaced with `V::value`.
+
 .Using mp_fill with std::tuple
 ```
 using L1 = std::tuple<void, int, float>;
@@ -188,6 +190,12 @@ using R1 = mp_fill<L1, double>; // std::tuple<double, double, double>
 ```
 using L1 = std::pair<int, float>;
 using R1 = mp_fill<L1, void>; // std::pair<void, void>
+```
+
+.Using mp_fill with mp_list_v
+```
+using L1 = mp_list_v<true, false>;
+using R1 = mp_fill<L1, mp_int<7>>; // mp_list_v<7, 7>
 ```
 
 .mp_fill
@@ -235,6 +243,8 @@ otherwise.
 
 `mp_repeat_c<L, N>` returns a list of the same form as `L` that consists of `N` concatenated copies of `L`.
 
+Supports value lists as `L` under {cpp}17.
+
 .Using mp_repeat_c
 ```
 using L1 = tuple<int>;
@@ -248,6 +258,9 @@ using R3 = mp_repeat_c<L3, 2>; // mp_list<int, float, int, float>
 
 using L4 = mp_list<int, float, double>;
 using R4 = mp_repeat_c<L4, 0>; // mp_list<>
+
+using L5 = mp_list_v<true, 8>;
+using R5 = mp_repeat_c<L5, 2>; // mp_list_v<true, 8, true, 8>
 ```
 
 ## mp_repeat<L, N>
@@ -255,6 +268,8 @@ using R4 = mp_repeat_c<L4, 0>; // mp_list<>
     template<class L, class N> using mp_repeat = /*...*/;
 
 Same as `mp_repeat_c` but with a type argument `N`. The number of copies is `N::value` and must be nonnegative.
+
+Supports value lists as `L` under {cpp}17.
 
 ## mp_product<F, L...>
 
@@ -305,6 +320,8 @@ As `mp_product`, but takes a quoted metafunction.
 
 `mp_drop_c<L, N>` removes the first `N` elements of `L` and returns the result.
 
+Supports a value list as `L` under {cpp}17.
+
 .mp_drop_c
 [cols="<.^4m,6*^.^1m",width=85%]
 |===
@@ -319,35 +336,46 @@ As `mp_product`, but takes a quoted metafunction.
 
 Same as `mp_drop_c`, but with a type argument `N`. `N::value` must be a nonnegative number.
 
-## mp_from_sequence<S>
+## mp_from_sequence<S, F>
 
-    template<class S> using mp_from_sequence = /*...*/
+    template<class S, class F = mp_int<0>> using mp_from_sequence = /*...*/
 
 `mp_from_sequence` transforms an integer sequence produced by `make_integer_sequence` into an `mp_list`
-of the corresponding `std::integral_constant` types. Given
+of the corresponding `std::integral_constant` types. If the optional second parameter `F` is supplied,
+an offset of `F::value` is added to all values.
+
+Given
 
     template<class T, T... I> struct S;
 
-`mp_from_sequence<S<T, I...>>` is an alias for `mp_list<std::integral_constant<T, I>...>`.
+`mp_from_sequence<S<T, I...>, F>` is an alias for `mp_list<std::integral_constant<T, I + F::value>...>`.
 
-## mp_iota_c<N>
+## mp_iota_c<N, F>
 
-    template<std::size_t N> using mp_iota_c = /*...*/;
+    template<std::size_t N, std::size_t F = 0> using mp_iota_c = /*...*/;
 
-`mp_iota_c<N>` is an alias for `mp_list<mp_size_t<0>, mp_size_t<1>, ..., mp_size_t<N-1>>`.
+`mp_iota_c<N, F>` is an alias for `mp_list<mp_size_t<F+0>, mp_size_t<F+1>, ..., mp_size_t<F+N-1>>`.
 
-## mp_iota<N>
+.mp_iota_c
+[cols="<.^4m,4*^.^1m",width=85%]
+|===
+|*mp_iota_c<4>*|mp_size_t<0>|mp_size_t<1>|mp_size_t<2>|mp_size_t<3>
+|*mp_iota_c<4, 2>*|mp_size_t<2>|mp_size_t<3>|mp_size_t<4>|mp_size_t<5>
+|===
 
-    template<class N> using mp_iota = /*...*/;
+## mp_iota<N, F>
 
-Same as `mp_iota_c`, but with a type argument `N`. `N::value` must be a nonnegative number. Returns
-`mp_list<std::integral_constant<T, 0>, std::integral_constant<T, 1>, ..., std::integral_constant<T, N::value-1>>`
+    template<class N, class F = mp_int<0>> using mp_iota = /*...*/;
+
+Same as `mp_iota_c`, but with a type arguments `N` and `F`. `N::value` must be a nonnegative number. Returns
+`mp_list<std::integral_constant<T, F::value+0>, std::integral_constant<T, F::value+1>, ..., std::integral_constant<T, F::value+N::value-1>>`
 where `T` is the type of `N::value`.
 
 .mp_iota
 [cols="<.^4m,4*^.^1m",width=85%]
 |===
-|*mp_iota<mp_int<4>>*|mp_int<0>|mp_int<1>|mp_int<2>|mp_int<3>
+|*mp_iota<mp_size_t<4>>*|mp_size_t<0>|mp_size_t<1>|mp_size_t<2>|mp_size_t<3>
+|*mp_iota<mp_int<4>, mp_int\<-2>>*|mp_int\<-2>|mp_int\<-1>|mp_int<0>|mp_int<+1>
 |===
 
 ## mp_at_c<L, I>
@@ -355,6 +383,8 @@ where `T` is the type of `N::value`.
     template<class L, std::size_t I> using mp_at_c = /*...*/;
 
 `mp_at_c<L, I>` returns the `I`-th element of `L`, zero-based.
+
+Supports a value list as `L` under {cpp}17. In that case, the element is returned wrapped with `mp_value`.
 
 ## mp_at<L, I>
 
@@ -367,6 +397,8 @@ Same as `mp_at_c`, but with a type argument `I`. `I::value` must be a nonnegativ
     template<class L, std::size_t N> using mp_take_c = /*...*/;
 
 `mp_take_c<L, N>` returns a list of the same form as `L` containing the first `N` elements of `L`.
+
+Supports a value list as `L` under {cpp}17.
 
 .mp_take_c
 [cols="<.^4m,6*^.^1m",width=85%]
@@ -388,11 +420,15 @@ Same as `mp_take_c`, but with a type argument `N`. `N::value` must be a nonnegat
 
 `mp_back<L>` returns the last element of the list `L`.
 
+Supports a value list as `L` under {cpp}17. In that case, the element is returned wrapped with `mp_value`.
+
 ## mp_pop_back<L>
 
     template<class L> using mp_pop_back = mp_take_c<L, mp_size<L>::value - 1>;
 
 `mp_pop_back<L>` removes the last element of the list `L` and returns the result.
+
+Supports a value list as `L` under {cpp}17.
 
 ## mp_insert_c<L, I, T...>
 
@@ -400,6 +436,8 @@ Same as `mp_take_c`, but with a type argument `N`. `N::value` must be a nonnegat
         mp_append<mp_take_c<L, I>, mp_push_front<mp_drop_c<L, I>, T...>>;
 
 Inserts the elements `T...` into the list `L` at position `I` (a zero-based index).
+
+Supports a value list as `L` under {cpp}17. In that case, the elements `T::value...` are inserted.
 
 .mp_insert_c with two elements
 [cols="<.^4m,8*^.^1m",width=85%]
@@ -422,6 +460,8 @@ Same as `mp_insert_c`, but with a type argument `I`.
         mp_append<mp_take_c<L, I>, mp_drop_c<L, J>>;
 
 Removes from the list `L` the elements with indices from `I` (inclusive) to `J` (exclusive).
+
+Supports a value list as `L` under {cpp}17.
 
 .mp_erase_c
 [cols="<.^4m,9*^.^1m",width=85%]
@@ -562,6 +602,41 @@ using R2b = mp_flatten<L2, tuple<>>; // mp_list<int, mp_list<float>, void>
 using L3 = mp_list<mp_list<float>, mp_list<mp_list<void>>>;
 using R3 = mp_flatten<L3>; // mp_list<float, mp_list<void>>
 ```
+
+## mp_intersperse<L, S>
+
+    template<class L, class S> using mp_intersperse = /*...*/;
+
+Inserts the separator `S` between the elements of the list `L`.
+
+`mp_intersperse<L<>, S>` is `L<>`. `mp_intersperse<L<T1>, S>` is `L<T1>`.
+`mp_intersperse<L<T1, T2, T3, ..., Tn-1, Tn>, S>` is `L<T1, S, T2, S, T3, S, ..., Tn-1, S, Tn>`.
+
+## mp_split<L, S>
+
+    template<class L, class S> using mp_split = /*...*/;
+
+Splits the list `L` into segments at each separator `S` and returns a list of
+the segments.
+
+`mp_split<L<>, S>` is `L<L<>>`. `mp_split<L<T...>, S>`, where `S` does not occur in `T...`,
+is `L<L<T...>>`. `mp_split<L<T1..., S, T2..., S, T3...>, S>` is `L<L<T1...>, L<T2...>, L<T3...>>`.
+
+The segments may be empty; `mp_split<L<S, X, Y, S, S>, S>` is `L<L<>, L<X, Y>, L<>, L<>>`.
+
+## mp_join<L, S>
+
+    template<class L, class S> using mp_join = /*...*/;
+
+`mp_join` is the reverse operation of `mp_split`; it takes a list of segments `L` and joins
+them into a single list, inserting the separator `S` between them.
+
+`mp_join<mp_split<L, S>, S>` yields back the original list `L`.
+
+For example, `mp_split<L<X1, X2, S, X3>, S>` gives `L<L<X1, X2>, L<X3>>`, and
+`mp_join<L<L<X1, X2>, L<X3>>, S>` results in `L<X1, X2, S, X3>`.
+
+`mp_join<L, S>` is equivalent to (and is implemented as) `mp_apply<mp_append, mp_intersperse<L, mp_list<S>>>`.
 
 ## mp_partition<L, P>
 
@@ -906,6 +981,10 @@ template<class... T> void print( std::tuple<T...> const & tp )
     });
 }
 ```
+
+In case the elements of the list `L` are not default-constructible, you can use
+`mp_for_each<mp_transform<mp_identity, L>>`, which would call `f` with `mp_identity<T>()`
+instead of `T()`.
 
 ## mp_with_index<N>(i, f)
 

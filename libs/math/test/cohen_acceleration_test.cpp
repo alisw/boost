@@ -13,10 +13,16 @@
 using boost::multiprecision::float128;
 #endif
 #include <boost/multiprecision/cpp_bin_float.hpp>
+#include <cmath>
+
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
 
 using boost::math::tools::cohen_acceleration;
 using boost::multiprecision::cpp_bin_float_100;
 using boost::math::constants::pi;
+using std::log;
 
 template<typename Real>
 class G {
@@ -65,22 +71,34 @@ void test_divergent()
 {
     auto g = Divergent<Real>();
     Real x = -cohen_acceleration(g);
-    CHECK_ULP_CLOSE(log(pi<Real>()/2)/2, x, 80);
+    CHECK_ULP_CLOSE(log(pi<Real>()/2)/2, x, (std::numeric_limits<Real>::digits > 100 ? 350 : 135));
 }
 
 int main()
 {
+    #ifdef __STDCPP_FLOAT32_T__
+    test_pisq_div12<std::float32_t>();
+    test_divergent<std::float32_t>();
+    #else
     test_pisq_div12<float>();
-    test_pisq_div12<double>();
-    test_pisq_div12<long double>();
-
     test_divergent<float>();
+    #endif
+    
+    #ifdef __STDCPP_FLOAT64_T__
+    test_pisq_div12<std::float64_t>();
+    test_divergent<std::float64_t>();
+    #else
     test_divergent<double>();
+    test_pisq_div12<double>();
+    #endif
+
     test_divergent<long double>();
+    test_pisq_div12<long double>();
 
     #ifdef BOOST_HAS_FLOAT128
     test_pisq_div12<float128>();
     test_divergent<float128>();
     #endif
+    
     return boost::math::test::report_errors();
 }

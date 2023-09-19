@@ -18,6 +18,10 @@
 #include <boost/math/interpolators/barycentric_rational.hpp>
 #include <boost/math/interpolators/vector_barycentric_rational.hpp>
 
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
+
 using std::sqrt;
 using std::abs;
 using std::numeric_limits;
@@ -54,9 +58,9 @@ void test_agreement_with_1d()
     }
 
     boost::random::uniform_real_distribution<Real> dis2(t[0], t[t.size()-1]);
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
-    boost::math::barycentric_rational<Real> scalar_interpolator0(std::move(t_copy0), std::move(y_copy0));
-    boost::math::barycentric_rational<Real> scalar_interpolator1(std::move(t_copy1), std::move(y_copy1));
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
+    boost::math::interpolators::barycentric_rational<Real> scalar_interpolator0(std::move(t_copy0), std::move(y_copy0));
+    boost::math::interpolators::barycentric_rational<Real> scalar_interpolator1(std::move(t_copy1), std::move(y_copy1));
 
 
     Eigen::Vector2d z;
@@ -93,7 +97,7 @@ void test_interpolation_condition_eigen()
 
     std::vector<Eigen::Vector2d> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
 
     Eigen::Vector2d z;
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -125,7 +129,7 @@ void test_interpolation_condition_std_array()
 
     std::vector<std::array<Real, 2>> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
 
     std::array<Real, 2> z;
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -161,7 +165,7 @@ void test_interpolation_condition_ublas()
     std::vector<Real> t_copy = t;
     std::vector<boost::numeric::ublas::vector<Real>> y_copy = y;
 
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
 
     boost::numeric::ublas::vector<Real> z(2);
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -192,7 +196,7 @@ void test_interpolation_condition_high_order()
 
     std::vector<Eigen::Vector2d> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y), 5);
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y), 5);
 
     Eigen::Vector2d z;
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -228,7 +232,7 @@ void test_constant_eigen()
 
     std::vector<Eigen::Vector2d> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
 
     Eigen::Vector2d z;
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -271,7 +275,7 @@ void test_constant_std_array()
 
     std::vector<std::array<Real,2>> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y));
 
     std::array<Real, 2> z;
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -313,7 +317,7 @@ void test_constant_high_order()
 
     std::vector<Eigen::Vector2d> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y), 5);
+    boost::math::interpolators::vector_barycentric_rational<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y), 5);
 
     Eigen::Vector2d z;
     for (size_t i = 0; i < t_copy.size(); ++i)
@@ -353,7 +357,7 @@ void test_weights()
 
     std::vector<Eigen::Vector2d> y_copy = y;
     std::vector<Real> t_copy = t;
-    boost::math::detail::vector_barycentric_rational_imp<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y), 1);
+    boost::math::interpolators::detail::vector_barycentric_rational_imp<decltype(t), decltype(y)> interpolator(std::move(t), std::move(y), 1);
 
     for (size_t i = 1; i < t_copy.size() - 1; ++i)
     {
@@ -373,6 +377,20 @@ void test_weights()
 
 BOOST_AUTO_TEST_CASE(vector_barycentric_rational)
 {
+    #ifdef __STDCPP_FLOAT64_T__
+
+    test_weights<std::float64_t>();
+    test_constant_eigen<std::float64_t>();
+    test_constant_std_array<std::float64_t>();
+    test_constant_high_order<std::float64_t>();
+    test_interpolation_condition_eigen<std::float64_t>();
+    test_interpolation_condition_ublas<std::float64_t>();
+    test_interpolation_condition_std_array<std::float64_t>();
+    test_interpolation_condition_high_order<std::float64_t>();
+    test_agreement_with_1d<std::float64_t>();
+
+    #else
+
     test_weights<double>();
     test_constant_eigen<double>();
     test_constant_std_array<double>();
@@ -382,4 +400,6 @@ BOOST_AUTO_TEST_CASE(vector_barycentric_rational)
     test_interpolation_condition_std_array<double>();
     test_interpolation_condition_high_order<double>();
     test_agreement_with_1d<double>();
+
+    #endif
 }

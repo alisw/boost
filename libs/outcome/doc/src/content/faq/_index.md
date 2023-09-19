@@ -10,16 +10,27 @@ weight = 30
 Outcome is specifically designed for use in the public interfaces of multi-million
 line codebases. `result`'s layout is hard coded to:
 
-```c
-struct
-{
-  T value;
+```c++
+struct trivially_copyable_result_layout {
+  union {
+    value_type value;
+    error_type error;
+  };
   unsigned int flags;
-  EC error;
 };
 ```
 
-This is C-compatible if `T` and `EC` are C-compatible. {{% api "std::error_code" %}}
+... if both `value_type` and `error_type` are `TriviallyCopyable`, otherwise:
+
+```c++
+struct non_trivially_copyable_result_layout {
+  value_type value;
+  unsigned int flags;
+  error_type error;
+};
+```
+
+This is C-compatible if `value_type` and `error_type` are C-compatible. {{% api "std::error_code" %}}
 is *probably* C-compatible, but its layout is not standardised (though there is a
 normative note in the standard about its layout). Hence Outcome cannot provide a
 C macro API for standard Outcome, but we can for [Experimental Outcome]({{< relref "/experimental/c-api" >}}).
@@ -27,15 +38,9 @@ C macro API for standard Outcome, but we can for [Experimental Outcome]({{< relr
 
 ## Does Outcome implement over-alignment?
 
-Variant-based alternatives to Outcome such as {{% api "std::expected<T, E>" %}}
-would use `std::aligned_union` to ensure appropriate over-alignment for the storage of
-either a `T` or an `E`. This discovers the over-alignment for a type using
-`std::alignment_of`, which is defaulted to `alignof()`.
-
-Outcome uses `struct`-based storage, as described above. Any over-alignment of
-`result` or `outcome` will follow the ordinary alignment and padding rules for
-`struct` on your compiler. Traits such as `std::alignment_of`, or other standard
-library facilities, are not used.
+Outcome propagates any over-alignment of the types you supply to it as according
+to the layout specified above. Therefore the ordinary alignment and padding rules
+for your compiler are used.
 
 
 ## Does Outcome implement the no-fail, strong or basic exception guarantee?
@@ -80,12 +85,15 @@ and standard swap is used instead.
 
 ## Does Outcome have a stable ABI and API?
 
-Right now, no. Though the data layout shown above is not expected to change.
+The layout changed for all trivially copyable types between Outcome v2.1 and v2.2,
+as union based storage was introduced. From v2.2 onwards, the layout is not
+expected to change again.
 
-Outcome's ABI and API will be formally fixed as **the** v2 interface approximately
-one year after its first Boost release. Thereafter the
-[ABI compliance checker](https://lvc.github.io/abi-compliance-checker/)
-will be run per-commit to ensure Outcome's ABI and API remains stable.
+If v2.2 proves to be unchanging for 24 months, Outcome's ABI and API will be
+formally fixed as **the** v2 interface and written into stone forever. Thereafter
+the [ABI compliance checker](https://lvc.github.io/abi-compliance-checker/)
+will be run per-commit to ensure Outcome's ABI and API remains stable. This is
+currently expected to occur in 2022.
 
 Note that the stable ABI and API guarantee will only apply to standalone
 Outcome, not to Boost.Outcome. Boost.Outcome has dependencies on other
@@ -97,7 +105,7 @@ to be ABI stable if `result` or `outcome` is to be ABI stable.
 
 ## Can I use `result<T, EC>` across DLL/shared object boundaries?
 
-A known problem with using DLLs (and to smaller extent shared libraries) is that global
+A known problem with using Windows DLLs (and to smaller extent POSIX shared libraries) is that global
 objects may get duplicated: one instance in the executable and one in the DLL. This
 behaviour is not incorrect according to the C++ Standard, as the Standard does not
 recognize the existence of DLLs or shared libraries. Therefore, program designs that
@@ -108,7 +116,7 @@ Nothing in Outcome depends on the addresses of globals, plus the guaranteed fixe
 layout (see answer above) means that different versions of Outcome can be used in
 different DLLs, and it probably will work okay (it is still not advised that you do that
 as that is an ODR violation).
-However, one of the most likely candidate for `EC` -- `std::error_code` -- does depend
+However, one of the most likely candidate for `EC` -- `std::error_code` -- **does** depend
 on the addresses of globals for correct functioning.
 
 The standard library is required to implement globally unique addresses for the standard library
@@ -380,7 +388,9 @@ Expected permits `T` and `E` to be the same.
    `.assume_value()` and `.assume_error()` for narrow (UB causing) observers].
 8. `checked<T, E>` uses `success<T>` and `failure<E>` type sugars for disambiguation.
 Expected uses `unexpected<E>` only.
-9. `checked<T, E>` requires `E` to be default constructible.
+9. `checked<T, E>` does not implement (prone to unintended misoperation) comparison
+operators which permit implicit conversion e.g. `checked<T> == T` will fail to compile.
+Instead write unambiguous code e.g. `checked<T> == success(T)` or `checked<T> == failure(T)`.
 10. `checked<T, E>` defaults `E` to `std::error_code` or `boost::system::error_code`.
 Expected does not default `E`.
 
@@ -417,6 +427,12 @@ party libraries each using incommensurate Outcome (or Expected) configurations. 
 not do any of this, but subsequent WG21 papers do propose various interoperation
 mechanisms, [one of which](https://wg21.link/P0786) Outcome implements so code using Expected will seamlessly
 interoperate with code using Outcome.
+
+6. Outcome was designed with the benefit of hindsight after Optional and Expected,
+where how those do implicit conversions have been found to be prone to writing
+unintentionally buggy code. Outcome simultaneously permits more implicit conversions
+for ease of use and convenience, where those are unambigiously safe, and prevents
+other implicit conversions which the Boost peer review reported as dangerous.
 
 
 ## Is Outcome riddled with undefined behaviour for const, const-containing and reference-containing types?

@@ -201,21 +201,6 @@ void test(const char& c, const test_invalid_regex_tag& tag)
    do_test(c, tag);
 }
 
-#ifndef BOOST_NO_WREGEX
-void test(const wchar_t& c, const test_regex_replace_tag& tag)
-{
-   do_test(c, tag);
-}
-void test(const wchar_t& c, const test_regex_search_tag& tag)
-{
-   do_test(c, tag);
-}
-void test(const wchar_t& c, const test_invalid_regex_tag& tag)
-{
-   do_test(c, tag);
-}
-#endif
-
 #ifdef BOOST_NO_EXCEPTIONS
 namespace boost{
 
@@ -228,6 +213,13 @@ void throw_exception( std::exception const & e )
 }
 
 int main(int argc, char * argv[])
+{
+   return cpp_main(argc, argv);
+}
+
+#elif defined(BOOST_REGEX_STANDALONE)
+
+int main(int argc, char* argv[])
 {
    return cpp_main(argc, argv);
 }

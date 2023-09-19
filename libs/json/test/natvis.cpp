@@ -14,7 +14,8 @@
 
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 class natvis_test
 {
@@ -102,7 +103,7 @@ public:
             monotonic_resource mr1;
             static_resource mr2(buf);
             storage_ptr sp;
-            
+
             sp = &mr1;
             sp = &mr2;
             sp = {};
@@ -112,4 +113,5 @@ public:
 
 TEST_SUITE(natvis_test, "json.natvis");
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost

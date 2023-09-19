@@ -83,6 +83,7 @@ INPUT                  = ./../../../boost/asio.hpp \
                          ./../../../boost/asio/windows \
                          ./../../../boost/asio/execution \
                          ./../../../boost/asio/experimental \
+                         ./model_dox.txt \
                          ./noncopyable_dox.txt \
                          ./std_exception_dox.txt
 FILE_PATTERNS          = 
@@ -198,15 +199,21 @@ PREDEFINED             = GENERATING_DOCUMENTATION \
                          BOOST_ASIO_EOF_ERROR(e)=implementation_defined \
                          BOOST_ASIO_OS_ERROR(e1,e2)=implementation_defined \
                          BOOST_ASIO_MOVE_ARG(a)=a&& \
+                         BOOST_ASIO_MOVE_OR_LVALUE_ARG(a)=a&& \
                          BOOST_ASIO_NONDEDUCED_MOVE_ARG(a)=a& \
                          BOOST_ASIO_DECL= \
                          BOOST_ASIO_CONSTEXPR=constexpr \
                          BOOST_ASIO_NOEXCEPT=noexcept \
+                         BOOST_ASIO_NODISCARD= \
                          BOOST_ASIO_COMPLETION_SIGNATURE=typename \
                          BOOST_ASIO_COMPLETION_HANDLER_FOR(s)=typename \
                          BOOST_ASIO_COMPLETION_TOKEN_FOR(s)=typename \
+                         BOOST_ASIO_COMPLETION_SIGNATURES_TPARAMS="typename... Signatures" \
+                         BOOST_ASIO_COMPLETION_SIGNATURES_TARGS=Signatures... \
                          BOOST_ASIO_INITFN_RESULT_TYPE(t,a)=void_or_deduced \
                          BOOST_ASIO_INITFN_AUTO_RESULT_TYPE(t,a)=void_or_deduced \
+                         BOOST_ASIO_INITFN_AUTO_RESULT_TYPE_PREFIX(t,a)=void_or_deduced \
+                         BOOST_ASIO_INITFN_AUTO_RESULT_TYPE_SUFFIX(e)= \
                          BOOST_ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(e)==default_token \
                          BOOST_ASIO_DEFAULT_COMPLETION_TOKEN(e)==default_token \
                          BOOST_ASIO_SVC_TPARAM= \
@@ -225,8 +232,14 @@ PREDEFINED             = GENERATING_DOCUMENTATION \
                          BOOST_ASIO_STRING_VIEW_PARAM=string_view \
                          BOOST_ASIO_UNUSED_VARIABLE= \
                          BOOST_ASIO_UNSPECIFIED(e)=unspecified \
+                         BOOST_ASIO_EXECUTION_EXECUTOR=typename \
                          BOOST_ASIO_EXECUTION_RECEIVER_ERROR_DEFAULT==std::exception_ptr \
-                         BOOST_ASIO_EXECUTION_RECEIVER_OF_0=typename
+                         BOOST_ASIO_EXECUTION_RECEIVER_OF_0=typename \
+                         BOOST_ASIO_NOEXCEPT_IF(c)= \
+                         BOOST_ASIO_AUTO_RETURN_TYPE_PREFIX(t)=auto \
+                         BOOST_ASIO_AUTO_RETURN_TYPE_PREFIX2(t0,t1)=auto \
+                         BOOST_ASIO_AUTO_RETURN_TYPE_PREFIX3(t0,t1,t2)=auto \
+                         BOOST_ASIO_AUTO_RETURN_TYPE_SUFFIX(t)=
 EXPAND_AS_DEFINED      = 
 SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------

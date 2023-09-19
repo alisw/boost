@@ -25,6 +25,7 @@ struct order_perf_type
    std::size_t val;
 
    order_perf_type()
+      : key(), val()
    {
       ++num_elements;
    }
@@ -86,11 +87,13 @@ struct order_move_type
    order_move_type(BOOST_RV_REF(order_move_type) other)
       : key(other.key), val(other.val)
    {
+      assert(this != &other);
       other.key = other.val = std::size_t(-1);
    }
 
    order_move_type & operator=(BOOST_RV_REF(order_move_type) other)
    {
+      assert(this != &other);
       key = other.key;
       val = other.val;
       other.key = other.val = std::size_t(-2);

@@ -5,7 +5,7 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <benchmark/benchmark.h>
-#include <boost/histogram/accumulators/thread_safe.hpp>
+#include <boost/histogram/accumulators/count.hpp>
 #include <boost/histogram/axis/regular.hpp>
 #include <boost/histogram/histogram.hpp>
 #include <boost/histogram/make_histogram.hpp>
@@ -29,7 +29,7 @@ using namespace boost::histogram;
 using namespace std::chrono_literals;
 
 using DS = dense_storage<unsigned>;
-using DSTS = dense_storage<accumulators::thread_safe<unsigned>>;
+using DSTS = dense_storage<accumulators::count<unsigned, true>>;
 
 static void NoThreads(benchmark::State& state) {
   std::default_random_engine gen(1);
@@ -50,12 +50,12 @@ static auto hist = make_histogram_with(DSTS(), axis::regular<>());
 
 static void AtomicStorage(benchmark::State& state) {
   init.lock();
-  if (state.thread_index == 0) {
+  if (state.thread_index() == 0) {
     const unsigned nbins = state.range(0);
     hist = make_histogram_with(DSTS(), axis::regular<>(nbins, 0, 1));
   }
   init.unlock();
-  std::default_random_engine gen(state.thread_index);
+  std::default_random_engine gen(state.thread_index());
   std::uniform_real_distribution<> dis(0, 1);
   for (auto _ : state) {
     // simulate some work

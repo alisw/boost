@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
+#include <boost/assert.hpp>
 #include <boost/core/demangle.hpp>
 #include <boost/hana/for_each.hpp>
 #include <boost/hana/ext/std/integer_sequence.hpp>
@@ -32,6 +33,8 @@ using std::sqrt;
 template<class Real, unsigned p>
 void test_daubechies_filters()
 {
+    using std::sqrt;
+
     std::cout << "Testing Daubechies filters with " << p << " vanishing moments on type " << boost::core::demangle(typeid(Real).name()) << "\n";
     Real tol = 3*std::numeric_limits<Real>::epsilon();
     using boost::math::filters::daubechies_scaling_filter;
@@ -244,7 +247,7 @@ void test_dyadic_grid()
     {
         auto phijk = boost::math::daubechies_scaling_dyadic_grid<Real, i+2, 0>(0);
         auto phik = boost::math::detail::daubechies_scaling_integer_grid<Real, i+2, 0>();
-        assert(phik.size() == phijk.size());
+        BOOST_ASSERT(phik.size() == phijk.size());
 
         for (size_t k = 0; k < phik.size(); ++k)
         {
@@ -286,6 +289,9 @@ void test_dyadic_grid()
 // "Direct algorithm for computation of derivatives of the Daubechies basis functions"
 void test_first_derivative()
 {
+#if LDBL_MANT_DIG > 64
+   // Limited precision test data means we can't test long double here...
+#else
     auto phi1_3 = boost::math::detail::daubechies_scaling_integer_grid<long double, 3, 1>();
     std::array<long double, 6> lin_3{0.0L, 1.638452340884085725014976L, -2.232758190463137395017742L,
                                      0.5501593582740176149905562L, 0.04414649130503405501220997L, 0.0L};
@@ -319,6 +325,7 @@ void test_first_derivative()
             std::cerr << "  Index " << i << " is incorrect\n";
         }
     }
+#endif
 }
 
 template<typename Real, int p>
@@ -353,15 +360,15 @@ void test_quadratures()
             CHECK_ULP_CLOSE(Real(0), phi(xlo), 0);
             CHECK_ULP_CLOSE(Real(0), phi(xhi), 0);
             xlo = std::nextafter(xlo, std::numeric_limits<Real>::lowest());
-            xhi = std::nextafter(xhi, std::numeric_limits<Real>::max());
+            xhi = std::nextafter(xhi, (std::numeric_limits<Real>::max)());
         }
 
         xlo = a;
         xhi = b;
         for (int i = 0; i < samples; ++i) {
-            assert(abs(phi(xlo)) <= 5);
-            assert(abs(phi(xhi)) <= 5);
-            xlo = std::nextafter(xlo, std::numeric_limits<Real>::max());
+            BOOST_ASSERT(abs(phi(xlo)) <= 5);
+            BOOST_ASSERT(abs(phi(xhi)) <= 5);
+            xlo = std::nextafter(xlo, (std::numeric_limits<Real>::max)());
             xhi = std::nextafter(xhi, std::numeric_limits<Real>::lowest());
         }
 
@@ -392,7 +399,7 @@ void test_quadratures()
         }
 
         std::random_device rd;
-        Real t = static_cast<Real>(rd())/static_cast<Real>(rd.max());
+        Real t = static_cast<Real>(rd())/static_cast<Real>((rd.max)());
         Real S = phi(t);
         Real dS = phi.prime(t);
         while (t < b)
@@ -425,23 +432,23 @@ void test_quadratures()
             CHECK_ULP_CLOSE(Real(0), phi(xlo), 0);
             CHECK_ULP_CLOSE(Real(0), phi(xhi), 0);
             if constexpr (p > 2) {
-                assert(abs(phi.prime(xlo)) <= 5);
-                assert(abs(phi.prime(xhi)) <= 5);
+                BOOST_ASSERT(abs(phi.prime(xlo)) <= 5);
+                BOOST_ASSERT(abs(phi.prime(xhi)) <= 5);
                 if constexpr (p > 5) {
-                    assert(abs(phi.double_prime(xlo)) <= 5);
-                    assert(abs(phi.double_prime(xhi)) <= 5);
+                     BOOST_ASSERT(abs(phi.double_prime(xlo)) <= 5);
+                     BOOST_ASSERT(abs(phi.double_prime(xhi)) <= 5);
                 }
             }
             xlo = std::nextafter(xlo, std::numeric_limits<Real>::lowest());
-            xhi = std::nextafter(xhi, std::numeric_limits<Real>::max());
+            xhi = std::nextafter(xhi, (std::numeric_limits<Real>::max)());
         }
 
         xlo = a;
         xhi = b;
         for (int i = 0; i < samples; ++i) {
-            assert(abs(phi(xlo)) <= 5);
-            assert(abs(phi(xhi)) <= 5);
-            xlo = std::nextafter(xlo, std::numeric_limits<Real>::max());
+            BOOST_ASSERT(abs(phi(xlo)) <= 5);
+            BOOST_ASSERT(abs(phi(xhi)) <= 5);
+            xlo = std::nextafter(xlo, (std::numeric_limits<Real>::max)());
             xhi = std::nextafter(xhi, std::numeric_limits<Real>::lowest());
         }
     }
@@ -449,6 +456,7 @@ void test_quadratures()
 
 int main()
 {
+    #ifndef __MINGW32__
     boost::hana::for_each(std::make_index_sequence<18>(), [&](auto i){
       test_quadratures<float, i+2>();
       test_quadratures<double, i+2>();
@@ -528,6 +536,6 @@ int main()
         test_daubechies_filters<float128, i+1>();
     });
     #endif
-
+    #endif // compiler guard for CI
     return boost::math::test::report_errors();
 }

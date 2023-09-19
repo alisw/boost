@@ -17,7 +17,8 @@
 
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 //----------------------------------------------------------
 
@@ -139,7 +140,7 @@ private:
 
         return ::operator new( bytes );
     }
-    
+
     void do_deallocate( void* ptr, std::size_t bytes, std::size_t align ) override
     {
         std::cout << "Deallocating " << bytes << " bytes with alignment " << align << " @ address " << ptr << '\n';
@@ -153,7 +154,7 @@ private:
         // any instance of a logging_resource can deallocate memory allocated
         // by another instance of a logging_resource
 
-        return dynamic_cast< logging_resource const* >( &other ) != nullptr; 
+        return dynamic_cast< logging_resource const* >( &other ) != nullptr;
     }
 };
 //]
@@ -173,4 +174,5 @@ public:
 
 TEST_SUITE(doc_storage_ptr_test, "boost.json.doc_storage_ptr");
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost

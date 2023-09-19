@@ -4,7 +4,6 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/core/is_same.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/core/lightweight_test_trait.hpp>
 #include <boost/histogram/axis.hpp>
@@ -15,10 +14,11 @@
 #include <boost/throw_exception.hpp>
 #include <string>
 #include <vector>
+#include <type_traits>
 #include "dummy_storage.hpp"
+#include "histogram.hpp"
 #include "std_ostream.hpp"
 #include "throw_exception.hpp"
-#include "utility_histogram.hpp"
 
 using namespace boost::histogram;
 
@@ -74,7 +74,7 @@ void run_tests() {
     BOOST_TEST_EQ(d3.at(2), 81);
 
     auto d4 = d3 * (1 * d); // converted return type
-    BOOST_TEST_TRAIT_FALSE((boost::core::is_same<decltype(d4), decltype(d3)>));
+    BOOST_TEST_TRAIT_FALSE((std::is_same<decltype(d4), decltype(d3)>));
     BOOST_TEST_EQ(d4.at(0), 8);
     BOOST_TEST_EQ(d4.at(1), 27);
     d4 /= d;
@@ -86,8 +86,8 @@ void run_tests() {
 
     auto e = 3 * a; // converted return type
     auto f = b * 2; // converted return type
-    BOOST_TEST_TRAIT_FALSE((boost::core::is_same<decltype(e), decltype(a)>));
-    BOOST_TEST_TRAIT_FALSE((boost::core::is_same<decltype(f), decltype(a)>));
+    BOOST_TEST_TRAIT_FALSE((std::is_same<decltype(e), decltype(a)>));
+    BOOST_TEST_TRAIT_FALSE((std::is_same<decltype(f), decltype(a)>));
     BOOST_TEST_EQ(e.at(0), 3);
     BOOST_TEST_EQ(e.at(1), 0);
     BOOST_TEST_EQ(f.at(0), 0);
@@ -160,8 +160,8 @@ void run_tests() {
     auto b = make_s(Tag(), std::vector<accumulators::weighted_sum<>>(), ia);
 
     a(0);
-    BOOST_TEST_EQ(a.at(0).variance(), 1);
     b(weight(3), 1);
+    BOOST_TEST_EQ(a.at(0).variance(), 1);
     BOOST_TEST_EQ(b.at(1).variance(), 9);
     auto c = a;
     c += b;
@@ -185,6 +185,50 @@ void run_tests() {
     BOOST_TEST_EQ(d.at(0).variance(), 3);
     BOOST_TEST_EQ(d.at(1).value(), 5);
     BOOST_TEST_EQ(d.at(1).variance(), 11);
+  }
+
+  // division operators with weighted storage
+  {
+    using w_t = accumulators::weighted_sum<>;
+    auto ia = axis::integer<int, axis::null_type, axis::option::none_t>(0, 2);
+    auto a = make_s(Tag(), std::vector<w_t>(), ia);
+    auto b = make_s(Tag(), std::vector<w_t>(), ia);
+
+    a(0);
+    a(1, weight(2));
+    b(weight(4), 0);
+    b(weight(3), 1);
+
+    w_t av[2] = {w_t{1, 1}, w_t{2, 4}};
+    w_t bv[2] = {w_t{4, 16}, w_t{3, 9}};
+    BOOST_TEST_EQ(a.at(0), av[0]);
+    BOOST_TEST_EQ(a.at(1), av[1]);
+    BOOST_TEST_EQ(b.at(0), bv[0]);
+    BOOST_TEST_EQ(b.at(1), bv[1]);
+
+    auto c = a;
+    c /= b;
+
+    w_t cv[2] = {av[0], av[1]};
+    cv[0] /= bv[0];
+    cv[1] /= bv[1];
+    BOOST_TEST_EQ(c.at(0), cv[0]);
+    BOOST_TEST_EQ(c.at(1), cv[1]);
+
+    // division by unweighted histogram
+    auto e = make_s(Tag(), std::vector<double>(), ia);
+
+    e(0);
+    e(0);
+    e(1);
+
+    auto f = a / e;
+    w_t fv[2] = {av[0], av[1]};
+    fv[0] /= e.at(0);
+    fv[1] /= e.at(1);
+
+    BOOST_TEST_EQ(f.at(0), fv[0]);
+    BOOST_TEST_EQ(f.at(1), fv[1]);
   }
 
   // merging add
@@ -317,12 +361,12 @@ void run_tests() {
     c *= 2; // this calls *= on each element
     BOOST_TEST_EQ(c[0], 2);
 
-    using h1_t = decltype(
-        make_s(Tag{}, dummy_storage<unscaleable, false>{}, axis::integer<>(0, 1)));
+    using h1_t = decltype(make_s(Tag{}, dummy_storage<unscaleable, false>{},
+                                 axis::integer<>(0, 1)));
     BOOST_TEST_NOT((detail::has_operator_rmul<h1_t, double>::value));
 
-    using h2_t = decltype(
-        make_s(Tag{}, dummy_storage<unscaleable, true>{}, axis::integer<>(0, 1)));
+    using h2_t = decltype(make_s(Tag{}, dummy_storage<unscaleable, true>{},
+                                 axis::integer<>(0, 1)));
     BOOST_TEST_NOT((detail::has_operator_rmul<h2_t, double>::value));
   }
 }

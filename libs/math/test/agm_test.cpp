@@ -9,21 +9,28 @@
 #include <numeric>
 #include <utility>
 #include <random>
-#include <boost/lexical_cast.hpp>
+#include <cmath>
+#include <boost/math/tools/test_value.hpp>
 #include <boost/core/demangle.hpp>
 #include <boost/math/tools/agm.hpp>
+
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
+
 #ifdef BOOST_HAS_FLOAT128
 #include <boost/multiprecision/float128.hpp>
 using boost::multiprecision::float128;
 #endif
 
 using boost::math::tools::agm;
+using std::sqrt;
 
 template<class Real>
 void test_gauss_constant()
 {
     // http://oeis.org/A014549/constant
-    Real G_expected = boost::lexical_cast<Real>(".83462684167407318628142973279904680899399301349034700244982737010368199270952641186969116035127532412906785");
+    Real G_expected = BOOST_MATH_TEST_VALUE(Real, 0.83462684167407318628142973279904680899399301349034700244982737010368199270952641186969116035127532412906785);
 
     Real G_computed = 1/agm(sqrt(Real(2)), Real(1));
     if(!CHECK_ULP_CLOSE(G_expected, G_computed, 2)) {
@@ -89,13 +96,24 @@ void test_scaling()
 
 int main()
 {
+    #ifdef __STDCPP_FLOAT32_T__
+    test_gauss_constant<std::float32_t>();
+    test_scaling<std::float32_t>();
+    #else
     test_gauss_constant<float>();
-    test_gauss_constant<double>();
-    test_gauss_constant<long double>();
-
     test_scaling<float>();
+    #endif
+
+    #ifdef __STDCPP_FLOAT64_T__
+    test_scaling<std::float64_t>();
+    test_gauss_constant<std::float64_t>();
+    #else
     test_scaling<double>();
+    test_gauss_constant<double>();
+    #endif
+
     test_scaling<long double>();
+    test_gauss_constant<long double>();
 
     #ifdef BOOST_HAS_FLOAT128
     test_gauss_constant<float128>();

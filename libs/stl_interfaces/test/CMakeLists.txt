@@ -43,3 +43,16 @@ add_test_executable(detail)
 add_test_executable(static_vec)
 add_test_executable(static_vec_noncopyable)
 add_test_executable(array)
+add_test_executable(view_adaptor)
+
+add_executable(
+    compile_tests
+    compile_tests_main.cpp
+    compile_seq_cont_rvalue_constrained_pop_back.cpp
+    compile_sfinae_path_mutable_iterator.cpp
+)
+target_link_libraries(compile_tests stl_interfaces)
+set_property(TARGET compile_tests PROPERTY CXX_STANDARD ${CXX_STD})
+if (clang_on_linux)
+    target_link_libraries(compile_tests c++)
+endif ()

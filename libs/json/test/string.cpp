@@ -22,7 +22,8 @@
 #include "test.hpp"
 #include "test_suite.hpp"
 
-BOOST_JSON_NS_BEGIN
+namespace boost {
+namespace json {
 
 BOOST_STATIC_ASSERT( std::is_nothrow_destructible<string>::value );
 BOOST_STATIC_ASSERT( std::is_nothrow_move_constructible<string>::value );
@@ -117,7 +118,7 @@ public:
                 BOOST_TEST(s == std::string(t.v2.size(), '*'));
             }
         }
-        
+
         // string(char const*, storage_ptr)
         {
             fail_loop([&](storage_ptr const& sp)
@@ -538,6 +539,16 @@ public:
                 BOOST_TEST(
                     *s.storage() !=
                     *s2.storage());
+            });
+
+            // self
+
+            fail_loop([&](storage_ptr const& sp)
+            {
+                string s1(t.v1, sp);
+                string& s2 = s1;
+                s1 = std::move(s2);
+                BOOST_TEST(s1 == t.v1);
             });
         }
 
@@ -975,6 +986,35 @@ public:
     }
 
     void
+    testConversion()
+    {
+        test_vectors const t;
+
+        string s(t.s1);
+        auto const& cs(s);
+
+        char const* chars = cs.c_str();
+        BOOST_TEST(chars == t.s1);
+        json::string_view sv = cs;
+        BOOST_TEST(sv == t.s1);
+#if ! defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+        std::string_view std_sv = cs;
+        BOOST_TEST(std_sv == t.s1);
+#endif
+
+        s = t.s2;
+
+        chars = cs.c_str();
+        BOOST_TEST(chars == t.s2);
+        sv = cs;
+        BOOST_TEST(sv == t.s2);
+#if ! defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
+        std_sv = cs;
+        BOOST_TEST(std_sv == t.s2);
+#endif
+    }
+
+    void
     testElementAccess()
     {
         test_vectors const t;
@@ -998,8 +1038,7 @@ public:
             s2.at(1) = 'B';
             BOOST_TEST(s2.at(1) == 'B');
 
-            BOOST_TEST_THROWS(s1.at(s2.size()),
-                std::out_of_range);
+            BOOST_TEST_THROWS_WITH_LOCATION( s1.at(s2.size()) );
         }
 
         // at(size_type) const
@@ -1007,8 +1046,7 @@ public:
             BOOST_TEST(cs1.at(1) == 'b');
             BOOST_TEST(cs2.at(1) == 'B');
 
-            BOOST_TEST_THROWS(cs1.at(cs2.size()),
-                std::out_of_range);
+            BOOST_TEST_THROWS_WITH_LOCATION( cs1.at(cs2.size()) );
         }
 
         // operator[&](size_type)
@@ -1105,10 +1143,8 @@ public:
 
         // operator string_view()
         {
-            BOOST_TEST(
-                string_view(cs1) == t.v1);
-            BOOST_TEST(
-                string_view(cs2) == t.v2);
+            BOOST_TEST(cs1.subview() == t.v1);
+            BOOST_TEST(cs2.subview() == t.v2);
         }
     }
 
@@ -1353,17 +1389,15 @@ public:
             // pos out of range
             {
                 string s(t.v1);
-                BOOST_TEST_THROWS(
-                    (s.insert(s.size() + 2, 1, '*')),
-                    std::out_of_range);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    (s.insert(s.size() + 2, 1, '*')) );
             }
 
             // size > max_size
             {
                 string s(t.v1);
-                BOOST_TEST_THROWS(
-                    (s.insert(1, s.max_size(), 'a')),
-                    std::length_error);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    s.insert(1, s.max_size(), 'a') );
             }
         }
 
@@ -1388,9 +1422,8 @@ public:
             // pos out of range
             {
                 string s(t.v1);
-                BOOST_TEST_THROWS(
-                    (s.insert(s.size() + 2, "*")),
-                    std::out_of_range);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    (s.insert(s.size() + 2, "*")));
             }
         }
 
@@ -1610,9 +1643,8 @@ public:
             // pos out of range
             {
                 string s(t.v1);
-                BOOST_TEST_THROWS(
-                    (s.insert(s.size() + 2, "*")),
-                    std::out_of_range);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    (s.insert(s.size() + 2, "*")));
             }
         }
 
@@ -1719,9 +1751,8 @@ public:
 
             {
                 string s(t.v1);
-                BOOST_TEST_THROWS(
-                    (s.erase(t.v1.size() + 1, 1)),
-                    std::out_of_range);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    (s.erase(t.v1.size() + 1, 1)));
             }
         }
 
@@ -2137,8 +2168,8 @@ public:
             fail_loop([&](storage_ptr const& sp)
             {
                 string s(t.v2, sp);
-                BOOST_TEST_THROWS(s.replace(s.size() + 1, 1, t.v2),
-                    std::out_of_range);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    s.replace(s.size() + 1, 1, t.v2));
             });
 
             // outside, shrink
@@ -2146,7 +2177,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(0, 4, t.v2.substr(4, 2)) == 
+                BOOST_TEST(s2.replace(0, 4, t.v2.substr(4, 2)) ==
                            s1.replace(0, 4, t.v2.data() + 4, 2));
             });
 
@@ -2155,7 +2186,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(0, 1, t.v2.substr(0)) == 
+                BOOST_TEST(s2.replace(0, 1, t.v2.substr(0)) ==
                            s1.replace(0, 1, t.v2.data(), t.v2.size()));
             });
 
@@ -2166,7 +2197,7 @@ public:
                 string s2(t.v2, sp);
                 s1.append(s1);
                 s2.append(s2);
-                BOOST_TEST(s2.replace(0, 1, t.v2.substr(0)) == 
+                BOOST_TEST(s2.replace(0, 1, t.v2.substr(0)) ==
                            s1.replace(0, 1, t.v2.data(), t.v2.size()));
             });
 
@@ -2175,7 +2206,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(0, 2, t.v2.substr(0, 2)) == 
+                BOOST_TEST(s2.replace(0, 2, t.v2.substr(0, 2)) ==
                            s1.replace(0, 2, t.v2.data(), 2));
             });
 
@@ -2186,7 +2217,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(0, 4, s2.subview(0, 4)) == 
+                BOOST_TEST(s2.replace(0, 4, s2.subview(0, 4)) ==
                            s1.replace(0, 4, s1.data() + 0, 4));
             });
 
@@ -2195,7 +2226,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(1, 4, s2.subview(4, 2)) == 
+                BOOST_TEST(s2.replace(1, 4, s2.subview(4, 2)) ==
                            s1.replace(1, 4, s1.data() + 4, 2));
             });
 
@@ -2204,7 +2235,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(1, 1, s2.subview(0)) == 
+                BOOST_TEST(s2.replace(1, 1, s2.subview(0)) ==
                            s1.replace(1, 1, s1.data(), s1.size()));
             });
 
@@ -2215,7 +2246,7 @@ public:
                 string s2(t.v2, sp);
                 s1.append(s1);
                 s2.append(s2);
-                BOOST_TEST(s2.replace(1, 1, s2.subview(0)) == 
+                BOOST_TEST(s2.replace(1, 1, s2.subview(0)) ==
                            s1.replace(1, 1, s1.data(), s1.size()));
             });
 
@@ -2224,7 +2255,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(1, 2, s2.subview(0, 2)) == 
+                BOOST_TEST(s2.replace(1, 2, s2.subview(0, 2)) ==
                            s1.replace(1, 2, s1.data(), 2));
             });
         }
@@ -2238,11 +2269,11 @@ public:
                 string s2(t.v2, sp);
                 BOOST_TEST(
                   s2.replace(
-                      s2.begin(), 
+                      s2.begin(),
                       s2.begin() + 4,
-                      t.v2.substr(4, 2)) == 
-                  s1.replace(0, 
-                      4, t.v2.data() + 4, 
+                      t.v2.substr(4, 2)) ==
+                  s1.replace(0,
+                      4, t.v2.data() + 4,
                       2));
             });
 
@@ -2253,11 +2284,11 @@ public:
                 string s2(t.v2, sp);
                 BOOST_TEST(
                     s2.replace(
-                        s2.begin(), 
-                        s2.begin() + 1, 
-                        t.v2.substr(0)) == 
-                    s1.replace(0, 
-                        1, t.v2.data(), 
+                        s2.begin(),
+                        s2.begin() + 1,
+                        t.v2.substr(0)) ==
+                    s1.replace(0,
+                        1, t.v2.data(),
                         t.v2.size()));
             });
 
@@ -2268,12 +2299,12 @@ public:
                 string s2(t.v2, sp);
                 BOOST_TEST(
                     s2.replace(
-                        s2.begin(), 
-                        s2.begin() + 2, 
-                        t.v2.substr(0, 2)) == 
+                        s2.begin(),
+                        s2.begin() + 2,
+                        t.v2.substr(0, 2)) ==
                     s1.replace(
-                        0, 2, 
-                        t.v2.data(), 
+                        0, 2,
+                        t.v2.data(),
                         2));
             });
 
@@ -2300,11 +2331,11 @@ public:
                 string s2(t.v2, sp);
                 BOOST_TEST(
                     s2.replace(
-                        s2.begin() + 1, 
-                        s2.begin() + 2, 
-                        s2.subview(0)) == 
+                        s2.begin() + 1,
+                        s2.begin() + 2,
+                        s2.subview(0)) ==
                     s1.replace(
-                        1, 1, 
+                        1, 1,
                         s1.data(),
                         s1.size()));
             });
@@ -2316,12 +2347,12 @@ public:
                 string s2(t.v2, sp);
                 BOOST_TEST(
                     s2.replace(
-                        s2.begin() + 1, 
-                        s2.begin() + 3, 
-                        s2.subview(0, 2)) == 
+                        s2.begin() + 1,
+                        s2.begin() + 3,
+                        s2.subview(0, 2)) ==
                     s1.replace(
-                        1, 2, 
-                        s1.data(), 
+                        1, 2,
+                        s1.data(),
                         2));
             });
         }
@@ -2333,7 +2364,7 @@ public:
             {
                 std::string s1(t.v2.data(), t.v2.size());
                 string s2(t.v2, sp);
-                BOOST_TEST(s2.replace(0, 4, 10, 'a') == 
+                BOOST_TEST(s2.replace(0, 4, 10, 'a') ==
                            s1.replace(0, 4, 10, 'a'));
             });
 
@@ -2360,8 +2391,8 @@ public:
             fail_loop([&](storage_ptr const& sp)
             {
                 string s(t.v2, sp);
-                BOOST_TEST_THROWS(s.replace(s.size() + 1, 1, 1, 'a'), 
-                    std::out_of_range);
+                BOOST_TEST_THROWS_WITH_LOCATION(
+                    s.replace(s.size() + 1, 1, 1, 'a'));
             });
         }
 
@@ -2488,35 +2519,39 @@ public:
     {
         test_vectors const t;
 
-        // swap
+        fail_loop([&](storage_ptr const& sp)
         {
-            fail_loop([&](storage_ptr const& sp)
-            {
-                string s1(t.v1, sp);
-                string s2(t.v2, sp);
-                s1.swap(s2);
-                BOOST_TEST(s1 == t.v2);
-                BOOST_TEST(s2 == t.v1);
-            });
+            string s1(t.v1, sp);
+            string s2(t.v2, sp);
+            s1.swap(s2);
+            BOOST_TEST(s1 == t.v2);
+            BOOST_TEST(s2 == t.v1);
+        });
 
-            fail_loop([&](storage_ptr const& sp)
-            {
-                string s1(t.v1, sp);
-                string s2(t.v2, sp);
-                swap(s1, s2);
-                BOOST_TEST(s1 == t.v2);
-                BOOST_TEST(s2 == t.v1);
-            });
+        fail_loop([&](storage_ptr const& sp)
+        {
+            string s1(t.v1, sp);
+            string s2(t.v2, sp);
+            swap(s1, s2);
+            BOOST_TEST(s1 == t.v2);
+            BOOST_TEST(s2 == t.v1);
+        });
 
-            fail_loop([&](storage_ptr const& sp)
-            {
-                string s1(t.v1);
-                string s2(t.v2, sp);
-                s1.swap(s2);
-                BOOST_TEST(s1 == t.v2);
-                BOOST_TEST(s2 == t.v1);
-            });
-        }
+        fail_loop([&](storage_ptr const& sp)
+        {
+            string s1(t.v1);
+            string s2(t.v2, sp);
+            s1.swap(s2);
+            BOOST_TEST(s1 == t.v2);
+            BOOST_TEST(s2 == t.v1);
+        });
+
+        fail_loop([&](storage_ptr const& sp)
+        {
+            string s(t.v1, sp);
+            swap(s, s);
+            BOOST_TEST(s == t.v1);
+        });
     }
 
     void
@@ -2544,7 +2579,7 @@ public:
     {
         test_vectors const t;
         string const s1 = t.v1;
-        
+
         // rfind(string_view, size_type)
         BOOST_TEST(s1.rfind("bcd") == 1);
         BOOST_TEST(s1.rfind("cde") == 2);
@@ -2729,13 +2764,13 @@ public:
         {
             std::unordered_set<string>(
                 0,
-                std::hash<string>(32));
+                std::hash<string>());
         }
 #endif
         {
-            std::hash<string> h1(32);
+            std::hash<string> h1;
             std::hash<string> h2(h1);
-            std::hash<string> h3(59);
+            std::hash<string> h3;
             h1 = h3;
             h2 = h3;
             (void)h2;
@@ -2748,6 +2783,7 @@ public:
         testConstruction();
         testAssignment();
         testAssign();
+        testConversion();
         testElementAccess();
         testIterators();
         testCapacity();
@@ -2781,4 +2817,5 @@ public:
 
 TEST_SUITE(string_test, "boost.json.string");
 
-BOOST_JSON_NS_END
+} // namespace json
+} // namespace boost

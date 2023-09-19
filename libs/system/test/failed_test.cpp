@@ -2,11 +2,9 @@
 // Copyright 2018 Peter Dimov.
 // Distributed under the Boost Software License, Version 1.0.
 
-// Avoid spurious VC++ warnings
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <boost/system/error_code.hpp>
 #include <boost/core/lightweight_test.hpp>
+#include <boost/core/snprintf.hpp>
 #include <cstdio>
 
 using namespace boost::system;
@@ -28,7 +26,7 @@ struct http_category_impl: public error_category
     {
         char buffer[ 32 ];
 
-        std::sprintf( buffer, "HTTP/1.0 %d", ev );
+        boost::core::snprintf( buffer, sizeof( buffer ), "HTTP/1.0 %d", ev );
         return buffer;
     }
 
@@ -120,30 +118,18 @@ template<class Ec> void test()
         ec.assign( 0, generic_category() );
         TEST_NOT_FAILED( ec );
     }
-}
 
-template<class Ec> void test2()
-{
-    Ec ec( 0, http_category() );
-    TEST_FAILED( ec );
+    {
+        Ec ec( 0, http_category() );
+        TEST_FAILED( ec );
 
-    ec.assign( 200, http_category() );
-    TEST_NOT_FAILED( ec );
+        ec.assign( 200, http_category() );
+        TEST_NOT_FAILED( ec );
 
-    ec = Ec( 404, http_category() );
-    TEST_FAILED( ec );
-}
+        ec = Ec( 404, http_category() );
+        TEST_FAILED( ec );
+    }
 
-template<class Ec> void test3()
-{
-    Ec ec( 0, http_category() );
-    BOOST_TEST( ec.failed() );
-
-    ec.assign( 200, http_category() );
-    BOOST_TEST( !ec.failed() );
-
-    ec = Ec( 404, http_category() );
-    BOOST_TEST( ec.failed() );
 }
 
 int main()
@@ -159,9 +145,7 @@ int main()
     BOOST_TEST( http_category().failed( 404 ) );
 
     test<error_code>();
-    test2<error_code>();
     test<error_condition>();
-    test3<error_condition>();
 
     {
         error_condition ec( errc::success );

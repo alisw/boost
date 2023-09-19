@@ -16,12 +16,16 @@
 #  define SSE2_ARCH_SUFFIX ""
 #endif
 
-#include "lib/nlohmann/single_include/nlohmann/json.hpp"
+#ifdef BOOST_JSON_HAS_NLOHMANN_JSON
+# include "lib/nlohmann/single_include/nlohmann/json.hpp"
+#endif // BOOST_JSON_HAS_NLOHMANN_JSON
 
-#include "lib/rapidjson/include/rapidjson/rapidjson.h"
-#include "lib/rapidjson/include/rapidjson/document.h"
-#include "lib/rapidjson/include/rapidjson/writer.h"
-#include "lib/rapidjson/include/rapidjson/stringbuffer.h"
+#ifdef BOOST_JSON_HAS_RAPIDJSON
+# include "lib/rapidjson/include/rapidjson/rapidjson.h"
+# include "lib/rapidjson/include/rapidjson/document.h"
+# include "lib/rapidjson/include/rapidjson/writer.h"
+# include "lib/rapidjson/include/rapidjson/stringbuffer.h"
+#endif // BOOST_JSON_HAS_RAPIDJSON
 
 #include <boost/json.hpp>
 #include <boost/json/basic_parser_impl.hpp>
@@ -29,6 +33,7 @@
 #include <chrono>
 #include <iostream>
 #include <memory>
+#include <numeric>
 #include <cstdio>
 #include <vector>
 
@@ -48,6 +53,7 @@ using clock_type = std::chrono::steady_clock;
 
 ::test_suite::debug_stream dout(std::cerr);
 std::stringstream strout;
+parse_options popts;
 
 #if defined(__clang__)
 string_view toolset = "clang";
@@ -271,7 +277,7 @@ public:
         string_view s,
         std::size_t repeat) const override
     {
-        stream_parser p;
+        stream_parser p({}, popts);
         while(repeat--)
         {
             p.reset();
@@ -338,7 +344,7 @@ public:
         string_view s,
         std::size_t repeat) const override
     {
-        stream_parser p;
+        stream_parser p({}, popts);
         while(repeat--)
         {
             monotonic_resource mr;
@@ -417,7 +423,7 @@ class boost_null_impl : public any_impl
         basic_parser<handler> p_;
 
         null_parser()
-            : p_(json::parse_options())
+            : p_(popts)
         {
         }
 
@@ -482,6 +488,55 @@ public:
 
 //----------------------------------------------------------
 
+class boost_simple_impl : public any_impl
+{
+    std::string name_;
+
+public:
+    boost_simple_impl(
+        std::string const& branch)
+    {
+        name_ = "boost (convenient)";
+        if(! branch.empty())
+            name_ += " " + branch;
+    }
+
+    string_view
+    name() const noexcept override
+    {
+        return name_;
+    }
+
+    void
+    parse(
+        string_view s,
+        std::size_t repeat) const override
+    {
+        while(repeat--)
+        {
+            error_code ec;
+            auto jv = json::parse(s, ec, {}, popts);
+            (void)jv;
+        }
+    }
+
+    void
+    serialize(
+        string_view s,
+        std::size_t repeat) const override
+    {
+        auto jv = json::parse(s);
+        std::string out;
+        while(repeat--)
+        {
+            out = json::serialize(jv);
+        }
+    }
+};
+
+//----------------------------------------------------------
+
+#ifdef BOOST_JSON_HAS_RAPIDJSON
 struct rapidjson_crt_impl : public any_impl
 {
     string_view
@@ -557,9 +612,11 @@ struct rapidjson_memory_impl : public any_impl
         }
     }
 };
+#endif // BOOST_JSON_HAS_RAPIDJSON
 
 //----------------------------------------------------------
 
+#ifdef BOOST_JSON_HAS_NLOHMANN_JSON
 struct nlohmann_impl : public any_impl
 {
     string_view
@@ -588,8 +645,7 @@ struct nlohmann_impl : public any_impl
 
     }
 };
-
-//----------------------------------------------------------
+#endif // BOOST_JSON_HAS_NLOHMANN_JSON
 
 } // json
 } // boost
@@ -649,6 +705,22 @@ static bool parse_option( char const * s )
     case 'b':
         s_branch = s;
         break;
+    case 'm':
+        switch( *s )
+        {
+        case 'i':
+            popts.numbers = number_precision::imprecise;
+            break;
+        case 'p':
+            popts.numbers = number_precision::precise;
+            break;
+        case 'n':
+            popts.numbers = number_precision::none;
+            break;
+        default:
+            return false;
+        }
+        break;
     }
 
     return true;
@@ -673,6 +745,11 @@ static bool add_impl( impl_list & vi, char impl )
         vi.emplace_back(new boost_null_impl(s_branch));
         break;
 
+    case 's':
+        vi.emplace_back(new boost_simple_impl(s_branch));
+        break;
+
+#ifdef BOOST_JSON_HAS_RAPIDJSON
     case 'r':
 
         vi.emplace_back(new rapidjson_memory_impl);
@@ -682,11 +759,14 @@ static bool add_impl( impl_list & vi, char impl )
 
         vi.emplace_back(new rapidjson_crt_impl);
         break;
+#endif // BOOST_JSON_HAS_RAPIDJSON
 
+#ifdef BOOST_JSON_HAS_NLOHMANN_JSON
     case 'n':
 
         vi.emplace_back(new nlohmann_impl);
         break;
+#endif // BOOST_JSON_HAS_NLOHMANN_JSON
 
     default:
 
@@ -736,12 +816,22 @@ main(
             "                                 (b: Boost.JSON, pool storage)\n"
             "                                 (d: Boost.JSON, default storage)\n"
             "                                 (u: Boost.JSON, null parser)\n"
+            "                                 (s: Boost.JSON, convenient functions)\n"
+#ifdef BOOST_JSON_HAS_RAPIDJSON
             "                                 (r: RapidJSON, memory storage)\n"
             "                                 (c: RapidJSON, CRT storage)\n"
+#endif // BOOST_JSON_HAS_RAPIDJSON
+#ifdef BOOST_JSON_HAS_NLOHMANN_JSON
             "                                 (n: nlohmann/json)\n"
+#endif // BOOST_JSON_HAS_NLOHMANN_JSON
 			"                                 (default all)\n"
             "          -n:<number>          Number of trials (default 6)\n"
             "          -b:<branch>          Branch label for boost implementations\n"
+            "          -m:(i|p|n)           Number parsing mode\n"
+            "                                 (i: imprecise)\n"
+            "                                 (p: precise)\n"
+            "                                 (n: none)\n"
+            "                                 (default imprecise)\n"
         ;
 
         return 4;

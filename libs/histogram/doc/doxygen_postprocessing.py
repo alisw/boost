@@ -23,11 +23,11 @@ def select(condition, *tags):
 
 def is_detail(x):
     if x.text is not None:
-        if "detail" in x.text:
+        if "detail" in x.text.lower():
             return True
-        m = re.match("(?:typename)? *([A-Za-z0-9_\:]+)", x.text)
+        m = re.match(r"(?:typename)? *([A-Za-z0-9_\:]+)", x.text)
         if m is not None:
-            s = m.group(1)
+            s = m.group(1).lower()
             if s.startswith("detail") or s.endswith("_impl"):
                 x.text = s
                 return True
@@ -103,6 +103,12 @@ for item in select(
     else:
         log("removing unnamed template parameter from", parent.tag, name)
 
+# hide macros with detail in the name
+for item in select(lambda x: "DETAIL" in x.get("name").split("_"), "macro"):
+    parent = parent_map[item]
+    parent.remove(item)
+    log("removing macro", item.get("name"))
+
 # replace any type with "detail" in its name with "unspecified"
 for item in select(is_detail, "type"):
     log("replacing", '"%s"' % item.text, 'with "unspecified"')
@@ -121,6 +127,17 @@ for item in select(is_deprecated, "typedef"):
         parent.get("name"),
     )
     parent.remove(item)
+
+# replace any typedef with "unspecified"
+for item in select(is_detail, "typedef"):
+    log("replacing typedef", item.get("name"), 'with "unspecified"')
+    name = item.get("name")
+    item.clear()
+    item.tag = "typedef"
+    item.set("name", name)
+    type = ET.Element("type")
+    type.append(unspecified)
+    item.append(type)
 
 # hide private member functions
 for item in select(

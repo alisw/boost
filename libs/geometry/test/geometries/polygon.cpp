@@ -3,6 +3,11 @@
 
 // Copyright (c) 2020 Digvijay Janartha, Hamirpur, India.
 
+// This file was modified by Oracle on 2021-2023.
+// Modifications copyright (c) 2021-2023, Oracle and/or its affiliates.
+// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -12,6 +17,7 @@
 #include <geometry_test_common.hpp>
 
 #include <boost/core/ignore_unused.hpp>
+#include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/algorithms/make.hpp>
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/geometries/point.hpp>
@@ -27,13 +33,9 @@
 BOOST_GEOMETRY_REGISTER_C_ARRAY_CS(cs::cartesian)
 BOOST_GEOMETRY_REGISTER_BOOST_TUPLE_CS(cs::cartesian)
 
-#ifdef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
-#include <initializer_list>
-#endif//BOOST_NO_CXX11_HDR_INITIALIZER_LIST
-
 template <typename P>
 bg::model::polygon<P> create_polygon()
-{   
+{
     bg::model::polygon<P> pl1;
     P p1;
     P p2;
@@ -41,7 +43,7 @@ bg::model::polygon<P> create_polygon()
     bg::assign_values(p1, 1, 2);
     bg::assign_values(p2, 2, 0);
     bg::assign_values(p3, 0, 0);
-    
+
     bg::append(pl1, p1);
     bg::append(pl1, p2);
     bg::append(pl1, p3);
@@ -51,7 +53,7 @@ bg::model::polygon<P> create_polygon()
 
 template <typename PL, typename P>
 void check_polygon(PL& to_check, P p1, P p2, P p3)
-{   
+{
     PL cur;
     bg::append(cur, p1);
     bg::append(cur, p2);
@@ -88,7 +90,7 @@ void test_copy_assignment()
 
 template <typename P>
 void test_concept()
-{   
+{
     typedef bg::model::polygon<P> PL;
 
     BOOST_CONCEPT_ASSERT( (bg::concepts::ConstPolygon<PL>) );
@@ -101,7 +103,7 @@ void test_concept()
 
 template <typename P>
 void test_all()
-{   
+{
     test_default_constructor<P>();
     test_copy_constructor<P>();
     test_copy_assignment<P>();
@@ -110,19 +112,17 @@ void test_all()
 
 template <typename P>
 void test_custom_polygon(bg::model::ring<P> IL)
-{   
-#ifdef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
+{
     std::initializer_list<bg::model::ring<P> > RIL = {IL};
     bg::model::polygon<P> pl1(RIL);
     std::ostringstream out;
     out << bg::dsv(pl1);
     BOOST_CHECK_EQUAL(out.str(), "(((3, 3), (3, 0), (0, 0), (0, 3), (3, 3)))");
-#endif//BOOST_NO_CXX11_HDR_INITIALIZER_LIST
 }
 
 template <typename P>
 void test_custom()
-{   
+{
     std::initializer_list<P> IL = {P(3, 3), P(3, 0), P(0, 0), P(0, 3), P(3, 3)};
     bg::model::ring<P> r1(IL);
     test_custom_polygon<P>(r1);
@@ -140,7 +140,7 @@ void test_cs()
 
 
 int test_main(int, char* [])
-{   
+{
     test_cs<bg::cs::cartesian>();
     test_cs<bg::cs::spherical<bg::degree> >();
     test_cs<bg::cs::spherical_equatorial<bg::degree> >();

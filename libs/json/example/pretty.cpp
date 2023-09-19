@@ -89,7 +89,7 @@ pretty_print( std::ostream& os, json::value const& jv, std::string* indent = nul
                 if(++it == arr.end())
                     break;
                 os << ",\n";
-            }   
+            }
         }
         os << "\n";
         indent->resize(indent->size() - 4);
@@ -104,15 +104,9 @@ pretty_print( std::ostream& os, json::value const& jv, std::string* indent = nul
     }
 
     case json::kind::uint64:
-        os << jv.get_uint64();
-        break;
-
     case json::kind::int64:
-        os << jv.get_int64();
-        break;
-
     case json::kind::double_:
-        os << jv.get_double();
+        os << jv;
         break;
 
     case json::kind::bool_:

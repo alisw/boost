@@ -10,14 +10,15 @@
 # Build b2
 echo "Building the B2 engine.."
 pwd=`pwd`
-( cd "./src/engine" && ./build.sh "$*" )
+"${pwd}/src/engine/build.sh" "$@"
 if [ $? -ne 0 ]; then
     echo
     echo "Failed to build the B2 engine." 1>&2
     exit 1
 fi
 cd "$pwd"
-cp "./src/engine/b2" .
+cp "./src/engine/b2" . 2>/dev/null
+cp "./src/engine/b2.exe" . 2>/dev/null
 
 cat << EOF
 

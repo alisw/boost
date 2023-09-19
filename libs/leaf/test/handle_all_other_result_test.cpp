@@ -1,9 +1,28 @@
-// Copyright (c) 2018-2020 Emil Dotchevski and Reverge Studios, Inc.
+// Copyright 2018-2022 Emil Dotchevski and Reverge Studios, Inc.
 
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/leaf/handle_errors.hpp>
+#include <boost/leaf/config.hpp>
+
+#if !BOOST_LEAF_CFG_STD_SYSTEM_ERROR
+
+#include <iostream>
+
+int main()
+{
+    std::cout << "Unit test not applicable." << std::endl;
+    return 0;
+}
+
+#else
+
+#ifdef BOOST_LEAF_TEST_SINGLE_HEADER
+#   include "leaf.hpp"
+#else
+#   include <boost/leaf/handle_errors.hpp>
+#endif
+
 #include "_test_res.hpp"
 #include "lightweight_test.hpp"
 
@@ -48,12 +67,12 @@ void test()
         int r = leaf::try_handle_all(
             [&]
             {
-                auto r = g<ResType>(false);
-                BOOST_TEST(!r);
-                auto ec = r.error();
+                auto r1 = g<ResType>(false);
+                BOOST_TEST(!r1);
+                auto ec = r1.error();
                 BOOST_TEST_EQ(ec.message(), "LEAF error");
                 BOOST_TEST(!std::strcmp(ec.category().name(),"LEAF error"));
-                return r;
+                return r1;
             },
             []( info<42> const & x, std::error_code const & ec )
             {
@@ -77,3 +96,5 @@ int main()
     test<test_res<int const, std::error_code> const>();
     return boost::report_errors();
 }
+
+#endif

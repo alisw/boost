@@ -7,6 +7,8 @@
 // This tests that cpp_dec_float_50 meets our
 // conceptual requirements when used with Boost.Math.
 //
+#ifdef BOOST_MP_SF_CONCEPT_TESTS
+
 #ifdef _MSC_VER
 #define _SCL_SECURE_NO_WARNINGS
 #pragma warning(disable : 4800)
@@ -103,7 +105,7 @@ void test_extra(T)
 #ifdef BOOST_HAS_LONG_LONG
    boost::math::lltrunc(v1);
    boost::math::llround(v1);
-   boost::long_long_type ll;
+   long long ll;
    boost::math::modf(v1, &ll);
 #endif
    boost::math::pow<2>(v1);
@@ -163,3 +165,12 @@ int main()
 {
    foo();
 }
+
+#else
+
+int main()
+{
+   return 0;
+}
+
+#endif

@@ -18,8 +18,10 @@
 #include <boost/test/tools/floating_point_comparison.hpp>
 #include <boost/math/quadrature/gauss.hpp>
 #include <boost/math/special_functions/sinc.hpp>
+#include <boost/math/tools/test_value.hpp>
 #include <boost/multiprecision/cpp_bin_float.hpp>
 #include <boost/multiprecision/cpp_complex.hpp>
+#include <boost/type_index.hpp>
 
 #ifdef BOOST_HAS_FLOAT128
 #include <boost/multiprecision/complex128.hpp>
@@ -27,6 +29,10 @@
 
 #ifdef _MSC_VER
 #pragma warning(disable:4127)  // Conditional expression is constant
+#endif
+
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
 #endif
 
 #if !defined(TEST1) && !defined(TEST2) && !defined(TEST3)
@@ -432,15 +438,35 @@ void test_complex_lambert_w()
     };
 
     //N[ProductLog[2+3*I], 150]
+    #ifndef BOOST_MATH_STANDALONE
     Complex Q = gauss<Real, 30>::integrate(lw, (Real) 0, pi<Real>());
-    BOOST_CHECK_CLOSE_FRACTION(Q.real(), boost::lexical_cast<Real>("1.09007653448579084630177782678166964987102108635357778056449870727913321296238687023915522935120701763447787503167111962008709116746523970476893277703"), tol);
-    BOOST_CHECK_CLOSE_FRACTION(Q.imag(), boost::lexical_cast<Real>("0.530139720774838801426860213574121741928705631382703178297940568794784362495390544411799468140433404536019992695815009036975117285537382995180319280835"), tol);
+    BOOST_CHECK_CLOSE_FRACTION(Q.real(), BOOST_MATH_TEST_VALUE(Real, 1.0900765344857908463017778267816696498710210863535777805644), tol);
+    BOOST_CHECK_CLOSE_FRACTION(Q.imag(), BOOST_MATH_TEST_VALUE(Real, 0.5301397207748388014268602135741217419287056313827031782979), tol);
+    #endif
 }
 
 BOOST_AUTO_TEST_CASE(gauss_quadrature_test)
 {
   
 #ifdef TEST1
+
+#ifdef __STDCPP_FLOAT64_T__
+    test_linear<std::float64_t, 7>();
+    test_quadratic<std::float64_t, 7>();
+    test_ca<std::float64_t, 7>();
+    test_three_quadrature_schemes_examples<std::float64_t, 7>();
+    test_integration_over_real_line<std::float64_t, 7>();
+    test_right_limit_infinite<std::float64_t, 7>();
+    test_left_limit_infinite<std::float64_t, 7>();
+
+    test_linear<std::float64_t, 9>();
+    test_quadratic<std::float64_t, 9>();
+    test_ca<std::float64_t, 9>();
+    test_three_quadrature_schemes_examples<std::float64_t, 9>();
+    test_integration_over_real_line<std::float64_t, 9>();
+    test_right_limit_infinite<std::float64_t, 9>();
+    test_left_limit_infinite<std::float64_t, 9>();
+#else
     test_linear<double, 7>();
     test_quadratic<double, 7>();
     test_ca<double, 7>();
@@ -456,7 +482,9 @@ BOOST_AUTO_TEST_CASE(gauss_quadrature_test)
     test_integration_over_real_line<double, 9>();
     test_right_limit_infinite<double, 9>();
     test_left_limit_infinite<double, 9>();
+#endif
 
+#if LDBL_MANT_DIG < 100 && defined(BOOST_MATH_RUN_MP_TESTS)
     test_linear<cpp_bin_float_quad, 10>();
     test_quadratic<cpp_bin_float_quad, 10>();
     test_ca<cpp_bin_float_quad, 10>();
@@ -465,7 +493,9 @@ BOOST_AUTO_TEST_CASE(gauss_quadrature_test)
     test_right_limit_infinite<cpp_bin_float_quad, 10>();
     test_left_limit_infinite<cpp_bin_float_quad, 10>();
 #endif
+#endif
 #ifdef TEST2
+#if LDBL_MANT_DIG < 100 && defined(BOOST_MATH_RUN_MP_TESTS)
     test_linear<cpp_bin_float_quad, 15>();
     test_quadratic<cpp_bin_float_quad, 15>();
     test_ca<cpp_bin_float_quad, 15>();
@@ -498,17 +528,21 @@ BOOST_AUTO_TEST_CASE(gauss_quadrature_test)
     test_right_limit_infinite<cpp_bin_float_quad, 30>();
     test_left_limit_infinite<cpp_bin_float_quad, 30>();
 
-
+#endif
 #endif
 #ifdef TEST3
+#if LDBL_MANT_DIG < 100 && defined(BOOST_MATH_RUN_MP_TESTS)
     test_left_limit_infinite<cpp_bin_float_quad, 30>();
+#endif
     test_complex_lambert_w<std::complex<double>>();
     test_complex_lambert_w<std::complex<long double>>();
 #ifdef BOOST_HAS_FLOAT128
     test_left_limit_infinite<boost::multiprecision::float128, 30>();
     test_complex_lambert_w<boost::multiprecision::complex128>();
 #endif
+#if LDBL_MANT_DIG < 100 && defined(BOOST_MATH_RUN_MP_TESTS)
     test_complex_lambert_w<boost::multiprecision::cpp_complex_quad>();
+#endif
 #endif
 }
 

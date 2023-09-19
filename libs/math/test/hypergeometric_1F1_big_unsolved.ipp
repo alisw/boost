@@ -8,7 +8,7 @@
 #ifndef SC_
 #  define SC_(x) static_cast<T>(BOOST_JOIN(x, L))
 #endif
-   static const boost::array<boost::array<T, 4>, 12> hypergeometric_1F1_big = {{
+   static const std::array<std::array<T, 4>, 12> hypergeometric_1F1_big = {{
       { SC_(-8.1472375000000000000000000000000000000000e+05), SC_(-1.3586878906250000000000000000000000000000e+04), SC_(-1.5873352050781250000000000000000000000000e+01), SC_(4.9489925464971372677922628162736666342744e-401) }, 
       { SC_(-1.3547703125000000000000000000000000000000e+04), SC_(-1.2525131835937500000000000000000000000000e+03), SC_(-1.5873352050781250000000000000000000000000e+01), SC_(-2.5898494644592200447792014846620256493447e+43) }, 
       { SC_(-9.0579218750000000000000000000000000000000e+03), SC_(-1.2525131835937500000000000000000000000000e+03), SC_(-1.5873352050781250000000000000000000000000e+01), SC_(8.3580772868001229331683618349570363666238e-49) }, 
@@ -21,9 +21,9 @@
 
       // These next 2 should be solvable by A&S 13.3.6 (which does converge nicely for these inputs) but gives the wrong results:
 
-      // Unexpected exception : Error in function boost::math::hypergeometric_pFq<long double> : Cancellation is so severe that no bits in the reuslt are correct, last result was 3.0871891698197084e+73
+      // Unexpected exception : Error in function boost::math::hypergeometric_pFq<long double> : Cancellation is so severe that no bits in the result are correct, last result was 3.0871891698197084e+73
       { { SC_(-5.9981750131794866e-15), SC_(0.499999999999994), SC_(-240.42092034220695), SC_(1.00000000000004464930530925572237133417488137) }},
-      // Unexpected exception : Error in function boost::math::hypergeometric_pFq<long double> : Cancellation is so severe that no bits in the reuslt are correct, last result was 3.0871891698197084e+73
+      // Unexpected exception : Error in function boost::math::hypergeometric_pFq<long double> : Cancellation is so severe that no bits in the result are correct, last result was 3.0871891698197084e+73
       { { SC_(-5.9981750131794866e-15), SC_(-0.500000000000006), SC_(-240.42092034220695), SC_(1.00000000000003262784934420226963147689063665) }},
 
       // This one is not too awful, we simply have no better method to improve the error rate:

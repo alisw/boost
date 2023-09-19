@@ -11,12 +11,17 @@
 #include <iomanip>
 #include <iostream>
 #include <cmath>
+#include <cfloat>
 #include <boost/core/demangle.hpp>
 #include <boost/hana/for_each.hpp>
 #include <boost/hana/ext/std/integer_sequence.hpp>
 #include <boost/math/quadrature/wavelet_transforms.hpp>
 #include <boost/math/tools/minima.hpp>
 #include <boost/math/quadrature/trapezoidal.hpp>
+
+#if __has_include(<stdfloat>)
+#  include <stdfloat>
+#endif
 
 #ifdef BOOST_HAS_FLOAT128
 #include <boost/multiprecision/float128.hpp>
@@ -32,6 +37,7 @@ using boost::math::quadrature::trapezoidal;
 template<typename Real, int p>
 void test_wavelet_transform()
 {
+    using std::abs;
     std::cout << "Testing wavelet transform of " << p << " vanishing moment Daubechies wavelet on type " << boost::core::demangle(typeid(Real).name()) << "\n";
     auto psi = boost::math::daubechies_wavelet<Real, p>();
 
@@ -109,14 +115,14 @@ void test_wavelet_transform()
         // Wavelet transform of a constant is zero.
         // The quadrature sum is horribly ill-conditioned (technically infinite),
         // so we'll only test on the more rapidly converging sums.
-        auto g = [](Real x) { return Real(7); };
+        auto g = [](Real ) { return Real(7); };
         auto Wg = daubechies_wavelet_transform(g, psi);
         for (double s = -10; s < 10; s += 0.1)
         {
             for (double t = -10; t < 10; t+= 0.1)
             {
                 Real w = Wg(s, t);
-                if (!CHECK_LE(abs(w), 10*sqrt(std::numeric_limits<Real>::epsilon())))
+                if (!CHECK_LE(abs(w), Real(10*sqrt(std::numeric_limits<Real>::epsilon()))))
                 {
                     std::cerr << "  Wavelet transform of constant with respect to " << p << " vanishing moment Daubechies wavelet is insufficiently small\n";
                 }
@@ -125,19 +131,33 @@ void test_wavelet_transform()
         }
         // Wavelet transform of psi evaluated at s = 1, t = 0 is L2 norm of psi:
         auto Wpsi = daubechies_wavelet_transform(psi, psi);
-        CHECK_MOLLIFIED_CLOSE(Real(1), Wpsi(1,0), 2*sqrt(std::numeric_limits<Real>::epsilon()));
+        CHECK_MOLLIFIED_CLOSE(Real(1), Wpsi(1,0), Real(2*sqrt(std::numeric_limits<Real>::epsilon())));
     }
 
 }
 
 int main()
 {
-    test_wavelet_transform<double, 2>();
-    test_wavelet_transform<double, 8>();
-    test_wavelet_transform<double, 16>();
-    // All these tests pass, but the compilation takes too long on CI:
-    //boost::hana::for_each(std::make_index_sequence<17>(), [&](auto i) {
-    //    test_wavelet_transform<double, i+3>();
-    //});
+    try{
+       #ifdef __STDCPP_FLOAT64_T__
+       test_wavelet_transform<std::float64_t, 2>();
+       test_wavelet_transform<std::float64_t, 8>();
+       test_wavelet_transform<std::float64_t, 16>();
+       #else
+       test_wavelet_transform<double, 2>();
+       test_wavelet_transform<double, 8>();
+       test_wavelet_transform<double, 16>();
+       #endif
+       // All these tests pass, but the compilation takes too long on CI:
+       //boost::hana::for_each(std::make_index_sequence<17>(), [&](auto i) {
+       //    test_wavelet_transform<double, i+3>();
+       //});
+    }
+    catch (std::bad_alloc const & e)
+    {
+        std::cerr << "Ran out of memory in wavelet transform test: " << e.what() << "\n";
+       // not much we can do about this, this test uses lots of memory!
+    }
+
     return boost::math::test::report_errors();
 }

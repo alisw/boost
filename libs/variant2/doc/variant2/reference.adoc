@@ -1,10 +1,7 @@
 ////
-Copyright 2018, 2019 Peter Dimov
-
+Copyright 2018-2021 Peter Dimov
 Distributed under the Boost Software License, Version 1.0.
-
-See accompanying file LICENSE_1_0.txt or copy at
-http://www.boost.org/LICENSE_1_0.txt
+https://www.boost.org/LICENSE_1_0.txt
 ////
 
 [#reference]
@@ -117,6 +114,21 @@ template<class U, class... T>
   constexpr add_pointer_t<const U>
     get_if(const variant<T...>* v) noexcept;
 
+// unsafe_get (extension)
+
+template<size_t I, class... T>
+  constexpr variant_alternative_t<I, variant<T...>>&
+    unsafe_get(variant<T...>& v);
+template<size_t I, class... T>
+  constexpr variant_alternative_t<I, variant<T...>>&&
+    unsafe_get(variant<T...>&& v);
+template<size_t I, class... T>
+  constexpr const variant_alternative_t<I, variant<T...>>&
+    unsafe_get(const variant<T...>& v);
+template<size_t I, class... T>
+  constexpr const variant_alternative_t<I, variant<T...>>&&
+    unsafe_get(const variant<T...>&& v);
+
 // relational operators
 
 template<class... T>
@@ -132,10 +144,20 @@ template<class... T>
 template<class... T>
   constexpr bool operator>=(const variant<T...>& v, const variant<T...>& w);
 
+// swap
+
+template<class... T>
+  void swap(variant<T...>& v, variant<T...>& w) noexcept( /*see below*/ );
+
 // visit
 
 template<class R = /*unspecified*/, class F, class... V>
   constexpr /*see below*/ visit(F&& f, V&&... v);
+
+// visit_by_index (extension)
+
+template<class R = /*unspecified*/, class V, class... F>
+  constexpr /*see below*/ visit_by_index(V&& v, F&&.. f);
 
 // monostate
 
@@ -148,10 +170,15 @@ constexpr bool operator>(monostate, monostate) noexcept { return false; }
 constexpr bool operator<=(monostate, monostate) noexcept { return true; }
 constexpr bool operator>=(monostate, monostate) noexcept { return true; }
 
-// swap
+// stream insertion (extension)
 
-template<class... T>
-  void swap(variant<T...>& v, variant<T...>& w) noexcept( /*see below*/ );
+template<class Ch, class Tr, class... T>
+  std::basic_ostream<Ch, Tr>&
+    operator<<( std::basic_ostream<Ch, Tr>& os, variant<T...> const& v );
+
+template<class Ch, class Tr>
+  std::basic_ostream<Ch, Tr>&
+    operator<<( std::basic_ostream<Ch, Tr>& os, monostate const& v );
 
 // bad_variant_access
 
@@ -222,6 +249,8 @@ public:
 
   constexpr bool valueless_by_exception() const noexcept;
   constexpr size_t index() const noexcept;
+
+  static constexpr bool uses_double_storage() noexcept;
 
   // swap
 
@@ -490,8 +519,8 @@ template<size_t I, class... A>
 +
 Requires: :: `I < sizeof...(T)`.
 Effects:  ::
-  Destroys the currently contained value, then initializes a new contained
-  value as if using the expression `Ti(std::forward<A>(a)...)`.
+  Initializes a new contained value as if using the expression
+  `Ti(std::forward<A>(a)...)`, then destroys the currently contained value.
 Ensures:  :: `index() == I`.
 Returns:  :: A reference to the new contained value.
 Throws:   ::
@@ -511,8 +540,8 @@ template<size_t I, class V, class... A>
 +
 Requires: :: `I < sizeof...(T)`.
 Effects:  ::
-  Destroys the currently contained value, then initializes a new contained
-  value as if using the expression `Ti(il, std::forward<A>(a)...)`.
+  Initializes a new contained value as if using the expression
+  `Ti(il, std::forward<A>(a)...)`, then destroys the currently contained value.
 Ensures:  :: `index() == I`.
 Returns:  :: A reference to the new contained value.
 Throws:   ::
@@ -542,6 +571,18 @@ constexpr size_t index() const noexcept;
 +
 Returns:  ::
   The zero-based index of the active alternative.
+
+```
+static constexpr bool uses_double_storage() noexcept;
+```
+[none]
+* {blank}
++
+Returns:  ::
+  `true` if the variant uses double storage to meet the never valueless
+  guarantee because one of the alternatives is not nothrow move constructible,
+  and `false` otherwise.
+
 
 #### Swap
 
@@ -775,6 +816,34 @@ Requires: :: The type `U` occurs exactly once in `T...`. Otherwise, the
 Effects:  :: Equivalent to: `return get_if<I>(v);` with `I` being
   the zero-based index of `U` in `T...`.
 
+### unsafe_get (extension)
+
+```
+template<size_t I, class... T>
+  constexpr variant_alternative_t<I, variant<T...>>&
+    unsafe_get(variant<T...>& v);
+```
+```
+template<size_t I, class... T>
+  constexpr variant_alternative_t<I, variant<T...>>&&
+    unsafe_get(variant<T...>&& v);
+```
+```
+template<size_t I, class... T>
+  constexpr const variant_alternative_t<I, variant<T...>>&
+    unsafe_get(const variant<T...>& v);
+```
+```
+template<size_t I, class... T>
+  constexpr const variant_alternative_t<I, variant<T...>>&&
+    unsafe_get(const variant<T...>&& v);
+```
+[none]
+* {blank}
++
+Requires: :: `v.index() == I`.
+Returns: :: a reference to the object stored in the variant.
+
 ### Relational Operators
 
 ```
@@ -835,6 +904,18 @@ template<class... T>
 Returns: ::
   `w \<= v`.
 
+### swap
+
+```
+template<class... T>
+  void swap(variant<T...>& v, variant<T...>& w) noexcept( /*see below*/ );
+```
+[none]
+* {blank}
++
+Effects: ::
+  Equivalent to `v.swap(w)`.
+
 ### visit
 
 ```
@@ -851,17 +932,50 @@ Remarks: :: If `R` is given explicitly, as in `visit<int>`, the return
   of `F` to the variant alternatives must have the same return type for
   this deduction to succeed.
 
-### swap
+### visit_by_index (extension)
 
 ```
-template<class... T>
-  void swap(variant<T...>& v, variant<T...>& w) noexcept( /*see below*/ );
+template<class R = /*unspecified*/, class V, class... F>
+  constexpr /*see below*/ visit_by_index(V&& v, F&&.. f);
+```
+[none]
+* {blank}
++
+Requires: :: `variant_size<V>::value == sizeof...(F)`, or the program is ill-formed.
+Returns: :: `std::forward<Fi>(fi)(get<i>(std::forward<V>(v)))`, where
+  `i` is `v.index()` and `Fi` and `fi` are the `i`-th element of `F...` and `f...`
+  accordingly.
+Remarks: :: If `R` is given explicitly, as in `visit_by_index<int>`, the return
+  type is `R`. Otherwise, it's deduced from `F...` and `V`. All the applications
+  of `Fi` to the corresponding variant alternatives must have the same return type
+  for this deduction to succeed.
+
+### Stream Insertion (extension)
+```
+template<class Ch, class Tr, class... T>
+  std::basic_ostream<Ch, Tr>&
+    operator<<( std::basic_ostream<Ch, Tr>& os, variant<T...> const& v );
+```
+[none]
+* {blank}
++
+Requires: ::
+  `sizeof...(T) != 0`.
+Returns: ::
+  `os << get<I>(v)`, where `I` is `v.index()`.
+
+```
+template<class Ch, class Tr>
+  std::basic_ostream<Ch, Tr>&
+    operator<<( std::basic_ostream<Ch, Tr>& os, monostate const& v );
 ```
 [none]
 * {blank}
 +
 Effects: ::
-  Equivalent to `v.swap(w)`.
+  `os << "monostate"`.
+Returns: ::
+  `os`.
 
 ### bad_variant_access
 
@@ -878,3 +992,7 @@ public:
     }
 };
 ```
+
+## <boost/variant2.hpp>
+
+This convenience header includes `<boost/variant2/variant.hpp>`.

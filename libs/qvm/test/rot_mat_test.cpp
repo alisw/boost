@@ -1,10 +1,15 @@
-//Copyright (c) 2008-2016 Emil Dotchevski and Reverge Studios, Inc.
+// Copyright 2008-2022 Emil Dotchevski and Reverge Studios, Inc.
 
-//Distributed under the Boost Software License, Version 1.0. (See accompanying
-//file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/qvm/mat_operations.hpp>
-#include <boost/qvm/mat.hpp>
+#ifdef BOOST_QVM_TEST_SINGLE_HEADER
+#   include BOOST_QVM_TEST_SINGLE_HEADER
+#else
+#   include <boost/qvm/mat_operations.hpp>
+#   include <boost/qvm/mat.hpp>
+#endif
+
 #include "test_qvm_matrix.hpp"
 #include "test_qvm_vector.hpp"
 #include "gold.hpp"
@@ -21,11 +26,11 @@ namespace
             {
             test_qvm::matrix<M1,D,D> const m1=rot_mat<D>(axis,r);
             test_qvm::rotation_x(m1.b,r);
-            BOOST_QVM_TEST_EQ(m1.a,m1.b);
+            BOOST_QVM_TEST_CLOSE(m1.a,m1.b,0.00001f);
             test_qvm::matrix<M1,D,D> m2(42,1);
             set_rot(m2,axis,r);
             test_qvm::rotation_x(m2.b,r);
-            BOOST_QVM_TEST_EQ(m2.a,m2.b);
+            BOOST_QVM_TEST_CLOSE(m2.a,m2.b,0.00001f);
             test_qvm::matrix<M1,D,D> m3(42,1);
             test_qvm::matrix<M1,D,D> m4(42,1);
             rotate(m3,axis,r);
@@ -44,11 +49,11 @@ namespace
             {
             test_qvm::matrix<M1,D,D> m1=rot_mat<D>(axis,r);
             test_qvm::rotation_y(m1.b,r);
-            BOOST_QVM_TEST_EQ(m1.a,m1.b);
+            BOOST_QVM_TEST_CLOSE(m1.a,m1.b,0.00001f);
             test_qvm::matrix<M1,D,D> m2(42,1);
             set_rot(m2,axis,r);
             test_qvm::rotation_y(m2.b,r);
-            BOOST_QVM_TEST_EQ(m2.a,m2.b);
+            BOOST_QVM_TEST_CLOSE(m2.a,m2.b,0.00001f);
             test_qvm::matrix<M1,D,D> m3(42,1);
             test_qvm::matrix<M1,D,D> m4(42,1);
             rotate(m3,axis,r);
@@ -67,11 +72,11 @@ namespace
             {
             test_qvm::matrix<M1,D,D> m1=rot_mat<D>(axis,r);
             test_qvm::rotation_z(m1.b,r);
-            BOOST_QVM_TEST_EQ(m1.a,m1.b);
+            BOOST_QVM_TEST_CLOSE(m1.a,m1.b,0.00001f);
             test_qvm::matrix<M1,D,D> m2(42,1);
             set_rot(m2,axis,r);
             test_qvm::rotation_z(m2.b,r);
-            BOOST_QVM_TEST_EQ(m2.a,m2.b);
+            BOOST_QVM_TEST_CLOSE(m2.a,m2.b,0.00001f);
             test_qvm::matrix<M1,D,D> m3(42,1);
             test_qvm::matrix<M1,D,D> m4(42,1);
             rotate(m3,axis,r);
@@ -117,15 +122,15 @@ namespace
                 mat<float,D,D> const m2 = rotx_mat<D>(x1) * roty_mat<D>(y2) * rotz_mat<D>(z3);
                     {
                     mat<float,D,D> m1 = rot_mat_xyz<D>(x1,y2,z3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.007f);
                     }
                     {
                     mat<float,D,D> m1; set_rot_xyz(m1,x1,y2,z3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.007f);
                     }
                     {
                     mat<float,D,D> m1 = identity_mat<float,D>(); rotate_xyz(m1,x1,y2,z3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.007f);
                     }
                 }
         }
@@ -167,15 +172,15 @@ namespace
                 mat<float,D,D> const m2 = roty_mat<D>(y1) * rotz_mat<D>(z2) * rotx_mat<D>(x3);
                     {
                     mat<float,D,D> m1 = rot_mat_yzx<D>(y1,z2,x3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.007f);
                     }
                     {
                     mat<float,D,D> m1; set_rot_yzx(m1,y1,z2,x3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.007f);
                     }
                     {
                     mat<float,D,D> m1 = identity_mat<float,D>(); rotate_yzx(m1,y1,z2,x3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.007f);
                     }
                 }
         }
@@ -217,15 +222,15 @@ namespace
                 mat<float,D,D> const m2 = rotz_mat<D>(z1) * rotx_mat<D>(x2) * roty_mat<D>(y3);
                     {
                     mat<float,D,D> m1 = rot_mat_zxy<D>(z1,x2,y3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.01f);
                     }
                     {
                     mat<float,D,D> m1; set_rot_zxy(m1,z1,x2,y3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.01f);
                     }
                     {
                     mat<float,D,D> m1 = identity_mat<float,D>(); rotate_zxy(m1,z1,x2,y3);
-                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.0002f);
+                    BOOST_QVM_TEST_CLOSE(m1.a,m2.a,0.01f);
                     }
                 }
         }

@@ -8,14 +8,24 @@
 #   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 #   http://www.boost.org/LICENSE_1_0.txt)
 #==============================================================================
-#
-#  Spirit regression test boost-jam file
-#  Joel de Guzman [Sept 27, 2002]
-#
+
+import config : requires ;
+
+###############################################################################
 
 project spirit-classic
     : requirements
         <include>.
+
+        # Suppress C++03 deprecation warnings from other libraries
+        <define>BOOST_BIND_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_HASH_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_ENDIAN_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_FUNCTION_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_SMART_PTR_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_SYSTEM_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_TYPEOF_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
+        <define>BOOST_UNORDERED_DETAIL_REQUIRES_CXX11_HPP_INCLUDED
     ;
 
 ###############################################################################
@@ -71,7 +81,7 @@ local multi-threading = <library>boost_thread
           [ spirit-run char_strings_test.cpp ]
           [ compile-fail char_strings_test_fail.cpp ]
           [ spirit-run numerics_tests.cpp : : : $(opt) ]
-          [ spirit-run custom_real_parser.cpp ]
+          [ spirit-run custom_real_parser.cpp : : : [ requires cxx14_constexpr ] ]
         ;
 
     test-suite "spirit.classic.core.composite"

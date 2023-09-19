@@ -2,7 +2,7 @@
     [quickbook 1.6]
     [version 1.0]
     [id stacktrace]
-    [copyright 2016-2020 Antony Polukhin]
+    [copyright 2016-2023 Antony Polukhin]
     [category Language Features Emulation]
     [license
         Distributed under the Boost Software License, Version 1.0.
@@ -59,53 +59,6 @@ Code from above will output something like this:
 
 [endsect]
 
-[section Handle terminates, aborts and Segmentation Faults]
-
-Segmentation Faults and `std::terminate` calls sometimes happen in programs. Programmers usually wish to get as much information as possible on such incidents, so having a stacktrace will significantly improve debugging and fixing.
-
-`std::terminate` calls `std::abort`, so we need to capture stack traces on Segmentation Faults and Abort signals.
-
-[warning Writing a signal handler requires high attention! Only a few system calls allowed in signal handlers, so there's no cross platform way to print a stacktrace without a risk of deadlocking. The only way to deal with the problem - [*dump raw stacktrace into file/socket and parse it on program restart].]
-
-[warning Not all the platforms provide means for even getting stacktrace in async signal safe way. No stack trace will be saved on such platforms. ]
-
-Let's write a handler to safely dump stacktrace:
-
-[getting_started_terminate_handlers]
-
-Registering our handler:
-
-[getting_started_setup_handlers]
-
-At program start we check for a file with stacktrace and if it exist - we're writing it in human readable format:
-
-[getting_started_on_program_restart]
-
-Now we'll get the following output on `std::terminate` call after the program restarts:
-
-```
-Previous run crashed:
- 0# 0x00007F2EC0A6A8EF
- 1# my_signal_handler(int) at ../example/terminate_handler.cpp:37
- 2# 0x00007F2EBFD84CB0
- 3# 0x00007F2EBFD84C37
- 4# 0x00007F2EBFD88028
- 5# 0x00007F2EC0395BBD
- 6# 0x00007F2EC0393B96
- 7# 0x00007F2EC0393BE1
- 8# bar(int) at ../example/terminate_handler.cpp:18
- 9# foo(int) at ../example/terminate_handler.cpp:22
-10# bar(int) at ../example/terminate_handler.cpp:14
-11# foo(int) at ../example/terminate_handler.cpp:22
-12# main at ../example/terminate_handler.cpp:84
-13# 0x00007F2EBFD6FF45
-14# 0x0000000000402209
-```
-
-[note Function names from shared libraries may not be decoded due to address space layout randomization. Still better than nothing.]
-
-[endsect]
-
 [section Better asserts]
 
 Pretty often assertions provide not enough information to locate the problem. For example you can see the following message on out-of-range access:
@@ -136,6 +89,44 @@ Backtrace:
 ```
 
 Now we do know the steps that led to the assertion and can find the error without debugger.
+
+[endsect]
+
+[section Handle terminates]
+
+`std::terminate` calls sometimes happen in programs. Programmers usually wish to get as much information as possible on such incidents, so having a stacktrace significantly improves debugging and fixing.
+
+Here's how to write a terminate handler that dumps stacktrace:
+
+[getting_started_terminate_handlers]
+
+Here's how to register it:
+
+[getting_started_setup_terminate_handlers]
+
+Now we'll get the following output on `std::terminate` call:
+
+```
+Previous run crashed:
+ 0# my_terminate_handler(int) at ../example/terminate_handler.cpp:37
+ 1# __cxxabiv1::__terminate(void (*)()) at ../../../../src/libstdc++-v3/libsupc++/eh_terminate.cc:48
+ 2# 0x00007F3CE65E5901 in /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+ 3# bar(int) at ../example/terminate_handler.cpp:18
+ 4# foo(int) at ../example/terminate_handler.cpp:22
+ 5# bar(int) at ../example/terminate_handler.cpp:14
+ 6# foo(int) at ../example/terminate_handler.cpp:22
+ 7# main at ../example/terminate_handler.cpp:84
+ 8# __libc_start_main in /lib/x86_64-linux-gnu/libc.so.6
+ 9# 0x0000000000402209
+```
+
+[warning There's a temptation to write a signal handler that prints the stacktrace on `SIGSEGV` or abort. Unfortunately, there's no cross platform way to do that without a risk of deadlocking. Not all the platforms provide means for even getting stacktrace in async signal safe way.
+
+Signal handler is often invoked on a separate stack and trash is returned on attempt to get a trace!
+
+Generic recommendation is to *avoid signal handlers! Use* platform specific ways to store and decode *core files*.
+]
+
 
 [endsect]
 
@@ -294,11 +285,11 @@ By default Boost.Stacktrace is a header-only library, but you may change that an
 
 In header only mode library could be tuned by macro. If one of the link macro from above is defined, you have to manually link with one of the libraries:
 [table:libconfig Config
-    [[Macro name or default] [Library] [Effect] [Platforms] [Uses debug information [footnote This will provide more readable backtraces with *source code locations* if the binary is built with debug information.]] [Uses dynamic exports information [footnote This will provide readable function names in backtrace for functions that are exported by the binary. Compiling with `-rdynamic` flag, without `-fisibility=hidden` or marking functions as exported produce a better stacktraces.]] ]
-    [[['default for MSVC, Intel on Windows, MinGW-w64] / *BOOST_STACKTRACE_USE_WINDBG*] [*boost_stacktrace_windbg*] [ Uses COM to show debug info. May require linking with *ole32* and *dbgeng*. ] [MSVC, MinGW-w64, Intel on Windows] [yes] [no]]
+    [[Macro name or default] [Library] [Effect] [Platforms] [Uses debug information [footnote This will provide more readable backtraces with *source code locations* if the binary is built with debug information.]] [Uses dynamic exports information [footnote This will provide readable function names in backtrace for functions that are exported by the binary. Compiling with `-rdynamic` flag, without `-fvisibility=hidden` or marking functions as exported produce a better stacktraces.]] ]
+    [[['default for MSVC, Intel on Windows, MinGW-w64] / *BOOST_STACKTRACE_USE_WINDBG*] [*boost_stacktrace_windbg*] [ Uses `dbgeng.h` to show debug info. May require linking with *ole32* and *dbgeng*. ] [MSVC, MinGW-w64, Intel on Windows] [yes] [no]]
     [[['default for other platforms]] [*boost_stacktrace_basic*] [Uses compiler intrinsics to collect stacktrace and if possible `::dladdr` to show information about the symbol. Requires linking with *libdl* library on POSIX platforms.] [Any compiler on POSIX or MinGW] [no] [yes]]
-    [[*BOOST_STACKTRACE_USE_WINDBG_CACHED*] [*boost_stacktrace_windbg_cached*] [ Uses COM to show debug info and caches COM instances in TLS for better performance. Useful only for cases when traces are gathered very often. [footnote This may affect other components of your program that use COM, because this mode calls the `CoInitializeEx(0, COINIT_MULTITHREADED)` on first use and does not call `::CoUninitialize();` until the current thread is destroyed. ] May require linking with *ole32* and *dbgeng*. ] [MSVC, Intel on Windows] [yes] [no]]
-    [[*BOOST_STACKTRACE_USE_BACKTRACE*] [*boost_stacktrace_backtrace*] [Requires linking with *libdl* on POSIX and *libbacktrace* libraries. *libbacktrace* is probably already installed in your system[footnote If you are using Clang with libstdc++ you could get into troubles of including `<backtrace.h>`, because on some platforms Clang does not search for headers in the GCC's include paths and any attempt to add GCC's include path leads to linker errors. To explicitly specify a path to the `<backtrace.h>` header you could define the *BOOST_STACKTRACE_BACKTRACE_INCLUDE_FILE* to a full path to the header. For example on Ubuntu Xenial use the command line option *-DBOOST_STACKTRACE_BACKTRACE_INCLUDE_FILE=</usr/lib/gcc/x86_64-linux-gnu/5/include/backtrace.h>* while building with Clang. ], or built into your compiler.
+    [[*BOOST_STACKTRACE_USE_WINDBG_CACHED*] [*boost_stacktrace_windbg_cached*] [ Uses `dbgeng.h` to show debug info and caches internals in TLS for better performance. Useful only for cases when traces are gathered very often. May require linking with *ole32* and *dbgeng*. ] [MSVC, Intel on Windows] [yes] [no]]
+    [[*BOOST_STACKTRACE_USE_BACKTRACE*] [*boost_stacktrace_backtrace*] [Requires linking with *libdl* on POSIX and *libbacktrace* libraries[footnote Some *libbacktrace* packages SEGFAULT if there's a concurrent work with the same `backtrace_state` instance. To avoid that issue the Boost.Stacktrace library uses `thread_local` states, unfortunately this may consume a lot of memory if you often create and destroy execution threads in your application. Define *BOOST_STACKTRACE_BACKTRACE_FORCE_STATIC* to force single instance, but make sure that [@https://github.com/boostorg/stacktrace/blob/develop/test/thread_safety_checking.cpp thread_safety_checking.cpp] works well in your setup. ]. *libbacktrace* is probably already installed in your system[footnote If you are using Clang with libstdc++ you could get into troubles of including `<backtrace.h>`, because on some platforms Clang does not search for headers in the GCC's include paths and any attempt to add GCC's include path leads to linker errors. To explicitly specify a path to the `<backtrace.h>` header you could define the *BOOST_STACKTRACE_BACKTRACE_INCLUDE_FILE* to a full path to the header. For example on Ubuntu Xenial use the command line option *-DBOOST_STACKTRACE_BACKTRACE_INCLUDE_FILE=</usr/lib/gcc/x86_64-linux-gnu/5/include/backtrace.h>* while building with Clang. ], or built into your compiler.
 
      Otherwise (if you are a *MinGW*/*MinGW-w64* user for example) it can be downloaded [@https://github.com/ianlancetaylor/libbacktrace from here] or [@https://github.com/gcc-mirror/gcc/tree/master/libbacktrace from here]. ] [Any compiler on POSIX, or MinGW, or MinGW-w64] [yes] [yes]]
     [[*BOOST_STACKTRACE_USE_ADDR2LINE*] [*boost_stacktrace_addr2line*] [Use *addr2line* program to retrieve stacktrace. Requires linking with *libdl* library and `::fork` system call. Macro *BOOST_STACKTRACE_ADDR2LINE_LOCATION* must be defined to the absolute path to the addr2line executable if it is not located in /usr/bin/addr2line. ] [Any compiler on POSIX] [yes] [yes]]

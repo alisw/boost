@@ -1,8 +1,8 @@
-Boost Math Library [![Build Status](https://travis-ci.org/boostorg/math.svg?branch=develop)](https://travis-ci.org/boostorg/math)
+Boost Math Library 
+[![Build Status](https://drone.cpp.al/api/badges/boostorg/math/status.svg)](https://drone.cpp.al/boostorg/math)[![Build Status](https://github.com/boostorg/math/workflows/CI/badge.svg?branch=develop)](https://github.com/boostorg/math/actions)
 ==================
 
->ANNOUNCEMENT: Support for C++03 is now deprecated in this library and will be supported in existing features
->only until March 2021.  New features will require *at least* C++11, as will existing features from next year.
+>ANNOUNCEMENT: This library now requires a compliant C++14 compiler.
 
 This library is divided into several interconnected parts:
 
@@ -50,7 +50,7 @@ Tools for manipulating polynomials and for efficient evaluation of rationals or 
 
 ### Interpolation
 
-Function interpolation via barycentric rational interpolation, compactly supported quadartic, cubic, and quintic B-splines, the Chebyshev transform, trigonometric polynomials, Makima, pchip, and cubic Hermite splines.
+Function interpolation via barycentric rational interpolation, compactly supported quadratic, cubic, and quintic B-splines, the Chebyshev transform, trigonometric polynomials, Makima, pchip, cubic Hermite splines, and bilinear interpolation.
 
 ### Numerical Integration and Differentiation
 
@@ -60,14 +60,28 @@ The integration routines are usable for functions returning complex results - an
 
 ### Quaternions and Octonions
 
-Quaternion and Octonians are class templates similar to std::complex.
+Quaternion and Octonion are class templates similar to std::complex.
 
 The full documentation is available on [boost.org](http://www.boost.org/doc/libs/release/libs/math).
 
+### Standalone Mode
+
+Defining BOOST_MATH_STANDALONE allows Boost.Math to be used without any Boost dependencies. Some functionality is reduced in this mode. A static_assert message will alert you if a particular feature has been disabled by standalone mode.
+
+## Supported Compilers ##
+
+The following compilers are tested with the CI system, and are known to work. Starting with Boost 1.76 (April 2021 Release) a compiler that is fully compliant with C++11 is required to use Boost.Math.
+
+* g++ 5 or later
+* clang++ 5 or later
+* Visual Studio 2015 (14.0) or later
+
+## Build Status ##
+
 |                  |  Master  |   Develop   |
 |------------------|----------|-------------|
-| Travis           | [![Build Status](https://travis-ci.org/boostorg/math.svg?branch=master)](https://travis-ci.org/boostorg/math)  |  [![Build Status](https://travis-ci.org/boostorg/math.svg)](https://travis-ci.org/boostorg/math) |
-| Appveyor         | [![Build status](https://ci.appveyor.com/api/projects/status/cnugjx9dt7cou7nj/branch/master?svg=true)](https://ci.appveyor.com/project/jzmaddock/math/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/cnugjx9dt7cou7nj/branch/develop?svg=true)](https://ci.appveyor.com/project/jzmaddock/math/branch/develop)  |
+| Github Actions | [![Build Status](https://github.com/boostorg/math/workflows/CI/badge.svg?branch=master)](https://github.com/boostorg/math/actions) | [![Build Status](https://github.com/boostorg/math/workflows/CI/badge.svg?branch=develop)](https://github.com/boostorg/math/actions) |
+|Drone | [![Build Status](https://drone.cpp.al/api/badges/boostorg/math/status.svg?ref=refs/heads/master)](https://drone.cpp.al/boostorg/math) | [![Build Status](https://drone.cpp.al/api/badges/boostorg/math/status.svg)](https://drone.cpp.al/boostorg/math) |
 
 
 
@@ -100,7 +114,16 @@ You can either run all the tests listed in `Jamfile.v2` or run a single test:
     test$ ../../../b2 static_assert_test     <- single test
     test$ # A more advanced syntax, demoing various options for building the tests:
     test$ ../../../b2 -a -j2 -q --reconfigure toolset=clang cxxflags="--std=c++14 -fsanitize=address -fsanitize=undefined" linkflags="-fsanitize=undefined -fsanitize=address"
-    
+
+### Continuous Integration ###
+The default action for a PR or commit to a PR is for CI to run the full complement of tests. The following can be appended to the end of a commit message to modify behavior:
+
+    * [ci skip] to skip all tests
+    * [linux] to test using GCC Versions 5-12 and Clang Versions 5-14 on Ubuntu LTS versions 18.04-22.04.
+    * [apple] to test Apple Clang on the latest version of MacOS.
+    * [windows] to test MSVC-14.0, MSVC-14.2, MSVC-14.3, CYGWIN, and mingw on the latest version of Windows.
+    * [standalone] to run standalone mode compile tests
+     
 ### Building documentation ###
 
 Full instructions can be found [here](https://svn.boost.org/trac10/wiki/BoostDocs/GettingStarted), but to reiterate slightly:

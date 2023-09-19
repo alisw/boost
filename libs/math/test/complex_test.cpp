@@ -9,7 +9,7 @@
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/is_floating_point.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/static_assert.hpp>
+#include <boost/math/tools/assert.hpp>
 #include <boost/math/complex.hpp>
 
 #include <iostream>
@@ -24,6 +24,14 @@ namespace std{ using ::sqrt; using ::tan; using ::tanh; }
 #ifndef VERBOSE
 #undef BOOST_TEST_MESSAGE
 #define BOOST_TEST_MESSAGE(x)
+#endif
+
+#ifdef _MSC_VER
+#pragma warning (disable:C4996)
+#elif __GNUC__ >= 5
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__clang__)
+#  pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 //

@@ -9,6 +9,42 @@
 [section What's New]
 
 [/////////////////////////////////////////////////////////////////////////////]
+[section:spirit_2_5_9_boost_1_78 Spirit V2.5.9 (Boost V1.78.0)]
+
+* Improved headers self-sufficiency. [gh 695]
+* Removed unneeded `boost/foreach.hpp` include.
+* Fortified against `min` and `max` macros. [gh_pr 697]
+* Deprecated Phoenix V2 transition headers (`boost/spirit/include/phoenix*.hpp`). [gh_pr 699]
+* Fixed potential UB in `hold_any` (`-Wundefined-reinterpret-cast` warnings).
+* Fixed swapped parameters to `is_substitute`. [gh_pr 702] [gh 701] [gh 679]
+
+[endsect]
+
+[/////////////////////////////////////////////////////////////////////////////]
+[section:spirit_2_5_8_boost_1_77 Spirit V2.5.8 (Boost V1.77.0)]
+
+* Fixed keyword list parser with Fusion adapt ADT attribute. [gh 666]
+* Lex: Changed token id storage type to `std::size_t` (lexer engine is hardcoded
+  to `std::size_t`) to always be able to hold `boost::lexer::npos` value.
+* Ceased dependence on Foreach. [gh_pr 691]
+
+[endsect]
+
+[/////////////////////////////////////////////////////////////////////////////]
+[section:spirit_2_5_8_boost_1_76 Spirit V2.5.8 (Boost V1.76.0)]
+
+* Fixed assertion in standard parser with an input containing characters from
+  extended charset (on values above 0x7F) [gh_pr 620]
+* Karma real numbers generator produces 10.0e-04 instead of 1.0e-03 [gh 628] [gh_pr 629]
+* Improved `what()` info for `distinct` directive [gh_pr 631]
+* Enhanced debug output to print unicode code points as hex [gh_pr 634]
+* Missing inline keyword in `function_impl_invert::eval<bool>` specialization [gh 638]
+* Replaced Boost.Math with Boost.Core alternatives [gh_pr 648]
+* Removed hardcap on Karma's `RealPolicy::precision()` value [trac 7785] [trac 11056] [gh 585] [gh_pr 586]
+
+[endsect]
+
+[/////////////////////////////////////////////////////////////////////////////]
 [section:spirit_2_5_8_boost_1_74 Spirit V2.5.8 (Boost V1.74.0)]
 
 * Ceased dependence on Boost.Iostreams [gh_pr 599]

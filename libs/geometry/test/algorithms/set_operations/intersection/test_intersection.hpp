@@ -1,10 +1,12 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 // Unit Test
 
+// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
+
 // Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2016, 2017.
-// Modifications copyright (c) 2016-2017, Oracle and/or its affiliates.
+// This file was modified by Oracle on 2016-2021.
+// Modifications copyright (c) 2016-2021, Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -17,7 +19,8 @@
 #include <fstream>
 #include <iomanip>
 
-#include <boost/foreach.hpp>
+#include <boost/core/ignore_unused.hpp>
+#include <boost/range/value_type.hpp>
 #include <boost/variant/variant.hpp>
 
 #include <boost/geometry/algorithms/intersection.hpp>
@@ -30,10 +33,9 @@
 
 #include <boost/geometry/geometries/geometries.hpp>
 
-#include <boost/geometry/strategies/strategies.hpp>
-
 #include <boost/geometry/io/wkt/wkt.hpp>
 
+#include <boost/geometry/strategies/strategies.hpp>
 
 #if defined(TEST_WITH_SVG)
 #  include <boost/geometry/io/svg/svg_mapper.hpp>
@@ -66,15 +68,15 @@ void check_result(IntersectionOutput const& intersection_output,
     int expected_point_count, expectation_limits const& expected_length_or_area,
     ut_settings const& settings)
 {
+    boost::ignore_unused(expected_point_count);
+
     typedef typename boost::range_value<IntersectionOutput>::type OutputType;
     bool const is_line = bg::geometry_id<OutputType>::type::value == 2;
 
     typename bg::default_area_result<G1>::type length_or_area = 0;
     int n = 0;
     std::size_t nholes = 0;
-    for (typename IntersectionOutput::const_iterator it = intersection_output.begin();
-            it != intersection_output.end();
-            ++it)
+    for (auto it = intersection_output.begin(); it != intersection_output.end(); ++it)
     {
       if (! expected_count.empty())
         {
@@ -109,6 +111,8 @@ void check_result(IntersectionOutput const& intersection_output,
             "intersection: " << caseid << " not valid: " << message
             << " type: " << (type_for_assert_message<G1, G2>()));
     }
+
+    boost::ignore_unused(n);
 
 #if ! defined(BOOST_GEOMETRY_NO_BOOST_TEST)
 #if defined(BOOST_GEOMETRY_USE_RESCALING)
@@ -257,10 +261,9 @@ typename bg::default_area_result<G1>::type test_intersection(std::string const& 
         mapper.map(g2, "fill-opacity:0.3;fill:rgb(51,51,153);"
                     "stroke:rgb(51,51,153);stroke-width:3");
 
-        for (typename result_type::const_iterator it = intersection_output.begin();
-                it != intersection_output.end(); ++it)
+        for (auto const& item : intersection_output)
         {
-            mapper.map(*it, "fill-opacity:0.2;stroke-opacity:0.4;fill:rgb(255,0,0);"
+            mapper.map(item, "fill-opacity:0.2;stroke-opacity:0.4;fill:rgb(255,0,0);"
                         "stroke:rgb(255,0,255);stroke-width:8");
         }
     }

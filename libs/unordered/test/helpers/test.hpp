@@ -6,6 +6,7 @@
 #if !defined(BOOST_UNORDERED_TEST_TEST_HEADER)
 #define BOOST_UNORDERED_TEST_TEST_HEADER
 
+#include <boost/unordered/detail/fwd.hpp>
 #include <boost/core/lightweight_test.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/stringize.hpp>
@@ -137,8 +138,6 @@ namespace test {
       << BOOST_UNORDERED_HAVE_PIECEWISE_CONSTRUCT << "\n"                      \
       << "BOOST_UNORDERED_EMPLACE_LIMIT: " << BOOST_UNORDERED_EMPLACE_LIMIT    \
       << "\n"                                                                  \
-      << "BOOST_UNORDERED_USE_ALLOCATOR_TRAITS: "                              \
-      << BOOST_UNORDERED_USE_ALLOCATOR_TRAITS << "\n"                          \
       << "BOOST_UNORDERED_CXX11_CONSTRUCTION: "                                \
       << BOOST_UNORDERED_CXX11_CONSTRUCTION << "\n\n"                          \
       << std::flush;                                                           \
