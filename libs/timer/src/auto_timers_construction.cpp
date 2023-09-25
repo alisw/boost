@@ -18,9 +18,7 @@
 
 // define BOOST_TIMER_SOURCE so that <boost/timer/config.hpp> knows
 // the library is being built (possibly exporting rather than importing code)
-#ifndef BOOST_TIMER_SOURCE
-# define BOOST_TIMER_SOURCE
-#endif
+#define BOOST_TIMER_SOURCE 
 
 #include <boost/timer/timer.hpp>
 #include <iostream>

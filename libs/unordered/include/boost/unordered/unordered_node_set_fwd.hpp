@@ -12,6 +12,7 @@
 #endif
 
 #include <boost/functional/hash_fwd.hpp>
+#include <boost/unordered/detail/fwd.hpp>
 #include <functional>
 #include <memory>
 

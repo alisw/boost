@@ -1,7 +1,6 @@
 // Boost.Geometry
 
 // Copyright (c) 2018 Adeel Ahmad, Islamabad, Pakistan.
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
 // Contributed and/or modified by Adeel Ahmad,
 //   as part of Google Summer of Code 2018 program.
@@ -31,6 +30,8 @@
 #ifndef BOOST_GEOMETRY_FORMULAS_KARNEY_DIRECT_HPP
 #define BOOST_GEOMETRY_FORMULAS_KARNEY_DIRECT_HPP
 
+
+#include <boost/array.hpp>
 
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/special_functions/hypot.hpp>

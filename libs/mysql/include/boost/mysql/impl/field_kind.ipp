@@ -14,7 +14,7 @@
 
 #include <ostream>
 
-std::ostream& boost::mysql::operator<<(std::ostream& os, boost::mysql::field_kind v)
+inline std::ostream& boost::mysql::operator<<(std::ostream& os, boost::mysql::field_kind v)
 {
     switch (v)
     {

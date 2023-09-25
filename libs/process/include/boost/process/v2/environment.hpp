@@ -13,7 +13,6 @@
 #include <boost/process/v2/detail/config.hpp>
 #include <boost/process/v2/cstring_ref.hpp>
 #include <boost/process/v2/detail/utf8.hpp>
-#include <boost/type_traits.hpp>
 #include <functional>
 #include <memory>
 #include <numeric>
@@ -502,8 +501,8 @@ struct key
 
     template< class Source >
     key( const Source& source,
-        decltype(std::declval<Source>().data()) = nullptr,
-        decltype(std::declval<Source>().size()) = 0u)
+        decltype(source.data()) = nullptr,
+        decltype(source.size()) = 0u)
         : value_(
              BOOST_PROCESS_V2_NAMESPACE::detail::conv_string<char_type, traits_type>(
                 source.data(), source.size()))
@@ -725,8 +724,8 @@ struct value
 
     template< class Source >
     value( const Source& source,
-           decltype(std::declval<Source>().data()) = nullptr,
-    decltype(std::declval<Source>().size()) = 0u)
+           decltype(source.data()) = nullptr,
+    decltype(source.size()) = 0u)
     : value_(BOOST_PROCESS_V2_NAMESPACE::detail::conv_string<char_type, traits_type>(
         source.data(), source.size()))
     {
@@ -975,8 +974,8 @@ struct key_value_pair
 
     template< class Source >
     key_value_pair( const Source& source,
-           decltype(std::declval<Source>().data()) = nullptr,
-           decltype(std::declval<Source>().size()) = 0u)
+           decltype(source.data()) = nullptr,
+           decltype(source.size()) = 0u)
             : value_(BOOST_PROCESS_V2_NAMESPACE::detail::conv_string<char_type, traits_type>(
                 source.data(), source.size()))
     {
@@ -1744,8 +1743,8 @@ struct process_environment
     return build_env(env_buffer);
   }
 
-  process_environment(std::initializer_list<string_view> sv)  : unicode_env{build_env(sv)} {}
-  process_environment(std::initializer_list<wstring_view> sv) : unicode_env{build_env(sv)} {}
+  process_environment(std::initializer_list<string_view> sv)  : unicode_env{build_env(sv,  "")} {}
+  process_environment(std::initializer_list<wstring_view> sv) : unicode_env{build_env(sv, L"")} {}
 
   template<typename Args>
   process_environment(Args && args) : unicode_env{build_env(std::forward<Args>(args))}

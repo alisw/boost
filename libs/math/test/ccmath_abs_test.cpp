@@ -64,7 +64,7 @@ int main()
     test<long double>();
     #endif
 
-    #if defined(BOOST_MATH_TEST_FLOAT128) && !defined(BOOST_MATH_USING_BUILTIN_CONSTANT_P)
+    #if defined(BOOST_HAS_FLOAT128) && !defined(BOOST_MATH_USING_BUILTIN_CONSTANT_P)
     test<boost::multiprecision::float128>();
     #endif
 
@@ -88,7 +88,7 @@ int main()
     fabs_test<long double>();
     #endif
 
-    #if defined(BOOST_MATH_TEST_FLOAT128) && !defined(BOOST_MATH_USING_BUILTIN_CONSTANT_P) && defined(BOOST_MATH_TEST_FLOAT128)
+    #if defined(BOOST_HAS_FLOAT128) && !defined(BOOST_MATH_USING_BUILTIN_CONSTANT_P)
     fabs_test<boost::multiprecision::float128>();
     #endif
 

@@ -13,7 +13,7 @@
 #include <boost/url/detail/config.hpp>
 #include <boost/url/error_types.hpp>
 #include <boost/url/scheme.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 
 namespace boost {
 namespace urls {
@@ -37,12 +37,12 @@ struct scheme_rule
 {
     struct value_type
     {
-        core::string_view scheme;
+        string_view scheme;
         urls::scheme scheme_id =
             urls::scheme::unknown;
     };
 
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end) const noexcept;

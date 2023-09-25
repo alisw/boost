@@ -31,7 +31,7 @@ namespace urls {
 
     @par Example
     @code
-    system::result< url_view > rv = parse_absolute_uri( "http://example.com/index.htm?id=1" );
+    result< url_view > rv = parse_absolute_uri( "http://example.com/index.htm?id=1" );
     @endcode
 
     @par BNF
@@ -62,9 +62,9 @@ namespace urls {
         @ref url_view.
 */
 BOOST_URL_DECL
-system::result<url_view>
+result<url_view>
 parse_absolute_uri(
-    core::string_view s);
+    string_view s);
 
 //------------------------------------------------
 
@@ -81,7 +81,7 @@ parse_absolute_uri(
 
     @par Example
     @code
-    system::result< url_view > = parse_origin_form( "/index.htm?layout=mobile" );
+    result< url_view > = parse_origin_form( "/index.htm?layout=mobile" );
     @endcode
 
     @par BNF
@@ -109,9 +109,9 @@ parse_absolute_uri(
         @ref url_view.
 */
 BOOST_URL_DECL
-system::result<url_view>
+result<url_view>
 parse_origin_form(
-    core::string_view s);
+    string_view s);
 
 //------------------------------------------------
 
@@ -128,7 +128,7 @@ parse_origin_form(
 
     @par Example
     @code
-    system::result< url_view > = parse_relative_ref( "images/dot.gif?v=hide#a" );
+    result< url_view > = parse_relative_ref( "images/dot.gif?v=hide#a" );
     @endcode
 
     @par BNF
@@ -162,9 +162,9 @@ parse_origin_form(
         @ref url_view.
 */
 BOOST_URL_DECL
-system::result<url_view>
+result<url_view>
 parse_relative_ref(
-    core::string_view s);
+    string_view s);
 
 //------------------------------------------------
 
@@ -181,7 +181,7 @@ parse_relative_ref(
 
     @par Example
     @code
-    system::result< url_view > = parse_uri( "https://www.example.com/index.htm?id=guest#s1" );
+    result< url_view > = parse_uri( "https://www.example.com/index.htm?id=guest#s1" );
     @endcode
 
     @par BNF
@@ -212,9 +212,9 @@ parse_relative_ref(
         @ref url_view.
 */
 BOOST_URL_DECL
-system::result<url_view>
+result<url_view>
 parse_uri(
-    core::string_view s);
+    string_view s);
 
 //------------------------------------------------
 
@@ -231,7 +231,7 @@ parse_uri(
 
     @par Example
     @code
-    system::result< url_view > = parse_uri_reference( "ws://echo.example.com/?name=boost#demo" );
+    result< url_view > = parse_uri_reference( "ws://echo.example.com/?name=boost#demo" );
     @endcode
 
     @par BNF
@@ -274,9 +274,9 @@ parse_uri(
         @ref url_view.
 */
 BOOST_URL_DECL
-system::result<url_view>
+result<url_view>
 parse_uri_reference(
-    core::string_view s);
+    string_view s);
 
 } // url
 } // boost

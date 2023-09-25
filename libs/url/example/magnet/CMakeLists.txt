@@ -7,7 +7,15 @@
 # Official repository: https://github.com/boostorg/url
 #
 
-add_executable(magnet magnet.cpp filter_view.hpp)
-target_link_libraries(magnet PRIVATE Boost::url)
-source_group("" FILES magnet.cpp filter_view.hpp)
+source_group("" FILES
+        magnet.cpp
+        filter_view.hpp
+        )
+
+add_executable(magnet
+        magnet.cpp
+        filter_view.hpp
+        )
+
 set_property(TARGET magnet PROPERTY FOLDER "Examples")
+target_link_libraries(magnet PRIVATE Boost::url)

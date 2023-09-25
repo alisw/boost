@@ -28,7 +28,7 @@ struct dec_octet_rule_test
 
         // javadoc
         {
-            system::result< unsigned char > rv = parse( "255", dec_octet_rule );
+            result< unsigned char > rv = parse( "255", dec_octet_rule );
 
             (void)rv;
         }

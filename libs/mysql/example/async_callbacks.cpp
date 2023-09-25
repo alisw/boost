@@ -7,19 +7,9 @@
 
 //[example_async_callbacks
 
-#include <boost/mysql/connection.hpp>
-#include <boost/mysql/diagnostics.hpp>
-#include <boost/mysql/error_code.hpp>
-#include <boost/mysql/error_with_diagnostics.hpp>
-#include <boost/mysql/handshake_params.hpp>
-#include <boost/mysql/results.hpp>
-#include <boost/mysql/row_view.hpp>
-#include <boost/mysql/statement.hpp>
-#include <boost/mysql/tcp_ssl.hpp>
-#include <boost/mysql/throw_on_error.hpp>
+#include <boost/mysql.hpp>
 
 #include <boost/asio/io_context.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/context.hpp>
 
 #include <iostream>
@@ -95,7 +85,7 @@ public:
 
     void query_employees()
     {
-        conn.async_execute(stmt.bind(company_id), result, diag, [this](error_code err) {
+        conn.async_execute_statement(stmt, std::make_tuple(company_id), result, diag, [this](error_code err) {
             boost::mysql::throw_on_error(err, diag);
             for (boost::mysql::row_view employee : result.rows())
             {

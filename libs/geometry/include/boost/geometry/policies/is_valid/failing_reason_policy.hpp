@@ -1,8 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
 // Copyright (c) 2015, Oracle and/or its affiliates.
+
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -15,7 +14,7 @@
 #include <sstream>
 
 #include <boost/geometry/io/dsv/write.hpp>
-#include <boost/geometry/util/constexpr.hpp>
+#include <boost/geometry/util/condition.hpp>
 #include <boost/geometry/util/range.hpp>
 #include <boost/geometry/algorithms/validity_failure_type.hpp>
 #include <boost/geometry/algorithms/detail/overlay/debug_turn_info.hpp>
@@ -70,12 +69,10 @@ private:
     static inline
     validity_failure_type transform_failure_type(validity_failure_type failure)
     {
-        if BOOST_GEOMETRY_CONSTEXPR (AllowDuplicates)
+        if (BOOST_GEOMETRY_CONDITION(
+                AllowDuplicates && failure == failure_duplicate_points))
         {
-            if (failure == failure_duplicate_points)
-            {
-                return no_failure;
-            }
+            return no_failure;
         }
         return failure;
     }
@@ -84,12 +81,10 @@ private:
     validity_failure_type transform_failure_type(validity_failure_type failure,
                                                  bool is_linear)
     {
-        if BOOST_GEOMETRY_CONSTEXPR (AllowSpikes)
+        if (BOOST_GEOMETRY_CONDITION(
+                is_linear && AllowSpikes && failure == failure_spikes))
         {
-            if (is_linear && failure == failure_spikes)
-            {
-                return no_failure;
-            }
+            return no_failure;
         }
         return transform_failure_type(failure);
     }
@@ -128,12 +123,9 @@ private:
                                  bool is_linear,
                                  SpikePoint const& spike_point)
         {
-            if BOOST_GEOMETRY_CONSTEXPR (AllowSpikes)
+            if (BOOST_GEOMETRY_CONDITION(is_linear && AllowSpikes))
             {
-                if (is_linear)
-                {
-                    return;
-                }
+                return;
             }
 
             oss << ". A spike point was found with apex at "
@@ -181,7 +173,7 @@ private:
         static inline void apply(std::ostringstream& oss,
                                  Point const& point)
         {
-            if BOOST_GEOMETRY_CONSTEXPR (AllowDuplicates)
+            if (BOOST_GEOMETRY_CONDITION(AllowDuplicates))
             {
                 return;
             }

@@ -52,7 +52,7 @@ struct is_pred<T, void_t<
     @code
     constexpr lut_chars vowel_chars = "AEIOU" "aeiou";
 
-    system::result< core::string_view > rv = parse( "Aiea", token_rule( vowel_chars ) );
+    result< string_view > rv = parse( "Aiea", token_rule( vowel_chars ) );
     @endcode
 
     @see

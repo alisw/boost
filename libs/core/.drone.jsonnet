@@ -334,14 +334,6 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
         ["deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main"],
     ),
 
-    linux_pipeline(
-        "Linux 22.04 Clang 16",
-        "cppalliance/droneubuntu2204:1",
-        { TOOLSET: 'clang', COMPILER: 'clang++-16', CXXSTD: '03,11,14,17,20,2b' },
-        "clang-16",
-        ["deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"],
-    ),
-
     macos_pipeline(
         "MacOS 10.15 Xcode 12.2 UBSAN",
         { TOOLSET: 'clang', COMPILER: 'clang++', CXXSTD: '03,11,14,1z' } + ubsan,
@@ -367,24 +359,24 @@ local windows_pipeline(name, image, environment, arch = "amd64") =
     windows_pipeline(
         "Windows VS2015 msvc-14.0",
         "cppalliance/dronevs2015",
-        { TOOLSET: 'msvc-14.0', CXXSTD: '14,latest', ADDRMD: '32,64' },
+        { TOOLSET: 'msvc-14.0', CXXSTD: '14,latest' },
     ),
 
     windows_pipeline(
         "Windows VS2017 msvc-14.1",
         "cppalliance/dronevs2017",
-        { TOOLSET: 'msvc-14.1', CXXSTD: '14,17,latest', ADDRMD: '32,64' },
+        { TOOLSET: 'msvc-14.1', CXXSTD: '14,17,latest' },
     ),
 
     windows_pipeline(
         "Windows VS2019 msvc-14.2",
         "cppalliance/dronevs2019",
-        { TOOLSET: 'msvc-14.2', CXXSTD: '14,17,20,latest', ADDRMD: '32,64' },
+        { TOOLSET: 'msvc-14.2', CXXSTD: '14,17,20,latest' },
     ),
 
     windows_pipeline(
         "Windows VS2022 msvc-14.3",
         "cppalliance/dronevs2022:1",
-        { TOOLSET: 'msvc-14.3', CXXSTD: '14,17,20,latest', ADDRMD: '32,64' },
+        { TOOLSET: 'msvc-14.3', CXXSTD: '14,17,20,latest' },
     ),
 ]

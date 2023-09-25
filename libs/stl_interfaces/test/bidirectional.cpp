@@ -18,9 +18,7 @@
 
 
 struct basic_bidirectional_iter : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                       basic_bidirectional_iter,
-#endif
                                       std::bidirectional_iterator_tag,
                                       int>
 {
@@ -45,9 +43,7 @@ struct basic_bidirectional_iter : boost::stl_interfaces::iterator_interface<
     }
 
     using base_type = boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
         basic_bidirectional_iter,
-#endif
         std::bidirectional_iterator_tag,
         int>;
     using base_type::operator++;
@@ -75,9 +71,7 @@ static_assert(
 
 struct basic_adapted_bidirectional_ptr_iter
     : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           basic_adapted_bidirectional_ptr_iter,
-#endif
           std::bidirectional_iterator_tag,
           int>
 {
@@ -105,9 +99,7 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 
 struct basic_adapted_bidirectional_list_iter
     : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           basic_adapted_bidirectional_list_iter,
-#endif
           std::bidirectional_iterator_tag,
           int>
 {
@@ -137,9 +129,7 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 template<typename ValueType>
 struct adapted_bidirectional_ptr_iter
     : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
           adapted_bidirectional_ptr_iter<ValueType>,
-#endif
           std::bidirectional_iterator_tag,
           ValueType>
 {
@@ -195,9 +185,7 @@ BOOST_STL_INTERFACES_STATIC_ASSERT_ITERATOR_TRAITS(
 
 template<typename ValueType>
 struct bidirectional_iter : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                 bidirectional_iter<ValueType>,
-#endif
                                 std::bidirectional_iterator_tag,
                                 ValueType>
 {
@@ -228,9 +216,7 @@ struct bidirectional_iter : boost::stl_interfaces::iterator_interface<
     }
 
     using base_type = boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
         bidirectional_iter<ValueType>,
-#endif
         std::bidirectional_iterator_tag,
         ValueType>;
     using base_type::operator++;

@@ -29,7 +29,9 @@
 
 #include <boost/geometry/geometries/concepts/point_concept.hpp>
 
+#ifndef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
 #include <initializer_list>
+#endif
 
 namespace boost { namespace geometry
 {
@@ -75,6 +77,8 @@ public :
         : base_type(begin, end)
     {}
 
+#ifndef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
+
     /// \constructor_initializer_list{linestring}
     inline linestring(std::initializer_list<Point> l)
         : base_type(l.begin(), l.end())
@@ -92,6 +96,8 @@ public :
 //        return *this;
 //    }
 //#endif
+
+#endif
 };
 
 } // namespace model

@@ -15,40 +15,38 @@ add_executable(
     boost_mysql_integrationtests
 
     # Utilities
-    src/get_endpoint.cpp
-    src/metadata_validator.cpp
-    src/er_network_variant.cpp
-    src/sync_errc.cpp
-    src/sync_exc.cpp
-    src/async_callback.cpp
-    src/async_coroutines.cpp
-    src/async_coroutinescpp20.cpp
+    utils/src/get_endpoint.cpp
+    utils/src/metadata_validator.cpp
+    utils/src/er_network_variant.cpp
+    utils/src/sync_errc.cpp
+    utils/src/sync_exc.cpp
+    utils/src/async_callback.cpp
+    utils/src/async_coroutines.cpp
+    utils/src/async_coroutinescpp20.cpp
 
     # Actual tests
-    test/spotchecks.cpp
-    test/crud.cpp
-    test/handshake.cpp
-    test/prepared_statements.cpp
-    test/stored_procedures.cpp
-    test/multi_queries.cpp
-    test/static_interface.cpp
-    test/reconnect.cpp
-    test/db_specific.cpp
-    test/database_types.cpp
+    spotchecks.cpp
+    crud.cpp
+    handshake.cpp
+    prepared_statements.cpp
+    reconnect.cpp
+    db_specific.cpp
+    database_types.cpp
+
+    entry_point.cpp
 )
 target_include_directories(
     boost_mysql_integrationtests
     PRIVATE
-    "include"
+    utils/include
 )
 target_link_libraries(
     boost_mysql_integrationtests
     PRIVATE
     boost_mysql_testing
-    Boost::mysql
     Boost::context
 )
-boost_mysql_common_target_settings(boost_mysql_integrationtests)
+common_target_settings(boost_mysql_integrationtests)
 if (${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.16)
     target_precompile_headers(
         boost_mysql_integrationtests
@@ -56,6 +54,11 @@ if (${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.16)
         pch.hpp
     )
 endif()
+set_source_files_properties(
+    entry_point.cpp
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS ON
+)
 
 # Compose the test filter
 if (NOT "$ENV{BOOST_MYSQL_NO_UNIX_SOCKET_TESTS}" STREQUAL "")

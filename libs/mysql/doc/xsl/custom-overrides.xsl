@@ -7,7 +7,9 @@
 
 <xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" expand-text="yes">
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  exclude-result-prefixes="xs"
+  expand-text="yes">
 
   <xsl:variable name="doc-ns" select="'boost::mysql'"/>
   <xsl:variable name="doc-ref" select="'mysql.ref'"/>
@@ -33,12 +35,8 @@
     'Stream',
     'SocketStream',
     'Executor',
-    'WritableFieldTuple',
-    'FieldViewFwdIterator',
-    'ExecutionRequest',
-    'StaticRow',
-    'ResultsType',
-    'ExecutionStateType'
+    'FieldLikeTuple',
+    'FieldViewFwdIterator'
   "/>
 
 </xsl:stylesheet>

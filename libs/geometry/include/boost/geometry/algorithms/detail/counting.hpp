@@ -30,6 +30,8 @@
 
 #include <boost/geometry/util/range.hpp>
 
+#include <boost/geometry/algorithms/detail/interior_iterator.hpp>
+
 
 namespace boost { namespace geometry
 {
@@ -65,8 +67,10 @@ struct polygon_count
     {
         std::size_t n = RangeCount::apply(exterior_ring(poly));
 
-        auto const& rings = interior_rings(poly);
-        for (auto it = boost::begin(rings); it != boost::end(rings); ++it)
+        typename interior_return_type<Polygon const>::type
+            rings = interior_rings(poly);
+        for (typename detail::interior_iterator<Polygon const>::type
+                it = boost::begin(rings); it != boost::end(rings); ++it)
         {
             n += RangeCount::apply(*it);
         }
@@ -80,10 +84,13 @@ template <typename SingleCount>
 struct multi_count
 {
     template <typename MultiGeometry>
-    static inline std::size_t apply(MultiGeometry const& multi)
+    static inline std::size_t apply(MultiGeometry const& geometry)
     {
         std::size_t n = 0;
-        for (auto it = boost::begin(multi); it != boost::end(multi); ++it)
+        for (typename boost::range_iterator<MultiGeometry const>::type
+                 it = boost::begin(geometry);
+             it != boost::end(geometry);
+             ++it)
         {
             n += SingleCount::apply(*it);
         }

@@ -28,14 +28,14 @@ namespace threading {
 enum level {
   /** Only one thread will execute. 
    */
-  single,
+  single     = MPI_THREAD_SINGLE,
   /** Only main thread will do MPI calls.
    * 
    * The process may be multi-threaded, but only the main 
    * thread will make MPI calls (all MPI calls are ``funneled''
    * to the main thread).
    */
-  funneled,
+  funneled   = MPI_THREAD_FUNNELED,
   /** Only one thread at the time do MPI calls.
    * 
    * The process may be multi-threaded, and multiple 
@@ -43,12 +43,12 @@ enum level {
    * MPI calls are not made concurrently from two distinct 
    * threads (all MPI calls are ``serialized'').
    */
-  serialized,
+  serialized = MPI_THREAD_SERIALIZED,
   /** Multiple thread may do MPI calls.
    * 
    * Multiple threads may call MPI, with no restrictions.
    */
-  multiple
+  multiple   = MPI_THREAD_MULTIPLE
 };
 
 /** Formated output for threading level. */
@@ -270,17 +270,6 @@ public:
    * Returns a pair with the version and sub-version number.
    */
   static std::pair<int, int> version();
-
-  /** @brief MPI library implementation version string.
-   *
-   * This routine returns a string with an additional library version
-   * information. The actual form of this version string is unspecified,
-   * but may be documented by the underlying MPI implementation.
-   * This routine is implemented as a call to @c MPI_Get_library_version,
-   * which is available from MPI-3. On older implementations the empty
-   * string will be returned.
-   */
-  static std::string library_version();
 
 private:
   /// Whether this environment object called MPI_Init

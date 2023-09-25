@@ -1,8 +1,7 @@
 // Boost.Geometry
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
 // Copyright (c) 2018 Oracle and/or its affiliates.
+
 // Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -128,14 +127,14 @@ public:
         CT mp = formula::quarter_meridian<CT>(spheroid);
         CT mu = geometry::math::pi<CT>()/CT(2) * m / mp;
 
-        if (BOOST_GEOMETRY_CONDITION(Order == 0))
+        if (Order == 0)
         {
             return mu;
         }
 
         CT H2 = 1.5 * n;
 
-        if (BOOST_GEOMETRY_CONDITION(Order == 1))
+        if (Order == 1)
         {
             return mu + H2 * sin(2*mu);
         }
@@ -143,7 +142,7 @@ public:
         CT n2 = n * n;
         CT H4 = 1.3125 * n2;
 
-        if (BOOST_GEOMETRY_CONDITION(Order == 2))
+        if (Order == 2)
         {
             return mu + H2 * sin(2*mu) + H4 * sin(4*mu);
         }
@@ -152,7 +151,7 @@ public:
         H2 -= 0.84375 * n3;
         CT H6 = 1.572916667 * n3;
 
-        if (BOOST_GEOMETRY_CONDITION(Order == 3))
+        if (Order == 3)
         {
             return mu + H2 * sin(2*mu) + H4 * sin(4*mu) + H6 * sin(6*mu);
         }

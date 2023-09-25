@@ -38,6 +38,7 @@ struct pj_ptr
         : m_ptr(ptr)
     {}
 
+#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     pj_ptr(pj_ptr && other)
         : m_ptr(other.m_ptr)
     {
@@ -52,6 +53,7 @@ struct pj_ptr
         other.m_ptr = NULL;
         return *this;
     }
+#endif
 
     projPJ get() const
     {
@@ -82,7 +84,7 @@ struct pj_projection
     {
         double x = boost::geometry::get_as_radian<0>(in);
         double y = boost::geometry::get_as_radian<1>(in);
-
+    
         projUV p1;
         projUV p2;
 
@@ -100,7 +102,7 @@ struct pj_projection
     {
         double lon = boost::geometry::get_as_radian<0>(in);
         double lat = boost::geometry::get_as_radian<1>(in);
-
+    
         projUV p1;
         projUV p2;
 
@@ -191,6 +193,7 @@ struct proj5_ptr
         : m_ptr(ptr)
     {}
 
+#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     proj5_ptr(proj5_ptr && other)
         : m_ptr(other.m_ptr)
     {
@@ -205,6 +208,7 @@ struct proj5_ptr
         other.m_ptr = NULL;
         return *this;
     }
+#endif
 
     PJ *get() const
     {

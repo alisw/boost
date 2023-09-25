@@ -30,9 +30,9 @@ struct range_rule_test
     struct big_rule
     {
         char unused[4096]{};
-        using value_type = core::string_view;
+        using value_type = string_view;
 
-        system::result<value_type>
+        result<value_type>
         parse(
             char const*& it,
             char const* end) const noexcept
@@ -46,7 +46,7 @@ struct range_rule_test
                 return error::mismatch;
             if(*it == ';')
                 return error::mismatch;
-            return core::string_view(it++, 1);
+            return string_view(it++, 1);
         }
     };
 
@@ -55,9 +55,9 @@ struct range_rule_test
     void
     check(
         R const& r,
-        core::string_view s,
+        string_view s,
         std::initializer_list<
-            core::string_view> init)
+            string_view> init)
     {
         auto rv = parse(s, r);
         if(! BOOST_TEST(rv.has_value()))
@@ -83,17 +83,17 @@ struct range_rule_test
 
         // range()
         {
-            range<core::string_view> v;
+            range<string_view> v;
             BOOST_TEST(v.empty());
             BOOST_TEST_EQ(v.size(), 0);
 
             // move
-            range<core::string_view> v2(std::move(v));
+            range<string_view> v2(std::move(v));
             BOOST_TEST(v2.empty());
             BOOST_TEST_EQ(v2.size(), 0);
 
             // copy
-            range<core::string_view> v3(v);
+            range<string_view> v3(v);
             BOOST_TEST(v3.empty());
             BOOST_TEST_EQ(v3.size(), 0);
         }
@@ -101,7 +101,7 @@ struct range_rule_test
         // range(range&&)
         {
             auto v0 = parse(";a;b;c", r0).value();
-            range<core::string_view> v(std::move(v0));
+            range<string_view> v(std::move(v0));
             BOOST_TEST(v0.empty());
             BOOST_TEST_EQ(v0.size(), 0);
             BOOST_TEST_EQ(v0.begin(), v0.end());
@@ -113,7 +113,7 @@ struct range_rule_test
         // range(range const&)
         {
             auto v0 = parse(";a;b;c", r0).value();
-            range<core::string_view> v(v0);
+            range<string_view> v(v0);
             BOOST_TEST(! v0.empty());
             BOOST_TEST_EQ(v0.size(), 3);
             BOOST_TEST_EQ(v0.string(), ";a;b;c");
@@ -231,7 +231,7 @@ struct range_rule_test
 
         // javadoc
         {
-            system::result< range<core::string_view> > rv = parse( ";alpha;xray;charlie",
+            result< range<string_view> > rv = parse( ";alpha;xray;charlie",
                 range_rule(
                     tuple_rule(
                         squelch( delim_rule( ';' ) ),
@@ -242,7 +242,7 @@ struct range_rule_test
 
         // javadoc
         {
-            system::result< range< core::string_view > > rv = parse( "whiskey,tango,foxtrot",
+            result< range< string_view > > rv = parse( "whiskey,tango,foxtrot",
                 range_rule(
                     token_rule( alpha_chars ),          // first
                     tuple_rule(                      // next

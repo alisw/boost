@@ -5,8 +5,6 @@
 # NOTE: CMake support for Boost.Parameter is currently experimental at best
 #       and the interface is likely to change in the future
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
 # TODO: Also process literate tests
 file(GLOB test_files *.cpp)
 

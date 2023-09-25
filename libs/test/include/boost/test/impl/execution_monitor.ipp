@@ -194,13 +194,6 @@ namespace { void _set_se_translator( void* ) {} }
 #  include <boost/core/demangle.hpp>
 #endif
 
-#if !defined(BOOST_MSSTL_VERSION) || (BOOST_MSSTL_VERSION >= 120)
-#  include <inttypes.h>
-#  define BOOST_TEST_PRIxPTR PRIxPTR
-#else
-#  define BOOST_TEST_PRIxPTR "08lx"
-#endif
-
 #include <boost/test/detail/suppress_warnings.hpp>
 
 //____________________________________________________________________________//
@@ -432,48 +425,48 @@ system_signal_exception::report() const
 #ifndef BOOST_TEST_LIMITED_SIGNAL_DETAILS
         case ILL_ILLOPC:
             report_error( execution_exception::system_fatal_error,
-                          "signal: illegal opcode; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: illegal opcode; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case ILL_ILLTRP:
             report_error( execution_exception::system_fatal_error,
-                          "signal: illegal trap; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: illegal trap; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case ILL_PRVREG:
             report_error( execution_exception::system_fatal_error,
-                          "signal: privileged register; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: privileged register; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case ILL_BADSTK:
             report_error( execution_exception::system_fatal_error,
-                          "signal: internal stack error; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: internal stack error; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
 #endif
         case ILL_ILLOPN:
             report_error( execution_exception::system_fatal_error,
-                          "signal: illegal operand; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: illegal operand; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case ILL_ILLADR:
             report_error( execution_exception::system_fatal_error,
-                          "signal: illegal addressing mode; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: illegal addressing mode; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case ILL_PRVOPC:
             report_error( execution_exception::system_fatal_error,
-                          "signal: privileged opcode; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: privileged opcode; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case ILL_COPROC:
             report_error( execution_exception::system_fatal_error,
-                          "signal: co-processor error; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: co-processor error; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         default:
             report_error( execution_exception::system_fatal_error,
-                          "signal: SIGILL, si_code: %d (illegal instruction; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR ")",
+                          "signal: SIGILL, si_code: %d (illegal instruction; address of failing instruction: 0x%08lx)",
                           m_sig_info->si_code, (uintptr_t) m_sig_info->si_addr );
             break;
         }
@@ -483,47 +476,47 @@ system_signal_exception::report() const
         switch( m_sig_info->si_code ) {
         case FPE_INTDIV:
             report_error( execution_exception::system_error,
-                          "signal: integer divide by zero; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: integer divide by zero; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_INTOVF:
             report_error( execution_exception::system_error,
-                          "signal: integer overflow; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: integer overflow; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_FLTDIV:
             report_error( execution_exception::system_error,
-                          "signal: floating point divide by zero; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: floating point divide by zero; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_FLTOVF:
             report_error( execution_exception::system_error,
-                          "signal: floating point overflow; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: floating point overflow; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_FLTUND:
             report_error( execution_exception::system_error,
-                          "signal: floating point underflow; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: floating point underflow; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_FLTRES:
             report_error( execution_exception::system_error,
-                          "signal: floating point inexact result; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: floating point inexact result; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_FLTINV:
             report_error( execution_exception::system_error,
-                          "signal: invalid floating point operation; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: invalid floating point operation; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case FPE_FLTSUB:
             report_error( execution_exception::system_error,
-                          "signal: subscript out of range; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR,
+                          "signal: subscript out of range; address of failing instruction: 0x%08lx",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         default:
             report_error( execution_exception::system_error,
-                          "signal: SIGFPE, si_code: %d (errnoneous arithmetic operations; address of failing instruction: 0x%" BOOST_TEST_PRIxPTR ")",
+                          "signal: SIGFPE, si_code: %d (errnoneous arithmetic operations; address of failing instruction: 0x%08lx)",
                           m_sig_info->si_code, (uintptr_t) m_sig_info->si_addr );
             break;
         }
@@ -534,18 +527,18 @@ system_signal_exception::report() const
 #ifndef BOOST_TEST_LIMITED_SIGNAL_DETAILS
         case SEGV_MAPERR:
             report_error( execution_exception::system_fatal_error,
-                          "memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ": no mapping at fault address",
+                          "memory access violation at address: 0x%08lx: no mapping at fault address",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case SEGV_ACCERR:
             report_error( execution_exception::system_fatal_error,
-                          "memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ": invalid permissions",
+                          "memory access violation at address: 0x%08lx: invalid permissions",
                           (uintptr_t) m_sig_info->si_addr );
             break;
 #endif
         default:
             report_error( execution_exception::system_fatal_error,
-                          "signal: SIGSEGV, si_code: %d (memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ")",
+                          "signal: SIGSEGV, si_code: %d (memory access violation at address: 0x%08lx)",
                           m_sig_info->si_code, (uintptr_t) m_sig_info->si_addr );
             break;
         }
@@ -556,23 +549,23 @@ system_signal_exception::report() const
 #ifndef BOOST_TEST_LIMITED_SIGNAL_DETAILS
         case BUS_ADRALN:
             report_error( execution_exception::system_fatal_error,
-                          "memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ": invalid address alignment",
+                          "memory access violation at address: 0x%08lx: invalid address alignment",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case BUS_ADRERR:
             report_error( execution_exception::system_fatal_error,
-                          "memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ": non-existent physical address",
+                          "memory access violation at address: 0x%08lx: non-existent physical address",
                           (uintptr_t) m_sig_info->si_addr );
             break;
         case BUS_OBJERR:
             report_error( execution_exception::system_fatal_error,
-                          "memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ": object specific hardware error",
+                          "memory access violation at address: 0x%08lx: object specific hardware error",
                           (uintptr_t) m_sig_info->si_addr );
             break;
 #endif
         default:
             report_error( execution_exception::system_fatal_error,
-                          "signal: SIGSEGV, si_code: %d (memory access violation at address: 0x%" BOOST_TEST_PRIxPTR ")",
+                          "signal: SIGSEGV, si_code: %d (memory access violation at address: 0x%08lx)",
                           m_sig_info->si_code, (uintptr_t) m_sig_info->si_addr );
             break;
         }
@@ -1035,7 +1028,7 @@ system_signal_exception::report() const
         else
             detail::report_error(
                 execution_exception::system_fatal_error,
-                    "memory access violation occurred at address 0x%" BOOST_TEST_PRIxPTR ", while attempting to %s",
+                    "memory access violation occurred at address 0x%08lx, while attempting to %s",
                     m_fault_address,
                     m_dir ? " read inaccessible data"
                           : " write to an inaccessible (or protected) address"
@@ -1130,7 +1123,7 @@ system_signal_exception::report() const
             detail::report_error(execution_exception::timeout_error, "timeout while executing function");
         }
         else {
-            detail::report_error( execution_exception::system_error, "unrecognized exception. Id: 0x%" BOOST_TEST_PRIxPTR, m_se_id );
+            detail::report_error( execution_exception::system_error, "unrecognized exception. Id: 0x%08lx", m_se_id );
         }
         break;
     }

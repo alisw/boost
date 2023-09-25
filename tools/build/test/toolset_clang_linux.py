@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 # coding: utf-8
 #
 # Copyright 2017 Steven Watanabe

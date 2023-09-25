@@ -1,6 +1,5 @@
 //
 // Copyright (c) 2016-2019 Vinnie Falco (vinnie dot falco at gmail dot com)
-// Copyright (c) 2022 Alan de Freitas (vinnie dot falco at gmail dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +13,7 @@
 #include <boost/url/detail/config.hpp>
 #include <boost/url/ipv6_address.hpp>
 #include <boost/url/error_types.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 
 namespace boost {
 namespace urls {
@@ -24,7 +23,7 @@ namespace detail {
 
     @par BNF
     @code
-    IP-literal = "[" ( IPv6address / IPv6addrz / IPvFuture  ) "]"
+    IP-literal = "[" ( IPv6address / IPvFuture  ) "]"
     @endcode
 
     @par Specification
@@ -40,7 +39,7 @@ struct ip_literal_rule_t
     {
         bool is_ipv6 = false;
         ipv6_address ipv6;
-        core::string_view ipvfuture;
+        string_view ipvfuture;
     };
 
     auto
@@ -48,7 +47,7 @@ struct ip_literal_rule_t
         char const*& it,
         char const* end
             ) const noexcept ->
-        system::result<value_type>;
+        result<value_type>;
 };
 
 constexpr ip_literal_rule_t ip_literal_rule{};

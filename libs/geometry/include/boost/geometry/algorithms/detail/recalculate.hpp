@@ -106,10 +106,13 @@ struct range_to_range
         typedef recalculate_point<geometry::dimension<point_type>::value> per_point;
         geometry::clear(destination);
 
-        for (auto const& source_point : source)
+        for (typename boost::range_iterator<Range2 const>::type it
+                = boost::begin(source);
+            it != boost::end(source);
+            ++it)
         {
             point_type p;
-            per_point::apply(p, source_point, strategy);
+            per_point::apply(p, *it, strategy);
             geometry::append(destination, p);
         }
     }

@@ -5,16 +5,28 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/spirit/include/lex_lexertl.hpp>
+#include <boost/spirit/include/support_multi_pass.hpp>
+#include <boost/spirit/include/classic_position_iterator.hpp>
 
 #include <boost/core/lightweight_test.hpp>
 #include <boost/phoenix/operator/self.hpp>
 
-#include <sstream>
-
 namespace spirit = boost::spirit;
 namespace lex = spirit::lex;
 
-typedef char const* content_iterator;
+typedef spirit::classic::position_iterator2<
+    spirit::multi_pass<std::istreambuf_iterator<char> >
+> file_iterator;
+
+inline file_iterator 
+make_file_iterator(std::istream& input, const std::string& filename)
+{
+    return file_iterator(
+        spirit::make_default_multi_pass(
+            std::istreambuf_iterator<char>(input)),
+        spirit::multi_pass<std::istreambuf_iterator<char> >(),
+        filename);
+}
 
 enum token_id
 {
@@ -23,7 +35,7 @@ enum token_id
 };
 
 typedef lex::lexertl::token<
-    content_iterator, boost::mpl::vector<>, boost::mpl::true_, token_id
+    file_iterator, boost::mpl::vector<>, boost::mpl::true_, token_id
 > token_type;
 
 struct lexer
@@ -55,10 +67,11 @@ typedef lexer::iterator_type token_iterator;
 
 int main()
 {
-    std::string const s = "!foo\nbar\n!baz";
+    std::stringstream ss;
+    ss << "!foo\nbar\n!baz";
     
-    content_iterator begin = s.data();
-    content_iterator end = s.data() + s.size();
+    file_iterator begin = make_file_iterator(ss, "SS");
+    file_iterator end;
     
     lexer l;
     token_iterator begin2 = l.begin(begin, end);

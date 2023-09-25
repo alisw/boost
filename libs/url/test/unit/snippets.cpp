@@ -12,8 +12,6 @@
 #include <boost/container/string.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/core/ignore_unused.hpp>
-#include <boost/core/detail/string_view.hpp>
-#include <boost/url/string_view.hpp>
 
 //[snippet_headers_1
 #include <boost/url.hpp>
@@ -55,18 +53,18 @@ using_url_views()
     }
 
     //[code_urls_parsing_1
-    boost::core::string_view s = "https://user:pass@example.com:443/path/to/my%2dfile.txt?id=42&name=John%20Doe+Jingleheimer%2DSchmidt#page%20anchor";
+    string_view s = "https://user:pass@example.com:443/path/to/my%2dfile.txt?id=42&name=John%20Doe+Jingleheimer%2DSchmidt#page%20anchor";
     //]
 
     {
         //[code_urls_parsing_2
-        boost::system::result<url_view> r = parse_uri( s );
+        result<url_view> r = parse_uri( s );
         //]
         boost::ignore_unused(r);
     }
 
     {
-        boost::system::result<url_view> r = parse_uri( s );
+        result<url_view> r = parse_uri( s );
         //[snippet_parsing_3
         url_view u = r.value();
         //]
@@ -74,7 +72,7 @@ using_url_views()
     }
 
     {
-        boost::system::result<url_view> r = parse_uri( s );
+        result<url_view> r = parse_uri( s );
         //[snippet_parsing_4
         url_view u = *r;
         //]
@@ -196,7 +194,7 @@ using_url_views()
 #endif
     {
         //[snippet_decoding_5a
-        auto function = [](boost::core::string_view str)
+        auto function = [](string_view str)
         {
             std::cout << str << "\n";
         };
@@ -242,7 +240,7 @@ using_url_views()
 void
 using_urls()
 {
-    boost::core::string_view s = "https://user:pass@www.example.com:443/path/to/my%2dfile.txt?id=42&name=John%20Doe#page%20anchor";
+    string_view s = "https://user:pass@www.example.com:443/path/to/my%2dfile.txt?id=42&name=John%20Doe#page%20anchor";
 
     //[snippet_quicklook_modifying_1
     url u = parse_uri( s ).value();
@@ -279,12 +277,12 @@ void
 parsing_urls()
 {
     {
-        auto handle_error = [](boost::system::error_code e)
+        auto handle_error = [](error_code e)
         {
             boost::ignore_unused(e);
         };
         //[snippet_parsing_url_1
-        boost::system::result< url > ru = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
+        result< url > ru = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
         if ( ru )
         {
             url u = *ru;
@@ -292,14 +290,14 @@ parsing_urls()
         }
         else
         {
-            boost::system::error_code e = ru.error();
+            error_code e = ru.error();
             handle_error(e);
         }
         //]
     }
 
     {
-        auto handle_error = [](boost::system::system_error& e)
+        auto handle_error = [](system_error& e)
         {
             boost::ignore_unused(e);
         };
@@ -309,7 +307,7 @@ parsing_urls()
             url u = parse_uri_reference( "https://www.example.com/path/to/file.txt" ).value();
             assert(u.encoded_path() == "/path/to/file.txt");
         }
-        catch (boost::system::system_error &e)
+        catch (system_error &e)
         {
             handle_error(e);
         }
@@ -318,7 +316,7 @@ parsing_urls()
 
     {
         //[snippet_parsing_url_1b2
-        boost::system::result< url > ru = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
+        result< url > ru = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
         if ( ru.has_value() )
         {
             url u = *ru;
@@ -339,29 +337,29 @@ parsing_urls()
 
     {
         //[snippet_parsing_url_1bc
-        boost::system::result< url > rv = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
+        result< url > rv = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
 
-        static_assert( std::is_convertible< boost::system::result< url_view >, boost::system::result< url > >::value, "" );
+        static_assert( std::is_convertible< result< url_view >, result< url > >::value, "" );
         //]
         boost::ignore_unused(rv);
     }
 
     {
         //[snippet_parsing_url_1bd
-        boost::system::result< static_url<1024> > rv = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
+        result< static_url<1024> > rv = parse_uri_reference( "https://www.example.com/path/to/file.txt" );
 
-        static_assert( std::is_convertible< boost::system::result< static_url<1024> >, boost::system::result< url > >::value, "" );
+        static_assert( std::is_convertible< result< static_url<1024> >, result< url > >::value, "" );
         //]
         boost::ignore_unused(rv);
     }
 
     {
         //[snippet_parsing_url_1c
-        boost::system::result< url_view > r0 = parse_relative_ref( "/path/to/file.txt" );
+        result< url_view > r0 = parse_relative_ref( "/path/to/file.txt" );
         assert( r0.has_value() );
         //]
         //[snippet_parsing_url_1d
-        boost::system::result< url_view > r1 = parse_uri( "https://www.example.com" );
+        result< url_view > r1 = parse_uri( "https://www.example.com" );
         assert( r1.has_value() );
         url dest;
         resolve(r1.value(), r0.value(), dest);
@@ -519,7 +517,7 @@ formatting_components()
 
     {
         //[snippet_format_5c
-        boost::core::string_view fmt = "{scheme}://{host}:{port}/{dir}/{file}";
+        string_view fmt = "{scheme}://{host}:{port}/{dir}/{file}";
         url u = format(fmt, {{"scheme", "https"}, {"port", 80}, {"host", "example.com"}, {"dir", "path/to"}, {"file", "file.txt"}});
         assert(u.buffer() == "https://example.com:80/path/to/file.txt");
         //]
@@ -640,14 +638,14 @@ parsing_authority()
     }
     {
         struct resolve_f {
-            boost::core::string_view
-            operator()(boost::core::string_view h)
+            string_view
+            operator()(string_view h)
             {
                 return h;
             }
         } resolve;
         struct write_request_f {
-            void operator()(boost::core::string_view) {}
+            void operator()(string_view) {}
             void operator()(ipv4_address) {}
             void operator()(ipv6_address) {}
         } write_request;
@@ -814,7 +812,7 @@ parsing_path()
     {
         {
             //[snippet_parsing_path_5_a
-            boost::core::string_view s = "https://www.boost.org";
+            string_view s = "https://www.boost.org";
             url_view u(s);
             std::cout << u << "\n"
                       << "path:     " << u.encoded_host()            << "\n"
@@ -824,7 +822,7 @@ parsing_path()
         }
         {
             //[snippet_parsing_path_5_b
-            boost::core::string_view s = "https://www.boost.org/";
+            string_view s = "https://www.boost.org/";
             url_view u(s);
             std::cout << u << "\n"
                       << "host:     " << u.encoded_host()            << "\n"
@@ -834,7 +832,7 @@ parsing_path()
         }
         {
             //[snippet_parsing_path_5_c
-            boost::core::string_view s = "https://www.boost.org//";
+            string_view s = "https://www.boost.org//";
             url_view u(s);
             std::cout << u << "\n"
                       << "host:     " << u.encoded_host()            << "\n"
@@ -1197,7 +1195,7 @@ grammar_parse()
         //[snippet_parse_1
         // VFALCO we should not show this example
         /*
-        boost::core::string_view s = "http:after_scheme";
+        string_view s = "http:after_scheme";
         const char* it = s.begin();
         auto rv = grammar::parse(it, s.end(), scheme_rule() );
         if( ! rv )
@@ -1213,9 +1211,9 @@ grammar_parse()
         //[snippet_parse_2
         // VFALCO This needs refactoring
         /*
-        boost::core::string_view s = "?key=value#anchor";
+        string_view s = "?key=value#anchor";
         const char* it = s.begin();
-        boost::system::error_code ec;
+        error_code ec;
         if (grammar::parse(it, s.end(), ec, r1))
         {
             auto r2 = grammar::parse( it, s.end(), fragment_part_rule );
@@ -1233,10 +1231,10 @@ grammar_parse()
         //[snippet_parse_3
         // VFALCO This needs refactoring
         /*
-        boost::core::string_view s = "?key=value#anchor";
+        string_view s = "?key=value#anchor";
         query_part_rule r1;
         const char* it = s.begin();
-        boost::system::error_code ec;
+        error_code ec;
         auto r2 = grammar::parse( it, s.end(), ec, fragment_part_rule );
         if( ! ec.failed() )
         {
@@ -1250,9 +1248,9 @@ grammar_parse()
     {
         //[snippet_parse_4
         /* VFALCO This will be removed
-        boost::core::string_view s = "http://www.boost.org";
+        string_view s = "http://www.boost.org";
         uri_rule r;
-        boost::system::error_code ec;
+        error_code ec;
         if (grammar::parse_string(s, ec, r))
         {
             std::cout << "scheme: " << r.scheme_part.scheme << '\n';
@@ -1267,7 +1265,7 @@ grammar_parse()
 /* VFALCO This needs rewriting
 struct lowercase_rule
 {
-    boost::core::string_view str;
+    string_view str;
 
     friend
     void
@@ -1275,7 +1273,7 @@ struct lowercase_rule
         grammar::parse_tag const&,
         char const*& it,
         char const* const end,
-        boost::system::error_code& ec,
+        error_code& ec,
         lowercase_rule& t) noexcept
     {
         ec = {};
@@ -1284,7 +1282,7 @@ struct lowercase_rule
         {
             ++it;
         }
-        t.str = boost::core::string_view(begin, it);
+        t.str = string_view(begin, it);
     }
 };
 */
@@ -1297,10 +1295,10 @@ grammar_customization()
         //[snippet_customization_2
         // VFALCO THIS NEEDS TO BE PORTED
         /*
-        boost::core::string_view s = "http:somelowercase";
+        string_view s = "http:somelowercase";
         scheme_rule r1;
         lowercase_rule r2;
-        boost::system::error_code ec;
+        error_code ec;
         if (grammar::parse_string(s, ec, r1, ':', r2))
         {
             std::cout << "scheme: " << r1.scheme << '\n';
@@ -1596,7 +1594,7 @@ encoding()
 
     {
         //[snippet_encoding_4
-        boost::core::string_view e = "hello world";
+        string_view e = "hello world";
         std::string s;
         s.reserve(encoded_size(e, pchars));
         encode(e, pchars, {}, string_token::assign_to(s));
@@ -1606,7 +1604,7 @@ encoding()
 
     {
         //[snippet_encoding_5
-        boost::core::string_view e = "hello world";
+        string_view e = "hello world";
         std::string s;
         s.resize(encoded_size(e, pchars));
         encode(&s[0], s.size(), e, pchars);
@@ -1623,7 +1621,7 @@ encoding()
 
     {
         //[snippet_encoding_7
-        boost::system::result<pct_string_view> rs =
+        result<pct_string_view> rs =
             make_pct_string_view("hello%20world");
         assert(rs.has_value());
         pct_string_view sv = rs.value();
@@ -1669,7 +1667,7 @@ encoding()
 
     {
         //[snippet_encoding_12
-        boost::system::result<pct_string_view> rs =
+        result<pct_string_view> rs =
             make_pct_string_view("hello%20world");
         assert(rs.has_value());
         pct_string_view s = rs.value();
@@ -1695,7 +1693,7 @@ encoding()
         {
             pct_string_view seg0 = *it0;
             decode_view dseg0 = *seg0;
-            boost::core::string_view seg1 = *it1;
+            string_view seg1 = *it1;
             if (dseg0 == seg1)
             {
                 ++it0;

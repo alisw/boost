@@ -116,9 +116,9 @@ def generate(compiler_ranges, cxx_range, max_cxx=2, coverage=True, docs=True, as
             coverage_desc[2] = 'codecov'
             latest_compilers = [coverage_desc] + latest_compilers
         if cmake:
-            # cmake_desc = latest_gcc[:]
-            # cmake_desc[2] = 'cmake-install'
-            # compilers = [cmake_desc] + compilers
+            cmake_desc = latest_gcc[:]
+            cmake_desc[2] = 'cmake-install'
+            compilers = [cmake_desc] + compilers
 
             cmake_desc = latest_gcc[:]
             cmake_desc[2] = 'cmake'
@@ -410,7 +410,7 @@ def generate(compiler_ranges, cxx_range, max_cxx=2, coverage=True, docs=True, as
 
         if cache_dir != None and image_supports_caching(image, compiler):
             environment['drone_cache_mount'] = cache_dir
-            if image in images_used or buildtype != "boost":
+            if image in images_used:
                 environment['drone_cache_rebuild'] = 'false'
             else:
                 environment['drone_cache_rebuild'] = 'true'
@@ -509,13 +509,14 @@ def compiler_supports(compiler, version, cxx):
 # This is based on an exclude-list since we want to assume
 # new images will support caching
 def image_supports_caching(image_str, compiler_str):
-    return image_str != None and not (image_str[:19] == 'cppalliance/dronevs' or compiler_str[:6] == 's390x-')
+    return image_str == None or not (image_str[:19] == 'cppalliance/dronevs' or compiler_str[:6] == 's390x-')
+
 
 # Get list of available compiler versions in a semver range
 # - compilers_in_range('gcc >=10') -> [('gcc', '12'), ('gcc', '11'), ('gcc', '10')]
 def compilers_in_range(compiler_range_str):
     supported = {
-        'gcc': ['12', '11', '10', '9', '8.4', '7', '6', '5', '4.9', '4.8'],
+        'gcc': ['12', '11', '10', '9', '8.4', '8.0.1', '7', '6', '5', '4.9', '4.8'],
         's390x-gcc': ['12'],
         'arm64-gcc': ['11'],
         'freebsd-gcc': ['11', '10', '9', '8'],

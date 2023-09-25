@@ -136,9 +136,6 @@ jobs:
           - toolset: clang
             cxxstd: "03,11,14,17,20,2b"
             os: macos-12
-          - toolset: clang
-            cxxstd: "03,11,14,17,20,2b"
-            os: macos-13
 
     runs-on: ${{matrix.os}}
     container: ${{matrix.container}}
@@ -158,9 +155,7 @@ jobs:
 
       - name: Install packages
         if: matrix.install
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install ${{matrix.install}}
+        run: sudo apt-get -y install ${{matrix.install}}
 
       - name: Setup Boost
         run: |

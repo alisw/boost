@@ -87,7 +87,7 @@ struct box_box_loop
         {
             touch = true;
         }
-
+        
         return box_box_loop
                 <
                     Dimension + 1,
@@ -157,20 +157,19 @@ struct areal_interrupt_policy
     inline bool apply(Range const& range)
     {
         // if already rejected (temp workaround?)
-        if (found_not_touch)
-        {
+        if ( found_not_touch )
             return true;
-        }
 
-        for (auto it = boost::begin(range); it != boost::end(range); ++it)
+        typedef typename boost::range_iterator<Range const>::type iterator;
+        for ( iterator it = boost::begin(range) ; it != boost::end(range) ; ++it )
         {
-            if (it->has(overlay::operation_intersection))
+            if ( it->has(overlay::operation_intersection) )
             {
                 found_not_touch = true;
                 return true;
             }
 
-            switch (it->method)
+            switch(it->method)
             {
                 case overlay::method_crosses:
                     found_not_touch = true;

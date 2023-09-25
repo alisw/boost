@@ -1,5 +1,4 @@
 // Copyright John Maddock 2006.
-// Copyright Matt Borland 2023.
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -29,19 +28,10 @@
    using std::setprecision;
 #include <cmath>
    using std::log;
-#include <type_traits>
 
 template <class RealType>
 void test_spot(RealType s, RealType x, RealType p, RealType q, RealType tolerance)
 {
-   RealType logtolerance = tolerance;
-
-   BOOST_IF_CONSTEXPR (std::is_same<RealType, long double>::value || 
-                       std::is_same<RealType, boost::math::concepts::real_concept>::value)
-   {
-      logtolerance *= 100;
-   }
-   
    BOOST_CHECK_CLOSE(
       ::boost::math::cdf(
          rayleigh_distribution<RealType>(s),
@@ -53,18 +43,6 @@ void test_spot(RealType s, RealType x, RealType p, RealType q, RealType toleranc
          complement(rayleigh_distribution<RealType>(s),
          x)),
          q,
-         tolerance); // %
-   BOOST_CHECK_CLOSE(
-      ::boost::math::logcdf(
-         rayleigh_distribution<RealType>(s),
-         x),
-         log(p),
-         tolerance); // %
-   BOOST_CHECK_CLOSE(
-      ::boost::math::logcdf(
-         complement(rayleigh_distribution<RealType>(s),
-         x)),
-         log(q),
          tolerance); // %
    // Special extra tests for p and q near to unity.
    if(p < 0.999)

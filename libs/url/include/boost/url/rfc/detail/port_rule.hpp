@@ -12,7 +12,7 @@
 
 #include <boost/url/detail/config.hpp>
 #include <boost/url/error_types.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 #include <cstdint>
 
 namespace boost {
@@ -37,12 +37,12 @@ struct port_rule
 {
     struct value_type
     {
-        core::string_view str;
+        string_view str;
         std::uint16_t number = 0;
         bool has_number = false;
     };
 
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end) const noexcept;
@@ -71,7 +71,7 @@ struct port_part_rule_t
     struct value_type
     {
         bool has_port = false;
-        core::string_view port;
+        string_view port;
         bool has_number = false;
         std::uint16_t port_number = 0;
     };
@@ -81,7 +81,7 @@ struct port_part_rule_t
         char const*& it,
         char const* end
             ) const noexcept ->
-        system::result<value_type>;
+        result<value_type>;    
 };
 
 constexpr port_part_rule_t port_part_rule{};

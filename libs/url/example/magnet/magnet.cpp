@@ -21,12 +21,10 @@
 #include <boost/url/rfc/absolute_uri_rule.hpp>
 #include <boost/url/grammar/digit_chars.hpp>
 #include <boost/url/grammar/parse.hpp>
-#include <boost/core/detail/string_view.hpp>
 #include "filter_view.hpp"
 #include <iostream>
 
 namespace urls = boost::urls;
-namespace core = boost::core;
 
 /** Callable to identify a magnet "exact topic"
 
@@ -56,10 +54,10 @@ struct is_exact_topic
  */
 class is_url_with_key
 {
-    core::string_view k_;
+    urls::string_view k_;
 public:
     is_url_with_key(
-        core::string_view key)
+        urls::string_view key)
         : k_(key) {}
 
     bool
@@ -100,7 +98,7 @@ struct to_decoded_value
 /** Callable to convert param values to info_hashes
 
     This callable converts the value of a
-    query parameter into a core::string_view with
+    query parameter into a urls::string_view with
     its infohash.
 
     The infohash hash is a parameter of an
@@ -111,14 +109,14 @@ struct to_decoded_value
  */
 struct param_view_to_infohash
 {
-    core::string_view
+    urls::string_view
     operator()(urls::param_view p);
 };
 
 /** Callable to convert param values to protocols
 
     This callable converts the value of a
-    query parameter into a core::string_view with
+    query parameter into a urls::string_view with
     its protocol.
 
     The protocol is a parameter of an exact
@@ -129,7 +127,7 @@ struct param_view_to_infohash
  */
 struct to_protocol
 {
-    core::string_view
+    urls::string_view
     operator()(urls::param_view p);
 };
 
@@ -338,7 +336,7 @@ public:
         @return Web seed
     */
     boost::optional<urls::pct_string_view>
-    param(core::string_view key) const noexcept;
+    param(urls::string_view key) const noexcept;
 
     friend
     std::ostream&
@@ -350,11 +348,11 @@ public:
 private:
     // get a query parameter as a urls::pct_string_view
     boost::optional<urls::pct_string_view>
-    encoded_param(core::string_view key) const noexcept;
+    encoded_param(urls::string_view key) const noexcept;
 
     // get a query parameter as a urls::url_view
     boost::optional<urls::url_view>
-    url_param(core::string_view key) const noexcept;
+    url_param(urls::string_view key) const noexcept;
 
     friend magnet_link_rule_t;
 };
@@ -386,12 +384,12 @@ operator()(urls::param_view p)
 {
     if (p.key != k_)
         return false;
-    boost::system::error_code ec;
+    urls::error_code ec;
     std::string buf(
         p.value.begin(), p.value.end());
     if (ec.failed())
         return false;
-    boost::system::result<urls::url_view> r =
+    urls::result<urls::url_view> r =
         urls::parse_uri(buf);
     return r.has_value();
 }
@@ -412,26 +410,26 @@ operator()(urls::param_view p)
     return u;
 }
 
-core::string_view
+urls::string_view
 param_view_to_infohash::
 operator()(urls::param_view p)
 {
     urls::url_view topic =
         urls::parse_uri(p.value).value();
-    core::string_view t = topic.encoded_path();
+    urls::string_view t = topic.encoded_path();
     std::size_t pos = t.find_last_of(':');
-    if (pos != core::string_view::npos)
+    if (pos != urls::string_view::npos)
         return t.substr(pos + 1);
     return t;
 }
 
-core::string_view
+urls::string_view
 to_protocol::
 operator()(urls::param_view p)
 {
     urls::url_view topic =
         urls::parse_uri(p.value).value();
-    core::string_view t = topic.encoded_path();
+    urls::string_view t = topic.encoded_path();
     std::size_t pos = t.find_last_of(':');
     return t.substr(0, pos);
 }
@@ -487,7 +485,7 @@ magnet_link_view::acceptable_sources() const
 boost::optional<std::string>
 magnet_link_view::keyword_topic() const noexcept
 {
-    boost::optional<urls::pct_string_view> o =
+    urls::optional<urls::pct_string_view> o =
         encoded_param("kt");
     if (o)
         return o->decode();
@@ -519,7 +517,7 @@ magnet_link_view::web_seed() const
 }
 
 boost::optional<urls::pct_string_view>
-magnet_link_view::param(core::string_view key) const noexcept
+magnet_link_view::param(urls::string_view key) const noexcept
 {
     urls::params_view ps = u_.params();
     auto it = ps.begin();
@@ -536,9 +534,9 @@ magnet_link_view::param(core::string_view key) const noexcept
         auto mid = std::next(p.key.begin(), 2);
         auto last = p.key.end();
         urls::pct_string_view prefix(
-            core::string_view(first, mid));
+            urls::string_view(first, mid));
         urls::pct_string_view suffix(
-            core::string_view(mid, last));
+            urls::string_view(mid, last));
         if (prefix == "x." &&
             suffix == key &&
             p.has_value)
@@ -549,7 +547,7 @@ magnet_link_view::param(core::string_view key) const noexcept
 }
 
 boost::optional<urls::pct_string_view>
-magnet_link_view::encoded_param(core::string_view key) const noexcept
+magnet_link_view::encoded_param(urls::string_view key) const noexcept
 {
     urls::params_encoded_view ps = u_.encoded_params();
     auto it = ps.find(key);
@@ -559,13 +557,13 @@ magnet_link_view::encoded_param(core::string_view key) const noexcept
 }
 
 boost::optional<urls::url_view>
-magnet_link_view::url_param(core::string_view key) const noexcept
+magnet_link_view::url_param(urls::string_view key) const noexcept
 {
     urls::params_encoded_view ps = u_.encoded_params();
     auto it = ps.find(key);
     if (it != ps.end() && (*it).has_value)
     {
-        boost::system::result<urls::url_view> r =
+        urls::result<urls::url_view> r =
             urls::parse_uri((*it).value);
         if (r)
             return *r;
@@ -581,7 +579,7 @@ struct magnet_link_rule_t
     using value_type = magnet_link_view;
 
     /// Parse a sequence of characters into a magnet_link_view
-    boost::system::result< value_type >
+    urls::result< value_type >
     parse( char const*& it, char const* end ) const noexcept;
 };
 
@@ -589,10 +587,10 @@ auto
 magnet_link_rule_t::parse(
     char const*& it,
     char const* end ) const noexcept
-    -> boost::system::result< value_type >
+    -> urls::result< value_type >
 {
     // 1) Parse url with the general uri syntax
-    boost::system::result<urls::url_view> r =
+    urls::result<urls::url_view> r =
         urls::grammar::parse(it, end, urls::absolute_uri_rule);
     if(!r)
         return urls::grammar::error::invalid;
@@ -618,7 +616,7 @@ magnet_link_rule_t::parse(
     {
         if (!is_exact_topic{}(p))
             return true;
-        boost::system::result<urls::url_view> u =
+        urls::result<urls::url_view> u =
             urls::parse_uri(p.value);
         return u.has_value();
     }))
@@ -636,8 +634,8 @@ constexpr magnet_link_rule_t magnet_link_rule{};
     This is a more convenient user-facing function
     to parse magnet links.
 */
-boost::system::result< magnet_link_view >
-parse_magnet_link( core::string_view s ) noexcept
+urls::result< magnet_link_view >
+parse_magnet_link( urls::string_view s ) noexcept
 {
     return urls::grammar::parse(s, magnet_link_rule);
 }
@@ -660,7 +658,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    boost::system::result<magnet_link_view> r =
+    urls::result<magnet_link_view> r =
         parse_magnet_link(argv[1]);
     if (!r)
         return EXIT_FAILURE;

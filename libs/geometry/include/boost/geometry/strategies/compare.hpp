@@ -4,10 +4,8 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2017-2023.
-// Modifications copyright (c) 2017-2023, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+// This file was modified by Oracle on 2017-2020.
+// Modifications copyright (c) 2017-2020, Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Parts of Boost.Geometry are redesigned from Geodan's Geographic Library
@@ -70,24 +68,6 @@ struct equal_to
     }
 };
 
-struct equals_epsilon
-{
-    template <typename T1, typename T2>
-    static inline bool apply(T1 const& l, T2 const& r)
-    {
-        return math::equals(l, r);
-    }
-};
-
-struct equals_exact
-{
-    template <typename T1, typename T2>
-    static inline bool apply(T1 const& l, T2 const& r)
-    {
-        return l == r;
-    }
-};
-
 
 #ifndef DOXYGEN_NO_DETAIL
 namespace detail
@@ -97,7 +77,6 @@ namespace detail
 template
 <
     typename ComparePolicy,
-    typename EqualsPolicy,
     std::size_t Dimension,
     std::size_t DimensionCount
 >
@@ -111,12 +90,11 @@ struct compare_loop
         typename geometry::coordinate_type<Point2>::type const&
             cright = geometry::get<Dimension>(right);
 
-        if (EqualsPolicy::apply(cleft, cright))
+        if (math::equals(cleft, cright))
         {
             return compare_loop
                 <
                     ComparePolicy,
-                    EqualsPolicy,
                     Dimension + 1, DimensionCount
                 >::apply(left, right);
         }
@@ -130,10 +108,9 @@ struct compare_loop
 template
 <
     typename ComparePolicy,
-    typename EqualsPolicy,
     std::size_t DimensionCount
 >
-struct compare_loop<ComparePolicy, EqualsPolicy, DimensionCount, DimensionCount>
+struct compare_loop<ComparePolicy, DimensionCount, DimensionCount>
 {
     template <typename Point1, typename Point2>
     static inline bool apply(Point1 const& , Point2 const& )
@@ -146,10 +123,9 @@ struct compare_loop<ComparePolicy, EqualsPolicy, DimensionCount, DimensionCount>
 
 template
 <
-    typename EqualsPolicy,
     std::size_t DimensionCount
 >
-struct compare_loop<strategy::compare::equal_to, EqualsPolicy, DimensionCount, DimensionCount>
+struct compare_loop<strategy::compare::equal_to, DimensionCount, DimensionCount>
 {
     template <typename Point1, typename Point2>
     static inline bool apply(Point1 const& , Point2 const& )
@@ -167,7 +143,6 @@ struct compare_loop<strategy::compare::equal_to, EqualsPolicy, DimensionCount, D
 template
 <
     typename ComparePolicy,
-    typename EqualsPolicy,
     int Dimension = -1
 >
 struct cartesian
@@ -177,7 +152,7 @@ struct cartesian
     {
         return compare::detail::compare_loop
             <
-                ComparePolicy, EqualsPolicy, Dimension, Dimension + 1
+                ComparePolicy, Dimension, Dimension + 1
             >::apply(left, right);
     }
 };
@@ -185,10 +160,9 @@ struct cartesian
 #ifndef DOXYGEN_NO_STRATEGY_SPECIALIZATIONS
 template
 <
-    typename ComparePolicy,
-    typename EqualsPolicy
+    typename ComparePolicy
 >
-struct cartesian<ComparePolicy, EqualsPolicy, -1>
+struct cartesian<ComparePolicy, -1>
 {
     template <typename Point1, typename Point2>
     static inline bool apply(Point1 const& left, Point2 const& right)
@@ -196,7 +170,6 @@ struct cartesian<ComparePolicy, EqualsPolicy, -1>
         return compare::detail::compare_loop
             <
                 ComparePolicy,
-                EqualsPolicy,
                 0,
                 ((std::min)(geometry::dimension<Point1>::value,
                             geometry::dimension<Point2>::value))
@@ -212,7 +185,6 @@ namespace services
 template
 <
     typename ComparePolicy,
-    typename EqualsPolicy,
     typename Point1,
     typename Point2 = Point1,
     int Dimension = -1,
@@ -227,17 +199,10 @@ struct default_strategy
 };
 
 
-template
-<
-    typename ComparePolicy,
-    typename EqualsPolicy,
-    typename Point1,
-    typename Point2,
-    int Dimension
->
-struct default_strategy<ComparePolicy, EqualsPolicy, Point1, Point2, Dimension, cartesian_tag, cartesian_tag>
+template <typename ComparePolicy, typename Point1, typename Point2, int Dimension>
+struct default_strategy<ComparePolicy, Point1, Point2, Dimension, cartesian_tag, cartesian_tag>
 {
-    typedef compare::cartesian<ComparePolicy, EqualsPolicy, Dimension> type;
+    typedef compare::cartesian<ComparePolicy, Dimension> type;
 };
 
 

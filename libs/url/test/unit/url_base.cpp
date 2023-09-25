@@ -23,12 +23,6 @@
     ':' 0x3a
 */
 
-#ifdef BOOST_TEST_CSTR_EQ
-#undef BOOST_TEST_CSTR_EQ
-#define BOOST_TEST_CSTR_EQ(expr1,expr2) \
-    BOOST_TEST_EQ( boost::urls::detail::to_sv(expr1), boost::urls::detail::to_sv(expr2) )
-#endif
-
 namespace boost {
 namespace urls {
 
@@ -38,8 +32,8 @@ struct url_base_test
     static
     void
     modify(
-        core::string_view before,
-        core::string_view after,
+        string_view before,
+        string_view after,
         F&& f)
     {
         url u(before);
@@ -58,7 +52,7 @@ struct url_base_test
     testSetScheme()
     {
         auto const remove = [](
-            core::string_view s1, core::string_view s2)
+            string_view s1, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -68,8 +62,8 @@ struct url_base_test
         };
 
         auto const set = [](
-            scheme id, core::string_view s1,
-            core::string_view s2, core::string_view s3)
+            scheme id, string_view s1,
+            string_view s2, string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s2));
@@ -79,7 +73,7 @@ struct url_base_test
         };
 
         auto const setid = [](
-            scheme id, core::string_view s1, core::string_view s2)
+            scheme id, string_view s1, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -135,15 +129,15 @@ struct url_base_test
 
         BOOST_TEST_THROWS(
             url().set_scheme(""),
-            system::system_error);
+            system_error);
 
         BOOST_TEST_THROWS(
             url().set_scheme("http~"),
-            system::system_error);
+            system_error);
 
         BOOST_TEST_THROWS(
             url().set_scheme_id(scheme::unknown),
-            system::system_error);
+            system_error);
 
         // self-intersection
         modify(
@@ -166,7 +160,7 @@ struct url_base_test
     testSetAuthority()
     {
         auto const remove = [](
-            core::string_view s1, core::string_view s2)
+            string_view s1, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -179,8 +173,8 @@ struct url_base_test
             BOOST_TEST(u.host_address().empty());
         };
 
-        auto const set = [](core::string_view s1,
-            core::string_view s2, core::string_view s3)
+        auto const set = [](string_view s1,
+            string_view s2, string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -191,11 +185,11 @@ struct url_base_test
 
         BOOST_TEST_THROWS(
             url().set_encoded_authority("x:y"),
-            system::system_error);
+            system_error);
 
         BOOST_TEST_THROWS(
             url().set_encoded_authority("%2"),
-            system::system_error);
+            system_error);
 
         remove("", "");
         remove("/", "/");
@@ -312,7 +306,7 @@ struct url_base_test
     testSetUserinfo()
     {
         auto const remove = [](
-            core::string_view s1, core::string_view s2)
+            string_view s1, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -322,20 +316,20 @@ struct url_base_test
             BOOST_TEST(! u.has_userinfo());
         };
 
-        auto const set = [](core::string_view s1,
-            core::string_view s2, core::string_view s3)
+        auto const set = [](string_view s1,
+            string_view s2, string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
             BOOST_TEST_EQ(u.set_userinfo(s2).buffer(), s3);
         };
 
-        auto const enc = [](core::string_view s1,
-            core::string_view s2, core::string_view s3)
+        auto const enc = [](string_view s1,
+            string_view s2, string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
-            BOOST_TEST_EQ(u.set_encoded_userinfo(s2).buffer(), s3);
+            BOOST_TEST(u.set_encoded_userinfo(s2).buffer() == s3);
             BOOST_TEST_EQ(u.encoded_userinfo(), s2);
             BOOST_TEST(u.has_userinfo());
         };
@@ -493,9 +487,9 @@ struct url_base_test
     testSetUser()
     {
         auto const set = [](
-            core::string_view s0,
-            core::string_view s,
-            core::string_view s1)
+            string_view s0,
+            string_view s,
+            string_view s1)
         {
             modify(s0, s1,
                 [s](url_base& u)
@@ -507,9 +501,9 @@ struct url_base_test
         };
 
         auto const enc = [](
-            core::string_view s0,
-            core::string_view s,
-            core::string_view s1)
+            string_view s0,
+            string_view s,
+            string_view s1)
         {
             modify(s0, s1,
                 [s](url_base& u)
@@ -524,7 +518,7 @@ struct url_base_test
 
         BOOST_TEST_THROWS(
             url().set_encoded_user("%2"),
-            system::system_error);
+            system_error);
 
         set("", "", "//@");
         set("/y", "", "//@/y");
@@ -625,64 +619,13 @@ struct url_base_test
                 u.set_user(
                     u.encoded_query());
             });
-
-        // path doesn't become host
-        {
-            url u("mailto:example.net");
-            BOOST_TEST_NO_THROW(u.set_encoded_user("me"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://me@/example.net");
-            BOOST_TEST_NOT(u.buffer() == "mailto://me@example.net");
-            BOOST_TEST_CSTR_EQ(u.encoded_user(), "me");
-        }
-        {
-            url u("mailto:you@example.net");
-            BOOST_TEST_NO_THROW(u.set_encoded_user("me"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://me@/you@example.net");
-            BOOST_TEST_NOT(u.buffer() == "mailto://me@you@example.net");
-            BOOST_TEST_CSTR_EQ(u.encoded_user(), "me");
-        }
-        {
-            url u("mailto:a@b.c");
-            BOOST_TEST_NO_THROW(u.set_encoded_password("secret"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://:secret@/a@b.c");
-        }
-        {
-            url u("mailto:a@b.c");
-            BOOST_TEST_NO_THROW(u.set_encoded_userinfo("u:p"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://u:p@/a@b.c");
-        }
-        {
-            url u("mailto://h/a@b.c");
-            BOOST_TEST_NO_THROW(u.set_encoded_userinfo("u:p"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://u:p@h/a@b.c");
-        }
-        {
-            url u("mailto:a@b.c");
-            BOOST_TEST_NO_THROW(u.set_encoded_userinfo("u"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://u@/a@b.c");
-        }
-        {
-            url u("mailto://h/a@b.c");
-            BOOST_TEST_NO_THROW(u.set_encoded_userinfo("u"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://u@h/a@b.c");
-        }
-        {
-            url u("mailto:a@b.c");
-            BOOST_TEST_NO_THROW(u.set_encoded_host("host"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://host/a@b.c");
-        }
-        {
-            url u("mailto:a@b.c");
-            BOOST_TEST_NO_THROW(u.set_port("80"));
-            BOOST_TEST_CSTR_EQ(u, "mailto://:80/a@b.c");
-        }
     }
 
     void
     testSetPassword()
     {
         auto const remove = [](
-            core::string_view s1, core::string_view s2)
+            string_view s1, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -692,8 +635,8 @@ struct url_base_test
         };
 
         auto const set = [](
-            core::string_view s1, core::string_view s2,
-                core::string_view s3)
+            string_view s1, string_view s2,
+                string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -701,8 +644,8 @@ struct url_base_test
         };
 
         auto const enc = [](
-            core::string_view s1, core::string_view s2,
-                core::string_view s3)
+            string_view s1, string_view s2,
+                string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -713,7 +656,7 @@ struct url_base_test
         };
 
         BOOST_TEST_THROWS(url().set_encoded_password(
-            "%2"), system::system_error);
+            "%2"), system_error);
 
         remove("", "");
         remove("/", "/");
@@ -846,8 +789,8 @@ struct url_base_test
     testSetHost()
     {
         auto const set_host = [](
-            core::string_view s,
-            core::string_view s1,
+            string_view s,
+            string_view s1,
             host_type ht)
         {
             url u;
@@ -899,8 +842,8 @@ struct url_base_test
         };
 
         auto const set_encoded_host = [](
-            core::string_view s,
-            core::string_view s1,
+            string_view s,
+            string_view s1,
             host_type ht)
         {
             url u;
@@ -952,8 +895,8 @@ struct url_base_test
         };
 
         auto const set_host_address = [](
-            core::string_view s,
-            core::string_view s1,
+            string_view s,
+            string_view s1,
             host_type ht)
         {
             url u;
@@ -1005,8 +948,8 @@ struct url_base_test
         };
 
         auto const set_encoded_host_address = [](
-            core::string_view s,
-            core::string_view s1,
+            string_view s,
+            string_view s1,
             host_type ht)
         {
             url u;
@@ -1058,8 +1001,8 @@ struct url_base_test
         };
 
         auto const set_host_ipv4 = [](
-            core::string_view s,
-            core::string_view s1)
+            string_view s,
+            string_view s1)
         {
             url u;
             BOOST_TEST_NO_THROW(u.set_host_ipv4(ipv4_address(s)));
@@ -1076,8 +1019,8 @@ struct url_base_test
         };
 
         auto const set_host_ipv6 = [](
-            core::string_view s,
-            core::string_view s1)
+            string_view s,
+            string_view s1)
         {
             url u;
             BOOST_TEST_NO_THROW(u.set_host_ipv6(ipv6_address(s)));
@@ -1094,8 +1037,8 @@ struct url_base_test
         };
 
         auto const set_host_ipvfuture = [](
-            core::string_view s,
-            core::string_view s1)
+            string_view s,
+            string_view s1)
         {
             url u;
             BOOST_TEST_NO_THROW(u.set_host_ipvfuture(s))
@@ -1112,8 +1055,8 @@ struct url_base_test
         };
 
         auto const set_host_name = [](
-            core::string_view s,
-            core::string_view s1)
+            string_view s,
+            string_view s1)
         {
             url u;
             BOOST_TEST_NO_THROW(u.set_host_name(s))
@@ -1130,8 +1073,8 @@ struct url_base_test
         };
 
         auto const set_encoded_host_name = [](
-            core::string_view s,
-            core::string_view s1)
+            string_view s,
+            string_view s1)
         {
             url u;
             BOOST_TEST_NO_THROW(u.set_encoded_host_name(s))
@@ -1193,7 +1136,7 @@ struct url_base_test
         set_host_ipv6("1::6:c0a8:1", "//[1::6:c0a8:1]");
 
         set_host_ipvfuture("v42.69", "//[v42.69]");
-        BOOST_TEST_THROWS(url().set_host_ipvfuture("127.0.0.1"), system::system_error);
+        BOOST_TEST_THROWS(url().set_host_ipvfuture("127.0.0.1"), system_error);
 
         set_host_name("www.example.com", "//www.example.com");
         set_host_name("%5b%3a", "//%255b%253a");
@@ -1202,7 +1145,7 @@ struct url_base_test
         set_encoded_host_name("www.example.com", "//www.example.com");
         set_encoded_host_name("%5b%3a", "//%5b%3a");
         set_encoded_host_name("127.0.0.1", "//127%2E0%2E0%2E1");
-        BOOST_TEST_THROWS(url().set_encoded_host_name("%go"), system::system_error);
+        BOOST_TEST_THROWS(url().set_encoded_host_name("%go"), system_error);
 
         // self-intersection
         modify(
@@ -1229,25 +1172,13 @@ struct url_base_test
                 u.set_host(
                     u.query());
             });
-
-        {
-            // issue #755
-            url u1;
-            u1.set_scheme("http");
-            u1.set_host("127.0.0.1.org");
-            BOOST_TEST_EQ(u1.buffer(), "http://127.0.0.1.org");
-            BOOST_TEST_EQ(u1.host_type(), host_type::name);
-            url u2(u1.buffer());
-            BOOST_TEST_EQ(u2.host_type(), u1.host_type());
-            BOOST_TEST_EQ(u2.host_type(), host_type::name);
-        }
     }
 
     void
     testSetPort()
     {
         auto const remove = [](
-            core::string_view s1, core::string_view s2)
+            string_view s1, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -1257,8 +1188,8 @@ struct url_base_test
             BOOST_TEST_EQ(u.port_number(), 0);
         };
 
-        auto const setn = [](core::string_view s1,
-            std::uint16_t n, core::string_view s2)
+        auto const setn = [](string_view s1,
+            std::uint16_t n, string_view s2)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -1267,9 +1198,9 @@ struct url_base_test
             BOOST_TEST_EQ(u.port_number(), n);
         };
 
-        auto const set = [](core::string_view s1,
-            std::uint16_t n, core::string_view s2,
-                core::string_view s3)
+        auto const set = [](string_view s1,
+            std::uint16_t n, string_view s2,
+                string_view s3)
         {
             url u;
             BOOST_TEST_NO_THROW(u = url(s1));
@@ -1440,17 +1371,17 @@ struct url_base_test
                 url u;
                 BOOST_TEST_THROWS(
                     u.set_encoded_query("%%"),
-                    system::system_error);
+                    system_error);
                 BOOST_TEST_THROWS(
                     u.set_encoded_query("%fg"),
-                    system::system_error);
+                    system_error);
             }
         }
 
         // set_query
         {
             auto good = [](
-                core::string_view q, core::string_view us)
+                string_view q, string_view us)
             {
                 url u;
                 u.set_query(q);

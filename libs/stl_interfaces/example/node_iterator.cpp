@@ -24,11 +24,8 @@ struct node
 //[ node_iterator_class_head
 template<typename T>
 struct node_iterator
-    : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
-          node_iterator<T>,
-#endif
-          std::forward_iterator_tag, T>
+    : boost::stl_interfaces::
+          iterator_interface<node_iterator<T>, std::forward_iterator_tag, T>
 //]
 {
     //[ node_iterator_ctors
@@ -51,11 +48,8 @@ struct node_iterator
     //]
 
     //[ node_iterator_using_declaration
-    using base_type = boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
-        node_iterator<T>,
-#endif
-        std::forward_iterator_tag, T>;
+    using base_type = boost::stl_interfaces::
+        iterator_interface<node_iterator<T>, std::forward_iterator_tag, T>;
     using base_type::operator++;
     //]
 

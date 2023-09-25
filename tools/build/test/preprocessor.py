@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 # Copyright 2003 Vladimir Prus
 # Copyright 2011 Steven Watanabe
-# Copyright 2023 Nikita Kniazev
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
@@ -17,8 +16,6 @@ project ;
 preprocessed hello : hello.cpp ;
 preprocessed a : a.c ;
 exe test : hello a : <define>FAIL ;
-preprocessed nolinemarkers-cpp : hello.cpp : <linemarkers>off ;
-preprocessed nolinemarkers-c : a.c : <linemarkers>off ;
 """)
 
 t.write("hello.cpp", """
@@ -48,13 +45,9 @@ int foo(void)
 }
 """)
 
-t.run_build_system(["-d+2"])
+t.run_build_system()
 t.expect_addition("bin/$toolset/debug*/hello.ii")
 t.expect_addition("bin/$toolset/debug*/a.i")
-t.expect_addition("bin/$toolset/debug*/nolinemarkers-cpp.ii")
-t.expect_addition("bin/$toolset/debug*/nolinemarkers-c.i")
 t.expect_addition("bin/$toolset/debug*/test.exe")
-t.fail_test('#' in t.read("bin/$toolset/debug*/nolinemarkers-cpp.ii"))
-t.fail_test('#' in t.read("bin/$toolset/debug*/nolinemarkers-c.i"))
 
 t.cleanup()

@@ -1,8 +1,6 @@
 // Boost.Geometry
 
-// Copyright (c) 2019-2023, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+// Copyright (c) 2019-2021, Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Licensed under the Boost Software License version 1.0.
@@ -132,7 +130,7 @@ inline void rel(G1 const& g1, G2 const& g2, S const& s)
     call_crosses<G1, G2>::apply(g1, g2, s);
     bg::disjoint(g1, g2, s);
     call_equals<G1, G2>::apply(g1, g2, s);
-    bg::intersects(g1, g2, s);
+    bg::intersects(g1, g2, s);    
     call_overlaps<G1, G2>::apply(g1, g2, s);
     call_touches<G1, G2>::apply(g1, g2, s);
     bg::within(g1, g2, s);

@@ -7,14 +7,9 @@
 
 //[example_metadata
 
-#include <boost/mysql/error_with_diagnostics.hpp>
-#include <boost/mysql/handshake_params.hpp>
-#include <boost/mysql/metadata_mode.hpp>
-#include <boost/mysql/results.hpp>
-#include <boost/mysql/tcp_ssl.hpp>
+#include <boost/mysql.hpp>
 
 #include <boost/asio/io_context.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/context.hpp>
 
 #include <iostream>
@@ -64,7 +59,7 @@ void main_impl(int argc, char** argv)
         JOIN company comp ON (comp.id = emp.company_id)
     )";
     boost::mysql::results result;
-    conn.execute(sql, result);
+    conn.query(sql, result);
 
     /**
      * results objects allow you to access metadata about the columns in the query

@@ -22,6 +22,7 @@
 
 #include <boost/numeric/conversion/cast.hpp>
 
+#include <boost/geometry/algorithms/detail/interior_iterator.hpp>
 #include <boost/geometry/algorithms/detail/normalize.hpp>
 #include <boost/geometry/algorithms/not_implemented.hpp>
 
@@ -399,8 +400,10 @@ struct polygon_collect_vectors
         typedef range_collect_vectors<ring_type, Collection> per_range;
         per_range::apply(collection, exterior_ring(polygon));
 
-        auto const& rings = interior_rings(polygon);
-        for (auto it = boost::begin(rings); it != boost::end(rings); ++it)
+        typename interior_return_type<Polygon const>::type
+            rings = interior_rings(polygon);
+        for (typename detail::interior_iterator<Polygon const>::type
+                it = boost::begin(rings); it != boost::end(rings); ++it)
         {
             per_range::apply(collection, *it);
         }
@@ -413,7 +416,10 @@ struct multi_collect_vectors
 {
     static inline void apply(Collection& collection, MultiGeometry const& multi)
     {
-        for (auto it = boost::begin(multi); it != boost::end(multi); ++it)
+        for (typename boost::range_iterator<MultiGeometry const>::type
+                it = boost::begin(multi);
+            it != boost::end(multi);
+            ++it)
         {
             SinglePolicy::apply(collection, *it);
         }

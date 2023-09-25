@@ -21,7 +21,6 @@ else()
         assert
         config
         core
-        describe
         endian
         lexical_cast
         mp11
@@ -61,6 +60,7 @@ else()
         tokenizer
         tuple
         preprocessor
+        type_index
         conversion
         concept_check
         container_hash
@@ -68,6 +68,7 @@ else()
         iterator
         optional
         unordered
+        describe
         function_types
         fusion
         rational

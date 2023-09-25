@@ -25,7 +25,7 @@ parse(
     char const*& it,
     char const* end
         ) const noexcept ->
-    system::result<value_type>
+    result<value_type>
 {
     if(it == end)
     {

@@ -1,7 +1,6 @@
 // Boost.Geometry - gis-projections (based on PROJ4)
 
 // Copyright (c) 2008-2015 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2017-2021.
 // Modifications copyright (c) 2017-2021, Oracle and/or its affiliates.
@@ -49,6 +48,8 @@
 #include <boost/geometry/srs/projections/proj/moll.hpp>
 
 #include <boost/geometry/util/math.hpp>
+
+#include <boost/shared_ptr.hpp>
 
 namespace boost { namespace geometry
 {
@@ -217,7 +218,7 @@ namespace projections
                     static const T d180 = igh::d180<T>();
 
                     static const T c2 = 2.0;
-
+                    
                     const T y90 = this->m_proj_parm.dy0 + sqrt(c2); // lt=90 corresponds to y=y0+sqrt(2.0)
 
                         int z = 0;
@@ -316,7 +317,7 @@ namespace projections
                   +-------+--------+-----------+-----------+
                 -180    -100      -20         80          180
             */
-
+                
                     T lp_lam = 0, lp_phi = d4044118;
                     T xy1_x, xy1_y;
                     T xy3_x, xy3_y;

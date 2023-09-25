@@ -35,7 +35,7 @@ namespace urls {
     @code
     //  pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
 
-    system::result< pct_string_view > rv = grammar::parse( "Program%20Files", pct_encoded_rule( pchars ) );
+    result< pct_string_view > rv = grammar::parse( "Program%20Files", pct_encoded_rule( pchars ) );
     @endcode
 
     @par BNF
@@ -78,7 +78,7 @@ struct pct_encoded_rule_t
         CharSet_ const& cs) noexcept ->
             pct_encoded_rule_t<CharSet_>;
 
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end) const noexcept;

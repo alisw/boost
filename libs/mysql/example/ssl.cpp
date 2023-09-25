@@ -7,14 +7,9 @@
 
 //[example_ssl
 
-#include <boost/mysql/error_with_diagnostics.hpp>
-#include <boost/mysql/handshake_params.hpp>
-#include <boost/mysql/results.hpp>
-#include <boost/mysql/tcp_ssl.hpp>
+#include <boost/mysql.hpp>
 
-#include <boost/asio/buffer.hpp>
 #include <boost/asio/io_context.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/context.hpp>
 #include <boost/asio/ssl/host_name_verification.hpp>
 
@@ -114,7 +109,7 @@ void main_impl(int argc, char** argv)
     // We can now use the connection as we would normally do.
     const char* sql = "SELECT first_name, last_name, salary FROM employee";
     boost::mysql::results result;
-    conn.execute(sql, result);
+    conn.query(sql, result);
 
     for (auto employee : result.rows())
     {

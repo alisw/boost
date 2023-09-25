@@ -32,7 +32,7 @@ namespace grammar {
     @par Example
     Rules are used with the function @ref parse.
     @code
-    system::result< decode_view > rv = parse( "Program%20Files",
+    result< decode_view > rv = parse( "Program%20Files",
         not_empty_rule( pct_encoded_rule( unreserved_chars ) ) );
     @endcode
 
@@ -59,7 +59,7 @@ struct not_empty_rule_t
     parse(
         char const*& it,
         char const* end) const ->
-            system::result<value_type>;
+            result<value_type>;
 
     template<class R_>
     friend

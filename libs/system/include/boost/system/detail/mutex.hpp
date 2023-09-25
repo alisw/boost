@@ -31,9 +31,7 @@ struct mutex
 } // namespace system
 } // namespace boost
 
-#else // defined(BOOST_SYSTEM_DISABLE_THREADS)
-
-#if defined(BOOST_MSSTL_VERSION) && BOOST_MSSTL_VERSION >= 140
+#elif defined(BOOST_MSSTL_VERSION) && BOOST_MSSTL_VERSION >= 140
 
 // Under the MS STL, std::mutex::mutex() is not constexpr, as is
 // required by the standard, which leads to initialization order
@@ -41,14 +39,6 @@ struct mutex
 // default constructor is constexpr, so we use that instead.
 
 #include <shared_mutex>
-
-#if BOOST_MSSTL_VERSION >= 142 || _HAS_SHARED_MUTEX
-# define BOOST_SYSTEM_HAS_MSSTL_SHARED_MUTEX
-#endif
-
-#endif
-
-#if defined(BOOST_SYSTEM_HAS_MSSTL_SHARED_MUTEX)
 
 namespace boost
 {
@@ -63,7 +53,7 @@ typedef std::shared_mutex mutex;
 } // namespace system
 } // namespace boost
 
-#else // defined(BOOST_SYSTEM_HAS_MSSTL_SHARED_MUTEX)
+#else
 
 #include <mutex>
 
@@ -80,8 +70,7 @@ using std::mutex;
 } // namespace system
 } // namespace boost
 
-#endif // defined(BOOST_SYSTEM_HAS_MSSTL_SHARED_MUTEX)
-#endif // defined(BOOST_SYSTEM_DISABLE_THREADS)
+#endif
 
 namespace boost
 {

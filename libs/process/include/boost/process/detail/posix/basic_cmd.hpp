@@ -112,10 +112,7 @@ struct exe_cmd_init<char> : boost::process::detail::api::handler_base_ext
     {
         if (exe.empty()) //cmd style
         {
-            if (args.empty())
-                exec.exe = "";
-            else
-                exec.exe = args.front().c_str();    
+            exec.exe = args.front().c_str();
             exec.cmd_style = true;
         }
         else

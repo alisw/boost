@@ -10,17 +10,13 @@
 
 #include <boost/mysql/days.hpp>
 
-#include <boost/mysql/detail/config.hpp>
-#include <boost/mysql/detail/datetime.hpp>
+#include <boost/mysql/detail/auxiliar/datetime.hpp>
 
-#include <boost/assert.hpp>
 #include <boost/config.hpp>
-#include <boost/throw_exception.hpp>
 
 #include <chrono>
 #include <cstdint>
 #include <iosfwd>
-#include <stdexcept>
 
 namespace boost {
 namespace mysql {
@@ -67,12 +63,7 @@ public:
      * \throws std::out_of_range If the resulting `date` would be
      * out of the [\ref min_date, \ref max_date] range.
      */
-    BOOST_CXX14_CONSTEXPR explicit date(time_point tp)
-    {
-        bool ok = detail::days_to_ymd(tp.time_since_epoch().count(), year_, month_, day_);
-        if (!ok)
-            BOOST_THROW_EXCEPTION(std::out_of_range("date::date: time_point was out of range"));
-    }
+    BOOST_CXX14_CONSTEXPR inline explicit date(time_point tp);
 
     /**
      * \brief Retrieves the year component.
@@ -114,11 +105,7 @@ public:
      * \par Exception safety
      * No-throw guarantee.
      */
-    BOOST_CXX14_CONSTEXPR time_point get_time_point() const noexcept
-    {
-        BOOST_ASSERT(valid());
-        return unch_get_time_point();
-    }
+    BOOST_CXX14_CONSTEXPR inline time_point get_time_point() const noexcept;
 
     /**
      * \brief Converts `*this` into a `time_point` (checked access).
@@ -126,12 +113,7 @@ public:
      * Strong guarantee.
      * \throws std::invalid_argument If `!this->valid()`.
      */
-    BOOST_CXX14_CONSTEXPR time_point as_time_point() const
-    {
-        if (!valid())
-            BOOST_THROW_EXCEPTION(std::invalid_argument("date::as_time_point: invalid date"));
-        return unch_get_time_point();
-    }
+    BOOST_CXX14_CONSTEXPR inline time_point as_time_point() const;
 
     /**
      * \brief Tests for equality.
@@ -141,10 +123,7 @@ public:
      * \par Exception safety
      * No-throw guarantee.
      */
-    constexpr bool operator==(const date& rhs) const noexcept
-    {
-        return year_ == rhs.year_ && month_ == rhs.month_ && day_ == rhs.day_;
-    }
+    constexpr bool operator==(const date& rhs) const noexcept;
 
     /**
      * \brief Tests for inequality.
@@ -170,10 +149,7 @@ private:
     std::uint8_t month_{};
     std::uint8_t day_{};
 
-    BOOST_CXX14_CONSTEXPR time_point unch_get_time_point() const noexcept
-    {
-        return time_point(days(detail::ymd_to_days(year_, month_, day_)));
-    }
+    BOOST_CXX14_CONSTEXPR inline time_point unch_get_time_point() const noexcept;
 };
 
 /**
@@ -181,8 +157,7 @@ private:
  * \brief Streams a date.
  * \details This function works for invalid dates, too.
  */
-BOOST_MYSQL_DECL
-std::ostream& operator<<(std::ostream& os, const date& v);
+inline std::ostream& operator<<(std::ostream& os, const date& v);
 
 /// The minimum allowed value for \ref date.
 constexpr date min_date{0u, 1u, 1u};
@@ -193,8 +168,6 @@ constexpr date max_date{9999u, 12u, 31u};
 }  // namespace mysql
 }  // namespace boost
 
-#ifdef BOOST_MYSQL_HEADER_ONLY
-#include <boost/mysql/impl/date.ipp>
-#endif
+#include <boost/mysql/impl/date.hpp>
 
 #endif

@@ -192,16 +192,13 @@ template<typename VerifyPolicy>
 struct turn_info_verification_functions
 {
     template <typename Point1, typename Point2>
-    static inline
-    typename select_coordinate_type<Point1, Point2>::type
-    distance_measure(Point1 const& a, Point2 const& b)
+    static inline typename geometry::coordinate_type<Point1>::type
+            distance_measure(Point1 const& a, Point2 const& b)
     {
         // TODO: revise this using comparable distance for various
         // coordinate systems
-        using coor_t = typename select_coordinate_type<Point1, Point2>::type;
-
-        coor_t const dx = get<0>(a) - get<0>(b);
-        coor_t const dy = get<1>(a) - get<1>(b);
+        auto const dx = get<0>(a) - get<0>(b);
+        auto const dy = get<1>(a) - get<1>(b);
         return dx * dx + dy * dy;
     }
 
@@ -560,7 +557,6 @@ struct touch : public base_turn_handler
     >
     static inline bool handle_imperfect_touch(UniqueSubRange1 const& range_p,
                                               UniqueSubRange2 const& range_q,
-                                              int side_pk_q2,
                                               UmbrellaStrategy const& umbrella_strategy,
                                               TurnInfo& ti)
     {
@@ -599,11 +595,10 @@ struct touch : public base_turn_handler
             return d1.measure > 0 && d2.measure > 0;
         };
 
-        if (side_pk_q2 == -1 && has_distance(range_p, range_q))
+        if (has_distance(range_p, range_q))
         {
             // Even though there is a touch, Q(j) is left of P1
             // and P(i) is still left from Q2.
-            // Q continues to the right.
             // It can continue.
             ti.operations[0].operation = operation_blocked;
             // Q turns right -> union (both independent),
@@ -613,11 +608,14 @@ struct touch : public base_turn_handler
             return true;
         }
 
-        if (side_pk_q2 == 1 && has_distance(range_q, range_p))
+        if (has_distance(range_q, range_p))
         {
-            // Similarly, but the other way round.
-            // Q continues to the left.
+            // Even though there is a touch, Q(j) is left of P1
+            // and P(i) is still left from Q2.
+            // It can continue.
             ti.operations[0].operation = operation_union;
+            // Q turns right -> union (both independent),
+            // Q turns left -> intersection
             ti.operations[1].operation = operation_blocked;
             ti.touch_only = true;
             return true;
@@ -678,8 +676,8 @@ struct touch : public base_turn_handler
                 || (side_qi_p1 == 0 && side_qk_p1 == 0 && side_pk_p != -1))
             {
                 if (side_qk_p1 == 0 && side_pk_q1 == 0
-                    && has_pk && has_qk
-                    && handle_imperfect_touch(range_p, range_q, side_pk_q2, umbrella_strategy, ti))
+                    && has_qk && has_qk
+                    && handle_imperfect_touch(range_p, range_q, umbrella_strategy, ti))
                 {
                     // If q continues collinearly (opposite) with p, it should be blocked
                     // but (FP) not if there is just a tiny space in between
@@ -1035,9 +1033,8 @@ struct collinear : public base_turn_handler
             return false;
         }
 
-       auto const dm = arrival_p == 1
-              ? fun::distance_measure(info.intersections[1], range_q.at(1))
-              : fun::distance_measure(info.intersections[1], range_p.at(1));
+        auto const dm = fun::distance_measure(info.intersections[1],
+                arrival_p == 1 ? range_q.at(1) : range_p.at(1));
         decltype(dm) const zero = 0;
         return math::equals(dm, zero);
     }

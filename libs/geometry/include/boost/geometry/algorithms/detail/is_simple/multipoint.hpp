@@ -1,8 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2023, Oracle and/or its affiliates.
+// Copyright (c) 2014-2021, Oracle and/or its affiliates.
 
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -45,11 +44,12 @@ struct is_simple_multipoint
     template <typename Strategy>
     static inline bool apply(MultiPoint const& multipoint, Strategy const& strategy)
     {
+        typedef typename Strategy::cs_tag cs_tag;
         typedef geometry::less
             <
                 typename point_type<MultiPoint>::type,
                 -1,
-                Strategy
+                cs_tag
             > less_type;
 
         if (boost::empty(multipoint))

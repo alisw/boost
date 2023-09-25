@@ -13,7 +13,7 @@
 
 #include <boost/url/detail/config.hpp>
 #include <boost/url/encoding_opts.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 #include <boost/url/grammar/all_chars.hpp>
 #include <boost/url/grammar/string_token.hpp>
 
@@ -61,7 +61,7 @@ namespace urls {
 template<class CharSet>
 std::size_t
 encoded_size(
-    core::string_view s,
+    string_view s,
     CharSet const& unreserved,
     encoding_opts opt = {}) noexcept;
 
@@ -119,7 +119,7 @@ std::size_t
 encode(
     char* dest,
     std::size_t size,
-    core::string_view s,
+    string_view s,
     CharSet const& unreserved,
     encoding_opts opt = {});
 
@@ -130,7 +130,7 @@ std::size_t
 encode_unsafe(
     char* dest,
     std::size_t size,
-    core::string_view s,
+    string_view s,
     CharSet const& unreserved,
     encoding_opts opt);
 #endif
@@ -183,7 +183,7 @@ template<
     class CharSet>
 BOOST_URL_STRTOK_RETURN
 encode(
-    core::string_view s,
+    string_view s,
     CharSet const& unreserved,
     encoding_opts opt = {},
     BOOST_URL_STRTOK_ARG(token)) noexcept;

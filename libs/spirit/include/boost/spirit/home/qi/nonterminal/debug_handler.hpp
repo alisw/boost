@@ -11,11 +11,15 @@
 #pragma once
 #endif
 
+#include <boost/spirit/home/support/unused.hpp>
 #include <boost/spirit/home/qi/nonterminal/rule.hpp>
 #include <boost/spirit/home/qi/nonterminal/debug_handler_state.hpp>
 #include <boost/spirit/home/qi/detail/expectation_failure.hpp>
 #include <boost/function.hpp>
-#include <string>
+#include <boost/fusion/include/at.hpp>
+#include <boost/fusion/include/vector.hpp>
+#include <boost/fusion/include/out.hpp>
+#include <iostream>
 
 namespace boost { namespace spirit { namespace qi
 {

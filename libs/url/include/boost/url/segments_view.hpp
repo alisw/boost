@@ -13,7 +13,7 @@
 
 #include <boost/url/detail/config.hpp>
 #include <boost/url/segments_base.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 
 namespace boost {
 namespace urls {
@@ -161,7 +161,7 @@ public:
     */
     BOOST_URL_DECL
     segments_view(
-        core::string_view s);
+        string_view s);
 
     /** Assignment
 

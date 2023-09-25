@@ -26,7 +26,7 @@ struct vchars_test
     {
         // javadoc
         {
-            system::result< core::string_view > rv = parse( "JohnDoe", token_rule( vchars ) );
+            result< string_view > rv = parse( "JohnDoe", token_rule( vchars ) );
 
             (void)rv;
         }

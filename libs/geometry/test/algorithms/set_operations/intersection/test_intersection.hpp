@@ -1,8 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 // Unit Test
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
 // Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
 
 // This file was modified by Oracle on 2016-2021.
@@ -19,7 +17,6 @@
 #include <fstream>
 #include <iomanip>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/range/value_type.hpp>
 #include <boost/variant/variant.hpp>
 
@@ -68,8 +65,6 @@ void check_result(IntersectionOutput const& intersection_output,
     int expected_point_count, expectation_limits const& expected_length_or_area,
     ut_settings const& settings)
 {
-    boost::ignore_unused(expected_point_count);
-
     typedef typename boost::range_value<IntersectionOutput>::type OutputType;
     bool const is_line = bg::geometry_id<OutputType>::type::value == 2;
 
@@ -261,9 +256,10 @@ typename bg::default_area_result<G1>::type test_intersection(std::string const& 
         mapper.map(g2, "fill-opacity:0.3;fill:rgb(51,51,153);"
                     "stroke:rgb(51,51,153);stroke-width:3");
 
-        for (auto const& item : intersection_output)
+        for (typename result_type::const_iterator it = intersection_output.begin();
+                it != intersection_output.end(); ++it)
         {
-            mapper.map(item, "fill-opacity:0.2;stroke-opacity:0.4;fill:rgb(255,0,0);"
+            mapper.map(*it, "fill-opacity:0.2;stroke-opacity:0.4;fill:rgb(255,0,0);"
                         "stroke:rgb(255,0,255);stroke-width:8");
         }
     }

@@ -42,11 +42,14 @@ class traverse
     template <typename Turns>
     static void reset_visits(Turns& turns)
     {
-        for (auto& turn : turns)
+        for (typename boost::range_iterator<Turns>::type
+            it = boost::begin(turns);
+            it != boost::end(turns);
+            ++it)
         {
-            for (auto& op : turn.operations)
+            for (int i = 0; i < 2; i++)
             {
-                op.visited.reset();
+                it->operations[i].visited.reset();
             }
         }
     }

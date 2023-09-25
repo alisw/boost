@@ -33,6 +33,7 @@ target_link_libraries(boost_spirit
     Boost::preprocessor
     Boost::proto
     Boost::range
+    Boost::regex
     Boost::smart_ptr
     Boost::static_assert
     Boost::thread

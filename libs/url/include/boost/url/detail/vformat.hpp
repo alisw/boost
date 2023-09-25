@@ -12,7 +12,7 @@
 
 #include <boost/url/detail/format_args.hpp>
 #include <boost/url/detail/pattern.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 #include <boost/url/url.hpp>
 
 namespace boost {
@@ -23,7 +23,7 @@ inline
 void
 vformat_to(
     url_base& u,
-    core::string_view fmt,
+    string_view fmt,
     detail::format_args args)
 {
     parse_pattern(fmt)
@@ -33,7 +33,7 @@ vformat_to(
 inline
 url
 vformat(
-    core::string_view fmt,
+    string_view fmt,
     detail::format_args args)
 {
     url u;

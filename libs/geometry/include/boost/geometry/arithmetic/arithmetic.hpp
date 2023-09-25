@@ -3,7 +3,6 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2008-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2021.
 // Modifications copyright (c) 2021 Oracle and/or its affiliates.
@@ -21,6 +20,7 @@
 
 #include <functional>
 
+#include <boost/call_traits.hpp>
 #include <boost/concept/requires.hpp>
 
 #include <boost/geometry/core/coordinate_type.hpp>
@@ -32,6 +32,24 @@
 namespace boost { namespace geometry
 {
 
+#ifndef DOXYGEN_NO_DETAIL
+namespace detail
+{
+
+
+template <typename Point>
+struct param
+{
+    typedef typename boost::call_traits
+        <
+            typename coordinate_type<Point>::type
+        >::param_type type;
+};
+
+
+} // namespace detail
+#endif // DOXYGEN_NO_DETAIL
+
 /*!
     \brief Adds the same value to each coordinate of a point
     \ingroup arithmetic
@@ -41,7 +59,7 @@ namespace boost { namespace geometry
     \param value value to add
  */
 template <typename Point>
-inline void add_value(Point& p, typename coordinate_type<Point>::type const& value)
+inline void add_value(Point& p, typename detail::param<Point>::type value)
 {
     BOOST_CONCEPT_ASSERT( (concepts::Point<Point>) );
 
@@ -83,7 +101,7 @@ inline void add_point(Point1& p1, Point2 const& p2)
     \param value value to subtract
  */
 template <typename Point>
-inline void subtract_value(Point& p, typename coordinate_type<Point>::type const& value)
+inline void subtract_value(Point& p, typename detail::param<Point>::type value)
 {
     BOOST_CONCEPT_ASSERT( (concepts::Point<Point>) );
 
@@ -125,7 +143,7 @@ inline void subtract_point(Point1& p1, Point2 const& p2)
     \param value value to multiply by
  */
 template <typename Point>
-inline void multiply_value(Point& p, typename coordinate_type<Point>::type const& value)
+inline void multiply_value(Point& p, typename detail::param<Point>::type value)
 {
     BOOST_CONCEPT_ASSERT( (concepts::Point<Point>) );
 
@@ -168,7 +186,7 @@ inline void multiply_point(Point1& p1, Point2 const& p2)
     \param value value to divide by
  */
 template <typename Point>
-inline void divide_value(Point& p, typename coordinate_type<Point>::type const& value)
+inline void divide_value(Point& p, typename detail::param<Point>::type value)
 {
     BOOST_CONCEPT_ASSERT( (concepts::Point<Point>) );
 
@@ -210,7 +228,7 @@ inline void divide_point(Point1& p1, Point2 const& p2)
     \param value value to assign
  */
 template <typename Point>
-inline void assign_value(Point& p, typename coordinate_type<Point>::type const& value)
+inline void assign_value(Point& p, typename detail::param<Point>::type value)
 {
     BOOST_CONCEPT_ASSERT( (concepts::Point<Point>) );
 

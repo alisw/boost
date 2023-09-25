@@ -10,7 +10,7 @@
 #ifndef BOOST_URL_DETAIL_PATH_HPP
 #define BOOST_URL_DETAIL_PATH_HPP
 
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 
 namespace boost {
 namespace urls {
@@ -62,7 +62,7 @@ path_prefix(
 inline
 std::size_t
 path_prefix(
-    core::string_view s) noexcept
+    string_view s) noexcept
 {
     return path_prefix(
         s.data(), s.size());
@@ -73,7 +73,7 @@ path_prefix(
 inline
 std::size_t
 path_segments(
-    core::string_view s,
+    string_view s,
     std::size_t nseg) noexcept
 {
     switch(s.size())
@@ -124,9 +124,9 @@ path_segments(
 // Trim reserved characters from
 // the front of the path.
 inline
-core::string_view
+string_view
 clean_path(
-    core::string_view s) noexcept
+    string_view s) noexcept
 {
     s.remove_prefix(
         path_prefix(s));

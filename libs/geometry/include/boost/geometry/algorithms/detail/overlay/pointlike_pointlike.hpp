@@ -1,10 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2014-2020, Oracle and/or its affiliates.
 
-// Copyright (c) 2014-2023, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -35,8 +32,6 @@
 #include <boost/geometry/core/tags.hpp>
 
 #include <boost/geometry/policies/compare.hpp>
-
-#include <boost/geometry/util/condition.hpp>
 
 
 namespace boost { namespace geometry
@@ -80,7 +75,9 @@ struct copy_points<PointOut, MultiPointIn, multi_point_tag>
     static inline void apply(MultiPointIn const& multi_point_in,
                              OutputIterator& oit)
     {
-        for (auto it = boost::begin(multi_point_in); it != boost::end(multi_point_in); ++it)
+        for (typename boost::range_iterator<MultiPointIn const>::type
+                 it = boost::begin(multi_point_in);
+             it != boost::end(multi_point_in); ++it)
         {
             PointOut point_out;
             geometry::convert(*it, point_out);
@@ -192,7 +189,9 @@ struct multipoint_point_point
     {
         BOOST_GEOMETRY_ASSERT( OverlayType == overlay_difference );
 
-        for (auto it = boost::begin(multipoint); it != boost::end(multipoint); ++it)
+        for (typename boost::range_iterator<MultiPoint const>::type
+                 it = boost::begin(multipoint);
+             it != boost::end(multipoint); ++it)
         {
             action_selector_pl
                 <
@@ -226,7 +225,9 @@ struct point_multipoint_point
     {
         typedef action_selector_pl<PointOut, OverlayType> action;
 
-        for (auto it = boost::begin(multipoint); it != boost::end(multipoint); ++it)
+        for (typename boost::range_iterator<MultiPoint const>::type
+                 it = boost::begin(multipoint);
+             it != boost::end(multipoint); ++it)
         {
             if ( detail::equals::equals_point_point(*it, point, strategy) )
             {
@@ -259,10 +260,10 @@ struct multipoint_multipoint_point
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
-        typedef geometry::less<void, -1, Strategy> less_type;
+        typedef geometry::less<void, -1, typename Strategy::cs_tag> less_type;
 
-        if (BOOST_GEOMETRY_CONDITION(OverlayType != overlay_difference)
-            && boost::size(multipoint1) > boost::size(multipoint2))
+        if ( OverlayType != overlay_difference
+             && boost::size(multipoint1) > boost::size(multipoint2) )
         {
             return multipoint_multipoint_point
                 <
@@ -278,7 +279,9 @@ struct multipoint_multipoint_point
         less_type const less = less_type();
         std::sort(points2.begin(), points2.end(), less);
 
-        for (auto it1 = boost::begin(multipoint1); it1 != boost::end(multipoint1); ++it1)
+        for (typename boost::range_iterator<MultiPoint1 const>::type
+                 it1 = boost::begin(multipoint1);
+             it1 != boost::end(multipoint1); ++it1)
         {
             bool found = std::binary_search(points2.begin(), points2.end(),
                                             *it1, less);

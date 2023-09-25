@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 # Copyright 2002-2005 Dave Abrahams.
 # Copyright 2002-2006 Vladimir Prus.
@@ -10,11 +10,8 @@ from __future__ import print_function
 
 import BoostBuild
 
-import concurrent.futures
 import os
 import os.path
-import time
-import signal
 import sys
 
 xml = "--xml" in sys.argv
@@ -31,24 +28,6 @@ for s in ("BOOST_ROOT", "BOOST_BUILD_PATH", "JAM_TOOLSET", "BCCROOT",
         pass
 
 BoostBuild.set_defer_annotations(1)
-
-
-def iterfutures(futures):
-    while futures:
-        done, futures = concurrent.futures.wait(
-            futures,return_when=concurrent.futures.FIRST_COMPLETED)
-        for future in done:
-            yield future, futures
-
-
-def run_test(test):
-    ts = time.perf_counter()
-    exc = None
-    try:
-        __import__(test)
-    except BaseException as e:
-        exc = e
-    return test, time.perf_counter() - ts, exc, BoostBuild.annotations
 
 
 def run_tests(critical_tests, other_tests):
@@ -70,48 +49,21 @@ def run_tests(critical_tests, other_tests):
         if len(x) > max_test_name_len:
             max_test_name_len = len(x)
 
-    cancelled = False
-    executor = concurrent.futures.ProcessPoolExecutor()
-
-    def handler(sig, frame):
-        cancelled = True
-        processes = executor._processes.values()
-        executor.shutdown(wait=False, cancel_futures=True)
-        for process in processes:
-            process.terminate()
-
-    signal.signal(signal.SIGINT, handler)
-
     pass_count = 0
     failures_count = 0
-    start_ts = time.perf_counter()
-    isatty = sys.stdout.isatty() or "--interactive" in sys.argv
-    futures = {executor.submit(run_test, test): test for test in all_tests}
-    for future, pending in iterfutures(futures):
-        test = futures[future]
+
+    for test in all_tests:
         if not xml:
             s = "%%-%ds :" % max_test_name_len % test
-            if isatty:
-                s = f"\r{s}"
             print(s, end='')
 
         passed = 0
-        ts = float('nan')
         try:
-            test, ts, exc, annotations = future.result()
-            BoostBuild.annotations += annotations
-            if exc is not None:
-                raise exc from None
+            __import__(test)
             passed = 1
-        except concurrent.futures.process.BrokenProcessPool:
-            # It could be us who broke the pool by terminating its threads
-            if not cancelled:
-                raise
         except KeyboardInterrupt:
             """This allows us to abort the testing manually using Ctrl-C."""
-            print("\n\nTesting was cancelled by external signal.")
-            cancelled = True
-            break
+            raise
         except SystemExit as e:
             """This is the regular way our test scripts are supposed to report
             test failures."""
@@ -146,19 +98,10 @@ def run_tests(critical_tests, other_tests):
 
         if not xml:
             if passed:
-                print(f"PASSED {ts * 1000:>5.0f}ms")
+                print("PASSED")
             else:
-                print(f"FAILED {ts * 1000:>5.0f}ms")
+                print("FAILED")
                 BoostBuild.flush_annotations()
-
-            if isatty:
-                msg = ", ".join(futures[future] for future in pending if future.running())
-                if msg:
-                    msg = f"[{len(futures) - len(pending)}/{len(futures)}] {msg}"
-                    max_len = max_test_name_len + len(" :PASSED 12345ms")
-                    if len(msg) > max_len:
-                        msg = msg[:max_len - 3] + "..."
-                    print(msg, end='')
         else:
             rs = "succeed"
             if not passed:
@@ -181,15 +124,14 @@ def run_tests(critical_tests, other_tests):
         open("test_results.txt", "w").close()
 
     if not xml:
-        print(f'''
+        print('''
         === Test summary ===
-        PASS: {pass_count}
-        FAIL: {failures_count}
-        TIME: {time.perf_counter() - start_ts:.0f}s
-        ''')
+        PASS: %d
+        FAIL: %d
+        ''' % (pass_count, failures_count))
 
     # exit with failure with failures
-    if cancelled or failures_count > 0:
+    if failures_count > 0:
         sys.exit(1)
 
 def last_failed_test():
@@ -212,7 +154,7 @@ def reorder_tests(tests, first_test):
         return tests
 
 
-critical_tests = ["docs", "unit_tests", "module_actions", "core_d12",
+critical_tests = ["unit_tests", "module_actions", "core_d12",
     "core_typecheck", "core_delete_module", "core_language", "core_arguments",
     "core_varnames", "core_import_module"]
 
@@ -309,7 +251,6 @@ tests = ["abs_workdir",
          "inherited_dependency",
          "inline",
          "install_build_no",
-         "lang_asm",
          "libjpeg",
          "liblzma",
          "libpng",
@@ -406,7 +347,8 @@ if toolset.startswith("gcc") and os.name != "nt":
 
 if toolset.startswith("clang") or toolset.startswith("gcc") or toolset.startswith("msvc"):
     tests.append("pch")
-    tests.append("feature_force_include")
+    if sys.platform != "darwin": # clang-darwin does not yet support
+        tests.append("feature_force_include")
 
 # Clang includes Objective-C driver everywhere, but GCC usually in a separate gobj package
 if toolset.startswith("clang") or "darwin" in toolset:
@@ -425,8 +367,7 @@ if "--extras" in sys.argv:
     tests.append("example_customization")
     # Requires gettext tools.
     tests.append("example_gettext")
-elif not xml and __name__ == "__main__":
+elif not xml:
     print("Note: skipping extra tests")
 
-if __name__ == "__main__":
-    run_tests(critical_tests, tests)
+run_tests(critical_tests, tests)

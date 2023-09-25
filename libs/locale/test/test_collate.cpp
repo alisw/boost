@@ -12,23 +12,20 @@
 #include <iostream>
 
 template<typename Char>
-void test_comp(const std::locale& l,
-               const std::basic_string<Char>& left,
-               const std::basic_string<Char>& right,
-               const boost::locale::collate_level level,
-               const int expected)
+void test_comp(std::locale l, std::basic_string<Char> left, std::basic_string<Char> right, int ilevel, int expected)
 {
     typedef std::basic_string<Char> string_type;
+    boost::locale::collate_level level = static_cast<boost::locale::collate_level>(ilevel);
     TEST_EQ(boost::locale::comparator<Char>(l, level)(left, right), expected < 0);
-    if(level == boost::locale::collate_level::identical) {
+    if(ilevel == 4) {
         const std::collate<Char>& coll = std::use_facet<std::collate<Char>>(l);
         string_type lt = coll.transform(left.c_str(), left.c_str() + left.size());
         string_type rt = coll.transform(right.c_str(), right.c_str() + right.size());
         if(expected < 0)
             TEST_LT(lt, rt);
-        else if(expected == 0)
+        else if(expected == 0) {
             TEST_EQ(lt, rt);
-        else
+        } else
             TEST_GT(lt, rt);
         long lh = coll.hash(left.c_str(), left.c_str() + left.size());
         long rh = coll.hash(right.c_str(), right.c_str() + right.size());
@@ -60,15 +57,11 @@ void test_comp(const std::locale& l,
 
 #define TEST_COMP(c, _l, _r) test_comp<c>(l, _l, _r, level, expected)
 
-void compare(const std::string left,
-             const std::string right,
-             const boost::locale::collate_level level,
-             const int expected)
+void compare(std::string left, std::string right, int level, int expected)
 {
-    using boost::locale::collate_level;
     boost::locale::generator gen;
     std::locale l = gen("en_US.UTF-8");
-    if(level == collate_level::identical)
+    if(level == 4)
         TEST_EQ(l(left, right), (expected < 0));
     TEST_COMP(char, left, right);
     TEST_COMP(wchar_t, to<wchar_t>(left), to<wchar_t>(right));
@@ -79,33 +72,31 @@ void compare(const std::string left,
     TEST_COMP(char32_t, to<char32_t>(left), to<char32_t>(right));
 #endif
     l = gen("en_US.ISO8859-1");
-    if(level == collate_level::identical)
+    if(level == 4)
         TEST_EQ(l(to<char>(left), to<char>(right)), (expected < 0));
     TEST_COMP(char, to<char>(left), to<char>(right));
 }
 
 void test_collate()
 {
-    constexpr int le = -1, gt = 1, eq = 0;
-    using boost::locale::collate_level;
+    int primary = 0, secondary = 1, tertiary = 2, quaternary = 3, identical = 4;
+    int le = -1, gt = 1, eq = 0;
 
-    compare("a", "A", collate_level::primary, eq);
-    compare("a", "A", collate_level::secondary, eq);
-    compare("A", "a", collate_level::tertiary, gt);
-    compare("a", "A", collate_level::tertiary, le);
-    compare("a", "A", collate_level::quaternary, le);
-    compare("A", "a", collate_level::quaternary, gt);
-    compare("a", "A", collate_level::identical, le);
-    compare("A", "a", collate_level::identical, gt);
-    compare("a", "ä", collate_level::primary, eq);
-    compare("a", "ä", collate_level::secondary, le);
-    compare("ä", "a", collate_level::secondary, gt);
-    compare("a", "ä", collate_level::quaternary, le);
-    compare("ä", "a", collate_level::quaternary, gt);
-    compare("a", "ä", collate_level::identical, le);
-    compare("ä", "a", collate_level::identical, gt);
-    compare("a", "a", collate_level::identical, eq);
-    compare("ä", "ä", collate_level::identical, eq);
+    compare("a", "A", primary, eq);
+    compare("a", "A", secondary, eq);
+    compare("A", "a", tertiary, gt);
+    compare("a", "A", tertiary, le);
+    compare("a", "A", quaternary, le);
+    compare("A", "a", quaternary, gt);
+    compare("a", "A", identical, le);
+    compare("A", "a", identical, gt);
+    compare("a", "ä", primary, eq);    //  a , ä
+    compare("a", "ä", secondary, le);  //  a , ä
+    compare("ä", "a", secondary, gt);  //  a , ä
+    compare("a", "ä", quaternary, le); //  a , ä
+    compare("ä", "a", quaternary, gt); //  a , ä
+    compare("a", "ä", identical, le);  //  a , ä
+    compare("ä", "a", identical, gt);  //  a , ä
 }
 
 BOOST_LOCALE_DISABLE_UNREACHABLE_CODE_WARNING

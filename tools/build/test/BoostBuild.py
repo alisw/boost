@@ -28,7 +28,7 @@ import time
 import traceback
 import tree
 import types
-from difflib import ndiff
+
 from xml.sax.saxutils import escape
 
 try:
@@ -79,11 +79,11 @@ def set_defer_annotations(n):
     defer_annotations = n
 
 
-def annotate_stack_trace(tb=None, level=None):
+def annotate_stack_trace(tb=None):
     if tb:
-        trace = TestCmd.caller(traceback.extract_tb(tb), level or 0)
+        trace = TestCmd.caller(traceback.extract_tb(tb), 0)
     else:
-        trace = TestCmd.caller(traceback.extract_stack(), level or 1)
+        trace = TestCmd.caller(traceback.extract_stack(), 1)
     annotation("stacktrace", trace)
 
 
@@ -99,22 +99,16 @@ def get_toolset():
     for arg in sys.argv[1:]:
         if not arg.startswith("-"):
             toolset = arg
-
-    if toolset:
-        return toolset
-
-    if sys.platform == "win32":
-        return "msvc"
-    if sys.platform == "darwin" or sys.platform.startswith("freebsd"):
-        return "clang"
-
-    return "gcc"
+    return toolset or "gcc"
 
 
 # Detect the host OS.
-if sys.platform == "cygwin":
+cygwin = hasattr(os, "uname") and os.uname()[0].lower().startswith("cygwin")
+windows = cygwin or os.environ.get("OS", "").lower().startswith("windows")
+
+if cygwin:
     default_os = "cygwin"
-elif sys.platform == "win32":
+elif windows:
     default_os = "windows"
 elif hasattr(os, "uname"):
     default_os = os.uname()[0].lower()
@@ -155,7 +149,7 @@ def prepare_suffix_map(toolset, target_os=default_os):
     if target_os == "cygwin":
         suffixes[".lib"] = ".a"
         suffixes[".obj"] = ".o"
-        suffixes[".implib"] = ".dll.a"
+        suffixes[".implib"] = ".lib.a"
     elif target_os == "windows":
         if toolset == "gcc":
             # MinGW
@@ -192,11 +186,6 @@ def prepare_library_prefix(toolset, target_os=default_os):
         dll_prefix = None
     else:
         dll_prefix = "lib"
-
-    global implib_prefix
-    implib_prefix = None
-    if toolset == "gcc":
-        implib_prefix = "lib"
 
 
 def re_remove(sequence, regex):
@@ -270,7 +259,7 @@ class Tester(TestCmd.TestCmd):
         if not executable:
             executable = os.getenv('B2')
         if not executable:
-            executable = 'b2' if sys.platform not in ['win32', 'cygwin'] else 'b2.exe'
+            executable = 'b2'
 
         assert arguments.__class__ is not str
         self.original_workdir = os.path.dirname(__file__)
@@ -282,7 +271,6 @@ class Tester(TestCmd.TestCmd):
         self.translate_suffixes = translate_suffixes
         self.use_test_config = use_test_config
 
-        self.target_os = default_os
         self.toolset = get_toolset()
         self.expanded_toolset = expand_toolset(self.toolset)
         self.pass_toolset = pass_toolset
@@ -344,17 +332,11 @@ class Tester(TestCmd.TestCmd):
             pass
 
     def set_toolset(self, toolset, target_os=default_os):
-        self.target_os = target_os
         self.toolset = toolset
         self.expanded_toolset = expand_toolset(toolset, target_os)
         self.pass_toolset = True
         prepare_prefixes_and_suffixes(toolset, target_os)
 
-    def is_implib_expected(self):
-        return self.target_os in ["windows", "cygwin"] and not re.match(r'^clang(-linux)?(-[\d.]+)?$', self.toolset)
-
-    def is_pdb_expected(self):
-        return self.toolset == "msvc" or "-win" in self.toolset
 
     #
     # Methods that change the working directory's content.
@@ -395,7 +377,10 @@ class Tester(TestCmd.TestCmd):
         os.rename(src_name, dst_name)
 
     def copy(self, src, dst):
-        self.write(dst, self.read(src, binary=True))
+        try:
+            self.write(dst, self.read(src, binary=True))
+        except:
+            self.fail_test(1)
 
     def copy_timestamp(self, src, dst):
         src_name = self.native_file_name(src)
@@ -547,7 +532,7 @@ class Tester(TestCmd.TestCmd):
             stderr = self.stderr()
             if stderr:
                 annotation("STDERR", stderr)
-            self.do_diff(self.stdout(), stdout)
+            self.maybe_do_diff(self.stdout(), stdout, stdout_test)
             self.fail_test(1, dump_stdio=False)
 
         # Intel tends to produce some messages to stderr which make tests fail.
@@ -560,7 +545,7 @@ class Tester(TestCmd.TestCmd):
             annotation("Expected STDERR", stderr)
             annotation("Actual STDERR", self.stderr())
             annotation("STDOUT", self.stdout())
-            self.do_diff(actual_stderr, stderr)
+            self.maybe_do_diff(actual_stderr, stderr, stderr_test)
             self.fail_test(1, dump_stdio=False)
 
         if expected_duration is not None:
@@ -570,6 +555,8 @@ class Tester(TestCmd.TestCmd):
                     "finish in under %f seconds." % (actual_duration,
                     expected_duration))
                 self.fail_test(1, dump_stdio=False)
+
+        self.__ignore_junk()
 
     def glob_file(self, name):
         name = self.adjust_name(name)
@@ -592,15 +579,14 @@ class Tester(TestCmd.TestCmd):
             openMode = "r"
             if binary:
                 openMode += "b"
-            elif sys.version_info[0] < 3:
+            else:
                 openMode += "U"
             f = open(name, openMode)
             result = f.read()
             f.close()
             return result
-        except Exception as e:
-            annotation("failure", "Could not open '%s': %s" % (name, e))
-            annotate_stack_trace(level=3)
+        except:
+            annotation("failure", "Could not open '%s'" % name)
             self.fail_test(1)
             return ""
 
@@ -647,7 +633,7 @@ class Tester(TestCmd.TestCmd):
             print(" ".join(self.last_program_invocation))
 
         if dump_stack:
-            annotate_stack_trace(level=2)
+            annotate_stack_trace()
         sys.exit(1)
 
     # A number of methods below check expectations with actual difference
@@ -748,7 +734,7 @@ class Tester(TestCmd.TestCmd):
     def __ignore_junk(self):
         # Not totally sure about this change, but I do not see a good
         # alternative.
-        if self.target_os == "windows":
+        if windows:
             self.ignore("*.ilk")       # MSVC incremental linking files.
             self.ignore("*.pdb")       # MSVC program database files.
             self.ignore("*.rsp")       # Response files.
@@ -772,7 +758,6 @@ class Tester(TestCmd.TestCmd):
         self.ignore("*.dSYM/*")
 
     def expect_nothing_more(self):
-        self.__ignore_junk()
         if not self.unexpected_difference.empty():
             annotation("failure", "Unexpected changes found")
             output = StringIO()
@@ -816,30 +801,51 @@ class Tester(TestCmd.TestCmd):
             print(actual)
             self.fail_test(1)
 
-    def do_diff(self, actual, expected):
-        actual = actual.splitlines(keepends=True)
-        expected = expected.splitlines(keepends=True)
-        annotation("DIFFERENCE", "".join(ndiff(actual, expected)))
+    def maybe_do_diff(self, actual, expected, result=None):
+        if os.environ.get("DO_DIFF"):
+            e = tempfile.mktemp("expected")
+            a = tempfile.mktemp("actual")
+            f = open(e, "w")
+            f.write(expected)
+            f.close()
+            f = open(a, "w")
+            f.write(actual)
+            f.close()
+            print("DIFFERENCE")
+            # Current diff should return 1 to indicate 'different input files'
+            # but some older diff versions may return 0 and depending on the
+            # exact Python/OS platform version, os.system() call may gobble up
+            # the external process's return code and return 0 itself.
+            if os.system('diff -u "%s" "%s"' % (e, a)) not in [0, 1]:
+                print('Unable to compute difference: diff -u "%s" "%s"' % (e, a
+                    ))
+            os.unlink(e)
+            os.unlink(a)
+        elif type(result) is TestCmd.MatchError:
+            print(result.message)
+        else:
+            print("Set environmental variable 'DO_DIFF' to examine the "
+                "difference.")
 
     # Internal methods.
     def adjust_lib_name(self, name):
         global lib_prefix
         global dll_prefix
-        global implib_prefix
         result = name
 
         pos = name.rfind(".")
         if pos != -1:
             suffix = name[pos:]
-            prefix = {
-                 ".lib": lib_prefix,
-                 ".dll": dll_prefix,
-                 ".implib": implib_prefix,
-            }.get(suffix)
-            (head, tail) = os.path.split(name)
-            if prefix:
-                tail = prefix + tail
-                result = os.path.join(head, tail)
+            if suffix == ".lib":
+                (head, tail) = os.path.split(name)
+                if lib_prefix:
+                    tail = lib_prefix + tail
+                    result = os.path.join(head, tail)
+            elif suffix == ".dll" or suffix == ".implib":
+                (head, tail) = os.path.split(name)
+                if dll_prefix:
+                    tail = dll_prefix + tail
+                    result = os.path.join(head, tail)
         # If we want to use this name in a Jamfile, we better convert \ to /,
         # as otherwise we would have to quote \.
         result = result.replace("\\", "/")

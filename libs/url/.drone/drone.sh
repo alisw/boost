@@ -8,7 +8,18 @@ set -xe
 
 echo "==================================> ENVIRONMENT"
 
-export BOOST_CI_SRC_FOLDER=$(pwd)
+TRAVIS_BUILD_DIR=$(pwd)
+export TRAVIS_BUILD_DIR
+DRONE_BUILD_DIR=$(pwd)
+export DRONE_BUILD_DIR
+export TRAVIS_BRANCH=$DRONE_BRANCH
+export TRAVIS_EVENT_TYPE=$DRONE_BUILD_EVENT
+export VCS_COMMIT_ID=$DRONE_COMMIT
+export GIT_COMMIT=$DRONE_COMMIT
+export REPO_NAME=$DRONE_REPO
+USER=$(whoami)
+export USER
+export CC=${CC:-gcc}
 export PATH=~/.local/bin:/usr/local/bin:$PATH
 printenv
 
@@ -33,11 +44,11 @@ common_install() {
   fi
 
   # The name of the current module
-  SELF=$(basename "$DRONE_REPO")
+  SELF=$(basename "$REPO_NAME")
   export SELF
 
   # The boost branch we should clone
-  export BOOST_CI_TARGET_BRANCH="$DRONE_BRANCH"
+  export BOOST_CI_TARGET_BRANCH="$TRAVIS_BRANCH"
 
   # The URL source directory to patch boost
   BOOST_CI_SRC_FOLDER=$(pwd)
@@ -70,13 +81,7 @@ common_install() {
   fi
 
   # Boost cache key
-  #
-  # This key varies every few hours on an update of boost:
-  # boost_hash=$(git ls-remote https://github.com/boostorg/boost.git $BOOST_BRANCH | awk '{ print $1 }')
-  #
-  # This key finds the most recent git tag and will vary every few months:
-  boost_hash=$(git ls-remote --tags https://github.com/boostorg/boost | fgrep -v ".beta" | fgrep -v ".rc" | tail -n 1 | cut -f 1)
-
+  boost_hash=$(git ls-remote https://github.com/boostorg/boost.git $BOOST_BRANCH | awk '{ print $1 }')
   os_name=$(uname -s)
   boost_cache_key=$os_name-boost-$boost_hash
 
@@ -112,31 +117,30 @@ common_install() {
   git clone https://github.com/boostorg/boost-ci.git boost-ci-cloned --depth 1
   cp -prf boost-ci-cloned/ci .
   rm -rf boost-ci-cloned
-  if [ "$boost_cache_hit" = true ]; then
+  if [ "$boost_cache_hit" != true ]; then
+    . ./ci/common_install.sh
+    if command -v rsync &>/dev/null && [ "$drone_cache_rebuild" == true ]; then
+      if command -v apt-get &>/dev/null; then
+        apt-get install -y rsync
+      fi
+      mkdir "$cache_dir"/boost
+      rsync -a "$BOOST_ROOT/" "$cache_dir/boost"
+      echo "$boost_cache_key" >"$cache_dir/boost_cache_key.txt"
+    fi
+  else
     cd ..
     mkdir boost-root
     cd boost-root
     BOOST_ROOT="$(pwd)"
     export BOOST_ROOT
+    ls "$cache_dir/boost"
     if command -v apt-get &>/dev/null; then
       apt-get install -y rsync
     fi
     rsync -a "$cache_dir/boost/" "$BOOST_ROOT"
     rm -rf "$BOOST_ROOT/libs/$SELF"
-    mkdir "$BOOST_ROOT/libs/$SELF"
-    cd $DRONE_WORKSPACE
-  fi
-  . ./ci/common_install.sh
-
-  if [ "$drone_cache_rebuild" == true ]; then
-    if command -v apt-get &>/dev/null; then
-      apt-get install -y rsync
-    fi
-    mkdir -p "$cache_dir"/boost
-    rsync -a --delete "$BOOST_ROOT/" "$cache_dir/boost" --exclude "$BOOST_ROOT/libs/$SELF/cache"
-    # and as a double measure
-    rm -rf $cache_dir/boost/libs/$SELF/cache
-    echo "$boost_cache_key" >"$cache_dir/boost_cache_key.txt"
+    rsync -a "$BOOST_CI_SRC_FOLDER/" "$BOOST_ROOT/libs/$SELF" --exclude cache
+    $python_executable tools/boostdep/depinst/depinst.py --include benchmark --include example --include examples --include tools "$SELF"
   fi
 }
 
@@ -155,7 +159,7 @@ elif [ "$DRONE_JOB_BUILDTYPE" == "docs" ]; then
 
   echo '==================================> INSTALL'
 
-  SELF=$(basename "$DRONE_REPO")
+  SELF=$(basename "$REPO_NAME")
   export SELF
 
   pwd
@@ -172,7 +176,7 @@ elif [ "$DRONE_JOB_BUILDTYPE" == "docs" ]; then
   sudo rm /usr/share/java/Saxon-HE.jar
   sudo cp saxon9he.jar /usr/share/java/Saxon-HE.jar
   cd ..
-  BOOST_BRANCH=develop && [ "$DRONE_BRANCH" == "master" ] && BOOST_BRANCH=master || true
+  BOOST_BRANCH=develop && [ "$TRAVIS_BRANCH" == "master" ] && BOOST_BRANCH=master || true
   git clone -b $BOOST_BRANCH https://github.com/boostorg/boost.git boost-root --depth 1
   cd boost-root
   BOOST_ROOT=$(pwd)
@@ -182,7 +186,7 @@ elif [ "$DRONE_JOB_BUILDTYPE" == "docs" ]; then
   git submodule update --init tools/boostdep
   git submodule update --init tools/docca
   git submodule update --init tools/quickbook
-  rsync -av "$DRONE_WORKSPACE/" "libs/$SELF"
+  rsync -av "$TRAVIS_BUILD_DIR/" "libs/$SELF"
   python tools/boostdep/depinst/depinst.py ../tools/quickbook
   ./bootstrap.sh
   ./b2 headers
@@ -261,11 +265,9 @@ elif [ "$DRONE_JOB_BUILDTYPE" == "coverity" ]; then
 
   echo '==================================> SCRIPT'
 
-  if [ -n "${COVERITY_SCAN_NOTIFICATION_EMAIL}" ] && { [ "$DRONE_BRANCH" = "develop" ] || [ "$DRONE_BRANCH" = "master" ]; } && { [ "$DRONE_BUILD_EVENT" = "push" ] || [ "$DRONE_BUILD_EVENT" = "cron" ]; }; then
+  if [ -n "${COVERITY_SCAN_NOTIFICATION_EMAIL}" ] && { [ "$TRAVIS_BRANCH" = "develop" ] || [ "$TRAVIS_BRANCH" = "master" ]; } && { [ "$DRONE_BUILD_EVENT" = "push" ] || [ "$DRONE_BUILD_EVENT" = "cron" ]; }; then
     cd "$BOOST_ROOT/libs/$SELF"
-    export BOOST_REPO="$DRONE_REPO"
-    export BOOST_BRANCH="$DRONE_BRANCH"
-    $BOOST_CI_SRC_FOLDER/ci/coverity.sh
+    ci/travis/coverity.sh
   fi
 
 elif [ "$DRONE_JOB_BUILDTYPE" == "cmake-superproject" ]; then
@@ -306,7 +308,7 @@ elif [ "$DRONE_JOB_BUILDTYPE" == "cmake-install" ]; then
 
   echo '==================================> SCRIPT'
 
-  SELF=$(basename "$DRONE_REPO")
+  SELF=$(basename "$REPO_NAME")
   export SELF
   BOOST_BRANCH=develop && [ "$DRONE_BRANCH" == "master" ] && BOOST_BRANCH=master || true
   echo BOOST_BRANCH: $BOOST_BRANCH
@@ -314,16 +316,11 @@ elif [ "$DRONE_JOB_BUILDTYPE" == "cmake-install" ]; then
   git clone -b $BOOST_BRANCH --depth 1 https://github.com/boostorg/boost.git boost-root
   cd boost-root
   # mkdir -p libs/$SELF
-  # cp -r $DRONE_WORKSPACE/* libs/$SELF
+  # cp -r $DRONE_BUILD_DIR/* libs/$SELF
   # git submodule update --init tools/boostdep
   git submodule update --init --recursive
-  if [ ! -d "libs/$SELF" ]; then
-    mkdir -p "libs/$SELF"
-  fi
-  find "libs/$SELF" -mindepth 1 -delete
-
   mkdir -p "libs/$SELF"
-  cp -r "$DRONE_WORKSPACE"/* "libs/$SELF"
+  cp -r "$DRONE_BUILD_DIR"/* "libs/$SELF"
 
   # CMake tests
   cd "libs/$SELF"

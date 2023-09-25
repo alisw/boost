@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 # This script is used to bump the bjam version. It takes a single argument, e.g
 #

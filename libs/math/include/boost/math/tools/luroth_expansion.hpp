@@ -11,7 +11,6 @@
 #include <iomanip>
 #include <cmath>
 #include <limits>
-#include <cstdint>
 #include <stdexcept>
 
 #include <boost/math/tools/is_standalone.hpp>

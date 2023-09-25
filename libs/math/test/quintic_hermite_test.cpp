@@ -20,9 +20,6 @@
 using boost::multiprecision::float128;
 #endif
 
-#if __has_include(<stdfloat>)
-#  include <stdfloat>
-#endif
 
 using boost::math::interpolators::quintic_hermite;
 using boost::math::interpolators::cardinal_quintic_hermite;
@@ -41,7 +38,7 @@ void test_constant()
     }
 
     auto qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
-    for (Real t = 0; t <= 81; t += Real(0.25))
+    for (Real t = 0; t <= 81; t += 0.25)
     {
         CHECK_ULP_CLOSE(Real(7), qh(t), 24);
         CHECK_ULP_CLOSE(Real(0), qh.prime(t), 24);
@@ -60,7 +57,7 @@ void test_linear()
 
     auto qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
 
-    for (Real t = 0; t <= 9; t += Real(0.25))
+    for (Real t = 0; t <= 9; t += 0.25)
     {
         CHECK_ULP_CLOSE(Real(t), qh(t), 2);
         CHECK_ULP_CLOSE(Real(1), qh.prime(t), 2);
@@ -68,7 +65,7 @@ void test_linear()
     }
 
     boost::random::mt19937 rng;
-    boost::random::uniform_real_distribution<Real> dis(Real(0.5), Real(1));
+    boost::random::uniform_real_distribution<Real> dis(0.5,1);
     x.resize(512);
     x[0] = dis(rng);
     Real xmin = x[0];
@@ -84,7 +81,7 @@ void test_linear()
 
     qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
 
-    for (Real t = xmin; t <= xmax; t += Real(0.125))
+    for (Real t = xmin; t <= xmax; t += 0.125)
     {
         CHECK_ULP_CLOSE(t, qh(t), 2);
         CHECK_ULP_CLOSE(Real(1), qh.prime(t), 100);
@@ -112,7 +109,7 @@ void test_quadratic()
 
     auto qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
 
-    for (Real t = 0; t <= 9; t += Real(0.0078125))
+    for (Real t = 0; t <= 9; t += 0.0078125)
     {
         CHECK_ULP_CLOSE(Real(t*t)/2, qh(t), 2);
         CHECK_ULP_CLOSE(t, qh.prime(t), 12);
@@ -120,7 +117,7 @@ void test_quadratic()
     }
 
     boost::random::mt19937 rng;
-    boost::random::uniform_real_distribution<Real> dis(Real(0.5), Real(1));
+    boost::random::uniform_real_distribution<Real> dis(0.5,1);
     x.resize(8);
     x[0] = dis(rng);
     Real xmin = x[0];
@@ -146,7 +143,7 @@ void test_quadratic()
 
     qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
 
-    for (Real t = xmin; t <= xmax; t += Real(0.125))
+    for (Real t = xmin; t <= xmax; t += 0.125)
     {
         CHECK_ULP_CLOSE(Real(t*t)/2, qh(t), 4);
         CHECK_ULP_CLOSE(t, qh.prime(t), 53);
@@ -178,7 +175,7 @@ void test_cubic()
 
     auto qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
 
-    for (Real t = 0; t <= 9; t += Real(0.0078125))
+    for (Real t = 0; t <= 9; t += 0.0078125)
     {
         CHECK_ULP_CLOSE(t*t*t, qh(t), 10);
         CHECK_ULP_CLOSE(3*t*t, qh.prime(t), 15);
@@ -211,7 +208,7 @@ void test_quartic()
 
     auto qh = quintic_hermite(std::move(x), std::move(y), std::move(dydx), std::move(d2ydx2));
 
-    for (Real t = 1; t <= 11; t += Real(0.0078125))
+    for (Real t = 1; t <= 11; t += 0.0078125)
     {
         CHECK_ULP_CLOSE(t*t*t*t, qh(t), 100);
         CHECK_ULP_CLOSE(4*t*t*t, qh.prime(t), 100);
@@ -269,7 +266,7 @@ void test_cardinal_constant()
 
     auto qh = cardinal_quintic_hermite(std::move(y), std::move(dydx), std::move(d2ydx2), x0, dx);
 
-    for (Real t = x0; t <= x0 + 24*dx; t += Real(0.25))
+    for (Real t = x0; t <= x0 + 24*dx; t += 0.25)
     {
         CHECK_ULP_CLOSE(Real(7), qh(t), 24);
         CHECK_ULP_CLOSE(Real(0), qh.prime(t), 24);
@@ -285,7 +282,7 @@ void test_cardinal_constant()
     }
 
     auto qh_aos = cardinal_quintic_hermite_aos(std::move(data), x0, dx);
-    for (Real t = x0; t <= x0 + 24*dx; t += Real(0.25))
+    for (Real t = x0; t <= x0 + 24*dx; t += 0.25)
     {
         CHECK_ULP_CLOSE(Real(7), qh_aos(t), 24);
         CHECK_ULP_CLOSE(Real(0), qh_aos.prime(t), 24);
@@ -324,7 +321,7 @@ void test_cardinal_linear()
 
     auto qh = cardinal_quintic_hermite(std::move(y), std::move(dydx), std::move(d2ydx2), x0, dx);
 
-    for (Real t = 0; t <= 9; t += Real(0.25)) {
+    for (Real t = 0; t <= 9; t += 0.25) {
         CHECK_ULP_CLOSE(Real(t), qh(t), 2);
         CHECK_ULP_CLOSE(Real(1), qh.prime(t), 2);
         CHECK_ULP_CLOSE(Real(0), qh.double_prime(t), 2);
@@ -339,7 +336,7 @@ void test_cardinal_linear()
 
     auto qh_aos = cardinal_quintic_hermite_aos(std::move(data), x0, dx);
 
-    for (Real t = 0; t <= 9; t += Real(0.25)) {
+    for (Real t = 0; t <= 9; t += 0.25) {
         CHECK_ULP_CLOSE(Real(t), qh_aos(t), 2);
         CHECK_ULP_CLOSE(Real(1), qh_aos.prime(t), 2);
         CHECK_ULP_CLOSE(Real(0), qh_aos.double_prime(t), 2);
@@ -385,7 +382,7 @@ void test_cardinal_quadratic()
 
     auto qh = cardinal_quintic_hermite(std::move(y), std::move(dydx), std::move(d2ydx2), x0, dx);
 
-    for (Real t = 0; t <= 9; t += Real(0.0078125)) {
+    for (Real t = 0; t <= 9; t += 0.0078125) {
         Real computed = qh(t);
         CHECK_ULP_CLOSE(Real(t*t)/2, computed, 2);
         CHECK_ULP_CLOSE(t, qh.prime(t), 15);
@@ -400,7 +397,7 @@ void test_cardinal_quadratic()
     }
     auto qh_aos = cardinal_quintic_hermite_aos(std::move(data), x0, dx);
 
-    for (Real t = 0; t <= 9; t += Real(0.0078125))
+    for (Real t = 0; t <= 9; t += 0.0078125)
     {
         Real computed = qh_aos(t);
         CHECK_ULP_CLOSE(Real(t*t)/2, computed, 2);
@@ -451,7 +448,7 @@ void test_cardinal_cubic()
 
     auto qh = cardinal_quintic_hermite(std::move(y), std::move(dydx), std::move(d2ydx2), x0, dx);
 
-    for (Real t = 0; t <= 9; t += Real(0.0078125))
+    for (Real t = 0; t <= 9; t += 0.0078125)
     {
         Real computed = qh(t);
         CHECK_ULP_CLOSE(t*t*t, computed, 10);
@@ -467,7 +464,7 @@ void test_cardinal_cubic()
     }
 
     auto qh_aos = cardinal_quintic_hermite_aos(std::move(data), x0, dx);
-    for (Real t = 0; t <= 9; t += Real(0.0078125))
+    for (Real t = 0; t <= 9; t += 0.0078125)
     {
         Real computed = qh_aos(t);
         CHECK_ULP_CLOSE(t*t*t, computed, 10);
@@ -499,7 +496,7 @@ void test_cardinal_quartic()
 
     auto qh = cardinal_quintic_hermite(std::move(y), std::move(dydx), std::move(d2ydx2), x0, dx);
 
-    for (Real t = 0; t <= 6; t += Real(0.0078125))
+    for (Real t = 0; t <= 6; t += 0.0078125)
     {
         CHECK_ULP_CLOSE(Real(t*t*t*t), qh(t), 250);
         CHECK_ULP_CLOSE(4*t*t*t, qh.prime(t), 250);
@@ -514,7 +511,7 @@ void test_cardinal_quartic()
     }
 
     auto qh_aos = cardinal_quintic_hermite_aos(std::move(data), x0, dx);
-    for (Real t = 0; t <= 6; t += Real(0.0078125))
+    for (Real t = 0; t <= 6; t += 0.0078125)
     {
         Real computed = qh_aos(t);
         CHECK_ULP_CLOSE(t*t*t*t, computed, 10);
@@ -526,20 +523,6 @@ void test_cardinal_quartic()
 
 int main()
 {
-    #ifdef __STDCPP_FLOAT32_T__
-    test_constant<std::float32_t>();
-    test_linear<std::float32_t>();
-    test_quadratic<std::float32_t>();
-    test_cubic<std::float32_t>();
-    test_quartic<std::float32_t>();
-    test_interpolation_condition<std::float32_t>();
-
-    test_cardinal_constant<std::float32_t>();
-    test_cardinal_linear<std::float32_t>();
-    test_cardinal_quadratic<std::float32_t>();
-    test_cardinal_cubic<std::float32_t>();
-    test_cardinal_quartic<std::float32_t>();
-    #else
     test_constant<float>();
     test_linear<float>();
     test_quadratic<float>();
@@ -552,22 +535,7 @@ int main()
     test_cardinal_quadratic<float>();
     test_cardinal_cubic<float>();
     test_cardinal_quartic<float>();
-    #endif
 
-    #ifdef __STDCPP_FLOAT64_T__
-    test_constant<std::float64_t>();
-    test_linear<std::float64_t>();
-    test_quadratic<std::float64_t>();
-    test_cubic<std::float64_t>();
-    test_quartic<std::float64_t>();
-    test_interpolation_condition<std::float64_t>();
-
-    test_cardinal_constant<std::float64_t>();
-    test_cardinal_linear<std::float64_t>();
-    test_cardinal_quadratic<std::float64_t>();
-    test_cardinal_cubic<std::float64_t>();
-    test_cardinal_quartic<std::float64_t>();
-    #else
     test_constant<double>();
     test_linear<double>();
     test_quadratic<double>();
@@ -580,7 +548,6 @@ int main()
     test_cardinal_quadratic<double>();
     test_cardinal_cubic<double>();
     test_cardinal_quartic<double>();
-    #endif
 
     test_constant<long double>();
     test_linear<long double>();
@@ -595,7 +562,7 @@ int main()
     test_cardinal_cubic<long double>();
     test_cardinal_quartic<long double>();
 
-    #ifdef BOOST_HAS_FLOAT128
+#ifdef BOOST_HAS_FLOAT128
     test_constant<float128>();
     //test_linear<float128>();
     test_quadratic<float128>();
@@ -607,7 +574,7 @@ int main()
     test_cardinal_quadratic<float128>();
     test_cardinal_cubic<float128>();
     test_cardinal_quartic<float128>();
-    #endif
+#endif
 
     return boost::math::test::report_errors();
 }

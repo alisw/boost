@@ -9,7 +9,6 @@
 #include <algorithm>
 #include "size_t.hpp"
 #include "consts.hpp" // num_chars, num_wchar_ts
-#include <sstream>
 #include <string>
 #include <limits>
 

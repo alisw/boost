@@ -22,7 +22,7 @@ void test_main(int /*argc*/, char** /*argv*/)
     std::cout << "ICU is not build... Skipping\n";
     return;
 #endif
-    const time_t now = std::time(nullptr);
+    time_t now = time(0);
     boost::locale::generator gen;
     std::locale::global(gen("en_US.UTF-8"));
 

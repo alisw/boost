@@ -77,7 +77,7 @@ class params_view;
         elements and all elements
         after (including `end()`).
 */
-class BOOST_URL_DECL params_ref
+class params_ref
     : public params_base
 {
     friend class url_base;
@@ -181,6 +181,7 @@ public:
 
         @param other The params to assign.
     */
+    BOOST_URL_DECL
     params_ref&
     operator=(
         params_ref const& other);
@@ -218,6 +219,7 @@ public:
 
     /** Conversion
     */
+    BOOST_URL_DECL
     operator
     params_view() const noexcept;
 
@@ -312,6 +314,7 @@ public:
 
         @param init The list of params to assign.
     */
+    BOOST_URL_DECL
     void
     assign(
         std::initializer_list<
@@ -474,6 +477,7 @@ public:
 
         @param p The param to insert.
     */
+    BOOST_URL_DECL
     iterator
     insert(
         iterator before,
@@ -511,6 +515,7 @@ public:
 
         @param init The list of params to insert.
     */
+    BOOST_URL_DECL
     iterator
     insert(
         iterator before,
@@ -649,9 +654,10 @@ public:
         here, the comparison is
         case-insensitive.
     */
+    BOOST_URL_DECL
     std::size_t
     erase(
-        core::string_view key,
+        string_view key,
         ignore_case_param ic = {}) noexcept;
 
     //--------------------------------------------
@@ -688,6 +694,7 @@ public:
 
         @param p The param to assign.
     */
+    BOOST_URL_DECL
     iterator
     replace(
         iterator pos,
@@ -724,6 +731,7 @@ public:
 
         @param init The list of params to assign.
     */
+    BOOST_URL_DECL
     iterator
     replace(
         iterator from,
@@ -807,6 +815,7 @@ public:
 
         @param pos An iterator to the element.
     */
+    BOOST_URL_DECL
     iterator
     unset(
         iterator pos) noexcept;
@@ -845,10 +854,11 @@ public:
         That is, `has_value` for the element
         is true.
     */
+    BOOST_URL_DECL
     iterator
     set(
         iterator pos,
-        core::string_view value);
+        string_view value);
 
     /** Set a value
 
@@ -907,25 +917,28 @@ public:
         here, the comparison is
         case-insensitive.
     */
+    BOOST_URL_DECL
     iterator
     set(
-        core::string_view key,
-        core::string_view value,
+        string_view key,
+        string_view value,
         ignore_case_param ic = {});
 
     //--------------------------------------------
 
 private:
+    BOOST_URL_DECL
     detail::params_iter_impl
     find_impl(
         detail::params_iter_impl,
-        core::string_view,
+        string_view,
         ignore_case_param) const noexcept;
 
+    BOOST_URL_DECL
     detail::params_iter_impl
     find_last_impl(
         detail::params_iter_impl,
-        core::string_view,
+        string_view,
         ignore_case_param) const noexcept;
 
     template<class FwdIt>

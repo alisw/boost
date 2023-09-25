@@ -572,18 +572,10 @@ rule inherit-generators ( toolset properties * : base : generators-to-ignore * )
                 base = $(base:B) ;
             }
             local new-id = $(toolset)$(suffix) ;
-            local rule-name = [ $(g).rule-name ] ;
 
-            g = [ $(g).clone $(new-id) : $(properties) ] ;
-            # Custom rule names needs special handling
-            if $(id) != $(rule-name) {
-                $(g).set-rule-name [ regex.replace $(rule-name) ^$(base)\\. $(toolset). ] ;
-            }
-
-            generators.register $(g) ;
+            generators.register [ $(g).clone $(new-id) : $(properties) ] ;
         }
     }
-    generators.inherit-overrides $(toolset) : $(base) : $(generators-to-ignore) ;
 }
 
 

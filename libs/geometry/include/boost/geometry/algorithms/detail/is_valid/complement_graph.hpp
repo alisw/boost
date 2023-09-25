@@ -1,8 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2023, Oracle and/or its affiliates.
+// Copyright (c) 2014, 2018, 2019, Oracle and/or its affiliates.
 
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -33,7 +32,7 @@ namespace detail { namespace is_valid
 {
 
 
-template <typename TurnPoint, typename Strategy>
+template <typename TurnPoint, typename CSTag>
 class complement_graph_vertex
 {
 public:
@@ -56,7 +55,7 @@ public:
         {
             return geometry::less
                 <
-                    TurnPoint, -1, Strategy
+                    TurnPoint, -1, CSTag
                 >()(*m_turn_point, *other.m_turn_point);
         }
         if ( m_turn_point == NULL && other.m_turn_point == NULL )
@@ -78,11 +77,11 @@ private:
 
 
 
-template <typename TurnPoint, typename Strategy>
+template <typename TurnPoint, typename CSTag>
 class complement_graph
 {
 private:
-    typedef complement_graph_vertex<TurnPoint, Strategy> vertex;
+    typedef complement_graph_vertex<TurnPoint, CSTag> vertex;
     typedef std::set<vertex> vertex_container;
 
 public:
@@ -225,10 +224,9 @@ public:
     }
 
 #ifdef BOOST_GEOMETRY_TEST_DEBUG
-    template <typename OutputStream>
+    template <typename OStream, typename TP>
     friend inline
-    void debug_print_complement_graph(OutputStream&,
-                                      complement_graph<TurnPoint, Strategy> const&);
+    void debug_print_complement_graph(OStream&, complement_graph<TP> const&);
 #endif // BOOST_GEOMETRY_TEST_DEBUG
 
 private:

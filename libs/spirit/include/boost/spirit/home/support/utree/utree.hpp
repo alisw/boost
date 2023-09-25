@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <string>
+#include <iostream>
 #include <ios>
 #include <sstream>
 #include <typeinfo>

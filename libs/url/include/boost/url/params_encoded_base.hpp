@@ -35,7 +35,7 @@ namespace urls {
     @li @ref params_encoded_ref
     @li @ref params_encoded_view
 */
-class BOOST_URL_DECL params_encoded_base
+class params_encoded_base
 {
     friend class url_view_base;
     friend class params_encoded_ref;
@@ -173,6 +173,7 @@ public:
         @li <a href="https://en.wikipedia.org/wiki/Query_string"
             >Query string (Wikipedia)</a>
     */
+    BOOST_URL_DECL
     pct_string_view
     buffer() const noexcept;
 
@@ -189,6 +190,7 @@ public:
         @par Exception Safety
         Throws nothing.
     */
+    BOOST_URL_DECL
     bool
     empty() const noexcept;
 
@@ -205,6 +207,7 @@ public:
         @par Exception Safety
         Throws nothing.
     */
+    BOOST_URL_DECL
     std::size_t
     size() const noexcept;
 
@@ -216,6 +219,7 @@ public:
         @par Exception Safety
         Throws nothing.
     */
+    BOOST_URL_DECL
     iterator
     begin() const noexcept;
 
@@ -227,6 +231,7 @@ public:
         @par Exception Safety
         Throws nothing.
     */
+    BOOST_URL_DECL
     iterator
     end() const noexcept;
 
@@ -301,6 +306,7 @@ public:
         here, the comparison is
         case-insensitive.
     */
+    BOOST_URL_DECL
     std::size_t
     count(
         pct_string_view key,
@@ -507,12 +513,14 @@ public:
         ignore_case_param ic = {}) const noexcept;
 
 private:
+    BOOST_URL_DECL
     detail::params_iter_impl
     find_impl(
         detail::params_iter_impl,
         pct_string_view,
         ignore_case_param) const noexcept;
 
+    BOOST_URL_DECL
     detail::params_iter_impl
     find_last_impl(
         detail::params_iter_impl,

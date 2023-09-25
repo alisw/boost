@@ -37,7 +37,7 @@ struct as_user_launcher : default_launcher
       auto proc =  (*this)(context, ec, executable, std::forward<Args>(args), std::forward<Inits>(inits)...);
 
       if (ec)
-          v2::detail::throw_error(ec, "as_user_launcher");
+          asio::detail::throw_error(ec, "as_user_launcher");
 
       return proc;
   }
@@ -68,7 +68,7 @@ struct as_user_launcher : default_launcher
       auto proc = (*this)(std::move(exec), ec, executable, std::forward<Args>(args), std::forward<Inits>(inits)...);
 
       if (ec)
-          detail::throw_error(ec, "as_user_launcher");
+          asio::detail::throw_error(ec, "as_user_launcher");
 
       return proc;
   }

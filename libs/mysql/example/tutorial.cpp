@@ -7,13 +7,9 @@
 
 //[tutorial_listing
 
-#include <boost/mysql/error_with_diagnostics.hpp>
-#include <boost/mysql/handshake_params.hpp>
-#include <boost/mysql/results.hpp>
-#include <boost/mysql/tcp_ssl.hpp>
+#include <boost/mysql.hpp>
 
 #include <boost/asio/io_context.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/context.hpp>
 #include <boost/system/system_error.hpp>
 
@@ -68,7 +64,7 @@ void main_impl(int argc, char** argv)
     // Issue the SQL query to the server
     const char* sql = "SELECT 'Hello world!'";
     boost::mysql::results result;
-    conn.execute(sql, result);
+    conn.query(sql, result);
     //]
 
     //[tutorial_results

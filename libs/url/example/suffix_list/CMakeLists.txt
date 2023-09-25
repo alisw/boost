@@ -7,7 +7,13 @@
 # Official repository: https://github.com/boostorg/url
 #
 
-add_executable(suffix_list suffix_list.cpp)
-target_link_libraries(suffix_list PRIVATE Boost::url)
-source_group("" FILES suffix_list.cpp)
+source_group("" FILES
+        suffix_list.cpp
+        )
+
+add_executable(suffix_list
+        suffix_list.cpp
+        )
+
 set_property(TARGET suffix_list PROPERTY FOLDER "Examples")
+target_link_libraries(suffix_list PRIVATE Boost::url)

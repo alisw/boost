@@ -121,10 +121,7 @@ growth(
     std::size_t capacity)
 {
     if(new_size > max_size())
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::string_too_large, &loc );
-    }
+        detail::throw_length_error( "string too large" );
     // growth factor 2
     if( capacity >
         max_size() - capacity)
@@ -159,10 +156,7 @@ append(
     storage_ptr const& sp)
 {
     if(n > max_size() - size())
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::string_too_large, &loc );
-    }
+        detail::throw_length_error( "string too large" );
     if(n <= capacity() - size())
     {
         term(size() + n);
@@ -188,10 +182,7 @@ insert(
 {
     const auto curr_size = size();
     if(pos > curr_size)
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::out_of_range, &loc );
-    }
+        detail::throw_out_of_range();
     const auto curr_data = data();
     if(n <= capacity() - curr_size)
     {
@@ -221,10 +212,7 @@ insert(
     else
     {
         if(n > max_size() - curr_size)
-        {
-            BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-            detail::throw_system_error( error::string_too_large, &loc );
-        }
+            detail::throw_length_error( "string too large" );
         string_impl tmp(growth(
             curr_size + n, capacity()), sp);
         tmp.size(curr_size + n);
@@ -254,10 +242,7 @@ insert_unchecked(
 {
     const auto curr_size = size();
     if(pos > curr_size)
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::out_of_range, &loc );
-    }
+        detail::throw_out_of_range();
     const auto curr_data = data();
     if(n <= capacity() - size())
     {
@@ -271,10 +256,7 @@ insert_unchecked(
         return dest;
     }
     if(n > max_size() - curr_size)
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::string_too_large, &loc );
-    }
+        detail::throw_length_error( "string too large" );
     string_impl tmp(growth(
         curr_size + n, capacity()), sp);
     tmp.size(curr_size + n);
@@ -302,10 +284,7 @@ replace(
 {
     const auto curr_size = size();
     if (pos > curr_size)
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::out_of_range, &loc );
-    }
+        detail::throw_out_of_range();
     const auto curr_data = data();
     n1 = (std::min)(n1, curr_size - pos);
     const auto delta = (std::max)(n1, n2) -
@@ -353,10 +332,7 @@ replace(
     else
     {
         if (delta > max_size() - curr_size)
-        {
-            BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-            detail::throw_system_error( error::string_too_large, &loc );
-        }
+            detail::throw_length_error( "string too large" );
         // would exceed capacity, reallocate
         string_impl tmp(growth(
             curr_size + delta, capacity()), sp);
@@ -390,10 +366,7 @@ replace_unchecked(
 {
     const auto curr_size = size();
     if(pos > curr_size)
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::out_of_range, &loc );
-    }
+        detail::throw_out_of_range();
     const auto curr_data = data();
     const auto delta = (std::max)(n1, n2) -
         (std::min)(n1, n2);
@@ -414,10 +387,7 @@ replace_unchecked(
         return replace_pos;
     }
     if(delta > max_size() - curr_size)
-    {
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::string_too_large, &loc );
-    }
+        detail::throw_length_error( "string too large" );
     // would exceed capacity, reallocate
     string_impl tmp(growth(
         curr_size + delta, capacity()), sp);

@@ -1,8 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
 // Copyright (c) 2014-2021, Oracle and/or its affiliates.
+
 // Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
@@ -32,7 +31,7 @@
 #include <boost/geometry/core/point_type.hpp>
 #include <boost/geometry/core/tags.hpp>
 
-#include <boost/geometry/util/constexpr.hpp>
+#include <boost/geometry/util/condition.hpp>
 
 
 namespace boost { namespace geometry
@@ -106,7 +105,7 @@ namespace dispatch
 // A curve is simple if it does not pass through the same point twice,
 // with the possible exception of its two endpoints
 //
-// There is an option here as to whether spikes are allowed for linestrings;
+// There is an option here as to whether spikes are allowed for linestrings; 
 // here we pass this as an additional template parameter: allow_spikes
 // If allow_spikes is set to true, spikes are allowed, false otherwise.
 // By default, spikes are disallowed
@@ -159,17 +158,15 @@ public:
                              VisitPolicy& visitor,
                              Strategy const& strategy)
     {
-        if BOOST_GEOMETRY_CONSTEXPR (AllowEmptyMultiGeometries)
+        if (BOOST_GEOMETRY_CONDITION(
+                AllowEmptyMultiGeometries && boost::empty(multilinestring)))
         {
-            if (boost::empty(multilinestring))
-            {
-                return visitor.template apply<no_failure>();
-            }
+            return visitor.template apply<no_failure>();
         }
 
         using per_ls = per_linestring<VisitPolicy, Strategy>;
 
-        return std::all_of(boost::begin(multilinestring),
+        return std::all_of(boost::begin(multilinestring), 
                            boost::end(multilinestring),
                            per_ls(visitor, strategy));
     }

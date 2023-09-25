@@ -1,7 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -11,7 +10,7 @@
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_OVERLAY_TURN_INFO_HPP
 
 
-#include <array>
+#include <boost/array.hpp>
 
 #include <boost/geometry/core/coordinate_type.hpp>
 #include <boost/geometry/algorithms/detail/signed_size_type.hpp>
@@ -81,7 +80,7 @@ template
     typename Point,
     typename SegmentRatio = geometry::segment_ratio<typename coordinate_type<Point>::type>,
     typename Operation = turn_operation<Point, SegmentRatio>,
-    typename Container = std::array<Operation, 2>
+    typename Container = boost::array<Operation, 2>
 >
 struct turn_info
 {

@@ -23,7 +23,6 @@
 #include <boost/static_assert.hpp>
 
 #include <boost/geometry/algorithms/append.hpp>
-#include <boost/geometry/algorithms/detail/convert_point_to_point.hpp>
 #include <boost/geometry/algorithms/detail/point_is_spike_or_equal.hpp>
 #include <boost/geometry/algorithms/detail/equals/point_point.hpp>
 
@@ -100,16 +99,7 @@ inline void append_no_dups_or_spikes(Range& range, Point const& point,
         return;
     }
 
-    auto append = [](auto& r, const auto& p)
-    {
-        using point_t = typename boost::range_value<Range>::type;
-        point_t rp;
-        geometry::detail::conversion::convert_point_to_point(p, rp);
-        traits::push_back<Range>::apply(r, std::move(rp));
-    };
-
-    append(range, point);
-
+    traits::push_back<Range>::apply(range, point);
 
     // If a point is equal, or forming a spike, remove the pen-ultimate point
     // because this one caused the spike.
@@ -125,7 +115,7 @@ inline void append_no_dups_or_spikes(Range& range, Point const& point,
     {
         // Use the Concept/traits, so resize and append again
         traits::resize<Range>::apply(range, boost::size(range) - 2);
-        append(range, point);
+        traits::push_back<Range>::apply(range, point);
     }
 }
 
@@ -184,6 +174,7 @@ inline void clean_closing_dups_and_spikes(Range& range,
         return;
     }
 
+    typedef typename boost::range_iterator<Range>::type iterator_type;
     static bool const closed = geometry::closure<Range>::value == geometry::closed;
 
 // TODO: the following algorithm could be rewritten to first look for spikes
@@ -193,9 +184,9 @@ inline void clean_closing_dups_and_spikes(Range& range,
     do
     {
         found = false;
-        auto first = boost::begin(range);
-        auto second = first + 1;
-        auto ultimate = boost::end(range) - 1;
+        iterator_type first = boost::begin(range);
+        iterator_type second = first + 1;
+        iterator_type ultimate = boost::end(range) - 1;
         if (BOOST_GEOMETRY_CONDITION(closed))
         {
             ultimate--;

@@ -1,8 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
 // Copyright (c) 2016-2022, Oracle and/or its affiliates.
+
 // Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -15,6 +14,8 @@
 
 #include <algorithm>
 
+#include <boost/tuple/tuple.hpp>
+#include <boost/algorithm/minmax.hpp>
 #include <boost/config.hpp>
 #include <boost/concept_check.hpp>
 
@@ -465,7 +466,7 @@ private:
 
 
     template <typename CT>
-    static inline auto non_iterative_case(CT const&     , CT const&     , //p1
+    static inline auto non_iterative_case(CT const& lon1, CT const& lat1, //p1
                                           CT const& lon2, CT const& lat2, //p2
                                           CT const& distance)
     {

@@ -28,6 +28,8 @@
 #include <boost/range/end.hpp>
 #include <boost/range/value_type.hpp>
 
+#include <boost/geometry/algorithms/detail/interior_iterator.hpp>
+
 #include <boost/geometry/core/exterior_ring.hpp>
 #include <boost/geometry/core/interior_rings.hpp>
 #include <boost/geometry/core/ring_type.hpp>
@@ -168,11 +170,15 @@ struct dsv_range
             Range const& range,
             dsv_settings const& settings)
     {
+        typedef typename boost::range_iterator<Range const>::type iterator_type;
+
         bool first = true;
 
         os << settings.list_open;
 
-        for (auto it = boost::begin(range); it != boost::end(range); ++it)
+        for (iterator_type it = boost::begin(range);
+            it != boost::end(range);
+            ++it)
         {
             os << (first ? "" : settings.point_separator)
                 << settings.point_open;
@@ -212,8 +218,10 @@ struct dsv_poly
 
         dsv_range<ring>::apply(os, exterior_ring(poly), settings);
 
-        auto const& rings = interior_rings(poly);
-        for (auto it = boost::begin(rings); it != boost::end(rings); ++it)
+        typename interior_return_type<Polygon const>::type
+            rings = interior_rings(poly);
+        for (typename detail::interior_iterator<Polygon const>::type
+                it = boost::begin(rings); it != boost::end(rings); ++it)
         {
             os << settings.list_separator;
             dsv_range<ring>::apply(os, *it, settings);
@@ -354,6 +362,12 @@ struct dsv_multi
                     typename boost::range_value<MultiGeometry>::type
                 > dispatch_one;
 
+    typedef typename boost::range_iterator
+        <
+            MultiGeometry const
+        >::type iterator;
+
+
     template <typename Char, typename Traits>
     static inline void apply(std::basic_ostream<Char, Traits>& os,
                 MultiGeometry const& multi,
@@ -362,7 +376,9 @@ struct dsv_multi
         os << settings.list_open;
 
         bool first = true;
-        for(auto it = boost::begin(multi); it != boost::end(multi); ++it, first = false)
+        for(iterator it = boost::begin(multi);
+            it != boost::end(multi);
+            ++it, first = false)
         {
             os << (first ? "" : settings.list_separator);
             dispatch_one::apply(os, *it, settings);

@@ -1,8 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
 // Copyright (c) 2015, Oracle and/or its affiliates.
+
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
 // Licensed under the Boost Software License version 1.0.
@@ -10,8 +9,6 @@
 
 #ifndef BOOST_GEOMETRY_ALGORITHMS_DETAIL_SWEEP_HPP
 #define BOOST_GEOMETRY_ALGORITHMS_DETAIL_SWEEP_HPP
-
-#include <boost/geometry/util/condition.hpp>
 
 #include <boost/core/ignore_unused.hpp>
 
@@ -59,7 +56,7 @@ inline void sweep(Range const& range, PriorityQueue& queue,
         event_type event = queue.top();
         queue.pop();
         event_visitor.apply(event, queue);
-        if (BOOST_GEOMETRY_CONDITION(interrupt_policy.enabled) && interrupt_policy.apply(event))
+        if (interrupt_policy.enabled && interrupt_policy.apply(event))
         {
             break;
         }

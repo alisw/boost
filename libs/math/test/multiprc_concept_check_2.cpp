@@ -12,8 +12,6 @@
 #define BOOST_MATH_ASSERT_UNDEFINED_POLICY false
 #define TEST_GROUP_9
 
-#ifdef BOOST_MATH_RUN_MP_TESTS
-
 #ifdef _MSC_VER
 #  pragma warning(disable:4800)
 #  pragma warning(disable:4512)
@@ -41,11 +39,4 @@ int main()
    checker.constraints();
 }
 
-#else
 
-int main()
-{
-   return 0;
-}
-
-#endif

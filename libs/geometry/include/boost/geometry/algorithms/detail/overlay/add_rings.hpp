@@ -96,6 +96,8 @@ inline OutputIterator add_rings(SelectionMap const& map,
             Strategy const& strategy,
             add_rings_error_handling error_handling = add_rings_ignore_unordered)
 {
+    typedef typename SelectionMap::const_iterator iterator;
+
     std::size_t const min_num_points = core_detail::closure::minimum_ring_size
         <
             geometry::closure
@@ -108,23 +110,29 @@ inline OutputIterator add_rings(SelectionMap const& map,
         >::value;
 
 
-    for (auto const& pair : map)
+    for (iterator it = boost::begin(map);
+        it != boost::end(map);
+        ++it)
     {
-        if (! pair.second.discarded
-            && pair.second.parent.source_index == -1)
+        if (! it->second.discarded
+            && it->second.parent.source_index == -1)
         {
             GeometryOut result;
             convert_and_add(result, geometry1, geometry2, collection,
-                    pair.first, pair.second.reversed, false);
+                    it->first, it->second.reversed, false);
 
             // Add children
-            for (auto const& child : pair.second.children)
+            for (typename std::vector<ring_identifier>::const_iterator child_it
+                        = it->second.children.begin();
+                child_it != it->second.children.end();
+                ++child_it)
             {
-                auto mit = map.find(child);
-                if (mit != map.end() && ! mit->second.discarded)
+                iterator mit = map.find(*child_it);
+                if (mit != map.end()
+                    && ! mit->second.discarded)
                 {
                     convert_and_add(result, geometry1, geometry2, collection,
-                            child, mit->second.reversed, true);
+                            *child_it, mit->second.reversed, true);
                 }
             }
 

@@ -1,7 +1,6 @@
 // Boost.Geometry
 
 // Copyright (c) 2018 Adeel Ahmad, Islamabad, Pakistan.
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
 // Contributed and/or modified by Adeel Ahmad, as part of Google Summer of Code 2018 program.
 
@@ -268,8 +267,8 @@ public:
             CT sin_sigma2 = sin_beta2;
             CT cos_sigma2 = cos_alpha2 * cos_beta2;
 
-            sigma12 = std::atan2((std::max)(c0, cos_sigma1 * sin_sigma2 - sin_sigma1 * cos_sigma2),
-                                                cos_sigma1 * cos_sigma2 + sin_sigma1 * sin_sigma2);
+            CT sigma12 = std::atan2((std::max)(c0, cos_sigma1 * sin_sigma2 - sin_sigma1 * cos_sigma2),
+                                                   cos_sigma1 * cos_sigma2 + sin_sigma1 * sin_sigma2);
 
             CT dummy;
             meridian_length(n, ep2, sigma12, sin_sigma1, cos_sigma1, dn1,
@@ -282,7 +281,7 @@ public:
             {
                 if (sigma12 < c3 * tiny)
                 {
-                    sigma12 = m12x = s12x = c0;
+                    sigma12  = m12x = s12x = c0;
                 }
 
                 m12x *= b;
@@ -382,7 +381,7 @@ public:
                         cos_alpha1 / sin_alpha1 > cos_alpha1b / sin_alpha1b))
                     {
                         sin_alpha1b = sin_alpha1;
-                        cos_alpha1b = cos_alpha1;
+                        cos_alpha1b = cos_alpha1;   
                     }
                     else if (v < c0 && (iteration > max_iterations ||
                              cos_alpha1 / sin_alpha1 < cos_alpha1a / sin_alpha1a))

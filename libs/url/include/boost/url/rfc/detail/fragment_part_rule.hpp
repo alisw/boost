@@ -39,7 +39,7 @@ struct fragment_part_rule_t
         bool has_fragment = false;
     };
 
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end

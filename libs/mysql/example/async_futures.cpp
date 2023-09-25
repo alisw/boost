@@ -7,15 +7,9 @@
 
 //[example_async_futures
 
-#include <boost/mysql/error_code.hpp>
-#include <boost/mysql/handshake_params.hpp>
-#include <boost/mysql/results.hpp>
-#include <boost/mysql/row_view.hpp>
-#include <boost/mysql/statement.hpp>
-#include <boost/mysql/tcp_ssl.hpp>
+#include <boost/mysql.hpp>
 
 #include <boost/asio/io_context.hpp>
-#include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/ssl/context.hpp>
 #include <boost/asio/use_future.hpp>
 #include <boost/system/system_error.hpp>
@@ -115,7 +109,7 @@ void main_impl(int argc, char** argv)
 
     // Execute the statement
     boost::mysql::results result;
-    fut = conn.async_execute(stmt.bind(company_id), result, use_future);
+    fut = conn.async_execute_statement(stmt, std::make_tuple(company_id), result, use_future);
     fut.get();
 
     // Print employees

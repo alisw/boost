@@ -185,7 +185,9 @@ public:
             }
             {
                 stream_parser p;
-                BOOST_TEST_THROWS_WITH_LOCATION( p.write_some("[*") );
+                BOOST_TEST_THROWS(
+                    p.write_some("[*"),
+                    system_error);
             }
         }
 
@@ -234,7 +236,9 @@ public:
             }
             {
                 stream_parser p;
-                BOOST_TEST_THROWS_WITH_LOCATION( p.write("[]*") );
+                BOOST_TEST_THROWS(
+                    p.write("[]*"),
+                    system_error);
             }
         }
 
@@ -253,7 +257,9 @@ public:
                 stream_parser p;
                 BOOST_TEST(! p.done());
                 p.write("1.");
-                BOOST_TEST_THROWS_WITH_LOCATION( p.finish() );
+                BOOST_TEST_THROWS(
+                    p.finish(),
+                    system_error);
             }
             {
                 stream_parser p;
@@ -269,7 +275,9 @@ public:
                 p.write("[1,2");
                 error_code ec;
                 p.finish(ec);
-                BOOST_TEST_THROWS_WITH_LOCATION( p.finish() );
+                BOOST_TEST_THROWS(
+                    p.finish(),
+                    system_error);
             }
             {
                 stream_parser p;
@@ -283,7 +291,9 @@ public:
                 p.write("[1,2");
                 std::error_code ec;
                 p.finish(ec);
-                BOOST_TEST_THROWS_WITH_LOCATION( p.finish() );
+                BOOST_TEST_THROWS(
+                    p.finish(),
+                    system_error);
             }
         }
 
@@ -294,7 +304,9 @@ public:
                 BOOST_TEST(
                     p.write_some("[") == 1);
                 BOOST_TEST(! p.done());
-                BOOST_TEST_THROWS_WITH_LOCATION( p.release() );
+                BOOST_TEST_THROWS(
+                    p.release(),
+                    system_error);
             }
             {
                 stream_parser p;
@@ -307,7 +319,9 @@ public:
                 stream_parser p;
                 p.write("[");
                 BOOST_TEST(! p.done());
-                BOOST_TEST_THROWS_WITH_LOCATION( p.release() );
+                BOOST_TEST_THROWS(
+                    p.release(),
+                    system_error);
             }
             {
                 stream_parser p;
@@ -317,7 +331,9 @@ public:
                     ec == error::extra_data);
                 BOOST_TEST(ec.has_location());
                 BOOST_TEST(! p.done());
-                BOOST_TEST_THROWS_WITH_LOCATION( p.release() );
+                BOOST_TEST_THROWS(
+                    p.release(),
+                    system_error);
             }
         }
     }
@@ -462,19 +478,15 @@ public:
 
     static
     void
-    grind_double( string_view s, double v, parse_options const& po = {} )
+    grind_double(string_view s, double v)
     {
         grind(s,
             [v](value const& jv, const parse_options&)
             {
                 if(! BOOST_TEST(jv.is_double()))
                     return;
-                if( std::isnan(v) )
-                    BOOST_TEST( std::isnan(jv.get_double()) );
-                else
-                    BOOST_TEST( jv.get_double() == v );
-            },
-            po);
+                BOOST_TEST(jv.get_double() == v);
+            });
     }
 
     //------------------------------------------------------
@@ -1023,7 +1035,9 @@ public:
 
             {
                 value jv;
-                BOOST_TEST_THROWS_WITH_LOCATION( jv = parse("{,") );
+                BOOST_TEST_THROWS(
+                    jv = parse("{,"),
+                    system_error);
             }
         }
 
@@ -1037,7 +1051,9 @@ public:
             {
                 monotonic_resource mr;
                 value jv;
-                BOOST_TEST_THROWS_WITH_LOCATION( jv = parse("xxx", &mr) );
+                BOOST_TEST_THROWS(
+                    jv = parse("xxx", &mr),
+                    system_error);
             }
         }
     }
@@ -1266,113 +1282,6 @@ R"xx({
         s.p.write(":0}", 3);
     }
 
-    void
-    testSpecialNumbers()
-    {
-        parse_options with_special_numbers;
-        with_special_numbers.allow_infinity_and_nan = true;
-
-        grind_double(
-            "Infinity",
-            std::numeric_limits<double>::infinity(),
-            with_special_numbers);
-
-        grind_double(
-            "-Infinity",
-            -std::numeric_limits<double>::infinity(),
-            with_special_numbers);
-        grind_double(
-            "-Infinity                         ", // long enough for fast path
-            -std::numeric_limits<double>::infinity(),
-            with_special_numbers);
-
-
-        grind_double(
-            "NaN",
-            std::numeric_limits<double>::quiet_NaN(),
-            with_special_numbers);
-    }
-
-    //------------------------------------------------------
-
-    void
-    testLongNumberOverlfow()
-    {
-#ifdef BOOST_JSON_EXPENSIVE_TESTS
-        std::array<char, 1000> zeroes;
-        zeroes.fill('0');
-
-        stream_parser p;
-        {
-            p.write("1", 1);
-
-            std::size_t count = 0;
-            while( static_cast<std::size_t>( INT_MAX - zeroes.size() ) > count )
-                count += p.write( zeroes.data(), zeroes.size() );
-
-            error_code ec;
-            p.write(zeroes.data(), zeroes.size(), ec);
-            BOOST_TEST( ec == error::exponent_overflow );
-        }
-
-        p.reset();
-        {
-            p.write("0.", 2);
-
-            std::size_t count = 0;
-            while( static_cast<std::size_t>( INT_MAX - zeroes.size() ) > count )
-                count += p.write( zeroes.data(), zeroes.size() );
-
-            error_code ec;
-            p.write(zeroes.data(), zeroes.size(), ec);
-            BOOST_TEST( ec == error::exponent_overflow );
-        }
-
-        p.reset();
-        {
-            p.write("0.", 2);
-
-            int count = INT_MIN;
-            while( static_cast<int>( count + zeroes.size() ) < 0 )
-                count += static_cast<int>(
-                    p.write( zeroes.data(), zeroes.size() ));
-
-            p.write(zeroes.data(), -2 - count);
-            p.write("1e", 2);
-            // at this point we've filled bias to the brim
-
-            std::string const int_min = std::to_string(INT_MIN);
-            p.write( int_min.data(), int_min.size() );
-
-            error_code ec;
-            p.finish(ec);
-            BOOST_TEST( ec == error::exponent_overflow );
-        }
-
-        p.reset();
-        {
-            std::string const uint64_max
-                = std::to_string(18446744073709551615U);
-            p.write( uint64_max.data(), uint64_max.size() );
-
-            std::size_t count = INT_MAX;
-            while( static_cast<int>( count - zeroes.size() ) > 0 )
-                count -= p.write( zeroes.data(), zeroes.size() );
-
-            p.write(zeroes.data(), count - 1);
-            // at this point we've filled bias to the brim
-
-            p.write("e", 1);
-            std::string const int_max = std::to_string(INT_MAX);
-            p.write( int_max.data(), int_max.size() );
-
-            error_code ec;
-            p.finish(ec);
-            BOOST_TEST( ec == error::exponent_overflow );
-        }
-#endif
-    }
-
     //------------------------------------------------------
 
     void
@@ -1398,8 +1307,6 @@ R"xx({
         testIssue45();
         testIssue876();
         testSentinelOverlap();
-        testSpecialNumbers();
-        testLongNumberOverlfow();
     }
 };
 

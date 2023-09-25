@@ -995,25 +995,25 @@ SIGNATURE NOT RECOGNISED
       bool all_good{false};
       ~_()
       {
-        if(!this->all_good)
+        if(!all_good)
         {
           // We lost one of the values
-          this->a._state._status.set_have_lost_consistency(true);
-          this->b._state._status.set_have_lost_consistency(true);
+          a._state._status.set_have_lost_consistency(true);
+          b._state._status.set_have_lost_consistency(true);
           return;
         }
-        if(this->exceptioned)
+        if(exceptioned)
         {
           // The value + error swap threw an exception. Try to swap back _ptr
           try
           {
-            strong_swap(this->all_good, this->a._ptr, this->b._ptr);
+            strong_swap(all_good, a._ptr, b._ptr);
           }
           catch(...)
           {
             // We lost one of the values
-            this->a._state._status.set_have_lost_consistency(true);
-            this->b._state._status.set_have_lost_consistency(true);
+            a._state._status.set_have_lost_consistency(true);
+            b._state._status.set_have_lost_consistency(true);
             // throw away second exception
           }
 
@@ -1030,8 +1030,8 @@ SIGNATURE NOT RECOGNISED
               t->_state._status.set_have_error(true).set_have_lost_consistency(true);
             }
           };
-          check(&this->a);
-          check(&this->b);
+          check(&a);
+          check(&b);
         }
       }
     } _{*this, o};

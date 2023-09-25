@@ -66,7 +66,7 @@ struct url_test
     equal(
         Segments const& segs,
         std::initializer_list<
-            core::string_view> init)
+            string_view> init)
     {
         if(! BOOST_TEST(segs.size() ==
             init.size()))
@@ -83,7 +83,7 @@ struct url_test
     equal(
         url& u,
         std::initializer_list<
-            core::string_view> init)
+            string_view> init)
     {
         url_view const& uv = u;
         equal(u.segments(), init);
@@ -96,8 +96,8 @@ struct url_test
     static
     void
     modify(
-        core::string_view before,
-        core::string_view after,
+        string_view before,
+        string_view after,
         F&& f)
     {
         url u(before);
@@ -147,7 +147,7 @@ struct url_test
             BOOST_TEST_EQ(u2.buffer(), "x://y/z?q#f");
         }
 
-        // url(core::string_view)
+        // url(string_view)
         {
             url u("http://example.com/path/to/file.txt?#");
         }
@@ -204,7 +204,7 @@ struct url_test
     testOrigin()
     {
         auto const remove = [](
-            core::string_view s1, core::string_view s2)
+            string_view s1, string_view s2)
         {
             url u = parse_uri_reference(s1).value();
             BOOST_TEST_CSTR_EQ(u.remove_origin().buffer(), s2);
@@ -231,28 +231,6 @@ struct url_test
             url u( "http://www.example.com//kyle:xy" );
             u.remove_origin();
             BOOST_TEST_CSTR_EQ( u.buffer(), "/.//kyle:xy" );
-        }
-
-        {
-            // issue #446
-            boost::urls::url u;
-            u.set_scheme("https")
-                .set_host("special-api.com")
-                .set_port("443")
-                .set_path("/prefix/api/v1");
-            u.segments().push_back("applications");
-            u.segments().push_back("01");
-            u.segments().push_back("devices");
-            u.params().append({"since", "2022-01-01"});
-            BOOST_TEST_EQ(
-                u.buffer(),
-                "https://special-api.com:443/prefix/api/v1/applications/01/devices?since=2022-01-01");
-            auto f = [](url_view u) {
-                BOOST_TEST_EQ(
-                    u.buffer(),
-                    "https://special-api.com/some/path");
-            };
-            f(url{"https://"}.set_host("special-api.com").set_path("some/path"));
         }
     }
 
@@ -333,15 +311,13 @@ struct url_test
         {
             // issue 674
             {
-                auto ok = [](core::string_view u0, core::string_view p)
+                auto ok = [](string_view u0, string_view p)
                 {
-                    urls::url u(u0);
-                     u.set_encoded_path(p);
-                    BOOST_TEST_CSTR_EQ(u.buffer(), p);
-                    u.set_path(p);
-                    BOOST_TEST_CSTR_EQ(u.buffer(), p);
-                    u.normalize();
-                    BOOST_TEST_CSTR_EQ(u.buffer(), p);
+                  urls::url u(u0);
+                  u.set_path(p);
+                  BOOST_TEST_CSTR_EQ(u.buffer(), p);
+                  u.normalize();
+                  BOOST_TEST_CSTR_EQ(u.buffer(), p);
                 };
                 ok("/", "/");
                 ok("/", "");
@@ -361,13 +337,6 @@ struct url_test
                 BOOST_TEST_CSTR_EQ(u.encoded_target(), "/");
                 BOOST_TEST_EQ(u.encoded_segments().size(), 0);
             }
-            // path normalization does not encode "/"
-            {
-                core::string_view s = "/a%2Fb/";
-                urls::url u(s);
-                u.normalize();
-                BOOST_TEST_CSTR_EQ(u.buffer(), s);
-            }
         }
 
         // set_encoded_path
@@ -375,70 +344,62 @@ struct url_test
             // empty
             url u = parse_uri("x://y/path/to/file.txt?q#f").value();
             u.set_encoded_path("");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "x://y?q#f");
+            BOOST_TEST_EQ(u.encoded_path(), "");
+            BOOST_TEST_EQ(u.buffer(), "x://y?q#f");
         }
         {
             // path-abempty
             url u = parse_uri("x://y/path/to/file.txt?q#f").value();
             u.set_encoded_path("/x");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "/x");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "x://y/x?q#f");
+            BOOST_TEST_EQ(u.encoded_path(), "/x");
+            BOOST_TEST_EQ(u.buffer(), "x://y/x?q#f");
             u.set_encoded_path("x/");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "x://y/x/?q#f");
+            BOOST_TEST_EQ(u.buffer(), "x://y/x/?q#f");
         }
         {
             // path-absolute
             url u = parse_relative_ref("/path/to/file.txt").value();
             u.set_encoded_path("/home/file.txt");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "/home/file.txt");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "/home/file.txt");
+            BOOST_TEST_EQ(u.encoded_path(), "/home/file.txt");
+            BOOST_TEST_EQ(u.buffer(), "/home/file.txt");
             u.set_encoded_path("//home/file.txt");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "/.//home/file.txt");
             equal(u, { "", "home", "file.txt" });
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "/.//home/file.txt");
+            BOOST_TEST_EQ(u.encoded_path(), "/.//home/file.txt");
             BOOST_TEST_THROWS(u.set_encoded_path("/home/%ile.txt"),
-                system::system_error);
+                system_error);
         }
         {
             // path-rootless
             url u = parse_uri("x:mailto").value();
             u.set_encoded_path("file.txt");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "file.txt");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "x:file.txt");
+            BOOST_TEST_EQ(u.encoded_path(), "file.txt");
+            BOOST_TEST_EQ(u.buffer(), "x:file.txt");
             u.set_encoded_path(":file.txt");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), ":file.txt");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "x::file.txt");
+            BOOST_TEST_EQ(u.encoded_path(), ":file.txt");
+            BOOST_TEST_EQ(u.buffer(), "x::file.txt");
             // to path-absolute
             u.set_encoded_path("/file.txt");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "/file.txt");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "x:/file.txt");
+            BOOST_TEST_EQ(u.encoded_path(), "/file.txt");
+            BOOST_TEST_EQ(u.buffer(), "x:/file.txt");
         }
         {
             // path-noscheme
             url u = parse_relative_ref("mailto").value();
             u.set_encoded_path("file.txt");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "file.txt");
-            BOOST_TEST_CSTR_EQ(u.buffer(), "file.txt");
+            BOOST_TEST_EQ(u.encoded_path(), "file.txt");
+            BOOST_TEST_EQ(u.buffer(), "file.txt");
             u.set_encoded_path(":file.txt");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "%3Afile.txt");
+            BOOST_TEST_EQ(u.encoded_path(), "%3Afile.txt");
             u.set_encoded_path("http:index.htm");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "http%3Aindex.htm");
-        }
-        {
-            // multiple empty segments with host
-            url u = parse_uri_reference("file:///unicorn").value();
-            u.set_encoded_path("//\\/");
-            BOOST_TEST_CSTR_EQ(u, "file:////%5C/");
-            BOOST_TEST_CSTR_EQ(u.encoded_path(), "//%5C/");
+            BOOST_TEST_EQ(u.encoded_path(), "http%3Aindex.htm");
         }
 
         // set_encoded_path
         {
             auto const check =
-            [&](core::string_view s0,
-                core::string_view arg,
-                core::string_view match)
+            [&](string_view s0,
+                string_view arg,
+                string_view match)
             {
                 url u = parse_uri_reference(s0).value();
                 u.set_encoded_path(arg);
@@ -478,13 +439,13 @@ struct url_test
         // set_path
         {
             auto const check =
-            [&](core::string_view s0,
-                core::string_view arg,
-                core::string_view match)
+            [&](string_view s0,
+                string_view arg,
+                string_view match)
             {
                 url u = parse_uri_reference(s0).value();
                 u.set_path(arg);
-                BOOST_TEST_CSTR_EQ(u.buffer(), match);
+                BOOST_TEST_EQ(u.buffer(), match);
             };
             check(
                 "",
@@ -498,10 +459,6 @@ struct url_test
                 "",
                 "/path/to/file.txt",
                 "/path/to/file.txt");
-            check(
-                "",
-                "/path%2Fto%2Ffile.txt",
-                "/path%252Fto%252Ffile.txt");
             check(
                 "",
                 "//index.htm",
@@ -607,23 +564,23 @@ struct url_test
                 url u;
                 u.set_encoded_fragment("");
                 BOOST_TEST(u.has_fragment());
-                BOOST_TEST_CSTR_EQ(u.buffer(), "#");
-                BOOST_TEST_CSTR_EQ(u.encoded_fragment(), "");
+                BOOST_TEST_EQ(u.buffer(), "#");
+                BOOST_TEST_EQ(u.encoded_fragment(), "");
             }
             {
                 url u;
                 u.set_encoded_fragment("x");
                 BOOST_TEST(u.has_fragment());
-                BOOST_TEST_CSTR_EQ(u.buffer(), "#x");
-                BOOST_TEST_CSTR_EQ(u.encoded_fragment(), "x");
+                BOOST_TEST_EQ(u.buffer(), "#x");
+                BOOST_TEST_EQ(u.encoded_fragment(), "x");
             }
             {
                 url u;
                 u.set_encoded_fragment("%41");
                 BOOST_TEST(u.has_fragment());
-                BOOST_TEST_CSTR_EQ(u.buffer(), "#%41");
-                BOOST_TEST_CSTR_EQ(u.encoded_fragment(), "%41");
-                BOOST_TEST_CSTR_EQ(u.fragment(), "A");
+                BOOST_TEST_EQ(u.buffer(), "#%41");
+                BOOST_TEST_EQ(u.encoded_fragment(), "%41");
+                BOOST_TEST_EQ(u.fragment(), "A");
             }
             {
                 url u;
@@ -639,14 +596,14 @@ struct url_test
         // set_fragment
         {
             auto good = [](
-                core::string_view f, core::string_view h, core::string_view ef)
+                string_view f, string_view h, string_view ef)
             {
                 url u;
                 u.set_fragment(f);
                 BOOST_TEST(u.has_fragment());
-                BOOST_TEST_CSTR_EQ(u.buffer(), h);
-                BOOST_TEST_CSTR_EQ(u.encoded_fragment(), ef);
-                BOOST_TEST_CSTR_EQ(u.fragment(), f);
+                BOOST_TEST_EQ(u.buffer(), h);
+                BOOST_TEST_EQ(u.encoded_fragment(), ef);
+                BOOST_TEST_EQ(u.fragment(), f);
             };
 
             good("", "#", "");
@@ -689,45 +646,45 @@ struct url_test
     static
     void
     perform(
-        core::string_view s0,
-        core::string_view s1,
+        string_view s0,
+        string_view s1,
         std::initializer_list<
-            core::string_view> init,
+            string_view> init,
         F const& f)
     {
         url u = parse_uri_reference(s0).value();
         f(u);
         equal(u.segments(), init);
         equal(u.encoded_segments(), init);
-        BOOST_TEST_CSTR_EQ(u.buffer(), s1);
+        BOOST_TEST_EQ(u.buffer(), s1);
     }
 
     template<class F>
     static
     void
     perform(
-        core::string_view s0,
-        core::string_view s1,
+        string_view s0,
+        string_view s1,
         std::initializer_list<
-            core::string_view> dec_init,
+            string_view> dec_init,
         std::initializer_list<
-            core::string_view> enc_init,
+            string_view> enc_init,
         F const& f)
     {
         url u = parse_uri_reference(s0).value();
         f(u);
         equal(u.segments(), dec_init);
         equal(u.encoded_segments(), enc_init);
-        BOOST_TEST_CSTR_EQ(u.buffer(), s1);
+        BOOST_TEST_EQ(u.buffer(), s1);
     }
 
     void
     testSegments()
     {
         auto const check = [](
-            core::string_view s,
+            string_view s,
             std::initializer_list<
-                core::string_view> init,
+                string_view> init,
             bool abs)
         {
             url u =
@@ -745,26 +702,26 @@ struct url_test
         };
 
         auto const abs = [&check](
-            core::string_view s,
+            string_view s,
             std::initializer_list<
-                core::string_view> init)
+                string_view> init)
         {
             check(s, init, true);
         };
 
         auto const rel = [&check](
-            core::string_view s,
+            string_view s,
             std::initializer_list<
-                core::string_view> init)
+                string_view> init)
         {
             check(s, init, false);
         };
 
         auto const assign = [](
-            core::string_view s0,
-            core::string_view s1,
+            string_view s0,
+            string_view s1,
             std::initializer_list<
-                core::string_view> init)
+                string_view> init)
         {
             url u0 = parse_uri_reference(s0).value();
             {
@@ -772,7 +729,7 @@ struct url_test
                 u.segments() = init;
                 equal(u.segments(), init);
                 //equal(u.encoded_segments(), init);
-                BOOST_TEST_CSTR_EQ(u.buffer(), s1);
+                BOOST_TEST_EQ(u.buffer(), s1);
             }
         };
 
@@ -872,24 +829,24 @@ struct url_test
             "http://a/b/c/d;p?q").value();
 
         auto const check = [&ub](
-            core::string_view r,
-            core::string_view m)
+            string_view r,
+            string_view m)
         {
             auto ur =
                 parse_uri_reference(r).value();
             url u = parse_uri(
                 "z://y:x@p.q:69/x/f?q#f" ).value();
-            system::result<void> rv = resolve(ub, ur, u);
+            result<void> rv = resolve(ub, ur, u);
             if(! BOOST_TEST( rv.has_value() ))
                 return;
-            BOOST_TEST_CSTR_EQ(u.buffer(), m);
+            BOOST_TEST_EQ(u.buffer(), m);
 
             // in place resolution
             url base( ub );
             rv = base.resolve( ur );
             if(! BOOST_TEST( rv.has_value() ))
                 return;
-            BOOST_TEST_CSTR_EQ(base.buffer(), m);
+            BOOST_TEST_EQ(base.buffer(), m);
         };
 
         check("g:h"          , "g:h");
@@ -955,7 +912,7 @@ struct url_test
 
         {
             url u("path/to/file.txt");
-            system::result<void> r = u.resolve(url_view("g/../h"));
+            result<void> r = u.resolve(url_view("g/../h"));
             BOOST_TEST(r.has_error());
             BOOST_TEST(r.error() == error::not_a_base);
         }
@@ -965,7 +922,7 @@ struct url_test
             {
                 url u("https://example.com/one/../two%2F..%2Fthree");
                 url eu(u);
-                system::result<void> r = u.resolve(u);
+                result<void> r = u.resolve(u);
                 BOOST_TEST(r.has_value());
                 eu.normalize();
                 BOOST_TEST_EQ(u, eu);
@@ -974,25 +931,9 @@ struct url_test
             {
                 url u("//example.com/one/../two%2F..%2Fthree");
                 url u1(u);
-                system::result<void> r = u1.resolve(u1);
+                result<void> r = u1.resolve(u1);
                 BOOST_TEST(r.has_error());
                 BOOST_TEST(r.error() == error::not_a_base);
-            }
-        }
-
-        // copying authority depends on same scheme
-        {
-            {
-                url u("http://auth/path");
-                url ref("http:path2");
-                BOOST_TEST(u.resolve(ref));
-                BOOST_TEST_CSTR_EQ(u, "http://auth/path2");
-            }
-            {
-                url u("http://auth/path");
-                url ref("https:path2");
-                BOOST_TEST(u.resolve(ref));
-                BOOST_TEST_CSTR_EQ(u, "https:path2");
             }
         }
     }
@@ -1028,8 +969,8 @@ struct url_test
     {
         // normalize
         {
-            auto check = [](core::string_view before,
-                            core::string_view after)
+            auto check = [](string_view before,
+                            string_view after)
             {
                 url u1 = parse_uri_reference(before).value();
                 url_view u2 = parse_uri_reference(after).value();
@@ -1104,8 +1045,8 @@ struct url_test
 
         // normalize path
         {
-            auto check = [](core::string_view p,
-                            core::string_view e) {
+            auto check = [](string_view p,
+                            string_view e) {
                 // normalize
                 url u1 = parse_relative_ref(p).value();
                 u1.normalize_path();
@@ -1152,8 +1093,8 @@ struct url_test
 
         // inequality
         {
-            auto check = [](core::string_view e1,
-                            core::string_view e2,
+            auto check = [](string_view e1,
+                            string_view e2,
                             int cmp) {
                 url_view u1 = parse_uri(e1).value();
                 url_view u2 = parse_uri(e2).value();
@@ -1192,8 +1133,8 @@ struct url_test
 
         // path inequality
         {
-            auto check = [](core::string_view e1,
-                            core::string_view e2,
+            auto check = [](string_view e1,
+                            string_view e2,
                             int cmp) {
                 url_view u1 = parse_relative_ref(e1).value();
                 url_view u2 = parse_relative_ref(e2).value();
@@ -1246,12 +1187,7 @@ struct url_test
                 resolve(base, base, base);
                 BOOST_TEST_CSTR_EQ(base.buffer(), "http://www.example.com/user/");
             }
-        }
 
-        // complete string comparison
-        {
-            url_view u("https://user:p%61ss@www.%65xample.com:443/p%61th/to/page?k%65y=h%65llo%20world#fr%61gment");
-            BOOST_TEST_EQ(u, url_view("https://user:pass@www.example.com:443/path/to/page?key=hello%20world#fragment"));
         }
     }
 

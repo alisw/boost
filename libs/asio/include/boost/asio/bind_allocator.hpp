@@ -472,40 +472,20 @@ namespace detail {
 
 template <typename TargetAsyncResult,
   typename Allocator, typename = void>
-class allocator_binder_completion_handler_async_result
+struct allocator_binder_async_result_completion_handler_type
 {
-public:
-  template <typename T>
-  explicit allocator_binder_completion_handler_async_result(T&)
-  {
-  }
 };
 
 template <typename TargetAsyncResult, typename Allocator>
-class allocator_binder_completion_handler_async_result<
+struct allocator_binder_async_result_completion_handler_type<
   TargetAsyncResult, Allocator,
   typename void_type<
     typename TargetAsyncResult::completion_handler_type
   >::type>
 {
-public:
   typedef allocator_binder<
     typename TargetAsyncResult::completion_handler_type, Allocator>
       completion_handler_type;
-
-  explicit allocator_binder_completion_handler_async_result(
-      typename TargetAsyncResult::completion_handler_type& handler)
-    : target_(handler)
-  {
-  }
-
-  typename TargetAsyncResult::return_type get()
-  {
-    return target_.get();
-  }
-
-private:
-  TargetAsyncResult target_;
 };
 
 template <typename TargetAsyncResult, typename = void>
@@ -527,16 +507,20 @@ struct allocator_binder_async_result_return_type<
 
 template <typename T, typename Allocator, typename Signature>
 class async_result<allocator_binder<T, Allocator>, Signature> :
-  public detail::allocator_binder_completion_handler_async_result<
+  public detail::allocator_binder_async_result_completion_handler_type<
     async_result<T, Signature>, Allocator>,
   public detail::allocator_binder_async_result_return_type<
     async_result<T, Signature> >
 {
 public:
   explicit async_result(allocator_binder<T, Allocator>& b)
-    : detail::allocator_binder_completion_handler_async_result<
-        async_result<T, Signature>, Allocator>(b.get())
+    : target_(b.get())
   {
+  }
+
+  typename async_result<T, Signature>::return_type get()
+  {
+    return target_.get();
   }
 
   template <typename Initiation>

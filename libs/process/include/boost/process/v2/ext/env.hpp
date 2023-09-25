@@ -109,11 +109,6 @@ struct env_view
             detail::ext::native_env_handle_deleter> handle_;
 };
 
-#if defined(BOOST_PROCESS_V2_WINDOWS)
-BOOST_PROCESS_V2_DECL env_view env(HANDLE handle, error_code & ec);
-BOOST_PROCESS_V2_DECL env_view env(HANDLE handle);
-#endif
-
 /// @{
 /// Get the environment of another process.
 BOOST_PROCESS_V2_DECL env_view env(pid_type pid, error_code & ec);
@@ -141,6 +136,10 @@ BOOST_PROCESS_V2_DECL env_view env(basic_process_handle<Executor> & handle)
 
 /// @}
 
+#if defined(BOOST_PROCESS_V2_WINDOWS)
+BOOST_PROCESS_V2_DECL env_view env(HANDLE handle, error_code & ec);
+BOOST_PROCESS_V2_DECL env_view env(HANDLE handle);
+#endif
 
 
 } // namespace ext

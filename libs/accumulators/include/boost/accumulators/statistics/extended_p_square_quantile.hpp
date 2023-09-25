@@ -76,7 +76,6 @@ namespace impl
                 boost::begin(args[extended_p_square_probabilities])
               , boost::end(args[extended_p_square_probabilities])
             )
-          , probability()
         {
         }
 

@@ -34,13 +34,8 @@ private:
         std::size_t buffer_size)
     {
         using ptr_t = const volatile unsigned char*;
-        return
-            std::greater_equal<ptr_t>()(
-                reinterpret_cast<ptr_t>(ptr),
-                reinterpret_cast<ptr_t>(buffer)) &&
-            std::less<ptr_t>()(
-                reinterpret_cast<ptr_t>(ptr),
-                reinterpret_cast<ptr_t>(buffer) + buffer_size);
+        return reinterpret_cast<ptr_t>(ptr) >= reinterpret_cast<ptr_t>(buffer) &&
+            reinterpret_cast<ptr_t>(ptr) < reinterpret_cast<ptr_t>(buffer) + buffer_size;
     }
 
     bool

@@ -11,11 +11,10 @@
 #define BOOST_JSON_SERIALIZER_HPP
 
 #include <boost/json/detail/config.hpp>
+#include <boost/json/value.hpp>
 #include <boost/json/detail/format.hpp>
 #include <boost/json/detail/stack.hpp>
 #include <boost/json/detail/stream.hpp>
-#include <boost/json/serialize_options.hpp>
-#include <boost/json/value.hpp>
 
 namespace boost {
 namespace json {
@@ -80,7 +79,6 @@ class serializer
     value const* jv_ = nullptr;
     detail::stack st_;
     const_stream cs0_;
-    serialize_options opts_;
     char buf_[detail::max_number_chars + 1];
     bool done_ = false;
 
@@ -128,12 +126,9 @@ public:
 
         @par Exception Safety
         No-throw guarantee.
-
-        @param opts The options for the serializer. If this parameter
-        is omitted, the serializer will output only standard JSON.
     */
     BOOST_JSON_DECL
-    serializer( serialize_options const& opts = {} ) noexcept;
+    serializer() noexcept;
 
     /** Constructor
 
@@ -160,16 +155,12 @@ public:
 
         @param buf_size The number of bytes of
         valid memory pointed to by `buf`.
-
-        @param opts The options for the serializer. If this parameter
-        is omitted, the serializer will output only standard JSON.
     */
     BOOST_JSON_DECL
     serializer(
         storage_ptr sp,
         unsigned char* buf = nullptr,
-        std::size_t buf_size = 0,
-        serialize_options const& opts = {}) noexcept;
+        std::size_t buf_size = 0) noexcept;
 
     /** Returns `true` if the serialization is complete
 

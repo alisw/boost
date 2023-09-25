@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 # Copyright (C) 2006. Vladimir Prus
 # Copyright (C) 2008. Jurko Gospodnetic

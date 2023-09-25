@@ -11,7 +11,6 @@
 #define BOOST_URL_DETAIL_ROUTER_HPP
 
 #include <boost/url/pct_string_view.hpp>
-#include <boost/url/segments_encoded_view.hpp>
 #include <boost/url/grammar/delim_rule.hpp>
 #include <boost/url/grammar/optional_rule.hpp>
 #include <boost/url/grammar/range_rule.hpp>
@@ -35,20 +34,24 @@ public:
     };
 
 protected:
+    BOOST_URL_DECL
     router_base();
 
+    BOOST_URL_DECL
     virtual ~router_base();
 
+    BOOST_URL_DECL
     void
     insert_impl(
-        core::string_view s,
+        string_view s,
         any_resource const* v);
 
+    BOOST_URL_DECL
     any_resource const*
     find_impl(
         segments_encoded_view path,
-        core::string_view*& matches,
-        core::string_view*& names) const noexcept;
+        string_view*& matches,
+        string_view*& names) const noexcept;
 };
 
 } // detail

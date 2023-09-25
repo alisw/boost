@@ -42,13 +42,13 @@ namespace grammar {
     except that `void` values are removed.
     However, if there is exactly one non-void
     value type `T`, then the sequence rule
-    returns `system::result<T>` instead of
-    `system::result<tuple<...>>`.
+    returns `result<T>` instead of
+    `result<tuple<...>>`.
 
     @par Example
     Rules are used with the function @ref parse.
     @code
-    system::result< std::tuple< unsigned char, unsigned char, unsigned char, unsigned char > > rv =
+    result< std::tuple< unsigned char, unsigned char, unsigned char, unsigned char > > rv =
         parse( "192.168.0.1", 
             tuple_rule(
                 dec_octet_rule,
@@ -114,7 +114,7 @@ public:
         Rn_ const&... rn) noexcept ->
             tuple_rule_t<R0_, Rn_...>;
 
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end) const;
@@ -164,7 +164,7 @@ struct squelch_rule_t
     {
     }
 
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end) const
@@ -196,7 +196,7 @@ struct squelch_rule_t
     @par Example 1
     With `squelch`:
     @code
-    system::result< std::tuple< decode_view, core::string_view > > rv = parse(
+    result< std::tuple< decode_view, string_view > > rv = parse(
         "www.example.com:443",
         tuple_rule(
             pct_encoded_rule(unreserved_chars + '-' + '.'),
@@ -207,7 +207,7 @@ struct squelch_rule_t
     @par Example 2
     Without `squelch`:
     @code
-    system::result< std::tuple< decode_view, core::string_view, core::string_view > > rv = parse(
+    result< std::tuple< decode_view, string_view, string_view > > rv = parse(
         "www.example.com:443",
         tuple_rule(
             pct_encoded_rule(unreserved_chars + '-' + '.'),

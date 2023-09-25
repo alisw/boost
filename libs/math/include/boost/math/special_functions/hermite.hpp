@@ -23,8 +23,7 @@ template <class T1, class T2, class T3>
 inline typename tools::promote_args<T1, T2, T3>::type 
    hermite_next(unsigned n, T1 x, T2 Hn, T3 Hnm1)
 {
-   using promoted_type = tools::promote_args_t<T1, T2, T3>;
-   return (2 * promoted_type(x) * promoted_type(Hn) - 2 * n * promoted_type(Hnm1));
+   return (2 * x * Hn - 2 * n * Hnm1);
 }
 
 namespace detail{
@@ -44,7 +43,7 @@ T hermite_imp(unsigned n, T x)
    while(c < n)
    {
       std::swap(p0, p1);
-      p1 = static_cast<T>(hermite_next(c, x, p0, p1));
+      p1 = hermite_next(c, x, p0, p1);
       ++c;
    }
    return p1;

@@ -19,9 +19,7 @@
 // iterator_interface is flexible enough to handle this odd kind of iterator.
 template<typename Container>
 struct back_insert_iterator : boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
                                   back_insert_iterator<Container>,
-#endif
                                   std::output_iterator_tag,
                                   typename Container::value_type,
                                   back_insert_iterator<Container> &>
@@ -53,9 +51,7 @@ struct back_insert_iterator : boost::stl_interfaces::iterator_interface<
     back_insert_iterator & operator++() { return *this; }
 
     using base_type = boost::stl_interfaces::iterator_interface<
-#if !BOOST_STL_INTERFACES_USE_DEDUCED_THIS
         back_insert_iterator<Container>,
-#endif
         std::output_iterator_tag,
         typename Container::value_type,
         back_insert_iterator<Container> &>;

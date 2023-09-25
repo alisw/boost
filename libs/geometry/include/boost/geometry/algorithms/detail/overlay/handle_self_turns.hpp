@@ -1,7 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
 // Copyright (c) 2017 Barend Gehrels, Amsterdam, the Netherlands.
-// Copyright (c) 2017-2023 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2019-2022.
 // Modifications copyright (c) 2019-2022 Oracle and/or its affiliates.
@@ -106,8 +106,15 @@ struct discard_closed_turns<overlay_union, operation_union>
                Geometry0 const& geometry0, Geometry1 const& geometry1,
                Strategy const& strategy)
     {
-        for (auto& turn : turns)
+        typedef typename boost::range_value<Turns>::type turn_type;
+
+        for (typename boost::range_iterator<Turns>::type
+                it = boost::begin(turns);
+             it != boost::end(turns);
+             ++it)
         {
+            turn_type& turn = *it;
+
             if (! turn.discarded
                 && is_self_turn<overlay_union>(turn)
                 && check_within<overlay_union>::apply(turn, geometry0,
@@ -130,16 +137,18 @@ private :
     bool is_self_cluster(signed_size_type cluster_id,
             const Turns& turns, Clusters const& clusters)
     {
-        auto cit = clusters.find(cluster_id);
+        typename Clusters::const_iterator cit = clusters.find(cluster_id);
         if (cit == clusters.end())
         {
             return false;
         }
 
         cluster_info const& cinfo = cit->second;
-        for (auto index : cinfo.turn_indices)
+        for (std::set<signed_size_type>::const_iterator it
+             = cinfo.turn_indices.begin();
+             it != cinfo.turn_indices.end(); ++it)
         {
-            if (! is_self_turn<OverlayType>(turns[index]))
+            if (! is_self_turn<OverlayType>(turns[*it]))
             {
                 return false;
             }
@@ -155,25 +164,28 @@ private :
             Geometry0 const& geometry0, Geometry1 const& geometry1,
             Strategy const& strategy)
     {
-        for (auto const& pair : clusters)
+        for (typename Clusters::const_iterator cit = clusters.begin();
+             cit != clusters.end(); ++cit)
         {
-            signed_size_type const cluster_id = pair.first;
-            cluster_info const& cinfo = pair.second;
+            signed_size_type const cluster_id = cit->first;
 
             // If there are only self-turns in the cluster, the cluster should
             // be located within the other geometry, for intersection
-            if (! cinfo.turn_indices.empty()
+            if (! cit->second.turn_indices.empty()
                 && is_self_cluster(cluster_id, turns, clusters))
             {
-                signed_size_type const first_index = *cinfo.turn_indices.begin();
-                if (! check_within<OverlayType>::apply(turns[first_index],
+                cluster_info const& cinfo = cit->second;
+                signed_size_type const index = *cinfo.turn_indices.begin();
+                if (! check_within<OverlayType>::apply(turns[index],
                                                        geometry0, geometry1,
                                                        strategy))
                 {
                     // Discard all turns in cluster
-                    for (auto index : cinfo.turn_indices)
+                    for (std::set<signed_size_type>::const_iterator sit
+                         = cinfo.turn_indices.begin();
+                         sit != cinfo.turn_indices.end(); ++sit)
                     {
-                        turns[index].discarded = true;
+                        turns[*sit].discarded = true;
                     }
                 }
             }
@@ -191,8 +203,15 @@ public :
     {
         discard_clusters(turns, clusters, geometry0, geometry1, strategy);
 
-        for (auto& turn : turns)
+        typedef typename boost::range_value<Turns>::type turn_type;
+
+        for (typename boost::range_iterator<Turns>::type
+                it = boost::begin(turns);
+             it != boost::end(turns);
+             ++it)
         {
+            turn_type& turn = *it;
+
             // It is a ii self-turn
             // Check if it is within the other geometry
             if (! turn.discarded

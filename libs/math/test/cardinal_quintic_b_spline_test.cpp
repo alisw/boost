@@ -6,11 +6,8 @@
  */
 
 #include "math_unit_test.hpp"
-#include <cstdint>
 #include <numeric>
 #include <utility>
-#include <vector>
-#include <limits>
 #include <boost/math/interpolators/cardinal_quintic_b_spline.hpp>
 #ifdef BOOST_HAS_FLOAT128
 #include <boost/multiprecision/float128.hpp>
@@ -18,14 +15,10 @@ using boost::multiprecision::float128;
 #endif
 using boost::math::interpolators::cardinal_quintic_b_spline;
 
-#if __has_include(<stdfloat>)
-#  include <stdfloat>
-#endif
-
 template<class Real>
 void test_constant()
 {
-    Real c = Real(7.5);
+    Real c = 7.5;
     Real t0 = 0;
     Real h = Real(1)/Real(16);
     size_t n = 513;
@@ -60,7 +53,7 @@ void test_constant()
 template<class Real>
 void test_constant_estimate_derivatives()
 {
-    Real c = Real(7.5);
+    Real c = 7.5;
     Real t0 = 0;
     Real h = Real(1)/Real(16);
     size_t n = 513;
@@ -95,8 +88,8 @@ template<class Real>
 void test_linear()
 {
     using std::abs;
-    Real m = Real(8.3);
-    Real b = Real(7.2);
+    Real m = 8.3;
+    Real b = 7.2;
     Real t0 = 0;
     Real h = Real(1)/Real(16);
     size_t n = 512;
@@ -144,8 +137,8 @@ template<class Real>
 void test_linear_estimate_derivatives()
 {
     using std::abs;
-    Real m = Real(8.3);
-    Real b = Real(7.2);
+    Real m = 8.3;
+    Real b = 7.2;
     Real t0 = 0;
     Real h = Real(1)/Real(16);
     size_t n = 512;
@@ -193,8 +186,8 @@ template<class Real>
 void test_quadratic()
 {
     Real a = Real(1)/Real(16);
-    Real b = Real(-3.5);
-    Real c = Real(-9);
+    Real b = -3.5;
+    Real c = -9;
     Real t0 = 0;
     Real h = Real(1)/Real(16);
     size_t n = 513;
@@ -236,8 +229,8 @@ template<class Real>
 void test_quadratic_estimate_derivatives()
 {
     Real a = Real(1)/Real(16);
-    Real b = Real(-3.5);
-    Real c = Real(-9);
+    Real b = -3.5;
+    Real c = -9;
     Real t0 = 0;
     Real h = Real(1)/Real(16);
     size_t n = 513;
@@ -273,41 +266,41 @@ void test_quadratic_estimate_derivatives()
 
 int main()
 {
-    #ifdef __STDCPP_FLOAT32_T__
-    test_linear<std::float32_t>();
-    #else
-    test_linear<float>();
-    #endif
-    
-    #ifdef __STDCPP_FLOAT64_T__
-    test_constant<std::float64_t>();
-    test_linear<std::float64_t>();
-    test_constant_estimate_derivatives<std::float64_t>();
-    test_linear_estimate_derivatives<std::float64_t>();
-    test_quadratic<std::float64_t>();
-    test_quadratic_estimate_derivatives<std::float64_t>();
-    #else
     test_constant<double>();
-    test_linear<double>();
-    test_constant_estimate_derivatives<double>();
-    test_linear_estimate_derivatives<double>();
-    test_quadratic<double>();
-    test_quadratic_estimate_derivatives<double>();
-    #endif
-
-    #ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_constant<long double>();
+#endif
+
+    test_constant_estimate_derivatives<double>();
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_constant_estimate_derivatives<long double>();
+#endif
+
+    test_linear<float>();
+    test_linear<double>();
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_linear<long double>();
+#endif
+
+    test_linear_estimate_derivatives<double>();
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_linear_estimate_derivatives<long double>();
+#endif
+
+    test_quadratic<double>();
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_quadratic<long double>();
+#endif
+
+    test_quadratic_estimate_derivatives<double>();
+#ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
     test_quadratic_estimate_derivatives<long double>();
-    #endif
+#endif
 
     #ifdef BOOST_HAS_FLOAT128
-    test_constant<float128>();
-    test_linear<float128>();
-    test_linear_estimate_derivatives<float128>();
+        test_constant<float128>();
+        test_linear<float128>();
+        test_linear_estimate_derivatives<float128>();
     #endif
 
     return boost::math::test::report_errors();

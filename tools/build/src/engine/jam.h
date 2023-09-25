@@ -425,13 +425,8 @@
 #endif
 
 #if defined( __arm__ ) || \
-    defined( _M_ARM )
+    defined( __aarch64__ )
     #define OSPLAT "OSPLAT=ARM"
-#endif
-
-#if defined( __aarch64__ ) || \
-    defined( _M_ARM64 )
-    #define OSPLAT "OSPLAT=ARM64"
 #endif
 
 #ifdef __s390__

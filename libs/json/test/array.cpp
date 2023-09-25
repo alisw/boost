@@ -457,7 +457,15 @@ public:
             BOOST_TEST(a.at(0).is_number());
             BOOST_TEST(a.at(1).is_bool());
             BOOST_TEST(a.at(2).is_string());
-            BOOST_TEST_THROWS_WITH_LOCATION( a.at(3) );
+            try
+            {
+                a.at(3);
+                BOOST_TEST_FAIL();
+            }
+            catch(std::out_of_range const&)
+            {
+                BOOST_TEST_PASS();
+            }
         }
 
         // at(pos) &&
@@ -466,7 +474,15 @@ public:
             BOOST_TEST(std::move(a).at(0).is_number());
             BOOST_TEST(std::move(a).at(1).is_bool());
             BOOST_TEST(std::move(a).at(2).is_string());
-            BOOST_TEST_THROWS_WITH_LOCATION( a.at(3) );
+            try
+            {
+                std::move(a).at(3);
+                BOOST_TEST_FAIL();
+            }
+            catch(std::out_of_range const&)
+            {
+                BOOST_TEST_PASS();
+            }
             value&& rv = std::move(a).at(0);
             (void)rv;
         }
@@ -477,7 +493,15 @@ public:
             BOOST_TEST(a.at(0).is_number());
             BOOST_TEST(a.at(1).is_bool());
             BOOST_TEST(a.at(2).is_string());
-            BOOST_TEST_THROWS_WITH_LOCATION( a.at(3) );
+            try
+            {
+                a.at(3);
+                BOOST_TEST_FAIL();
+            }
+            catch(std::out_of_range const&)
+            {
+                BOOST_TEST_PASS();
+            }
         }
 
         // operator[&](size_type) &

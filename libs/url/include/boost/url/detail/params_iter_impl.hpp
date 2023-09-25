@@ -19,7 +19,7 @@ namespace boost {
 namespace urls {
 namespace detail {
 
-struct BOOST_URL_DECL params_iter_impl
+struct params_iter_impl
     : parts_base
 {
     query_ref ref;
@@ -37,10 +37,12 @@ struct BOOST_URL_DECL params_iter_impl
         params_iter_impl const&) = default;
 
     // begin
+    BOOST_URL_DECL
     params_iter_impl(
         query_ref const&) noexcept;
 
     // end
+    BOOST_URL_DECL
     params_iter_impl(
         query_ref const&,
         int) noexcept;
@@ -51,9 +53,9 @@ struct BOOST_URL_DECL params_iter_impl
         std::size_t,
         std::size_t) noexcept;
     void setup() noexcept;
-    void increment() noexcept;
-    void decrement() noexcept;
-    param_pct_view
+    BOOST_URL_DECL void increment() noexcept;
+    BOOST_URL_DECL void decrement() noexcept;
+    BOOST_URL_DECL param_pct_view
         dereference() const noexcept;
     pct_string_view key() const noexcept;
 

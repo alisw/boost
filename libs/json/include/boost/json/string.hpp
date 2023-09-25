@@ -253,7 +253,7 @@ public:
         ownership of the memory resource.
         The default argument for this parameter is `{}`.
 
-        @throw system_error `count > max_size()`.
+        @throw std::length_error `count > max_size()`.
     */
     BOOST_JSON_DECL
     explicit
@@ -286,7 +286,7 @@ public:
         ownership of the memory resource.
         The default argument for this parameter is `{}`.
 
-        @throw system_error `strlen(s) > max_size()`.
+        @throw std::length_error `strlen(s) > max_size()`.
     */
     BOOST_JSON_DECL
     string(
@@ -318,7 +318,7 @@ public:
         ownership of the memory resource.
         The default argument for this parameter is `{}`.
 
-        @throw system_error `count > max_size()`.
+        @throw std::length_error `count > max_size()`.
     */
     BOOST_JSON_DECL
     explicit
@@ -359,7 +359,7 @@ public:
         ownership of the memory resource.
         The default argument for this parameter is `{}`.
 
-        @throw system_error `std::distance(first, last) > max_size()`.
+        @throw std::length_error `std::distance(first, last) > max_size()`.
     */
     template<class InputIt
     #ifndef BOOST_JSON_DOCS
@@ -501,7 +501,7 @@ public:
         ownership of the memory resource.
         The default argument for this parameter is `{}`.
 
-        @throw system_error `s.size() > max_size()`.
+        @throw std::length_error `s.size() > max_size()`.
     */
     BOOST_JSON_DECL
     string(
@@ -591,7 +591,7 @@ public:
 
         @param s The null-terminated character string.
 
-        @throw system_error `std::strlen(s) > max_size()`.
+        @throw std::length_error `std::strlen(s) > max_size()`.
     */
     BOOST_JSON_DECL
     string&
@@ -616,7 +616,7 @@ public:
 
         @param s The string view to copy from.
 
-        @throw system_error `s.size() > max_size()`.
+        @throw std::length_error `s.size() > max_size()`.
     */
     BOOST_JSON_DECL
     string&
@@ -645,7 +645,7 @@ public:
         @param ch The value to initialize characters
         of the string with.
 
-        @throw system_error `count > max_size()`.
+        @throw std::length_error `count > max_size()`.
     */
     BOOST_JSON_DECL
     string&
@@ -734,7 +734,7 @@ public:
         @param s A pointer to a character string used to
         copy from.
 
-        @throw system_error `count > max_size()`.
+        @throw std::length_error `count > max_size()`.
     */
     BOOST_JSON_DECL
     string&
@@ -766,7 +766,7 @@ public:
         @param s A pointer to a character string used to
         copy from.
 
-        @throw system_error `strlen(s) > max_size()`.
+        @throw std::length_error `strlen(s) > max_size()`.
     */
     BOOST_JSON_DECL
     string&
@@ -802,7 +802,7 @@ public:
         @param last An input iterator pointing to the end
         of the range.
 
-        @throw system_error `std::distance(first, last) > max_size()`.
+        @throw std::length_error `std::distance(first, last) > max_size()`.
     */
     template<class InputIt
     #ifndef BOOST_JSON_DOCS
@@ -833,7 +833,7 @@ public:
 
         @param s The string view to copy from.
 
-        @throw system_error `s.size() > max_size()`.
+        @throw std::length_error `s.size() > max_size()`.
     */
     string&
     assign(string_view s)
@@ -903,28 +903,40 @@ public:
 
         @param pos A zero-based index to access.
 
-        @throw system_error `pos >= size()`
+        @throw std::out_of_range `pos >= size()`
     */
-    /** @{ */
     char&
     at(std::size_t pos)
     {
-
-        auto const& self = *this;
-        return const_cast< char& >( self.at(pos) );
+        if(pos >= size())
+            detail::throw_out_of_range();
+        return impl_.data()[pos];
     }
 
+    /** Return a character with bounds checking.
+
+        Returns a reference to the character specified at
+        location `pos`.
+
+        @par Complexity
+
+        Constant.
+
+        @par Exception Safety
+
+        Strong guarantee.
+
+        @param pos A zero-based index to access.
+
+        @throw std::out_of_range `pos >= size()`
+    */
     char const&
     at(std::size_t pos) const
     {
         if(pos >= size())
-        {
-            BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-            detail::throw_system_error( error::out_of_range, &loc );
-        }
+            detail::throw_out_of_range();
         return impl_.data()[pos];
     }
-    /** @} */
 
     /** Return a character without bounds checking.
 
@@ -1474,7 +1486,7 @@ public:
 
         @param new_capacity The new capacity of the array.
 
-        @throw system_error `new_capacity > max_size()`
+        @throw std::length_error `new_capacity > max_size()`
     */
     void
     reserve(std::size_t new_capacity)
@@ -1548,9 +1560,9 @@ public:
 
         @param sv The `string_view` to insert.
 
-        @throw system_error `size() + s.size() > max_size()`
+        @throw std::length_error `size() + s.size() > max_size()`
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     BOOST_JSON_DECL
     string&
@@ -1578,9 +1590,9 @@ public:
 
         @param ch The character to insert.
 
-        @throw system_error `size() + count > max_size()`
+        @throw std::length_error `size() + count > max_size()`
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     BOOST_JSON_DECL
     string&
@@ -1608,9 +1620,9 @@ public:
 
         @param ch The character to insert.
 
-        @throw system_error `size() + 1 > max_size()`
+        @throw std::length_error `size() + 1 > max_size()`
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     string&
     insert(
@@ -1651,9 +1663,9 @@ public:
 
         @param last The end of the character range.
 
-        @throw system_error `size() + insert_count > max_size()`
+        @throw std::length_error `size() + insert_count > max_size()`
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     template<class InputIt
     #ifndef BOOST_JSON_DOCS
@@ -1691,7 +1703,7 @@ public:
         The default argument for this parameter
         is @ref npos.
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     BOOST_JSON_DECL
     string&
@@ -1775,7 +1787,7 @@ public:
 
         @param ch The character to append.
 
-        @throw system_error `size() + 1 > max_size()`
+        @throw std::length_error `size() + 1 > max_size()`
     */
     BOOST_JSON_DECL
     void
@@ -1812,7 +1824,7 @@ public:
 
         @param ch The character to append.
 
-        @throw system_error `size() + count > max_size()`
+        @throw std::length_error `size() + count > max_size()`
     */
     BOOST_JSON_DECL
     string&
@@ -1832,7 +1844,7 @@ public:
 
         @param sv The `string_view` to append.
 
-        @throw system_error `size() + s.size() > max_size()`
+        @throw std::length_error `size() + s.size() > max_size()`
     */
     BOOST_JSON_DECL
     string&
@@ -1865,7 +1877,7 @@ public:
         @param last An iterator one past the
         last character to append.
 
-        @throw system_error `size() + insert_count > max_size()`
+        @throw std::length_error `size() + insert_count > max_size()`
     */
     template<class InputIt
     #ifndef BOOST_JSON_DOCS
@@ -1890,7 +1902,7 @@ public:
 
         @param sv The `string_view` to append.
 
-        @throw system_error `size() + sv.size() > max_size()`
+        @throw std::length_error `size() + sv.size() > max_size()`
     */
     string&
     operator+=(string_view sv)
@@ -1908,7 +1920,7 @@ public:
 
         @param ch The character to append.
 
-        @throw system_error `size() + 1 > max_size()`
+        @throw std::length_error `size() + 1 > max_size()`
     */
     string&
     operator+=(char ch)
@@ -2037,9 +2049,9 @@ public:
 
         @param sv The `string_view` to replace with.
 
-        @throw system_error `size() + (sv.size() - rcount) > max_size()`
+        @throw std::length_error `size() + (sv.size() - rcount) > max_size()`
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     BOOST_JSON_DECL
     string&
@@ -2075,7 +2087,7 @@ public:
 
         @param sv The `string_view` to replace with.
 
-        @throw system_error `size() + (sv.size() - std::distance(first, last)) > max_size()`
+        @throw std::length_error `size() + (sv.size() - std::distance(first, last)) > max_size()`
     */
     string&
     replace(
@@ -2125,7 +2137,7 @@ public:
         @param last2 An iterator one past the end of
         the last character to replace with.
 
-        @throw system_error `size() + (inserted - std::distance(first, last)) > max_size()`
+        @throw std::length_error `size() + (inserted - std::distance(first, last)) > max_size()`
     */
     template<class InputIt
     #ifndef BOOST_JSON_DOCS
@@ -2164,9 +2176,9 @@ public:
 
         @param ch The character to replace with.
 
-        @throw system_error `size() + (count2 - rcount) > max_size()`
+        @throw std::length_error `size() + (count2 - rcount) > max_size()`
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     BOOST_JSON_DECL
     string&
@@ -2206,7 +2218,7 @@ public:
 
         @param ch The character to replace with.
 
-        @throw system_error `size() + (count - std::distance(first, last)) > max_size()`
+        @throw std::length_error `size() + (count - std::distance(first, last)) > max_size()`
     */
     string&
     replace(
@@ -2237,7 +2249,7 @@ public:
         The default argument for this parameter
         is @ref npos.
 
-        @throw system_error `pos > size()`
+        @throw std::out_of_range `pos > size()`
     */
     string_view
     subview(
@@ -2282,7 +2294,7 @@ public:
         @param pos The index to begin copying from. The
         default argument for this parameter is `0`.
 
-        @throw system_error `pos > max_size()`
+        @throw std::out_of_range `pos > max_size()`
     */
     std::size_t
     copy(
@@ -2304,7 +2316,7 @@ public:
 
         @param count The size to resize the string to.
 
-        @throw system_error `count > max_size()`
+        @throw std::out_of_range `count > max_size()`
     */
     void
     resize(std::size_t count)
@@ -2324,7 +2336,7 @@ public:
         @param ch The characters to append if the size
         increases.
 
-        @throw system_error `count > max_size()`
+        @throw std::out_of_range `count > max_size()`
     */
     BOOST_JSON_DECL
     void

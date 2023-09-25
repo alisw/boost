@@ -28,7 +28,7 @@ namespace urls {
     @par Example
     Rules are used with the function @ref grammar::parse.
     @code
-    system::result< params_encoded_view > rv = grammar::parse( "format=web&id=42&compact", query_rule );
+    result< params_encoded_view > rv = grammar::parse( "format=web&id=42&compact", query_rule );
     @endcode
 
     @par BNF
@@ -62,7 +62,7 @@ struct query_rule_t
     using value_type = params_encoded_view;
 
     BOOST_URL_DECL
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end

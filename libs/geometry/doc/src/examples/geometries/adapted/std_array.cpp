@@ -8,6 +8,14 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/config.hpp>
+#ifdef BOOST_NO_CXX11_HDR_ARRAY
+
+int main()
+{
+    return 0;
+}
+
+#else //this example needs C++11 std::array
 
 //[std_array
 //` Shows how to use a C++11 std::array using Boost.Geometry's distance, set and assign_values algorithms
@@ -40,6 +48,8 @@ int main()
 }
 
 //]
+
+#endif //BOOST_NO_CXX11_HDR_ARRAY
 
 //[std_array_output
 /*`

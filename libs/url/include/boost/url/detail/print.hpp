@@ -10,6 +10,10 @@
 #ifndef BOOST_URL_DETAIL_PRINT_HPP
 #define BOOST_URL_DETAIL_PRINT_HPP
 
+#ifndef BOOST_URL_SOURCE
+#error
+#endif
+
 #include <cstdint>
 #include <type_traits>
 
@@ -57,10 +61,10 @@ public:
         }
     }
 
-    core::string_view
+    string_view
     string() const noexcept
     {
-        return core::string_view(buf_ +
+        return string_view(buf_ +
             sizeof(buf_) - n_, n_);
     }
 };

@@ -95,7 +95,7 @@ def _install_boost(
     copytree(
         str(source_dir),
         str(lib_dir),
-        ignore=ignore_patterns('__build*__', '.git'),
+        ignore=ignore_patterns('__build*__'),
         **({ 'dirs_exist_ok': True } if _supports_dir_exist_ok else {})
     )
 
@@ -137,7 +137,6 @@ def _db_setup(
     db: str = 'mysql8'
 ) -> None:
     _run_sql_file(source_dir.joinpath('example', 'db_setup.sql'))
-    _run_sql_file(source_dir.joinpath('example', 'order_management', 'db_setup.sql'))
     _run_sql_file(source_dir.joinpath('test', 'integration', 'db_setup.sql'))
     if db == 'mysql8':
         _run_sql_file(source_dir.joinpath('test', 'integration', 'db_setup_sha256.sql'))
@@ -181,13 +180,9 @@ def _b2_build(
     address_model: str = '64',
     clean: bool = False,
     boost_branch: str = 'develop',
-    db: str = 'mysql8',
-    separate_compilation: bool = True,
-    address_sanitizer: bool = False,
-    undefined_sanitizer: bool = False,
+    db: str = 'mysql8'
 ) -> None:
     # Config
-    os.environ['UBSAN_OPTIONS'] = 'print_stacktrace=1'
     if _is_windows:
         os.environ['OPENSSL_ROOT'] = 'C:\\openssl-{}'.format(address_model)
 
@@ -211,15 +206,11 @@ def _b2_build(
         'address-model={}'.format(address_model),
         'variant={}'.format(variant),
         'stdlib={}'.format(stdlib),
-        'boost.mysql.separate-compilation={}'.format('on' if separate_compilation else 'off'),
-    ] + (['address-sanitizer=norecover'] if address_sanitizer else [])     # can only be disabled by omitting the arg
-      + (['undefined-sanitizer=norecover'] if undefined_sanitizer else []) # can only be disabled by omitting the arg
-      + [
         'warnings-as-errors=on',
         '-j4',
         'libs/mysql/test',
         'libs/mysql/test/integration//boost_mysql_integrationtests',
-        'libs/mysql/example'
+        'libs/mysql/example//boost_mysql_all_examples'
     ])
 
 
@@ -276,7 +267,7 @@ def _cmake_build(
             '--with-date_time',
             '--with-test',
             '-d0',
-        ] + (['cxxstd={}'.format(cxxstd)] if cxxstd else []) + [
+            'cxxstd={}'.format(cxxstd),
             'install'
         ])
 
@@ -284,7 +275,7 @@ def _cmake_build(
         if coverage:
             rmtree(b2_distro.joinpath('include', 'boost', 'mysql'))
 
-    # Build the library, run the tests, and install, from the superproject
+    # Library tests, run from the superproject
     _mkdir_and_cd(_boost_root.joinpath('__build_cmake_test__'))
     _run([
         'cmake',
@@ -292,29 +283,24 @@ def _cmake_build(
         generator,
         '-DCMAKE_PREFIX_PATH={}'.format(_build_prefix_path(*cmake_prefix_path)),
         '-DCMAKE_BUILD_TYPE={}'.format(build_type),
-    ] + (['-DCMAKE_CXX_STANDARD={}'.format(cxxstd)] if cxxstd else []) + [
+        '-DCMAKE_CXX_STANDARD={}'.format(cxxstd),
         '-DBOOST_INCLUDE_LIBRARIES=mysql',
         '-DBUILD_SHARED_LIBS={}'.format(_cmake_bool(build_shared_libs)),
-        '-DCMAKE_INSTALL_PREFIX={}'.format(cmake_distro),
         '-DBUILD_TESTING=ON',
         '-DBoost_VERBOSE=ON',
-        '-DCMAKE_INSTALL_MESSAGE=NEVER',
         '..'
     ])
     _run(['cmake', '--build', '.', '--target', 'tests', '--config', build_type])
     _run(['ctest', '--output-on-failure', '--build-config', build_type])
-    if install_tests:
-        _run(['cmake', '--build', '.', '--target', 'install', '--config', build_type])
 
-    # Library tests, using the b2 Boost distribution generated before (this tests our normal dev workflow)
+    # Library tests, using the b2 Boost distribution generated before
     if standalone_tests:
         _mkdir_and_cd(_boost_root.joinpath('libs', 'mysql', '__build_standalone__'))
         _run([
             'cmake',
             '-DCMAKE_PREFIX_PATH={}'.format(_build_prefix_path(b2_distro, *cmake_prefix_path)),
             '-DCMAKE_BUILD_TYPE={}'.format(build_type),
-            '-DBUILD_SHARED_LIBS={}'.format(_cmake_bool(build_shared_libs)),
-        ] + (['-DCMAKE_CXX_STANDARD={}'.format(cxxstd)] if cxxstd else []) + [
+            '-DCMAKE_CXX_STANDARD={}'.format(cxxstd),
             '-DBOOST_MYSQL_INTEGRATION_TESTS=ON',
             '-DBOOST_MYSQL_VALGRIND_TESTS={}'.format(_cmake_bool(valgrind)),
             '-DBOOST_MYSQL_COVERAGE={}'.format(_cmake_bool(coverage)),
@@ -326,7 +312,7 @@ def _cmake_build(
         _run(['ctest', '--output-on-failure', '--build-config', build_type])
     
 
-    # Subdir tests, using add_subdirectory() (lib can be consumed using add_subdirectory)
+    # Subdir tests, using add_subdirectory()
     if add_subdir_tests:
         _mkdir_and_cd(test_folder.joinpath('__build_cmake_subdir_test__'))
         _run([
@@ -342,8 +328,26 @@ def _cmake_build(
         _run(['cmake', '--build', '.', '--config', build_type])
         _run(['ctest', '--output-on-failure', '--build-config', build_type])
 
+    # Install the library
+    if install_tests:
+        _mkdir_and_cd(_boost_root.joinpath('__build_cmake_install_test__'))
+        _run([
+            'cmake',
+            '-G',
+            generator,
+            '-DCMAKE_PREFIX_PATH={}'.format(_build_prefix_path(*cmake_prefix_path)),
+            '-DCMAKE_BUILD_TYPE={}'.format(build_type),
+            '-DBOOST_INCLUDE_LIBRARIES=mysql',
+            '-DBUILD_SHARED_LIBS={}'.format(_cmake_bool(build_shared_libs)),
+            '-DCMAKE_INSTALL_PREFIX={}'.format(cmake_distro),
+            '-DBoost_VERBOSE=ON',
+            '-DBoost_DEBUG=ON',
+            '-DCMAKE_INSTALL_MESSAGE=NEVER',
+            '..'
+        ])
+        _run(['cmake', '--build', '.', '--target', 'install', '--config', build_type])
+
     # Subdir tests, using find_package with the library installed in the previous step
-    # (library can be consumed using find_package on a distro built by cmake)
     if install_tests:
         _mkdir_and_cd(test_folder.joinpath('__build_cmake_install_test__'))
         _run([
@@ -359,25 +363,10 @@ def _cmake_build(
         _run(['cmake', '--build', '.', '--config', build_type])
         _run(['ctest', '--output-on-failure', '--build-config', build_type])
 
-    # Subdir tests, using find_package with the b2 distribution
-    # (library can be consumed using find_package on a distro built by b2)
+    # Subdir tests, using find_package with the b2 distribution.
     # These are incompatible with coverage builds (we rmtree include/boost/mysql)
     if standalone_tests and not coverage:
         _mkdir_and_cd(_boost_root.joinpath('libs', 'mysql', 'test', 'cmake_b2_test', '__build_cmake_b2_test__'))
-        _run([
-            'cmake',
-            '-G',
-            generator,
-            '-DCMAKE_PREFIX_PATH={}'.format(_build_prefix_path(*cmake_prefix_path, b2_distro)),
-            '-DCMAKE_BUILD_TYPE={}'.format(build_type),
-            '-DBUILD_TESTING=ON',
-            '..'
-        ])
-        _run(['cmake', '--build', '.', '--config', build_type])
-        _run(['ctest', '--output-on-failure', '--build-config', build_type])
-
-        # Same as the above, but for separate-build mode
-        _mkdir_and_cd(_boost_root.joinpath('libs', 'mysql', 'test', 'cmake_b2_separate_compilation_test', '__build__'))
         _run([
             'cmake',
             '-G',
@@ -462,9 +451,6 @@ def main():
     parser.add_argument('--variant', default='release')
     parser.add_argument('--stdlib', choices=['native', 'libc++'], default='native')
     parser.add_argument('--address-model', choices=['32', '64'], default='64')
-    parser.add_argument('--separate-compilation', type=_str2bool, default=True)
-    parser.add_argument('--address-sanitizer', type=_str2bool, default=False)
-    parser.add_argument('--undefined-sanitizer', type=_str2bool, default=False)
     parser.add_argument('--server-host', default='localhost')
 
     args = parser.parse_args()
@@ -480,9 +466,6 @@ def main():
             variant=args.variant,
             stdlib=args.stdlib,
             address_model=args.address_model,
-            separate_compilation=args.separate_compilation,
-            address_sanitizer=args.address_sanitizer,
-            undefined_sanitizer=args.undefined_sanitizer,
             clean=args.clean,
             boost_branch=boost_branch,
             db=args.db

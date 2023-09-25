@@ -11,7 +11,6 @@
 #include <cstring>
 #include "../../size_t.hpp"
 #include "re_tokeniser_state.hpp"
-#include <sstream>
 
 namespace boost
 {

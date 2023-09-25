@@ -7,7 +7,13 @@
 # Official repository: https://github.com/boostorg/url
 #
 
-add_executable(finicky finicky.cpp)
-target_link_libraries(finicky PRIVATE Boost::url Boost::json Boost::regex)
-source_group("" FILES finicky.cpp)
+source_group("" FILES
+        finicky.cpp
+        )
+
+add_executable(finicky
+        finicky.cpp
+        )
+
 set_property(TARGET finicky PROPERTY FOLDER "Examples")
+target_link_libraries(finicky PRIVATE Boost::url Boost::json Boost::regex)

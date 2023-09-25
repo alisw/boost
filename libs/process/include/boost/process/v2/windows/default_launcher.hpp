@@ -14,7 +14,6 @@
 #include <boost/process/v2/cstring_ref.hpp>
 #include <boost/process/v2/detail/config.hpp>
 #include <boost/process/v2/detail/last_error.hpp>
-#include <boost/process/v2/detail/throw_error.hpp>
 #include <boost/process/v2/detail/utf8.hpp>
 #include <boost/process/v2/error.hpp>
 
@@ -245,7 +244,7 @@ struct default_launcher
       auto proc =  (*this)(context, ec, executable, std::forward<Args>(args), std::forward<Inits>(inits)...);
 
       if (ec)
-          v2::detail::throw_error(ec, "default_launcher");
+          asio::detail::throw_error(ec, "default_launcher");
 
       return proc;
   }
@@ -276,7 +275,7 @@ struct default_launcher
       auto proc =  (*this)(std::move(exec), ec, executable, std::forward<Args>(args), std::forward<Inits>(inits)...);
 
       if (ec)
-          detail::throw_error(ec, "default_launcher");
+          asio::detail::throw_error(ec, "default_launcher");
 
       return proc;
   }
@@ -312,6 +311,7 @@ struct default_launcher
         &startup_info.StartupInfo,
         &process_information);
 
+    auto ec__ = detail::get_last_error();
     if (ok == 0)
     {
       BOOST_PROCESS_V2_ASSIGN_LAST_ERROR(ec)

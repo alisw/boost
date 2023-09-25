@@ -2440,13 +2440,10 @@ public:
 #endif
     to_number() const
     {
-        error e;
-        auto result = to_number<T>(e);
-        if( e != error() )
-        {
-            BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-            detail::throw_system_error( e, &loc );
-        }
+        error_code ec;
+        auto result = to_number<T>(ec);
+        if(ec)
+            detail::throw_system_error( ec );
         return result;
     }
 
@@ -2505,14 +2502,15 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_object()`
+        @throw std::invalid_argument `! this->is_object()`
     */
     /* @{ */
     object&
     as_object() &
     {
-        auto const& self = *this;
-        return const_cast<object&>( self.as_object() );
+        if(! is_object())
+            detail::throw_invalid_argument( "not an object" );
+        return obj_;
     }
 
     object&&
@@ -2524,10 +2522,9 @@ public:
     object const&
     as_object() const&
     {
-        if( is_object() )
-            return obj_;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_object, &loc );
+        if(! is_object())
+            detail::throw_invalid_argument( "not an object" );
+        return obj_;
     }
     /* @} */
 
@@ -2543,14 +2540,15 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_array()`
+        @throw std::invalid_argument `! this->is_array()`
     */
     /* @{ */
     array&
     as_array() &
     {
-        auto const& self = *this;
-        return const_cast<array&>( self.as_array() );
+        if(! is_array())
+            detail::throw_invalid_argument( "array required" );
+        return arr_;
     }
 
     array&&
@@ -2562,10 +2560,9 @@ public:
     array const&
     as_array() const&
     {
-        if( is_array() )
-            return arr_;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_array, &loc );
+        if(! is_array())
+            detail::throw_invalid_argument( "array required" );
+        return arr_;
     }
     /* @} */
 
@@ -2581,14 +2578,15 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_string()`
+        @throw std::invalid_argument `! this->is_string()`
     */
     /* @{ */
     string&
     as_string() &
     {
-        auto const& self = *this;
-        return const_cast<string&>( self.as_string() );
+        if(! is_string())
+            detail::throw_invalid_argument( "not a string" );
+        return str_;
     }
 
     string&&
@@ -2600,10 +2598,9 @@ public:
     string const&
     as_string() const&
     {
-        if( is_string() )
-            return str_;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_string, &loc );
+        if(! is_string())
+            detail::throw_invalid_argument( "not a string" );
+        return str_;
     }
     /* @} */
 
@@ -2619,15 +2616,14 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_int64()`
+        @throw std::invalid_argument `! this->is_int64()`
     */
     std::int64_t&
     as_int64()
     {
-        if( is_int64() )
-            return sca_.i;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_int64, &loc );
+        if(! is_int64())
+            detail::throw_invalid_argument( "not an int64" );
+        return sca_.i;
     }
 
     /** Return the underlying `std::int64_t`, or throw an exception.
@@ -2642,15 +2638,14 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_int64()`
+        @throw std::invalid_argument `! this->is_int64()`
     */
     std::int64_t
     as_int64() const
     {
-        if( is_int64() )
-            return sca_.i;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_int64, &loc );
+        if(! is_int64())
+            detail::throw_invalid_argument( "not an int64" );
+        return sca_.i;
     }
 
     /** Return a reference to the underlying `std::uint64_t`, or throw an exception.
@@ -2665,20 +2660,19 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_uint64()`
+        @throw std::invalid_argument `! this->is_uint64()`
     */
     std::uint64_t&
     as_uint64()
     {
-        if( is_uint64() )
-            return sca_.u;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_uint64, &loc );
+        if(! is_uint64())
+            detail::throw_invalid_argument( "not a uint64" );
+        return sca_.u;
     }
 
     /** Return the underlying `std::uint64_t`, or throw an exception.
 
-        If @ref is_uint64() is `true`, returns
+        If @ref is_int64() is `true`, returns
         the underlying `std::uint64_t`,
         otherwise throws an exception.
 
@@ -2688,15 +2682,14 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_uint64()`
+        @throw std::length_error `! this->is_uint64()`
     */
     std::uint64_t
     as_uint64() const
     {
-        if( is_uint64() )
-            return sca_.u;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_uint64, &loc );
+        if(! is_uint64())
+            detail::throw_invalid_argument( "not a uint64" );
+        return sca_.u;
     }
 
     /** Return a reference to the underlying `double`, or throw an exception.
@@ -2711,20 +2704,19 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_double()`
+        @throw std::invalid_argument `! this->is_double()`
     */
     double&
     as_double()
     {
-        if( is_double() )
-            return sca_.d;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_double, &loc );
+        if(! is_double())
+            detail::throw_invalid_argument( "not a double" );
+        return sca_.d;
     }
 
     /** Return the underlying `double`, or throw an exception.
 
-        If @ref is_double() is `true`, returns
+        If @ref is_int64() is `true`, returns
         the underlying `double`,
         otherwise throws an exception.
 
@@ -2734,15 +2726,14 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_double()`
+        @throw std::invalid_argument `! this->is_double()`
     */
     double
     as_double() const
     {
-        if( is_double() )
-            return sca_.d;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_double, &loc );
+        if(! is_double())
+            detail::throw_invalid_argument( "not a double" );
+        return sca_.d;
     }
 
     /** Return a reference to the underlying `bool`, or throw an exception.
@@ -2757,15 +2748,14 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_bool()`
+        @throw std::invalid_argument `! this->is_bool()`
     */
     bool&
     as_bool()
     {
-        if( is_bool() )
-            return sca_.b;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_bool, &loc );
+        if(! is_bool())
+            detail::throw_invalid_argument( "bool required" );
+        return sca_.b;
     }
 
     /** Return the underlying `bool`, or throw an exception.
@@ -2780,15 +2770,14 @@ public:
         @par Exception Safety
         Strong guarantee.
 
-        @throw system_error `! this->is_bool()`
+        @throw std::invalid_argument `! this->is_bool()`
     */
     bool
     as_bool() const
     {
-        if( is_bool() )
-            return sca_.b;
-        BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-        detail::throw_system_error( error::not_bool, &loc );
+        if(! is_bool())
+            detail::throw_invalid_argument( "bool required" );
+        return sca_.b;
     }
 
     //------------------------------------------------------
@@ -3865,10 +3854,7 @@ public:
         : value_(std::forward<Args>(args)...)
     {
         if(key.size() > string::max_size())
-        {
-            BOOST_STATIC_CONSTEXPR source_location loc = BOOST_CURRENT_LOCATION;
-            detail::throw_system_error( error::key_too_large, &loc );
-        }
+            detail::throw_length_error( "key too large" );
         auto s = reinterpret_cast<
             char*>(value_.storage()->
                 allocate(key.size() + 1, alignof(char)));

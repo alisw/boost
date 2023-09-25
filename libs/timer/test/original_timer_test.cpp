@@ -12,8 +12,6 @@
 //  16 Jul 99  Second beta
 //   6 Jul 99  Initial boost version
 
-#define BOOST_TIMER_ENABLE_DEPRECATED
-
 #include <boost/progress.hpp>
 #include <iostream>
 #include <climits>

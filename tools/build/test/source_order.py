@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 # Copyright 2013 Steven Watanabe
 # Distributed under the Boost Software License, Version 1.0.

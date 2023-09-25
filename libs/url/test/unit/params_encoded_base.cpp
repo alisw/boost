@@ -93,7 +93,7 @@ struct params_encoded_base_test
     static
     void
     check(
-        core::string_view s,
+        string_view s,
         std::initializer_list<
             param_pct_view> init)
     {

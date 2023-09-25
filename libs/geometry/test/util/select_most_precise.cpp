@@ -4,7 +4,6 @@
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
 
 // This file was modified by Oracle on 2021.
 // Modifications copyright (c) 2021, Oracle and/or its affiliates.
@@ -20,7 +19,6 @@
 
 #include <geometry_test_common.hpp>
 
-#include <boost/geometry/util/condition.hpp>
 #include <boost/geometry/util/select_most_precise.hpp>
 
 
@@ -62,7 +60,7 @@ int test_main(int, char* [])
     test<float, int, float>();
     test<int, float, float>();
 
-    if (BOOST_GEOMETRY_CONDITION(sizeof(long double) > sizeof(double)))
+    if ( sizeof(long double) > sizeof(double) )
     {
         // This cannot be done for MSVC because double/long double is the same
         // This is also true for Android

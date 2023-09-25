@@ -31,7 +31,7 @@ namespace grammar {
     @par Example
     Rules are used with the function @ref parse.
     @code
-    system::result< unsigned char > rv = parse( "255", dec_octet_rule );
+    result< unsigned char > rv = parse( "255", dec_octet_rule );
     @endcode
 
     @par BNF
@@ -63,7 +63,7 @@ struct dec_octet_rule_t
         char const*& it,
         char const* end
             ) const noexcept ->
-        system::result<value_type>;
+        result<value_type>;
 };
 
 constexpr dec_octet_rule_t dec_octet_rule{};

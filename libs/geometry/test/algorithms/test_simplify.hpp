@@ -3,9 +3,8 @@
 
 // Copyright (c) 2007-2012 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2021-2023.
-// Modifications copyright (c) 2021-2023 Oracle and/or its affiliates.
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+// This file was modified by Oracle on 2021.
+// Modifications copyright (c) 2021 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -25,7 +24,6 @@
 #include <boost/geometry/algorithms/simplify.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
 #include <boost/geometry/geometries/geometry_collection.hpp>
-#include <boost/geometry/strategies/concepts/simplify_concept.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 #include <boost/geometry/io/wkt/wkt.hpp>
 #include <boost/variant/variant.hpp>
@@ -180,7 +178,7 @@ void test_geometry(std::string const& wkt,
 
     using variant_t = typename boost_variant_type<Geometry>::type;
     variant_t v(geometry);
-
+    
     // Define default strategy for testing
     typedef bg::strategy::simplify::douglas_peucker
         <
@@ -192,7 +190,7 @@ void test_geometry(std::string const& wkt,
 
     check_geometry(geometry, expected, distance);
     check_geometry(v, expected, distance);
-
+    
     check_geometry(geometry, expected, distance, dp());
     check_geometry(v, expected, distance, dp());
 

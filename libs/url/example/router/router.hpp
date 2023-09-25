@@ -64,7 +64,7 @@ public:
      */
     template <class U>
     void
-    insert(core::string_view pattern, U&& v);
+    insert(string_view pattern, U&& v);
 
     /** Match URL path to corresponding resource
 

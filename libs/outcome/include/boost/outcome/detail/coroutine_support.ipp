@@ -39,17 +39,7 @@ DEALINGS IN THE SOFTWARE.
 #include <cassert>
 #include <exception>
 
-#ifndef BOOST_OUTCOME_COROUTINE_HEADER_TYPE
-#if __has_include(<coroutine>)
-#define BOOST_OUTCOME_COROUTINE_HEADER_TYPE 1
-#elif __has_include(<experimental/coroutine>)
-#define BOOST_OUTCOME_COROUTINE_HEADER_TYPE 2
-#else
-#define BOOST_OUTCOME_COROUTINE_HEADER_TYPE 0
-#endif
-#endif
-
-#if BOOST_OUTCOME_COROUTINE_HEADER_TYPE && (__cpp_impl_coroutine || (defined(_MSC_VER) && __cpp_coroutines))
+#if __cpp_impl_coroutine || (defined(_MSC_VER) && __cpp_coroutines) || (defined(__clang__) && __cpp_coroutines)
 #ifndef BOOST_OUTCOME_HAVE_NOOP_COROUTINE
 #if defined(__has_builtin)
 #if __has_builtin(__builtin_coro_noop) || (!defined(__clang__) && __GNUC__ >= 10)
@@ -64,7 +54,7 @@ DEALINGS IN THE SOFTWARE.
 #define BOOST_OUTCOME_HAVE_NOOP_COROUTINE 0
 #endif
 #endif
-#if BOOST_OUTCOME_COROUTINE_HEADER_TYPE == 1
+#if __has_include(<coroutine>)
 #include <coroutine>
 BOOST_OUTCOME_V2_NAMESPACE_BEGIN
 namespace awaitables
@@ -79,7 +69,7 @@ namespace awaitables
 }  // namespace awaitables
 BOOST_OUTCOME_V2_NAMESPACE_END
 #define BOOST_OUTCOME_FOUND_COROUTINE_HEADER 1
-#elif BOOST_OUTCOME_COROUTINE_HEADER_TYPE == 2
+#elif __has_include(<experimental/coroutine>)
 #include <experimental/coroutine>
 BOOST_OUTCOME_V2_NAMESPACE_BEGIN
 namespace awaitables

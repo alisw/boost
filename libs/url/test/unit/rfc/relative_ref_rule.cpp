@@ -25,7 +25,7 @@ public:
     {    
         // javadoc
         {
-            system::result< url_view > rv = grammar::parse( "images/dot.gif?v=hide#a", relative_ref_rule );
+            result< url_view > rv = grammar::parse( "images/dot.gif?v=hide#a", relative_ref_rule );
             (void)rv;
         }
     }

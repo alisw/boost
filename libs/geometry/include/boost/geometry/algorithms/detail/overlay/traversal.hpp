@@ -123,8 +123,12 @@ public :
     template <typename TurnInfoMap>
     inline void finalize_visit_info(TurnInfoMap& turn_info_map)
     {
-        for (auto& turn : m_turns)
+        for (typename boost::range_iterator<Turns>::type
+            it = boost::begin(m_turns);
+            it != boost::end(m_turns);
+            ++it)
         {
+            turn_type& turn = *it;
             for (int i = 0; i < 2; i++)
             {
                 turn_operation_type& op = turn.operations[i];
@@ -154,18 +158,23 @@ public :
     inline void set_visited_in_cluster(signed_size_type cluster_id,
                                        signed_size_type rank)
     {
-        auto mit = m_clusters.find(cluster_id);
+        typename Clusters::const_iterator mit = m_clusters.find(cluster_id);
         BOOST_ASSERT(mit != m_clusters.end());
 
         cluster_info const& cinfo = mit->second;
+        std::set<signed_size_type> const& ids = cinfo.turn_indices;
 
-        for (auto turn_index : cinfo.turn_indices)
+        for (typename std::set<signed_size_type>::const_iterator it = ids.begin();
+             it != ids.end(); ++it)
         {
+            signed_size_type const turn_index = *it;
             turn_type& turn = m_turns[turn_index];
 
-            for (auto& op : turn.operations)
+            for (int i = 0; i < 2; i++)
             {
-                if (op.visited.none() && op.enriched.rank == rank)
+                turn_operation_type& op = turn.operations[i];
+                if (op.visited.none()
+                    && op.enriched.rank == rank)
                 {
                     op.visited.set_visited();
                 }
@@ -780,19 +789,21 @@ public :
         turn_type const& turn = m_turns[turn_index];
         BOOST_ASSERT(turn.is_clustered());
 
-        auto mit = m_clusters.find(turn.cluster_id);
+        typename Clusters::const_iterator mit = m_clusters.find(turn.cluster_id);
         BOOST_ASSERT(mit != m_clusters.end());
 
         cluster_info const& cinfo = mit->second;
+        std::set<signed_size_type> const& cluster_indices = cinfo.turn_indices;
 
         sbs_type sbs(m_strategy);
 
-        if (! fill_sbs(sbs, turn_index, cinfo.turn_indices, previous_seg_id))
+
+        if (! fill_sbs(sbs, turn_index, cluster_indices, previous_seg_id))
         {
             return false;
         }
 
-        cluster_exits<OverlayType, Turns, sbs_type> exits(m_turns, cinfo.turn_indices, sbs);
+        cluster_exits<OverlayType, Turns, sbs_type> exits(m_turns, cluster_indices, sbs);
 
         if (exits.apply(turn_index, op_index))
         {
@@ -803,7 +814,7 @@ public :
 
         if (is_union)
         {
-            result = select_from_cluster_union(turn_index, cinfo.turn_indices,
+            result = select_from_cluster_union(turn_index, cluster_indices,
                                                op_index, sbs,
                                                start_turn_index, start_op_index);
             if (! result)

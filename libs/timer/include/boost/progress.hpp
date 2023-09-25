@@ -19,14 +19,11 @@
 #ifndef BOOST_PROGRESS_HPP
 #define BOOST_PROGRESS_HPP
 
-#if !defined(BOOST_TIMER_ENABLE_DEPRECATED)
-# error This header is deprecated and will be removed. (You can define BOOST_TIMER_ENABLE_DEPRECATED to suppress this error.)
-#endif
-
 #include <boost/config/header_deprecated.hpp>
 BOOST_HEADER_DEPRECATED( "the facilities in <boost/timer/timer.hpp> or <boost/timer/progress_display.hpp>" )
 
 #include <boost/timer.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/cstdint.hpp>  // for uintmax_t
 #include <iostream>           // for ostream, cout, etc
 #include <string>             // for string
@@ -38,17 +35,13 @@ namespace boost {
 //  A progress_timer behaves like a timer except that the destructor displays
 //  an elapsed time message at an appropriate place in an appropriate form.
 
-class progress_timer : public timer
+class progress_timer : public timer, private noncopyable
 {
- private:
-
-  progress_timer( progress_timer const& );
-  progress_timer& operator=( progress_timer const& );
-
+  
  public:
   explicit progress_timer( std::ostream & os = std::cout )
      // os is hint; implementation may ignore, particularly in embedded systems
-     : timer(), m_os(os) {}
+     : timer(), noncopyable(), m_os(os) {}
   ~progress_timer()
   {
   //  A) Throwing an exception from a destructor is a Bad Thing.
@@ -84,13 +77,8 @@ class progress_timer : public timer
 // found some compilers couldn't handle the required conversion to double.
 // Reverted to unsigned long until the compilers catch up. 
 
-class progress_display
+class progress_display : private noncopyable
 {
- private:
-
-  progress_display( progress_display const& );
-  progress_display& operator=( progress_display const& );
-
  public:
   explicit progress_display( unsigned long expected_count_,
                              std::ostream & os = std::cout,
@@ -98,7 +86,7 @@ class progress_display
                              const std::string & s2 = "",
                              const std::string & s3 = "" )
    // os is hint; implementation may ignore, particularly in embedded systems
-   : m_os(os), m_s1(s1), m_s2(s2), m_s3(s3) { restart(expected_count_); }
+   : noncopyable(), m_os(os), m_s1(s1), m_s2(s2), m_s3(s3) { restart(expected_count_); }
 
   void           restart( unsigned long expected_count_ )
   //  Effects: display appropriate scale

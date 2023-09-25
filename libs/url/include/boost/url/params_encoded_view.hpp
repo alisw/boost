@@ -15,7 +15,7 @@
 #include <boost/url/error_types.hpp>
 #include <boost/url/params_encoded_base.hpp>
 #include <boost/url/params_view.hpp>
-#include <boost/core/detail/string_view.hpp>
+#include <boost/url/string_view.hpp>
 #include <iosfwd>
 #include <utility>
 
@@ -51,7 +51,7 @@ namespace urls {
     Changes to the underlying character buffer
     can invalidate iterators which reference it.
 */
-class BOOST_URL_DECL params_encoded_view
+class params_encoded_view
     : public params_encoded_base
 {
     friend class url_view_base;
@@ -162,8 +162,9 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.4"
             >3.4.  Query</a>
     */
+    BOOST_URL_DECL
     params_encoded_view(
-        core::string_view s);
+        string_view s);
 
     /** Assignment
 
@@ -220,15 +221,16 @@ public:
         @par Exception Safety
         Throws nothing
     */
+    BOOST_URL_DECL
     operator
     params_view() const noexcept;
 
     //--------------------------------------------
 
-    friend
     BOOST_URL_DECL
-    system::result<params_encoded_view>
-    parse_query(core::string_view s) noexcept;
+    friend
+        result<params_encoded_view>
+        parse_query(string_view s) noexcept;
 };
 
 } // urls

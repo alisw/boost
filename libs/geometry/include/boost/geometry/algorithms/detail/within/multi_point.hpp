@@ -1,10 +1,6 @@
 // Boost.Geometry
 
-// Copyright (c) 2023 Adam Wulkiewicz, Lodz, Poland.
-
-// Copyright (c) 2017-2023, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+// Copyright (c) 2017-2020, Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -42,7 +38,6 @@
 #include <boost/geometry/strategies/covered_by.hpp>
 #include <boost/geometry/strategies/disjoint.hpp>
 
-#include <boost/geometry/util/condition.hpp>
 #include <boost/geometry/util/type_traits.hpp>
 
 
@@ -60,7 +55,8 @@ struct multi_point_point
     {
         auto const s = strategy.relate(multi_point, point);
 
-        for (auto it = boost::begin(multi_point); it != boost::end(multi_point); ++it)
+        typedef typename boost::range_const_iterator<MultiPoint>::type iterator;
+        for ( iterator it = boost::begin(multi_point) ; it != boost::end(multi_point) ; ++it )
         {
             if (! s.apply(*it, point))
             {
@@ -82,7 +78,8 @@ struct multi_point_multi_point
                              Strategy const& /*strategy*/)
     {
         typedef typename boost::range_value<MultiPoint2>::type point2_type;
-        typedef geometry::less<void, -1, Strategy> less_type;
+        typedef typename Strategy::cs_tag cs_tag;
+        typedef geometry::less<void, -1, cs_tag> less_type;
 
         less_type const less = less_type();
 
@@ -91,7 +88,8 @@ struct multi_point_multi_point
 
         bool result = false;
 
-        for (auto it = boost::begin(multi_point1); it != boost::end(multi_point1); ++it)
+        typedef typename boost::range_const_iterator<MultiPoint1>::type iterator;
+        for ( iterator it = boost::begin(multi_point1) ; it != boost::end(multi_point1) ; ++it )
         {
             if (! std::binary_search(points2.begin(), points2.end(), *it, less))
             {
@@ -136,12 +134,13 @@ struct multi_point_single_geometry
         // If in the exterior, break
         bool result = false;
 
-        for (auto it = boost::begin(multi_point); it != boost::end(multi_point); ++it )
+        typedef typename boost::range_const_iterator<MultiPoint>::type iterator;
+        for ( iterator it = boost::begin(multi_point) ; it != boost::end(multi_point) ; ++it )
         {
             typedef decltype(strategy.covered_by(*it, box)) point_in_box_type;
 
             int in_val = 0;
-
+            
             // exterior of box and of geometry
             if (! point_in_box_type::apply(*it, box)
                 || (in_val = point_in_geometry(*it, linear_or_areal, strategy)) < 0)
@@ -199,7 +198,8 @@ struct multi_point_multi_geometry
         // If a point is in the exterior break
         bool result = false;
 
-        for (auto it = boost::begin(multi_point); it != boost::end(multi_point); ++it)
+        typedef typename boost::range_const_iterator<MultiPoint>::type iterator;
+        for ( iterator it = boost::begin(multi_point) ; it != boost::end(multi_point) ; ++it )
         {
             // TODO: investigate the possibility of using satisfies
             // TODO: investigate the possibility of using iterative queries (optimization below)
@@ -238,7 +238,7 @@ struct multi_point_multi_geometry
 
             if (boundaries > 0)
             {
-                if (BOOST_GEOMETRY_CONDITION(is_linear) && boundaries % 2 == 0)
+                if (is_linear && boundaries % 2 == 0)
                 {
                     found_interior = true;
                 }

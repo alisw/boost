@@ -22,7 +22,7 @@ optional_rule_t<R>::
 parse(
     char const*& it,
     char const* end) const ->
-        system::result<value_type>
+        result<value_type>
 {
     if(it == end)
         return boost::none;

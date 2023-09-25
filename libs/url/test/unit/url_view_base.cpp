@@ -45,7 +45,7 @@ struct url_view_base_test
     testHost()
     {
         auto const ipv4 = [](
-            core::string_view s)
+            string_view s)
         {
             std::string sa = std::string(s);
             std::string su = "https://" + sa + "/";
@@ -67,7 +67,7 @@ struct url_view_base_test
         };
 
         auto const ipv6 = [](
-            core::string_view s)
+            string_view s)
         {
             std::string sa = bracketed(s);
             std::string su = "https://" + sa + "/";
@@ -89,7 +89,7 @@ struct url_view_base_test
         };
 
         auto const ipvfut = [](
-            core::string_view s)
+            string_view s)
         {
             std::string sa = bracketed(s);
             std::string su = "https://" + sa + "/";
@@ -111,7 +111,7 @@ struct url_view_base_test
         };
 
         auto const name = [](
-            core::string_view s)
+            string_view s)
         {
             std::string sa = std::string(s);
             std::string su = "https://" + sa + "/";

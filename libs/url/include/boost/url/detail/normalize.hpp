@@ -11,9 +11,7 @@
 #ifndef BOOST_URL_DETAIL_NORMALIZED_HPP
 #define BOOST_URL_DETAIL_NORMALIZED_HPP
 
-#include <boost/core/detail/string_view.hpp>
-#include <boost/url/segments_encoded_view.hpp>
-#include <boost/url/detail/normalize.hpp>
+#include <boost/url/string_view.hpp>
 
 namespace boost {
 namespace urls {
@@ -50,7 +48,7 @@ public:
     }
 
     void
-    put(core::string_view s) noexcept
+    put(string_view s) noexcept
     {
         for (char c: s)
         {
@@ -70,78 +68,78 @@ private:
 
 void
 pop_encoded_front(
-    core::string_view& s,
+    string_view& s,
     char& c,
     std::size_t& n) noexcept;
 
-// compare two core::string_views as if they are both
+// compare two string_views as if they are both
 // percent-decoded
 int
 compare_encoded(
-    core::string_view lhs,
-    core::string_view rhs) noexcept;
+    string_view lhs,
+    string_view rhs) noexcept;
 
-// digest a core::string_view as if it were
+// digest a string_view as if it were
 // percent-decoded
 void
 digest_encoded(
-    core::string_view s,
+    string_view s,
     fnv_1a& hasher) noexcept;
 
 void
 digest(
-    core::string_view s,
+    string_view s,
     fnv_1a& hasher) noexcept;
 
-// check if core::string_view lhs starts with core::string_view
+// check if string_view lhs starts with string_view
 // rhs as if they are both percent-decoded. If
 // lhs starts with rhs, return number of chars
-// matched in the encoded core::string_view
+// matched in the encoded string_view
 std::size_t
 path_starts_with(
-    core::string_view lhs,
-    core::string_view rhs) noexcept;
+    string_view lhs,
+    string_view rhs) noexcept;
 
-// check if core::string_view lhs ends with core::string_view
+// check if string_view lhs ends with string_view
 // rhs as if they are both percent-decoded. If
 // lhs ends with rhs, return number of chars
-// matched in the encoded core::string_view
+// matched in the encoded string_view
 std::size_t
 path_ends_with(
-    core::string_view lhs,
-    core::string_view rhs) noexcept;
+    string_view lhs,
+    string_view rhs) noexcept;
 
-// compare two core::string_views as if they are both
+// compare two string_views as if they are both
 // percent-decoded and lowercase
 int
 ci_compare_encoded(
-    core::string_view lhs,
-    core::string_view rhs) noexcept;
+    string_view lhs,
+    string_view rhs) noexcept;
 
-// digest a core::string_view as if it were decoded
+// digest a string_view as if it were decoded
 // and lowercase
 void
 ci_digest_encoded(
-    core::string_view s,
+    string_view s,
     fnv_1a& hasher) noexcept;
 
-// compare two ascii core::string_views
+// compare two ascii string_views
 int
 compare(
-    core::string_view lhs,
-    core::string_view rhs) noexcept;
+    string_view lhs,
+    string_view rhs) noexcept;
 
-// compare two core::string_views as if they are both
+// compare two string_views as if they are both
 // lowercase
 int
 ci_compare(
-    core::string_view lhs,
-    core::string_view rhs) noexcept;
+    string_view lhs,
+    string_view rhs) noexcept;
 
-// digest a core::string_view as if it were lowercase
+// digest a string_view as if it were lowercase
 void
 ci_digest(
-    core::string_view s,
+    string_view s,
     fnv_1a& hasher) noexcept;
 
 BOOST_URL_DECL
@@ -149,21 +147,21 @@ std::size_t
 remove_dot_segments(
     char* dest,
     char const* end,
-    core::string_view s) noexcept;
+    string_view s) noexcept;
 
 void
 pop_last_segment(
-    core::string_view& s,
-    core::string_view& c,
+    string_view& s,
+    string_view& c,
     std::size_t& level,
     bool r) noexcept;
 
 char
-path_pop_back( core::string_view& s );
+path_pop_back( string_view& s );
 
 void
 normalized_path_digest(
-    core::string_view s,
+    string_view s,
     bool remove_unmatched,
     fnv_1a& hasher) noexcept;
 

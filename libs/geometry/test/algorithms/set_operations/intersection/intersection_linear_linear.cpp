@@ -1,13 +1,11 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2023, Oracle and/or its affiliates.
-
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
-// Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Copyright (c) 2014-2015, Oracle and/or its affiliates.
 
 // Licensed under the Boost Software License version 1.0.
 // http://www.boost.org/users/license.html
 
+// Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 
 #include <iostream>
 
@@ -1383,7 +1381,7 @@ BOOST_AUTO_TEST_CASE( test_intersection_ml_ml_spikes )
 {
 #ifdef BOOST_GEOMETRY_TEST_DEBUG
     std::cout << std::endl << std::endl << std::endl;
-    std::cout << "*** MULTILINESTRING / MULTILINESTRING INTERSECTION"
+    std::cout << "*** MULTILINESTRING / MULTILINESTRING INTERSECTION" 
               << " (WITH SPIKES) ***"
               << std::endl;
     std::cout << std::endl;

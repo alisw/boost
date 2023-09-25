@@ -28,7 +28,7 @@ namespace urls {
     @par Example
     Rules are used with the function @ref grammar::parse.
     @code
-    system::result< url_view > rv = grammar::parse( "/index.htm?layout=mobile", origin_form_rule );
+    result< url_view > rv = grammar::parse( "/index.htm?layout=mobile", origin_form_rule );
     @endcode
 
     @par BNF
@@ -56,7 +56,7 @@ struct origin_form_rule_t
         url_view;
 
     BOOST_URL_DECL
-    system::result<value_type>
+    result<value_type>
     parse(
         char const*& it,
         char const* end

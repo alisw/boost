@@ -13,6 +13,7 @@
 #endif
 
 #include "router.hpp"
+#include "src.hpp"
 
 #include "test_suite.hpp"
 
@@ -156,11 +157,11 @@ struct router_test
     static
     void
     good(
-        std::initializer_list<core::string_view> patterns,
+        std::initializer_list<string_view> patterns,
         std::size_t match_idx,
-        core::string_view request,
-        std::initializer_list<core::string_view> ms = {},
-        std::initializer_list<std::pair<core::string_view, core::string_view>> args = {})
+        string_view request,
+        std::initializer_list<string_view> ms = {},
+        std::initializer_list<std::pair<string_view, string_view>> args = {})
     {
         router<int> r;
         int i = 0;
@@ -211,10 +212,10 @@ struct router_test
     static
     void
     good(
-        core::string_view pattern,
-        core::string_view request,
-        std::initializer_list<core::string_view> matches = {},
-        std::initializer_list<std::pair<core::string_view, core::string_view>> args = {})
+        string_view pattern,
+        string_view request,
+        std::initializer_list<string_view> matches = {},
+        std::initializer_list<std::pair<string_view, string_view>> args = {})
     {
         return good({pattern}, 0, request, matches, args);
     };
@@ -222,8 +223,8 @@ struct router_test
     static
     void
     bad(
-        core::string_view pattern,
-        core::string_view request)
+        string_view pattern,
+        string_view request)
     {
         router<int> r;
         try
@@ -243,10 +244,10 @@ struct router_test
 
     static
     void
-    bad(core::string_view pattern)
+    bad(string_view pattern)
     {
         router<int> r;
-        BOOST_TEST_THROWS(r.insert(pattern, 0), system::system_error);
+        BOOST_TEST_THROWS(r.insert(pattern, 0), system_error);
     };
 
     void

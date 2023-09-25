@@ -33,8 +33,7 @@
 
 namespace urls = boost::urls;
 namespace fs = boost::filesystem;
-namespace core = boost::core;
-using string_view = boost::core::string_view;
+using string_view = urls::string_view;
 
 /** Check if a target matches a prefix
 
@@ -83,7 +82,7 @@ class route
 {
 public:
     /// Constructor
-    route(core::string_view prefix, fs::path root)
+    route(string_view prefix, fs::path root)
         : prefix_(urls::parse_uri_reference(prefix).value())
         , root_(std::move(root))
     {}

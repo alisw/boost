@@ -39,7 +39,7 @@ namespace grammar {
     //                / authority-form
     //                / asterisk-form
 
-    system::result< variant< url_view, url_view, authority_view, core::string_view > > rv = grammar::parse(
+    result< variant< url_view, url_view, authority_view, string_view > > rv = grammar::parse(
         "/index.html?width=full",
         variant_rule(
             origin_form_rule,
@@ -65,7 +65,8 @@ namespace grammar {
         @ref delim_rule,
         @ref parse,
         @ref origin_form_rule,
-        @ref url_view.
+        @ref url_view,
+        @ref variant.
 */
 #ifdef BOOST_URL_DOCS
 template<class... Rules>
@@ -86,7 +87,7 @@ public:
     parse(
         char const*& it,
         char const* end) const ->
-            system::result<value_type>;
+            result<value_type>;
 
     template<
         class R0_,

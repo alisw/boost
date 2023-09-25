@@ -19,8 +19,7 @@ namespace urls {
 /** The type of variant used by the library
 */
 template<class... Ts>
-using variant
-    BOOST_URL_DEPRECATED("Use variant2::variant instead") =
+using variant =
     boost::variant2::variant<Ts...>;
 
 } // urls

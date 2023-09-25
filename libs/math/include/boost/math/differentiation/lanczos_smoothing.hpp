@@ -10,7 +10,6 @@
 #include <limits> // to nan initialize
 #include <vector>
 #include <string>
-#include <cstdint>
 #include <stdexcept>
 #include <type_traits>
 #include <boost/math/tools/assert.hpp>

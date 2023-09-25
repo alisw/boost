@@ -1,7 +1,7 @@
 // Boost.Geometry
 
-// Copyright (c) 2022-2023, Oracle and/or its affiliates.
-// Contributed and/or modified by Vissarion Fysikopoulos, on behalf of Oracle
+// Copyright (c) 2022, Oracle and/or its affiliates.
+
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Licensed under the Boost Software License version 1.0.
@@ -9,8 +9,6 @@
 
 #ifndef BOOST_GEOMETRY_VIEWS_DETAIL_RANDOM_ACCESS_VIEW_HPP
 #define BOOST_GEOMETRY_VIEWS_DETAIL_RANDOM_ACCESS_VIEW_HPP
-
-#include <vector>
 
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>

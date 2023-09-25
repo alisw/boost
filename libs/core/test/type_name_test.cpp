@@ -47,13 +47,9 @@ class B
 {
 };
 
-class C;
-
 template<class T1, class T2> struct X
 {
 };
-
-template<class T1, class T2> struct Y;
 
 enum E1
 {
@@ -66,8 +62,6 @@ enum class E2
 {
     e2
 };
-
-enum class E3;
 
 #endif
 
@@ -121,14 +115,12 @@ int main()
 
     TEST(A);
     TEST(B);
-    TEST(C);
 
     TEST(E1);
 
 #if !defined(BOOST_NO_CXX11_SCOPED_ENUMS)
 
     TEST(E2);
-    TEST(E3);
 
 #endif
 
@@ -139,10 +131,6 @@ int main()
     TEST(B&);
     TEST(B const&);
 
-    TEST(C volatile);
-    TEST(C&);
-    TEST(C const&);
-
 #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES)
 
     TEST(B&&);
@@ -152,9 +140,6 @@ int main()
 
     TEST(A*);
     TEST(B const* volatile*);
-
-    TEST(C*);
-    TEST(C const* volatile*);
 
     TEST(void*);
     TEST(void const* volatile*);
@@ -254,17 +239,8 @@ int main()
     TEST(B(&)[1][2][3]);
     TEST(B const volatile(***)[1][2][3]);
 
-#if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) || !defined(BOOST_MSVC)
-
     TEST(int A::*);
     TEST(int const B::*);
-
-#else
-
-    boost::core::type_name<int A::*>();
-    boost::core::type_name<int const B::*>();
-
-#endif
 
 #if !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
 
@@ -272,13 +248,6 @@ int main()
     TEST(void(A::*)() const);
     TEST(void(A::*)() volatile);
     TEST(void(A::*)() const volatile);
-
-#else
-
-    boost::core::type_name<void(A::*)()>();
-    boost::core::type_name<void(A::*)() const>();
-    boost::core::type_name<void(A::*)() volatile>();
-    boost::core::type_name<void(A::*)() const volatile>();
 
 #endif
 
@@ -305,16 +274,10 @@ int main()
     TEST(std::pair<A, B>);
     TEST(std::pair<A const*, B*> volatile&);
 
-    TEST(std::pair<C, C>);
-
     TEST(std::pair<void, void>);
     TEST(std::pair<std::pair<void, void>, void>);
 
-#if defined(_LIBCPP_VERSION) && _LIBCPP_VERSION >= 160000
-// std::char_traits<Ch> is deprecated for non-char types
-#else
     TEST(std::basic_string<Ch>);
-#endif
 
     TEST(std::string);
     TEST(std::wstring);
@@ -334,11 +297,6 @@ int main()
 
     TEST(X<A, B>);
     TEST(X<A const&, B&> volatile&);
-
-    TEST(X<C, C>);
-
-    TEST(Y<A, B>);
-    TEST(Y<C, C>);
 
     TEST(X<std::pair<void, void>, void>);
 
@@ -406,11 +364,7 @@ int main()
 
 #if !defined(BOOST_NO_CXX17_HDR_STRING_VIEW)
 
-#if defined(_LIBCPP_VERSION) && _LIBCPP_VERSION >= 160000
-// std::char_traits<Ch> is deprecated for non-char types
-#else
     TEST(std::basic_string_view<Ch>);
-#endif
 
     TEST(std::string_view);
     TEST(std::wstring_view);

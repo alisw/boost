@@ -31,7 +31,7 @@ namespace urls {
     strings constructed from a parsed, external
     character buffer whose storage is managed
     by the caller. That is, it acts like a
-    `core::string_view` in terms of ownership.
+    @ref string_view in terms of ownership.
     The caller is responsible for ensuring
     that the lifetime of the underlying
     character buffer extends until it is no
@@ -55,7 +55,7 @@ namespace urls {
     contain an error. The error can be converted to
     an exception by the caller if desired:
     @code
-    system::result< authority_view > rv = parse_authority( "user:pass@www.example.com:8080" );
+    result< authority_view > rv = parse_authority( "user:pass@www.example.com:8080" );
     @endcode
 
     @par BNF
@@ -79,7 +79,7 @@ namespace urls {
     @see
         @ref parse_authority.
 */
-class BOOST_URL_DECL
+class BOOST_SYMBOL_VISIBLE
     authority_view
     : private detail::parts_base
 {
@@ -103,6 +103,7 @@ public:
 
     /** Destructor
     */
+    BOOST_URL_DECL
     virtual
     ~authority_view();
 
@@ -118,6 +119,7 @@ public:
 
         @par Specification
     */
+    BOOST_URL_DECL
     authority_view() noexcept;
 
     /** Construct from a string.
@@ -155,16 +157,19 @@ public:
         @see
             @ref parse_authority.
     */
+    BOOST_URL_DECL
     explicit
-    authority_view(core::string_view s);
+    authority_view(string_view s);
 
     /** Constructor
     */
+    BOOST_URL_DECL
     authority_view(
         authority_view const&) noexcept;
 
     /** Assignment
     */
+    BOOST_URL_DECL
     authority_view&
     operator=(
         authority_view const&) noexcept;
@@ -250,10 +255,10 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2"
             >3.2. Authority (rfc3986)</a>
     */
-    core::string_view
+    string_view
     buffer() const noexcept
     {
-        return core::string_view(data(), size());
+        return string_view(data(), size());
     }
 
     //--------------------------------------------
@@ -299,6 +304,7 @@ public:
             @ref userinfo.
 
     */
+    BOOST_URL_DECL
     bool
     has_userinfo() const noexcept;
 
@@ -393,6 +399,7 @@ public:
             @ref user,
             @ref userinfo.
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_userinfo() const noexcept;
 
@@ -491,6 +498,7 @@ public:
             @ref user,
             @ref userinfo.
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_user() const noexcept;
 
@@ -532,6 +540,7 @@ public:
             @ref user,
             @ref userinfo.
     */
+    BOOST_URL_DECL
     bool
     has_password() const noexcept;
 
@@ -624,6 +633,7 @@ public:
             @ref user,
             @ref userinfo.
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_password() const noexcept;
 
@@ -740,6 +750,7 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2"
             >3.2.2. Host (rfc3986)</a>
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_host() const noexcept;
 
@@ -854,6 +865,7 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2"
             >3.2.2. Host (rfc3986)</a>
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_host_address() const noexcept;
 
@@ -893,6 +905,7 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2"
             >3.2.2. Host (rfc3986)</a>
     */
+    BOOST_URL_DECL
     ipv4_address
     host_ipv4_address() const noexcept;
 
@@ -940,6 +953,7 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2"
             >3.2.2. Host (rfc3986)</a>
     */
+    BOOST_URL_DECL
     ipv6_address
     host_ipv6_address() const noexcept;
 
@@ -972,7 +986,8 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2"
             >3.2.2. Host (rfc3986)</a>
     */
-    core::string_view
+    BOOST_URL_DECL
+    string_view
     host_ipvfuture() const noexcept;
 
     /** Return the host name
@@ -1054,6 +1069,7 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2"
             >3.2.2. Host (rfc3986)</a>
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_host_name() const noexcept;
 
@@ -1095,6 +1111,7 @@ public:
             @ref port,
             @ref port_number.
     */
+    BOOST_URL_DECL
     bool
     has_port() const noexcept;
 
@@ -1130,7 +1147,8 @@ public:
             @ref has_port,
             @ref port_number.
     */
-    core::string_view
+    BOOST_URL_DECL
+    string_view
     port() const noexcept;
 
     /** Return the port
@@ -1165,6 +1183,7 @@ public:
             @ref has_port,
             @ref port.
     */
+    BOOST_URL_DECL
     std::uint16_t
     port_number() const noexcept;
 
@@ -1204,6 +1223,7 @@ public:
             @ref port,
             @ref port_number.
     */
+    BOOST_URL_DECL
     pct_string_view
     encoded_host_and_port() const noexcept;
 
@@ -1229,6 +1249,7 @@ public:
         @li <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-6.2.2"
             >6.2.2 Syntax-Based Normalization (rfc3986)</a>
     */
+    BOOST_URL_DECL
     int
     compare(authority_view const& other) const noexcept;
 
@@ -1429,9 +1450,9 @@ operator<<(
         @ref authority_view.
 */
 BOOST_URL_DECL
-system::result<authority_view>
+result<authority_view>
 parse_authority(
-    core::string_view s) noexcept;
+    string_view s) noexcept;
 
 //------------------------------------------------
 

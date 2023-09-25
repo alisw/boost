@@ -98,8 +98,6 @@ run visit_each_test.cpp ;
 run get_pointer_test.cpp ;
 
 local pedantic-errors = <warnings>pedantic
-    <toolset>gcc:<cxxflags>"-Wconversion"
-    <toolset>clang:<cxxflags>"-Wconversion"
     <toolset>msvc:<warnings-as-errors>on
     <toolset>gcc:<warnings-as-errors>on
     <toolset>clang:<warnings-as-errors>on ;
@@ -298,22 +296,9 @@ run bit_popcount_test.cpp
   : : : $(pedantic-errors) ;
 run bit_endian_test.cpp
   : : : $(pedantic-errors) ;
-run bit_byteswap_test.cpp
-  : : : $(pedantic-errors) ;
 
 compile-fail bit_width_fail.cpp
   : <warnings>off ;
-
-compile bit_cast_test_cx.cpp ;
-compile bit_rotate_test_cx.cpp ;
-compile bit_countr_test_cx.cpp ;
-compile bit_countl_test_cx.cpp ;
-compile bit_width_test_cx.cpp ;
-compile has_single_bit_test_cx.cpp ;
-compile bit_floor_test_cx.cpp ;
-compile bit_ceil_test_cx.cpp ;
-compile bit_popcount_test_cx.cpp ;
-compile bit_byteswap_test_cx.cpp ;
 
 run type_name_test.cpp ;
 
@@ -385,12 +370,6 @@ run serialization_construct_data_test.cpp : : : <library>/boost//serialization/<
 
 run identity_test.cpp ;
 run identity_rvalue_test.cpp ;
-
-run sp_thread_pause_test.cpp ;
-run sp_thread_yield_test.cpp ;
-run sp_thread_sleep_test.cpp ;
-run yield_prim_windows_h_test.cpp ;
-run yield_prim_pthread_cancel_test.cpp : ;
 
 use-project /boost/core/swap : ./swap ;
 build-project ./swap ;

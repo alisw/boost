@@ -16,9 +16,12 @@
 #include <boost/geometry/algorithms/difference.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
 
-#include <robustness/common/make_random_generator.hpp>
+#include <boost/random/linear_congruential.hpp>
+#include <boost/random/uniform_int.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
 
-#include <chrono>
+
 
 const int point_count = 90; // points for a full circle
 
@@ -212,7 +215,15 @@ void test_many_rings(int imn, int jmx, int count,
     bg::model::multi_point<point> mp;
 
     // Use a bit of random disturbance in the otherwise too regular grid
-    auto random = make_real_generator(12345, 0.0, 0.5);
+    typedef boost::minstd_rand base_generator_type;
+    base_generator_type generator(12345);
+    boost::uniform_real<> random_range(0.0, 0.5);
+    boost::variate_generator
+    <
+        base_generator_type&,
+        boost::uniform_real<>
+    > random(generator, random_range);
+
     for (int i = 0; i < count; i++)
     {
         for (int j = 0; j < count; j++)
@@ -256,11 +267,9 @@ void test_many_rings(int imn, int jmx, int count,
         std::ostringstream wkt;
         wkt << std::setprecision(12) << bg::wkt(many_rings);
 
-        auto const t0 = std::chrono::high_resolution_clock::now();
+        boost::timer t;
         test_one<multi_polygon_type, polygon_type>(out.str(), wkt.str(), join_round, end_flat, expected_area_exterior, 0.3);
-        auto const t = std::chrono::high_resolution_clock::now();
-        auto const elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(t - t0).count();
-        std::cout << "Exterior " << count << " " << elapsed_ms / 1000.0 << std::endl;
+        std::cout << "Exterior " << count << " " << t.elapsed() << std::endl;
     }
 
     return;
@@ -270,11 +279,9 @@ void test_many_rings(int imn, int jmx, int count,
         std::ostringstream wkt;
         wkt << std::setprecision(12) << bg::wkt(many_interiors);
 
-        auto const t0 = std::chrono::high_resolution_clock::now();
+        boost::timer t;
         test_one<multi_polygon_type, polygon_type>(out.str(), wkt.str(), join_round, end_flat, expected_area_interior, 0.3);
-        auto const t = std::chrono::high_resolution_clock::now();
-        auto const elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(t - t0).count();
-        std::cout << "Interior " << count << " " << elapsed_ms / 1000.0 << std::endl;
+        std::cout << "Interior " << count << " " << t.elapsed() << std::endl;
     }
 }
 

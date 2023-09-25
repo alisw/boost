@@ -21,7 +21,7 @@ struct string_token_test
     void
     f_impl(
         string_token::arg& dest,
-        core::string_view v)
+        string_view v)
     {
         char* p = dest.prepare(v.size());
         v.copy(p, v.size());
@@ -31,7 +31,7 @@ struct string_token_test
         class StringToken = string_token::return_string>
     typename StringToken::result_type
     f(  StringToken&& st = {},
-        core::string_view v = "test")
+        string_view v = "test")
     {
         f_impl(st, v);
         return st.result();
@@ -62,7 +62,7 @@ struct string_token_test
         // temp_string
         {
             std::string s("url");
-            core::string_view sv;
+            string_view sv;
 
             sv = f(string_token::preserve_size(s));
             BOOST_TEST_EQ(sv, "test");

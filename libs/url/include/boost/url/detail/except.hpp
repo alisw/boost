@@ -19,13 +19,13 @@ namespace detail {
 
 BOOST_URL_DECL void BOOST_NORETURN
 throw_system_error(
-    system::error_code const& ec,
+    error_code const& ec,
     source_location const& loc =
         BOOST_URL_POS);
 
 BOOST_URL_DECL void BOOST_NORETURN
 throw_errc(
-    boost::system::errc::errc_t ev,
+    errc::errc_t ev,
     source_location const& loc =
         BOOST_URL_POS);
 

@@ -27,7 +27,7 @@ namespace urls {
     @par Example
     Rules are used with the function @ref grammar::parse.
     @code
-    system::result< url_view > rv = grammar::parse( "ws://echo.example.com/?name=boost#demo", uri_reference_rule );
+    result< url_view > rv = grammar::parse( "ws://echo.example.com/?name=boost#demo", uri_reference_rule );
     @endcode
 
     @par BNF
@@ -60,7 +60,7 @@ struct uri_reference_rule_t
         char const*& it,
         char const* end
             ) const noexcept ->
-    system::result<value_type>;
+    result<value_type>;
 };
 
 constexpr uri_reference_rule_t uri_reference_rule{};

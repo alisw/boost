@@ -98,7 +98,10 @@ struct multipoint_single_point
                                        OutputIterator oit,
                                        Strategy const& strategy)
     {
-        for (auto it = boost::begin(multipoint); it != boost::end(multipoint); ++it)
+        for (typename boost::range_iterator<MultiPoint const>::type
+                 it = boost::begin(multipoint);
+             it != boost::end(multipoint);
+             ++it)
         {
             action_selector_pl
                 <

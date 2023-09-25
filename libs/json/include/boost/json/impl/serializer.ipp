@@ -44,13 +44,11 @@ serializer::
 serializer(
     storage_ptr sp,
     unsigned char* buf,
-    std::size_t buf_size,
-    serialize_options const& opts) noexcept
+    std::size_t buf_size) noexcept
     : st_(
         std::move(sp),
         buf,
         buf_size)
-    , opts_(opts)
 {
 }
 
@@ -439,15 +437,12 @@ write_number(stream& ss0)
                 ss.remain() >=
                     detail::max_number_chars))
             {
-                ss.advance(
-                    detail::format_double(
-                        ss.data(),
-                        jv_->get_double(),
-                        opts_.allow_infinity_and_nan));
+                ss.advance(detail::format_double(
+                    ss.data(), jv_->get_double()));
                 return true;
             }
             cs0_ = { buf_, detail::format_double(
-                buf_, jv_->get_double(), opts_.allow_infinity_and_nan) };
+                buf_, jv_->get_double()) };
             break;
         }
     }
@@ -755,8 +750,7 @@ read_some(
 //----------------------------------------------------------
 
 serializer::
-serializer( serialize_options const& opts ) noexcept
-    : opts_(opts)
+serializer() noexcept
 {
     // ensure room for \uXXXX escape plus one
     BOOST_STATIC_ASSERT(
