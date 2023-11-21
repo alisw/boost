@@ -456,19 +456,6 @@ inline bool shared_memory_object::remove(const char *filename)
 
 inline void shared_memory_object::truncate(offset_t length)
 {
-   #ifdef BOOST_INTERPROCESS_POSIX_FALLOCATE
-   int ret = EINTR;
-   while (EINTR == ret) {
-      ret = posix_fallocate(m_handle, 0, length);
-   }
-
-   if (ret && ret != EOPNOTSUPP && ret != ENODEV){
-      error_info err(ret);
-      throw interprocess_exception(err);
-   }
-   //ftruncate fallback
-   #endif //BOOST_INTERPROCESS_POSIX_FALLOCATE
-
    handle_eintr:
    if (0 != ftruncate(m_handle, length)){
       if (errno == EINTR)
