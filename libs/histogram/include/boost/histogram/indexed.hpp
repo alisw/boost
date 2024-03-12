@@ -192,7 +192,7 @@ public:
     }
 
     template <class U>
-    bool operator>(const U& o) const noexcept {
+    std::enable_if_t<std::is_same_v<accessor, U>, bool> operator>(const U& o) const noexcept {
       return get() > o;
     }
 
