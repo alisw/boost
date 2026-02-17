@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Changelog :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/changelog.html">
+    <link rel="prev" href="acknowledgements.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Introduction</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="requests_responses.html">Requests and responses</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="changelog.html">Changelog</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="acknowledgements.html">
+      <span class="material-symbols-outlined" title="Previous: Acknowledgements">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+</div></div>
+    <h1 class="page">Changelog</h1>
+  <div class="sect1">
+<h2 id="_boost_1_90"><a class="anchor" href="#_boost_1_90"></a>Boost 1.90</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/310">310</a>)
+Improves the per-operation support in <code>async_exec()</code>. Requests can now
+be cancelled at any point, and cancellations don&#8217;t interfere with other
+requests anyhow. In previous versions, a cancellation could cause
+<code>async_run()</code> to be cancelled, making cancellations unpredictable.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/226">226</a>)
+Added support for the <code>asio::cancel_after</code> and <code>asio::cancel_at</code>
+completion tokens in <code>async_exec()</code> and <code>async_run()</code>.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/319">319</a>)
+Added support for per-operation cancellation in <code>async_run()</code>.</p>
+</li>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/329">329</a>
+and <a href="https://github.com/boostorg/redis/pull/334">334</a>)
+The <code>cancel_on_connection_lost</code> and <code>cancel_if_not_connected</code>
+flags in <code>request::config</code> have been deprecated, and will be removed
+in subsequent releases. To limit the time span that <code>async_exec</code>
+might take, use <code>asio::cancel_after</code>, instead.
+<code>cancel_on_connection_lost</code> default has been changed to <code>false</code>.
+This shouldn&#8217;t cause much impact, since <code>cancel_on_connection_lost</code>
+is not a reliable way to limit the time span that <code>async_exec</code> might take.</p>
+</li>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/321">321</a>)
+Calling <code>cancel</code> with <code>operation::resolve</code>, <code>operation::connect</code>,
+<code>operation::ssl_handshake</code>, <code>operation::reconnection</code> and
+<code>operation::health_check</code> is now deprecated.
+These enumerators will be removed in subsequent releases.
+Users should employ <code>cancel(operation::run)</code>, instead.</p>
+</li>
+<li>
+<p>(Issue github.com/boostorg/redis/issues/302[302] and
+pull request <a href="https://github.com/boostorg/redis/pull/303">303</a>)
+Added support for custom setup requests using <code>config::setup</code>
+and <code>config::use_setup</code>. When setting these fields, users can
+replace the library-generated <code>HELLO</code> request by any other arbitrary request.
+This request is executed every time a new physical connection with the server
+is established. This feature can be used to interact with systems that don&#8217;t
+support <code>HELLO</code>, to handle authentication and to connect to replicas.</p>
+</li>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/305">305</a>)
+<code>request::config::hello_with_priority</code> and <code>request::has_hello_priority()</code> have
+been deprecated and will be removed in subsequent releases.
+This flag is not well specified and should only be used by the library.
+If you need to execute a request before any other, use <code>config::setup</code>, instead.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/296">296</a>)
+Valkey long-term support: we guarantee Valkey compatibility
+starting with this release. Previous releases may also work,
+but have not been tested with this database system.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/341">341</a>)
+Adds a <code>request::append()</code> function, to concatenate request objects.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/104">104</a>)
+The health checker algorithm has been redesigned to avoid
+false positives under heavy loads. <code>PING</code> commands are now
+only issued when the connection is idle, instead of periodically.</p>
+</li>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/283">283</a>)
+Added <code>config::read_buffer_append_size</code>, which allows to control
+the expansion of the connection&#8217;s read buffer.</p>
+</li>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/311">311</a>)
+Added <code>usage::bytes_rotated</code>, which measures data copying when
+reading and parsing data from the server.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/298">298</a>)
+Added support for authenticating users with an empty password
+but a non-default username.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/318">318</a>)
+Fixed a number of race conditions in the <code>cancel()</code> function
+of <code>connection</code> and <code>basic_connection</code> that could cause
+cancellations to be ignored.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/290">290</a>)
+Fixed a problem that could cause an error during <code>HELLO</code>
+to make subsequent <code>HELLO</code> attempts during reconnection to fail.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/297">297</a>)
+Errors during <code>HELLO</code> are now correctly logged.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/287">287</a>)
+Fixed a bug causing an exception to be thrown when parsing
+a response that contains an intermediate error into a <code>generic_response</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boost_1_89"><a class="anchor" href="#_boost_1_89"></a>Boost 1.89</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/256">256</a>,
+ <a href="https://github.com/boostorg/redis/pull/266">266</a> and
+ <a href="https://github.com/boostorg/redis/pull/273">273</a>)
+The following members in <code>connection</code> and <code>basic_connection</code> are now deprecated
+and will be removed in subsequent releases:</p>
+</li>
+<li>
+<p><code>next_layer()</code> and <code>next_layer_type</code>: there is no reason to access the underlying stream object directly.
+Connection member functions should be used, instead.</p>
+</li>
+<li>
+<p><code>get_ssl_context()</code>: SSL contexts should never be modified after an <code>asio::ssl::stream</code>
+object has been created from them. Properties should be set before passing the context
+to the constructor. There is no reason to access the SSL context after that.</p>
+</li>
+<li>
+<p><code>reset_stream()</code>: connection internals have been refactored to reset the SSL stream
+automatically when required. This function is now a no-op.</p>
+</li>
+<li>
+<p>The <code>async_run()</code> overload taking no parameters: use the <code>async_run</code>
+overload taking a <code>config</code> object explicitly, instead.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/213">213</a>)
+The logging interface has been re-written:</p>
+</li>
+<li>
+<p>Logging can now be customized by passing a function object
+to the <code>logger</code> constructor. This allows integration with
+third-party logging libraries, like spdlog.
+This new logging interface is public and will be maintained long-term.</p>
+</li>
+<li>
+<p>The old, unstable interface consisting of <code>logger::on_xxx</code> functions has been removed.</p>
+</li>
+<li>
+<p><code>connection</code> and <code>basic_connection</code> constructors now accept a <code>logger</code> object.
+This is now the preferred way to configure logging.
+The <code>async_run()</code> overload taking a <code>logger</code> object is now deprecated, and will
+be removed in subsequent releases.</p>
+</li>
+<li>
+<p><code>config::log_prefix</code> is now deprecated, and will
+be removed in subsequent releases. Users can achieve the same effect
+by passing a custom logging function to the <code>logger</code> constructor.</p>
+</li>
+<li>
+<p>The default logging function, which prints to <code>stderr</code>,
+is now based on <code>printf</code> and is thus thread-safe.
+The old function used <code>std::cerr</code> and could result to interleaved
+output in multi-threaded programs.</p>
+</li>
+<li>
+<p>The default log level is now <code>logger::level::info</code>,
+down from <code>logger::level::debug</code>. This results in less verbose output by default.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/272">272</a>)
+Added support for connecting to Redis using UNIX domain sockets.
+This feature can be accessed using <code>config::unix_socket</code>.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/255">255</a>)
+Fixed an issue that caused <code>async_run</code> to complete when a connection
+establishment error is encountered, even if <code>config::reconnect_wait_interval</code>
+specified reconnection.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/265">265</a>)
+<code>connection::async_exec</code> now uses <code>ignore</code> as the default response,
+rather than having no default response. This matches
+<code>basic_connection::async_exec</code> behavior.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/260">260</a>)
+Fixed a memory corruption affecting the logger&#8217;s prefix
+configured in <code>config::log_prefix</code>.</p>
+</li>
+<li>
+<p>(Pull request <a href="https://github.com/boostorg/redis/pull/254">254</a>)
+Fixed some warnings regarding unused variables, name shadowing
+and narrowing conversions.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/252">252</a>)
+Fixed a bug that causes reconnection to ignore the reconnection
+wait time configured in <code>config::reconnect_wait_interval</code>.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/238">238</a>)
+Fixed a bug introduced in Boost 1.88 that caused <code>response&lt;T&gt;</code> to
+not compile for some integral types.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/247">247</a>)
+The documentation has been modernized, and a more complete
+reference section has been added.</p>
+</li>
+<li>
+<p>Part of the internals have been refactored to allow for better
+testing and reduce compile times.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boost_1_88"><a class="anchor" href="#_boost_1_88"></a>Boost 1.88</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/233">233</a>)
+To deal with keys that might not exits in the Redis server, the
+library supports <code>std::optional</code>, for example
+<code>response&lt;std::optional&lt;std::vector&lt;std::string&gt;&gt;&gt;</code>. In some cases
+however, such as the <a href="https://redis.io/docs/latest/commands/mget/">MGET</a> command,
+each element in the vector might be non exiting, now it is possible
+to specify a response as <code>response&lt;std::optional&lt;std::vector&lt;std::optional&lt;std::string&gt;&gt;&gt;&gt;</code>.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/225">225</a>)
+Use <code>deferred</code> as the connection default completion token.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/128">128</a>)
+Adds a new <code>async_exec</code> overload that allows passing response
+adapters. This makes it possible to receive Redis responses directly
+in custom data structures thereby avoiding unnecessary data copying.
+Thanks to Ruben Perez (@anarthal) for implementing this feature.</p>
+</li>
+<li>
+<p>There are also other multiple small improvements in this release,
+users can refer to the git history for more details.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boost_1_87"><a class="anchor" href="#_boost_1_87"></a>Boost 1.87</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/205">205</a>)
+Improves reaction time to disconnection by using <code>wait_for_one_error</code>
+instead of <code>wait_for_all</code>. The function <code>connection::async_run</code> was
+also changed to return EOF to the user when that error is received
+from the server. That is a breaking change.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/210">210</a>)
+Fixes the adapter of empty nested responses.</p>
+</li>
+<li>
+<p>(Issues <a href="https://github.com/boostorg/redis/issues/211">211</a> and <a href="https://github.com/boostorg/redis/issues/212">212</a>)
+Fixes the reconnect loop that would hang under certain conditions,
+see the linked issues for more details.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/219">219</a>)
+Changes the default log level from <code>disabled</code> to <code>debug</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boost_1_85"><a class="anchor" href="#_boost_1_85"></a>Boost 1.85</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/170">170</a>)
+Under load and on low-latency networks it is possible to start
+receiving responses before the write operation completed and while
+the request is still marked as staged and not written. This messes
+up with the heuristics that classifies responses as unsolicited or
+not.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/168">168</a>).
+Provides a way of passing a custom SSL context to the connection.
+The design here differs from that of Boost.Beast and Boost.MySql
+since in Boost.Redis the connection owns the context instead of only
+storing a reference to a user provided one. This is ok so because
+apps need only one connection for their entire application, which
+makes the overhead of one ssl-context per connection negligible.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/181">181</a>).
+See a detailed description of this bug in
+<a href="https://github.com/boostorg/redis/issues/181#issuecomment-1913346983">this comment</a>.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/182">182</a>).
+Sets <code>"default"</code> as the default value of <code>config::username</code>. This
+makes it simpler to use the <code>requirepass</code> configuration in Redis.</p>
+</li>
+<li>
+<p>(Issue <a href="https://github.com/boostorg/redis/issues/189">189</a>).
+Fixes narrowing conversion by using <code>std::size_t</code> instead of
+<code>std::uint64_t</code> for the sizes of bulks and aggregates. The code
+relies now on <code>std::from_chars</code> returning an error if a value
+greater than 32 is received on platforms on which the size
+of <code>std::size_t</code> is 32.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_boost_1_84_first_release_in_boost"><a class="anchor" href="#_boost_1_84_first_release_in_boost"></a>Boost 1.84 (First release in Boost)</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Deprecates the <code>async_receive</code> overload that takes a response. Users
+should now first call <code>set_receive_response</code> to avoid constantly and
+unnecessarily setting the same response.</p>
+</li>
+<li>
+<p>Uses <code>std::function</code> to type erase the response adapter. This change
+should not influence users in any way but allowed important
+simplification in the connections internals. This resulted in
+massive performance improvement.</p>
+</li>
+<li>
+<p>The connection has a new member <code>get_usage()</code> that returns the
+connection usage information, such as number of bytes written,
+received etc.</p>
+</li>
+<li>
+<p>There are massive performance improvements in the consuming of
+server pushes which are now communicated with an <code>asio::channel</code> and
+therefore can be buffered which avoids blocking the socket read-loop.
+Batch reads are also supported by means of <code>channel.try_send</code> and
+buffered messages can be consumed synchronously with
+<code>connection::receive</code>. The function <code>boost::redis::cancel_one</code> has
+been added to simplify processing multiple server pushes contained
+in the same <code>generic_response</code>.  <strong>IMPORTANT</strong>: These changes may
+result in more than one push in the response when
+<code>connection::async_receive</code> resumes. The user must therefore be
+careful when calling <code>resp.clear()</code>: either ensure that all message
+have been processed or just use <code>consume_one</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v1_4_2_incorporates_changes_to_conform_the_boost_review_and_more"><a class="anchor" href="#_v1_4_2_incorporates_changes_to_conform_the_boost_review_and_more"></a>v1.4.2 (incorporates changes to conform the boost review and more)</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds <code>boost::redis::config::database_index</code> to make it possible to
+choose a database before starting running commands e.g. after an
+automatic reconnection.</p>
+</li>
+<li>
+<p>Massive performance improvement. One of my tests went from
+140k req/s to 390k/s. This was possible after a parser
+simplification that reduced the number of reschedules and buffer
+rotations.</p>
+</li>
+<li>
+<p>Adds Redis stream example.</p>
+</li>
+<li>
+<p>Renames the project to Boost.Redis and moves the code into namespace
+<code>boost::redis</code>.</p>
+</li>
+<li>
+<p>As pointed out in the reviews the <code>to_bulk</code> and <code>from_bulk</code> names were too
+generic for ADL customization points. They gained the prefix <code>boost_redis_</code>.</p>
+</li>
+<li>
+<p>Moves <code>boost::redis::resp3::request</code> to <code>boost::redis::request</code>.</p>
+</li>
+<li>
+<p>Adds new typedef <code>boost::redis::response</code> that should be used instead of
+<code>std::tuple</code>.</p>
+</li>
+<li>
+<p>Adds new typedef <code>boost::redis::generic_response</code> that should be used instead
+of <code>std::vector&lt;resp3::node&lt;std::string&gt;&gt;</code>.</p>
+</li>
+<li>
+<p>Renames <code>redis::ignore</code> to <code>redis::ignore_t</code>.</p>
+</li>
+<li>
+<p>Changes <code>async_exec</code> to receive a <code>redis::response</code> instead of an adapter,
+namely, instead of passing <code>adapt(resp)</code> users should pass <code>resp</code> directly.</p>
+</li>
+<li>
+<p>Introduces <code>boost::redis::adapter::result</code> to store responses to commands
+including possible resp3 errors without losing the error diagnostic part. To
+access values now use <code>std::get&lt;N&gt;(resp).value()</code> instead of
+<code>std::get&lt;N&gt;(resp)</code>.</p>
+</li>
+<li>
+<p>Implements full-duplex communication. Before these changes the connection
+would wait for a response to arrive before sending the next one. Now requests
+are continuously coalesced and written to the socket. <code>request::coalesce</code>
+became unnecessary and was removed. I could measure significative performance
+gains with these changes.</p>
+</li>
+<li>
+<p>Improves serialization examples using Boost.Describe to serialize to JSON and protobuf. See
+cpp20_json.cpp and cpp20_protobuf.cpp for more details.</p>
+</li>
+<li>
+<p>Upgrades to Boost 1.81.0.</p>
+</li>
+<li>
+<p>Fixes build with libc++.</p>
+</li>
+<li>
+<p>Adds high-level functionality to the connection classes. For
+example, <code>boost::redis::connection::async_run</code> will automatically
+resolve, connect, reconnect and perform health checks.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v1_4_0_1"><a class="anchor" href="#_v1_4_0_1"></a>v1.4.0-1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Renames <code>retry_on_connection_lost</code> to <code>cancel_if_unresponded</code>.  (v1.4.1)</p>
+</li>
+<li>
+<p>Removes dependency on Boost.Hana, <code>boost::string_view</code>, Boost.Variant2 and Boost.Spirit.</p>
+</li>
+<li>
+<p>Fixes build and setup CI on windows.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v1_3_0_1"><a class="anchor" href="#_v1_3_0_1"></a>v1.3.0-1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrades to Boost 1.80.0</p>
+</li>
+<li>
+<p>Removes automatic sending of the <code>HELLO</code> command. This can&#8217;t be
+implemented properly without bloating the connection class. It is
+now a user responsibility to send HELLO. Requests that contain it have
+priority over other requests and will be moved to the front of the
+queue, see <code>aedis::request::config</code></p>
+</li>
+<li>
+<p>Automatic name resolving and connecting have been removed from
+<code>aedis::connection::async_run</code>. Users have to do this step manually
+now. The reason for this change is that having them built-in doesn&#8217;t
+offer enough flexibility that is need for boost users.</p>
+</li>
+<li>
+<p>Removes healthy checks and idle timeout. This functionality must now
+be implemented by users, see the examples. This is
+part of making Aedis useful to a larger audience and suitable for
+the Boost review process.</p>
+</li>
+<li>
+<p>The <code>aedis::connection</code> is now using a typeddef to a
+<code>net::ip::tcp::socket</code> and  <code>aedis::ssl::connection</code> to
+<code>net::ssl::stream&lt;net::ip::tcp::socket&gt;</code>.  Users that need to use
+other stream type must now specialize <code>aedis::basic_connection</code>.</p>
+</li>
+<li>
+<p>Adds a low level example of async code.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v1_2_0"><a class="anchor" href="#_v1_2_0"></a>v1.2.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><code>aedis::adapt</code> supports now tuples created with <code>std::tie</code>.
+<code>aedis::ignore</code> is now an alias to the type of <code>std::ignore</code>.</p>
+</li>
+<li>
+<p>Provides allocator support for the internal queue used in the
+<code>aedis::connection</code> class.</p>
+</li>
+<li>
+<p>Changes the behaviour of <code>async_run</code> to complete with success if
+asio::error::eof is received. This makes it easier to  write
+composed operations with awaitable operators.</p>
+</li>
+<li>
+<p>Adds allocator support in the <code>aedis::request</code> (a
+contribution from Klemens Morgenstern).</p>
+</li>
+<li>
+<p>Renames <code>aedis::request::push_range2</code> to <code>push_range</code>. The
+suffix 2 was used for disambiguation. Klemens fixed it with SFINAE.</p>
+</li>
+<li>
+<p>Renames <code>fail_on_connection_lost</code> to
+<code>aedis::request::config::cancel_on_connection_lost</code>. Now, it will
+only cause connections to be canceled when <code>async_run</code> completes.</p>
+</li>
+<li>
+<p>Introduces <code>aedis::request::config::cancel_if_not_connected</code> which will
+cause a request to be canceled if <code>async_exec</code> is called before a
+connection has been established.</p>
+</li>
+<li>
+<p>Introduces new request flag <code>aedis::request::config::retry</code> that if
+set to true will cause the request to not be canceled when it was
+sent to Redis but remained unresponded after <code>async_run</code> completed.
+It provides a way to avoid executing commands twice.</p>
+</li>
+<li>
+<p>Removes the <code>aedis::connection::async_run</code> overload that takes
+request and adapter as parameters.</p>
+</li>
+<li>
+<p>Changes the way <code>aedis::adapt()</code> behaves with
+<code>std::vector&lt;aedis::resp3::node&lt;T&gt;&gt;</code>. Receiving RESP3 simple errors,
+blob errors or null won&#8217;t causes an error but will be treated as
+normal response.  It is the user responsibility to check the content
+in the vector.</p>
+</li>
+<li>
+<p>Fixes a bug in <code>connection::cancel(operation::exec)</code>. Now this
+call will only cancel non-written requests.</p>
+</li>
+<li>
+<p>Implements per-operation implicit cancellation support for
+<code>aedis::connection::async_exec</code>. The following call will <code>co_await (conn.async_exec(&#8230;&#8203;) || timer.async_wait(&#8230;&#8203;))</code>
+will cancel the request as long as it has not been written.</p>
+</li>
+<li>
+<p>Changes <code>aedis::connection::async_run</code> completion signature to
+<code>f(error_code)</code>. This is how is was in the past, the second
+parameter was not helpful.</p>
+</li>
+<li>
+<p>Renames <code>operation::receive_push</code> to <code>aedis::operation::receive</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v1_1_0_1"><a class="anchor" href="#_v1_1_0_1"></a>v1.1.0-1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Removes <code>coalesce_requests</code> from the <code>aedis::connection::config</code>, it
+became a request property now, see <code>aedis::request::config::coalesce</code>.</p>
+</li>
+<li>
+<p>Removes <code>max_read_size</code> from the <code>aedis::connection::config</code>. The maximum
+read size can be specified now as a parameter of the
+<code>aedis::adapt()</code> function.</p>
+</li>
+<li>
+<p>Removes <code>aedis::sync</code> class, see intro_sync.cpp for how to perform
+synchronous and thread safe calls. This is possible in Boost. 1.80
+only as it requires <code>boost::asio::deferred</code>.</p>
+</li>
+<li>
+<p>Moves from <code>boost::optional</code> to <code>std::optional</code>. This is part of
+moving to C++17.</p>
+</li>
+<li>
+<p>Changes the behaviour of the second <code>aedis::connection::async_run</code> overload
+so that it always returns an error when the connection is lost.</p>
+</li>
+<li>
+<p>Adds TLS support, see intro_tls.cpp.</p>
+</li>
+<li>
+<p>Adds an example that shows how to resolve addresses over sentinels,
+see subscriber_sentinel.cpp.</p>
+</li>
+<li>
+<p>Adds a <code>aedis::connection::timeouts::resp3_handshake_timeout</code>. This is
+timeout used to send the <code>HELLO</code> command.</p>
+</li>
+<li>
+<p>Adds <code>aedis::endpoint</code> where in addition to host and port, users can
+optionally provide username, password and the expected server role
+(see <code>aedis::error::unexpected_server_role</code>).</p>
+</li>
+<li>
+<p><code>aedis::connection::async_run</code> checks whether the server role received in
+the hello command is equal to the expected server role specified in
+<code>aedis::endpoint</code>. To skip this check let the role variable empty.</p>
+</li>
+<li>
+<p>Removes reconnect functionality from <code>aedis::connection</code>. It
+is possible in simple reconnection strategies but bloats the class
+in more complex scenarios, for example, with sentinel,
+authentication and TLS. This is trivial to implement in a separate
+coroutine. As a result the <code>enum event</code> and <code>async_receive_event</code>
+have been removed from the class too.</p>
+</li>
+<li>
+<p>Fixes a bug in <code>connection::async_receive_push</code> that prevented
+passing any response adapter other that <code>adapt(std::vector&lt;node&gt;)</code>.</p>
+</li>
+<li>
+<p>Changes the behaviour of <code>aedis::adapt()</code> that caused RESP3 errors
+to be ignored. One consequence of it is that <code>connection::async_run</code>
+would not exit with failure in servers that required authentication.</p>
+</li>
+<li>
+<p>Changes the behaviour of <code>connection::async_run</code> that would cause it
+to complete with success when an error in the
+<code>connection::async_exec</code> occurred.</p>
+</li>
+<li>
+<p>Ports the buildsystem from autotools to CMake.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v1_0_0"><a class="anchor" href="#_v1_0_0"></a>v1.0.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds experimental cmake support for windows users.</p>
+</li>
+<li>
+<p>Adds new class <code>aedis::sync</code> that wraps an <code>aedis::connection</code> in
+a thread-safe and synchronous API.  All free functions from the
+<code>sync.hpp</code> are now member functions of <code>aedis::sync</code>.</p>
+</li>
+<li>
+<p>Split <code>aedis::connection::async_receive_event</code> in two functions, one
+to receive events and another for server side pushes, see
+<code>aedis::connection::async_receive_push</code>.</p>
+</li>
+<li>
+<p>Removes collision between <code>aedis::adapter::adapt</code> and
+<code>aedis::adapt</code>.</p>
+</li>
+<li>
+<p>Adds <code>connection::operation</code> enum to replace <code>cancel_*</code> member
+functions with a single cancel function that gets the operations
+that should be cancelled as argument.</p>
+</li>
+<li>
+<p>Bugfix: a bug on reconnect from a state where the <code>connection</code> object
+had unsent commands. It could cause <code>async_exec</code> to never
+complete under certain conditions.</p>
+</li>
+<li>
+<p>Bugfix: Documentation of <code>adapt()</code> functions were missing from
+Doxygen.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v0_3_0"><a class="anchor" href="#_v0_3_0"></a>v0.3.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds <code>experimental::exec</code> and <code>receive_event</code> functions to offer a
+thread safe and synchronous way of executing requests across
+threads. See <code>intro_sync.cpp</code> and <code>subscriber_sync.cpp</code> for
+examples.</p>
+</li>
+<li>
+<p><code>connection::async_read_push</code> was renamed to <code>async_receive_event</code>.</p>
+</li>
+<li>
+<p><code>connection::async_receive_event</code> is now being used to communicate
+internal events to the user, such as resolve, connect, push etc. For
+examples see cpp20_subscriber.cpp and <code>connection::event</code>.</p>
+</li>
+<li>
+<p>The <code>aedis</code> directory has been moved to <code>include</code> to look more
+similar to Boost libraries. Users should now replace <code>-I/aedis-path</code>
+with <code>-I/aedis-path/include</code> in the compiler flags.</p>
+</li>
+<li>
+<p>The <code>AUTH</code> and <code>HELLO</code> commands are now sent automatically. This change was
+necessary to implement reconnection. The username and password
+used in <code>AUTH</code> should be provided by the user on
+<code>connection::config</code>.</p>
+</li>
+<li>
+<p>Adds support for reconnection. See <code>connection::enable_reconnect</code>.</p>
+</li>
+<li>
+<p>Fixes a bug in the <code>connection::async_run(host, port)</code> overload
+that was causing crashes on reconnection.</p>
+</li>
+<li>
+<p>Fixes the executor usage in the connection class. Before these
+changes it was imposing <code>any_io_executor</code> on users.</p>
+</li>
+<li>
+<p><code>connection::async_receiver_event</code> is not cancelled anymore when
+<code>connection::async_run</code> exits. This change makes user code simpler.</p>
+</li>
+<li>
+<p><code>connection::async_exec</code> with host and port overload has been
+removed. Use the other <code>connection::async_run</code> overload.</p>
+</li>
+<li>
+<p>The host and port parameters from <code>connection::async_run</code> have been
+move to <code>connection::config</code> to better support authentication and
+failover.</p>
+</li>
+<li>
+<p>Many simplifications in the <code>chat_room</code> example.</p>
+</li>
+<li>
+<p>Fixes build in clang the compilers and makes some improvements in
+the documentation.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v0_2_0_1"><a class="anchor" href="#_v0_2_0_1"></a>v0.2.0-1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Fixes a bug that happens on very high load. (v0.2.1)</p>
+</li>
+<li>
+<p>Major rewrite of the high-level API. There is no more need to use the low-level API anymore.</p>
+</li>
+<li>
+<p>No more callbacks: Sending requests follows the ASIO asynchronous model.</p>
+</li>
+<li>
+<p>Support for reconnection: Pending requests are not canceled when a connection is lost and are re-sent when a new one is established.</p>
+</li>
+<li>
+<p>The library is not sending HELLO-3 on user behalf anymore. This is important to support AUTH properly.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v0_1_0_2"><a class="anchor" href="#_v0_1_0_2"></a>v0.1.0-2</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds reconnect coroutine in the <code>echo_server</code> example. (v0.1.2)</p>
+</li>
+<li>
+<p>Corrects <code>client::async_wait_for_data</code> with <code>make_parallel_group</code> to launch operation. (v0.1.2)</p>
+</li>
+<li>
+<p>Improvements in the documentation. (v0.1.2)</p>
+</li>
+<li>
+<p>Avoids dynamic memory allocation in the client class after reconnection. (v0.1.2)</p>
+</li>
+<li>
+<p>Improves the documentation and adds some features to the high-level client. (v.0.1.1)</p>
+</li>
+<li>
+<p>Improvements in the design and documentation.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v0_0_1"><a class="anchor" href="#_v0_0_1"></a>v0.0.1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>First release to collect design feedback.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="prev"><a href="acknowledgements.html">Acknowledgements</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Questions &amp; Answers, tips :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/questions-answers-tips.html">
+    <link rel="prev" href="performance-compilers.html">
+    <link rel="next" href="internals.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="index.html">Table of Contents</a></li>
+    <li><a href="questions-answers-tips.html">Questions &amp; Answers, tips</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="performance-compilers.html">
+      <span class="material-symbols-outlined" title="Previous: Performance / Compilers">arrow_back</span>
+    </a>
+    <a accesskey="u" href="index.html">
+      <span class="material-symbols-outlined" title="Up: Table of Contents">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="internals.html">
+      <span class="material-symbols-outlined" title="Next: Internals">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Questions &amp; Answers, tips</h1>
+  <div class="paragraph">
+<p><em>Where should I define a state machine?</em>: The tutorials are implemented
+in a simple cpp source file for simplicity. I want to model dynamic
+behavior of a class as a state machine, how should I define the state
+machine?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: Usually you&#8217;ll want to implement the state machine as an
+attribute of the class. Unfortunately, a concrete state machine is a
+typedef, which cannot be forward-declared. This leaves you with two
+possibilities:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide the state machine definition inside the header class and
+contain an instance as attribute. Simple, but with several drawbacks:
+using namespace directives are not advised, and compile-time cost for
+all modules including the header.</p>
+</li>
+<li>
+<p>Keep the state machine as (shared) pointer to void inside the
+<a href="_attachments/FsmAsPtr.hpp" class="xref attachment">class definition</a>, and implement the state
+machine in the <a href="_attachments/FsmAsPtr.cpp" class="xref attachment">cpp file</a>. Minimum
+compile-time, using directives are okay, but the state machine is now
+located inside the heap.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: on_entry gets as argument the sent event. What event do I
+get when the state becomes default-activated (because it is an initial
+state)?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: To allow you to know that the state was default-activated, MSM
+generates a boost::msm::InitEvent default event.</p>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: Why do I see no call to no_transition in my submachine?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: Because of the priority rule defined by UML. It says that in
+case of transition conflict, the most inner state has a higher priority.
+So after asking the inner state, the containing composite has to be also
+asked to handle the transition and could find a possible transition.</p>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: Why do I get a compile error saying the compiler cannot
+convert to a function &#8230;&#8203;Fsm::*(some_event)?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: You probably defined a transition triggered by the event
+some_event, but used a guard/action method taking another event.</p>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: Why do I get a compile error saying something like <code>too
+few'' or </code>too many'' template arguments?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: You probably defined a transition in form of an a_row or g_row
+where you wanted just a _row or the other way around. With Row, it could
+mean that you forgot a "none".</p>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: Why do I get a very long compile error when I define more
+than 20 rows in the transition table?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: MSM uses Boost.MPL under the hood and this is the default
+maximum size. Please define the following 3 macros before including any
+MSM headers:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>#define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
+#define BOOST_MPL_LIMIT_VECTOR_SIZE 30 // or whatever you need
+#define BOOST_MPL_LIMIT_MAP_SIZE 30 // or whatever you need</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: Why do I get this error: ``error C2977: 'boost::mpl::vector'
+: too many template arguments''?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: The first possibility is that you defined a transition table
+as, say, vector17 and have 18 entries. The second is that you have 17
+entries and have a composite state. Under the hood, MSM adds a row for
+every event in the composite transition table. The third one is that you
+used a mpl::vector without the number of entries but are close to the
+MPL default of 50 and have a composite, thus pushing you above 50. Then
+you need mpl/vector60/70….hpp and a mpl/map60/70….hpp.</p>
+</div>
+<div class="paragraph">
+<p><em>Question</em>: Why do I get a very long compile error when I define more
+than 10 states in a state machine?</p>
+</div>
+<div class="paragraph">
+<p><em>Answer</em>: MSM uses Boost.Fusion under the hood and this is the default
+maximum size. Please define the following macro before including any MSM
+headers:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>#define FUSION_MAX_VECTOR_SIZE 20 // or whatever you need</pre>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/questions-answers-tips.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="performance-compilers.html">Performance / Compilers</a></span>
+        <span class="next"><a href="internals.html">Internals</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

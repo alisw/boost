@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/multiple_dispatch.html">
+    <link rel="prev" href="friends.html">
+    <link rel="next" href="core_api.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Basic Features</li>
+    <li><a href="multiple_dispatch.html">Multiple Dispatch</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="friends.html">
+      <span class="material-symbols-outlined" title="Previous: Friends">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="core_api.html">
+      <span class="material-symbols-outlined" title="Next: Core API">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="multiple_dispatch" class="paragraph">
+<p>A method can have more than one virtual parameter. This is often called
+"multi-method" or "multiple dispatch". All the virtual parameters participate
+equally in overrider selection, following the same rules as those governing
+overload resolution - except that the selection happens at runtime, and takes
+into account the arguments dynamic types.</p>
+</div>
+<div class="paragraph">
+<p>Multiple dispatch is occasionally useful. When it is needed, it can be difficult
+to implement correctly and efficiently by hand. For example, given the following
+classes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">struct Role {
+    virtual ~Role() = default;
+};
+
+struct Employee : Role {};
+struct Salesman : Employee {};
+struct Manager : Employee {};
+struct Founder : Role {};
+
+struct Expense {
+    virtual ~Expense() {
+    }
+};
+
+struct Public : Expense {};
+struct Bus : Public {};
+struct Metro : Public {};
+struct Taxi : Expense {};
+struct PrivateJet : Expense {};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We want to implement a function - <code>approve</code> - that determines who can make what
+kind of expenses. The rules are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>By default, an expense is rejected.</p>
+</li>
+<li>
+<p>Employees can take any public transportation.</p>
+</li>
+<li>
+<p>Managers can also take a taxi, for a ride cost up to $100.</p>
+</li>
+<li>
+<p>Founders can take any transportation, including a private jet.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is a case of multiple dispatch: the outcome depends on two parameters. It
+can be implemented as a method with two virtual arguments. The four rules can be
+expressed as four overriders:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">using boost::openmethod::virtual_ptr;
+
+BOOST_OPENMETHOD(
+    approve, (virtual_ptr&lt;const Role&gt;, virtual_ptr&lt;const Expense&gt;, double),
+    bool);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    approve, (virtual_ptr&lt;const Role&gt;, virtual_ptr&lt;const Expense&gt;, double),
+    bool) {
+    return false;
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    approve, (virtual_ptr&lt;const Employee&gt;, virtual_ptr&lt;const Public&gt;, double),
+    bool) {
+    return true;
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    approve,
+    (virtual_ptr&lt;const Manager&gt;, virtual_ptr&lt;const Taxi&gt;, double amount),
+    bool) {
+    return amount &lt; 100.0;
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    approve, (virtual_ptr&lt;const Founder&gt;, virtual_ptr&lt;const Expense&gt;, double),
+    bool) {
+    return true;
+}
+
+int main() {
+    boost::openmethod::initialize();
+
+    Founder bill;
+    Employee bob;
+    Manager alice;
+
+    Bus bus;
+    Taxi taxi;
+    PrivateJet jet;
+
+    std::cout &lt;&lt; std::boolalpha;
+    std::cout &lt;&lt; approve(bill, bus, 4.0) &lt;&lt; "\n";        // true
+    std::cout &lt;&lt; approve(bob, bus, 4.0) &lt;&lt; "\n";         // true
+    std::cout &lt;&lt; approve(bob, taxi, 36.0) &lt;&lt; "\n";       // false
+    std::cout &lt;&lt; approve(alice, taxi, 36.0) &lt;&lt; "\n";     // true
+    std::cout &lt;&lt; approve(alice, taxi, 2000.0) &lt;&lt; "\n";   // false
+    std::cout &lt;&lt; approve(bill, jet, 120'000.0) &lt;&lt; "\n";  // true
+    std::cout &lt;&lt; approve(bob, jet, 120'000.0) &lt;&lt; "\n";   // false
+    std::cout &lt;&lt; approve(alice, jet, 120'000.0) &lt;&lt; "\n"; // false
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because <code>approve</code> understands inheritance, we don&#8217;t have to specify an overrider
+for every combination (5 role classes x 6 expense classes = 30 combinations).</p>
+</div>
+<div class="sect2">
+<h3 id="_ambiguities"><a class="anchor" href="#_ambiguities"></a>Ambiguities</h3>
+<div class="paragraph">
+<p>Just like with overload resolution, ambiguities can arise. Let&#8217;s look at another
+example - matrix addition:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+#include &lt;iostream&gt;
+
+struct Matrix { virtual ~Matrix() = default; };
+struct DenseMatrix : Matrix {};
+struct SparseMatrix : Matrix {};
+
+BOOST_OPENMETHOD_CLASSES(Matrix, DenseMatrix, SparseMatrix);
+
+using boost::openmethod::virtual_ptr;
+
+BOOST_OPENMETHOD(
+    add, (virtual_ptr&lt;const Matrix&gt;, virtual_ptr&lt;const Matrix&gt;), void);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    add, (virtual_ptr&lt;const Matrix&gt;, virtual_ptr&lt;const SparseMatrix&gt;), void) {
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    add, (virtual_ptr&lt;const SparseMatrix&gt;, virtual_ptr&lt;const Matrix&gt;), void) {
+}
+
+int main() {
+    boost::openmethod::initialize();
+
+    SparseMatrix a, b;
+    add(a, b);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The programs terminates with the following error message:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">ambiguous
+Aborted (core dumped)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is because the call to <code>add(a, b)</code> is ambiguous: both overriders are equally
+good matches. The solution is to add an overrider for the case where both
+arguments are <code>SparseMatrix</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">BOOST_OPENMETHOD_OVERRIDE(
+    add, (virtual_ptr&lt;const SparseMatrix&gt;, virtual_ptr&lt;const SparseMatrix&gt;), void) {
+}</code></pre>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/multiple_dispatch.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="friends.html">Friends</a></span>
+        <span class="next"><a href="core_api.html">Core API</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

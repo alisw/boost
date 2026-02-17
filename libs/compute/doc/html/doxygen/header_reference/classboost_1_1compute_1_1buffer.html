@@ -1,0 +1,127 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Class buffer</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter 1. Boost.Compute">
+<link rel="up" href="../../boost_compute/reference.html#doxygen.header_reference.buffer_8hpp" title="Header &lt;boost/compute/buffer.hpp&gt;">
+<link rel="prev" href="classboost_1_1compute_1_1wait__guard.html" title="Class template wait_guard">
+<link rel="next" href="closure_8hpp_1acba2537465bd13ba411a5c525941634d.html" title="Macro BOOST_COMPUTE_CLOSURE">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="classboost_1_1compute_1_1wait__guard.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.buffer_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="closure_8hpp_1acba2537465bd13ba411a5c525941634d.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="doxygen.header_reference.classboost_1_1compute_1_1buffer"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class buffer</span></h2>
+<p>boost::compute::buffer — A memory buffer on a compute device. </p>
+</div>
+<h2 class="refsynopsisdiv-title">Synopsis</h2>
+<div class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_compute/reference.html#doxygen.header_reference.buffer_8hpp" title="Header &lt;boost/compute/buffer.hpp&gt;">boost/compute/buffer.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">memory_object</span> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+
+  <span class="comment">// <a class="link" href="classboost_1_1compute_1_1buffer.html#id6-bb">public member functions</a></span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a00737b2bdc8e28fe6697933f6fc3eba8"><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a0d1747a34bf8c61423349300338ad808"><span class="identifier">buffer</span></a><span class="special">(</span><span class="identifier">cl_mem</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a8ebcbc85b43675cf69866a2c3e483a9e"><span class="identifier">buffer</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">cl_mem_flags</span> <span class="special">=</span> <span class="identifier">read_write</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1aa0799aaf34a8b5341b808cebaa0d4b43"><span class="identifier">buffer</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a1280f969afcf5b6676a0aeca305ff2d1"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a6eba0c71c24b030ee95c94cd98a5d9bc"><span class="identifier">buffer</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a74c701264ea5c35d95b227305cfbe7cc"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a8f1cbdbe8b59e1a554ee232770ce8011"><span class="special">~</span><span class="identifier">buffer</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1ab7d5f756e34b291f8893bb95a1ba3381"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a46f46b5662c66a0192bec8e9dc37d731"><span class="identifier">get_info</span></a><span class="special">(</span><span class="identifier">cl_mem_info</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> Enum<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a148412b2ac583f4af69ca3140f7b8395"><span class="identifier">get_info</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1ac2aa43949315d53ef5851632ef0bba5e"><span class="identifier">clone</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a11501120b23d0e6fda2794cd7ed0f20b"><span class="identifier">create_subbuffer</span></a><span class="special">(</span><span class="identifier">cl_mem_flags</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id15510"></a><h2>Description</h2>
+<p>The buffer class represents a memory buffer on a compute device.</p>
+<p>Buffers are allocated within a compute context. For example, to allocate a memory buffer for 32 float's:</p>
+<pre class="programlisting"></pre>
+<p>Once created, data can be copied to and from the buffer using the <code class="computeroutput">enqueue_*_buffer</code>() methods in the <a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> class. For example, to copy a set of <code class="computeroutput">int</code> values from the host to the device: </p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">data</span><span class="special">[</span><span class="special">]</span> <span class="special">=</span> <span class="special">{</span> <span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">4</span> <span class="special">}</span><span class="special">;</span>
+
+<span class="identifier">queue</span><span class="special">.</span><span class="identifier">enqueue_write_buffer</span><span class="special">(</span><span class="identifier">buf</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">4</span> <span class="special">*</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">int</span><span class="special">)</span><span class="special">,</span> <span class="identifier">data</span><span class="special">)</span><span class="special">;</span>
+</pre>
+<p>Also see the copy() algorithm for a higher-level interface to copying data between the host and the device. For a higher-level, dynamically-resizable, type-safe container for data on a compute device, use the <a class="link" href="classboost_1_1compute_1_1vector.html" title="Class template vector">vector&lt;T&gt;</a> class.</p>
+<p>Buffer objects have reference semantics. Creating a copy of a buffer object simply creates another reference to the underlying OpenCL memory object. To create an actual copy use the <a class="link" href="classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1ac2aa43949315d53ef5851632ef0bba5e">buffer::clone()</a> method.</p>
+<p><b>See Also: </b><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a>, <a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> </p>
+<p>
+</p>
+<div class="refsect2">
+<a name="id15564"></a><h3>
+<a name="id6-bb"></a><code class="computeroutput">buffer</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a00737b2bdc8e28fe6697933f6fc3eba8"></a><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Creates a null buffer object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a0d1747a34bf8c61423349300338ad808"></a><span class="identifier">buffer</span><span class="special">(</span><span class="identifier">cl_mem</span> mem<span class="special">,</span> <span class="keyword">bool</span> retain <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Creates a buffer object for <code class="computeroutput">mem</code>. If <code class="computeroutput">retain</code> is <code class="computeroutput">true</code>, the reference count for <code class="computeroutput">mem</code> will be incremented. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a8ebcbc85b43675cf69866a2c3e483a9e"></a><span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> context<span class="special">,</span> <span class="identifier">size_t</span> size<span class="special">,</span> <span class="identifier">cl_mem_flags</span> flags <span class="special">=</span> <span class="identifier">read_write</span><span class="special">,</span> 
+       <span class="keyword">void</span> <span class="special">*</span> host_ptr <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Create a new memory buffer in of <code class="computeroutput">size</code> with <code class="computeroutput">flags</code> in <code class="computeroutput">context</code>.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1aa0799aaf34a8b5341b808cebaa0d4b43"></a><span class="identifier">buffer</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Creates a new buffer object as a copy of <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a1280f969afcf5b6676a0aeca305ff2d1"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Copies the buffer object from <code class="computeroutput">other</code> to <code class="computeroutput">*this</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a6eba0c71c24b030ee95c94cd98a5d9bc"></a><span class="identifier">buffer</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-constructs a new buffer object from <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a74c701264ea5c35d95b227305cfbe7cc"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-assigns the buffer from <code class="computeroutput">other</code> to <code class="computeroutput">*this</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a8f1cbdbe8b59e1a554ee232770ce8011"></a><span class="special">~</span><span class="identifier">buffer</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Destroys the buffer object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_t</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1ab7d5f756e34b291f8893bb95a1ba3381"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the size of the buffer in bytes. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a46f46b5662c66a0192bec8e9dc37d731"></a><span class="identifier">get_info</span><span class="special">(</span><span class="identifier">cl_mem_info</span> info<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns information about the buffer.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> Enum<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a148412b2ac583f4af69ca3140f7b8395"></a><span class="identifier">get_info</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1ac2aa43949315d53ef5851632ef0bba5e"></a><span class="identifier">clone</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> <span class="special">&amp;</span> queue<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Creates a new buffer with a copy of the data in <code class="computeroutput">*this</code>. Uses <code class="computeroutput">queue</code> to perform the copy. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a> <a name="doxygen.header_reference.classboost_1_1compute_1_1buffer_1a11501120b23d0e6fda2794cd7ed0f20b"></a><span class="identifier">create_subbuffer</span><span class="special">(</span><span class="identifier">cl_mem_flags</span> flags<span class="special">,</span> <span class="identifier">size_t</span> origin<span class="special">,</span> <span class="identifier">size_t</span> size<span class="special">)</span><span class="special">;</span></pre>
+<p>Creates a new buffer out of this buffer. The new buffer is a sub region of this buffer. <code class="computeroutput">flags</code> The <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2">mem_flags</a> which should be used to create the new buffer <code class="computeroutput">origin</code> The start index in this buffer <code class="computeroutput">size</code> The size of the new sub buffer</p>
+<p>See the documentation for </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="copyright-footer">Copyright © 2013, 2014 Kyle Lutz<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="classboost_1_1compute_1_1wait__guard.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.buffer_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="closure_8hpp_1acba2537465bd13ba411a5c525941634d.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

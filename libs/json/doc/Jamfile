@@ -1,0 +1,131 @@
+#
+# Copyright (c) 2019 Vinnie Falco (vinnie.falco@gmail.com)
+# Copyright (c) 2021 Dmitry Arkhipov (grisumbras@gmail.com)
+#
+# Distributed under the Boost Software License, Version 1.0. (See accompanying
+# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+# Official repository: https://github.com/boostorg/json
+#
+
+project json/doc
+  : default-build
+    <warnings-as-errors>on
+  ;
+
+import-search /boost/docca ;
+using asciidoctor ;
+
+import common ;
+import docca ;
+import feature ;
+import path ;
+import property-set ;
+
+if ! ( htmldir in [ feature.values asciidoctor-backend ] )
+{
+    feature.extend asciidoctor-backend : htmldir ;
+}
+
+local here-dir = [ path.root $(__file__:D) [ path.pwd ] ] ;
+local include-prefix = [ path.native $(here-dir:D)/include ] ;
+docca.pyreference entities.adoc
+    : [ glob-tree-ex ../include/boost/json : *.hpp *.ipp : detail impl ]
+      externals.hpp
+    : <doxygen:param>ALIASES="esafe=\"@par Exception Safety\""
+      <doxygen:param>DISTRIBUTE_GROUP_DOC=YES
+      <doxygen:param>MACRO_EXPANSION=YES
+      <doxygen:param>EXPAND_ONLY_PREDEF=YES
+      <doxygen:param>"PREDEFINED=\\
+          BOOST_FORCEINLINE \\
+          BOOST_JSON_DECL \\
+          BOOST_JSON_DOCS \\
+          BOOST_SYMBOL_VISIBLE \\
+          \"BOOST_JSON_INLINE_VARIABLE(v, t)=constexpr t v;\""
+      <doxygen:param>ABBREVIATE_BRIEF=
+      <doxygen:param>INLINE_INHERITED_MEMB=YES
+      <doxygen:param>JAVADOC_AUTOBRIEF=YES
+      <doxygen:param>AUTOLINK_SUPPORT=NO
+      <doxygen:param>EXTRACT_ALL=YES
+      <doxygen:param>EXTRACT_LOCAL_CLASSES=NO
+      <doxygen:param>STRIP_FROM_PATH=$(include-prefix)
+
+      <docca:template>reference.adoc.jinja2
+      <docca:config>config.json
+    ;
+
+generate with-path : entities.adoc : <generating-rule>@with-path ;
+
+install images
+    : [ glob images/*.png ]
+    : <location>html/images
+    ;
+explicit images ;
+
+#-------------------------------------------------------------------------------
+#
+# HTML documentation for $(BOOST_ROOT)/doc/html
+#
+#-------------------------------------------------------------------------------
+
+local backend-module = [ path.root htmldir.rb $(here-dir) ] ;
+html index
+    : pages/main.adoc
+    : <location>html
+      <dependency>images
+      <dependency>with-path
+
+      <use>/boost/boostlook//boostlook
+
+      <asciidoctor-attribute>nofooter
+      <asciidoctor-attribute>nofootnotes
+      <asciidoctor-attribute>pagelevels=2
+      <asciidoctor-attribute>icons=font
+      <asciidoctor-attribute>project-dir=$(here-dir:D)
+      <asciidoctor-attribute>"project-gh=https://github.com/boostorg/json/edit/develop"
+
+      <asciidoctor-attribute>docinfo=shared-head
+      <dependency>pages/docinfo.html
+
+      <asciidoctor-backend>htmldir
+      <dependency>htmldir.rb
+      <flags>"-r $(backend-module)"
+
+      <asciidoctor-attribute>attribute-missing=warn
+      <flags>-v
+      <flags>--trace
+      <warnings>all:<flags>-w
+      <warnings>extra:<flags>-w
+      <warnings>pedantic:<flags>-w
+      <warnings-as-errors>on:<flags>--failure-level=WARN
+    ;
+
+#-------------------------------------------------------------------------------
+#
+# These are used to inform the build system of the
+# means to build the integrated and stand-alone docs.
+#
+
+alias boostdoc ;
+explicit boostdoc ;
+
+alias boostrelease : index ;
+explicit boostrelease ;
+
+
+#-------------------------------------------------------------------------------
+#
+# helpers
+#
+
+rule with-path ( project name : ps : src )
+{
+    local pwd = [ path.pwd ] ;
+    local here = [ path.root $(__file__:D) $(pwd) ] ;
+
+    local path = [ path.root [ $(src).name ] [ $(src).path ] ] ;
+    path = [ path.root $(path) $(pwd) ] ;
+    path = [ path.relative-to $(here)/pages $(path) ] ;
+    return [ $(ps).add-raw <asciidoctor-attribute>entities-file=$(path) ]
+        $(src) ;
+}

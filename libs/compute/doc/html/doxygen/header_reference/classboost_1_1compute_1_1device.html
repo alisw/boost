@@ -1,0 +1,265 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Class device</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter 1. Boost.Compute">
+<link rel="up" href="../../boost_compute/reference.html#doxygen.header_reference.device_8hpp" title="Header &lt;boost/compute/device.hpp&gt;">
+<link rel="prev" href="interop_2opengl_2context_8hpp_1ac21e2deb8b3dbac5ab375e6beb279666.html" title="Function opengl_create_shared_context">
+<link rel="next" href="classboost_1_1compute_1_1event.html" title="Class event">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="interop_2opengl_2context_8hpp_1ac21e2deb8b3dbac5ab375e6beb279666.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.device_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="classboost_1_1compute_1_1event.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="doxygen.header_reference.classboost_1_1compute_1_1device"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class device</span></h2>
+<p>boost::compute::device — A compute device. </p>
+</div>
+<h2 class="refsynopsisdiv-title">Synopsis</h2>
+<div class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_compute/reference.html#doxygen.header_reference.device_8hpp" title="Header &lt;boost/compute/device.hpp&gt;">boost/compute/device.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+
+  <span class="keyword">enum</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ac1c5e08348d4d2259aa1f48b2a1e9019"></a>type <span class="special">{</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ac1c5e08348d4d2259aa1f48b2a1e9019a9130b5fee16723c0f5084d690cdb84b0"></a>cpu = CL_DEVICE_TYPE_CPU, <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ac1c5e08348d4d2259aa1f48b2a1e9019ae96afc80254e8b9516d816189fc84ade"></a>gpu = CL_DEVICE_TYPE_GPU, 
+              <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ac1c5e08348d4d2259aa1f48b2a1e9019a5f6753545911cf92b4b03c6e5b7b856a"></a>accelerator = CL_DEVICE_TYPE_ACCELERATOR <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="classboost_1_1compute_1_1device.html#id20-bb">public member functions</a></span>
+  <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a34572cfd879d0c81f7673501b889ed2e"><span class="identifier">device</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a173821ef7c558ed6ca08c3d033d9cf65"><span class="identifier">device</span></a><span class="special">(</span><span class="identifier">cl_device_id</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1adf843eea9f2ac4fe3517c1af5570c6dc"><span class="identifier">device</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a94bc47b220d00a37fecaeb0a1cd2fbd7"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1abe175aceac41bd108da00bfc6628e70c"><span class="identifier">device</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a01a5bf59bbbd4dc35adc8810785e81c6"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1aac6d39c2cf4ff5b85fcd90eddd753b17"><span class="special">~</span><span class="identifier">device</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">cl_device_id</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1abb609ffb4f81817bf6d31c0d6246b16e"><span class="identifier">id</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">cl_device_id</span> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a50cb4b3368aa9eb6dc214c28edd9e593"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">cl_device_type</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1afe95b17062e1b75864e927a236256a93"><span class="identifier">type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1platform.html" title="Class platform">platform</a> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a72a48bece3d0b07fe3421b180776b6f4"><span class="identifier">platform</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ab7dd5769bc63986ea4bfe6ebd1b69295"><span class="identifier">name</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a251acb1fb5d1ab410d38adbc8d560335"><span class="identifier">vendor</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1acb3b439b7de7c763f8b7939564b55108"><span class="identifier">profile</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a70842354350dc78e4e4e4dc96fd7d9b4"><span class="identifier">version</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ac9ee6fa830bef0db4afba568ae0f68f4"><span class="identifier">driver_version</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&gt;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ad7348a98923548f4b46a7629716825f6"><span class="identifier">extensions</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a3f1c59c950024588ff7910469426c064"><span class="identifier">supports_extension</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ac749b51d9985902130a84fcc51ae8ca0"><span class="identifier">address_bits</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">ulong_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1afe670637f21b2e7f767bd1800eafe3d6"><span class="identifier">global_memory_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">ulong_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ab48e4b0d017d3c411876b6a3998bc0c3"><span class="identifier">local_memory_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a7701fabe331790ac4f607fd0fcb01195"><span class="identifier">clock_frequency</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1aa6da5b3c3e77d74df28843697126fc9e"><span class="identifier">compute_units</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">uint_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a4cb27288c00759182bfcb5f453d16b86"><span class="identifier">preferred_vector_width</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1aa12b295f735dafc1ae6dc2800d27c99c"><span class="identifier">profiling_timer_resolution</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a17b0fee6d9495b005efa757fbf69dbd7"><span class="identifier">is_subdevice</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1adf511861f68dc3b189c720e8efc0734e"><span class="identifier">get_info</span></a><span class="special">(</span><span class="identifier">cl_device_info</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> Enum<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ab88bf591a18cbf5159695b4f3bbf79a8"><span class="identifier">get_info</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a095c9be3cfbc8082c4918574f1b4a1c5"><span class="identifier">partition</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">cl_device_partition_property</span> <span class="special">*</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a8e32970b0ace1d16b559d0f2e6a91a03"><span class="identifier">partition_equally</span></a><span class="special">(</span><span class="identifier">size_t</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> 
+  <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a21dbbd6c63d555cfca068a71c0552614"><span class="identifier">partition_by_counts</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">size_t</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> 
+  <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a5052ba2975a49bc0aa4dd19715dc6eb9"><span class="identifier">partition_by_affinity_domain</span></a><span class="special">(</span><span class="identifier">cl_device_affinity_domain</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">ulong_</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a588dd69953b0401b0f765ac7cd53ad0e"><span class="identifier">get_host_timer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">ulong_</span><span class="special">,</span> <span class="identifier">ulong_</span> <span class="special">&gt;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a3a50a7dfd946dcec8e4e91fe9dba95b6"><span class="identifier">get_device_and_host_timer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Duration<span class="special">&gt;</span> <span class="identifier">Duration</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a2c0b782c3410aa2ec3b22af87bb67444"><span class="identifier">get_host_timer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Duration<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">Duration</span><span class="special">,</span> <span class="identifier">Duration</span> <span class="special">&gt;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a06c0c000a5263eeb2c11bba97c50787a"><span class="identifier">get_device_and_host_timer</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ad324ba446ca91959140d5b5b2e9753d4"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1ab1a49a01c0424b6a651e5e3dd8d87cc6"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1aa32cc89bf130ae29b0a8737c2183df4c"><span class="identifier">check_version</span></a><span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">int</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id30235"></a><h2>Description</h2>
+<p>Typical compute devices include GPUs and multi-core CPUs. A list of all compute devices available on a platform can be obtained via the <a class="link" href="classboost_1_1compute_1_1platform.html#doxygen.header_reference.classboost_1_1compute_1_1platform_1aeaeb2bea6b659fc507f1b087734c1553">platform::devices()</a> method.</p>
+<p>The default compute device for the system can be obtained with the <a class="link" href="classboost_1_1compute_1_1system.html#doxygen.header_reference.classboost_1_1compute_1_1system_1a7e1531ff30d091e9127eaa6d96cbb3b7">system::default_device()</a> method. For example:</p>
+<pre class="programlisting"></pre>
+<p><b>See Also: </b><a class="link" href="classboost_1_1compute_1_1platform.html" title="Class platform">platform</a>, <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a>, <a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> </p>
+<p>
+</p>
+<div class="refsect2">
+<a name="id30250"></a><h3>
+<a name="id20-bb"></a><code class="computeroutput">device</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a34572cfd879d0c81f7673501b889ed2e"></a><span class="identifier">device</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Creates a null device object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a173821ef7c558ed6ca08c3d033d9cf65"></a><span class="identifier">device</span><span class="special">(</span><span class="identifier">cl_device_id</span> id<span class="special">,</span> <span class="keyword">bool</span> retain <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Creates a new device object for <code class="computeroutput">id</code>. If <code class="computeroutput">retain</code> is <code class="computeroutput">true</code>, the reference count for the device will be incremented. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1device_1adf843eea9f2ac4fe3517c1af5570c6dc"></a><span class="identifier">device</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Creates a new device object as a copy of <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a94bc47b220d00a37fecaeb0a1cd2fbd7"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Copies the device from <code class="computeroutput">other</code> to <code class="computeroutput">*this</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1device_1abe175aceac41bd108da00bfc6628e70c"></a><span class="identifier">device</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-constructs a new device object from <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a01a5bf59bbbd4dc35adc8810785e81c6"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-assigns the device from <code class="computeroutput">other</code> to <code class="computeroutput">*this</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1device_1aac6d39c2cf4ff5b85fcd90eddd753b17"></a><span class="special">~</span><span class="identifier">device</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Destroys the device object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_device_id</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1abb609ffb4f81817bf6d31c0d6246b16e"></a><span class="identifier">id</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the ID of the device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_device_id</span> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a50cb4b3368aa9eb6dc214c28edd9e593"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a reference to the underlying OpenCL device id. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_device_type</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1afe95b17062e1b75864e927a236256a93"></a><span class="identifier">type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the type of the device. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1platform.html" title="Class platform">platform</a> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a72a48bece3d0b07fe3421b180776b6f4"></a><span class="identifier">platform</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the platform for the device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ab7dd5769bc63986ea4bfe6ebd1b69295"></a><span class="identifier">name</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the name of the device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a251acb1fb5d1ab410d38adbc8d560335"></a><span class="identifier">vendor</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the name of the vendor for the device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1acb3b439b7de7c763f8b7939564b55108"></a><span class="identifier">profile</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the device profile string. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a70842354350dc78e4e4e4dc96fd7d9b4"></a><span class="identifier">version</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the device version string. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ac9ee6fa830bef0db4afba568ae0f68f4"></a><span class="identifier">driver_version</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the driver version string. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&gt;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ad7348a98923548f4b46a7629716825f6"></a><span class="identifier">extensions</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a list of extensions supported by the device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a3f1c59c950024588ff7910469426c064"></a><span class="identifier">supports_extension</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> name<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns <code class="computeroutput">true</code> if the device supports the extension with <code class="computeroutput">name</code>. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ac749b51d9985902130a84fcc51ae8ca0"></a><span class="identifier">address_bits</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the number of address bits. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">ulong_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1afe670637f21b2e7f767bd1800eafe3d6"></a><span class="identifier">global_memory_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the global memory size in bytes. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">ulong_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ab48e4b0d017d3c411876b6a3998bc0c3"></a><span class="identifier">local_memory_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the local memory size in bytes. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a7701fabe331790ac4f607fd0fcb01195"></a><span class="identifier">clock_frequency</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the clock frequency for the device's compute units. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1aa6da5b3c3e77d74df28843697126fc9e"></a><span class="identifier">compute_units</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the number of compute units in the device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">uint_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a4cb27288c00759182bfcb5f453d16b86"></a><span class="identifier">preferred_vector_width</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the preferred vector width for type <code class="computeroutput">T</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_t</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1aa12b295f735dafc1ae6dc2800d27c99c"></a><span class="identifier">profiling_timer_resolution</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the profiling timer resolution in nanoseconds. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a17b0fee6d9495b005efa757fbf69dbd7"></a><span class="identifier">is_subdevice</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the device is a sub-device. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1adf511861f68dc3b189c720e8efc0734e"></a><span class="identifier">get_info</span><span class="special">(</span><span class="identifier">cl_device_info</span> info<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns information about the device.</p>
+<p>For example, to get the number of compute units: </p>
+<pre class="programlisting"><a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a34572cfd879d0c81f7673501b889ed2e"><span class="identifier">device</span></a><span class="special">.</span><span class="identifier">get_info</span><span class="special">&lt;</span><span class="identifier">cl_uint</span><span class="special">&gt;</span><span class="special">(</span><span class="identifier">CL_DEVICE_MAX_COMPUTE_UNITS</span><span class="special">)</span><span class="special">;</span>
+</pre>
+<p>Alternatively, the template-specialized version can be used which automatically determines the result type: </p>
+<pre class="programlisting"><a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a34572cfd879d0c81f7673501b889ed2e"><span class="identifier">device</span></a><span class="special">.</span><span class="identifier">get_info</span><span class="special">&lt;</span><span class="identifier">CL_DEVICE_MAX_COMPUTE_UNITS</span><span class="special">&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+</pre>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> Enum<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ab88bf591a18cbf5159695b4f3bbf79a8"></a><span class="identifier">get_info</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> 
+<a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a095c9be3cfbc8082c4918574f1b4a1c5"></a><span class="identifier">partition</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">cl_device_partition_property</span> <span class="special">*</span> properties<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Partitions the device into multiple sub-devices according to <code class="computeroutput">properties</code>.</p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>This method is only available if the OpenCL version is 1.2 or later. </p></td></tr>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a8e32970b0ace1d16b559d0f2e6a91a03"></a><span class="identifier">partition_equally</span><span class="special">(</span><span class="identifier">size_t</span> count<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>This method is only available if the OpenCL version is 1.2 or later. </p></td></tr>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> 
+<a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a21dbbd6c63d555cfca068a71c0552614"></a><span class="identifier">partition_by_counts</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="identifier">size_t</span> <span class="special">&gt;</span> <span class="special">&amp;</span> counts<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>This method is only available if the OpenCL version is 1.2 or later. </p></td></tr>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> 
+<a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a5052ba2975a49bc0aa4dd19715dc6eb9"></a><span class="identifier">partition_by_affinity_domain</span><span class="special">(</span><span class="identifier">cl_device_affinity_domain</span> domain<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>This method is only available if the OpenCL version is 1.2 or later. </p></td></tr>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">ulong_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a588dd69953b0401b0f765ac7cd53ad0e"></a><span class="identifier">get_host_timer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns the current value of the host clock as seen by device in nanoseconds.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">ulong_</span><span class="special">,</span> <span class="identifier">ulong_</span> <span class="special">&gt;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a3a50a7dfd946dcec8e4e91fe9dba95b6"></a><span class="identifier">get_device_and_host_timer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns a reasonably synchronized pair of timestamps from the device timer and the host timer as seen by device in nanoseconds. The first of returned std::pair is a device timer timestamp, the second is a host timer timestamp.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Duration<span class="special">&gt;</span> <span class="identifier">Duration</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a2c0b782c3410aa2ec3b22af87bb67444"></a><span class="identifier">get_host_timer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns the current value of the host clock as seen by device as duration.</p>
+<p>For example, to print the current value of the host clock as seen by device in milliseconds: </p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1a34572cfd879d0c81f7673501b889ed2e"><span class="identifier">device</span></a><span class="special">.</span><span class="identifier">get_host_timer</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">milliseconds</span><span class="special">&gt;</span><span class="special">(</span><span class="special">)</span><span class="special">.</span><span class="identifier">count</span><span class="special">(</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="string">" ms"</span><span class="special">;</span>
+</pre>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Duration<span class="special">&gt;</span> 
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">Duration</span><span class="special">,</span> <span class="identifier">Duration</span> <span class="special">&gt;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1a06c0c000a5263eeb2c11bba97c50787a"></a><span class="identifier">get_device_and_host_timer</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns a reasonably synchronized pair of timestamps from the device timer and the host timer as seen by device as a std::pair&lt;Duration, Duration&gt; value. The first of returned std::pair is a device timer timestamp, the second is a host timer timestamp.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ad324ba446ca91959140d5b5b2e9753d4"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the device is the same at <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1ab1a49a01c0424b6a651e5e3dd8d87cc6"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the device is different from <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1device_1aa32cc89bf130ae29b0a8737c2183df4c"></a><span class="identifier">check_version</span><span class="special">(</span><span class="keyword">int</span> major<span class="special">,</span> <span class="keyword">int</span> minor<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns <code class="computeroutput">true</code> if the device OpenCL version is major.minor or newer; otherwise returns <code class="computeroutput">false</code>. </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="copyright-footer">Copyright © 2013, 2014 Kyle Lutz<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="interop_2opengl_2context_8hpp_1ac21e2deb8b3dbac5ab375e6beb279666.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.device_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="classboost_1_1compute_1_1event.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

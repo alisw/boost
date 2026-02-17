@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Logging :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/logging.html">
+    <link rel="prev" href="serialization.html">
+    <link rel="next" href="benchmarks.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Introduction</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="requests_responses.html">Requests and responses</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="logging.html">Logging</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="serialization.html">
+      <span class="material-symbols-outlined" title="Previous: Serializing and parsing into custom types">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="benchmarks.html">
+      <span class="material-symbols-outlined" title="Next: Echo server benchmark">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Logging</h1>
+  <div class="paragraph">
+<p><a href="reference/boost/redis/basic_connection/async_run-04.html" class="xref page"><code>connection::async_run</code></a>
+is a complex algorithm, with features like built-in reconnection.
+This can make configuration problems, like a misconfigured hostname, difficult to debug -
+Boost.Redis will keep retrying to connect to the same hostname over and over.
+For this reason, Boost.Redis incorporates a lightweight logging solution, and
+<strong>will log some status messages to stderr by default</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Logging can be customized by passing a
+<a href="reference/boost/redis/logger.html" class="xref page"><code>logger</code></a> object to the connection&#8217;s constructor. For example, logging can be disabled by writing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">asio::io_context ioc;
+connection conn {ioc, logger{logger::level::disabled}};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Every message logged by the library is attached a
+<a href="https://en.wikipedia.org/wiki/Syslog#Severity_level">syslog-like severity</a>
+tag (a <a href="reference/boost/redis/logger/level.html" class="xref page"><code>logger::level</code></a>).
+You can filter messages by severity by creating a <code>logger</code> with a specific level:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">asio::io_context ioc;
+
+// Logs to stderr messages with severity &gt;= level::error.
+// This will hide all informational output.
+connection conn {ioc, logger{logger::level::error}};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>logger</code> constructor accepts a <code>std::function&lt;void(logger::level, std::string_view)&gt;</code>
+as second argument. If supplied, Boost.Redis will call this function when logging
+instead of printing to stderr. This can be used to integrate third-party logging
+libraries. See our <a href="https://github.com/boostorg/redis/blob/master/example/cpp17_spdlog.cpp">spdlog integration example</a>
+for sample code.</p>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="prev"><a href="serialization.html">Serializing and parsing into custom types</a></span>
+        <span class="next"><a href="benchmarks.html">Echo server benchmark</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

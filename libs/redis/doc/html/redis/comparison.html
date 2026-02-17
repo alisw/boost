@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Comparison with other Redis clients :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/comparison.html">
+    <link rel="prev" href="benchmarks.html">
+    <link rel="next" href="examples.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Introduction</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="requests_responses.html">Requests and responses</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="comparison.html">Comparison with other Redis clients</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="benchmarks.html">
+      <span class="material-symbols-outlined" title="Previous: Echo server benchmark">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="examples.html">
+      <span class="material-symbols-outlined" title="Next: Examples">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Comparison with other Redis clients</h1>
+  <div class="sect1">
+<h2 id="_comparison"><a class="anchor" href="#_comparison"></a>Comparison</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The main reason for why I started writing Boost.Redis was to have a client
+compatible with the Asio asynchronous model. As I made progresses I could
+also address what I considered weaknesses in other libraries.  Due to
+time constraints I won&#8217;t be able to give a detailed comparison with
+each client listed in the
+<a href="https://redis.io/docs/clients/#cpp">official list</a>.
+Instead, I will focus on the most popular C++ client on github in number of stars, namely:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/sewenew/redis-plus-plus" class="bare">https://github.com/sewenew/redis-plus-plus</a></p>
+</div>
+<div class="sect2">
+<h3 id="_boost_redis_vs_redis_plus_plus"><a class="anchor" href="#_boost_redis_vs_redis_plus_plus"></a>Boost.Redis vs Redis-plus-plus</h3>
+<div class="paragraph">
+<p>Before we start it is important to mention some of the things
+redis-plus-plus does not support</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The latest version of the communication protocol RESP3. Without that it is impossible to support some important Redis features like client side caching, among other things.</p>
+</li>
+<li>
+<p>Coroutines.</p>
+</li>
+<li>
+<p>Reading responses directly in user data structures to avoid creating temporaries.</p>
+</li>
+<li>
+<p>Error handling with support for error-code.</p>
+</li>
+<li>
+<p>Cancellation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The remaining points will be addressed individually.  Let us first
+have a look at what sending a command a pipeline and a transaction
+look like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">auto redis = Redis("tcp://127.0.0.1:6379");
+
+// Send commands
+redis.set("key", "val");
+auto val = redis.get("key"); // val is of type OptionalString.
+if (val)
+    std::cout &lt;&lt; *val &lt;&lt; std::endl;
+
+// Sending pipelines
+auto pipe = redis.pipeline();
+auto pipe_replies = pipe.set("key", "value")
+                        .get("key")
+                        .rename("key", "new-key")
+                        .rpush("list", {"a", "b", "c"})
+                        .lrange("list", 0, -1)
+                        .exec();
+
+// Parse reply with reply type and index.
+auto set_cmd_result = pipe_replies.get&lt;bool&gt;(0);
+// ...
+
+// Sending a transaction
+auto tx = redis.transaction();
+auto tx_replies = tx.incr("num0")
+                    .incr("num1")
+                    .mget({"num0", "num1"})
+                    .exec();
+
+auto incr_result0 = tx_replies.get&lt;long long&gt;(0);
+// ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some of the problems with this API are</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Heterogeneous treatment of commands, pipelines and transaction. This makes auto-pipelining impossible.</p>
+</li>
+<li>
+<p>Any Api that sends individual commands has a very restricted scope of usability and should be avoided for performance reasons.</p>
+</li>
+<li>
+<p>The API imposes exceptions on users, no error-code overload is provided.</p>
+</li>
+<li>
+<p>No way to reuse the buffer for new calls to e.g. redis.get in order to avoid further dynamic memory allocations.</p>
+</li>
+<li>
+<p>Error handling of resolve and connection not clear.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>According to the documentation, pipelines in redis-plus-plus have
+the following characteristics</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>NOTE: By default, creating a Pipeline object is NOT cheap, since
+it creates a new connection.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>This is clearly a downside in the API as pipelines should be the
+default way of communicating and not an exception, paying such a
+high price for each pipeline imposes a severe cost in performance.
+Transactions also suffer from the very same problem:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>NOTE: Creating a Transaction object is NOT cheap, since it
+creates a new connection.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>In Boost.Redis there is no difference between sending one command, a
+pipeline or a transaction because requests are decoupled
+from the I/O objects.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>redis-plus-plus also supports async interface, however, async
+support for Transaction and Subscriber is still on the way.</p>
+</div>
+<div class="paragraph">
+<p>The async interface depends on third-party event library, and so
+far, only libuv is supported.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Async code in redis-plus-plus looks like the following</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">auto async_redis = AsyncRedis(opts, pool_opts);
+
+Future&lt;string&gt; ping_res = async_redis.ping();
+
+cout &lt;&lt; ping_res.get() &lt;&lt; endl;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the reader can see, the async interface is based on futures
+which is also known to have a bad performance.  The biggest
+problem however with this async design is that it makes it
+impossible to write asynchronous programs correctly since it
+starts an async operation on every command sent instead of
+enqueueing a message and triggering a write when it can be sent.
+It is also not clear how are pipelines realised with this design
+(if at all).</p>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="prev"><a href="benchmarks.html">Echo server benchmark</a></span>
+        <span class="next"><a href="examples.html">Examples</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Boost.OpenMethod :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/index.html">
+    <link rel="next" href="motivation.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Boost.OpenMethod</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="motivation.html">
+      <span class="material-symbols-outlined" title="Next: Motivation">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Boost.OpenMethod</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Boost.OpenMethod implements open-(multi-)methods in C++17 and above.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features"><a class="anchor" href="#_features"></a>Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Single dispatch can be as fast as equivalent virtual function calls.</p>
+</li>
+<li>
+<p>Multiple dispatch in constant time (for a given number of virtual parameters).</p>
+</li>
+<li>
+<p>Redundancy-free multiple dispatch tables.</p>
+</li>
+<li>
+<p>Inter-operation with standard smart pointers, extensible to other pointer-like
+types.</p>
+</li>
+<li>
+<p>Exception agnostic by default.</p>
+</li>
+<li>
+<p>Macro-based interface for convenience.</p>
+</li>
+<li>
+<p>Macro-free interface for inter-operation with templates.</p>
+</li>
+<li>
+<p>Customization points for alternative RTTI systems, error handling, vptr
+placement, etc.</p>
+</li>
+<li>
+<p>Headers-only.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements"><a class="anchor" href="#_requirements"></a>Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The library requires an optimizing compiler supporting C++17 or above.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tested_compilers"><a class="anchor" href="#_tested_compilers"></a>Tested Compilers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Boost.OpenMethod is tested with the following compilers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>clang: 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20</p>
+</li>
+<li>
+<p>gcc: 8, 9, 10, 11, 12, 13, 14, 15</p>
+</li>
+<li>
+<p>msvc: 14.3</p>
+</li>
+<li>
+<p>icpx</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>and on the following platforms:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Linux</p>
+</li>
+<li>
+<p>macOS</p>
+</li>
+<li>
+<p>Windows</p>
+</li>
+<li>
+<p>s390x</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_quality_assurance"><a class="anchor" href="#_quality_assurance"></a>Quality Assurance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The development infrastructure for the library includes these per-commit
+analyses:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Coverage reports</p>
+</li>
+<li>
+<p>Clang sanitizers</p>
+</li>
+<li>
+<p>Compilation and tests on Drone.io and GitHub Actions</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>Acknowledgments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I would like to thank the C++ Alliance for their support, in particular
+Joaquín M. López Muñoz for encouraging me to submit my library and being the
+first to endorse it; and Dmitryi Arkhipov for volunteering to be the review
+manager.</p>
+</div>
+<div class="paragraph">
+<p>Thanks to the members of the Boost community who posted a formal review:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Andrzej Krzemienski</p>
+</li>
+<li>
+<p>Christian Mazakas</p>
+</li>
+<li>
+<p>Joaquin M López Muñoz</p>
+</li>
+<li>
+<p>Klemens Morgenstern</p>
+</li>
+<li>
+<p>Ruben Perez</p>
+</li>
+<li>
+<p>Yannick Le Goc</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Also thanks to Steven Watanabe for his cogent feedback and advice, and all
+the people who posted remarks and suggestions.</p>
+</div>
+<div class="paragraph">
+<p>This work was strongly influenced by the following papers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.stroustrup.com/multimethods.pdf">Open Multi-Methods for C++</a>,
+Peter Pirkelbauer, Yuriy Solodkyy and Bjarne Stroustrup</p>
+</li>
+<li>
+<p><a href="https://core.ac.uk/download/pdf/18599789.pdf">Simplifying the Analysis of
+C++ Programs</a>, Yuriy Solodkyy.</p>
+</li>
+<li>
+<p><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2216.pdf">Report
+on language support for Multi-Methods and Open-Methods for C++</a>, Peter
+Pirkelbauer, Yuriy Solodkyy and Bjarne Stroustrup.</p>
+</li>
+<li>
+<p><a href="https://dl.acm.org/doi/abs/10.1145/191081.191117">Optimizing multi-method
+dispatch using compressed dispatch tables</a>, Eric Amiel, Olivier Gruber and
+Eric Simon.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Finally, thanks to Prof. J.D. Garcia, of the Universidad Carlos III in Madrid,
+for organizing the "using std::cpp" conference, and introducing me to Joaquín.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/index.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="next"><a href="motivation.html">Motivation</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

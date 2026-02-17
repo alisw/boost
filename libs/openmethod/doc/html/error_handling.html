@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/error_handling.html">
+    <link rel="prev" href="custom_rtti.html">
+    <link rel="next" href="virtual_ptr_alt.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Advanced Features</li>
+    <li><a href="error_handling.html">Error Handling</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="custom_rtti.html">
+      <span class="material-symbols-outlined" title="Previous: Custom RTTI">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="virtual_ptr_alt.html">
+      <span class="material-symbols-outlined" title="Next: Virtual Pointer Alternatives">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="error_handling" class="paragraph">
+<p>Errors can occur during <code>initialize</code>, or during method dispatch, if the method&#8217;s
+registry contains the <code>runtime_checks</code> policy. If the registry contains an
+<code>error_handler</code> policy, its <code>error_handler::error</code> member function is called
+with an error object, before terminating the program with a call to <code>abort</code>.
+<code>default_registry</code> contains such a policy: <code>default_error_handler</code>. It wraps the
+error object in a variant, and calls a handler via a <code>std::function</code>,
+initialized to a function that prints a short description of the error to
+<code>stderr</code>. The function can be changed, for example, to throw an exception:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;iostream&gt;
+#include &lt;variant&gt;
+
+#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+
+using boost::openmethod::virtual_ptr;
+
+struct Animal {
+    virtual ~Animal() = default;
+};
+
+struct Cat : Animal {};
+struct Dog : Animal {};
+
+BOOST_OPENMETHOD_CLASSES(Animal, Cat, Dog);
+
+BOOST_OPENMETHOD(trick, (std::ostream&amp;, virtual_ptr&lt;Animal&gt;), void);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    trick, (std::ostream &amp; os, virtual_ptr&lt;Dog&gt; /*dog*/), void) {
+    os &lt;&lt; "spin\n";
+}
+
+auto main() -&gt; int {
+    namespace bom = boost::openmethod;
+    bom::initialize();
+
+    bom::default_registry::error_handler::set([](const auto&amp; error) {
+        if (std::holds_alternative&lt;bom::no_overrider&gt;(error)) {
+            throw std::runtime_error("not implemented");
+        }
+    });
+
+    Cat felix;
+    Dog hector, snoopy;
+    std::vector&lt;Animal*&gt; animals = {&amp;hector, &amp;felix, &amp;snoopy};
+
+    for (auto animal : animals) {
+        try {
+            trick(std::cout, *animal);
+        } catch (std::runtime_error&amp; error) {
+            std::cerr &lt;&lt; error.what() &lt;&lt; "\n";
+        }
+    }
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">spin
+not implemented
+spin</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also replace the <code>error_handler</code> policy with our own.
+For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;iostream&gt;
+
+#include &lt;boost/openmethod/default_registry.hpp&gt;
+
+struct Animal {
+    virtual ~Animal() = default;
+};
+
+struct Cat : Animal {};
+struct Dog : Animal {};
+
+namespace bom = boost::openmethod;
+
+struct throw_if_not_implemented : bom::policies::error_handler {
+    template&lt;class Registry&gt;
+    struct fn {
+        static auto error(const bom::openmethod_error&amp;) -&gt; void {
+        }
+
+        static auto error(const bom::no_overrider&amp; err) -&gt; void {
+            throw err;
+        }
+    };
+};
+
+struct custom_registry : bom::default_registry::with&lt;throw_if_not_implemented&gt; {
+};
+
+#define BOOST_OPENMETHOD_DEFAULT_REGISTRY custom_registry
+
+#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+
+using boost::openmethod::virtual_ptr;
+
+BOOST_OPENMETHOD_CLASSES(Animal, Cat, Dog);
+
+BOOST_OPENMETHOD(trick, (std::ostream&amp;, virtual_ptr&lt;Animal&gt;), void);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    trick, (std::ostream &amp; os, virtual_ptr&lt;Dog&gt; /*dog*/), void) {
+    os &lt;&lt; "spin\n";
+}
+
+auto main() -&gt; int {
+    bom::initialize();
+
+    Cat felix;
+    Dog hector, snoopy;
+    std::vector&lt;Animal*&gt; animals = {&amp;hector, &amp;felix, &amp;snoopy};
+
+    for (auto animal : animals) {
+        try {
+            trick(std::cout, *animal);
+        } catch (bom::no_overrider&amp;) {
+            std::cout &lt;&lt; "not implemented\n";
+        }
+    }
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">spin
+not implemented
+spin</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Stock policy <code>throw_error_handler</code> does this for all the error types:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">namespace boost::openmethod::policies {
+
+struct throw_error_handler : error_handler {
+    template&lt;class Error&gt;
+    [[noreturn]] static auto error(const Error&amp; error) -&gt; void {
+        throw error;
+    }
+};
+
+} // namespace boost::openmethod::policies</code></pre>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/error_handling.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="custom_rtti.html">Custom RTTI</a></span>
+        <span class="next"><a href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

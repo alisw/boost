@@ -1,0 +1,133 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Class memory_object</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter 1. Boost.Compute">
+<link rel="up" href="../../boost_compute/reference.html#doxygen.header_reference.memory__object_8hpp" title="Header &lt;boost/compute/memory_object.hpp&gt;">
+<link rel="prev" href="classboost_1_1compute_1_1svm__ptr.html" title="Class template svm_ptr">
+<link rel="next" href="classboost_1_1compute_1_1pipe.html" title="Class pipe">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="classboost_1_1compute_1_1svm__ptr.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.memory__object_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="classboost_1_1compute_1_1pipe.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class memory_object</span></h2>
+<p>boost::compute::memory_object — Base-class for memory objects. </p>
+</div>
+<h2 class="refsynopsisdiv-title">Synopsis</h2>
+<div class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_compute/reference.html#doxygen.header_reference.memory__object_8hpp" title="Header &lt;boost/compute/memory_object.hpp&gt;">boost/compute/memory_object.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html" title="Class memory_object">memory_object</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+
+  <span class="comment">// Flags for the creation of memory objects. </span>
+  <span class="keyword">enum</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2"></a>mem_flags <span class="special">{</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2a61b24c0f55f49b8eaa895a1ebc66a5a3"></a>read_write = CL_MEM_READ_WRITE, 
+                   <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2ac77e8c5cf1142f16eb67090d53cfd573"></a>read_only = CL_MEM_READ_ONLY, 
+                   <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2a69effe0eef9914543fe69785d98c1394"></a>write_only = CL_MEM_WRITE_ONLY, 
+                   <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2aa12e2684c7e5c042332a1a671459ca94"></a>use_host_ptr = CL_MEM_USE_HOST_PTR, 
+                   <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2a1fd63f5a063e0ead9dd6f0b8917e936b"></a>alloc_host_ptr = CL_MEM_ALLOC_HOST_PTR, 
+                   <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1aadbed46e5fd319c9905a97aa88a36da2ac3de9faed4f3a82c9f787d0cc3a46a90"></a>copy_host_ptr = CL_MEM_COPY_HOST_PTR <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// Symbolic names for the OpenCL address spaces. </span>
+  <span class="keyword">enum</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a07b5a9cbbb991231d749b3e0de193b1d"></a>address_space <span class="special">{</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a07b5a9cbbb991231d749b3e0de193b1dafeeb0200d0f3f1f6c2711d7898ca8d98"></a>global_memory, <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a07b5a9cbbb991231d749b3e0de193b1dac85f41146caecf967d3eda2f7941774e"></a>local_memory, <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a07b5a9cbbb991231d749b3e0de193b1dabca53dbe3fdf860ef2f8c31dd1f1f751"></a>private_memory, 
+                       <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a07b5a9cbbb991231d749b3e0de193b1da537a5122edfc074642d0f75ee9fdce3c"></a>constant_memory <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="classboost_1_1compute_1_1memory__object.html#id80-bb">public member functions</a></span>
+  <span class="identifier">cl_mem</span> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1ae06ba468411f9b8270ab00183d08b25f"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_t</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1abd68b6de97b96a86f0426a122d2d2887"><span class="identifier">get_memory_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">cl_mem_object_type</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a990f9c4d98ca2cae07f0140642f431e4"><span class="identifier">get_memory_type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">cl_mem_flags</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a382b3a7aba4e6c45f6a50971a5662117"><span class="identifier">get_memory_flags</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a28ecd1d5bfe6d1f137c85497d4d14b1b"><span class="identifier">get_context</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a124e7556e21b084acc251888d249efcc"><span class="identifier">get_host_ptr</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">uint_</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a7095b834af0ae3e7eaa297c917605683"><span class="identifier">reference_count</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a5027c85debb69f0ca1998389127445d1"><span class="identifier">get_memory_info</span></a><span class="special">(</span><span class="identifier">cl_mem_info</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a35b52b986c5d1c2d3b82369ff4b94e61"><span class="identifier">set_destructor_callback</span></a><span class="special">(</span><span class="keyword">void</span><span class="special">(</span><span class="identifier">BOOST_COMPUTE_CL_CALLBACK</span> <span class="special">*</span><span class="identifier">callback</span><span class="special">)</span><span class="special">(</span><span class="identifier">cl_mem</span> <span class="identifier">memobj</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span><span class="identifier">user_data</span><span class="special">)</span><span class="special">,</span> 
+                               <span class="keyword">void</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Function<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a4812d1cd29e7c9b77e6fb030c99ff6b3"><span class="identifier">set_destructor_callback</span></a><span class="special">(</span><span class="identifier">Function</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a6772b7927ef0a3d95ad010866ccc7efb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html" title="Class memory_object">memory_object</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html#doxygen.header_reference.classboost_1_1compute_1_1memory__object_1af6928fc21db78ff9381ca4013fe50772"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html" title="Class memory_object">memory_object</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id43902"></a><h2>Description</h2>
+<p>The <a class="link" href="classboost_1_1compute_1_1memory__object.html" title="Class memory_object">memory_object</a> class is the base-class for memory objects on compute devices.</p>
+<p><b>See Also: </b><a class="link" href="classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer</a>, <a class="link" href="classboost_1_1compute_1_1vector.html" title="Class template vector">vector</a> </p>
+<p>
+</p>
+<div class="refsect2">
+<a name="id43912"></a><h3>
+<a name="id80-bb"></a><code class="computeroutput">memory_object</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_mem</span> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1ae06ba468411f9b8270ab00183d08b25f"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the underlying OpenCL memory object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">size_t</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1abd68b6de97b96a86f0426a122d2d2887"></a><span class="identifier">get_memory_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the size of the memory object in bytes. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_mem_object_type</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a990f9c4d98ca2cae07f0140642f431e4"></a><span class="identifier">get_memory_type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the type for the memory object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_mem_flags</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a382b3a7aba4e6c45f6a50971a5662117"></a><span class="identifier">get_memory_flags</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the flags for the memory object. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a28ecd1d5bfe6d1f137c85497d4d14b1b"></a><span class="identifier">get_context</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the context for the memory object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <span class="special">*</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a124e7556e21b084acc251888d249efcc"></a><span class="identifier">get_host_ptr</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the host pointer associated with the memory object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">uint_</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a7095b834af0ae3e7eaa297c917605683"></a><span class="identifier">reference_count</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the reference count for the memory object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a5027c85debb69f0ca1998389127445d1"></a><span class="identifier">get_memory_info</span><span class="special">(</span><span class="identifier">cl_mem_info</span> info<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns information about the memory object.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a35b52b986c5d1c2d3b82369ff4b94e61"></a><span class="identifier">set_destructor_callback</span><span class="special">(</span><span class="keyword">void</span><span class="special">(</span><span class="identifier">BOOST_COMPUTE_CL_CALLBACK</span> <span class="special">*</span><span class="identifier">callback</span><span class="special">)</span><span class="special">(</span><span class="identifier">cl_mem</span> <span class="identifier">memobj</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span><span class="identifier">user_data</span><span class="special">)</span><span class="special">,</span> 
+                             <span class="keyword">void</span> <span class="special">*</span> user_data <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Registers a function to be called when the memory object is deleted and its resources freed.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Function<span class="special">&gt;</span> <span class="keyword">void</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a4812d1cd29e7c9b77e6fb030c99ff6b3"></a><span class="identifier">set_destructor_callback</span><span class="special">(</span><span class="identifier">Function</span> callback<span class="special">)</span><span class="special">;</span></pre>
+<p>Registers a function to be called when the memory object is deleted and its resources freed.</p>
+<p>The function specified by <code class="computeroutput">callback</code> must be invokable with zero arguments (e.g. <code class="computeroutput">callback()</code>).</p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>This method is only available if the OpenCL version is 1.1 or later. </p></td></tr>
+</table></div>
+<p>
+</p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1a6772b7927ef0a3d95ad010866ccc7efb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html" title="Class memory_object">memory_object</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the memory object is the same as <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1memory__object_1af6928fc21db78ff9381ca4013fe50772"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1memory__object.html" title="Class memory_object">memory_object</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the memory object is different from <code class="computeroutput">other</code>. </li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="copyright-footer">Copyright © 2013, 2014 Kyle Lutz<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="classboost_1_1compute_1_1svm__ptr.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.memory__object_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="classboost_1_1compute_1_1pipe.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

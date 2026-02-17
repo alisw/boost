@@ -1,0 +1,138 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Class context</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../index.html" title="Chapter 1. Boost.Compute">
+<link rel="up" href="../../boost_compute/reference.html#doxygen.header_reference.context_8hpp" title="Header &lt;boost/compute/context.hpp&gt;">
+<link rel="prev" href="classboost_1_1compute_1_1vector.html" title="Class template vector">
+<link rel="next" href="interop_2opengl_2context_8hpp_1ac21e2deb8b3dbac5ab375e6beb279666.html" title="Function opengl_create_shared_context">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="classboost_1_1compute_1_1vector.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.context_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="interop_2opengl_2context_8hpp_1ac21e2deb8b3dbac5ab375e6beb279666.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="doxygen.header_reference.classboost_1_1compute_1_1context"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class context</span></h2>
+<p>boost::compute::context — A compute context. </p>
+</div>
+<h2 class="refsynopsisdiv-title">Synopsis</h2>
+<div class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_compute/reference.html#doxygen.header_reference.context_8hpp" title="Header &lt;boost/compute/context.hpp&gt;">boost/compute/context.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+
+  <span class="comment">// <a class="link" href="classboost_1_1compute_1_1context.html#id19-bb">public member functions</a></span>
+  <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a5f2e11587133c31974e695e7d33c4c00"><span class="identifier">context</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a12fa1d3f515e9430b9f2291614422959"><span class="identifier">context</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">cl_context_properties</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a69cb0f8a6d47d644dee18f982c39f6cc"><span class="identifier">context</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> 
+                   <span class="keyword">const</span> <span class="identifier">cl_context_properties</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a3efec5a0b475ee3c2c068c0f5221cf3b"><span class="identifier">context</span></a><span class="special">(</span><span class="identifier">cl_context</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1ad483eae2d4d154e9cde0266154c227b2"><span class="identifier">context</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a591276b4904366c04f9cebf234e887a0"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a9e5a7ad849fae44839822fc5c37fc7ed"><span class="identifier">context</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a6befee3ddd3d6b5aa85b667b68e037a9"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;&amp;</span><span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1acb626a4dc9da2f9b53a8485b4cba4ff6"><span class="special">~</span><span class="identifier">context</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">cl_context</span> <span class="special">&amp;</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a89f7f0223c68917fef1f628f3578138a"><span class="identifier">get</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a6b2715e4aaee544f9581441d24a433e5"><span class="identifier">get_device</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a67e12da0d9c5266410daa13a725d3455"><span class="identifier">get_devices</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a832d7bdcbad35a3be691836826b7e248"><span class="identifier">get_info</span></a><span class="special">(</span><span class="identifier">cl_context_info</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> Enum<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1ae1d7154c6c4d74c364904091c1e60aab"><span class="identifier">get_info</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a0daa5d592019e57d63ebf74af0020b8a"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a25a59589d2a3e87dbbbbcc79a81bfb65"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id29466"></a><h2>Description</h2>
+<p>The context class represents a compute context.</p>
+<p>A context object manages a set of OpenCL resources including memory buffers and program objects. Before allocating memory on the device or executing kernels you must set up a context object.</p>
+<p>To create a context for the default device on the system: </p>
+<pre class="programlisting"><span class="comment">// get the default compute device</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">device</span> <span class="identifier">gpu</span> <span class="special">=</span> <a class="link" href="classboost_1_1compute_1_1system.html#doxygen.header_reference.classboost_1_1compute_1_1system_1a7e1531ff30d091e9127eaa6d96cbb3b7"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">system</span><span class="special">::</span><span class="identifier">default_device</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+<span class="comment">// create a context for the device</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">compute</span><span class="special">::</span><span class="identifier">context</span> <a class="link" href="classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a5f2e11587133c31974e695e7d33c4c00"><span class="identifier">context</span></a><span class="special">(</span><span class="identifier">gpu</span><span class="special">)</span><span class="special">;</span>
+</pre>
+<p>Once a context is created, memory can be allocated using the buffer class and kernels can be executed using the <a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> class.</p>
+<p><b>See Also: </b><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a>, <a class="link" href="classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue</a> </p>
+<p>
+</p>
+<div class="refsect2">
+<a name="id29511"></a><h3>
+<a name="id19-bb"></a><code class="computeroutput">context</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a5f2e11587133c31974e695e7d33c4c00"></a><span class="identifier">context</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Create a null context object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a12fa1d3f515e9430b9f2291614422959"></a><span class="identifier">context</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&amp;</span> device<span class="special">,</span> 
+                 <span class="keyword">const</span> <span class="identifier">cl_context_properties</span> <span class="special">*</span> properties <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Creates a new context for <code class="computeroutput">device</code> with <code class="computeroutput">properties</code>.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a69cb0f8a6d47d644dee18f982c39f6cc"></a><span class="identifier">context</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <span class="special">&amp;</span> devices<span class="special">,</span> 
+                 <span class="keyword">const</span> <span class="identifier">cl_context_properties</span> <span class="special">*</span> properties <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Creates a new context for <code class="computeroutput">devices</code> with <code class="computeroutput">properties</code>.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a3efec5a0b475ee3c2c068c0f5221cf3b"></a><span class="identifier">context</span><span class="special">(</span><span class="identifier">cl_context</span> context<span class="special">,</span> <span class="keyword">bool</span> retain <span class="special">=</span> <span class="keyword">true</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Creates a new context object for <code class="computeroutput">context</code>. If <code class="computeroutput">retain</code> is <code class="computeroutput">true</code>, the reference count for <code class="computeroutput">context</code> will be incremented. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1context_1ad483eae2d4d154e9cde0266154c227b2"></a><span class="identifier">context</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Creates a new context object as a copy of <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a591276b4904366c04f9cebf234e887a0"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> other<span class="special">)</span><span class="special">;</span></pre>Copies the context object from <code class="computeroutput">other</code> to <code class="computeroutput">*this</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a9e5a7ad849fae44839822fc5c37fc7ed"></a><span class="identifier">context</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-constructs a new context object from <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a6befee3ddd3d6b5aa85b667b68e037a9"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;&amp;</span> other<span class="special">)</span> <span class="keyword">noexcept</span><span class="special">;</span></pre>Move-assigns the context from <code class="computeroutput">other</code> to <code class="computeroutput">*this</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><a name="doxygen.header_reference.classboost_1_1compute_1_1context_1acb626a4dc9da2f9b53a8485b4cba4ff6"></a><span class="special">~</span><span class="identifier">context</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Destroys the context object. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">cl_context</span> <span class="special">&amp;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a89f7f0223c68917fef1f628f3578138a"></a><span class="identifier">get</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the underlying OpenCL context. </li>
+<li class="listitem">
+<pre class="literallayout"><a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a6b2715e4aaee544f9581441d24a433e5"></a><span class="identifier">get_device</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns the device for the context. If the context contains multiple devices, the first is returned. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <a class="link" href="classboost_1_1compute_1_1device.html" title="Class device">device</a> <span class="special">&gt;</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a67e12da0d9c5266410daa13a725d3455"></a><span class="identifier">get_devices</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns a vector of devices for the context. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="identifier">T</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a832d7bdcbad35a3be691836826b7e248"></a><span class="identifier">get_info</span><span class="special">(</span><span class="identifier">cl_context_info</span> info<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns information about the context.</p>
+<p>See the documentation for </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> Enum<span class="special">&gt;</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1ae1d7154c6c4d74c364904091c1e60aab"></a><span class="identifier">get_info</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a0daa5d592019e57d63ebf74af0020b8a"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the context is the same as <code class="computeroutput">other</code>. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="doxygen.header_reference.classboost_1_1compute_1_1context_1a25a59589d2a3e87dbbbbcc79a81bfb65"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="classboost_1_1compute_1_1context.html" title="Class context">context</a> <span class="special">&amp;</span> other<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns <code class="computeroutput">true</code> if the context is different from <code class="computeroutput">other</code>. </li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="copyright-footer">Copyright © 2013, 2014 Kyle Lutz<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="classboost_1_1compute_1_1vector.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_compute/reference.html#doxygen.header_reference.context_8hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="interop_2opengl_2context_8hpp_1ac21e2deb8b3dbac5ab375e6beb279666.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

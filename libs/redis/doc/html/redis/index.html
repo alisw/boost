@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Introduction :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/index.html">
+    <link rel="next" href="requests_responses.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="index.html">Introduction</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="requests_responses.html">Requests and responses</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="index.html">Introduction</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="requests_responses.html">
+      <span class="material-symbols-outlined" title="Next: Requests and responses">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Introduction</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Boost.Redis is a high-level <a href="https://redis.io/">Redis</a> and <a href="https://valkey.io/">Valkey</a>
+client library built on top of
+<a href="https://www.boost.org/doc/libs/latest/doc/html/boost_asio.html">Boost.Asio</a>
+that implements the Redis protocol
+<a href="https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md">RESP3</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements"><a class="anchor" href="#_requirements"></a>Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The requirements for using Boost.Redis are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Boost 1.84 or higher. Boost.Redis is included in Boost installations since Boost 1.84.</p>
+</li>
+<li>
+<p>C++17 or higher. Supported compilers include gcc 11 and later, clang 11 and later, and Visual Studio 16 (2019) and later.</p>
+</li>
+<li>
+<p>Redis 6 or higher, or Valkey (any version). The database server must support RESP3.
+We intend to maintain compatibility with both Redis and Valkey in the long-run.</p>
+</li>
+<li>
+<p>OpenSSL.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The documentation assumes basic-level knowledge about <a href="https://redis.io/docs/">Redis</a> and <a href="https://www.boost.org/doc/libs/latest/doc/html/boost_asio.html">Boost.Asio</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_the_library"><a class="anchor" href="#_building_the_library"></a>Building the library</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To use the library it is necessary to include the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">#include &lt;boost/redis/src.hpp&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>in exactly one source file in your applications. Otherwise, the library is header-only.</p>
+</div>
+<div class="paragraph">
+<p>Boost.Redis unconditionally requires OpenSSL. Targets using Boost.Redis need to link
+to the OpenSSL libraries.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tutorial"><a class="anchor" href="#_tutorial"></a>Tutorial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The code below uses a short-lived connection to
+<a href="https://redis.io/commands/ping/">ping</a> a Redis server:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">#include &lt;boost/redis/connection.hpp&gt;
+#include &lt;boost/asio/co_spawn.hpp&gt;
+#include &lt;boost/asio/consign.hpp&gt;
+#include &lt;boost/asio/detached.hpp&gt;
+#include &lt;iostream&gt;
+
+namespace net = boost::asio;
+using boost::redis::request;
+using boost::redis::response;
+using boost::redis::config;
+using boost::redis::connection;
+
+auto co_main(config const&amp; cfg) -&gt; net::awaitable&lt;void&gt;
+{
+   auto conn = std::make_shared&lt;connection&gt;(co_await net::this_coro::executor);
+   conn-&gt;async_run(cfg, {}, net::consign(net::detached, conn));
+
+   // A request containing only a ping command.
+   request req;
+   req.push("PING", "Hello world");
+
+   // Response object.
+   response&lt;std::string&gt; resp;
+
+   // Executes the request.
+   co_await conn-&gt;async_exec(req, resp);
+   conn-&gt;cancel();
+
+   std::cout &lt;&lt; "PING: " &lt;&lt; std::get&lt;0&gt;(resp).value() &lt;&lt; std::endl;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The roles played by the <code>async_run</code> and <code>async_exec</code> functions are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="reference/boost/redis/basic_connection/async_exec-02.html" class="xref page"><code>connection::async_exec</code></a>: executes the commands contained in the
+request and stores the individual responses in the response object. Can
+be called from multiple places in your code concurrently.</p>
+</li>
+<li>
+<p><a href="reference/boost/redis/basic_connection/async_run-04.html" class="xref page"><code>connection::async_run</code></a>: keeps the connection healthy. It takes care of hostname resolution, session establishment, health-checks, reconnection and coordination of low-level read and write operations. It should be called only once per connection, regardless of the number of requests to execute.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_server_pushes"><a class="anchor" href="#_server_pushes"></a>Server pushes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Redis servers can also send a variety of pushes to the client. Some of
+them are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://redis.io/docs/manual/pubsub/">Pubsub messages</a>.</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/manual/keyspace-notifications/">Keyspace notifications</a>.</p>
+</li>
+<li>
+<p><a href="https://redis.io/docs/manual/client-side-caching/">Client-side caching</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The connection class supports server pushes by means of the
+<a href="reference/boost/redis/basic_connection/async_receive.html" class="xref page"><code>connection::async_receive</code></a> function, which can be
+called in the same connection that is being used to execute commands.
+The coroutine below shows how to use it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">auto
+receiver(std::shared_ptr&lt;connection&gt; conn) -&gt; net::awaitable&lt;void&gt;
+{
+   request req;
+   req.push("SUBSCRIBE", "channel");
+
+   generic_response resp;
+   conn-&gt;set_receive_response(resp);
+
+   // Loop while reconnection is enabled
+   while (conn-&gt;will_reconnect()) {
+
+      // Reconnect to channels.
+      co_await conn-&gt;async_exec(req, ignore);
+
+      // Loop reading Redis pushes.
+      for (;;) {
+         error_code ec;
+         co_await conn-&gt;async_receive(resp, net::redirect_error(net::use_awaitable, ec));
+         if (ec)
+            break; // Connection lost, break so we can reconnect to channels.
+
+         // Use the response resp in some way and then clear it.
+         ...
+
+         consume_one(resp);
+      }
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_further_reading"><a class="anchor" href="#_further_reading"></a>Further reading</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here is a list of topics that you might be interested in:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="cancellation.html" class="xref page">Setting timeouts to requests and managing cancellation</a>.</p>
+</li>
+<li>
+<p><a href="requests_responses.html" class="xref page">More on requests and responses</a>.</p>
+</li>
+<li>
+<p><a href="serialization.html" class="xref page">Serializing and parsing into custom types</a>.</p>
+</li>
+<li>
+<p><a href="logging.html" class="xref page">Configuring logging</a>.</p>
+</li>
+<li>
+<p><a href="examples.html" class="xref page">Examples</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="next"><a href="requests_responses.html">Requests and responses</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

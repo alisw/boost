@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>boost::operator&lt;&lt; :: Boost.DynamicBitset</title>
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../../_'</script>
+<link rel="icon" href="../../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="dynamic_bitset" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../../index.html">Boost.DynamicBitset</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../../index.html">Boost.DynamicBitset</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="dynamic_bitset.html">Reference</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../../index.html" aria-label="Home: Boost.DynamicBitset">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="operator_lshift.html"><a href="../boost.html">boost</a>::operator&lt;&lt;</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+</div></div>
+    <h1 class="page"><a href="../boost.html">boost</a>::operator&lt;&lt;</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Inserts a textual representation of <code>b</code> into the stream <code>os</code>, highest bit first&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Declared in <code>&lt;boost&sol;dynamic&lowbar;bitset&sol;dynamic&lowbar;bitset&period;hpp&gt;</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">template&lt;
+    typename CharT,
+    typename Traits,
+    typename Block,
+    typename AllocatorOrContainer&gt;
+std::basic&lowbar;ostream&lt;CharT, Traits&gt;&amp;
+operator&lt;&lt;(
+    std::basic&lowbar;ostream&lt;CharT, Traits&gt;&amp; os,
+    <a href="dynamic_bitset.html" class="xref page">dynamic&lowbar;bitset&lt;Block, AllocatorOrContainer&gt;</a> const&amp; b);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Informally, the output is the same as&colon;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">std::basic_string&lt;Char, Traits&gt; s;
+boost::to_string(x, s):
+os &lt;&lt; s;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>except that the stream inserter takes into accout the locale imbued into <code>os</code>, which <code>boost&colon;&colon;to&lowbar;string()</code> can&apos;t do&period; More precisely&colon; First, for each valid position <code>i</code> into the bitset b let&apos;s put&colon; <code>character&lowbar;of( b&lsqb; i ) &rsqb; ) &equals; b&lsqb; i &rsqb; ? os&period;widen( &apos;1&apos; ) &colon; os&period;widen( &apos;0&apos; )&semi;</code>&period; Let also <code>s</code> be a <code>std&colon;&colon;basic&lowbar;string&lt;Char, Traits&gt;</code> object, having length <code>b&period;size()</code> and such that, for each <code>i</code> in <code>&lsqb;0, b&period;size())</code>, <code>s&lsqb; i &rsqb;</code> is <code>character&lowbar;of( b&lsqb; i &rsqb; )</code>&period; Then, the output, the effects on <code>os</code> and the exception behavior is the same as outputting the object <code>s</code> to <code>os</code> (same width, same exception mask, same padding, same <code>setstate()</code> logic&period;)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_return_value"><a class="anchor" href="#_return_value"></a>Return Value</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>os</code>&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>os</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An output stream</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>b</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The object to output</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><span class="small">Created with <a href="https://www.mrdocs.com">MrDocs</a></span></p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/custom_rtti.html">
+    <link rel="prev" href="registries_and_policies.html">
+    <link rel="next" href="error_handling.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Advanced Features</li>
+    <li><a href="custom_rtti.html">Custom RTTI</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="registries_and_policies.html">
+      <span class="material-symbols-outlined" title="Previous: Registries and Policies">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="error_handling.html">
+      <span class="material-symbols-outlined" title="Next: Error Handling">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="custom_rtti" class="paragraph">
+<p>The original motivation for the policy mechanism is to make it possible to
+interface OpenMethod with custom RTTI systems.</p>
+</div>
+<div class="paragraph">
+<p>Stock registries use the <code>std_rtti</code> implementation of <code>rtti</code>.
+Here is its full source:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">struct std_rtti : rtti {
+    template&lt;class Registry&gt;
+    struct fn {
+        template&lt;class Class&gt;
+        static constexpr bool is_polymorphic = std::is_polymorphic_v&lt;Class&gt;;
+
+        template&lt;class Class&gt;
+        static auto static_type() -&gt; type_id {
+            return &amp;typeid(Class);
+        }
+
+        template&lt;class Class&gt;
+        static auto dynamic_type(const Class&amp; obj) -&gt; type_id {
+            return &amp;typeid(obj);
+        }
+
+        template&lt;typename Stream&gt;
+        static auto type_name(type_id type, Stream&amp; stream) -&gt; void {
+            stream &lt;&lt; boost::core::demangle(
+                reinterpret_cast&lt;const std::type_info*&gt;(type)-&gt;name());
+        }
+
+        static auto type_index(type_id type) -&gt; std::type_index {
+            return std::type_index(
+                *reinterpret_cast&lt;const std::type_info*&gt;(type));
+        }
+
+        template&lt;typename D, typename B&gt;
+        static auto dynamic_cast_ref(B&amp;&amp; obj) -&gt; D {
+            return dynamic_cast&lt;D&gt;(obj);
+        }
+    };
+};</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>is_polymorphic</code> is used to check if a class is polymorphic.
+This template is required.</p>
+</li>
+<li>
+<p><code>static_type</code> is called during class registration, by
+<code>virtual_ptr</code>s "final" constructs.
+It is also called to set <code>bad_call::method</code>.
+This function is required.</p>
+</li>
+<li>
+<p><code>dynamic_type</code> is used to read the dynamic type of a virtual argument.
+If only the <code>virtual_ptr</code> "final" constructs are used, or if
+<code>boost_openmethod_vptr</code> is provided for all the classes in the registry,
+this function can be omitted.</p>
+</li>
+<li>
+<p><code>type_name</code> writes a representation of a type to a
+<code>LightweightOutputStream</code>.
+It is used to format error and trace messages.
+This function is optional; if it is not provided, <em>type</em> is rendered as
+"type_id(<em>type</em>)".</p>
+</li>
+<li>
+<p><code>type_index</code> returns an object that <em>uniquely</em> identifies a class.
+Some forms of RTTI (most notably, C&#43;&#43;'s <code>typeid</code> operator) do not
+guarantee that the type information object for a class is unique within
+the same program.
+This function is optional; if not provided, <code>type</code> is assumed to be
+unique, and used as is.</p>
+</li>
+<li>
+<p><code>dynamic_cast_ref</code> casts an object to a class.
+It takes a reference, and returns a reference of the same category (and
+cv-qualifier if applicable) as <code>B</code>.
+This function is required only in presence of virtual inheritance.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s rewrite the Node example using several variations of custom RTTIs.</p>
+</div>
+<div class="paragraph">
+<p>In the first example, we use a "static" scheme, where the type ids are
+compile-time constants:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">struct Node {
+    virtual ~Node() {}
+    virtual int value() const = 0;
+    // our custom RTTI:
+    Node(unsigned type) : type(type) {}
+    unsigned type;
+    static constexpr unsigned static_type = 1;
+};
+
+struct Variable : Node {
+    static constexpr unsigned static_type = 2;
+    Variable(int value) : Node(static_type), v(value) {}
+    int value() const override { return v; }
+    int v;
+};
+
+struct Plus : Node {
+    static constexpr unsigned static_type = 3;
+    Plus(const Node&amp; left, const Node&amp; right)
+        : Node(static_type), left(left), right(right) {}
+    int value() const override { return left.value() + right.value(); }
+    const Node&amp; left; const Node&amp; right;
+};
+
+struct Times : Node {
+    static constexpr unsigned static_type = 4;
+    Times(const Node&amp; left, const Node&amp; right)
+        : Node(static_type), left(left), right(right) {}
+    int value() const override { return left.value() * right.value(); }
+    const Node&amp; left; const Node&amp; right;
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s define a <code>rtti</code> policy for this scheme. We are going to replace the
+default registry globally, so we do <em>not</em> include <code>&lt;boost/openmethod/core.hpp&gt;</code>
+or <code>&lt;boost/openmethod.hpp&gt;</code> - only what we need to implement the policy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod/preamble.hpp&gt;
+#include &lt;boost/openmethod/policies/vptr_vector.hpp&gt;
+
+struct custom_rtti : boost::openmethod::policies::rtti {
+    template&lt;class Registry&gt;
+    struct fn : defaults {
+        template&lt;class T&gt;
+        static constexpr bool is_polymorphic = std::is_base_of_v&lt;Node, T&gt;;
+
+        using type_id = boost::openmethod::type_id; // for brevity
+
+        template&lt;typename T&gt;
+        static auto static_type() {
+            if constexpr (is_polymorphic&lt;T&gt;) {
+                return reinterpret_cast&lt;type_id&gt;(T::static_type);
+            } else {
+                return reinterpret_cast&lt;type_id&gt;(0);
+            }
+        }
+
+        template&lt;typename T&gt;
+        static auto dynamic_type(const T&amp; obj) {
+            if constexpr (is_polymorphic&lt;T&gt;) {
+                return reinterpret_cast&lt;type_id&gt;(obj.type);
+            } else {
+                return reinterpret_cast&lt;type_id&gt;(0);
+            }
+        }
+    };
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The policy&#8217;s notion of "polymorphic" is different from C&#43;&#43;'s. Here, a
+class is "polymorphic" if it derives from <code>Node</code>, meaning that <code>dynamic_type</code>
+can extract the <em>runtime</em> type of a virtual argument. In fact, this policy does
+not require Node to be polymorphic in the C++ sense. If we remove the virtual
+destructor and implement <code>value</code> as an open-method as well, the program will
+still work.</p>
+</div>
+<div class="paragraph">
+<p>The policy is quite minimal. It does not support virtual inheritance, because it
+does not provide a <code>dynamic_cast_ref</code> function. It would not produce good error
+or trace messages, because it does not provide a <code>type_name</code> function. Instead,
+it relies on the <code>type_name</code> inherited from <code><a href="reference/boost/openmethod/policies/rtti.html" class="xref page">rtti::defaults</a></code>. It
+renders types as adorned integers, e.g. "type_id(2)". All non-"polymorphic"
+types would be rendered the same way, as "type_id(0)".</p>
+</div>
+<div class="paragraph">
+<p><code><a href="reference/boost/openmethod/policies/rtti.html" class="xref page">rtti::defaults</a></code> also provides a default implementation for <code>type_index</code>,
+which simply returns its argument.</p>
+</div>
+<div class="paragraph">
+<p>Now we need a policy to get a v-table pointer from an object. Our RTTI system
+has an interesting property: its type ids are monotonically allocated in a
+small, dense range. It means that we can use them as indexes in a vector.
+<code>vptr_vector</code> is perfect for that. So here is our registry:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">struct custom_registry : boost::openmethod::registry&lt;
+        custom_rtti, boost::openmethod::policies::vptr_vector&gt; {};
+
+#define BOOST_OPENMETHOD_DEFAULT_REGISTRY custom_registry</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Defining macro
+<a href="BOOST_OPENMETHOD_DEFAULT_REGISTRY.html" class="xref page">BOOST_OPENMETHOD_DEFAULT_REGISTRY</a>
+sets the default registry used by all library components that need one.</p>
+</div>
+<div class="paragraph">
+<p>Next, we include the main header.
+Because <code>BOOST_OPENMETHOD_DEFAULT_REGISTRY</code> is defined, its value is used
+for the default registry.</p>
+</div>
+<div class="paragraph">
+<p>The rest of the example is unchanged.</p>
+</div>
+<div class="sect1">
+<h2 id="_deferred_rtti"><a class="anchor" href="#_deferred_rtti"></a>Deferred RTTI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the previous example, the RTTI system assigns type ids statically. Another
+popular approach is to allocate type ids using a global counter, manipulated by
+static constructors. Like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">struct Node {
+    Node(unsigned type) : type(type) {}
+    unsigned type;
+    static unsigned last_type;
+    static unsigned static_type;
+};
+
+struct Variable : Node {
+    static unsigned static_type;
+    Variable(int value) : Node(static_type), v(value) {}
+    int v;
+};
+
+struct Plus : Node {
+    static unsigned static_type;
+    Plus(const Node&amp; left, const Node&amp; right)
+        : Node(static_type), left(left), right(right) {}
+    const Node&amp; left; const Node&amp; right;
+};
+
+struct Times : Node {
+    static unsigned static_type;
+    Times(const Node&amp; left, const Node&amp; right)
+        : Node(static_type), left(left), right(right) {}
+    const Node&amp; left; const Node&amp; right;
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The type ids are assigned in another translation unit:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">unsigned Node::last_type = 0;
+unsigned Node::static_type = ++Node::last_type;
+unsigned Variable::static_type = ++Node::last_type;
+unsigned Plus::static_type = ++Node::last_type;
+unsigned Times::static_type = ++Node::last_type;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is a problem, because <code>static_type</code> is called by
+<code>BOOST_OPENMETHOD_CLASSES</code>, also during static construction. There no guarantee
+regarding the order of execution of static constructors across several
+translation units. <code>BOOST_OPENMETHOD_CLASSES</code> risks reading the type ids
+<em>before</em> they have been assigned.</p>
+</div>
+<div class="paragraph">
+<p>The solution is to derive the rtti policy from <code>deferred_static_rtti</code>. Doing so
+postpones reading the type ids until <code>initialize</code> is called:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod/preamble.hpp&gt;
+#include &lt;boost/openmethod/policies/vptr_vector.hpp&gt;
+
+//                                          note: vvvvvvvvvvvvvvvv
+struct custom_rtti : boost::openmethod::policies::deferred_static_rtti {
+    template&lt;class Registry&gt;
+    struct fn : defaults {
+        template&lt;class T&gt;
+        static constexpr bool is_polymorphic = std::is_base_of_v&lt;Node, T&gt;;
+
+        using type_id = boost::openmethod::type_id; // for brevity
+
+        template&lt;typename T&gt;
+        static auto static_type() {
+            if constexpr (is_polymorphic&lt;T&gt;) {
+                return reinterpret_cast&lt;type_id&gt;(T::static_type);
+            } else {
+                return reinterpret_cast&lt;type_id&gt;(0);
+            }
+        }
+
+        template&lt;typename T&gt;
+        static auto dynamic_type(const T&amp; obj) {
+            if constexpr (is_polymorphic&lt;T&gt;) {
+                return reinterpret_cast&lt;type_id&gt;(obj.type);
+            } else {
+                return reinterpret_cast&lt;type_id&gt;(0);
+            }
+        }
+    };
+};</code></pre>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/custom_rtti.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="registries_and_policies.html">Registries and Policies</a></span>
+        <span class="next"><a href="error_handling.html">Error Handling</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/core_api.html">
+    <link rel="prev" href="multiple_dispatch.html">
+    <link rel="next" href="registries_and_policies.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Advanced Features</li>
+    <li><a href="core_api.html">Core API</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="multiple_dispatch.html">
+      <span class="material-symbols-outlined" title="Previous: Multiple Dispatch">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="registries_and_policies.html">
+      <span class="material-symbols-outlined" title="Next: Registries and Policies">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="core_api" class="paragraph">
+<p>OpenMethod provides a macro-free interface: the core API. This is useful in
+certain situations, for example when combining open-methods and templates.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s rewrite the <code>postfix</code> method using the core API. An open-method is
+implemented as an instance of the <code>method</code> class template. Its parameters are an
+identifier type and a function type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod/core.hpp&gt;
+
+struct postfix_method_id;
+
+using postfix = method&lt;
+    postfix_method_id, void(virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os)&gt;;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>postfix_method_id</code> class acts as the method&#8217;s identifier: it separates it
+from other methods with the same signature. For example, we could have another
+method, <code>prefix</code>, which writes expressions in prefix notation. It would have the
+same signature. Without the identifier argument, <code>prefix</code> and <code>postfix</code> would be the
+same method.</p>
+</div>
+<div class="paragraph">
+<p>The exact name of the identifier class does not matter. The class needs not be
+defined, only declared.</p>
+</div>
+<div class="paragraph">
+<p>Inventing identifier class names can get tedious, so OpenMethod provides a macro
+for that: <a href="BOOST_OPENMETHOD_ID.html" class="xref page">BOOST_OPENMETHOD_ID</a>. Let&#8217;s use it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod/macros.hpp&gt;
+
+struct BOOST_OPENMETHOD_ID(postfix);
+
+using postfix = method&lt;
+    BOOST_OPENMETHOD_ID(postfix),
+    void(virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os)&gt;;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We said macro-free interface, but here is a macro again! Well, we are not forced
+to use the macro. There is a benefit though: it is used in the implementation of
+high-level macros like <a href="BOOST_OPENMETHOD.html" class="xref page">BOOST_OPENMETHOD</a>. This makes
+it possible to mix the two styles, for example to define a method using the
+macro, and add overriders using the core API.</p>
+</div>
+<div class="paragraph">
+<p>We call the method via the nested function object <code>fn</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">postfix::fn(node, std::cout);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Overriders are ordinary functions. We add them to the method via the class
+template <code>override</code>, nested in the method class. Its constructor adds the
+functions passed as template arguments to the method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">auto postfix_variable(virtual_ptr&lt;const Variable&gt; node, std::ostream&amp; os) {
+    os &lt;&lt; node-&gt;v;
+}
+
+static postfix::override&lt;postfix_variable&gt; override_postfix_variable;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once again we find ourselves inventing a name for a single use. In C++26, we
+will probably have the Python-like <code>_</code> for this.</p>
+</div>
+<div class="paragraph">
+<p>We can also use a small macro:
+<a href="BOOST_OPENMETHOD_REGISTER.html" class="xref page">BOOST_OPENMETHOD_REGISTER</a>. It takes a
+class, and instantiates a static object with an obfuscated name:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod/macros.hpp&gt;
+
+auto postfix_plus(virtual_ptr&lt;const Plus&gt; node, std::ostream&amp; os) {
+    postfix::fn(node-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix::fn(node-&gt;right, os);
+    os &lt;&lt; " +";
+}
+
+auto postfix_times(virtual_ptr&lt;const Times&gt; node, std::ostream&amp; os) {
+    postfix::fn(node-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix::fn(node-&gt;right, os);
+    os &lt;&lt; " *";
+}
+
+BOOST_OPENMETHOD_REGISTER(postfix::override&lt;postfix_plus, postfix_times&gt;);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again, use of this macro is completely optional.</p>
+</div>
+<div class="paragraph">
+<p>We register the classes with <code>use_classes</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">BOOST_OPENMETHOD_REGISTER(use_classes&lt;Node, Variable, Plus, Times&gt;);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, we call the method via the static member of the method class <code>fn</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">auto main() -&gt; int {
+    boost::openmethod::initialize();
+    Variable a{2}, b{3}, c{4};
+    Plus d{a, b};
+    Times e{d, c};
+    postfix::fn(e, std::cout);
+    std::cout &lt;&lt; " = " &lt;&lt; e.value() &lt;&lt; "\n"; // 2 3 + 4 * = 20
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_methods_and_templates"><a class="anchor" href="#_methods_and_templates"></a>Methods and Templates</h3>
+<div class="paragraph">
+<p>The primary purpose of the core API is to make open-methods inter-operate with
+templates.</p>
+</div>
+<div class="paragraph">
+<p><code>Plus</code> and <code>Times</code> are obvious candidates for templatization. They only differ
+by the operation they perform, and we already have templates for that in the
+standard library:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+
+struct Node {
+    virtual ~Node() {}
+    virtual int value() const = 0;
+};
+
+struct Variable : Node {
+    Variable(int value) : v(value) {}
+    int value() const override { return v; }
+    int v;
+};
+
+template&lt;typename Op&gt;
+struct BinaryOp : Node {
+    BinaryOp(const Node&amp; left, const Node&amp; right) : left(left), right(right) {}
+    int value() const override { return Op()(left.value(), right.value()); }
+    const Node&amp; left;
+    const Node&amp; right;
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s go back to defining postfix using <code>BOOST_OPENMETHOD</code>. It is more
+convenient, as it generates <code>postfix</code> as an ordinary inline function, which can
+be overloaded, passed around by address, etc. The overrider for <code>Variable</code> does
+not involve templates, so we can write it as before:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">BOOST_OPENMETHOD(
+    postfix, (virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os), void);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Variable&gt; var, std::ostream&amp; os), void) {
+    os &lt;&lt; var-&gt;v;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We write a function template that renders binary operations in postfix
+notation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">template&lt;class BinaryOp, char Op&gt;
+auto postfix_binary(virtual_ptr&lt;const BinaryOp&gt; node, std::ostream&amp; os) {
+    postfix(node-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix(node-&gt;right, os);
+    os &lt;&lt; " " &lt;&lt; Op;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Macro <a href="BOOST_OPENMETHOD_TYPE.html" class="xref page">BOOST_OPENMETHOD_TYPE</a> takes the same
+parameters as <code>BOOST_OPENMETHOD</code>, and expands to the core <code><a href="reference/boost/openmethod/method-0d8.html" class="xref page">method</a></code>
+instance. That is how we access its nested <code>overrider</code> class template:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">BOOST_OPENMETHOD_TYPE(
+    postfix, (virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os), void)::
+    override&lt;
+        postfix_binary&lt;BinaryOp&lt;std::plus&lt;int&gt;&gt;, '+'&gt;,
+        postfix_binary&lt;
+            BinaryOp&lt;std::multiplies&lt;int&gt;&gt;, '*'&gt;&gt; add_binary_overriders;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can register the classes with <code>BOOST_OPENMETHOD_CLASSES</code>, and write <code>main</code>
+like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">BOOST_OPENMETHOD_CLASSES(
+    Node, Variable, BinaryOp&lt;std::plus&lt;int&gt;&gt;, BinaryOp&lt;std::multiplies&lt;int&gt;&gt;);
+
+auto main() -&gt; int {
+    boost::openmethod::initialize();
+    Variable a{2}, b{3}, c{4};
+    BinaryOp&lt;std::plus&lt;int&gt;&gt; d{a, b};
+    BinaryOp&lt;std::multiplies&lt;int&gt;&gt; e{d, c};
+    postfix(e, std::cout);
+    std::cout &lt;&lt; " = " &lt;&lt; e.value() &lt;&lt; "\n"; // 2 3 + 4 * = 20
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example only scratches the surface of what can be done by combining
+templates, the core API, and libraries such as Boost.Mp11.</p>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/core_api.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="multiple_dispatch.html">Multiple Dispatch</a></span>
+        <span class="next"><a href="registries_and_policies.html">Registries and Policies</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

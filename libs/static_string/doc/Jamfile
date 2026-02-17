@@ -1,0 +1,109 @@
+#
+# Copyright (c) 2013-2017 Vinnie Falco (vinnie dot falco at gmail dot com)
+# Copyright (c) 2020 Krystian Stasiowski (sdkrystian at gmail dot com)
+# Copyright (c) 2022 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Distributed under the Boost Software License, Version 1.0. (See accompanying
+# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+
+project static_string/doc ;
+
+import-search /boost/docca ;
+
+import docca ;
+import path ;
+import os ;
+
+local include-prefix = [ path.root $(__file__:D) [ path.pwd ] ] ;
+include-prefix = [ path.native $(include-prefix:D)/include ] ;
+
+docca.pyreference reference.qbk
+    :
+        [ glob-tree-ex ../include/boost/static_string : *.hpp *.ipp : detail impl ]
+        externals.hpp
+    :
+        <doxygen:param>ALIASES="esafe=\"@par Exception Safety\""
+        <doxygen:param>DISTRIBUTE_GROUP_DOC=YES
+        <doxygen:param>MACRO_EXPANSION=YES
+        <doxygen:param>EXPAND_ONLY_PREDEF=YES
+        <doxygen:param>PREDEFINED="\\
+            BOOST_STATIC_STRING_DOCS \\
+            \"BOOST_STATIC_STRING_CPP11_CONSTEXPR=constexpr\" \\
+            \"BOOST_STATIC_STRING_CPP14_CONSTEXPR=constexpr\" \\
+            \"BOOST_STATIC_STRING_CPP17_CONSTEXPR=constexpr\" \\
+            \"BOOST_STATIC_STRING_CPP20_CONSTEXPR=constexpr\""
+        <doxygen:param>ABBREVIATE_BRIEF=
+        <doxygen:param>INLINE_INHERITED_MEMB=YES
+        <doxygen:param>JAVADOC_AUTOBRIEF=YES
+        <doxygen:param>AUTOLINK_SUPPORT=NO
+        <doxygen:param>EXTRACT_ALL=YES
+        <doxygen:param>EXTRACT_PRIVATE=YES
+        <doxygen:param>EXTRACT_LOCAL_CLASSES=NO
+        <doxygen:param>INLINE_INFO=NO
+        <doxygen:param>SORT_MEMBER_DOCS=NO
+        <doxygen:param>SORT_MEMBERS_CTORS_1ST=YES
+        <doxygen:param>STRIP_FROM_PATH=$(include-prefix)
+
+        # <doxygen:param>ALLOW_UNICODE_NAMES=NO
+        # <doxygen:param>GROUP_NESTED_COMPOUNDS=NO
+        # <doxygen:param>HIDE_COMPOUND_REFERENCE=NO
+        # <doxygen:param>WARN_AS_ERROR=NO
+
+        <docca:config>config.json
+    ;
+
+#-------------------------------------------------------------------------------
+#
+# Produce the Boost.Book XML from the QuickBook
+#
+
+install images
+    :
+    :
+        <location>html/static_string/images
+    ;
+
+explicit images ;
+
+xml static_string_doc
+    :
+        qbk/main.qbk
+    :
+        <dependency>images
+        <dependency>reference.qbk
+    ;
+
+explicit static_string_doc ;
+
+#-------------------------------------------------------------------------------
+#
+# HTML documentation for $(BOOST_ROOT)/doc/html
+#
+#-------------------------------------------------------------------------------
+
+boostbook static_string
+    :
+        static_string_doc
+    :
+        <xsl:param>boost.root=../../../..
+        <xsl:param>chapter.autolabel=0
+        <xsl:param>chunk.section.depth=8               # Depth to which sections should be chunked
+        <xsl:param>chunk.first.sections=1              # Chunk the first top-level section?
+        <xsl:param>generate.toc="chapter toc,title section nop reference nop"
+        <include>../../../tools/boostbook/dtd
+    :
+        <dependency>images
+    ;
+
+#-------------------------------------------------------------------------------
+#
+# These are used to inform the build system of the
+# means to build the integrated and stand-alone docs.
+#
+
+alias boostdoc ;
+explicit boostdoc ;
+
+alias boostrelease : static_string ;
+explicit boostrelease ;

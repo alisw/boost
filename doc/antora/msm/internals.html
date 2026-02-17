@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Internals :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/internals.html">
+    <link rel="prev" href="questions-answers-tips.html">
+    <link rel="next" href="acknowledgements.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="index.html">Table of Contents</a></li>
+    <li><a href="internals.html">Internals</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="questions-answers-tips.html">
+      <span class="material-symbols-outlined" title="Previous: Questions &amp; Answers, tips">arrow_back</span>
+    </a>
+    <a accesskey="u" href="index.html">
+      <span class="material-symbols-outlined" title="Up: Table of Contents">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="acknowledgements.html">
+      <span class="material-symbols-outlined" title="Next: Acknowledgements">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Internals</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This chapter describes the internal machinery of the back-end, which can
+be useful for UML experts but can be safely ignored for most users. For
+implementers, the interface between front- and back-end is also
+described in detail.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="run-to-completion"><a class="anchor" href="#run-to-completion"></a>Backend: Run To Completion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The back-end implements the following run-to-completion algorithm:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check if one region of the concrete state machine is in a terminate or
+interrupt state. If yes, event processing is disabled while the
+condition lasts (forever for a terminate pseudo-state, while active for
+an interrupt pseudo-state).</p>
+</li>
+<li>
+<p>If the message queue feature is enabled and if the state machine is
+already processing an event, push the currently processed event into the
+queue and end processing. Otherwise, remember that the state machine is
+now processing an event and continue.</p>
+</li>
+<li>
+<p>If the state machine detected that no deferred event is used, skip
+this step. Otherwise, mark the first deferred event from the deferred
+queue as active.</p>
+</li>
+<li>
+<p>Now start the core of event dispatching. If exception handling is
+activated, this will happen inside a try/catch block and the front-end
+<code>exception_caught</code> is called if an exception occurs.</p>
+</li>
+<li>
+<p>The event is now dispatched in turn to every region, in the order
+defined by the initial state front-end definition. This will, for every
+region, call the corresponding front-end transition definition (the
+"row" or "Row" of the transition table).</p>
+</li>
+<li>
+<p>Without transition conflict, if for a given region a transition is
+possible, the guard condition is checked. If it returns <code>true</code>, the
+transition processing continues and the current state&#8217;s exit action is
+called, followed by the transition action behavior and the new active
+state&#8217;s entry behavior.</p>
+</li>
+<li>
+<p>With transition conflicts (several possible transitions, disambiguated
+by mutually exclusive guard conditions), the guard conditions are tried
+in reverse order of their transition definition in the transition table.
+The first one returning <code>true</code> selects its transition. Note that this is
+not defined by the UML standard, which simply specifies that if the
+guard conditions are not mutually exclusive, the state machine is
+ill-formed and the behaviour undefined. Relying on this
+implementation-specific behaviour will make it harder for the developer
+to support another state machine framework.</p>
+</li>
+<li>
+<p>If at least one region processes the event, this event is seen as
+having been accepted. If not, the library calls <code>no_transition</code> on the
+state machine for every contained region.</p>
+</li>
+<li>
+<p>If the currently active state is a submachine, the behaviour is
+slightly different. The UML standard specifies that internal transitions
+have to be tried first, so the event is first dispatched to the
+submachine. Only if the submachine does not accept the event are other
+(non internal) transitions tried.</p>
+</li>
+<li>
+<p>This back-end supports simple states' and submachines' internal
+transitions. These are provided in the state&#8217;s
+<code>internal_transition_table</code> type. Transitions defined in this table are
+added at the end of the main state machine&#8217;s transition table, but with
+a lesser priority than the submachine&#8217;s transitions (defined in
+<code>transition_table</code>). This means, for simple states, that these
+transitions have higher priority than non-internal transitions, conform
+to the UML standard which gives higher priority to deeper-level
+transitions. For submachines, this is a non-standard addition which can
+help make event processing faster by giving a chance to bypass subregion
+processing. With standard UML, one would need to add a subregion only to
+process these internal transitions, which would be slower.</p>
+</li>
+<li>
+<p>After the dispatching itself, the deferred event marked in step 3 (if
+any) now gets a chance of processing.</p>
+</li>
+<li>
+<p>Then, events queued in the message queue also get a dispatching
+chance.</p>
+</li>
+<li>
+<p>Finally, completion / anonymous transitions, if to be found in the
+transition table, also get their dispatching chance.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This algorithm illustrates how the back-end configures itself at
+compile-time as much as possible. Every feature not found in a given
+state machine definition is deactivated and has therefore no runtime
+cost. Completion events, deferred events, terminate states, dispatching
+to several regions, internal transitions are all deactivated if not
+used. User configuration is only for exception handling and message
+queue necessary.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="internals-front-back-interface"><a class="anchor" href="#internals-front-back-interface"></a>Frontend / Backend interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The design of MSM tries to make front-ends and back-ends (later) to be
+as interchangeable as possible. Of course, no back-end will ever
+implement every feature defined by any possible front-end and inversely,
+but the goal is to make it as easy as possible to extend the current
+state of the library.</p>
+</div>
+<div class="paragraph">
+<p>To achieve this, MSM divides the functionality between both sides: the
+front-end is a sort of user interface and is descriptive, the back-end
+implements the state machine engine.</p>
+</div>
+<div class="paragraph">
+<p>MSM being based on a transition table, a concrete state machine (or a
+given front-end) must provide a transition_table. This transition table
+must be made of rows. And each row must tell what kind of transition it
+is and implement the calls to the actions and guards. A state machine
+must also define its regions (marked by initial states). And that is
+about the only constraints for front-ends. How the rows are described is
+implementer&#8217;s choice.</p>
+</div>
+<div class="paragraph">
+<p>Every row must provide:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A <code>Source</code> typedef indicating, well, the type of the source state.</p>
+</li>
+<li>
+<p>A <code>Target</code> typedef indicating, well, the type of the target state.</p>
+</li>
+<li>
+<p>An <code>Evt</code> typedef indicating the type of the event triggering the
+transition.</p>
+</li>
+<li>
+<p>A <code>row_type_tag</code> typedef indicating the type of the transition.</p>
+</li>
+<li>
+<p>Rows having a type requiring transition actions must provide a static
+function <code>action_call</code> with the following signature:
+<code>template &lt;class Fsm,class SourceState,class TargetState,class AllStates&gt;</code></p>
+<div class="paragraph">
+<p><code>static void action_call (Fsm&amp; fsm, Event const&amp; evt, SourceState&amp;, TargetState&amp;, AllStates&amp;)</code></p>
+</div>
+<div class="paragraph">
+<p>The function gets as parameters the (back-end) state machine, the event,
+source and target states and a container (in the current back-end, a
+fusion::set) of all the states defined in the state machine. For
+example, as the back-end has the front-end as basic class, <code>action_call</code>
+is simply defined as <code>(fsm.*action)(evt)</code>.</p>
+</div>
+</li>
+<li>
+<p>Rows having a type requiring a guard must provide a static function
+<code>guard_call</code> with the following signature:``</p>
+<div class="paragraph">
+<p><code>template &lt;class Fsm,class SourceState,class TargetState,class AllStates&gt;</code></p>
+</div>
+<div class="paragraph">
+<p><code>static bool guard_call (Fsm&amp;, Event const&amp;, SourceState&amp;, TargetState&amp;, AllStates&amp;)</code></p>
+</div>
+</li>
+<li>
+<p>The possible transition (row) types are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>a_row_tag: a transition with actions and no guard</p>
+</li>
+<li>
+<p>g_row_type: a transition with a guard and no actions</p>
+</li>
+<li>
+<p>_row_tag: a transition without actions or guard</p>
+</li>
+<li>
+<p>row_tag: a transition with guard and actions</p>
+</li>
+<li>
+<p>a_irow_tag: an internal transition (defined inside the
+<code>transition_table</code>) with actions</p>
+</li>
+<li>
+<p>g_irow_tag: an internal transition (defined inside the
+<code>transition_table</code>) with guard</p>
+</li>
+<li>
+<p>irow_tag: an internal transition (defined inside the
+<code>transition_table</code>) with actions and guards</p>
+</li>
+<li>
+<p>_irow_tag: an internal transition (defined inside the
+<code>transition_table</code>) without action or guard. Due to higher priority for
+internal transitions, this is equivalent to a "ignore event"</p>
+</li>
+<li>
+<p>sm_a_i_row_tag: an internal transition (defined inside the
+<code>internal_transition_table</code>) with actions</p>
+</li>
+<li>
+<p>sm_g_i_row_tag: an internal transition (defined inside the
+<code>internal_transition_table</code>) with guard</p>
+</li>
+<li>
+<p>sm_i_row_tag: an internal transition (defined inside the
+<code>internal_transition_table</code>) with actions and guards</p>
+</li>
+<li>
+<p>sm__i_row_tag: an internal transition (defined inside the
+<code>internal_transition_table</code>) without action or guard. Due to higher
+priority for internal transitions, this is equivalent to an "ignore
+event"</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Furthermore, a front-end must provide the definition of states and state
+machines. State machine definitions must provide (the implementer is
+free to provide it or let it be done by every concrete state machine;
+different MSM front-ends took one or the other approach):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>initial_state</code>: This typedef can be a single state or a mpl container
+and provides the initial states defining one or several orthogonal
+regions.</p>
+</li>
+<li>
+<p><code>transition_table</code>: This typedef is a MPL sequence of transition rows.</p>
+</li>
+<li>
+<p><code>configuration</code>: this typedef is a MPL sequence of known types
+triggering special behavior in the back-end, for example if a concrete
+fsm requires a message queue or exception catching.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>States and state machines must both provide a (possibly empty)
+definition of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>flag_list</code>: the flags being active when this state or state machine
+becomes the current state of the fsm.</p>
+</li>
+<li>
+<p><code>deferred_events</code>: events being automatically deferred when the state
+is the current state of the fsm.</p>
+</li>
+<li>
+<p><code>internal_transition_table</code>: the internal transitions of this state.</p>
+</li>
+<li>
+<p><code>on_entry</code> and <code>on_exit</code> methods.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="internals-state-id"><a class="anchor" href="#internals-state-id"></a>Generated state ids</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Normally, one does not need to know the ids are generated for all the
+states of a state machine, unless for debugging purposes, like the
+pstate function does in the tutorials in order to display the name of
+the current state. This section will show how to automatically display
+typeid-generated names, but these are not very readable on all
+platforms, so it can help to know how the ids are generated. The ids are
+generated using the transition table, from the <code>Start'' column up to
+down, then from the </code>Next'' column, up to down, as shown in the next
+image:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/AnnexA.jpg" alt="image"></span> Stopped will get id 0, Open id 1,
+ErrorMode id 6 and SleepMode (seen only in the ``Next'' column) id 7. If
+you have some implicitly created states, like transition-less initial
+states or states created using the explicit_creation typedef, these will
+be added as a source at the end of the transition table. If you have
+submachine states, a row will be added for them at the end of the table,
+after the automatically or explicitly created states, which can change
+their id. The next help you will need for debugging would be to call the
+current_state method of the state_machine class, then the display_type
+helper to generate a readable name from the id. If you do not want to go
+through the transition table to fill an array of names, the library
+provides another helper, fill_state_names, which, given an array of
+sufficient size (please see next section to know how many states are
+defined in the state machine), will fill it with typeid-generated names.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="metaprogramming-tools"><a class="anchor" href="#metaprogramming-tools"></a>Metaprogramming tools</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We can find for the transition table more uses than what we have seen so
+far. Let&#8217;s suppose you need to write a coverage tool. A state machine
+would be perfect for such a job, if only it could provide some
+information about its structure. Thanks to the transition table and
+Boost.MPL, it does.</p>
+</div>
+<div class="paragraph">
+<p>What is needed for a coverage tool? You need to know how many states are
+defined in the state machine, and how many events can be fired. This way
+you can log the fired events and the states visited in the life of a
+concrete machine and be able to perform some coverage analysis, like
+``fired 65% of all possible events and visited 80% of the states defined
+in the state machine''. To achieve this, MSM provides a few useful
+tools:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>generate_state_set&lt;transition table&gt;: returns a mpl::set of all the
+states defined in the table.</p>
+</li>
+<li>
+<p>generate_event_set&lt;transition table&gt;: returns a mpl::set of all the
+events defined in the table.</p>
+</li>
+<li>
+<p>using mpl::size&lt;&gt;::value you can get the number of elements in the
+set.</p>
+</li>
+<li>
+<p>display_type defines an operator() sending typeid(Type).name() to
+cout.</p>
+</li>
+<li>
+<p>fill_state_names fills an array of char const* with names of all
+states (found by typeid).</p>
+</li>
+<li>
+<p>using mpl::for_each on the result of generate_state_set and
+generate_event_set passing display_type as argument will display all the
+states of the state machine.</p>
+</li>
+<li>
+<p>let&#8217;s suppose you need to recursively find the states and events
+defined in the composite states and thus also having a transition table.
+Calling recursive_get_transition_table&lt;Composite&gt; will return you the
+transition table of the composite state, recursively adding the
+transition tables of all sub-state machines and sub-sub&#8230;&#8203;-sub-state
+machines. Then call generate_state_set or generate_event_set on the
+result to get the full list of states and events.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>An <a href="_attachments/BoostCon09Full.cpp" class="xref attachment">example</a> shows the tools in action.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/internals.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="questions-answers-tips.html">Questions &amp; Answers, tips</a></span>
+        <span class="next"><a href="acknowledgements.html">Acknowledgements</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

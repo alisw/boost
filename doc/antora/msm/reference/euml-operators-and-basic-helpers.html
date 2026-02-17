@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>eUML operators and basic helpers :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/reference/euml-operators-and-basic-helpers.html">
+    <link rel="prev" href="external-references-to-msm.html">
+    <link rel="next" href="functional-programming.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+<link rel="icon" href="../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class=" is-current-page" data-depth="3">
+            <a class="nav-link" href="euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="../index.html">Table of Contents</a></li>
+    <li><a href="../reference.html">Reference</a></li>
+    <li><a href="euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="external-references-to-msm.html">
+      <span class="material-symbols-outlined" title="Previous: External references to MSM">arrow_back</span>
+    </a>
+    <a accesskey="u" href="../reference.html">
+      <span class="material-symbols-outlined" title="Up: Reference">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="functional-programming.html">
+      <span class="material-symbols-outlined" title="Next: Functional programming">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">eUML operators and basic helpers</h1>
+  <div class="paragraph">
+<p>Table 10.1 — eUML operators and basic helpers</p>
+</div>
+<div class="paragraph">
+<p>eUML function / operator</p>
+</div>
+<div class="paragraph">
+<p>Description</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>&amp;&amp;</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1&amp;&amp; Action2</p>
+</div>
+<div class="paragraph">
+<p>And_</p>
+</div>
+<div class="paragraph">
+<p>||</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1|| Action2</p>
+</div>
+<div class="paragraph">
+<p>Or_</p>
+</div>
+<div class="paragraph">
+<p>!</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily !Action1</p>
+</div>
+<div class="paragraph">
+<p>Not_</p>
+</div>
+<div class="paragraph">
+<p>!=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 != Action2</p>
+</div>
+<div class="paragraph">
+<p>NotEqualTo_</p>
+</div>
+<div class="paragraph">
+<p>==</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 == Action2</p>
+</div>
+<div class="paragraph">
+<p>EqualTo_</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>Calls lazily Action1 &gt; Action2</p>
+</div>
+<div class="paragraph">
+<p>Greater_</p>
+</div>
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &gt;= Action2</p>
+</div>
+<div class="paragraph">
+<p>Greater_Equal_</p>
+</div>
+<div class="paragraph">
+<p>&lt;</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &lt; Action2</p>
+</div>
+<div class="paragraph">
+<p>Less_</p>
+</div>
+<div class="paragraph">
+<p>&#8656;</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &#8656; Action2</p>
+</div>
+<div class="paragraph">
+<p>Less_Equal_</p>
+</div>
+<div class="paragraph">
+<p>&amp;</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &amp; Action2</p>
+</div>
+<div class="paragraph">
+<p>Bitwise_And_</p>
+</div>
+<div class="paragraph">
+<p>|</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 | Action2</p>
+</div>
+<div class="paragraph">
+<p>Bitwise_Or_</p>
+</div>
+<div class="paragraph">
+<p>^</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 ^ Action2</p>
+</div>
+<div class="paragraph">
+<p>Bitwise_Xor_</p>
+</div>
+<div class="paragraph">
+<p>–</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily –Action1 / Action1–</p>
+</div>
+<div class="paragraph">
+<p>Pre_Dec_ / Post_Dec_</p>
+</div>
+<div class="paragraph">
+<p>++</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 / Action1</p>
+</div>
+<div class="paragraph">
+<p>Pre_Inc_ / Post_Inc_</p>
+</div>
+<div class="paragraph">
+<p>/</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 / Action2</p>
+</div>
+<div class="paragraph">
+<p>Divides_</p>
+</div>
+<div class="paragraph">
+<p>/=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 /= Action2</p>
+</div>
+<div class="paragraph">
+<p>Divides_Assign_</p>
+</div>
+<div class="paragraph">
+<p>*</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 * Action2</p>
+</div>
+<div class="paragraph">
+<p>Multiplies_</p>
+</div>
+<div class="paragraph">
+<p>*=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 *= Action2</p>
+</div>
+<div class="paragraph">
+<p>Multiplies_Assign_</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(binary)</p>
+<div class="paragraph">
+<p>+
+Calls lazily Action1 + Action2</p>
+</div>
+<div class="paragraph">
+<p>+
+Plus_</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(unary)</p>
+<div class="paragraph">
+<p>Calls lazily +Action1</p>
+</div>
+<div class="paragraph">
+<p>Unary_Plus_</p>
+</div>
+<div class="paragraph">
+<p>+=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 += Action2</p>
+</div>
+<div class="paragraph">
+<p>Plus_Assign_</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(binary)</p>
+<div class="paragraph">
+<p>Calls lazily Action1 - Action2</p>
+</div>
+<div class="paragraph">
+<p>Minus_</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(unary)</p>
+<div class="paragraph">
+<p>Calls lazily -Action1</p>
+</div>
+<div class="paragraph">
+<p>Unary_Minus_</p>
+</div>
+<div class="paragraph">
+<p>-=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 -= Action2</p>
+</div>
+<div class="paragraph">
+<p>Minus_Assign_</p>
+</div>
+<div class="paragraph">
+<p>%</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 % Action2</p>
+</div>
+<div class="paragraph">
+<p>Modulus_</p>
+</div>
+<div class="paragraph">
+<p>%=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 %= Action2</p>
+</div>
+<div class="paragraph">
+<p>Modulus_Assign_</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="openblock">
+<div class="content">
+
+</div>
+</div>
+</blockquote>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>Calls lazily Action1 &gt;&gt; Action2</p>
+</div>
+<div class="paragraph">
+<p>ShiftRight_</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+
+</blockquote>
+</div>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>=</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &gt;&gt;= Action2</p>
+</div>
+<div class="paragraph">
+<p>ShiftRight_Assign_</p>
+</div>
+<div class="paragraph">
+<p>&lt;&lt;</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &lt;&lt; Action2</p>
+</div>
+<div class="paragraph">
+<p>ShiftLeft_</p>
+</div>
+<div class="paragraph">
+<p>&lt;&#8656;</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 &lt;&#8656; Action2</p>
+</div>
+<div class="paragraph">
+<p>ShiftLeft_Assign_</p>
+</div>
+<div class="paragraph">
+<p>[] (works on vector, map, arrays)</p>
+</div>
+<div class="paragraph">
+<p>Calls lazily Action1 [Action2]</p>
+</div>
+<div class="paragraph">
+<p>Subscript_</p>
+</div>
+<div class="paragraph">
+<p>if_then_else_(Condition,Action1,Action2)</p>
+</div>
+<div class="paragraph">
+<p>Returns either the result of calling Action1 or the result of calling
+Action2</p>
+</div>
+<div class="paragraph">
+<p>If_Else_</p>
+</div>
+<div class="paragraph">
+<p>if_then_(Condition,Action)</p>
+</div>
+<div class="paragraph">
+<p>Returns the result of calling Action if Condition</p>
+</div>
+<div class="paragraph">
+<p>If_Then_</p>
+</div>
+<div class="paragraph">
+<p>while_(Condition, Body)</p>
+</div>
+<div class="paragraph">
+<p>While Condition(), calls Body(). Returns nothing</p>
+</div>
+<div class="paragraph">
+<p>While_Do_</p>
+</div>
+<div class="paragraph">
+<p>do_while_(Condition, Body)</p>
+</div>
+<div class="paragraph">
+<p>Calls Body() while Condition(). Returns nothing</p>
+</div>
+<div class="paragraph">
+<p>Do_While_</p>
+</div>
+<div class="paragraph">
+<p>for_(Begin,Stop,EndLoop,Body)</p>
+</div>
+<div class="paragraph">
+<p>Calls for(Begin;Stop;EndLoop)\{Body;}</p>
+</div>
+<div class="paragraph">
+<p>For_Loop_</p>
+</div>
+<div class="paragraph">
+<p>process_(Event [,fsm1] [,fsm2] [,fsm3] [,fsm4])</p>
+</div>
+<div class="paragraph">
+<p>Processes Event on the current state machine (if no fsm specified) or on
+up to 4 state machines returned by an appropriate functor.</p>
+</div>
+<div class="paragraph">
+<p>Process_</p>
+</div>
+<div class="paragraph">
+<p>process2_(Event, Data [,fsm1] [,fsm2] [,fsm3])</p>
+</div>
+<div class="paragraph">
+<p>Processes Event on the current state machine (if no fsm specified) or on
+up to 2 state machines returned by an appropriate functor. The event is
+copy-constructed from what Data() returns.</p>
+</div>
+<div class="paragraph">
+<p>Process2_</p>
+</div>
+<div class="paragraph">
+<p>is_flag_(Flag [,fsm])</p>
+</div>
+<div class="paragraph">
+<p>Calls is_flag_active() on the current state machine or the one returned
+by calling fsm.</p>
+</div>
+<div class="paragraph">
+<p>Get_Flag_</p>
+</div>
+<div class="paragraph">
+<p>event_ [(attribute name)]</p>
+</div>
+<div class="paragraph">
+<p>Returns the current event (as const reference)</p>
+</div>
+<div class="paragraph">
+<p>GetEvent_</p>
+</div>
+<div class="paragraph">
+<p>source_ [(attribute name)]</p>
+</div>
+<div class="paragraph">
+<p>Returns the source state of the currently triggered transition (as
+reference). If an attribute name is provided, returns the attribute by
+reference.</p>
+</div>
+<div class="paragraph">
+<p>GetSource_</p>
+</div>
+<div class="paragraph">
+<p>target_ [(attribute name)]</p>
+</div>
+<div class="paragraph">
+<p>Returns the target state of the currently triggered transition (as
+reference). If an attribute name is provided, returns the attribute by
+reference.</p>
+</div>
+<div class="paragraph">
+<p>GetTarget_</p>
+</div>
+<div class="paragraph">
+<p>state_ [(attribute name)]</p>
+</div>
+<div class="paragraph">
+<p>Returns the source state of the currently active state (as reference).
+Valid inside a state entry/exit action. If an attribute name is
+provided, returns the attribute by reference.</p>
+</div>
+<div class="paragraph">
+<p>GetState_</p>
+</div>
+<div class="paragraph">
+<p>fsm_ [(attribute name)]</p>
+</div>
+<div class="paragraph">
+<p>Returns the current state machine (as reference). Valid inside a state
+entry/exit action or a transition. If an attribute name is provided,
+returns the attribute by reference.</p>
+</div>
+<div class="paragraph">
+<p>GetFsm_</p>
+</div>
+<div class="paragraph">
+<p>substate_(state_name [,fsm])</p>
+</div>
+<div class="paragraph">
+<p>Returns (as reference) the state state_name referenced in the current
+state machine or the one given as argument.</p>
+</div>
+<div class="paragraph">
+<p>SubState_</p>
+</div>
+</blockquote>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+
+</blockquote>
+</div>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="openblock">
+<div class="content">
+
+</div>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="openblock">
+<div class="content">
+
+</div>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>To use these functions, you need to include:</p>
+</div>
+<div class="paragraph">
+<p><code>#include &lt;msm/front/euml/euml.hpp&gt;</code></p>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/reference/euml-operators-and-basic-helpers.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="external-references-to-msm.html">External references to MSM</a></span>
+        <span class="next"><a href="functional-programming.html">Functional programming</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

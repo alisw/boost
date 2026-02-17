@@ -1,0 +1,328 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>execution::inline_exception_handling_t</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../../boost_asio.html" title="Boost.Asio">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="execution__inline_exception_handling.html" title="execution::inline_exception_handling">
+<link rel="next" href="execution__inline_exception_handling_t/capture.html" title="execution::inline_exception_handling_t::capture">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="execution__inline_exception_handling.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="execution__inline_exception_handling_t/capture.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_asio.reference.execution__inline_exception_handling_t"></a><a class="link" href="execution__inline_exception_handling_t.html" title="execution::inline_exception_handling_t">execution::inline_exception_handling_t</a>
+</h3></div></div></div>
+<p>
+        <a class="indexterm" name="boost_asio.indexterm.execution__inline_exception_handling_t"></a>
+      </p>
+<p>
+        A property to describe what guarantees an executor makes about the treatment
+        of exceptions that are thrown by a submitted function, when that function
+        is executed inline within <code class="computeroutput"><span class="identifier">execute</span></code>.
+      </p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">inline_exception_handling_t</span>
+</pre>
+<h5>
+<a name="boost_asio.reference.execution__inline_exception_handling_t.h0"></a>
+        <span class="phrase"><a name="boost_asio.reference.execution__inline_exception_handling_t.types"></a></span><a class="link" href="execution__inline_exception_handling_t.html#boost_asio.reference.execution__inline_exception_handling_t.types">Types</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t__capture_t.html" title="execution::inline_exception_handling_t::capture_t"><span class="bold"><strong>capture_t</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  A sub-property that indicates that invocation of an executor's
+                  execution function will capture any exceptions that are thrown
+                  by the submitted function object, if that function object is executed
+                  inline. Captured exceptions are forwarded to an executor-defined
+                  handling mechanism.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t__propagate_t.html" title="execution::inline_exception_handling_t::propagate_t"><span class="bold"><strong>propagate_t</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  A sub-property that indicates that invocation of an executor's
+                  execution function will propagate any exceptions that are thrown
+                  by the submitted function object, if that function object is executed
+                  inline.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t__terminate_t.html" title="execution::inline_exception_handling_t::terminate_t"><span class="bold"><strong>terminate_t</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  A sub-property that indicates that invocation of an executor's
+                  execution function will terminate the program if any exceptions
+                  that are thrown by the submitted function object, if that function
+                  object is executed inline.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/polymorphic_query_result_type.html" title="execution::inline_exception_handling_t::polymorphic_query_result_type"><span class="bold"><strong>polymorphic_query_result_type</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  The type returned by queries against an any_executor.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="boost_asio.reference.execution__inline_exception_handling_t.h1"></a>
+        <span class="phrase"><a name="boost_asio.reference.execution__inline_exception_handling_t.member_functions"></a></span><a class="link" href="execution__inline_exception_handling_t.html#boost_asio.reference.execution__inline_exception_handling_t.member_functions">Member
+        Functions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/inline_exception_handling_t.html" title="execution::inline_exception_handling_t::inline_exception_handling_t"><span class="bold"><strong>inline_exception_handling_t</strong></span></a> <span class="silver">[constructor]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  Default constructor. <br> <span class="silver"> —</span><br> Construct from a sub-property
+                  value.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<h5>
+<a name="boost_asio.reference.execution__inline_exception_handling_t.h2"></a>
+        <span class="phrase"><a name="boost_asio.reference.execution__inline_exception_handling_t.data_members"></a></span><a class="link" href="execution__inline_exception_handling_t.html#boost_asio.reference.execution__inline_exception_handling_t.data_members">Data
+        Members</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/capture.html" title="execution::inline_exception_handling_t::capture"><span class="bold"><strong>capture</strong></span></a> <span class="silver">[static]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  A special value used for accessing the inline_exception_handling_t::capture_t
+                  property.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/is_applicable_property_v.html" title="execution::inline_exception_handling_t::is_applicable_property_v"><span class="bold"><strong>is_applicable_property_v</strong></span></a> <span class="silver">[static]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  The inline_exception_handling property applies to executors.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/is_preferable.html" title="execution::inline_exception_handling_t::is_preferable"><span class="bold"><strong>is_preferable</strong></span></a> <span class="silver">[static]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  The top-level inline_exception_handling property cannot be preferred.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/is_requirable.html" title="execution::inline_exception_handling_t::is_requirable"><span class="bold"><strong>is_requirable</strong></span></a> <span class="silver">[static]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  The top-level inline_exception_handling property cannot be required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/propagate.html" title="execution::inline_exception_handling_t::propagate"><span class="bold"><strong>propagate</strong></span></a> <span class="silver">[static]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  A special value used for accessing the inline_exception_handling_t::propagate_t
+                  property.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/terminate.html" title="execution::inline_exception_handling_t::terminate"><span class="bold"><strong>terminate</strong></span></a> <span class="silver">[static]</span>
+                </p>
+              </td>
+<td>
+                <p>
+                  A special value used for accessing the inline_exception_handling_t::terminate_t
+                  property.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="boost_asio.reference.execution__inline_exception_handling_t.h3"></a>
+        <span class="phrase"><a name="boost_asio.reference.execution__inline_exception_handling_t.friends"></a></span><a class="link" href="execution__inline_exception_handling_t.html#boost_asio.reference.execution__inline_exception_handling_t.friends">Friends</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/operator_not__eq_.html" title="execution::inline_exception_handling_t::operator!="><span class="bold"><strong>operator!=</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Compare property values for inequality.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a class="link" href="execution__inline_exception_handling_t/operator_eq__eq_.html" title="execution::inline_exception_handling_t::operator=="><span class="bold"><strong>operator==</strong></span></a>
+                </p>
+              </td>
+<td>
+                <p>
+                  Compare property values for equality.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="boost_asio.reference.execution__inline_exception_handling_t.h4"></a>
+        <span class="phrase"><a name="boost_asio.reference.execution__inline_exception_handling_t.requirements"></a></span><a class="link" href="execution__inline_exception_handling_t.html#boost_asio.reference.execution__inline_exception_handling_t.requirements">Requirements</a>
+      </h5>
+<p>
+        <span class="emphasis"><em>Header: </em></span><code class="literal">boost/asio/execution/inline_exception_handling.hpp</code>
+      </p>
+<p>
+        <span class="emphasis"><em>Convenience header: </em></span><code class="literal">boost/asio/execution.hpp</code>
+      </p>
+</div>
+<div class="copyright-footer">Copyright © 2003-2025 Christopher M.
+      Kohlhoff<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="execution__inline_exception_handling.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../boost_asio.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="execution__inline_exception_handling_t/capture.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

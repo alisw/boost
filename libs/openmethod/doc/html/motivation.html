@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/motivation.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="basics.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="motivation.html">Motivation</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="index.html">
+      <span class="material-symbols-outlined" title="Previous: Boost.OpenMethod">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="basics.html">
+      <span class="material-symbols-outlined" title="Next: Methods and Overriders">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="motivation" class="paragraph">
+<p>Consider a class hierarchy that represents and evaluates arithmetic
+expressions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">#include &lt;iostream&gt;
+
+struct Node {
+    virtual ~Node() {}
+    virtual int value() const = 0;
+};
+
+struct Variable : Node {
+    Variable(int value) : v(value) {}
+    int value() const override { return v; }
+    int v;
+};
+
+struct Plus : Node {
+    Plus(const Node&amp; left, const Node&amp; right) : left(left), right(right) {}
+    int value() const override { return left.value() + right.value(); }
+    const Node&amp; left; const Node&amp; right;
+};
+
+struct Times : Node {
+    Times(const Node&amp; left, const Node&amp; right) : left(left), right(right) {}
+    int value() const override { return left.value() * right.value(); }
+    const Node&amp; left; const Node&amp; right;
+};
+
+int main() {
+    Variable a{2}, b{3}, c{4};
+    Plus d{a, b}; Times e{d, c};
+    std::cout &lt;&lt; e.value() &lt;&lt; "\n"; // 20
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We want to add a new operation that prints the expression in postfix
+notation. How do we do it?</p>
+</div>
+<div class="paragraph">
+<p>The simple way is: add a new virtual function. Like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">#include &lt;iostream&gt;
+
+struct Node {
+    // as before
+    virtual void postfix(std::ostream&amp; os) const = 0;
+};
+
+struct Variable : Node {
+    // as before
+    virtual void postfix(std::ostream&amp; os) const override { os &lt;&lt; v; }
+};
+
+struct Plus : Node {
+    // as before
+    void postfix(std::ostream&amp; os) const override {
+        left.postfix(os); os &lt;&lt; ' '; right.postfix(os); os &lt;&lt; " +";
+    }
+};
+
+struct Times : Node {
+    // as before
+    void postfix(std::ostream&amp; os) const override {
+        left.postfix(os); os &lt;&lt; ' '; right.postfix(os); os &lt;&lt; " *";
+    }
+};
+
+int main() {
+    Variable a{2}, b{3}, c{4};
+    Plus d{a, b}; Times e{d, c};
+    e.postfix(std::cout); // 2 3 + 4 *
+    std::cout &lt;&lt; " = " &lt;&lt; e.value() &lt;&lt; "\n"; // = 20
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the classes are part of a small, self-contained program, this may be a
+reasonable solution.
+Otherwise, there are serious problems with this approach.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We need to modify all the classes in the hierarchy, which, in a real
+program, may be numerous and spread across multiple files.
+This assumes that we have access to their source code.</p>
+</li>
+<li>
+<p>We need to recompile all the files that <em>use</em> the Node classes, because
+the layout of their virtual function tables (v-tables) has changed.</p>
+</li>
+<li>
+<p>Programs that use the Node classes get the overriders of
+<code>postfix</code>, even those that don&#8217;t call <code>postfix</code> anywhere.</p>
+</li>
+<li>
+<p>They also pull in <code>postfix</code>'s transitive dependencies, in this case
+<code>std::ostream</code>, locales, facets, exceptions, etc. Note that now we need to
+include <code>&lt;iostream&gt;</code> <em>before</em> defining the classes.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In C++, this problem is often "solved" with the Visitor design pattern. We may
+still need to modify Node to equip it with Visitor support, if it is not there
+already. But once that is done, we can add all the operations we want, albeit in
+a clumsy fashion.</p>
+</div>
+<div class="paragraph">
+<p>Sadly, it is now difficult to add new <em>Node</em> classes, because we have to modify
+the Visitor&#8217;s interface, and all its implementations, and recompile all the
+files that use the Visitor. We traded one problem for another.</p>
+</div>
+<div class="paragraph">
+<p>Paul Graham said that design patterns are essentially workarounds for features
+that are missing in less expressive languages. Indeed, in some languages, our
+problem does not even exist. C# has extension classes. Lisp, Clojure, Dylan,
+Julia, Cecil, TADS, and others, have multi-methods.</p>
+</div>
+<div class="paragraph">
+<p>But wait! What do multi-methods have to do with our problem? There is no
+multiple dispatch going on here! The thing is, "multi-methods" is not a very
+good name. Even in languages that support them, many "multi-methods" have a
+single virtual parameter - they are uni-methods
+<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>! For that reason, we prefer the
+term "open-methods", to emphasize the important feature: openness. Multiple
+dispatch is just a bonus.</p>
+</div>
+<div class="paragraph">
+<p>An open-method is like a virtual function, but it exists outside of a class, as
+a free-standing function. We can create all the open-methods we need, without
+ever needing to modify existing classes.</p>
+</div>
+<div class="paragraph">
+<p>This library implements open-methods for C++17 and above. Next we will see how
+to use them in the Node example.</p>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. <a href="https://figshare.com/articles/thesis/Multiple_Dispatch_in_Practice/16959112">Multiple dispatch in practice</a>, Radu Muschevici, 2008.
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/motivation.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="index.html">Boost.OpenMethod</a></span>
+        <span class="next"><a href="basics.html">Methods and Overriders</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

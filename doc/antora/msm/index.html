@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Meta State Machine (MSM) :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/index.html">
+    <link rel="next" href="preface.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="index.html">Table of Contents</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="preface.html">
+      <span class="material-symbols-outlined" title="Next: Preface">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Meta State Machine (MSM)</h1>
+  <div class="paragraph">
+<p>Christophe Henry</p>
+</div>
+<div class="paragraph">
+<p>Christian Granzin</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#">Table of Contents</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="preface.html" class="xref page">Preface</a></p>
+</li>
+<li>
+<p><a href="founding-idea.html" class="xref page">Founding idea</a></p>
+</li>
+<li>
+<p><a href="uml-short-guide.html" class="xref page">UML short guide</a></p>
+</li>
+<li>
+<p><a href="tutorial.html" class="xref page">Tutorial</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="tutorial/basic-front-end.html" class="xref page">Basic front-end</a></p>
+</li>
+<li>
+<p><a href="tutorial/functor-front-end.html" class="xref page">Functor front-end</a></p>
+</li>
+<li>
+<p><a href="tutorial/puml-front-end.html" class="xref page">PUML front-end (C++20, experimental)</a></p>
+</li>
+<li>
+<p><a href="tutorial/euml-front-end.html" class="xref page">eUML front-end (deprecated)</a></p>
+</li>
+<li>
+<p><a href="tutorial/back-end.html" class="xref page">Back-end</a></p>
+</li>
+<li>
+<p><a href="tutorial/backmp11-back-end.html" class="xref page">Backmp11 back-end (C++17, experimental)</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="performance-compilers.html" class="xref page">Performance / Compilers</a></p>
+</li>
+<li>
+<p><a href="questions-answers-tips.html" class="xref page">Questions &amp; Answers, tips</a></p>
+</li>
+<li>
+<p><a href="internals.html" class="xref page">Internals</a></p>
+</li>
+<li>
+<p><a href="acknowledgements.html" class="xref page">Acknowledgements</a></p>
+</li>
+<li>
+<p><a href="version-history.html" class="xref page">Version history</a></p>
+</li>
+<li>
+<p><a href="reference.html" class="xref page">Reference</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="reference/external-references-to-msm.html" class="xref page">External references to MSM</a></p>
+</li>
+<li>
+<p><a href="reference/euml-operators-and-basic-helpers.html" class="xref page">eUML operators and basic helpers</a></p>
+</li>
+<li>
+<p><a href="reference/functional-programming.html" class="xref page">Functional programming</a></p>
+</li>
+<li>
+<p><a href="reference/common-headers.html" class="xref page">Common headers</a></p>
+</li>
+<li>
+<p><a href="reference/back-end-headers.html" class="xref page">Back-end headers</a></p>
+</li>
+<li>
+<p><a href="reference/front-end-headers.html" class="xref page">Front-end headers</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/index.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="next"><a href="preface.html">Preface</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

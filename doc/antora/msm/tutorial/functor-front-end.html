@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Functor front-end :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/tutorial/functor-front-end.html">
+    <link rel="prev" href="basic-front-end.html">
+    <link rel="next" href="puml-front-end.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+<link rel="icon" href="../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class=" is-current-page" data-depth="3">
+            <a class="nav-link" href="functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="../index.html">Table of Contents</a></li>
+    <li><a href="../tutorial.html">Tutorial</a></li>
+    <li><a href="functor-front-end.html">Functor front-end</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="basic-front-end.html">
+      <span class="material-symbols-outlined" title="Previous: Basic front-end">arrow_back</span>
+    </a>
+    <a accesskey="u" href="../tutorial.html">
+      <span class="material-symbols-outlined" title="Up: Tutorial">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="puml-front-end.html">
+      <span class="material-symbols-outlined" title="Next: PUML front-end (C++20, experimental)">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Functor front-end</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The functor front-end is the preferred front-end at the moment. It is
+more powerful than the standard front-end and has a more readable
+transition table. It also makes it easier to reuse parts of state
+machines. Like <code>eUML</code>, it also comes with a good deal of predefined
+actions. Actually, eUML generates a functor front-end through
+Boost.Typeof and Boost.Proto so both offer the same functionality.</p>
+</div>
+<div class="paragraph">
+<p>The rows which MSM offered in the previous front-end come in different
+flavors. We saw the a_row, g_row, _row, row, not counting internal rows.
+This is already much to know, so why define new rows? These types have
+some disadvantages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>They are more typing and information than we would wish. This means
+syntactic noise and more to learn.</p>
+</li>
+<li>
+<p>Function pointers are weird in C++.</p>
+</li>
+<li>
+<p>The action/guard signature is limited and does not allow for more
+variations of parameters (source state, target state, current state
+machine, etc.).</p>
+</li>
+<li>
+<p>It is not easy to reuse action code from a state machine to another.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="transition-table"><a class="anchor" href="#transition-table"></a>Transition table</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We can change the definition of the simple tutorial&#8217;s transition table
+to:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>struct transition_table : mpl::vector&lt;
+//    Start     Event        Target      Action                      Guard
+//   +---------+------------+-----------+---------------------------+----------------------------+
+Row  &lt; Stopped , play       ,  Playing  , start_playback            , none                       &gt;,
+Row  &lt; Stopped , open_close ,  Open     , open_drawer               , none                       &gt;,
+Row  &lt; Stopped , stop       ,  Stopped  , none                      , none                       &gt;,
+//   +---------+------------+-----------+---------------------------+----------------------------+
+Row  &lt; Open    , open_close ,  Empty    , close_drawer              , none                       &gt;,
+//   +---------+------------+-----------+---------------------------+----------------------------+
+Row  &lt; Empty   , open_close ,  Open     , open_drawer               , none                       &gt;,
+Row  &lt; Empty   , cd_detected,  Stopped  , store_cd_info             , good_disk_format           &gt;,
+g_row&lt; Empty   , cd_detected,  Playing  , &amp;player_::store_cd_info   , &amp;player_::auto_start       &gt;,
+//   +---------+------------+-----------+---------------------------+----------------------------+
+Row  &lt; Playing , stop       ,  Stopped  , stop_playback             , none                       &gt;,
+Row  &lt; Playing , pause      ,  Paused   , pause_playback            , none                       &gt;,
+Row  &lt; Playing , open_close ,  Open     , stop_and_open             , none                       &gt;,
+//   +---------+------------+-----------+---------------------------+----------------------------+
+Row  &lt; Paused  , end_pause  ,  Playing  , resume_playback           , none                       &gt;,
+Row  &lt; Paused  , stop       ,  Stopped  , stop_playback             , none                       &gt;,
+Row  &lt; Paused  , open_close ,  Open     , stop_and_open             , none                       &gt;
+//   +---------+------------+-----------+---------------------------+----------------------------+
+&gt; {};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Transitions are now of type "Row" with exactly 5 template arguments:
+source state, event, target state, action and guard. Wherever there is
+nothing (for example actions and guards), write "none". Actions and
+guards are no more methods but functors getting as arguments the
+detected event, the state machine, source and target state:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>struct store_cd_info
+{
+    template &lt;class Fsm,class Evt,class SourceState,class TargetState&gt;
+    void operator()(Evt const&amp;, Fsm&amp; fsm, SourceState&amp;,TargetState&amp; )
+    {
+        cout &lt;&lt; "player::store_cd_info" &lt;&lt; endl;
+        fsm.process_event(play());
+    }
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The advantage of functors compared to functions is that functors are
+generic and reusable. They also allow passing more parameters than just
+events. The guard functors are the same but have an operator() returning
+a bool.</p>
+</div>
+<div class="paragraph">
+<p>It is also possible to mix rows from different front-ends. To show this,
+a g_row has been left in the transition table. <em>Note:</em> in case the
+action functor is used in the transition table of a state machine
+contained inside a top-level state machine, the ``fsm'' parameter refers
+to the lowest-level state machine (referencing this action), not the
+top-level one.</p>
+</div>
+<div class="paragraph">
+<p>To illustrate the reusable point, MSM comes with a whole set of
+predefined functors. Please refer to eUML for the
+<a href="#Reference-begin">full list</a>. For example, we are now going to
+replace the first action by an action sequence and the guard by a more
+complex functor.</p>
+</div>
+<div class="paragraph">
+<p>We decide we now want to execute two actions in the first transition
+(Stopped &#8594; Playing). We only need to change the action start_playback
+to</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>ActionSequence_&lt; mpl::vector&lt;some_action, start_playback&gt; &gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and now will execute some_action and start_playback every time the
+transition is taken. ActionSequence_ is a functor calling each action of
+the mpl::vector in sequence.</p>
+</div>
+<div class="paragraph">
+<p>We also want to replace good_disk_format by a condition of the type:
+``good_disk_format &amp;&amp; (some_condition || some_other_condition)''. We can
+achieve this using And_ and Or_ functors:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>And_&lt;good_disk_format,Or_&lt; some_condition , some_other_condition&gt; &gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It even starts looking like functional programming. MSM ships with
+functors for operators, state machine usage, STL algorithms or container
+methods.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="defining-states-with-entryexit-actions"><a class="anchor" href="#defining-states-with-entryexit-actions"></a>Defining states with entry/exit actions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You probably noticed that we just showed a different transition table
+and that we even mixed rows from different front-ends. This means that
+you can do this and leave the definitions for states unchanged. Most
+examples are doing this as it is the simplest solution. You still enjoy
+the simplicity of the first front-end with the extended power of the new
+transition types. This <a href="../_attachments/SimpleWithFunctors.cpp" class="xref attachment">tutorial</a>,
+adapted from the earlier example, does just this.</p>
+</div>
+<div class="paragraph">
+<p>Of course, it is also possible to define states where entry and exit
+actions are also provided as functors as these are generated by eUML and
+both front-ends are equivalent. For example, we can define a state as:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>struct Empty_Entry
+{
+    template &lt;class Event,class Fsm,class State&gt;
+    void operator()(Event const&amp;,Fsm&amp;,State&amp;)
+    {
+        ...
+    }
+}; // same for Empty_Exit
+struct Empty_tag {};
+struct Empty : public msm::front::euml::func_state&lt;Empty_tag,Empty_Entry,Empty_Exit&gt;{};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This also means that you can, like in the transition table, write entry
+/ exit actions made of more complicated action combinations. The
+previous example can therefore <a href="../_attachments/SimpleWithFunctors2.cpp" class="xref attachment">be
+rewritten</a>.</p>
+</div>
+<div class="paragraph">
+<p>Usually, however, one will probably use the standard state definition as
+it provides the same capabilities as this front-end state definition,
+unless one needs some of the shipped predefined functors or is a fan of
+functional programming.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="functor-front-end-actions"><a class="anchor" href="#functor-front-end-actions"></a>What do you actually do inside actions / guards (Part 2)?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the basic front-end, we saw how to pass data to actions through
+the event, that data common to all states could be stored in the state
+machine, state relevant data could be stored in the state and access as
+template parameter in the entry / exit actions. What was however missing
+was the capability to access relevant state data in the transition
+action. This is possible with this front-end. A transition&#8217;s source and
+target state are also given as arguments. If the current calculation&#8217;s
+state was to be found in the transition&#8217;s source state (whatever it is),
+we could access it:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>struct send_rocket
+{
+    template &lt;class Fsm,class Evt,class SourceState,class TargetState&gt;
+    void operator()(Evt const&amp;, Fsm&amp; fsm, SourceState&amp; src,TargetState&amp; )
+    {
+        fire_rocket(evt.direction, src.current_calculation);
+    }
+};</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It was a little awkward to generate new events inside actions with the
+basic front-end. With the functor front-end it is much cleaner:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>struct send_rocket
+{
+    template &lt;class Fsm,class Evt,class SourceState,class TargetState&gt;
+    void operator()(Evt const&amp; evt, Fsm&amp; fsm, SourceState&amp; src,TargetState&amp;)
+    {
+        fire_rocket(evt.direction, src.current_calculation);
+        fsm.process_event(rocket_launched());
+    }
+};</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="defining-a-simple-state-machine"><a class="anchor" href="#defining-a-simple-state-machine"></a>Defining a simple state machine</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Like states, state machines can be defined using the previous front-end,
+as the previous example showed, or with the functor front-end, which
+allows you to define state machine entry and exit functions as functors,
+as in <a href="../_attachments/SimpleWithFunctors2.cpp" class="xref attachment">this example</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="anonymous-transitions"><a class="anchor" href="#anonymous-transitions"></a>Anonymous transitions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Anonymous (completion) transitions are transitions without a named
+event. We saw how this front-end uses <code>none</code> when no action or guard is
+required. We can also use <code>none</code> instead of an event to mark an
+anonymous transition. For example, the following transition makes an
+immediate transition from State1 to State2:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Row &lt; State1 , none , State2 &gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following transition does the same but calling an action in the
+process:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Row &lt; State1 , none , State2 , State1ToState2, none &gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following diagram shows an example and its
+<a href="../_attachments/AnonymousTutorialWithFunctors.cpp" class="xref attachment">implementation</a>:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../_images/Anonymous.jpg" alt="image"></span> <mark>#</mark></p>
+</div>
+<div class="paragraph">
+<p><a id="functor-internal-transitions"></a>Internal transitions</p>
+</div>
+<div class="paragraph">
+<p>The <a href="../_attachments/SimpleTutorialInternalFunctors.cpp" class="xref attachment">following example</a>
+uses internal transitions with the functor front-end. As for the simple
+standard front-end, both methods of defining internal transitions are
+supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>providing a <code>Row</code> in the state machine&#8217;s transition table with <code>none</code>
+as target state defines an internal transition.</p>
+</li>
+<li>
+<p>providing an <code>internal_transition_table</code> made of <code>Internal</code> rows
+inside a state or submachine defines UML-conforming internal transitions
+with higher priority.</p>
+</li>
+<li>
+<p>transitions defined inside <code>internal_transition_table</code> require no
+source or target state as the source state is known (<code>Internal</code> really
+are <code>Row</code> without a source or target state).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Like for the <code>standard front-end internal transitions</code>, internal
+transition tables are added into the main state machine&#8217;s table, thus
+allowing you to distribute the transition table definition and reuse
+states.</p>
+</div>
+<div class="paragraph">
+<p>There is an added bonus offered for submachines, which can have both the
+standard transition_table and an internal_transition_table (which has
+higher priority). This makes it easier if you decide to make a full
+submachine from a state later. It is also slightly faster than the
+standard alternative, adding orthogonal regions, because event
+dispatching will, if accepted by the internal table, not continue to the
+subregions. This gives you an O(1) dispatch instead of O(number of
+regions). While the example is with eUML, the same is also possible with
+this front-end.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="any-event"><a class="anchor" href="#any-event"></a>Kleene (any) event</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Normally, MSM requires an event to fire a transition. But there are
+cases, where any event, no matter which one, would do:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you want to reduce the number of transitions: any event would do,
+possibly will guards decide what happens.</p>
+</li>
+<li>
+<p>Pseudo entry states do not necessarily want to know the event which
+caused their activation, or they might want to know only a property of
+it.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>MSM supports a boost::any as an acceptable event. This event will match
+any event, meaning that if a transition with boost::any as event
+originates from the current state, this transition would fire (provided
+no guards or transition with a higher priority fires first). This event
+is named Kleene, as a reference to the Kleene star used in a regex.</p>
+</div>
+<div class="paragraph">
+<p>For example, this transition on a state machine instance named fsm:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Row &lt; State1, boost::any, State2&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>will fire if State1 is active and an event is processed:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>fsm.process_event(whatever_event());</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this point, you can use this <em>any</em> event in transition actions to get
+back to the original event by calling for example <em>boost::any::type()</em>.</p>
+</div>
+<div class="paragraph">
+<p>It is also possible to support your own Kleene events by specializing
+boost::msm::is_kleene_event for a given event, for example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>namespace boost { namespace msm{
+    template&lt;&gt;
+    struct is_kleene_event&lt; my_event &gt;
+    {
+      typedef boost::mpl::true_ type;
+    };
+}}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The only requirement is that this event must have a copy constructor
+from the event originally processed on the state machine.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/tutorial/functor-front-end.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="basic-front-end.html">Basic front-end</a></span>
+        <span class="next"><a href="puml-front-end.html">PUML front-end (C++20, experimental)</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

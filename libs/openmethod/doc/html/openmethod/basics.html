@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/basics.html">
+    <link rel="prev" href="motivation.html">
+    <link rel="next" href="performance.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Basic Features</li>
+    <li><a href="basics.html">Methods and Overriders</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="motivation.html">
+      <span class="material-symbols-outlined" title="Previous: Motivation">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="performance.html">
+      <span class="material-symbols-outlined" title="Next: Performance">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="basics" class="paragraph">
+<p>An <em>open-method</em> is a free-standing function that has one or more <em>virtual</em>
+<em>parameters</em>. When it is called, it forwards to an <em>overrider</em> selected from a
+set by examining the dynamic types of the virtual parameters.</p>
+</div>
+<div class="paragraph">
+<p>If this sounds like a virtual function, that&#8217;s because because an open-method
+with one virtual parameter is equivalent to a virtual function - with one big
+difference: it exists outside of classes.</p>
+</div>
+<div class="paragraph">
+<p>A virtual parameter is in the form <code>virtual_ptr&lt;Class&gt;</code>. It is a pointer-like
+class that points to an instance of <code>Class</code>. <code>virtual_ptr</code> is defined in the library&#8217;s main namespace,
+<code>boost::openmethod</code>.</p>
+</div>
+<div class="paragraph">
+<p>To create an open-method that implements the <code>postfix</code> operation, we use the
+<a href="BOOST_OPENMETHOD.html" class="xref page">BOOST_OPENMETHOD</a> macro:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">BOOST_OPENMETHOD(
+    postfix, (virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os), void);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>postfix</code> is the method&#8217;s name. It takes one virtual parameter, <code>node</code>, and one
+non-virtual parameter, <code>os</code>. It returns <code>void</code>. The macro generates the
+following function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">inline auto postfix(virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os) -&gt; void {
+    // examine the type of *node
+    // select an overrider
+    // call it
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Before we can call the method, we need to define overriders. For that we use the
+<a href="BOOST_OPENMETHOD_OVERRIDE.html" class="xref page">BOOST_OPENMETHOD_OVERRIDE</a> macro:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Variable&gt; var, std::ostream&amp; os), void) {
+    os &lt;&lt; var-&gt;v;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The overrider must have virtual parameters in the same positions as in the
+method. The classes in the method&#8217;s virtual parameters must be accessible,
+non-ambiguous bases of the classes in the overrider. Note that this rules out
+repeated inheritance. Apart from this restriction, multiple and virtual
+inheritance are supported.</p>
+</div>
+<div class="paragraph">
+<p>The non-virtual parameters must have exactly the same types as in the method.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s look at another overrider:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Plus&gt; plus, std::ostream&amp; os), void) {
+    postfix(plus-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix(plus-&gt;right, os);
+    os &lt;&lt; " +";
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one calls <code>postfix</code> recursively to print the left and right
+sub-expressions. Note that we call the method just like an ordinary function.</p>
+</div>
+<div class="paragraph">
+<p><code>postfix</code> expects a <code>virtual_ptr&lt;const Node&gt;</code>, and we are passing it a <em>plain</em>
+<em>reference</em> to a <code>Node</code> object. This works because <code>virtual_ptr</code> has conversion
+constructors from plain references or pointers to objects, or from other
+<code>virtual_ptr</code>s.</p>
+</div>
+<div class="paragraph">
+<p>There are two more things we need to do.</p>
+</div>
+<div class="paragraph">
+<p>OpenMethod is a library, not a compiler. It needs to be informed of all the
+classes that may be used as virtual parameters, and in method calls, and their
+inheritance relationships. We provide that information with the
+<a href="BOOST_OPENMETHOD_CLASSES.html" class="xref page">BOOST_OPENMETHOD_CLASSES</a> macro:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">BOOST_OPENMETHOD_CLASSES(Node, Variable, Plus, Times);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Classes can be registered multiple times, in any order, and incrementally. Every
+direct base of a class must appear together with it in at least one call to
+<code>BOOST_OPENMETHOD_CLASSES</code>. This enables the library to deduce the complete
+inheritance lattice.</p>
+</div>
+<div class="paragraph">
+<p>The constructs used in this example require the classes to be polymorphic, in
+the standard C++ sense, i.e. they must have at least one virtual function. The
+library can also be used with non-polymorphic classes, with some restrictions.</p>
+</div>
+<div class="paragraph">
+<p>Finally, we need to call <code>boost::openmethod::initialize()</code> before the first call
+to an open-method. This builds the dispatch tables used during method calls. It
+is typically done once, at the very beginning of main, and requires the
+inclusion of <code>&lt;boost/openmethod/initialize.hpp&gt;</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod/initialize.hpp&gt;
+
+int main() {
+    boost::openmethod::initialize();
+    // ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Putting it all together:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">struct Node {
+    virtual ~Node() {}
+    virtual int value() const = 0;
+};
+
+struct Variable : Node {
+    Variable(int value) : v(value) {}
+    int value() const override { return v; }
+    int v;
+};
+
+struct Plus : Node {
+    Plus(const Node&amp; left, const Node&amp; right) : left(left), right(right) {}
+    int value() const override { return left.value() + right.value(); }
+    const Node&amp; left; const Node&amp; right;
+};
+
+struct Times : Node {
+    Times(const Node&amp; left, const Node&amp; right) : left(left), right(right) {}
+    int value() const override { return left.value() * right.value(); }
+    const Node&amp; left; const Node&amp; right;
+};
+
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// library code
+// =============================================================================
+// application code
+// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+#include &lt;iostream&gt;
+
+using boost::openmethod::virtual_ptr;
+
+BOOST_OPENMETHOD(postfix, (virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os), void);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Variable&gt; var, std::ostream&amp; os), void) {
+    os &lt;&lt; var-&gt;v;
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Plus&gt; plus, std::ostream&amp; os), void) {
+    postfix(plus-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix(plus-&gt;right, os);
+    os &lt;&lt; " +";
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Times&gt; times, std::ostream&amp; os), void) {
+    postfix(times-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix(times-&gt;right, os);
+    os &lt;&lt; " *";
+}
+
+BOOST_OPENMETHOD_CLASSES(Node, Variable, Plus, Times);
+
+int main() {
+    boost::openmethod::initialize();
+    Variable a{2}, b{3}, c{4};
+    Plus d{a, b}; Times e{d, c};
+    postfix(e, std::cout);
+    std::cout &lt;&lt; " = " &lt;&lt; e.value() &lt;&lt; "\n"; // 2 3 + 4 * = 20
+}</code></pre>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/basics.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="motivation.html">Motivation</a></span>
+        <span class="next"><a href="performance.html">Performance</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PUML front-end (C++20, experimental) :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/tutorial/puml-front-end.html">
+    <link rel="prev" href="functor-front-end.html">
+    <link rel="next" href="euml-front-end.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+<link rel="icon" href="../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class=" is-current-page" data-depth="3">
+            <a class="nav-link" href="puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="../index.html">Table of Contents</a></li>
+    <li><a href="../tutorial.html">Tutorial</a></li>
+    <li><a href="puml-front-end.html">PUML front-end (C++20, experimental)</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="functor-front-end.html">
+      <span class="material-symbols-outlined" title="Previous: Functor front-end">arrow_back</span>
+    </a>
+    <a accesskey="u" href="../tutorial.html">
+      <span class="material-symbols-outlined" title="Up: Tutorial">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="euml-front-end.html">
+      <span class="material-symbols-outlined" title="Next: eUML front-end (deprecated)">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">PUML front-end (C++20, experimental)</h1>
+  <div class="sect1">
+<h2 id="plantuml-basics"><a class="anchor" href="#plantuml-basics"></a>PlantUML basics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://plantuml.com/">PlantUML</a> is a modelling tool with a nice
+extension for state machine diagrams. The result can then be viewed, for
+example VSCode has add-ons for previewing the result.</p>
+</div>
+<div class="paragraph">
+<p>Our usual player example could look like this in PlantUML syntax:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@startuml Player
+            skinparam linetype polyline
+            state Player{
+                [*]-&gt; Empty
+                Stopped     -&gt; Playing   : play
+                Stopped     -&gt; Open      : open_close    / open_drawer
+                Stopped     -&gt; Stopped   : stop
+
+                Open        -&gt; Empty     : open_close    / close_drawer               [can_close_drawer]
+                Empty       --&gt; Open     : open_close    / open_drawer
+                Empty       ---&gt; Stopped : cd_detected   / store_cd_info              [good_disk_format &amp;&amp; always_true]
+                Playing     --&gt; Stopped  : stop          / stop_playback
+                Playing     -&gt; Paused    : pause
+                Playing     --&gt; Open     : open_close    / stop_playback, open_drawer
+                Paused      -&gt; Playing   : end_pause     / resume_playback
+                Paused      --&gt; Stopped  : stop          / stop_playback
+                Paused      --&gt; Open     : open_close    / stop_playback, open_drawer
+
+                Playing : flag CDLoaded
+                Playing : entry start_playback [always_true]
+                Paused  : entry pause_playback
+                Paused  : flag CDLoaded
+                Stopped : flag CDLoaded
+            }
+ @enduml</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A few key points of the syntax:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Initial states are marked with [*] &#8594; State</p>
+</li>
+<li>
+<p>Terminal states are marked with Terminal &#8594; [*]</p>
+</li>
+<li>
+<p>Transitions follow the syntax: Source State &#8594; Target State : event /
+Action1,Action2 [guard conditions]</p>
+</li>
+<li>
+<p>Varying the number of "-" will make the layouter use longer arrows for
+transitions</p>
+</li>
+<li>
+<p>"--" will make orthogonal regions clearer</p>
+</li>
+<li>
+<p>Supported guard conditions are guard names &amp;&amp;&#8230;&#8203; ||&#8230;&#8203; !&#8230;&#8203; (), for
+example !G1 &amp;&amp; (G2 || G3)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We also want to add these non-standard PlantUML features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Flags. State Name : [keyword] flag flag-name. Add a flag per line.</p>
+</li>
+<li>
+<p>entry / exit actions. State name: [keyword] entry-or-exit
+comma-separated-actions-sequence [guard conditions]</p>
+</li>
+<li>
+<p>An anonymous transition has an empty event name</p>
+</li>
+<li>
+<p>An any event is defined using the Kleene syntax "*" as the event name.</p>
+</li>
+<li>
+<p>a defer function is already provided for conditional event deferring</p>
+</li>
+<li>
+<p>an internal transition is implemented using an equal source and target
+state and a "-" before the event name</p>
+<div class="literalblock">
+<div class="content">
+<pre>Open        -&gt; Open         : -play         / defer</pre>
+</div>
+</div>
+</li>
+<li>
+<p>An internal Kleene would then be:</p>
+<div class="literalblock">
+<div class="content">
+<pre>Empty       -&gt; Empty        : -*            / defer               [is_play_event]</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Before PUML one had to convert this syntax in the classical MSM
+transition table, states with entry/exit/flags, events, etc. which takes
+long and is error-prone.</p>
+</div>
+<div class="paragraph">
+<p>Good news: This is no more necessary. Now we can copy-paste our PlantUML
+and directly use it in the code, which gives us:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>    // front-end: define the FSM structure
+    struct player_ : public msm::front::state_machine_def&lt;player_&gt;
+    {
+        // here is the whole FSM structure defined:
+        // Initial states [*]
+        // Transitions with actions starting with / and separated by ,
+        // and guards between [ ]. Supported are !, &amp;&amp;, || and ()
+        // State Entry / Exit with guards
+        // Flags
+        // -&gt; can have different lengths for nicer PlantUML Viewer preview
+
+        BOOST_MSM_PUML_DECLARE_TABLE(
+            R"(
+            @startuml Player
+            skinparam linetype polyline
+            state Player{
+                [*]-&gt; Empty
+                Stopped     -&gt; Playing   : play
+                Stopped     -&gt; Open      : open_close    / open_drawer
+                Stopped     -&gt; Stopped   : stop
+
+                Open        -&gt; Empty     : open_close    / close_drawer               [can_close_drawer]
+                Empty       --&gt; Open     : open_close    / open_drawer
+                Empty       ---&gt; Stopped : cd_detected   / store_cd_info              [good_disk_format &amp;&amp; always_true]
+                Playing     --&gt; Stopped  : stop          / stop_playback
+                Playing     -&gt; Paused    : pause
+                Playing     --&gt; Open     : open_close    / stop_playback, open_drawer
+                Paused      -&gt; Playing   : end_pause     / resume_playback
+                Paused      --&gt; Stopped  : stop          / stop_playback
+                Paused      --&gt; Open     : open_close    / stop_playback, open_drawer
+
+                Playing : flag CDLoaded
+                Playing : entry start_playback [always_true]
+                Paused  : entry pause_playback
+                Paused  : flag CDLoaded
+                Stopped : flag CDLoaded
+            }
+            @enduml
+        )"
+        )
+
+        // Replaces the default no-transition response.
+        template &lt;class FSM, class Event&gt;
+        void no_transition(Event const&amp;, FSM&amp;, int)
+        {
+        }
+    };
+    // Pick a back-end
+    typedef msm::back11::state_machine&lt;player_&gt; player;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The PlantUML string is parsed at compile-time and generates a classical
+Functor front-end.</p>
+</div>
+<div class="paragraph">
+<p>States and event do not need to be defined any more, unless one needs to
+provide them with attributes, or if the states are submachines. Actions
+and Guards do need to be implemented to reduce bugs because of typos:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>namespace boost::msm::front::puml {
+    template&lt;&gt;
+    struct Action&lt;by_name("close_drawer")&gt;
+    {
+        template &lt;class EVT, class FSM, class SourceState, class TargetState&gt;
+        void operator()(EVT const&amp;, FSM&amp;, SourceState&amp;, TargetState&amp;)
+        {
+        }
+    };
+    template&lt;&gt;
+    struct Guard&lt;by_name("always_true")&gt;
+    {
+        template &lt;class EVT, class FSM, class SourceState, class TargetState&gt;
+        bool operator()(EVT const&amp;, FSM&amp;, SourceState&amp;, TargetState&amp;)
+        {
+            return true;
+        }
+    };
+    }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The events are also referenced by name:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>p.process_event(Event&lt;by_name("open_close")&gt;{});</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Please note that C++20 is required. <a href="../_attachments/SimplePuml.cpp" class="xref attachment">A
+complete implementation</a> of the player is provided.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="composite-state-machines"><a class="anchor" href="#composite-state-machines"></a>Composite State Machines</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At the moment, the PUML front-end does not support submachines in a
+single text string, so we need to split. First we define the submachine:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>struct playing_ : public msm::front::state_machine_def&lt;playing_&gt;
+{
+        typedef boost::fusion::vector&lt;PlayingPaused, CDLoaded&gt;        flag_list;
+        // optional
+        template &lt;class Event, class FSM&gt;
+        void on_entry(Event const&amp;, FSM&amp;) { }
+        template &lt;class Event, class FSM&gt;
+        void on_exit(Event const&amp;, FSM&amp;) { }
+
+        BOOST_MSM_PUML_DECLARE_TABLE(
+            R"(
+            @startuml Player
+            skinparam linetype polyline
+            state Player{
+                [*]-&gt; Song1
+                Song1     -&gt; Song2   : NextSong
+                Song2     -&gt; Song1   : PreviousSong   / start_prev_song [start_prev_song_guard]
+                Song2     -&gt; Song3   : NextSong       / start_next_song
+                Song3     -&gt; Song2   : PreviousSong                     [start_prev_song_guard]
+            }
+            @enduml
+        )"
+        )
+
+        // Replaces the default no-transition response.
+        template &lt;class FSM, class Event&gt;
+        void no_transition(Event const&amp;, FSM&amp;, int)
+        {
+        }
+};
+namespace boost::msm::front::puml {
+    // define submachine with desired back-end
+    template&lt;&gt;
+    struct State&lt;by_name("PlayingFsm")&gt; : public msm::back11::state_machine&lt;playing_&gt;
+    {
+    };
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can reference the submachine within the upper state machine:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>PlayingFsm  --&gt; Stopped       : stop          / stop_playback</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again, <a href="../_attachments/OrthogonalDeferredPuml.cpp" class="xref attachment">a complete
+implementation</a> of the player is provided. Interesting are the
+orthogonal regions delimited with "--", comments and the possibility to
+declare terminate or interrupt state using the standard MSM states.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/tutorial/puml-front-end.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="functor-front-end.html">Functor front-end</a></span>
+        <span class="next"><a href="euml-front-end.html">eUML front-end (deprecated)</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

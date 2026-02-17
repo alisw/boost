@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Functional programming :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/reference/functional-programming.html">
+    <link rel="prev" href="euml-operators-and-basic-helpers.html">
+    <link rel="next" href="common-headers.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+<link rel="icon" href="../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class=" is-current-page" data-depth="3">
+            <a class="nav-link" href="functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="../index.html">Table of Contents</a></li>
+    <li><a href="../reference.html">Reference</a></li>
+    <li><a href="functional-programming.html">Functional programming</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="euml-operators-and-basic-helpers.html">
+      <span class="material-symbols-outlined" title="Previous: eUML operators and basic helpers">arrow_back</span>
+    </a>
+    <a accesskey="u" href="../reference.html">
+      <span class="material-symbols-outlined" title="Up: Reference">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="common-headers.html">
+      <span class="material-symbols-outlined" title="Next: Common headers">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Functional programming</h1>
+  <div class="paragraph">
+<p>To use these functions, you need to include:</p>
+</div>
+<div class="paragraph">
+<p><code>#include &lt;msm/front/euml/stl.hpp&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>or the specified header in the following tables.</p>
+</div>
+<div class="paragraph">
+<p>Table 11.1 — STL algorithms</p>
+</div>
+<div class="paragraph">
+<p>STL algorithms in querying.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>find_(first, last, value)</p>
+</div>
+<div class="paragraph">
+<p>Find_</p>
+</div>
+<div class="paragraph">
+<p>find_if_(first, last, value)</p>
+</div>
+<div class="paragraph">
+<p>FindIf_</p>
+</div>
+<div class="paragraph">
+<p>lower_bound_(first, last, value [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>LowerBound_</p>
+</div>
+<div class="paragraph">
+<p>upper_bound_(first, last, value [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>UpperBound_</p>
+</div>
+<div class="paragraph">
+<p>equal_range_(first, last, value [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>EqualRange_</p>
+</div>
+<div class="paragraph">
+<p>binary_search_(first, last, value [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>BinarySearch_</p>
+</div>
+<div class="paragraph">
+<p>min_element_(first, last[,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>MinElement_</p>
+</div>
+<div class="paragraph">
+<p>max_element_(first, last[,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>MaxElement_</p>
+</div>
+<div class="paragraph">
+<p>adjacent_find_(first, last[,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>AdjacentFind_</p>
+</div>
+<div class="paragraph">
+<p>find_end_( first1, last1, first2, last2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>FindEnd_</p>
+</div>
+<div class="paragraph">
+<p>find_first_of_( first1, last1, first2, last2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>FindFirstOf_</p>
+</div>
+<div class="paragraph">
+<p>equal_( first1, last1, first2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Equal_</p>
+</div>
+<div class="paragraph">
+<p>search_( first1, last1, first2, last2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Search_</p>
+</div>
+<div class="paragraph">
+<p>includes_( first1, last1, first2, last2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Includes_</p>
+</div>
+<div class="paragraph">
+<p>lexicographical_compare_ ( first1, last1, first2, last2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>LexicographicalCompare_</p>
+</div>
+<div class="paragraph">
+<p>count_(first, last, value [,size])</p>
+</div>
+<div class="paragraph">
+<p>Count_</p>
+</div>
+<div class="paragraph">
+<p>count_if_(first, last, op ᵃ [,size])</p>
+</div>
+<div class="paragraph">
+<p>CountIf_</p>
+</div>
+<div class="paragraph">
+<p>distance_(first, last)</p>
+</div>
+<div class="paragraph">
+<p>Distance_</p>
+</div>
+<div class="paragraph">
+<p>mismatch _( first1, last1, first2 [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Mismatch_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.2 — STL algorithms</p>
+</div>
+<div class="paragraph">
+<p>STL algorithms in iteration.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>for_each_(first,last, unary opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>ForEach_</p>
+</div>
+<div class="paragraph">
+<p>accumulate_first, last, init [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Accumulate_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.3 — STL algorithms</p>
+</div>
+<div class="paragraph">
+<p>STL algorithms in transformation.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>copy_(first, last, result)</p>
+</div>
+<div class="paragraph">
+<p>Copy_</p>
+</div>
+<div class="paragraph">
+<p>copy_backward_(first, last, result)</p>
+</div>
+<div class="paragraph">
+<p>CopyBackward_</p>
+</div>
+<div class="paragraph">
+<p>reverse_(first, last)</p>
+</div>
+<div class="paragraph">
+<p>Reverse_</p>
+</div>
+<div class="paragraph">
+<p>reverse_copy_(first, last , result)</p>
+</div>
+<div class="paragraph">
+<p>ReverseCopy_</p>
+</div>
+<div class="paragraph">
+<p>remove_(first, last, value)</p>
+</div>
+<div class="paragraph">
+<p>Remove_</p>
+</div>
+<div class="paragraph">
+<p>remove_if_(first, last , opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>RemoveIf_</p>
+</div>
+<div class="paragraph">
+<p>remove_copy_(first, last , output, value)</p>
+</div>
+<div class="paragraph">
+<p>RemoveCopy_</p>
+</div>
+<div class="paragraph">
+<p>remove_copy_if_(first, last, output, opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>RemoveCopyIf_</p>
+</div>
+<div class="paragraph">
+<p>fill_(first, last, value)</p>
+</div>
+<div class="paragraph">
+<p>Fill_</p>
+</div>
+<div class="paragraph">
+<p>fill_n_(first, size, value)ᵇ</p>
+</div>
+<div class="paragraph">
+<p>FillN_</p>
+</div>
+<div class="paragraph">
+<p>generate_(first, last, generatorᵃ)</p>
+</div>
+<div class="paragraph">
+<p>Generate_</p>
+</div>
+<div class="paragraph">
+<p>generate_(first, size, generatorᵃ)ᵇ</p>
+</div>
+<div class="paragraph">
+<p>GenerateN_</p>
+</div>
+<div class="paragraph">
+<p>unique_(first, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Unique_</p>
+</div>
+<div class="paragraph">
+<p>unique_copy_(first, last, output [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>UniqueCopy_</p>
+</div>
+<div class="paragraph">
+<p>random_shuffle_(first, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>RandomShuffle_</p>
+</div>
+<div class="paragraph">
+<p>rotate_copy_(first, middle, last, output)</p>
+</div>
+<div class="paragraph">
+<p>RotateCopy_</p>
+</div>
+<div class="paragraph">
+<p>partition_ (first, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Partition_</p>
+</div>
+<div class="paragraph">
+<p>stable_partition_ (first, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>StablePartition_</p>
+</div>
+<div class="paragraph">
+<p>stable_sort_(first, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>StableSort_</p>
+</div>
+<div class="paragraph">
+<p>sort_(first, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Sort_</p>
+</div>
+<div class="paragraph">
+<p>partial_sort_(first, middle, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>PartialSort_</p>
+</div>
+<div class="paragraph">
+<p>partial_sort_copy_ (first, last, res_first, res_last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>PartialSortCopy_</p>
+</div>
+<div class="paragraph">
+<p>nth_element_(first, nth, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>NthElement_</p>
+</div>
+<div class="paragraph">
+<p>merge_( first1, last1, first2, last2, output [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>Merge_</p>
+</div>
+<div class="paragraph">
+<p>inplace_merge_(first, middle, last [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>InplaceMerge_</p>
+</div>
+<div class="paragraph">
+<p>set_union_(first1, last1, first2, last2, output [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>SetUnion_</p>
+</div>
+<div class="paragraph">
+<p>push_heap_(first, last [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>PushHeap_</p>
+</div>
+<div class="paragraph">
+<p>pop_heap_(first, last [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>PopHeap_</p>
+</div>
+<div class="paragraph">
+<p>make_heap_(first, last [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>MakeHeap_</p>
+</div>
+<div class="paragraph">
+<p>sort_heap_(first, last [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>SortHeap_</p>
+</div>
+<div class="paragraph">
+<p>next_permutation_(first, last [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>NextPermutation_</p>
+</div>
+<div class="paragraph">
+<p>prev_permutation_(first, last [,op ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>PrevPermutation_</p>
+</div>
+<div class="paragraph">
+<p>inner_product_(first1, last1, first2, init [,op1ᵃ] [,op2ᵃ])</p>
+</div>
+<div class="paragraph">
+<p>InnerProduct_</p>
+</div>
+<div class="paragraph">
+<p>partial_sum_(first, last, output [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>PartialSum_</p>
+</div>
+<div class="paragraph">
+<p>adjacent_difference_(first, last, output [,opᵃ])</p>
+</div>
+<div class="paragraph">
+<p>AdjacentDifference_</p>
+</div>
+<div class="paragraph">
+<p>replace_(first, last, old_value, new_value)</p>
+</div>
+<div class="paragraph">
+<p>Replace_</p>
+</div>
+<div class="paragraph">
+<p>replace_if_(first, last, opᵃ, new_value)</p>
+</div>
+<div class="paragraph">
+<p>ReplaceIf_</p>
+</div>
+<div class="paragraph">
+<p>replace_copy_(first, last, result, old_value, new_value)</p>
+</div>
+<div class="paragraph">
+<p>ReplaceCopy_</p>
+</div>
+<div class="paragraph">
+<p>replace_copy_if_(first, last, result, opᵃ, new_value)</p>
+</div>
+<div class="paragraph">
+<p>ReplaceCopyIf_</p>
+</div>
+<div class="paragraph">
+<p>rotate_(first, middle, last)ᵇ</p>
+</div>
+<div class="paragraph">
+<p>Rotate_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.4 — STL container methods</p>
+</div>
+<div class="paragraph">
+<p>STL container methods(common) in container.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>container::reference front_(container)</p>
+</div>
+<div class="paragraph">
+<p>Front_</p>
+</div>
+<div class="paragraph">
+<p>container::reference back_(container)</p>
+</div>
+<div class="paragraph">
+<p>Back_</p>
+</div>
+<div class="paragraph">
+<p>container::iterator begin_(container)</p>
+</div>
+<div class="paragraph">
+<p>Begin_</p>
+</div>
+<div class="paragraph">
+<p>container::iterator end_(container)</p>
+</div>
+<div class="paragraph">
+<p>End_</p>
+</div>
+<div class="paragraph">
+<p>container::reverse_iterator rbegin_(container)</p>
+</div>
+<div class="paragraph">
+<p>RBegin_</p>
+</div>
+<div class="paragraph">
+<p>container::reverse_iterator rend_(container)</p>
+</div>
+<div class="paragraph">
+<p>REnd_</p>
+</div>
+<div class="paragraph">
+<p>void push_back_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>Push_Back_</p>
+</div>
+<div class="paragraph">
+<p>void pop_back_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>Pop_Back_</p>
+</div>
+<div class="paragraph">
+<p>void push_front_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>Push_Front_</p>
+</div>
+<div class="paragraph">
+<p>void pop_front_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>Pop_Front_</p>
+</div>
+<div class="paragraph">
+<p>void clear_(container)</p>
+</div>
+<div class="paragraph">
+<p>Clear_</p>
+</div>
+<div class="paragraph">
+<p>size_type capacity_(container)</p>
+</div>
+<div class="paragraph">
+<p>Capacity_</p>
+</div>
+<div class="paragraph">
+<p>size_type size_(container)</p>
+</div>
+<div class="paragraph">
+<p>Size_</p>
+</div>
+<div class="paragraph">
+<p>size_type max_size_(container)</p>
+</div>
+<div class="paragraph">
+<p>Max_Size_</p>
+</div>
+<div class="paragraph">
+<p>void reserve_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>Reserve _</p>
+</div>
+<div class="paragraph">
+<p>void resize_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>Resize _</p>
+</div>
+<div class="paragraph">
+<p>iterator insert_(container, pos, value)</p>
+</div>
+<div class="paragraph">
+<p>Insert_</p>
+</div>
+<div class="paragraph">
+<p>void insert_( container , pos, first, last)</p>
+</div>
+<div class="paragraph">
+<p>Insert_</p>
+</div>
+<div class="paragraph">
+<p>void insert_( container , pos, number, value)</p>
+</div>
+<div class="paragraph">
+<p>Insert_</p>
+</div>
+<div class="paragraph">
+<p>void swap_( container , other_container)</p>
+</div>
+<div class="paragraph">
+<p>Swap_</p>
+</div>
+<div class="paragraph">
+<p>void erase_( container , pos)</p>
+</div>
+<div class="paragraph">
+<p>Erase_</p>
+</div>
+<div class="paragraph">
+<p>void erase_( container , first, last)</p>
+</div>
+<div class="paragraph">
+<p>Erase_</p>
+</div>
+<div class="paragraph">
+<p>bool empty_( container)</p>
+</div>
+<div class="paragraph">
+<p>Empty_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.5 — STL list methods</p>
+</div>
+<div class="paragraph">
+<p>std::list methods in container.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>void list_remove_(container, value)</p>
+</div>
+<div class="paragraph">
+<p>ListRemove_</p>
+</div>
+<div class="paragraph">
+<p>void list_remove_if_(container, opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>ListRemove_If_</p>
+</div>
+<div class="paragraph">
+<p>void list_merge_(container, other_list)</p>
+</div>
+<div class="paragraph">
+<p>ListMerge_</p>
+</div>
+<div class="paragraph">
+<p>void list_merge_(container, other_list, opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>ListMerge_</p>
+</div>
+<div class="paragraph">
+<p>void splice_(container, iterator, other_list)</p>
+</div>
+<div class="paragraph">
+<p>Splice_</p>
+</div>
+<div class="paragraph">
+<p>void splice_(container, iterator, other_list, iterator)</p>
+</div>
+<div class="paragraph">
+<p>Splice_</p>
+</div>
+<div class="paragraph">
+<p>void splice_(container, iterator, other_list, first, last)</p>
+</div>
+<div class="paragraph">
+<p>Splice_</p>
+</div>
+<div class="paragraph">
+<p>void list_reverse_(container)</p>
+</div>
+<div class="paragraph">
+<p>ListReverse_</p>
+</div>
+<div class="paragraph">
+<p>void list_unique_(container)</p>
+</div>
+<div class="paragraph">
+<p>ListUnique_</p>
+</div>
+<div class="paragraph">
+<p>void list_unique_(container, opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>ListUnique_</p>
+</div>
+<div class="paragraph">
+<p>void list_sort_(container)</p>
+</div>
+<div class="paragraph">
+<p>ListSort_</p>
+</div>
+<div class="paragraph">
+<p>void list_sort_(container, opᵃ)</p>
+</div>
+<div class="paragraph">
+<p>ListSort_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.6 — STL associative container methods</p>
+</div>
+<div class="paragraph">
+<p>Associative container methods in container.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>iterator insert_(container, pos, value)</p>
+</div>
+<div class="paragraph">
+<p>Insert_</p>
+</div>
+<div class="paragraph">
+<p>void insert_( container , first, last)</p>
+</div>
+<div class="paragraph">
+<p>Insert_</p>
+</div>
+<div class="paragraph">
+<p>pair&lt;iterator, bool&gt; insert_( container , value)</p>
+</div>
+<div class="paragraph">
+<p>Insert_</p>
+</div>
+<div class="paragraph">
+<p>void associative_erase_( container , pos)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Erase_</p>
+</div>
+<div class="paragraph">
+<p>void associative_erase_( container , first, last)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Erase_</p>
+</div>
+<div class="paragraph">
+<p>size_type associative_erase_( container , key)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Erase_</p>
+</div>
+<div class="paragraph">
+<p>iterator associative_find_( container , key)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Find_</p>
+</div>
+<div class="paragraph">
+<p>size_type associative_count_( container , key)</p>
+</div>
+<div class="paragraph">
+<p>AssociativeCount_</p>
+</div>
+<div class="paragraph">
+<p>iterator associative_lower_bound_( container , key)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Lower_Bound_</p>
+</div>
+<div class="paragraph">
+<p>iterator associative_upper_bound_( container , key)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Upper_Bound_</p>
+</div>
+<div class="paragraph">
+<p>pair&lt;iterator, iterator&gt; associative_equal_range_( container , key)</p>
+</div>
+<div class="paragraph">
+<p>Associative_Equal_Range_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.7 — STL pair</p>
+</div>
+<div class="paragraph">
+<p>std::pair in container.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>first_type first_(pair&lt;T1, T2&gt;)</p>
+</div>
+<div class="paragraph">
+<p>First_</p>
+</div>
+<div class="paragraph">
+<p>second_type second_(pair&lt;T1, T2&gt;)</p>
+</div>
+<div class="paragraph">
+<p>Second_</p>
+</div>
+<div class="paragraph">
+<p>Table 11.8 — STL string</p>
+</div>
+<div class="paragraph">
+<p>STL string method</p>
+</div>
+<div class="paragraph">
+<p>std::string method in container.hpp</p>
+</div>
+<div class="paragraph">
+<p>Functor</p>
+</div>
+<div class="paragraph">
+<p>substr (size_type pos, size_type size)</p>
+</div>
+<div class="paragraph">
+<p>string substr_(container, pos, length)</p>
+</div>
+<div class="paragraph">
+<p>Substr_</p>
+</div>
+<div class="paragraph">
+<p>int compare(string)</p>
+</div>
+<div class="paragraph">
+<p>int string_compare_(container, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringCompare_</p>
+</div>
+<div class="paragraph">
+<p>int compare(char*)</p>
+</div>
+<div class="paragraph">
+<p>int string_compare_(container, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringCompare_</p>
+</div>
+<div class="paragraph">
+<p>int compare(size_type pos, size_type size, string)</p>
+</div>
+<div class="paragraph">
+<p>int string_compare_(container, pos, size, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringCompare_</p>
+</div>
+<div class="paragraph">
+<p>int compare (size_type pos, size_type size, string, size_type length)</p>
+</div>
+<div class="paragraph">
+<p>int string_compare_(container, pos, size, another_string, length)</p>
+</div>
+<div class="paragraph">
+<p>StringCompare_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append(const string&amp;)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append_(container, another_string)</p>
+</div>
+<div class="paragraph">
+<p>Append_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append (charT*)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append_(container, another_string)</p>
+</div>
+<div class="paragraph">
+<p>Append_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append (string , size_type pos, size_type size)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append_(container, other_string, pos, size)</p>
+</div>
+<div class="paragraph">
+<p>Append_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append (charT*, size_type size)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append_(container, another_string, length)</p>
+</div>
+<div class="paragraph">
+<p>Append_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append (size_type size, charT)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append_(container, size, char)</p>
+</div>
+<div class="paragraph">
+<p>Append_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append (iterator begin, iterator end)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; append_(container, begin, end)</p>
+</div>
+<div class="paragraph">
+<p>Append_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; insert (size_type pos, charT*)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_insert_(container, pos, other_string)</p>
+</div>
+<div class="paragraph">
+<p>StringInsert_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; insert(size_type pos, charT*,size_type n)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_insert_(container, pos, other_string, n)</p>
+</div>
+<div class="paragraph">
+<p>StringInsert_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; insert(size_type pos,size_type n, charT c)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_insert_(container, pos, n, c)</p>
+</div>
+<div class="paragraph">
+<p>StringInsert_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; insert (size_type pos, const string&amp;)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_insert_(container, pos, other_string)</p>
+</div>
+<div class="paragraph">
+<p>StringInsert_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; insert (size_type pos, const string&amp;, size_type pos1, size_type
+n)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_insert_(container, pos, other_string, pos1, n)</p>
+</div>
+<div class="paragraph">
+<p>StringInsert_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; erase(size_type pos=0, size_type n=npos)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_erase_(container, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringErase_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; assign(const string&amp;)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_assign_(container, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringAssign_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; assign(const charT*)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_assign_(container, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringAssign_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; assign(const string&amp;, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_assign_(container, another_string, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringAssign_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; assign(const charT*, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_assign_(container, another_string, n)</p>
+</div>
+<div class="paragraph">
+<p>StringAssign_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; assign(size_type n, charT c)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_assign_(container, n, c)</p>
+</div>
+<div class="paragraph">
+<p>StringAssign_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; assign(iterator first, iterator last)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_assign_(container, first, last)</p>
+</div>
+<div class="paragraph">
+<p>StringAssign_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(size_type pos, size_type n, const string&amp;)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, pos, n, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(size_type pos, size_type n, const charT*, size_type n1)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, pos, n, another_string, n1)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(size_type pos, size_type n, const charT*)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, pos, n, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(size_type pos, size_type n, size_type n1, charT c)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, pos, n, n1, c)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(iterator first, iterator last, const string&amp;)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, first, last, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(iterator first, iterator last, const charT*, size_type
+n)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, first, last, another_string, n)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(iterator first, iterator last, const charT*)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, first, last, another_string)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(iterator first, iterator last, size_type n, charT c)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, first, last, n, c)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>string&amp; replace(iterator first, iterator last, iterator f, iterator l)</p>
+</div>
+<div class="paragraph">
+<p>string&amp; string_replace_(container, first, last, f, l)</p>
+</div>
+<div class="paragraph">
+<p>StringReplace_</p>
+</div>
+<div class="paragraph">
+<p>const charT* c_str()</p>
+</div>
+<div class="paragraph">
+<p>const charT* c_str_(container)</p>
+</div>
+<div class="paragraph">
+<p>CStr_</p>
+</div>
+<div class="paragraph">
+<p>const charT* data()</p>
+</div>
+<div class="paragraph">
+<p>const charT* string_data_(container)</p>
+</div>
+<div class="paragraph">
+<p>StringData_</p>
+</div>
+<div class="paragraph">
+<p>size_type copy(charT* buf, size_type n, size_type pos = 0)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_copy_(container, buf, n, pos); size_type
+string_copy_(container, buf, n)</p>
+</div>
+<div class="paragraph">
+<p>StringCopy_</p>
+</div>
+<div class="paragraph">
+<p>size_type find(charT* s, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_find_(container, s, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type find(charT* s, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_find_(container, s, pos); size_type
+string_find_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type find(const string&amp; s, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_find_(container, s, pos) size_type
+string_find_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type find(charT c, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_find_(container, c, pos) size_type
+string_find_(container, c)</p>
+</div>
+<div class="paragraph">
+<p>StringFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type rfind(charT* s, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_rfind_(container, s, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringRFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type rfind(charT* s, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_rfind_(container, s, pos); size_type
+string_rfind_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringRFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type rfind(const string&amp; s, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_rfind_(container, s, pos); size_type
+string_rfind_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringRFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type rfind(charT c, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type string_rfind_(container, c, pos) size_type
+string_rfind_(container, c)</p>
+</div>
+<div class="paragraph">
+<p>StringRFind_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of(charT* s, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of_(container, s, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of (charT* s, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of_(container, s, pos); size_type
+find_first_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of (const string&amp; s, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of_(container, s, pos); size_type
+find_first_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of (charT c, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_of_(container, c, pos) size_type
+find_first_of_(container, c)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of(charT* s, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of_(container, s, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of (charT* s, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of_(container, s, pos); size_type
+find_first_not_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of (const string&amp; s, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of_(container, s, pos); size_type
+find_first_not_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of (charT c, size_type pos=0)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_first_not_of_(container, c, pos); size_type
+find_first_not_of_(container, c)</p>
+</div>
+<div class="paragraph">
+<p>StringFindFirstNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of(charT* s, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of_(container, s, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of (charT* s, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of_(container, s, pos); size_type
+find_last_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of (const string&amp; s, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of_(container, s, pos); size_type
+find_last_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of (charT c, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_of_(container, c, pos); size_type
+find_last_of_(container, c)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of(charT* s, size_type pos, size_type n)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of_(container, s, pos, n)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of (charT* s, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of_(container, s, pos); size_type
+find_last_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of (const string&amp; s, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of_(container, s, pos); size_type
+find_last_not_of_(container, s)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastNotOf_</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of (charT c, size_type pos=npos)</p>
+</div>
+<div class="paragraph">
+<p>size_type find_last_not_of_(container, c, pos); size_type
+find_last_not_of_(container, c)</p>
+</div>
+<div class="paragraph">
+<p>StringFindLastNotOf_</p>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/reference/functional-programming.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a></span>
+        <span class="next"><a href="common-headers.html">Common headers</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

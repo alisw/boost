@@ -1,0 +1,44 @@
+#
+# Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Distributed under the Boost Software License, Version 1.0. (See accompanying
+# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+#
+# Official repository: https://github.com/boostorg/url
+#
+
+# An antora playbook used for local development / tests
+# The playbook includes the example project as its only component
+
+site:
+  title: My Library
+  url: https://www.github.com/alandefreitas/antora-cpp-reference-extension
+  start_page: my-lib::index.adoc
+  robots: allow
+  keys:
+    repo_url: 'https://www.github.com/alandefreitas/antora-cpp-reference-extension'
+
+content:
+  sources:
+    - url: ../..
+      start_path: example/doc
+      edit_url: 'https://github.com/alandefreitas/antora-cpp-reference-extension/edit/{refname}/example/{path}'
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+
+antora:
+  extensions:
+    - require: '@alandefreitas/antora-cpp-reference-extension'
+      dependencies:
+        - name: 'boost'
+          repo: 'https://github.com/boostorg/boost.git'
+          tag: 'develop'
+          variable: 'BOOST_SRC_ROOT'
+
+asciidoc:
+  attributes:
+    # Enable pagination
+    page-pagination: ''

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Boost.DynamicBitset :: Boost.DynamicBitset</title>
+    <link rel="next" href="reference/boost/dynamic_bitset.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="dynamic_bitset" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.DynamicBitset</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="index.html">Boost.DynamicBitset</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference/boost/dynamic_bitset.html">Reference</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Boost.DynamicBitset</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="reference/boost/dynamic_bitset.html">
+      <span class="material-symbols-outlined" title="Next: Reference">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Boost.DynamicBitset</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Boost.DynamicBitset is a portable library that provides a set of bits.</p>
+</div>
+<div class="paragraph">
+<p>The set
+(<a href="reference/boost/dynamic_bitset.html#boost-dynamic_bitset" class="xref page">dynamic_bitset</a>)
+provides access to the value of individual bits via
+<a href="reference/boost/dynamic_bitset/operator_subs-08.html" class="xref page">operator[]</a> and
+provides all of the bitwise operators that one can apply to builtin integers,
+such as <a href="reference/boost/operator_bitand.html" class="xref page">operator&amp;</a> and
+<a href="reference/boost/dynamic_bitset/operator_lshift.html" class="xref page">operator&lt;&lt;</a>. The number
+of bits can change at runtime.</p>
+</div>
+<div class="paragraph">
+<p><code>dynamic_bitset</code> is nearly identical to <code>std::bitset</code>. The difference is that
+the size of a <code>dynamic_bitset</code> (the number of bits) can change at runtime,
+whereas the size of a <code>std::bitset</code> is specified at compile-time through an
+integer template parameter.</p>
+</div>
+<div class="paragraph">
+<p>The main problem that <code>dynamic_bitset</code> is designed to solve is that of
+representing a subset of a finite set. Each bit represents whether an element of
+the finite set is in the subset or not. As such the bitwise operations of
+<code>dynamic_bitset</code>, such as <code>operator&amp;</code> and <code>operator|</code>, correspond to set
+operations, such as intersection and union.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_definitions"><a class="anchor" href="#_definitions"></a>Definitions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each bit represents either the Boolean value <code>true</code> or <code>false</code> (1 or 0). To set
+a bit is to assign it 1. To clear or reset a bit is to assign it 0. To flip a
+bit is to change the value to 1 if it was 0 and to 0 if it was 1. Each bit has a
+non-negative position. A bitset <code>x</code> contains <code>x.size()</code> bits, with each bit
+assigned a unique position in the range <code>[0, x.size())</code>. The bit at position 0
+is called the least significant bit and the bit at position <code>size() - 1</code> is the
+most significant bit. When converting an instance of <code>dynamic_bitset</code> to or from
+an unsigned long <code>n</code>, the bit at position <code>i</code> of the bitset has the same value
+as <code>(n &gt;&gt; i) &amp; 1</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rationale"><a class="anchor" href="#_rationale"></a>Rationale</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Because of the proxy reference type, <code>dynamic_bitset</code> is not a
+<a href="https://en.cppreference.com/w/cpp/named_req/Container.html">Container</a> and its
+iterators do not satisfy the requirements for a LegacyForwardIterator. This
+means that its iterators are not usable with many standard algorithms. However,
+<code>dynamic_bitset</code> provides C++20 iterators which can be used with ranges.</p>
+</div>
+<div class="paragraph">
+<p>Some people prefer the name "toggle" to "flip". The name "flip" was chosen
+because that is the name used in <code>std::bitset</code>. In fact, most of the function
+names for <code>dynamic_bitset</code> were chosen for this reason.</p>
+</div>
+<div class="paragraph">
+<p><code>dynamic_bitset</code> does not throw exceptions when a precondition is violated (as
+is done in <code>std::bitset</code>). Instead <code>BOOST_ASSERT()</code> is used. See the guidelines
+for Error and Exception Handling for the explanation. Note that, consistently
+with this, the documentation of the member functions doesn&#8217;t use the term
+"precondition" for conditions that cause an exception to be emitted (the C++
+standard uses the term "requires" in such cases).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_acknowledgments"><a class="anchor" href="#_acknowledgments"></a>Acknowledgments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We would like to thank the Boost community for putting in the time to review and
+accept this library. This library is much better than it ever would have been
+due to all the suggestions from Boost members. We especially thank Matt Marcus
+for taking on the task of review manager. Also, a special thanks goes to James
+Kanze for his invaluable help with the internationalization issues.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/dynamic_bitset/edit/master/doc/modules/ROOT/pages/index.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="next"><a href="reference/boost/dynamic_bitset.html">Reference</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

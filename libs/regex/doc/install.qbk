@@ -1,0 +1,53 @@
+[/ 
+  Copyright 2006-2007 John Maddock.
+  Distributed under the Boost Software License, Version 1.0.
+  (See accompanying file LICENSE_1_0.txt or copy at
+  http://www.boost.org/LICENSE_1_0.txt).
+]
+
+[section:install Building and Installing the Library]
+
+When you extract the library from its zip file, you must preserve its internal 
+directory structure (for example by using the -d option when extracting). If you 
+didn't do that when extracting, then you'd better stop reading this, delete the 
+files you just extracted, and try again!
+
+This library should not need configuring before use; most popular compilers\/standard 
+libraries\/platforms are already supported "as is". If you do experience configuration 
+problems, or just want to test the configuration with your compiler, then the 
+process is the same as for all of boost; see the 
+[@../../../config/index.html configuration library documentation].
+
+The library will encase all code inside namespace boost.
+
+This is a header only library and all support for
+C++03 compilers has now been removed.
+
+The only people that still need to build the external libboost_regex library are those that are using the deprecated POSIX C API's
+
+Further, this library may now be used in "standalone" mode without the rest of the Boost C++ libraries,
+in order to do this you must either:
+
+* Have a C++17 compiler that supports `__has_include`, in this case if `<boost/config.hpp>` is not present
+then the library will automoatically enter standalone mode.  Or:
+* Define BOOST_REGEX_STANDALONE when building.
+
+If you are using this library with ICU, note that since it is now header only, it will be up to you
+to link to the ICU libraries if you use `<boost/regex/icu.hpp>` unless you are using the supplied CMake script.
+
+[h4 Usage with CMake]
+
+The library comes with a very basic CMakeLists.txt that allows this library to be used from other CMake scripts.
+
+CMakeLists.txt defines two targets:
+
+* `Boost::regex`  This is the target to use for normal header only builds.
+* `Boost::regex_icu`  This is the target to use if you are using `<boost/regex/icu.hpp>` in your code, and wish to have the ICU dependencies taken care of for you.
+
+There is also one configuration option:
+
+* BOOST_REGEX_STANDALONE when set then no other Boost libraries are targeted as dependencies, and Boost.Regex is placed in standalone mode.  Invoke CMake
+with -DBOOST_REGEX_STANDALONE=on to enable standalone mode.
+
+[endsect]
+

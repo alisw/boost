@@ -1,0 +1,887 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Porting Guide</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../index.html" title="Chapter 1. Boost.Compute">
+<link rel="up" href="../index.html" title="Chapter 1. Boost.Compute">
+<link rel="prev" href="interop.html" title="Interoperability">
+<link rel="next" href="platforms_and_compilers.html" title="Platforms and Compilers">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="interop.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="platforms_and_compilers.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_compute.porting_guide"></a><a class="link" href="porting_guide.html" title="Porting Guide">Porting Guide</a>
+</h2></div></div></div>
+<div class="toc"><dl class="toc"><dt><span class="section"><a href="porting_guide.html#boost_compute.porting_guide.opencl_api">OpenCL API</a></span></dt></dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_compute.porting_guide.opencl_api"></a><a class="link" href="porting_guide.html#boost_compute.porting_guide.opencl_api" title="OpenCL API">OpenCL API</a>
+</h3></div></div></div>
+<div class="table">
+<a name="boost_compute.porting_guide.opencl_api.opencl_api_translation_table"></a><p class="title"><b>Table 1.1. OpenCL API Translation Table</b></p>
+<div class="table-contents"><table class="table" summary="OpenCL API Translation Table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  OpenCL Function
+                </p>
+              </th>
+<th>
+                <p>
+                  Boost.Compute Function
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Buffers</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateBuffer</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer::buffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clReleaseMemObject</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1buffer.html" title="Class buffer">buffer::~buffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetMemObjectInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1buffer.html#doxygen.header_reference.classboost_1_1compute_1_1buffer_1a46f46b5662c66a0192bec8e9dc37d731">buffer::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Command Queues</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateCommandQueue</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue::command_queue()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clReleaseCommandQueue</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html" title="Class command_queue">command_queue::~command_queue()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetCommandQueueInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1af57669be2ef8b3dfc37172e63e8b16f3">command_queue::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueReadBuffer</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1adb6faa9b3bb69c2bd600d677051d4248">command_queue::enqueue_read_buffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueWriteBuffer</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ae0f48e8fe4989935eed4a94cdab0db40">command_queue::enqueue_write_buffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueCopyBuffer</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ae316d1c0be2281e16ad7ce9a99b31b4d">command_queue::enqueue_copy_buffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueNDRangeKernel</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ae25de1cdf6763552b9c58a7080e46b53">command_queue::enqueue_nd_range_kernel()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueTask</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ad0d8725e13b4de9f390d6bb2a53b8511">command_queue::enqueue_task()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueBarrier</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1af31ccf13c1617ecfea1e4794a5cc40dc">command_queue::enqueue_barrier()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueMarker</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1a6df474b8bc7d519ef698bbad59b17b67">command_queue::enqueue_marker()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clFlush</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ad0d8725e13b4de9f390d6bb2a53b8511">command_queue::flush()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clFinish</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ad0d8725e13b4de9f390d6bb2a53b8511">command_queue::finish()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Contexts</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateContext</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1context.html" title="Class context">context::context()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clReleaseContext</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1context.html" title="Class context">context::~context()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetContextInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1context.html#doxygen.header_reference.classboost_1_1compute_1_1context_1a832d7bdcbad35a3be691836826b7e248">context::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Devices</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetDeviceInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1device.html#doxygen.header_reference.classboost_1_1compute_1_1device_1adf511861f68dc3b189c720e8efc0734e">device::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Events</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clReleaseEvent</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1event.html" title="Class event">event::~event()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetEventInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1event.html#doxygen.header_reference.classboost_1_1compute_1_1event_1afbe904bedc245d46b7066e07c20ee593">event::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetEventProfilingInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1event.html#doxygen.header_reference.classboost_1_1compute_1_1event_1aa527bfb85ea1170edea2333e8f69b5b3">event::get_profiling_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clWaitForEvents</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1wait__list.html#doxygen.header_reference.classboost_1_1compute_1_1wait__list_1ada7933ea39d1cf52e061ba5974962426">wait_list::wait()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateUserEvent</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1user__event.html" title="Class user_event">user_event::user_event()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clSetUserEventStatus</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1user__event.html#doxygen.header_reference.classboost_1_1compute_1_1user__event_1ada9763582af569101b0e5e8df50d6949">user_event::set_status()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Kernels</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateKernel</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html" title="Class kernel">kernel::kernel()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clReleaseKernel</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html" title="Class kernel">kernel::~kernel()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetKernelInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html#doxygen.header_reference.classboost_1_1compute_1_1kernel_1ad7981f9ebd251a73a27fbeeb09e79ac5">kernel::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetKernelArgInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html#doxygen.header_reference.classboost_1_1compute_1_1kernel_1a660f1b7424d2d9e047abbdc14be4fe75">kernel::get_arg_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetKernelWorkGroupInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html#doxygen.header_reference.classboost_1_1compute_1_1kernel_1a47fca8ecdeaca09ff1ed7a973c9b43c8">kernel::get_work_group_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clSetKernelArg</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html#doxygen.header_reference.classboost_1_1compute_1_1kernel_1a85aa168290952ad5943eef2cd564d655">kernel::set_arg()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clSetKernelExecInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1kernel.html#doxygen.header_reference.classboost_1_1compute_1_1kernel_1a30a8c077cae0fb0ea37effe43c15a77e">kernel::set_exec_info()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Pipes</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreatePipe</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1pipe.html" title="Class pipe">pipe::pipe()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetPipeInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1pipe.html#doxygen.header_reference.classboost_1_1compute_1_1pipe_1abf9f9269802b5e88824a387c7df87f17">pipe::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Platforms</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetDeviceIDs</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1platform.html#doxygen.header_reference.classboost_1_1compute_1_1platform_1aeaeb2bea6b659fc507f1b087734c1553">platform::devices()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetPlatformInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1platform.html#doxygen.header_reference.classboost_1_1compute_1_1platform_1ab323b9d4e994e1436d163c6a3a00922b">platform::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetExtensionFunctionAddress</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1platform.html#doxygen.header_reference.classboost_1_1compute_1_1platform_1abd2c6fb0043baff3cf7092e51540c81d">platform::get_extension_function_address()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clUnloadCompiler</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1platform.html#doxygen.header_reference.classboost_1_1compute_1_1platform_1a2735397cc59125b1807e1dbad0949fa9">platform::unload_compiler()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Programs</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateProgramWithSource</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1ae8c5092400528f5b3b24a2fa06b50d6c">program::create_with_source()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateProgramWithBinary</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1a19faee32269b9151fb03e853c1372151">program::create_with_binary()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateProgramWithBuiltInKernels</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1a10d2b53fed3930707ef476985176a501">program::create_with_builtin_kernels()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clReleaseProgram</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html" title="Class program">program::~program()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetProgramInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1a140d5a53c5be03b50d4de41dc3892a30">program::get_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clBuildProgram</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1a2b383f843f941cfdde53798beee992b0">program::build()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCompileProgram</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1a1335c2a08fc5d6d9b2f5e07e527ee7ab">program::compile()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clLinkProgram</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1program.html#doxygen.header_reference.classboost_1_1compute_1_1program_1a6b5ace74143372faae6094069c44d3ba">program::link()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>Shared Virtual Memory</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clSVMAlloc</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/svm_8hpp_1a491036858efc0c5123152d9acadba890.html" title="Function template svm_alloc">svm_alloc&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clSVMFree</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/svm_8hpp_1a255906cdcabe24a70b6d9be2862eb96e.html" title="Function template svm_free">svm_free&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueSVMFree</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1ac7328b1fc09e982ad5b8114a02fef21f">command_queue::enqueue_svm_free()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueSVMMemcpy</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1a172636bb282989a6b8833451ffe5aeb2">command_queue::enqueue_svm_memcpy()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueSVMMemFill</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1a5f5abab3ffc21119bd117513fc8d9d6c">command_queue::enqueue_svm_fill()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueSVMMap</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1aa170ab74a27672aa2dd8b58a591c637a">command_queue::enqueue_svm_map()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueSVMUnmap</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1command__queue.html#doxygen.header_reference.classboost_1_1compute_1_1command__queue_1a8378add9c9b88c878764d5decbded84c">command_queue::enqueue_svm_unmap()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>System</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetPlatformIDs</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1system.html#doxygen.header_reference.classboost_1_1compute_1_1system_1ad57f8e101db7f85d6f0a8e79911734a2">system::platforms()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <span class="bold"><strong>OpenGL Sharing</strong></span>
+                </p>
+              </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateFromGLBuffer</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1opengl__buffer.html" title="Class opengl_buffer">opengl_buffer::opengl_buffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateFromGLRenderbuffer</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1opengl__renderbuffer.html" title="Class opengl_renderbuffer">opengl_renderbuffer::opengl_renderbuffer()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clCreateFromGLTexture</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1opengl__texture.html" title="Class opengl_texture">opengl_texture::opengl_texture()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clGetGLTextureInfo</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/classboost_1_1compute_1_1opengl__texture.html" title="Class opengl_texture">opengl_texture::get_texture_info&lt;T&gt;()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueAcquireGLObjects</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/acquire_8hpp_1a4094d4a9e8725247122439272fcb0b97.html" title="Function opengl_enqueue_acquire_gl_objects">opengl_enqueue_acquire_gl_objects()</a></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">clEnqueueReleaseGLObjects</span><span class="special">()</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../doxygen/header_reference/acquire_8hpp_1aa2597563995d9a32b3f014f13006aeaa.html" title="Function opengl_enqueue_release_gl_objects">opengl_enqueue_release_gl_objects()</a></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break">
+</div>
+</div>
+<div class="copyright-footer">Copyright © 2013, 2014 Kyle Lutz<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="interop.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="platforms_and_compilers.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

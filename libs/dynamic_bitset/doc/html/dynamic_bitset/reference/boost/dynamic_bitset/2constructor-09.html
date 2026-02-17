@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>boost::dynamic&lowbar;bitset::dynamic&lowbar;bitset :: Boost.DynamicBitset</title>
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../../../_'</script>
+<link rel="icon" href="../../../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="dynamic_bitset" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../../../index.html">Boost.DynamicBitset</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../../../index.html">Boost.DynamicBitset</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../dynamic_bitset.html">Reference</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../../../index.html" aria-label="Home: Boost.DynamicBitset">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="2constructor-09.html"><a href="../../boost.html">boost</a>::<a href="../../boost/dynamic_bitset.html">dynamic&lowbar;bitset</a>::dynamic&lowbar;bitset</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+</div></div>
+    <h1 class="page"><a href="../../boost.html">boost</a>::<a href="../../boost/dynamic_bitset.html">dynamic&lowbar;bitset</a>::dynamic&lowbar;bitset</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Constructs a bitset from a range of blocks or from an integer&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Declared in <code>&lt;boost&sol;dynamic&lowbar;bitset&sol;dynamic&lowbar;bitset&period;hpp&gt;</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">template&lt;typename BlockInputIterator&gt;
+dynamic&lowbar;bitset(
+    BlockInputIterator first,
+    BlockInputIterator last,
+    <a href="allocator_type.html" class="xref page">allocator&lowbar;type</a> const&amp; alloc = allocator&lowbar;type());</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If this constructor is called with a type <code>BlockInputIterator</code> which is actually an integral type, the library behaves as if the constructor from <code>unsigned long</code> were called, with arguments <code>static&lowbar;cast&lt; size&lowbar;type &gt;( first )</code>, <code>last</code> and <code>alloc</code>, in that order&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example"><a class="anchor" href="#_example"></a>Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Given&colon;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">dynamic_bitset&lt; unsigned short &gt; b( 8, 7 );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>b</code> is constructed as if by calling the constructor&colon;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">dynamic_bitset(size_type num_bits,
+               unsigned long value = 0,
+               const allocator_type &amp; alloc = allocator_type())</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>with arguments&colon;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">static_cast&lt; dynamic_bitset&lt; unsigned short &gt;::size_type &gt;( 8 ),
+7,
+allocator_type()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note&colon; At the time of writing (October 2008) this is aligned with the proposed resolution for library issue 438&period; That is a post C&plus;&plus;03 change, and is currently in the working paper for C&plus;&plus;0x&period; Informally speaking, the critical changes with respect to C&plus;&plus;03 are the drop of a <code>static&lowbar;cast</code> on the second argument, and more leeway as to when the templated constructor should have the same effect as the <code>(size, value)</code> one&colon; Only when <code>InputIterator</code> is an integral type, in C&plus;&plus;03&semi; when it is either an integral type or any other type that the implementation might detect as impossible to be an input iterator, with the proposed resolution&period; For the purposes of dynamic&lowbar;bitset we limit ourselves to the first of these two changes&period;</p>
+</div>
+<div class="paragraph">
+<p>Otherwise (i&period;e&period; if the template argument is not an integral type), constructs a bitset based on a range of blocks&period; Let <code>&ast;first</code> be block number 0, <code>&bsol;&ast;&plus;&plus;first</code> block number 1, etc&period; Block number <code>b</code> is used to initialize the bits of the dynamic&lowbar;bitset in the position range <code>&lsqb;b &ast; bits&lowbar;per&lowbar;block, ( b &plus; 1 ) &ast; bits&lowbar;per&lowbar;block)</code>&period; For each block number <code>b</code> with value <code>bval</code>, the bit <code>( bval &gt;&gt; i ) &amp; 1</code> corresponds to the bit at position <code>b &ast; bits&lowbar;per&lowbar;block &plus; i</code> in the bitset (where i goes through the range <code>&lsqb;0, bits&lowbar;per&lowbar;block)</code>)&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_throws"><a class="anchor" href="#_throws"></a>Throws</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An allocation error if memory is exhausted (<code>std&colon;&colon;bad&lowbar;alloc</code> if <code>allocator&lowbar;type</code> is a <code>std&colon;&colon;allocator</code>)&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>first</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>numbits</code> if the template argument is an integral type, otherwise the start of the range&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>last</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>value</code> if the template argument is an integral type, otherwise the end of the range&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>alloc</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The allocator to use&period;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preconditions"><a class="anchor" href="#_preconditions"></a>Preconditions</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><code>BlockInputIterator</code> must be either an integral type or a model of <a href="https://en.cppreference.com/w/cpp/named_req/InputIterator">LegacyInputIterator</a> whose <code>value&lowbar;type</code> is the same type as <code>Block</code>&period;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="small">Created with <a href="https://www.mrdocs.com">MrDocs</a></span></p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../../../_/js/site.js" data-ui-root-path="../../../../_"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

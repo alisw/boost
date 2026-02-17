@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Building and Installing the Library</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="../index.html" title="Boost.Regex 7.0.1">
+<link rel="up" href="../index.html" title="Boost.Regex 7.0.1">
+<link rel="prev" href="configuration/tuning.html" title="Algorithm Tuning">
+<link rel="next" href="modules.html" title="Module Support (Experimental)">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="configuration/tuning.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="modules.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_regex.install"></a><a class="link" href="install.html" title="Building and Installing the Library">Building and Installing the Library</a>
+</h2></div></div></div>
+<p>
+      When you extract the library from its zip file, you must preserve its internal
+      directory structure (for example by using the -d option when extracting). If
+      you didn't do that when extracting, then you'd better stop reading this, delete
+      the files you just extracted, and try again!
+    </p>
+<p>
+      This library should not need configuring before use; most popular compilers/standard
+      libraries/platforms are already supported "as is". If you do experience
+      configuration problems, or just want to test the configuration with your compiler,
+      then the process is the same as for all of boost; see the <a href="../../../../config/index.html" target="_top">configuration
+      library documentation</a>.
+    </p>
+<p>
+      The library will encase all code inside namespace boost.
+    </p>
+<p>
+      This is a header only library and all support for C++03 compilers has now been
+      removed.
+    </p>
+<p>
+      The only people that still need to build the external libboost_regex library
+      are those that are using the deprecated POSIX C API's
+    </p>
+<p>
+      Further, this library may now be used in "standalone" mode without
+      the rest of the Boost C++ libraries, in order to do this you must either:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Have a C++17 compiler that supports <code class="computeroutput"><span class="identifier">__has_include</span></code>,
+          in this case if <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> is not present then the library will
+          automoatically enter standalone mode. Or:
+        </li>
+<li class="listitem">
+          Define BOOST_REGEX_STANDALONE when building.
+        </li>
+</ul></div>
+<p>
+      If you are using this library with ICU, note that since it is now header only,
+      it will be up to you to link to the ICU libraries if you use <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">regex</span><span class="special">/</span><span class="identifier">icu</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> unless you are using the supplied CMake
+      script.
+    </p>
+<h5>
+<a name="boost_regex.install.h0"></a>
+      <span class="phrase"><a name="boost_regex.install.usage_with_cmake"></a></span><a class="link" href="install.html#boost_regex.install.usage_with_cmake">Usage
+      with CMake</a>
+    </h5>
+<p>
+      The library comes with a very basic CMakeLists.txt that allows this library
+      to be used from other CMake scripts.
+    </p>
+<p>
+      CMakeLists.txt defines two targets:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <code class="computeroutput"><span class="identifier">Boost</span><span class="special">::</span><span class="identifier">regex</span></code> This is the target to use for normal
+          header only builds.
+        </li>
+<li class="listitem">
+          <code class="computeroutput"><span class="identifier">Boost</span><span class="special">::</span><span class="identifier">regex_icu</span></code> This is the target to use if
+          you are using <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">regex</span><span class="special">/</span><span class="identifier">icu</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> in your code, and wish to have the
+          ICU dependencies taken care of for you.
+        </li>
+</ul></div>
+<p>
+      There is also one configuration option:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem">
+          BOOST_REGEX_STANDALONE when set then no other Boost libraries are targeted
+          as dependencies, and Boost.Regex is placed in standalone mode. Invoke CMake
+          with -DBOOST_REGEX_STANDALONE=on to enable standalone mode.
+        </li></ul></div>
+</div>
+<div class="copyright-footer">Copyright © 1998-2013 John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="configuration/tuning.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="modules.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

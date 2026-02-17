@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>UML short guide :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/uml-short-guide.html">
+    <link rel="prev" href="founding-idea.html">
+    <link rel="next" href="tutorial.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="founding-idea.html">Founding idea</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="index.html">Table of Contents</a></li>
+    <li><a href="uml-short-guide.html">UML short guide</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="founding-idea.html">
+      <span class="material-symbols-outlined" title="Previous: Founding idea">arrow_back</span>
+    </a>
+    <a accesskey="u" href="index.html">
+      <span class="material-symbols-outlined" title="Up: Table of Contents">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="tutorial.html">
+      <span class="material-symbols-outlined" title="Next: Tutorial">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">UML short guide</h1>
+  <div class="sect1">
+<h2 id="what-are-state-machines"><a class="anchor" href="#what-are-state-machines"></a>What are state machines?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>State machines are the description of a thing&#8217;s lifeline. They describe
+the different stages of the lifeline, the events influencing it, and
+what it does when a particular event is detected at a particular stage.
+They offer the complete specification of the dynamic behavior of the
+thing.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="concepts"><a class="anchor" href="#concepts"></a>Concepts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Thinking in terms of state machines is a bit surprising at first, so let
+us have a quick glance at the concepts.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="state-machine-state-transition-event"><a class="anchor" href="#state-machine-state-transition-event"></a>State machine, state, transition, event</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A state machine is a concrete model describing the behavior of a system.
+It is composed of a finite number of states and transitions.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/sm.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>A simple state has no sub states. It can have data, entry and exit
+behaviors and deferred events. One can provide entry and exit behaviors
+(also called actions) to states (or state machines), which are executed
+whenever a state is entered or left, no matter how. A state can also
+have internal transitions which cause no entry or exit behavior to be
+called. A state can mark events as deferred. This means the event cannot
+be processed if this state is active, but it must be retained. Next time
+a state not deferring this event is active, the event will be processed,
+as if it had just been fired.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/state.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>A transition is the switching between active states, triggered by an
+event. Actions and guard conditions can be attached to the transition.
+The action executes when the transition fires, the guard is a Boolean
+operation executed first and which can prevent the transition from
+firing by returning false.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/transition.jpg" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>An initial state marks the first active state of a state machine. It has
+no real existence and neither has the transition originating from it.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/init_state.gif" alt="image"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="submachines-orthogonal-regions-pseudostates"><a class="anchor" href="#submachines-orthogonal-regions-pseudostates"></a>Submachines, orthogonal regions, pseudostates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A composite state is a state containing a region or decomposed in two or
+more regions. A composite state contains its own set of states and
+regions.</p>
+</div>
+<div class="paragraph">
+<p>A submachine is a state machine inserted as a state in another state
+machine. The same submachine can be inserted more than once.</p>
+</div>
+<div class="paragraph">
+<p>Orthogonal regions are parts of a composite state or submachine, each
+having its own set of mutually exclusive set of states and transitions.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/regions.gif" alt="image"></span> UML also defines a number of pseudo
+states, which are considered important concepts to model, but not enough
+to make them first-class citizens. The terminate pseudo state terminates
+the execution of a state machine (MSM handles this slightly differently;
+the state machine is not destroyed but no further event processing
+occurs).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/terminate.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>An exit point pseudo state exits a composite state or a submachine and
+forces termination of execution in all contained regions.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/exit.gif" alt="image"></span> An entry point pseudo state allows a kind
+of controlled entry inside a composite. Precisely, it connects a
+transition outside the composite to a transition inside the composite.
+An important point is that this mechanism only allows a single region to
+be entered. In the above diagram, in region1, the initial state would
+become active.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/entry_point.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>There are also two more ways to enter a submachine (apart the obvious
+and more common case of a transition terminating on the submachine as
+shown in the region case). An explicit entry means that an inside state
+is the target of a transition. Unlike with direct entry, no tentative
+encapsulation is made, and only one transition is executed. An explicit
+exit is a transition from an inner state to a state outside the
+submachine (not supported by MSM). I would not recommend using explicit
+entry or exit.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/explicit.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>The last entry possibility is using fork. A fork is an explicit entry
+into one or more regions. Other regions are again activated using their
+initial state.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/fork.gif" alt="image"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_history"><a class="anchor" href="#_history"></a><a id="uml-history"></a>History</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>UML defines two kinds of history, shallow history and deep history.
+Shallow history is a pseudo state representing the most recent substate
+of a submachine. A submachine can have at most one shallow history. A
+transition with a history pseudo state as target is equivalent to a
+transition with the most recent substate as target. And very
+importantly, only one transition may originate from the history. Deep
+history is a shallow history recursively reactivating the substates of
+the most recent substate. It is represented like the shallow history
+with a star (H* inside a circle).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/history.gif" alt="image"></span> History is not a completely satisfying
+concept. First of all, there can be just one history pseudo state and
+only one transition may originate from it. So they do not mix well with
+orthogonal regions as only one region can be ``remembered''. Deep
+history is even worse and looks like a last-minute addition. History has
+to be activated by a transition and only one transition originates from
+it, so how to model the transition originating from the deep history
+pseudo state and pointing to the most recent substate of the substate?
+As a bonus, it is also inflexible and does not accept new types of
+histories. Let&#8217;s face it, history sounds great and is useful in theory,
+but the UML version is not quite making the cut. And therefore, MSM
+provides a different version of this useful concept.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="uml-anonymous"><a class="anchor" href="#uml-anonymous"></a>Completion transitions / anonymous transitions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Completion events (or transitions), also called anonymous transitions,
+are defined as transitions having no defined event triggering them. This
+means that such transitions will immediately fire when a state being the
+source of an anonymous transition becomes active, provided that a guard
+allows it. They are useful in modeling algorithms as an activity diagram
+would normally do. In the real-time world, they have the advantage of
+making it easier to estimate how long a periodically executed action
+will last. For example, consider the following diagram.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/completion.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>The designer now knows at any time that he will need a maximum of 4
+transitions. Being able to estimate how long a transition takes, he can
+estimate how much of a time frame he will need to require (real-time
+tasks are often executed at regular intervals). If he can also estimate
+the duration of actions, he can even use graph algorithms to better
+estimate his timing requirements.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="UML-internal-transition"><a class="anchor" href="#UML-internal-transition"></a>Internal transitions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Internal transitions are transitions executing in the scope of the
+active state, being a simple state or a submachine. One can see them as
+a self-transition of this state, without an entry or exit action called.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="transition-conflict"><a class="anchor" href="#transition-conflict"></a>Conflicting transitions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If, for a given event, several transitions are enabled, they are said to
+be in conflict. There are two kinds of conflicts:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For a given source state, several transitions are defined, triggered
+by the same event. Normally, the guard condition in each transition
+defines which one is fired.</p>
+</li>
+<li>
+<p>The source state is a submachine or simple state and the conflict is
+between a transition internal to this state and a transition triggered
+by the same event and having as target another state.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The first one is simple; one only needs to define two or more rows in
+the transition table, with the same source and trigger, with a different
+guard condition. Beware, however, that the UML standard wants these
+conditions to be not overlapping. If they do, the standard says nothing
+except that this is incorrect, so the implementer is free to implement
+it the way he sees fit. In the case of MSM, the transition appearing
+last in the transition table gets selected first, if it returns false
+(meaning disabled), the library tries with the previous one, and so on.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/conflict1.gif" alt="image"></span></p>
+</div>
+<div class="paragraph">
+<p>In the second case, UML defines that the most inner transition gets
+selected first, which makes sense, otherwise no exit point pseudo state
+would be possible (the inner transition brings us to the exit point,
+from where the containing state machine can take over).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/conflict2.gif" alt="image"></span> MSM handles both cases itself, so the
+designer needs only concentrate on its state machine and the UML
+subtleties (not overlapping conditions), not on implementing this
+behavior himself.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="added-concepts"><a class="anchor" href="#added-concepts"></a>Added concepts</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Interrupt states: a terminate state which can be exited if a defined
+event is triggered.</p>
+</li>
+<li>
+<p>Kleene (any) event: a transition with a kleene event will accept any
+event as trigger. Unlike a completion transition, an event must be
+triggered and the original event is kept accessible in the kleene event.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="state-machine-glossary"><a class="anchor" href="#state-machine-glossary"></a>State machine glossary</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>state machine: the life cycle of a thing. It is made of states,
+regions, transitions and processes incoming events.</p>
+</li>
+<li>
+<p>state: a stage in the life cycle of a state machine. A state (like a
+submachine) can have an entry and exit behaviors.</p>
+</li>
+<li>
+<p>event: an incident provoking (or not) a reaction of the state machine</p>
+</li>
+<li>
+<p>transition: a specification of how a state machine reacts to an event.
+It specifies a source state, the event triggering the transition, the
+target state (which will become the newly active state if the transition
+is triggered), guard and actions.</p>
+</li>
+<li>
+<p>action: an operation executed during the triggering of the transition.</p>
+</li>
+<li>
+<p>guard: a boolean operation being able to prevent the triggering of a
+transition which would otherwise fire.</p>
+</li>
+<li>
+<p>transition table: representation of a state machine. A state machine
+diagram is a graphical, but incomplete representation of the same model.
+A transition table, on the other hand, is a complete representation.</p>
+</li>
+<li>
+<p>initial state: The state in which the state machine starts. Having
+several orthogonal regions means having as many initial states.</p>
+</li>
+<li>
+<p>submachine: A submachine is a state machine inserted as a state in
+another state machine and can be found several times in a same state
+machine.</p>
+</li>
+<li>
+<p>orthogonal regions: (logical) parallel flow of execution of a state
+machine. Every region of a state machine gets a chance to process an
+incoming event.</p>
+</li>
+<li>
+<p>terminate pseudo-state: when this state becomes active, it terminates
+the execution of the whole state machine. MSM does not destroy the state
+machine as required by the UML standard, however, which lets you keep
+all the state machine&#8217;s data.</p>
+</li>
+<li>
+<p>entry/exit pseudo state: defined for submachines and are defined as a
+connection between a transition outside of the submachine and a
+transition inside the submachine. It is a way to enter or leave a
+submachine through a predefined point.</p>
+</li>
+<li>
+<p>fork: a fork allows explicit entry into several orthogonal regions of
+a submachine.</p>
+</li>
+<li>
+<p>history: a history is a way to remember the active state of a
+submachine so that the submachine can proceed in its last active state
+next time it becomes active.</p>
+</li>
+<li>
+<p>completion events (also called completion/anonymous transitions): when
+a transition has no named event triggering it, it automatically fires
+when the source state is active, unless a guard forbids it.</p>
+</li>
+<li>
+<p>transition conflict: a conflict is present if for a given source state
+and incoming event, several transitions are possible. UML specifies that
+guard conditions have to solve the conflict.</p>
+</li>
+<li>
+<p>internal transitions: transition from a state to itself without having
+exit and entry actions being called.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/uml-short-guide.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="founding-idea.html">Founding idea</a></span>
+        <span class="next"><a href="tutorial.html">Tutorial</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

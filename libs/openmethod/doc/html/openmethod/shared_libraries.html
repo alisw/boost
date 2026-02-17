@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/shared_libraries.html">
+    <link rel="prev" href="virtual_ptr_alt.html">
+    <link rel="next" href="ref_headers.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Advanced Features</li>
+    <li><a href="shared_libraries.html">Shared Libraries</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="virtual_ptr_alt.html">
+      <span class="material-symbols-outlined" title="Previous: Virtual Pointer Alternatives">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="ref_headers.html">
+      <span class="material-symbols-outlined" title="Next: Headers">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="shared_libraries" class="paragraph">
+<p>This section discusses how OpenMethod interoperates with shared libraries on
+Linux, other POSIX-like platforms, and Windows.</p>
+</div>
+<div class="sect2">
+<h3 id="_static_linking"><a class="anchor" href="#_static_linking"></a>Static Linking</h3>
+<div class="paragraph">
+<p>Statically linking to a shared library behaves the same way as linking to a
+static library on all platforms. Objects from the program and the shared
+libraries can contribute classes, methods and overriders to the default
+registry, or any registries.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dynamic_linking"><a class="anchor" href="#_dynamic_linking"></a>Dynamic Linking</h3>
+<div class="paragraph">
+<p>By "dynamic linking", we mean a program loading a shared library after it has
+started, and accessing its content. A common application of dynamic linking is
+to implement plugin architectures.</p>
+</div>
+<div class="paragraph">
+<p>OpenMethod uses global data to keep track of methods, overriders and classes,
+all managed by static constructors and destructors. <code><a href="reference/boost/openmethod/initialize.html" class="xref page">initialize</a></code> uses that
+information to set up dispatch tables. These variables must be truly global and
+unique for the library to operate correctly.</p>
+</div>
+<div class="paragraph">
+<p>Under this condition, a shared library can dynamically add classes, methods and
+overriders to an existing registry. <code>initialize</code> must be called to rebuild the
+dispatch tables after loading or unloading a shared library.</p>
+</div>
+<div class="paragraph">
+<p>Dynamic linking on Linux and POSIX-like platforms fulfills the unicity
+requirement with little effort from the programmer. On Linux, it is just a
+matter of tossing in <code>-rdynamic</code>, or adding <code>ENABLE_EXPORTS ON</code> to the library&#8217;s
+target properties if using <code>cmake</code>.</p>
+</div>
+<div class="paragraph">
+<p>If a library only uses its own registries, for example, if using open-methods as
+an implementation detail, it has its own global data, and there is no need to
+call <code>initialize</code>.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s look at an example. The following header is included by the program and
+the shared library:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">// animals.hpp
+
+#include &lt;string&gt;
+#include &lt;boost/openmethod.hpp&gt;
+
+struct Animal { virtual ~Animal() {} };
+struct Herbivore : Animal {};
+struct Carnivore : Animal {};
+
+BOOST_OPENMETHOD(
+    meet, (
+        boost::openmethod::virtual_ptr&lt;Animal&gt;,
+        boost::openmethod::virtual_ptr&lt;Animal&gt;),
+    std::string);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The shared library contains an object that adds two overriders, a new class,
+<code>Tiger</code>, and a factory function:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">// extensions.cpp
+#include "animals.hpp"
+
+using namespace boost::openmethod::aliases;
+
+BOOST_OPENMETHOD_OVERRIDE(
+    meet, (virtual_ptr&lt;Herbivore&gt;, virtual_ptr&lt;Carnivore&gt;), std::string) {
+    return "run";
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    meet, (virtual_ptr&lt;Carnivore&gt;, virtual_ptr&lt;Herbivore&gt;), std::string) {
+    return "hunt";
+}
+
+struct Tiger : Carnivore {};
+
+BOOST_OPENMETHOD_CLASSES(Tiger, Carnivore);
+
+extern "C" {
+#ifdef _WIN32
+__declspec(dllexport)
+#endif
+auto make_tiger() -&gt; Animal* {
+    return new Tiger;
+}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The main program adds a couple of classes then calls <code>meet</code> method. At this
+point, we only have the catch-call overrider:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">// dynamic_main.cpp
+
+#include "animals.hpp"
+
+#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+#include &lt;boost/dll/shared_library.hpp&gt;
+#include &lt;boost/dll/runtime_symbol_info.hpp&gt;
+#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+using namespace boost::openmethod::aliases;
+
+struct Cow : Herbivore {};
+struct Wolf : Carnivore {};
+
+BOOST_OPENMETHOD_CLASSES(Animal, Herbivore, Cow, Wolf, Carnivore);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    meet, (virtual_ptr&lt;Animal&gt;, virtual_ptr&lt;Animal&gt;), std::string) {
+    return "greet";
+}
+
+int main() {
+    std::cout &lt;&lt; "Before loading the shared library.\n";
+
+    boost::openmethod::initialize();
+
+    std::cout &lt;&lt; "cow meets wolf -&gt; "
+              &lt;&lt; meet(*std::make_unique&lt;Cow&gt;(), *std::make_unique&lt;Wolf&gt;())
+              &lt;&lt; "\n"; // greet
+    std::cout &lt;&lt; "wolf meets cow -&gt; "
+              &lt;&lt; meet(*std::make_unique&lt;Wolf&gt;(), *std::make_unique&lt;Cow&gt;())
+              &lt;&lt; "\n"; // greet
+
+    // to be continued...
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We load the shared library using Boost.DLL. After calling <code>initialize</code>, the new
+overriders are installed. The main program can also use <code>Tiger</code> objects, even
+though it has no knowledge of that class at compile time.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">int main() {
+    // ...
+
+    std::cout &lt;&lt; "\nAfter loading the shared library.\n";
+
+    boost::dll::shared_library lib(
+        boost::dll::program_location().parent_path() / LIBRARY_NAME,
+        boost::dll::load_mode::rtld_now);
+    boost::openmethod::initialize();
+
+    std::cout &lt;&lt; "cow meets wolf -&gt; "
+              &lt;&lt; meet(*std::make_unique&lt;Cow&gt;(), *std::make_unique&lt;Wolf&gt;())
+              &lt;&lt; "\n"; // run
+    std::cout &lt;&lt; "wolf meets cow -&gt; "
+              &lt;&lt; meet(*std::make_unique&lt;Wolf&gt;(), *std::make_unique&lt;Cow&gt;())
+              &lt;&lt; "\n"; // hunt
+
+    auto make_tiger = lib.get&lt;Animal*()&gt;("make_tiger");
+    std::cout &lt;&lt; "cow meets tiger -&gt; "
+              &lt;&lt; meet(
+                     *std::make_unique&lt;Cow&gt;(),
+                     *std::unique_ptr&lt;Animal&gt;(make_tiger()))
+              &lt;&lt; "\n"; // hunt
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, we unload the shared library and call <code>initialize</code> again. The
+overriders provided by the shared library are removed from the method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">    // ...
+
+    std::cout &lt;&lt; "\nAfter unloading the shared library.\n";
+
+    lib.unload();
+    boost::openmethod::initialize();
+
+    std::cout &lt;&lt; "cow meets wolf -&gt; "
+              &lt;&lt; meet(*std::make_unique&lt;Cow&gt;(), *std::make_unique&lt;Wolf&gt;())
+              &lt;&lt; "\n"; // greet
+    std::cout &lt;&lt; "wolf meets cow -&gt; "
+              &lt;&lt; meet(*std::make_unique&lt;Wolf&gt;(), *std::make_unique&lt;Cow&gt;())
+              &lt;&lt; "\n"; // greet
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_windows"><a class="anchor" href="#_windows"></a>Windows</h3>
+<div class="paragraph">
+<p>If we try the example on Windows, the result is disappointing:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">Before loading the shared library.
+cow meets wolf -&gt; greet
+wolf meets cow -&gt; greet
+
+After loading the shared library.
+cow meets wolf -&gt; greet
+wolf meets cow -&gt; greet
+cow meets tiger -&gt; unknown class struct Tiger</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>What happens here is that the program and the DLL have their own copies of
+"global" variables. When the DLL is loaded, its static constructors run, and
+they add overriders to <em>their</em> copy of the method (the <code>method::fn</code> static
+variable for the given name and signature). They are ignored when the main
+program calls <code>initialize</code>.</p>
+</div>
+<div class="paragraph">
+<p>Likewise, <code>BOOST_OPENMETHOD_CLASSES(Tiger, Carnivore)</code> in the DLL adds <code>Tiger</code>
+to the DLL&#8217;s copy of the registry. For the perspective of the program&#8217;s
+registry, the class does not exist.</p>
+</div>
+<div class="paragraph">
+<p>In theory, this can be fixed by adding <code><em>declspec(dllimport)</code> and
+<code></em>declspec(dllexport)</code> attributes where needed. However, this is not practical,
+because programs and DLLs can both import and export registries and methods. The
+underlying objects are instantiated from templates, which complicates the
+matter. Research is being done on this subject. However, as of now, dynamic
+loading is supported on Windows only if it does not attempt to share a registry
+across modules.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_indirect_vptrs"><a class="anchor" href="#_indirect_vptrs"></a>Indirect Vptrs</h3>
+<div class="paragraph">
+<p><code>initialize</code> rebuilds the v-tables in the registry. This invalidates all the
+<code>virtual_ptr</code>s, and also the v-table pointers stored in objects by
+<code><a href="reference/boost/openmethod/inplace_vptr_base.html" class="xref page">inplace_vptr_base</a></code>, related to that registry. This is seldom an issue, as
+most programs that dynamically load shared libraries do so at the very beginning
+of their execution.</p>
+</div>
+<div class="paragraph">
+<p>Otherwise, indirect v-table pointers must be used. This is achieved by using a
+registry that contains the <code><a href="reference/boost/openmethod/policies/indirect_vptr.html" class="xref page">indirect_vptr</a></code> policy.
+<code>&lt;boost/openmethod/default_registry.hpp&gt;</code> provides an <code><a href="reference/boost/openmethod/indirect_registry.html" class="xref page">indirect_registry</a></code>
+that has the same policies as <code>default_registry</code>, plus <code>indirect_vptr</code>. We can
+use it to override the default registry, for example using a compiler
+command-line switch (<code>-DBOOST_OPENMETHOD_DEFAULT_REGISTRY=indirect_registry</code>).</p>
+</div>
+<div class="paragraph">
+<p>Here is an example of a program that carries <code>virtual_ptr</code>s across
+<code>initialize</code> calls:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">// indirect_main.cpp
+
+#include "animals.hpp"
+
+#include &lt;boost/openmethod.hpp&gt;
+#include &lt;boost/openmethod/initialize.hpp&gt;
+#include &lt;boost/openmethod/interop/std_unique_ptr.hpp&gt;
+#include &lt;boost/dll/shared_library.hpp&gt;
+#include &lt;boost/dll/runtime_symbol_info.hpp&gt;
+#include &lt;iostream&gt;
+
+using namespace boost::openmethod::aliases;
+
+struct Cow : Herbivore {};
+struct Wolf : Carnivore {};
+
+BOOST_OPENMETHOD_CLASSES(Animal, Herbivore, Cow, Wolf, Carnivore);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    meet, (virtual_ptr&lt;Animal&gt;, virtual_ptr&lt;Animal&gt;), std::string) {
+    return "greet";
+}
+
+auto main() -&gt; int {
+    using namespace boost::openmethod::aliases;
+
+    std::cout &lt;&lt; "Before loading the shared library.\n";
+    boost::openmethod::initialize();
+
+    auto gracie = make_unique_virtual&lt;Cow&gt;();
+    auto willy = make_unique_virtual&lt;Wolf&gt;();
+
+    std::cout &lt;&lt; "cow meets wolf -&gt; " &lt;&lt; meet(*gracie, *willy) &lt;&lt; "\n"; // greet
+    std::cout &lt;&lt; "wolf meets cow -&gt; " &lt;&lt; meet(*willy, *gracie) &lt;&lt; "\n"; // greet
+    std::cout &lt;&lt; "cow.vptr() = " &lt;&lt; gracie.vptr() &lt;&lt; "\n"; // 0x5d3121d22be8
+    std::cout &lt;&lt; "wolf.vptr() = " &lt;&lt; willy.vptr() &lt;&lt; "\n"; // 0x5d3121d22bd8
+
+    std::cout &lt;&lt; "\nAfter loading the shared library.\n";
+
+    boost::dll::shared_library lib(
+        boost::dll::program_location().parent_path() / LIBRARY_NAME,
+        boost::dll::load_mode::rtld_now);
+
+    boost::openmethod::initialize();
+
+    std::cout &lt;&lt; "cow meets wolf -&gt; " &lt;&lt; meet(*gracie, *willy) &lt;&lt; "\n"; // run
+    std::cout &lt;&lt; "wolf meets cow -&gt; " &lt;&lt; meet(*willy, *gracie) &lt;&lt; "\n"; // hunt
+    std::cout &lt;&lt; "cow.vptr() = " &lt;&lt; gracie.vptr() &lt;&lt; "\n"; // 0x5d3121d21998
+    std::cout &lt;&lt; "wolf.vptr() = " &lt;&lt; willy.vptr() &lt;&lt; "\n"; // 0x5d3121d21988
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This program loads a shared library that is itself compiled with
+<code>-DBOOST_OPENMETHOD_DEFAULT_REGISTRY=indirect_registry</code>.</p>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/shared_libraries.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a></span>
+        <span class="next"><a href="ref_headers.html">Headers</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

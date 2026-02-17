@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cancellation and timeouts :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/cancellation.html">
+    <link rel="prev" href="requests_responses.html">
+    <link rel="next" href="serialization.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Introduction</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="requests_responses.html">Requests and responses</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="cancellation.html">Cancellation and timeouts</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="requests_responses.html">
+      <span class="material-symbols-outlined" title="Previous: Requests and responses">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="serialization.html">
+      <span class="material-symbols-outlined" title="Next: Serializing and parsing into custom types">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Cancellation and timeouts</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, running a request with <a href="reference/boost/redis/basic_connection/async_exec-02.html" class="xref page"><code>async_exec</code></a>
+will wait until a connection to the Redis server is established by <code>async_run</code>.
+This may take a very long time if the server is down.</p>
+</div>
+<div class="paragraph">
+<p>For this reason, it is usually a good idea to set a timeout to <code>async_exec</code>
+operations using the
+<a href="https://www.boost.org/doc/libs/latest/doc/html/boost_asio/reference/cancel_after.html"><code>asio::cancel_after</code></a>
+completion token:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">using namespace std::chrono_literals;
+
+// Compose a request with a SET command
+request req;
+req.push("SET", "my_key", 42);
+
+// If the request hasn't completed after 10 seconds, it will be cancelled
+// and an exception will be thrown.
+co_await conn.async_exec(req, ignore, asio::cancel_after(10s));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See our <a href="https://github.com/boostorg/redis/blob/master/example/cpp20_timeouts.cpp">example on timeouts</a>
+for a full code listing.</p>
+</div>
+<div class="paragraph">
+<p>You can also use <code>cancel_after</code> with other completion styles, like
+callbacks and futures.</p>
+</div>
+<div class="paragraph">
+<p><code>cancel_after</code> works because <code>async_exec</code> supports the per-operation
+cancellation mechanism. This is used by Boost.Asio to implement features
+like <code>cancel_after</code> and parallel groups. All asynchronous operations
+in the library support this mechanism. Please consult the documentation
+for individual operations for more info.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_retrying_idempotent_requests"><a class="anchor" href="#_retrying_idempotent_requests"></a>Retrying idempotent requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We mentioned that <code>async_exec</code> waits until the server is up
+before sending the request. But what happens if there is a communication
+error after sending the request, but before receiving a response?</p>
+</div>
+<div class="paragraph">
+<p>In this situation there is no way to know if the request was processed by the server or not.
+By default, the library will consider the request as failed,
+and <code>async_exec</code> will complete with an <code>asio::error::operation_aborted</code>
+error code.</p>
+</div>
+<div class="paragraph">
+<p>Some requests can be executed several times and result in the same outcome
+as executing them only once. We say that these requests are <em>idempotent</em>.
+The <code>SET</code> command is idempotent, while <code>INCR</code> is not.</p>
+</div>
+<div class="paragraph">
+<p>If you know that a <code>request</code> object contains only idempotent commands,
+you can instruct Boost.Redis to retry the request on failure, even
+if the library is unsure about the server having processed the request or not.
+You can do so by setting <code>cancel_if_unresponded</code>
+in <a href="reference/boost/redis/request/config.html" class="xref page"><code>request::config</code></a>
+to false:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Compose a request
+request req;
+req.push("SET", "my_key", 42); // idempotent
+req.get_config().cancel_if_unresponded = false; // Retry the request even if it was written but not responded
+
+// Makes sure that the key is set, even in the presence of network errors.
+// This may suspend for an unspecified period of time if the server is down.
+co_await conn.async_exec(req, ignore);</code></pre>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="prev"><a href="requests_responses.html">Requests and responses</a></span>
+        <span class="next"><a href="serialization.html">Serializing and parsing into custom types</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

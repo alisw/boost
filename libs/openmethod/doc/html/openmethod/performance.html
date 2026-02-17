@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Boost.OpenMethod</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/develop/lib/doc/openmethod/performance.html">
+    <link rel="prev" href="basics.html">
+    <link rel="next" href="smart_pointers.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="openmethod" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.OpenMethod</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="motivation.html">Motivation</a>
+        </li>
+              <li class="" data-depth="1">
+            <span class="nav-text">Basic Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="basics.html">Methods and Overriders</a>
+        </li>
+              <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="performance.html">Performance</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="smart_pointers.html">Smart Pointers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="headers.html">Header and Implementation Files</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="namespaces.html">Namespaces</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="friends.html">Friends</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="multiple_dispatch.html">Multiple Dispatch</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Advanced Features</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="core_api.html">Core API</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="registries_and_policies.html">Registries and Policies</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="custom_rtti.html">Custom RTTI</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="error_handling.html">Error Handling</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="virtual_ptr_alt.html">Virtual Pointer Alternatives</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="shared_libraries.html">Shared Libraries</a>
+        </li>
+        </ul>
+        <li class="" data-depth="1">
+            <span class="nav-text">Reference</span>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="ref_headers.html">Headers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="ref_macros.html">Macros</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference/boost/openmethod.html">Namespace boost::openmethod</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.OpenMethod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li>Basic Features</li>
+    <li><a href="performance.html">Performance</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="basics.html">
+      <span class="material-symbols-outlined" title="Previous: Methods and Overriders">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="smart_pointers.html">
+      <span class="material-symbols-outlined" title="Next: Smart Pointers">arrow_forward</span>
+    </a>
+</div></div>
+  <div id="performance" class="paragraph">
+<p>Open-methods can be as fast as ordinary virtual member functions when
+compiled with optimization.</p>
+</div>
+<div class="paragraph">
+<p>First, let&#8217;s examine the code generated by clang for an ordinary virtual
+function call:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">void call_virtual_function(const Node&amp; node, std::ostream&amp; os) {
+    node.postfix(os);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Clang compiles this function to the following assembly on the x64 architecture:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asm hljs" data-lang="asm">mov	rax, qword ptr [rdi]
+mov	rax, qword ptr [rax + 24]
+jmp	rax                             # TAILCALL</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>llvm-mca estimates this code has a throughput of 1 cycle per dispatch.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s look at a method call now:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">void call_via_ref(const Node&amp; node, std::ostream&amp; os) {
+    postfix(node, os);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This compiles to (variable names are shortened for readability):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asm hljs" data-lang="asm">	mov		rax, rdi
+	mov		rcx, qword ptr [rdi]
+	mov		rdi, qword ptr [rip + mult]
+	imul 	rdi, qword ptr [rcx - 8]
+	movzx	ecx, byte ptr [rip + shift]
+	shr		rdi, cl
+	mov		rdx, rsi
+	mov		rcx, qword ptr [rip + vptr_vector_vptrs]
+	mov		rdi, qword ptr [rcx + 8*rdi]
+	mov		rcx, qword ptr [rip + postfix::fn+88]
+	mov		rcx, qword ptr [rdi + 8*rcx]
+	mov		rsi, rax
+	jmp		rcx                             # TAILCALL</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is quite a few instructions more. Upon closer examination, we see that many
+are memory reads, independent of one another; they can thus be executed in
+parallel. For example, the first three instructions can execute simultaneously.</p>
+</div>
+<div class="paragraph">
+<p>llvm-mca estimates a throughput of 4 cycles per dispatch. However, the
+difference is amortized by the time spent passing the arguments and returning
+from the function; plus, of course, executing the body of the function.</p>
+</div>
+<div class="paragraph">
+<p>Micro- and RDTSC-based benchmarks suggest that dispatching an open-methods with
+a single virtual argument <em>via</em> <em>a</em> <em>reference</em> is between 30% and 50% slower
+than calling the equivalent virtual function, with an empty body and no other
+arguments. In most real programs, the overhead would be unnoticeable.</p>
+</div>
+<div class="paragraph">
+<p><strong>However</strong>, <code>call_via_ref</code> does two things: it constructs a <code>virtual_ptr&lt;Node&gt;</code>
+from a <code>const Node&amp;</code>, then it calls the method.</p>
+</div>
+<div class="paragraph">
+<p>The construction of the <code>virtual_ptr</code> is the costly part. It performs a lookup
+in a perfect hash table, indexed by pointers to <code>std::type_info</code>, to find the
+correct vtable. Then it stores a pointer to it in the <code>virtual_ptr</code> object,
+along with a pointer to the object.<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>If we already have a <code>virtual_ptr</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">void call_via_virtual_ptr(virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os) {
+    postfix(node, os);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A method call compiles to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asm hljs" data-lang="asm">mov	rax, qword ptr [rip + postfix::fn+88]
+mov	rax, qword ptr [rdi + 8*rax]
+jmp	rax                             # TAILCALL</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>virtual_ptr</code> arguments are passed through the method call, to the overrider,
+which can use them to make further method calls.</p>
+</div>
+<div class="paragraph">
+<p>Code that incorporates open-methods in its design should use
+<code>virtual_ptr</code>s in place of plain pointers or references, as much as
+possible. Here is the Node example, rewritten to use <code>virtual_ptr</code>s
+thoughout:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#include &lt;boost/openmethod.hpp&gt;
+using boost::openmethod::virtual_ptr;
+
+struct Node {
+    virtual ~Node() {}
+    virtual int value() const = 0;
+};
+
+struct Variable : Node {
+    Variable(int value) : v(value) {}
+    int value() const override { return v; }
+    int v;
+};
+
+struct Plus : Node {
+    Plus(virtual_ptr&lt;const Node&gt; left, virtual_ptr&lt;const Node&gt; right)
+        : left(left), right(right) {}
+    int value() const override { return left-&gt;value() + right-&gt;value(); }
+    virtual_ptr&lt;const Node&gt; left, right;
+};
+
+struct Times : Node {
+    Times(virtual_ptr&lt;const Node&gt; left, virtual_ptr&lt;const Node&gt; right)
+        : left(left), right(right) {}
+    int value() const override { return left-&gt;value() * right-&gt;value(); }
+    virtual_ptr&lt;const Node&gt; left, right;
+};
+
+#include &lt;iostream&gt;
+
+using boost::openmethod::virtual_ptr;
+
+BOOST_OPENMETHOD(postfix, (virtual_ptr&lt;const Node&gt; node, std::ostream&amp; os), void);
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Variable&gt; var, std::ostream&amp; os), void) {
+    os &lt;&lt; var-&gt;v;
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Plus&gt; plus, std::ostream&amp; os), void) {
+    postfix(plus-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix(plus-&gt;right, os);
+    os &lt;&lt; " +";
+}
+
+BOOST_OPENMETHOD_OVERRIDE(
+    postfix, (virtual_ptr&lt;const Times&gt; times, std::ostream&amp; os), void) {
+    postfix(times-&gt;left, os);
+    os &lt;&lt; ' ';
+    postfix(times-&gt;right, os);
+    os &lt;&lt; " *";
+}
+
+BOOST_OPENMETHOD_CLASSES(Node, Variable, Plus, Times);
+
+#include &lt;boost/openmethod/initialize.hpp&gt;
+
+int main() {
+    boost::openmethod::initialize();
+    Variable a{2}, b{3}, c{4};
+    Plus d{a, b}; Times e{d, c};
+    postfix(e, std::cout);
+    std::cout &lt;&lt; " = " &lt;&lt; e.value() &lt;&lt; "\n"; // 2 3 + 4 * = 20
+}</code></pre>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. This is how Go and Rust implement dynamic dispatch.
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/openmethod/edit/master/doc/modules/ROOT/pages/performance.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="basics.html">Methods and Overriders</a></span>
+        <span class="next"><a href="smart_pointers.html">Smart Pointers</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+#  Boost.Atomic Library test Jamfile
+#
+#  Copyright (c) 2011 Helge Bahmann
+#  Copyright (c) 2012 Tim Blechmann
+#  Copyright (c) 2020-2025 Andrey Semashev
+#
+#  Distributed under the Boost Software License, Version 1.0. (See
+#  accompanying file LICENSE_1_0.txt or copy at
+#  http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+import-search /boost/config/checks ;
+import config : requires ;
+
+local cxx_requirements = [ requires
+      cxx11_constexpr
+      cxx11_noexcept
+      cxx11_nullptr
+      cxx11_lambdas
+      cxx11_static_assert
+      cxx11_defaulted_functions
+      cxx11_deleted_functions
+      cxx11_hdr_chrono
+      cxx11_hdr_mutex
+      cxx11_hdr_condition_variable
+      cxx11_hdr_thread
+    ]
+    [ check-target-builds ../config//has_sufficient_cxx11_type_traits "has sufficient <type_traits>" : : <build>no ]
+    ;
+
+project boost/atomic/test
+    : requirements
+      <include>.
+      <threading>multi
+      <library>/boost/atomic//boost_atomic
+      <library>/boost/config//boost_config
+      <library>/boost/core//boost_core
+      <library>/boost/detail//boost_detail
+      <library>/boost/type_traits//boost_type_traits
+      <target-os>windows:<define>BOOST_USE_WINDOWS_H
+      <toolset>gcc,<target-os>windows:<linkflags>"-lkernel32"
+      $(cxx_requirements)
+    ;
+
+test-suite atomic
+    : [ run atomic_api.cpp ]
+      [ run atomic_ref_api.cpp ]
+      [ run atomic_api.cpp : : : <define>BOOST_ATOMIC_FORCE_FALLBACK : fallback_atomic_api ]
+      [ run atomic_ref_api.cpp : : : <define>BOOST_ATOMIC_FORCE_FALLBACK : fallback_atomic_ref_api ]
+      [ run wait_api.cpp ]
+      [ run wait_ref_api.cpp ]
+      [ run wait_api.cpp : : : <define>BOOST_ATOMIC_FORCE_FALLBACK : fallback_wait_api ]
+      [ run wait_ref_api.cpp : : : <define>BOOST_ATOMIC_FORCE_FALLBACK : fallback_wait_ref_api ]
+      [ run wait_fuzz.cpp ]
+      [ run wait_fuzz.cpp : : : <define>BOOST_ATOMIC_FORCE_FALLBACK : fallback_wait_fuzz ]
+      [ run ipc_atomic_api.cpp ]
+      [ run ipc_atomic_ref_api.cpp ]
+      [ run ipc_wait_api.cpp ]
+      [ run ipc_wait_ref_api.cpp ]
+      [ run atomicity.cpp ]
+      [ run atomicity_ref.cpp ]
+      [ run ordering.cpp ]
+      [ run ordering_ref.cpp ]
+      [ run lockfree.cpp ]
+      [ compile-fail cf_arith_void_ptr.cpp ]
+      [ compile-fail cf_arith_func_ptr.cpp ]
+      [ compile-fail cf_arith_mem_ptr.cpp ]
+      [ compile c_implicit_ctor.cpp ]
+    ;

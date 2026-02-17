@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>boost::redis::basic&lowbar;connection::async&lowbar;exec :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/reference/boost/redis/basic_connection/async_exec-02.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../../../../_'</script>
+<link rel="icon" href="../../../../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../../../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../../../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../../../../index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../index.html">Introduction</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../requests_responses.html">Requests and responses</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="../../../../changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../../../../index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="async_exec-02.html"><a href="../../../boost.html">boost</a>::<a href="../../../boost/redis.html">redis</a>::<a href="../../../boost/redis/basic_connection.html">basic&lowbar;connection</a>::async&lowbar;exec</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+</div></div>
+    <h1 class="page"><a href="../../../boost.html">boost</a>::<a href="../../../boost/redis.html">redis</a>::<a href="../../../boost/redis/basic_connection.html">basic&lowbar;connection</a>::async&lowbar;exec</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Executes commands on the Redis server asynchronously&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Declared in <code>&lt;<a href="https://github.com/boostorg/redis/blob/master/include/boost/redis/connection.hpp#L759">boost&sol;redis&sol;connection&period;hpp</a>&gt;</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">template&lt;class CompletionToken = asio::default&lowbar;completion&lowbar;token&lowbar;t&lt;executor&lowbar;type&gt;&gt;
+auto
+async&lowbar;exec(
+    <a href="../request.html" class="xref page">request</a> const&amp; req,
+    <a href="../any_adapter.html" class="xref page">any&lowbar;adapter</a> adapter,
+    CompletionToken&amp;&amp; token = &lcub;&rcub;);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This function sends a request to the Redis server and waits for the responses to each individual command in the request&period; If the request contains only commands that don&apos;t expect a response, the completion occurs after it has been written to the underlying stream&period; Multiple concurrent calls to this function will be automatically queued by the implementation&period;</p>
+</div>
+<div class="paragraph">
+<p>For an example see cpp20&lowbar;echo&lowbar;server&period;cpp&period;</p>
+</div>
+<div class="paragraph">
+<p>The completion token must have the following signature&colon;</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">void f(system::error_code, std::size_t);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where the second parameter is the size of the response received in bytes&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_peroperation_cancellation"><a class="anchor" href="#_peroperation_cancellation"></a>Per&hyphen;operation cancellation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This operation supports per&hyphen;operation cancellation&period; Depending on the state of the request when cancellation is requested, we can encounter two scenarios&colon;</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If the request hasn&apos;t been sent to the server yet, cancellation will prevent it       from being sent to the server&period; In this situation, all cancellation types are supported       (&grave;asio&colon;&colon;cancellation&lowbar;type&lowbar;t&colon;&colon;terminal&grave;, &grave;asio&colon;&colon;cancellation&lowbar;type&lowbar;t&colon;&colon;partial&grave; and       &grave;asio&colon;&colon;cancellation&lowbar;type&lowbar;t&colon;&colon;total&grave;)&period;</p>
+</li>
+<li>
+<p>If the request has been sent to the server but the response hasn&apos;t arrived yet,       cancellation will cause &grave;async&lowbar;exec&grave; to complete immediately&period; When the response       arrives from the server, it will be ignored&period; In this situation, only       &grave;asio&colon;&colon;cancellation&lowbar;type&lowbar;t&colon;&colon;terminal&grave; and &grave;asio&colon;&colon;cancellation&lowbar;type&lowbar;t&colon;&colon;partial&grave;       are supported&period; Cancellation requests specifying &grave;asio&colon;&colon;cancellation&lowbar;type&lowbar;t&colon;&colon;total&grave;       only will be ignored&period;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In any case, connections can be safely used after cancelling <code>async&lowbar;exec</code> operations&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_object_lifetimes"><a class="anchor" href="#_object_lifetimes"></a>Object lifetimes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Both <code>req</code> and any response object referenced by <code>adapter</code> should be kept alive until the operation completes&period; No copies of the request object are made&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parameters"><a class="anchor" href="#_parameters"></a>Parameters</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>req</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The request to be executed&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>adapter</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An adapter object referencing a response to place data into&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>token</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Completion token&period;</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><span class="small">Created with <a href="https://www.mrdocs.com">MrDocs</a></span></p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../../../../_/js/site.js" data-ui-root-path="../../../../../_"></script>
+<script async src="../../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

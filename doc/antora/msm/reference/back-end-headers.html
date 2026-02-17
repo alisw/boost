@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Back-end headers :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/reference/back-end-headers.html">
+    <link rel="prev" href="common-headers.html">
+    <link rel="next" href="front-end-headers.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+<link rel="icon" href="../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="../tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class="" data-depth="2">
+            <a class="nav-link" href="../performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="../reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="common-headers.html">Common headers</a>
+        </li>
+              <li class=" is-current-page" data-depth="3">
+            <a class="nav-link" href="back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="../index.html">Table of Contents</a></li>
+    <li><a href="../reference.html">Reference</a></li>
+    <li><a href="back-end-headers.html">Back-end headers</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="common-headers.html">
+      <span class="material-symbols-outlined" title="Previous: Common headers">arrow_back</span>
+    </a>
+    <a accesskey="u" href="../reference.html">
+      <span class="material-symbols-outlined" title="Up: Reference">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="front-end-headers.html">
+      <span class="material-symbols-outlined" title="Next: Front-end headers">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Back-end headers</h1>
+  <div class="sect1">
+<h2 id="msmbackstate_machinehpp"><a class="anchor" href="#msmbackstate_machinehpp"></a>msm/back/state_machine.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header provides one type, state_machine, MSM&#8217;s state machine engine
+implementation.</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class Derived,class HistoryPolicy=NoHistory,class
+CompilePolicy=favor_runtime_speed&gt; state_machine</p>
+</div>
+<div class="sect2">
+<h3 id="template-arguments"><a class="anchor" href="#template-arguments"></a>Template arguments</h3>
+<div class="sect3">
+<h4 id="derived"><a class="anchor" href="#derived"></a>Derived</h4>
+<div class="paragraph">
+<p>The name of the front-end state machine definition. All three front-ends
+are possible.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="historypolicy"><a class="anchor" href="#historypolicy"></a>HistoryPolicy</h4>
+<div class="paragraph">
+<p>The desired history. This can be: AlwaysHistory, NoHistory,
+ShallowHistory. Default is NoHistory.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="compilepolicy"><a class="anchor" href="#compilepolicy"></a>CompilePolicy</h4>
+<div class="paragraph">
+<p>The trade-off performance / compile-time. There are two predefined
+policies, favor_runtime_speed and favor_compile_time. Default is
+favor_runtime_speed, best performance, longer compile-time. See
+<a href="#backend-tradeof-rt-ct">the backend</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="methods"><a class="anchor" href="#methods"></a>methods</h3>
+<div class="sect3">
+<h4 id="start"><a class="anchor" href="#start"></a>start</h4>
+<div class="paragraph">
+<p>The start methods must be called before any call to process_event. It
+activates the entry action of the initial state(s). This allows you to
+choose when a state machine can start. See <a href="#backend-start">backend</a>.</p>
+</div>
+<div class="paragraph">
+<p>void start</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="process_event"><a class="anchor" href="#process_event"></a>process_event</h4>
+<div class="paragraph">
+<p>The event processing method implements the double-dispatch. Each call to
+this function with a new event type instantiates a new dispatch
+algorithm and increases compile-time.</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class Event&gt; HandledEnum process_event</p>
+</div>
+<div class="paragraph">
+<p>Event const&amp;</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="current_state"><a class="anchor" href="#current_state"></a>current_state</h4>
+<div class="paragraph">
+<p>Returns the ids of currently active states. You will typically need it
+only for debugging or logging purposes.</p>
+</div>
+<div class="paragraph">
+<p>const int* current_state const</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="get_state_by_id"><a class="anchor" href="#get_state_by_id"></a>get_state_by_id</h4>
+<div class="paragraph">
+<p>Returns the state whose id is given. As all states of a concrete state
+machine share a common base state, the return value is a base state. If
+the id corresponds to no state, a null pointer is returned.</p>
+</div>
+<div class="paragraph">
+<p>const BaseState* get_state_by_id const</p>
+</div>
+<div class="paragraph">
+<p>int id</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="is_contained"><a class="anchor" href="#is_contained"></a>is_contained</h4>
+<div class="paragraph">
+<p>Helper returning true if the state machine is contained as a submachine
+of another state machine.</p>
+</div>
+<div class="paragraph">
+<p>bool is_contained const</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_state"><a class="anchor" href="#_get_state"></a>get_state</h4>
+<div class="paragraph">
+<p>Returns the required state of the state machine as a pointer. A compile
+error will occur if the state is not to be found in the state machine.</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class State&gt; State* get_state</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_state_2"><a class="anchor" href="#_get_state_2"></a>get_state</h4>
+<div class="paragraph">
+<p>Returns the required state of the state machine as a reference. A
+compile error will occur if the state is not to be found in the state
+machine.</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class State&gt; State&amp; get_state</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_is_flag_active"><a class="anchor" href="#_is_flag_active"></a>is_flag_active</h4>
+<div class="paragraph">
+<p>Returns true if the given flag is currently active. A flag is active if
+the active state of one region is tagged with this flag (using OR as
+BinaryOp) or active states of <em>all</em> regions (using AND as BinaryOp)</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class Flag,class BinaryOp&gt; bool is_flag_active</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_is_flag_active_2"><a class="anchor" href="#_is_flag_active_2"></a>is_flag_active</h4>
+<div class="paragraph">
+<p>Returns true if the given flag is currently active. A flag is active if
+the active state of one region is tagged with this flag.</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class Flag&gt; bool is_flag_active</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_visit_current_states"><a class="anchor" href="#_visit_current_states"></a>visit_current_states</h4>
+<div class="paragraph">
+<p>Visits all active states and their substates. A state is visited using
+the <code>accept</code> method without argument. The base class of all states must
+provide an <code>accept_sig</code> type.</p>
+</div>
+<div class="paragraph">
+<p>void visit_current_states</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_visit_current_states_2"><a class="anchor" href="#_visit_current_states_2"></a>visit_current_states</h4>
+<div class="paragraph">
+<p>Visits all active states and their substates. A state is visited using
+the <code>accept</code> method with arguments. The base class of all states must
+provide an <code>accept_sig</code> type defining the signature and thus the number
+and type of the parameters.</p>
+</div>
+<div class="paragraph">
+<p>void visit_current_states</p>
+</div>
+<div class="paragraph">
+<p>any-type param1, any-type param2,&#8230;&#8203;</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="defer_event"><a class="anchor" href="#defer_event"></a>defer_event</h4>
+<div class="paragraph">
+<p>Defers the provided event. This method can be called only if at least
+one state defers an event or if the state machine provides the
+<code>activate_deferred_events</code> (see
+<a href="../_attachments/Orthogonal-deferred2.cpp" class="xref attachment">example</a>) type either directly or
+using the deferred_events configuration of eUML
+(<code>configure_ &lt;&lt; deferred_events</code>).</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class Event&gt; void defer_event</p>
+</div>
+<div class="paragraph">
+<p>Event const&amp;</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="types"><a class="anchor" href="#types"></a>Types</h3>
+<div class="sect3">
+<h4 id="nr_regions"><a class="anchor" href="#nr_regions"></a>nr_regions</h4>
+<div class="paragraph">
+<p>The number of orthogonal regions contained in the state machine</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="entry_pt"><a class="anchor" href="#entry_pt"></a>entry_pt</h4>
+<div class="paragraph">
+<p>This nested type provides the necessary typedef for entry point
+pseudostates. <code>state_machine&lt;&#8230;&#8203;&gt;::entry_pt&lt;state_name&gt;</code> is a
+transition&#8217;s valid target inside the containing state machine&#8217;s
+transition table.</p>
+</div>
+<div class="paragraph">
+<p>entry_pt</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="exit_pt"><a class="anchor" href="#exit_pt"></a>exit_pt</h4>
+<div class="paragraph">
+<p>This nested type provides the necessary typedef for exit point
+pseudostates. <code>state_machine&lt;&#8230;&#8203;&gt;::exit_pt&lt;state_name&gt;</code> is a
+transition&#8217;s valid source inside the containing state machine&#8217;s
+transition table.</p>
+</div>
+<div class="paragraph">
+<p>exit_pt</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="direct"><a class="anchor" href="#direct"></a>direct</h4>
+<div class="paragraph">
+<p>This nested type provides the necessary typedef for an explicit entry
+inside a submachine. <code>state_machine&lt;&#8230;&#8203;&gt;::direct&lt;state_name&gt;</code> is a
+transition&#8217;s valid target inside the containing state machine&#8217;s
+transition table.</p>
+</div>
+<div class="paragraph">
+<p>direct</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="stt"><a class="anchor" href="#stt"></a>stt</h4>
+<div class="paragraph">
+<p>Calling state_machine&lt;frontend&gt;::stt returns a mpl::vector containing
+the transition table of the state machine. This type can then be used
+with generate_state_set or generate_event_set.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="argshpp"><a class="anchor" href="#argshpp"></a>args.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header provides one type, args, which provides the necessary types
+for a visitor implementation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="history-interface"><a class="anchor" href="#history-interface"></a>msm/back/history_policies.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header provides the out-of-the-box history policies supported by
+MSM. There are 3 such policies.</p>
+</div>
+<div class="sect2">
+<h3 id="every-history-policy-must-implement-the-following-methods"><a class="anchor" href="#every-history-policy-must-implement-the-following-methods"></a>Every history policy must implement the following methods:</h3>
+<div class="sect3">
+<h4 id="set_initial_states"><a class="anchor" href="#set_initial_states"></a>set_initial_states</h4>
+<div class="paragraph">
+<p>This method is called by msm::back::state_machine when constructed. It
+gives the policy a chance to save the ids of all initial states (passed
+as array).</p>
+</div>
+<div class="paragraph">
+<p>void set_initial_states</p>
+</div>
+<div class="paragraph">
+<p>int* const</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="history_exit"><a class="anchor" href="#history_exit"></a>history_exit</h4>
+<div class="paragraph">
+<p>This method is called by msm::back::state_machine when the submachine is
+exited. It gives the policy a chance to remember the ids of the last
+active substates of this submachine (passed as array).</p>
+</div>
+<div class="paragraph">
+<p>void history_exit</p>
+</div>
+<div class="paragraph">
+<p>int* const</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="history_entry"><a class="anchor" href="#history_entry"></a>history_entry</h4>
+<div class="paragraph">
+<p>This method is called by msm::back::state_machine when the submachine is
+entered. It gives the policy a chance to set the active states according
+to the policy&#8217;s aim. The policy gets as parameter the event which
+activated the submachine and returns an array of active states ids.</p>
+</div>
+<div class="paragraph">
+<p>template &lt;class Event&gt; int* const history_exit</p>
+</div>
+<div class="paragraph">
+<p>Event const&amp;</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="out-of-the-box-policies"><a class="anchor" href="#out-of-the-box-policies"></a>Out-of-the-box policies:</h3>
+<div class="sect3">
+<h4 id="nohistory"><a class="anchor" href="#nohistory"></a>NoHistory</h4>
+<div class="paragraph">
+<p>This policy is the default used by state_machine. No active state of a
+submachine is remembered and at every new activation of the submachine,
+the initial state(s) are activated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="alwayshistory"><a class="anchor" href="#alwayshistory"></a>AlwaysHistory</h4>
+<div class="paragraph">
+<p>This policy is a non-UML-standard extension. The active state(s) of a
+submachine is (are) always remembered at every new activation of the
+submachine.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="shallowhistory"><a class="anchor" href="#shallowhistory"></a>ShallowHistory</h4>
+<div class="paragraph">
+<p>This policy activates the active state(s) of a submachine if the event
+is found in the policy&#8217;s event list.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="msmbackdefault_compile_policyhpp"><a class="anchor" href="#msmbackdefault_compile_policyhpp"></a>msm/back/default_compile_policy.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header contains the definition of favor_runtime_speed. This policy
+has two settings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Submachines dispatch faster because their transitions are added into
+their containing machine&#8217;s transition table instead of simply forwarding
+events.</p>
+</li>
+<li>
+<p>It solves transition conflicts at compile-time</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="msmbackfavor_compile_timehpp"><a class="anchor" href="#msmbackfavor_compile_timehpp"></a>msm/back/favor_compile_time.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header contains the definition of favor_compile_time. This policy
+has two settings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Submachines dispatch is slower because all events, even those with no
+dispatch chance, are forwarded to submachines. In exchange, no row is
+added into the containing machine&#8217;s transition table, which reduces
+compile-time.</p>
+</li>
+<li>
+<p>It solves transition conflicts at run-time.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="msmbackmetafunctionshpp"><a class="anchor" href="#msmbackmetafunctionshpp"></a>msm/back/metafunctions.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header contains metafunctions for use by the library. Three
+metafunctions can be useful for the user:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>generate_state_set&lt; stt &gt;</code>: generates the list of all states
+referenced by the transition table stt. If stt is a recursive table
+(generated by <code>recursive_get_transition_table</code>), the metafunction finds
+recursively all states of the submachines. A non-recursive table can be
+obtained with some_backend_fsm::stt.</p>
+</li>
+<li>
+<p><code>generate_event_set&lt; stt&gt;</code>: generates the list of all events
+referenced by the transition table stt. If stt is a recursive table
+(generated by <code>recursive_get_transition_table</code>), the metafunction finds
+recursively all events of the submachines. A non-recursive table can be
+obtained with some_backend_fsm::stt.</p>
+</li>
+<li>
+<p><code>recursive_get_transition_table&lt;fsm&gt;</code>: recursively extends the
+transition table of the state machine fsm with tables from the
+submachines.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="msmbacktoolshpp"><a class="anchor" href="#msmbacktoolshpp"></a>msm/back/tools.hpp</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This header contains a few metaprogramming tools to get some information
+out of a state machine.</p>
+</div>
+<div class="sect2">
+<h3 id="fill_state_names"><a class="anchor" href="#fill_state_names"></a>fill_state_names</h3>
+<div class="sect3">
+<h4 id="attributes"><a class="anchor" href="#attributes"></a>attributes</h4>
+<div class="paragraph">
+<p>fill_state_names has for attribute:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>char const** m_names</code>: an already allocated array of const char*
+where the typeid-generated names of a state machine states will be
+witten.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="constructor"><a class="anchor" href="#constructor"></a>constructor</h4>
+<div class="paragraph">
+<p>char const** names_to_fill</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="usage"><a class="anchor" href="#usage"></a>usage</h4>
+<div class="paragraph">
+<p>fill_state_names is made for use in a mpl::for_each iterating on a state
+list and writing inside a pre-allocated array the state names. Example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>typedef some_fsm::stt Stt;
+typedef msm::back::generate_state_set&lt;Stt&gt;::type all_states; //states
+static char const* state_names[mpl::size&lt;all_states&gt;::value];
+// array to fill with names
+// fill the names of the states defined in the state machine
+mpl::for_each&lt;all_states,boost::msm::wrap&lt;mpl::placeholders::_1&gt; &gt;
+    (msm::back::fill_state_names&lt;Stt&gt;(state_names));
+// display all active states
+for (unsigned int i=0;i&lt;some_fsm::nr_regions::value;++i)
+{
+    std::cout &lt;&lt; " -&gt; "
+              &lt;&lt; state_names[my_fsm_instance.current_state()[i]]
+              &lt;&lt; std::endl;
+}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="get_state_name"><a class="anchor" href="#get_state_name"></a>get_state_name</h3>
+<div class="sect3">
+<h4 id="_attributes"><a class="anchor" href="#_attributes"></a>attributes</h4>
+<div class="paragraph">
+<p>get_state_name has for attributes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>std::string&amp; m_name: the return value of the iteration</p>
+</li>
+<li>
+<p>int m_state_id: the searched state&#8217;s id</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_constructor"><a class="anchor" href="#_constructor"></a>constructor</h4>
+<div class="paragraph">
+<p>The constructor takes as argument a reference to the string to fill with
+the state name and the id which must be searched.</p>
+</div>
+<div class="paragraph">
+<p>string&amp; name_to_fill,int state_id</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_usage"><a class="anchor" href="#_usage"></a>usage</h4>
+<div class="paragraph">
+<p>This type is made for the same search as in the previous example, using
+a mpl::for_each to iterate on states. After the iteration, the state
+name reference has been set.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// we need a fsm's table
+typedef player::stt Stt;
+typedef msm::back::generate_state_set&lt;Stt&gt;::type all_states; //all states
+std::string name_of_open; // id of Open is 1
+// fill name_of_open for state of id 1
+boost::mpl::for_each&lt;all_states,boost::msm::wrap&lt;mpl::placeholders::_1&gt; &gt;
+          (msm::back::get_state_name&lt;Stt&gt;(name_of_open,1));
+std::cout &lt;&lt; "typeid-generated name Open is: " &lt;&lt;  name_of_open &lt;&lt; std::endl;</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="display_type"><a class="anchor" href="#display_type"></a>display_type</h3>
+<div class="sect3">
+<h4 id="_attributes_2"><a class="anchor" href="#_attributes_2"></a>attributes</h4>
+<div class="paragraph">
+<p>none</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_usage_2"><a class="anchor" href="#_usage_2"></a>usage</h4>
+<div class="paragraph">
+<p>Reusing the state list from the previous example, we can output all
+state names:</p>
+</div>
+<div class="paragraph">
+<p><code>mpl::for_each&lt;all_states,boost::msm::wrap&lt;mpl::placeholders::_1&gt; &gt;(msm::back::display_type ());</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/reference/back-end-headers.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="common-headers.html">Common headers</a></span>
+        <span class="next"><a href="front-end-headers.html">Front-end headers</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

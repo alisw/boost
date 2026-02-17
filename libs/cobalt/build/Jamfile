@@ -1,0 +1,151 @@
+# Copyright (c) 2023 Klemens D. Morgenstern
+#
+# Distributed under the Boost Software License, Version 1.0. (See accompanying
+# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+
+import os ;
+import-search /boost/config/checks ;
+import config : requires ;
+import-search /boost/cobalt ;
+import boost-cobalt ;
+import ac ;
+
+using openssl ;
+
+explicit
+        [ searched-lib ws2_32 : : <target-os>windows ]
+        [ searched-lib mswsock : : <target-os>windows ]
+        [ searched-lib bcrypt : : <target-os>windows ]
+        ;
+
+project : requirements
+  <define>BOOST_ASIO_NO_DEPRECATED
+  <toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
+  <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+  <toolset>msvc:<cxxflags>/bigobj
+  <target-os>windows:<define>WIN32_LEAN_AND_MEAN
+  <target-os>linux:<linkflags>-lpthread
+  : source-location ../src
+  : common-requirements <library>$(boost_dependencies)
+    <boost.cobalt.pmr>std:<define>BOOST_COBALT_USE_STD_PMR=1
+    <boost.cobalt.pmr>boost-container:<define>BOOST_COBALT_USE_BOOST_CONTAINER_PMR=1
+    <boost.cobalt.pmr>custom:<define>BOOST_COBALT_USE_CUSTOM_PMR=1
+    <boost.cobalt.pmr>no:<define>BOOST_COBALT_NO_PMR=1
+    <boost.cobalt.executor>use_io_context:<define>BOOST_COBALT_USE_IO_CONTEXT=1
+    <boost.cobalt.executor>custom_executor:<define>BOOST_COBALT_CUSTOM_EXECUTOR=1
+;
+
+
+local config-binding = [ modules.binding config ] ;
+config-binding ?= "" ;
+
+alias cobalt_sources
+   : detail/exception.cpp
+     detail/util.cpp
+     channel.cpp
+     error.cpp
+     main.cpp
+     this_thread.cpp
+     thread.cpp
+   ;
+
+explicit cobalt_sources ;
+
+lib boost_cobalt
+   : cobalt_sources
+   : requirements <define>BOOST_COBALT_SOURCE=1
+     <link>shared:<define>BOOST_COBALT_DYN_LINK=1
+     [ requires
+        cxx20_hdr_concepts
+     ]
+     <boost.cobalt.pmr>boost-container:<library>/boost/container//boost_container
+      [ check-target-builds
+          $(config-binding:D)//cpp_lib_memory_resource
+          cpp_lib_memory_resource
+      : <conditional>@set-pmr-std
+      : <conditional>@set-pmr-boost
+      ]
+   : usage-requirements
+     <boost.cobalt.pmr>boost-container:<library>/boost/container//boost_container
+     <link>shared:<define>BOOST_COBALT_DYN_LINK=1
+     <define>BOOST_COBALT_NO_LINK=1
+      [ check-target-builds
+          $(config-binding:D)//cpp_lib_memory_resource
+          cpp_lib_memory_resource
+      : <conditional>@set-pmr-std
+      : <conditional>@set-pmr-boost
+      ]
+    <target-os>windows,<toolset>gcc:<library>ws2_32
+  ;
+
+alias cobalt_io_sources
+   : io/steady_timer.cpp
+     io/system_timer.cpp
+     io/sleep.cpp
+     io/signal_set.cpp
+     io/serial_port.cpp
+     io/write.cpp
+     io/read.cpp
+     io/pipe.cpp
+     io/file.cpp
+     io/random_access_file.cpp
+     io/stream_file.cpp
+     io/endpoint.cpp
+     io/socket.cpp
+     io/datagram_socket.cpp
+     io/seq_packet_socket.cpp
+     io/stream_socket.cpp
+     io/resolver.cpp
+     io/acceptor.cpp
+   ;
+
+
+lib boost_cobalt_io
+    : cobalt_io_sources boost_cobalt
+    : requirements <define>BOOST_COBALT_IO_SOURCE=1
+      <link>shared:<define>BOOST_COBALT_DYN_LINK=1
+      <target-os>windows,<toolset>gcc:<library>bcrypt
+      <target-os>windows,<toolset>gcc:<library>mswsock
+    : usage-requirements
+      <target-os>windows,<toolset>gcc:<library>bcrypt
+      <target-os>windows,<toolset>gcc:<library>mswsock
+    ;
+
+lib boost_cobalt_io_ssl
+    : io/ssl.cpp boost_cobalt_io
+    : requirements <define>BOOST_COBALT_SSL_SOURCE=1
+                   <link>shared:<define>BOOST_COBALT_DYN_LINK=1
+                   [ ac.check-library /openssl//ssl : <library>/openssl//ssl/<link>shared : <build>no ]
+                   [ ac.check-library /openssl//crypto : <library>/openssl//crypto/<link>shared : <build>no ]
+    : usage-requirements
+                   [ ac.check-library /openssl//ssl : <library>/openssl//ssl/<link>shared : <build>no ]
+                   [ ac.check-library /openssl//crypto : <library>/openssl//crypto/<link>shared : <build>no ]
+    ;
+
+
+rule set-pmr-boost ( props * )
+{
+    if ! <boost.cobalt.pmr> in $(props:G)
+    {
+        return <boost.cobalt.pmr>boost-container ;
+    }
+
+    if <boost.cobalt.pmr>boost-container in $(props)
+    {
+        return <boost.cobalt.pmr>boost-container ;
+    }
+}
+
+rule set-pmr-std ( props * )
+{
+    if ! <boost.cobalt.pmr> in $(props:G)
+    {
+        return <boost.cobalt.pmr>std ;
+    }
+
+    if <boost.cobalt.pmr>std in $(props)
+    {
+        return <boost.cobalt.pmr>std ;
+    }
+}

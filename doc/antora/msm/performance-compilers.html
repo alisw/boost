@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Performance / Compilers :: Boost Libraries Documentation</title>
+  <link rel="canonical" href="https://antora.cppalliance.org/master/lib/doc/msm/performance-compilers.html">
+    <link rel="prev" href="tutorial/backmp11-back-end.html">
+    <link rel="next" href="questions-answers-tips.html">
+  <meta name="generator" content="Antora 3.1.14">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="msm" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.MetaStateMachine</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Table of Contents</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="2">
+            <a class="nav-link" href="preface.html">Preface</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="founding-idea.html">Founding idea</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="uml-short-guide.html">UML short guide</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="tutorial.html">Tutorial</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/basic-front-end.html">Basic front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/functor-front-end.html">Functor front-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/puml-front-end.html">PUML front-end (C++20, experimental)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/euml-front-end.html">eUML front-end (deprecated)</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/back-end.html">Back-end</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a>
+        </li>
+        </ul>
+        <li class=" is-current-page" data-depth="2">
+            <a class="nav-link" href="performance-compilers.html">Performance / Compilers</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="questions-answers-tips.html">Questions &amp; Answers, tips</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="internals.html">Internals</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="version-history.html">Version history</a>
+        </li>
+              <li class="" data-depth="2">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+        <ul class="nav-list">
+        <li class="" data-depth="3">
+            <a class="nav-link" href="reference/external-references-to-msm.html">External references to MSM</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/euml-operators-and-basic-helpers.html">eUML operators and basic helpers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/functional-programming.html">Functional programming</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/common-headers.html">Common headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/back-end-headers.html">Back-end headers</a>
+        </li>
+              <li class="" data-depth="3">
+            <a class="nav-link" href="reference/front-end-headers.html">Front-end headers</a>
+        </li>
+        </ul>
+  </ul>
+  </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+      <aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.MetaStateMachine">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="index.html">Table of Contents</a></li>
+    <li><a href="performance-compilers.html">Performance / Compilers</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="tutorial/backmp11-back-end.html">
+      <span class="material-symbols-outlined" title="Previous: Backmp11 back-end (C++17, experimental)">arrow_back</span>
+    </a>
+    <a accesskey="u" href="index.html">
+      <span class="material-symbols-outlined" title="Up: Table of Contents">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="questions-answers-tips.html">
+      <span class="material-symbols-outlined" title="Next: Questions &amp; Answers, tips">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Performance / Compilers</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tests were made on different PCs running Windows XP and Vista and
+compiled with VC9 SP1 or Ubuntu and compiled with g++ 4.2 and 4.3. For
+these tests, the same player state machine was written using
+Boost.Statechart, as a <a href="_attachments/SCSimple.cpp" class="xref attachment">state machine with
+only simple states</a> and as a <a href="_attachments/SCComposite.cpp" class="xref attachment">state machine
+with a composite state</a>. The same simple and composite state machines
+are implemented with MSM with a standard frontend
+<a href="_attachments/MsmSimple.cpp" class="xref attachment">(simple)</a><a href="_attachments/MsmComposite.cpp" class="xref attachment">(composite)</a>,
+the simple one also with <a href="_attachments/MsmSimpleFunctors.cpp" class="xref attachment">functors</a>
+and with <a href="_attachments/EumlSimple.cpp" class="xref attachment">eUML</a>. As these simple machines
+need no terminate/interrupt states, no message queue and have no-throw
+guarantee on their actions, the MSM state machines are defined with
+minimum functionality. Test machine is a Q6600 2.4GHz, Vista 64.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="speed"><a class="anchor" href="#speed"></a>Speed</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>VC9:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The simple test completes 90 times faster with MSM than with
+Boost.Statechart</p>
+</li>
+<li>
+<p>The composite test completes 25 times faster with MSM</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>gcc 4.2.3 (Ubuntu 8.04 in VMWare, same PC):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The simple test completes 46 times faster with MSM</p>
+</li>
+<li>
+<p>The composite test completes 19 times faster with MSM</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="executable-size"><a class="anchor" href="#executable-size"></a>Executable size</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are some worries that MSM generates huge code. Is it true? The 2
+compilers I tested disagree with this claim. On VC9, the test state
+machines used in the performance section produce executables of 14kB
+(for simple and eUML) and 21kB (for the composite). This includes the
+test code and iostreams. By comparison, an empty executable with
+iostreams generated by VC9 has a size of 7kB. Boost.Statechart generates
+executables of 43kB and 54kB. As a bonus, eUML comes for ``free'' in
+terms of executable size. You even get a speed gain. With g++ 4.3, it
+strongly depends on the compiler options (much more than VC). A good
+size state machine with –O3 can generate an executable of 600kB, and
+with eUML you can get to 1.5MB. Trying with –Os –s I come down to 18kB
+and 30kB for the test state machines, while eUML will go down to 1MB
+(which is still big), so in this case eUML does not come for free.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="supported-compilers"><a class="anchor" href="#supported-compilers"></a>Supported compilers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For a current status, have a look at the
+<a href="http://www.boost.org/development/tests/trunk/developer/msm.html">regression
+tests</a>.</p>
+</div>
+<div class="paragraph">
+<p>MSM was successfully tested with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>VC8 (partly), VC9, VC10</p>
+</li>
+<li>
+<p>g++ 4.0.1 and higher</p>
+</li>
+<li>
+<p>Intel 10.1 and higher</p>
+</li>
+<li>
+<p>Clang 2.9</p>
+</li>
+<li>
+<p>Green Hills Software MULTI for ARM v5.0.5 patch 4416 (Simple and
+Composite tutorials)</p>
+</li>
+<li>
+<p>Partial support for IBM compiler</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>VC8 and to some lesser extent VC9 suffer from a bug. Enabling the option
+"Enable Minimal Rebuild" (/Gm) will cause much higher compile-time (up
+to three times with VC8!). This option being activated per default in
+Debug mode, this can be a big problem.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Compilation times of state machines with &gt; 80 transitions that are
+going to make you storm the CFO&#8217;s office and make sure you get a shiny
+octocore with 12GB RAM by next week, unless he&#8217;s interested in paying
+you watch the compiler agonize for hours&#8230;&#8203; (Make sure you ask for dual
+24" as well, it doesn&#8217;t hurt.)</p>
+</li>
+<li>
+<p>eUML allows very long constructs but will also quickly increase your
+compile time on some compilers (VC9, VC10) with buggy decltype support
+(I suspect some at least quadratic algorithms there). Even g++ 4.4 shows
+some regression compared to 4.3 and will crash if the constructs become
+too big.</p>
+</li>
+<li>
+<p>Need to overwrite the mpl::vector/list default-size-limit of 20 and
+fusion default vector size of 10 if more than 10 states found in a state
+machine</p>
+</li>
+<li>
+<p><code>Limitation for submachines</code> and entry actions requiring an event
+property.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="compilers-corner"><a class="anchor" href="#compilers-corner"></a>Compilers corner</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Compilers are sometimes full of surprises and such strange errors
+happened in the course of the development that I wanted to list the most
+fun for readers’ entertainment.</p>
+</div>
+<div class="paragraph">
+<p><em>VC8</em>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>template &lt;class StateType&gt;
+typename ::boost::enable_if&lt;
+       typename ::boost::mpl::and_&lt;
+                typename ::boost::mpl::not_&lt;
+                    typename has_exit_pseudo_states&lt;StateType&gt;::type
+                &gt;::type,
+                typename ::boost::mpl::not_&lt;
+                    typename is_pseudo_exit&lt;StateType&gt;::type
+                &gt;::type
+       &gt;::type,
+       BaseState*&gt;::type</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I get the following error:</p>
+</div>
+<div class="paragraph">
+<p>error C2770: invalid explicit template argument(s) for '`global
+namespace'::boost::enable_if&lt;&#8230;&#8203;&gt;::&#8230;&#8203;'</p>
+</div>
+<div class="paragraph">
+<p>If I now remove the first ``::'' in ::boost::mpl, the compiler shuts up.
+So in this case, it is not possible to follow Boost’s guidelines.</p>
+</div>
+<div class="paragraph">
+<p><em>VC9</em>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>This one is my all times’ favorite. Do you know why the exit pseudo
+states are referenced in the transition table with a
+<code>submachine::exit_pt''? Because </code>exit'' will crash the compiler.
+``Exit'' is not possible either because it will crash the compiler on
+one machine, but not on another (the compiler was installed from the
+same disk).</p>
+</li>
+<li>
+<p>Sometimes, removing a policy crashes the compiler, so some versions
+are defining a dummy policy called WorkaroundVC9.</p>
+</li>
+<li>
+<p>Typeof: While g++ and VC9 compile ``standard'' state machines in
+comparable times, Typeof (while in both ways natively supported) seems
+to behave in a quadratic complexity with VC9 and VC10.</p>
+</li>
+<li>
+<p>eUML: in case of a compiler crash, changing the order of state
+definitions (first states without entry or exit) sometimes solves the
+problem.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>_g 4.x_: Boring compiler, almost all is working almost as expected.
+Being not a language lawyer I am unsure about the following ``Typeof
+problem''. VC9 and g disagree on the question if you can derive from
+the BOOST_TYPEOF generated type without first defining a typedef. I will
+be thankful for an answer on this. I only found two ways to break the
+compiler:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add more eUML constructs until something explodes (especially with
+g++-4.4)</p>
+</li>
+<li>
+<p>The build_terminate function uses 2 mpl::push_back instead of
+mpl::insert_range because g++ would not accept insert_range.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can test your compiler’s decltype implementation with the
+<a href="_attachments/CompilerStressTestEuml.cpp" class="xref attachment">following stress test</a> and
+reactivate the commented-out code until the compiler crashes.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/boostorg/msm/edit/develop/doc/modules/ROOT/pages/performance-compilers.adoc">Edit this Page</a>
+      </div>
+      <nav class="pagination">
+        <span class="prev"><a href="tutorial/backmp11-back-end.html">Backmp11 back-end (C++17, experimental)</a></span>
+        <span class="next"><a href="questions-answers-tips.html">Questions &amp; Answers, tips</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

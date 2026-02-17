@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>boost::dynamic&lowbar;bitset :: Boost.DynamicBitset</title>
+    <link rel="prev" href="../../index.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../../_'</script>
+<link rel="icon" href="../../../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../../../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../../../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="dynamic_bitset" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="../../index.html">Boost.DynamicBitset</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="../../index.html">Boost.DynamicBitset</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="dynamic_bitset.html">Reference</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="../../index.html" aria-label="Home: Boost.DynamicBitset">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="dynamic_bitset.html">Reference</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="../../index.html">
+      <span class="material-symbols-outlined" title="Previous: Boost.DynamicBitset">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+</div></div>
+    <h1 class="page"><a href="../boost.html">boost</a>::dynamic&lowbar;bitset</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>dynamic&lowbar;bitset</code> template represents a set of bits&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Declared in <code>&lt;boost&sol;dynamic&lowbar;bitset&sol;dynamic&lowbar;bitset&period;hpp&gt;</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">template&lt;
+    typename Block = unsigned long,
+    typename AllocatorOrContainer = std::allocator&lt;Block&gt;&gt;
+class dynamic&lowbar;bitset;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_types"><a class="anchor" href="#_types"></a>Types</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/reference.html" class="xref page"><code>reference</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A proxy class to simulate lvalues of bit type&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/serialize_impl.html" class="xref page"><code>serialize&lowbar;impl</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional zero&hyphen;copy serialization support&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/allocator_type.html" class="xref page"><code>allocator&lowbar;type</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The allocator used for all memory allocations&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/block_type.html" class="xref page"><code>block&lowbar;type</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The same type as <code>Block</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/const_iterator.html" class="xref page"><code>const&lowbar;iterator</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A read&hyphen;only iterator into the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/const_reference.html" class="xref page"><code>const&lowbar;reference</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type bool&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/const_reverse_iterator.html" class="xref page"><code>const&lowbar;reverse&lowbar;iterator</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A reverse read&hyphen;only iterator into the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/iterator.html" class="xref page"><code>iterator</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A read&sol;write iterator into the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/reverse_iterator.html" class="xref page"><code>reverse&lowbar;iterator</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A reverse read&sol;write reverse iterator into the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/size_type.html" class="xref page"><code>size&lowbar;type</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An unsigned integral type that can represent the size of the bitset&period; See <a href="dynamic_bitset/size.html" class="xref page"><code>size()</code></a>&period;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_member_functions"><a class="anchor" href="#_member_functions"></a>Member Functions</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/2constructor-0cb.html" class="xref page"><code>dynamic&lowbar;bitset</code></a>         <span class="small">[constructor]</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Constructors</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/2destructor.html" class="xref page"><code>&#126;dynamic&lowbar;bitset</code></a> <span class="small">[destructor]</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Destructor&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_assign-0f.html" class="xref page"><code>operator&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Assignment operators</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/all.html" class="xref page"><code>all</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether all bits in <code>&ast;this</code> are set&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/any.html" class="xref page"><code>any</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether any bits in <code>&ast;this</code> are set&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/append-07.html" class="xref page"><code>append</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>append</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/at-01.html" class="xref page"><code>at</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A checked version of <code>operator&lsqb;&rsqb;()</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/begin-0ba.html" class="xref page"><code>begin</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>begin</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/capacity.html" class="xref page"><code>capacity</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the total number of elements that <code>&ast;this</code> can hold without requiring reallocation&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/cbegin.html" class="xref page"><code>cbegin</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a read&hyphen;only iterator that refers to the least significant bit in the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/cend.html" class="xref page"><code>cend</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a read&hyphen;only iterator that refers to one past the most significant bit in the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/clear.html" class="xref page"><code>clear</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Clears the bitset, i&period;e&period; makes its size zero&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/count.html" class="xref page"><code>count</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the number of bits in this bitset that are set&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/crbegin.html" class="xref page"><code>crbegin</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a read&hyphen;only reverse iterator that refers to the most significant bit in the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/crend.html" class="xref page"><code>crend</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a read&hyphen;only reverse iterator that refers to one before the least significant bit in the bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/empty.html" class="xref page"><code>empty</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether this bitset has size zero&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/end-08.html" class="xref page"><code>end</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>end</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/find_first.html" class="xref page"><code>find&lowbar;first</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds the first set bit in <code>&ast;this</code> with an index &gt;&equals; <code>pos</code>, if any&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/find_first_off.html" class="xref page"><code>find&lowbar;first&lowbar;off</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds the first unset bit in <code>&ast;this</code> with an index &gt;&equals; <code>pos</code>, if any&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/find_next.html" class="xref page"><code>find&lowbar;next</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds the first bit set in <code>&ast;this</code> with an index &gt; <code>pos</code>, if any&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/find_next_off.html" class="xref page"><code>find&lowbar;next&lowbar;off</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds the first unset bit in <code>&ast;this</code> with an index &gt; <code>pos</code>, if any&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/flip-0e.html" class="xref page"><code>flip</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>flip</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/get_allocator.html" class="xref page"><code>get&lowbar;allocator</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a copy of the allocator object used to construct <code>&ast;this</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/intersects.html" class="xref page"><code>intersects</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether <code>&ast;this</code> intersects with <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/is_proper_subset_of.html" class="xref page"><code>is&lowbar;proper&lowbar;subset&lowbar;of</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether <code>&ast;this</code> is a proper subset of <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/is_subset_of.html" class="xref page"><code>is&lowbar;subset&lowbar;of</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether <code>&ast;this</code> is a subset of <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/max_size.html" class="xref page"><code>max&lowbar;size</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the maximum size of a bitset of this type&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/none.html" class="xref page"><code>none</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checks whether this bitset has no set bit&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/num_blocks.html" class="xref page"><code>num&lowbar;blocks</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the number of blocks in this bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_and_eq.html" class="xref page"><code>operator&amp;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bitwise&hyphen;ANDs all the bits in this bitset with the bits in <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_minus_eq.html" class="xref page"><code>operator&hyphen;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Computes the set difference of this bitset and the <code>b</code> bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_lshift_eq.html" class="xref page"><code>operator&lt;&lt;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shifts the bits in this bitset to the left by <code>n</code> positions&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_rshift.html" class="xref page"><code>operator&gt;&gt;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a shifted copy of <code>&ast;this</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_rshift_eq.html" class="xref page"><code>operator&gt;&gt;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shifts the bits in this bitset to the right by <code>n</code> positions&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_subs-08.html" class="xref page"><code>operator&lsqb;&rsqb;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subscript operators</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_xor_eq.html" class="xref page"><code>operator&circ;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bitwise&hyphen;XORs all the bits in this bitset with the bits in <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_or_eq.html" class="xref page"><code>operator&verbar;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bitwise&hyphen;ORs all the bits in this bitset with the bits in <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_bitnot.html" class="xref page"><code>operator&#126;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a copy of <code>&ast;this</code> with all of its bits toggled&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/pop_back.html" class="xref page"><code>pop&lowbar;back</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decreases the size of the bitset by one, removing the most significant bit&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/pop_front.html" class="xref page"><code>pop&lowbar;front</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decreases the size of the bitset by one, removing the least significant bit&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/push_back.html" class="xref page"><code>push&lowbar;back</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Increases the size of the bitset by one, and sets the value of the new most significant bit to <code>bit</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/push_front.html" class="xref page"><code>push&lowbar;front</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Increases the size of the bitset by one, and sets the value of the new least significant bit to <code>bit</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/rbegin-02.html" class="xref page"><code>rbegin</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rbegin</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/rend-06.html" class="xref page"><code>rend</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rend</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/reserve.html" class="xref page"><code>reserve</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Informs the bitset of a planned change in size, so that it can manage the storage allocation accordingly&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/reset-0c.html" class="xref page"><code>reset</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reset</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/resize.html" class="xref page"><code>resize</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Changes the number of bits of the bitset to <code>num&lowbar;bits</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/set-0d5.html" class="xref page"><code>set</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>set</code> overloads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/shrink_to_fit.html" class="xref page"><code>shrink&lowbar;to&lowbar;fit</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requests the bitset to reduce memory use by removing unused capacity&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/size.html" class="xref page"><code>size</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the number of bits in this bitset&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/swap.html" class="xref page"><code>swap</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Swaps the contents of this bitset and bitset <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/test.html" class="xref page"><code>test</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tests the bit at the given position&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/test_set.html" class="xref page"><code>test&lowbar;set</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets bit <code>pos</code> if <code>val</code> is <code>true</code>, and clears it if <code>val</code> is <code>false</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/to_ulong.html" class="xref page"><code>to&lowbar;ulong</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns the numeric value corresponding to the bits in <code>&ast;this</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/operator_lshift.html" class="xref page"><code>operator&lt;&lt;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns a shifted copy of <code>&ast;this</code>&period;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_static_data_members"><a class="anchor" href="#_static_data_members"></a>Static Data Members</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/bits_per_block.html" class="xref page"><code>bits&lowbar;per&lowbar;block</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of bits the type <code>Block</code> uses to represent values, excluding any padding bits&period; Numerically equal to <code>std&colon;&colon;numeric&lowbar;limits&lt; Block &gt;&colon;&colon;digits</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="dynamic_bitset/npos.html" class="xref page"><code>npos</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum value of <code>size&lowbar;type</code>&period;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_friends"><a class="anchor" href="#_friends"></a>Friends</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boost::dynamic&lowbar;bitset::bit&lowbar;appender</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="dynamic_bitset/serialize_impl.html" class="xref page">boost::dynamic&lowbar;bitset::serialize&lowbar;impl</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional zero&hyphen;copy serialization support&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="hash_value.html" class="xref page">boost::hash&lowbar;value</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Computes a hash value for a <code>dynamic&lowbar;bitset</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boost::to&lowbar;string&lowbar;helper</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="operator_rshift-0e.html" class="xref page">boost::operator&gt;&gt;</a></code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="from_block_range-0e1.html" class="xref page">boost::from&lowbar;block&lowbar;range</a></code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="to_block_range-08.html" class="xref page">boost::to&lowbar;block&lowbar;range</a></code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="operator_lt-04b.html" class="xref page">boost::operator&lt;</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less&hyphen;than operator</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="operator_eq-0e8.html" class="xref page">boost::operator&equals;&equals;</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Equality operator</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boost::const&lowbar;bit&lowbar;iterator</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boost::bit&lowbar;iterator</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_non_member_functions"><a class="anchor" href="#_non_member_functions"></a>Non-Member Functions</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_not_eq.html" class="xref page"><code>operator!&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compares two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_bitand.html" class="xref page"><code>operator&amp;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Performs a bitwise&hyphen;AND of two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_minus.html" class="xref page"><code>operator&hyphen;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Calculates the set difference of two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_lt-0c.html" class="xref page"><code>operator&lt;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compares two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_le.html" class="xref page"><code>operator&lt;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compares two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_eq-09.html" class="xref page"><code>operator&equals;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compares two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_gt.html" class="xref page"><code>operator&gt;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compares two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_ge.html" class="xref page"><code>operator&gt;&equals;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Compares two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_xor.html" class="xref page"><code>operator&circ;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Performs a bitwise&hyphen;XOR of two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="operator_bitor.html" class="xref page"><code>operator&verbar;</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Performs a bitwise&hyphen;OR of two bitsets&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="swap.html" class="xref page"><code>swap</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exchanges the contents of <code>a</code> and <code>b</code>&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="to_block_range-0c.html" class="xref page"><code>to&lowbar;block&lowbar;range</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Writes the bits of the bitset into the iterator <code>result</code>, a block at a time&period;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="to_string.html" class="xref page"><code>to&lowbar;string</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Copies a representation of <code>b</code> into the string <code>s</code>&period;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_template_parameters"><a class="anchor" href="#_template_parameters"></a>Template parameters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>&hyphen; <code>Block</code> The integer type in which the bits are stored&period; Defaults to <code>unsigned long</code>&period;</p>
+</div>
+<div class="paragraph">
+<p>&hyphen; <code>AllocatorOrContainer</code> Either an allocator (to use for all internal memory management) or a container of Block&apos;s&period; Defaults to <code>std&colon;&colon;allocator&lt; Block &gt;</code>&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_concepts_modeled"><a class="anchor" href="#_concepts_modeled"></a>Concepts modeled</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>DefaultConstructible, CopyConstructible, CopyAssignable, MoveConstructible, MoveAssignable, EqualityComparable, LessThanComparable&period;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_type_requirements"><a class="anchor" href="#_type_requirements"></a>Type requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>Block</code> is a cv&hyphen;unqualified unsigned integer type other than <code>bool</code>&period; <code>AllocatorOrContainer</code> satisfies the standard requirements for an <a href="https://en.cppreference.com/w/cpp/named_req/Allocator.html">allocator</a> or is a container&hyphen;like type which provides at least bidirectional iterators&period;</p>
+</div>
+<div class="paragraph">
+<p><span class="small">Created with <a href="https://www.mrdocs.com">MrDocs</a></span></p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="prev"><a href="../../index.html">Boost.DynamicBitset</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+[#hash_traits]
+== Hash Traits
+
+:idprefix: hash_traits_
+
+=== `<boost/unordered/hash_traits.hpp>` Synopsis
+
+[listing,subs="+macros,+quotes"]
+-----
+#include <boost/container_hash/hash_is_avalanching.hpp>
+
+namespace boost {
+namespace unordered {
+
+using boost::hash_is_avalanching;
+
+} // namespace unordered
+} // namespace boost
+-----
+
+[horizontal]
+Note:;; This header is deprecated. Use instead
+`link:../../../../../container_hash/doc/html/hash.html#ref_hash_is_avalanchinghash[boost::hash_is_avalanching]`
+defined in
+`link:../../../../../container_hash/doc/html/hash.html#ref_boostcontainer_hashhash_is_avalanching_hpp[<boost/container_hash/hash_is_avalanching.hpp>]`.
+
+Open-addressing and concurrent containers
+use the provided hash function `Hash` as-is if `hash_is_avalanching<Hash>::value` is `true`; otherwise, they
+implement a bit-mixing post-processing stage to increase the quality of hashing at the expense of
+extra computational cost.
+
+---

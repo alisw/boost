@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Requests and responses :: Boost.Redis</title>
+  <link rel="canonical" href="https://github.com/boostorg/redis/blob/master/redis/requests_responses.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="cancellation.html">
+  <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/boostlook.css">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../_'</script>
+<link rel="icon" href="../_/img/favicons/favicon.ico" type="image/x-icon">
+    <!-- Favicon configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../_/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../_/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../_/img/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../_/img/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="../_/img/favicons/favicon.ico">
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <div id="header">
+    <div id="toc" class="nav-container toc2" data-component="redis" data-version="">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">Boost.Redis</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Introduction</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="requests_responses.html">Requests and responses</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="cancellation.html">Cancellation and timeouts</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="serialization.html">Serializing and parsing into custom types</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="logging.html">Logging</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="benchmarks.html">Echo server benchmark</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="comparison.html">Comparison with other Redis clients</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="examples.html">Examples</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="reference.html">Reference</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="changelog.html">Changelog</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: Boost.Redis">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="requests_responses.html">Requests and responses</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="index.html">
+      <span class="material-symbols-outlined" title="Previous: Introduction">arrow_back</span>
+    </a>
+    <a class="disabled" accesskey="u" aria-disabled="true" tabindex="-1">
+      <span class="material-symbols-outlined" title="Up:">arrow_upward</span>
+    </a>
+    <a accesskey="n" href="cancellation.html">
+      <span class="material-symbols-outlined" title="Next: Cancellation and timeouts">arrow_forward</span>
+    </a>
+</div></div>
+    <h1 class="page">Requests and responses</h1>
+  <div class="sect1">
+<h2 id="_requests"><a class="anchor" href="#_requests"></a>Requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Redis requests are composed of one or more commands. In the
+Redis documentation, requests are called
+<a href="https://redis.io/topics/pipelining">pipelines</a>. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Some example containers.
+std::list&lt;std::string&gt; list {...};
+std::map&lt;std::string, mystruct&gt; map { ...};
+
+// The request can contain multiple commands.
+request req;
+
+// Command with variable length of arguments.
+req.push("SET", "key", "some value", "EX", "2");
+
+// Pushes a list.
+req.push_range("SUBSCRIBE", list);
+
+// Same as above but as an iterator range.
+req.push_range("SUBSCRIBE", std::cbegin(list), std::cend(list));
+
+// Pushes a map.
+req.push_range("HSET", "key", map);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Sending a request to Redis is performed by
+<a href="reference/boost/redis/basic_connection/async_exec-02.html" class="xref page"><code>connection::async_exec</code></a>
+as already stated. Requests accept a <a href="reference/boost/redis/request/config.html" class="xref page"><code>boost::redis::request::config</code></a>
+object when constructed that dictates how requests are handled in situations like
+reconnection. The reader is advised to read it carefully.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_responses"><a class="anchor" href="#_responses"></a>Responses</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Boost.Redis uses the following strategy to deal with Redis responses:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="reference/boost/redis/response.html" class="xref page"><code>boost::redis::response</code></a> should be used
+when the request&#8217;s number of commands is known at compile-time.</p>
+</li>
+<li>
+<p><a href="reference/boost/redis/generic_response.html" class="xref page"><code>boost::redis::generic_response</code></a> should be
+used when the number of commands is dynamic.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, the request below has three commands:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">request req;
+req.push("PING");
+req.push("INCR", "key");
+req.push("QUIT");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Therefore, its response will also contain three elements.
+The following response object can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">response&lt;std::string, int, std::string&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response behaves as a <code>std::tuple</code> and must
+have as many elements as the request has commands (exceptions below).
+It is also necessary that each tuple element is capable of storing the
+response to the command it refers to, otherwise an error will occur.</p>
+</div>
+<div class="paragraph">
+<p>To ignore responses to individual commands in the request use the tag
+<a href="reference/boost/redis/ignore_t.html" class="xref page"><code>boost::redis::ignore_t</code></a>. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Ignore the second and last responses.
+response&lt;std::string, ignore_t, std::string, ignore_t&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following table provides the RESP3-types returned by some Redis
+commands:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Command</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RESP3 type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Documentation</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lpush</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lpush" class="bare">https://redis.io/commands/lpush</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lrange</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lrange" class="bare">https://redis.io/commands/lrange</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>set</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple-string, null or blob-string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/set" class="bare">https://redis.io/commands/set</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>get</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blob-string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/get" class="bare">https://redis.io/commands/get</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>smembers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/smembers" class="bare">https://redis.io/commands/smembers</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hgetall</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/hgetall" class="bare">https://redis.io/commands/hgetall</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>To map these RESP3 types into a C++ data structure use the table below:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RESP3 type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Possible C++ type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Type</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple-string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple-error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blob-string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::string</code>, <code>std::vector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blob-error</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::string</code>, <code>std::vector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>long long</code>, <code>int</code>, <code>std::size_t</code>, <code>std::string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Double</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>double</code>, <code>std::string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::optional&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simple</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::vector</code>, <code>std::list</code>, <code>std::array</code>, <code>std::deque</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aggregate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::vector</code>, <code>std::map</code>, <code>std::unordered_map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aggregate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::vector</code>, <code>std::set</code>, <code>std::unordered_set</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aggregate</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Push</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>std::vector</code>, <code>std::map</code>, <code>std::unordered_map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aggregate</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For example, the response to the request</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">request req;
+req.push("HELLO", 3);
+req.push_range("RPUSH", "key1", vec);
+req.push_range("HSET", "key2", map);
+req.push("LRANGE", "key3", 0, -1);
+req.push("HGETALL", "key4");
+req.push("QUIT");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Can be read in the following response object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">response&lt;
+   redis::ignore_t,  // hello
+   int,              // rpush
+   int,              // hset
+   std::vector&lt;T&gt;,   // lrange
+   std::map&lt;U, V&gt;,   // hgetall
+   std::string       // quit
+&gt; resp;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To execute the request and read the response use
+<a href="reference/boost/redis/basic_connection/async_exec-02.html" class="xref page"><code>async_exec</code></a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">co_await conn-&gt;async_exec(req, resp);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the intention is to ignore responses altogether, use
+<a href="reference/boost/redis/ignore.html" class="xref page"><code>ignore</code></a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Ignores the response
+co_await conn-&gt;async_exec(req, ignore);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Responses that contain nested aggregates or heterogeneous data
+types will be given special treatment later in <a href="#the-general-case">the general case</a>.  As
+of this writing, not all RESP3 types are used by the Redis server,
+which means in practice users will be concerned with a reduced
+subset of the RESP3 specification.</p>
+</div>
+<div class="sect2">
+<h3 id="_pushes"><a class="anchor" href="#_pushes"></a>Pushes</h3>
+<div class="paragraph">
+<p>Commands that have no response, like</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>"SUBSCRIBE"</code></p>
+</li>
+<li>
+<p><code>"PSUBSCRIBE"</code></p>
+</li>
+<li>
+<p><code>"UNSUBSCRIBE"</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>must <strong>NOT</strong> be included in the response tuple. For example, the following request</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">request req;
+req.push("PING");
+req.push("SUBSCRIBE", "channel");
+req.push("QUIT");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>must be read in the response object <code>response&lt;std::string, std::string&gt;</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_null"><a class="anchor" href="#_null"></a>Null</h3>
+<div class="paragraph">
+<p>It is not uncommon for apps to access keys that do not exist or that
+have already expired in the Redis server. To deal with these use cases,
+wrap the type within a <code>std::optional</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">response&lt;
+   std::optional&lt;A&gt;,
+   std::optional&lt;B&gt;,
+   ...
+   &gt; resp;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Everything else stays the same.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_transactions"><a class="anchor" href="#_transactions"></a>Transactions</h3>
+<div class="paragraph">
+<p>To read responses to transactions we must first observe that Redis
+will queue the transaction commands and send their individual
+responses as elements of an array. The array itself is the response to
+the <code>EXEC</code> command.  For example, to read the response to this request</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">req.push("MULTI");
+req.push("GET", "key1");
+req.push("LRANGE", "key2", 0, -1);
+req.push("HGETALL", "key3");
+req.push("EXEC");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use the following response type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">response&lt;
+   ignore_t,  // multi
+   ignore_t,  // QUEUED
+   ignore_t,  // QUEUED
+   ignore_t,  // QUEUED
+   response&lt;
+      std::optional&lt;std::string&gt;, // get
+      std::optional&lt;std::vector&lt;std::string&gt;&gt;, // lrange
+      std::optional&lt;std::map&lt;std::string, std::string&gt;&gt; // hgetall
+   &gt; // exec
+&gt; resp;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For a complete example, see <a href="https://github.com/boostorg/redis/blob/master/example/cpp20_containers.cpp">cpp20_containers.cpp</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="the-general-case"><a class="anchor" href="#the-general-case"></a>The general case</h3>
+<div class="paragraph">
+<p>There are cases where responses to Redis
+commands won&#8217;t fit in the model presented above. Some examples are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Commands (like <code>set</code>) whose responses don&#8217;t have a fixed
+RESP3 type. Expecting an <code>int</code> and receiving a blob-string
+results in an error.</p>
+</li>
+<li>
+<p>RESP3 aggregates that contain nested aggregates can&#8217;t be read in STL containers.</p>
+</li>
+<li>
+<p>Transactions with a dynamic number of commands can&#8217;t be read in a <code>response</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To deal with these cases Boost.Redis provides the <a href="reference/boost/redis/resp3/node.html" class="xref page"><code>boost::redis::resp3::node</code></a> type
+abstraction, that is the most general form of an element in a
+response, be it a simple RESP3 type or the element of an aggregate. It
+is defined like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">template &lt;class String&gt;
+struct basic_node {
+   // The RESP3 type of the data in this node.
+   type data_type;
+
+   // The number of elements of an aggregate (or 1 for simple data).
+   std::size_t aggregate_size;
+
+   // The depth of this node in the response tree.
+   std::size_t depth;
+
+   // The actual data. For aggregate types this is always empty.
+   String value;
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Any response to a Redis command can be parsed into a
+<a href="reference/boost/redis/generic_response.html" class="xref page">boost::redis::generic_response</a>.
+The vector can be seen as a pre-order view of the response tree.
+Using it is not different than using other types:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// Receives any RESP3 simple or aggregate data type.
+boost::redis::generic_response resp;
+co_await conn-&gt;async_exec(req, resp);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example, suppose we want to retrieve a hash data structure
+from Redis with <code>HGETALL</code>, some of the options are</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>boost::redis::generic_response</code>: always works.</p>
+</li>
+<li>
+<p><code>std::vector&lt;std::string&gt;</code>: efficient and flat, all elements as string.</p>
+</li>
+<li>
+<p><code>std::map&lt;std::string, std::string&gt;</code>: efficient if you need the data as a <code>std::map</code>.</p>
+</li>
+<li>
+<p><code>std::map&lt;U, V&gt;</code>: efficient if you are storing serialized data. Avoids temporaries and requires <code>boost_redis_from_bulk</code> for <code>U</code> and <code>V</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition to the above users can also use unordered versions of the
+containers. The same reasoning applies to sets e.g. <code>SMEMBERS</code>
+and other data structures in general.</p>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+  </div>
+      <nav class="pagination">
+        <span class="prev"><a href="index.html">Introduction</a></span>
+        <span class="next"><a href="cancellation.html">Cancellation and timeouts</a></span>
+    </nav>
+</article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script async src="../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>
